@@ -1,0 +1,115 @@
+
+
+
+.content-page {
+  margin-top: 1rem;
+
+  .component-details {
+    font-weight: bold;
+    text-transform: capitalize;
+    margin-bottom: 1em;
+    border-bottom: solid 1px _palette(border);
+  }
+
+  .component-details__list {
+    margin-bottom: 1em;
+  }
+
+  .component-details--label {
+    font-weight: normal;
+    text-transform: none;
+  }
+
+  .component-details--only-used {
+    font-style: italic;
+    text-transform: none;
+  }
+
+  img {
+
+  }
+
+  h2 {
+    border-top: solid 3px _palette(accent);
+    padding-top: 1rem;
+    margin-top: 2rem;
+  }
+
+  h2:before {
+    content: ' ';
+    clear: both;
+    padding-top: 100px;
+  }
+
+  h2,
+  h3 {
+    clear: both
+  }
+
+  h3 {
+    border-top: solid 1px _palette(border);
+    padding-top: 1rem;
+  }
+
+  h4 {
+    margin-bottom: .2rem;
+    margin-top: 2rem;
+  }
+
+  h3 ~ h4,
+  h3 ~ p,
+  h3 ~ ul,
+  h3 ~ ol,
+  h3 ~ blockquote {
+    margin-left: 1rem;
+  }
+
+  h3 ~ p {
+    margin-bottom: .5rem;
+  }
+
+  h2[id="technical-details"] ~ h4 {
+  }
+
+  pre code {
+    font-size: .9rem;
+    padding: .7rem 1rem;
+  }
+
+  ul ul {
+    margin-bottom: .25rem;
+  }
+
+  p {
+    margin-bottom: .5rem;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  img[alt*="dialog"],
+  img[alt*="Dialog"],
+  img[alt*="right"] {
+    border: solid 1px _palette(border);
+    display: block;
+    float: right;
+    margin-bottom: 2rem;
+    margin-left: 1rem;
+    margin-top: .75rem;
+
+  }
+
+  img[alt*="Center"],
+  img[alt*="center"],
+  img[alt*="component"] {
+    border: solid 1px _palette(border);
+    display: block;
+    margin: 2em auto;
+  }
+
+  .page-content {
+    margin-bottom: 4rem;
+  }
+
+}

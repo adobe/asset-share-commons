@@ -1,0 +1,21 @@
+---
+---
+
+@import "ie8";
+@import "ie9";
+@import "main";
+@import "content-page";
+
+/* Overrides */
+
+body {
+  font-size: 12pt;
+}
+
+h1 {
+  font-weight: 200;
+}
+
+#main {
+  padding-left: 0;
+}

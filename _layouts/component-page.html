@@ -1,0 +1,18 @@
+---
+layout: default
+---
+<div class="component-page content-page">
+    <h1>{{ page.title }} Component</h1>
+
+    <section class="component-details">
+        <ul class="component-details__list">
+            <li><span class="component-details--label">Component title:</span> {{ page.title }}</li>
+            <li><span class="component-details--label">Component group:</span> Asset Share Commons - {{ page.component-group }}</li>
+            <!--<li class="component-details--only-used">Only to be used on the <a href="../">{{ page.component-group }} page template</a></li>-->
+        </ul>
+    </section>
+
+    <article class="page-content">
+    {{ content }}
+    </article>
+</div>

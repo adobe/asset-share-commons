@@ -1,0 +1,10 @@
+{% assign page = include.page %}
+
+<article>
+    <a href="{{ page.url }}" class="image"><img src="{{ page.url }}/../images/main.png" alt="{{ page.title }}" /></a>
+    <h3>{{ page.title }}</h3>
+    <p>{{ page.description }}</p>
+    <ul class="actions">
+        <li><a href="{{ page.url }}" class="button">Learn more</a></li>
+    </ul>
+</article>

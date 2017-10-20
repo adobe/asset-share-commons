@@ -1,0 +1,14 @@
+<section>
+    <div class="posts">
+
+        {% assign sorted = (site.pages | sort: 'title') %}
+        {% assign currentPagePath = page.path | remove: "index.md" %}
+        {% for subpage in sorted %}
+        {% capture subFeature %}{% if subpage.path contains currentPagePath and subpage.path != page.path and subpage.layout != 'section-page' %}true{% else %}false{% endif %}{% endcapture %}
+        {% if subFeature == 'true' %}
+        {% include sub-page.html page=subpage  %}
+        {% endif %}
+        {% endfor %}
+
+    </div>
+</section>
