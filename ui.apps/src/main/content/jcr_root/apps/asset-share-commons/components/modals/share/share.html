@@ -1,0 +1,115 @@
+<!--/*
+  ~ Asset Share Commons
+  ~
+  ~ Copyright [2017]  Adobe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+ */-->
+
+<sly data-sly-use.share="com.adobe.aem.commons.assetshare.components.actions.share.EmailShare"
+	 data-sly-use.config="com.adobe.aem.commons.assetshare.configuration.Config"></sly>
+
+<style data-sly-test="${!wccmode.disabled}">
+	.cmp-modal-share .ui.modal {
+		position: relative !important;
+		display: block !important;
+		top: 0 !important;
+	}
+</style>
+
+<form method="post"
+	  action="${resource.path}.share.html"
+	  data-asset-share-id="share-modal"
+	  class="ui form modal cmp-modal-share__wrapper--initial  cmp-modal">
+
+	<i class="close icon"></i>
+
+	<div class="header">
+		${properties['modalTitle']}
+	</div>
+
+	<!--/* Loading */-->
+	<div class="cmp-content--loading ui inverted dimmer ">
+		<div class="ui text loader">${properties['sendingMessage']}.</div>
+	</div>
+
+	<div class="content scrolling">
+
+		<!--/* Messages after AJAX request */-->
+		<div data-asset-share-id="share-success"
+			 class="cmp-content--success">
+			<h3>${properties['successTitle']}</h3>
+			<p>${properties['successMessage']}</p>
+		</div>
+		 <div data-asset-share-id="share-error"
+			  class="cmp-content--error">
+			<h3>${properties['errorTitle']}</h3>
+			<p>${properties['errorMessage']}</p>
+		</div>
+		
+		<!--/* Email Share Form  */-->
+		<div class="ui grid cmp-content--form"
+			 data-asset-share-id="share-content">
+			<div class="four wide column">
+				<div class="ui header">${properties['assetListTitle']}</div>
+
+				<div class="ui list" data-sly-list.asset="${share.assets}">
+					<div class="item">
+						<i class="file icon"></i>
+						<div class="content">
+							<div class="header">${asset.title}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="eleven wide column">
+				<div class="ui header">${properties['shareOptionsTitle']}</div>
+	
+				<sly data-sly-list.asset="${share.assets}">
+					<input type="hidden" name="path" value="${asset.path}" />
+				</sly>
+
+				<div class="field">
+					<label>${properties['emailFieldLabel']}</label>
+					<input type="email" multiple name="email" required
+						   placeholder="${properties['emailPlaceholder']}"/>
+				</div>
+
+				<div class="field">
+					<label>${properties['messageFieldLabel']}</label>
+					<textarea rows="2" name="message"
+							placeholder="${properties['messagePlaceholder']}"></textarea>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!--/* Default actions */-->
+	<div class="cmp-footer__actions actions">
+		<div class="ui deny button">${properties['cancelButton']}</div>
+		<button data-asset-share-id="submit-share"
+				type="submit"
+				class="ui primary submit right labeled icon button">
+			${properties['shareButton']}
+			<i class="send outline icon"></i>
+		</button>
+	</div>
+	
+	<!--/* After request actions */-->
+	<div class="cmp-footer__actions--completed actions">
+		<div class="ui deny button">${properties['closeButton']}</div>
+	</div>
+</form>
+
+

@@ -1,0 +1,38 @@
+<!--/*
+  ~ Asset Share Commons
+  ~
+  ~ Copyright [2017]  Adobe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+ */-->
+
+<!--/* Root Component sets up page to be divided into a rail and main body */-->
+<div id="asset-share-commons">
+    <div class="ui stackable grid">
+        <div class="twelve wide column"
+             id="main"
+             data-asset-share-id="main">
+            <div data-sly-resource="${'main' @ resourceType='wcm/foundation/components/responsivegrid'}"></div>
+
+        </div>
+
+        <div class="four wide column desktopvisible"
+             id="rail"
+             data-asset-share-id="rail">
+            <div class="ui wide sidebar right">
+                <div data-sly-resource="${'rail' @ resourceType='wcm/foundation/components/responsivegrid'}"></div>
+            </div>
+        </div>
+    </div>
+</div>
+	

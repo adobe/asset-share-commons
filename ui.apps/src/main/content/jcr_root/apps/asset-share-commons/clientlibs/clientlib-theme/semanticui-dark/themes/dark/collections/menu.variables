@@ -1,0 +1,18 @@
+/* Menu */ 
+
+@dropdownBackground            : @inputBackground;
+
+
+@secondaryItemColor			   : @textColor;
+@secondaryActiveHoverItemColor : @highlightColor; 
+@secondaryActiveItemColor      : @highlightColor;
+@secondaryHoverItemColor       : @highlightColor;
+
+@secondaryActiveItemBackground : none; 
+@secondaryItemBackground	   : none;
+@secondaryHoverItemBackground  : none;
+@secondaryActiveHoverItemBackground : none;
+@secondaryItemBorderRadius	   : 0em;
+
+@secondaryItemPadding    : @relativeMini 0em;
+@secondaryItemMargin	:  0em @relativeSmall;

@@ -1,0 +1,4 @@
+
+@verticalPadding : 0.75em;
+@horizontalPadding : 1.5em;
+@fontWeight : normal;

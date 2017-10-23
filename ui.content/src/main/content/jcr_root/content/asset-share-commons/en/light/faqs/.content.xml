@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="cq:Page">
+    <jcr:content
+        cq:lastModified="{Date}2017-10-06T10:33:42.822-04:00"
+        cq:lastModifiedBy="admin"
+        cq:template="/conf/asset-share-commons/settings/wcm/templates/content-rail-template"
+        jcr:primaryType="cq:PageContent"
+        jcr:title="Frequently Asked Questions"
+        sling:resourceType="asset-share-commons/components/structure/page">
+        <root
+            jcr:primaryType="nt:unstructured"
+            sling:resourceType="asset-share-commons/components/structure/root">
+            <rail
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="wcm/foundation/components/responsivegrid">
+                <cq:responsive jcr:primaryType="nt:unstructured"/>
+                <responsivegrid
+                    jcr:created="{Date}2017-10-06T10:29:01.288-04:00"
+                    jcr:createdBy="admin"
+                    jcr:lastModified="{Date}2017-10-06T10:29:13.529-04:00"
+                    jcr:lastModifiedBy="admin"
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="wcm/foundation/components/responsivegrid">
+                    <text
+                        jcr:created="{Date}2017-10-06T10:33:18.574-04:00"
+                        jcr:createdBy="admin"
+                        jcr:lastModified="{Date}2017-10-06T10:33:42.821-04:00"
+                        jcr:lastModifiedBy="admin"
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="asset-share-commons/components/content/text"
+                        text="&lt;p>Here are some frequently asked questions about Asset Share Commons. (its a work in progress)&lt;/p>&#xa;"
+                        textIsRich="true"/>
+                </responsivegrid>
+            </rail>
+            <main
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="wcm/foundation/components/responsivegrid">
+                <cq:responsive jcr:primaryType="nt:unstructured"/>
+                <responsivegrid
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="wcm/foundation/components/responsivegrid">
+                    <title
+                        jcr:created="{Date}2017-10-06T10:32:28.894-04:00"
+                        jcr:createdBy="admin"
+                        jcr:lastModified="{Date}2017-10-06T10:32:28.894-04:00"
+                        jcr:lastModifiedBy="admin"
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="asset-share-commons/components/content/title"/>
+                    <title_1482768887
+                        jcr:created="{Date}2017-10-06T10:32:33.336-04:00"
+                        jcr:createdBy="admin"
+                        jcr:lastModified="{Date}2017-10-06T10:32:55.802-04:00"
+                        jcr:lastModifiedBy="admin"
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Question # 1"
+                        sling:resourceType="asset-share-commons/components/content/title"
+                        type="h2"/>
+                    <text
+                        jcr:created="{Date}2017-10-06T10:32:59.733-04:00"
+                        jcr:createdBy="admin"
+                        jcr:lastModified="{Date}2017-10-06T10:33:13.644-04:00"
+                        jcr:lastModifiedBy="admin"
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="asset-share-commons/components/content/text"
+                        text="&lt;p>Can put in pure content pages to support the Asset Share portal.&lt;/p>&#xa;"
+                        textIsRich="true"/>
+                </responsivegrid>
+            </main>
+        </root>
+    </jcr:content>
+</jcr:root>

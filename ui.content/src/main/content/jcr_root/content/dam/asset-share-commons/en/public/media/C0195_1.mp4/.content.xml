@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:Iptc4xmpCore="http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/" xmlns:tiff="http://ns.adobe.com/tiff/1.0/" xmlns:xmp="http://ns.adobe.com/xap/1.0/" xmlns:xmpRights="http://ns.adobe.com/xap/1.0/rights/" xmlns:xmpDM="http://ns.adobe.com/xmp/1.0/DynamicMedia/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dam="http://www.day.com/dam/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:mix="http://www.jcp.org/jcr/mix/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:mixinTypes="[mix:referenceable]"
+    jcr:primaryType="dam:Asset"
+    jcr:uuid="b3edb2b9-96f0-4197-ba4b-15847993a5f1">
+    <jcr:content
+        dam:assetState="processed"
+        dam:copiedAt="{Date}2017-10-17T11:31:24.956-04:00"
+        dam:parentAssetID="a1fed7e5-9f41-4d55-8a9c-7ba5932bf959"
+        dam:relativePath="asset-share-commons/en/public/media/C0195_1.mp4"
+        jcr:lastModified="{Date}2017-10-17T11:32:22.022-04:00"
+        jcr:lastModifiedBy="admin"
+        jcr:primaryType="dam:AssetContent">
+        <metadata
+            cq:tags="[properties:orientation/landscape,properties:style/monochrome]"
+            dam:extracted="{Date}2017-10-17T11:31:24.981-04:00"
+            dam:sha1="ed4bfdcadcbb576f38c6fd6e5b3c578492486211"
+            dam:size="{Long}3037529"
+            dam:youtube_category="Autos &amp; Vehicles"
+            dam:youtube_privacy="public"
+            dc:description="Asian market place"
+            dc:extent="{Long}5087"
+            dc:format="video/mp4"
+            dc:modified="{Date}2017-10-17T10:45:43.874-04:00"
+            dc:title="Market video"
+            jcr:lastModified="{Date}2017-10-17T11:31:56.229-04:00"
+            jcr:lastModifiedBy="admin"
+            jcr:mixinTypes="[cq:Taggable]"
+            jcr:primaryType="nt:unstructured"
+            tiff:ImageLength="{Long}1080"
+            tiff:ImageWidth="{Long}1920"
+            xmp:CreateDate="{Date}2017-02-07T05:09:20.000Z"
+            xmp:ModifyDate="{Date}2017-02-07T05:09:20.000Z"
+            xmpRights:UsageTerms="Unrestricted.">
+            <xmpDM:duration
+                jcr:primaryType="nt:unstructured"
+                xmpDM:scale="1/600"
+                xmpDM:value="{Long}3520"
+                xmpNodeType="xmpStruct"/>
+            <Iptc4xmpCore:CreatorContactInfo jcr:primaryType="nt:unstructured"/>
+        </metadata>
+        <related jcr:primaryType="nt:unstructured"/>
+    </jcr:content>
+</jcr:root>

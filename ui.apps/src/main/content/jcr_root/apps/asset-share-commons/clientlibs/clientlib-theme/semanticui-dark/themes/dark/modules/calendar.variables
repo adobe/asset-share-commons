@@ -1,0 +1,7 @@
+/*******************************
+            Calendar Theme
+*******************************/
+
+@rangeBackground : @darkBlack;
+@rangeTextColor  : @filterPrimaryColor;
+@focusBoxShadow  : @focusInvertedBoxShadow;

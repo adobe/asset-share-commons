@@ -1,0 +1,80 @@
+<!--/*
+  ~ Asset Share Commons
+  ~
+  ~ Copyright [2017]  Adobe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+ */-->
+
+<template data-sly-template.data="${@ search, pagePredicate}">
+    <span data-asset-share-id="results-data"
+          data-asset-share-update-method="replace">
+        <!--/* layout */-->
+
+        <input type="hidden"
+                data-asset-share-id="layout"
+                name="layout"
+                value="${search.layout}"
+                data-asset-share-search-actions="all"/>
+
+        <!--/* p.offset */-->
+
+        <input type="hidden"
+               name="p.offset"
+               value="0"
+               data-asset-share-search-actions="search,switch-layout,sort,deep-link"/>
+
+        <input type="hidden"
+               name="p.offset"
+               value="${search.results.nextOffset}"
+               data-asset-share-search-actions="load-more"/>
+
+        <!--/* p.limit */-->
+
+        <input type="hidden"
+               name="p.limit"
+               value="${search.results.runningTotal}"
+               data-asset-share-search-actions="switch-layout,deep-link,sort"/>
+    </span>
+</template>
+
+<template data-sly-template.fragments="${@ search}">
+    <span style="display: none">
+        <div data-asset-share-id="results-running-total"
+             data-asset-share-update-method="replace">
+            ${search.results.runningTotal}
+        </div>
+
+        <div data-asset-share-id="results-total"
+             data-asset-share-update-method="replace">
+            ${search.results.total}${search.results.more ? '+' : ''}
+        </div>
+
+        <div data-asset-share-id="results-time-taken"
+             data-asset-share-update-method="replace">
+            ${search.results.timeTaken}
+        </div>
+    </span>
+</template>
+
+
+<template data-sly-template.footer="${@ search}">
+    <div data-asset-share-id="results-footer"
+         data-asset-share-update-method="replace">
+        <sly data-sly-test="${search.results.more}">
+            <br/><br/>
+            <button data-asset-share-id="${properties['infiniteLoadMore'] ? 'infinite-load-more' : 'load-more'}"
+                    class="fluid ui button">${properties['loadMoreLabel']}</button>
+        </sly>
+    </div>
+</template>

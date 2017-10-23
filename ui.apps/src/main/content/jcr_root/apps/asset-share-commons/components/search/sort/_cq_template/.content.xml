@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Asset Share Commons
+  ~
+  ~ Copyright [2017]  Adobe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="nt:unstructured"
+    ascendingLabel="Ascending"
+    descendingLabel="Descending"
+    orderByLabel="Sort By"
+    orderBySortLabel="Sort Direction">
+    <items jcr:primaryType="nt:unstructured">
+        <item0
+            jcr:primaryType="nt:unstructured"
+            text="Size"
+            value="@jcr:content/metadata/dam:size"/>
+        <item1
+            jcr:primaryType="nt:unstructured"
+            text="Last Modified"
+            value="@jcr:content/jcr:lastModified"/>
+        <item2
+            jcr:primaryType="nt:unstructured"
+            text="Width"
+            value="@jcr:content/metadata/tiff:ImageWidth"/>
+        <item3
+            jcr:primaryType="nt:unstructured"
+            text="Length"
+            value="@jcr:content/metadata/tiff:ImageLength"/>
+    </items>
+</jcr:root>

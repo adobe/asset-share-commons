@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Asset Share Commons
+  ~
+  ~ Copyright [2017]  Adobe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+          xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+          jcr:primaryType="nt:unstructured"
+          jcr:title="E-mail Share Modal"
+          sling:resourceType="cq/gui/components/authoring/dialog"
+          maximized="{Boolean}true">
+    <content
+            jcr:primaryType="nt:unstructured"
+            sling:resourceType="granite/ui/components/coral/foundation/container">
+        <items jcr:primaryType="nt:unstructured">
+            <tabs
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="granite/ui/components/coral/foundation/tabs"
+                    maximized="{Boolean}true">
+                <items jcr:primaryType="nt:unstructured">
+                    <tab-1
+                            jcr:primaryType="nt:unstructured"
+                            jcr:title="Form Labels"
+                            sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns"
+                            margin="{Boolean}true">
+                        <items jcr:primaryType="nt:unstructured">
+                            <column
+                                    jcr:primaryType="nt:unstructured"
+                                    sling:resourceType="granite/ui/components/coral/foundation/container">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <modal-title
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Share"
+                                            fieldLabel="Modal Title"
+                                            name="./modalTitle"
+                                            required="{Boolean}true"/>
+                                    <asset-list-title
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Assets"
+                                            fieldLabel="Asset List Title"
+                                            name="./assetListTitle"
+                                            required="{Boolean}true"/>
+                                    <share-options-title
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Share options"
+                                            fieldLabel="Share Options Title"
+                                            name="./shareOptionsTitle"
+                                            required="{Boolean}true"/>
+                                    <email-field-label
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="E-mail Address"
+                                            fieldLabel="E-mail Field Label"
+                                            name="./emailFieldLabel"
+                                            required="{Boolean}true"/>
+                                    <email-placeholder
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Comma delimited list of e-mail addresses"
+                                            fieldLabel="E-mail Field Placeholder Text"
+                                            name="./emailPlaceholder"
+                                            required="{Boolean}true"/>
+                                    <message-field-label
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Message (optional)"
+                                            fieldLabel="Message Field Label"
+                                            name="./messageFieldLabel"
+                                            required="{Boolean}true"/>
+                                    <message-placeholder
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Enter an optional message"
+                                            fieldLabel="Message Field Placeholder Text"
+                                            name="./messagePlaceholder"
+                                            required="{Boolean}true"/>
+                                    <close-button
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Close"
+                                            fieldLabel="Close Button Label"
+                                            name="./closeButton"
+                                            required="{Boolean}true"/>
+                                    <cancel-button
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Cancel"
+                                            fieldLabel="Cancel Button Label"
+                                            name="./cancelButton"
+                                            required="{Boolean}true"/>
+                                    <share-button
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Share"
+                                            fieldLabel="Share Button Label"
+                                            name="./shareButton"
+                                            required="{Boolean}true"/>
+                                </items>
+                            </column>
+                        </items>
+                    </tab-1>
+                    <tab-2
+                            jcr:primaryType="nt:unstructured"
+                            jcr:title="Event Labels"
+                            sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns"
+                            margin="{Boolean}true">
+                        <items jcr:primaryType="nt:unstructured">
+                            <column
+                                    jcr:primaryType="nt:unstructured"
+                                    sling:resourceType="granite/ui/components/coral/foundation/container">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <sending-message
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Sending e-mail..."
+                                            fieldLabel="Sending Message"
+                                            name="./sendingMessage"
+                                            required="{Boolean}true"/>
+                                    <success-title
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Success"
+                                            fieldLabel="Success Title"
+                                            name="./successTitle"
+                                            required="{Boolean}true"/>
+                                    <success-message
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Email sent successfully."
+                                            fieldLabel="Success Message"
+                                            name="./successMessage"
+                                            required="{Boolean}true"/>
+                                    <error-title
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Error"
+                                            fieldLabel="Error Title"
+                                            name="./errorText"
+                                            required="{Boolean}true"/>
+                                    <error-message
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="An error occurred while trying to send the email."
+                                            fieldLabel="Error Message"
+                                            name="./errorMessage"
+                                            required="{Boolean}true"/>
+                                </items>
+                            </column>
+                        </items>
+                    </tab-2>
+                    <tab-3
+                            jcr:primaryType="nt:unstructured"
+                            jcr:title="E-mail Template"
+                            sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns"
+                            margin="{Boolean}true">
+                        <items jcr:primaryType="nt:unstructured">
+                            <column
+                                    jcr:primaryType="nt:unstructured"
+                                    sling:resourceType="granite/ui/components/coral/foundation/container">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <!-- This property name is important as it ties into the ACS AEM Commons E-mail Service API -->
+                                    <sender-email-address
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            fieldDescription="Please ensure your outgoing (SMTP) mail server will support sending from this e-mail address. If blank, the default 'from' e-mail adress on the Mail Service configuration is used."
+                                            emptyText="E-mail address from which to send this share e-mail"
+                                            fieldLabel="From E-mail Address"
+                                            name="./data/senderEmailAddress"
+                                            required="{Boolean}true"/>
+                                    <!-- This property name is important as it ties into the ACS AEM Commons E-mail Service API -->
+                                    <sender-name
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="The friendly name to accompany the e-mail address"
+                                            fieldLabel="From E-Mail Name"
+                                            name="./data/senderName"
+                                            required="{Boolean}true"/>
+                                    <email-template-path
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
+                                            emptyText="/etc/notification/email"
+                                            fieldLabel="E-mail Template"
+                                            filter="hierarchy"
+                                            forceSelection="{Boolean}true"
+                                            name="./emailTemplatePath"
+                                            required="{Boolean}true"
+                                            rootPath="/etc/notification/email"/>
+                                    <subject
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Check out these assets!"
+                                            fieldLabel="Subject"
+                                            name="./data/subject"
+                                            required="{Boolean}true"/>
+                                    <user-sharer-signature
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                            fieldDescription="Except for Anonymous, Admin or user's without Display Names, in which case the Anonymous Signature will be used."
+                                            text="Use Sharer's Display Name as Signature"
+                                            value="true"
+                                            name="./useSharerSignature"/>
+                                    <signature
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            fieldDescription="The e-mail signature to use if 'User Sharer's Display Name as Signature' is unchecked, or sent by anonymous, admin or a user with an unresolvable Display Name."
+                                            fieldLabel="Signature"
+                                            required="{Boolean}true"
+                                            name="./data/signature"/>
+
+                                    <allowed-query-params-instructions
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/heading"
+                                            level="{Long}4"
+                                            text="Allow Query Parameters determine which query parameters submitted by the user are automatically made available to e-mail templates."/>
+
+                                    <allowed-query-params
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
+                                            fieldDescription="Restricts the form fields which are eligible for being added to the e-mail template."
+                                            fieldLabel="Allowed Query Parameters">
+                                        <field
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                name="./allowedQueryParams"/>
+                                    </allowed-query-params>
+                                </items>
+                            </column>
+                        </items>
+                    </tab-3>
+                </items>
+            </tabs>
+        </items>
+    </content>
+</jcr:root>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:Iptc4xmpCore="http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/" xmlns:tiff="http://ns.adobe.com/tiff/1.0/" xmlns:xmp="http://ns.adobe.com/xap/1.0/" xmlns:xmpDM="http://ns.adobe.com/xmp/1.0/DynamicMedia/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dam="http://www.day.com/dam/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:mix="http://www.jcp.org/jcr/mix/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:mixinTypes="[mix:referenceable]"
+    jcr:primaryType="dam:Asset"
+    jcr:uuid="deabc7db-4c72-4b6c-8d91-fa53fc6c9b3e">
+    <jcr:content
+        dam:assetState="processed"
+        dam:copiedAt="{Date}2017-10-17T11:29:35.569-04:00"
+        dam:parentAssetID="d3b87c95-58b0-49f7-855a-f09b955acae9"
+        dam:relativePath="asset-share-commons/en/public/media/BnW.mp4"
+        jcr:lastModified="{Date}2017-10-17T11:32:23.652-04:00"
+        jcr:lastModifiedBy="admin"
+        jcr:primaryType="dam:AssetContent">
+        <metadata
+            cq:tags="[properties:orientation/landscape,properties:style/monochrome/grayscale]"
+            dam:extracted="{Date}2017-10-17T11:29:35.593-04:00"
+            dam:sha1="8b92dc1b8ddf270174bfcfbe97b6285d9cefa323"
+            dam:size="{Long}3834289"
+            dam:youtube_category="Travel &amp; Events"
+            dam:youtube_privacy="public"
+            dc:creator="Adobe Premiere Pro"
+            dc:description="Gotham city at night."
+            dc:extent="{Long}14088"
+            dc:format="video/mp4"
+            dc:modified="{Date}2017-10-17T10:48:28.437-04:00"
+            dc:title="Cityscape"
+            jcr:lastModified="{Date}2017-10-17T11:32:23.652-04:00"
+            jcr:lastModifiedBy="admin"
+            jcr:mixinTypes="[cq:Taggable]"
+            jcr:primaryType="nt:unstructured"
+            tiff:ImageLength="{Long}1080"
+            tiff:ImageWidth="{Long}1920"
+            xmp:CreateDate="{Date}2017-02-07T05:17:45.000Z"
+            xmp:ModifyDate="{Date}2017-02-07T05:17:45.000Z">
+            <xmpDM:duration
+                jcr:primaryType="nt:unstructured"
+                xmpDM:scale="1/600"
+                xmpDM:value="{Long}8928"
+                xmpNodeType="xmpStruct"/>
+            <Iptc4xmpCore:CreatorContactInfo jcr:primaryType="nt:unstructured"/>
+        </metadata>
+        <related jcr:primaryType="nt:unstructured"/>
+    </jcr:content>
+</jcr:root>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:Iptc4xmpCore="http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/" xmlns:tiff="http://ns.adobe.com/tiff/1.0/" xmlns:xmp="http://ns.adobe.com/xap/1.0/" xmlns:xmpDM="http://ns.adobe.com/xmp/1.0/DynamicMedia/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dam="http://www.day.com/dam/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:mix="http://www.jcp.org/jcr/mix/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:mixinTypes="[mix:referenceable]"
+    jcr:primaryType="dam:Asset"
+    jcr:uuid="a7296760-850b-4da0-b0b1-80d05cda3b0d">
+    <jcr:content
+        dam:assetState="processed"
+        dam:copiedAt="{Date}2017-10-17T11:29:32.044-04:00"
+        dam:parentAssetID="5254fb31-e00b-4d3b-9198-b27967f33ba6"
+        dam:relativePath="asset-share-commons/en/public/media/2015-03-29-01.mp4"
+        jcr:lastModified="{Date}2017-10-17T11:32:23.621-04:00"
+        jcr:lastModifiedBy="admin"
+        jcr:primaryType="dam:AssetContent">
+        <metadata
+            cq:tags="[properties:orientation/landscape,properties:style/color]"
+            dam:extracted="{Date}2017-10-17T11:29:32.141-04:00"
+            dam:sha1="c621b9cb40886342c51c5606f351c54a51aefb23"
+            dam:size="{Long}16409655"
+            dam:youtube_category="Science &amp; Technology"
+            dam:youtube_privacy="public"
+            dc:description="Flower fields"
+            dc:extent="{Long}14098"
+            dc:format="video/mp4"
+            dc:modified="{Date}2017-10-17T10:44:39.501-04:00"
+            jcr:lastModified="{Date}2017-10-17T11:29:31.908-04:00"
+            jcr:lastModifiedBy="admin"
+            jcr:mixinTypes="[cq:Taggable]"
+            jcr:primaryType="nt:unstructured"
+            tiff:ImageLength="{Long}1080"
+            tiff:ImageWidth="{Long}1920"
+            xmp:CreateDate="{Date}2015-09-18T01:09:32.000Z"
+            xmp:ModifyDate="{Date}2015-09-18T01:09:32.000Z">
+            <xmpDM:duration
+                jcr:primaryType="nt:unstructured"
+                xmpDM:scale="1/600"
+                xmpDM:value="{Long}8985"
+                xmpNodeType="xmpStruct"/>
+            <Iptc4xmpCore:CreatorContactInfo jcr:primaryType="nt:unstructured"/>
+        </metadata>
+        <related jcr:primaryType="nt:unstructured"/>
+    </jcr:content>
+</jcr:root>

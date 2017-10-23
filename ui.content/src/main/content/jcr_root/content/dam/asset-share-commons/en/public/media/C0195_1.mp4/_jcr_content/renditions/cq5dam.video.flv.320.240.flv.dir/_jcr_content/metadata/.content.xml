@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="nt:unstructured"
+    audioBitrate="{Long}56"
+    audioChannels="{Long}1"
+    audioCodec="libmp3lame"
+    audioSamplingRate="{Long}22050"
+    extension="flv"
+    height="{Long}240"
+    mimeType="video/x-flv"
+    videoBitrate="{Long}200"
+    videoFrameRate="12"
+    width="{Long}320"/>

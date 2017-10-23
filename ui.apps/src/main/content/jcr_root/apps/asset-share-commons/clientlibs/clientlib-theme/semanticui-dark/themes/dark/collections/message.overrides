@@ -1,0 +1,89 @@
+/*
+ * Asset Share Commons
+ *
+ * Copyright [2017]  Adobe
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*--------------
+     Types
+---------------*/
+
+.ui.message,
+.ui.attached.message {
+  box-shadow: none;
+}
+
+.ui.message {
+  text-transform: uppercase;
+}
+
+/* Positive */
+.ui.positive.message {
+  background-color: @positiveBackgroundColor;
+  color: @white;
+}
+.ui.positive.message .header {
+  color: @white;
+}
+
+/* Negative */
+.ui.negative.message {
+  background-color: @negativeBackgroundColor;
+  color: @white;
+}
+
+.ui.negative.message .header {
+  color: @white;
+}
+
+/* Info */
+.ui.message,
+.ui.info.message {
+  background-color: @infoBackgroundColor;
+  color: @white;
+}
+.ui.message .header,
+.ui.info.message .header {
+  color: @white;
+}
+
+/* Warning */
+.ui.warning.message {
+  background-color: @warningBackgroundColor;
+  color: @black;
+}
+
+.ui.warning.message .header {
+  color: @black;
+}
+
+/* Error */
+.ui.error.message {
+  background-color: @negativeBackgroundColor;
+  color: @white;
+}
+
+.ui.error.message .header {
+  color: @white;
+}
+
+/* Success */
+.ui.success.message {
+  background-color: @positiveBackgroundColor;
+  color: @white;
+}
+.ui.success.message .header {
+  color: @white;
+}

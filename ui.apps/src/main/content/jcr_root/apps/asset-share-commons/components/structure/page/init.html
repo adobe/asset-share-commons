@@ -1,0 +1,40 @@
+<!--/*
+  ~ Asset Share Commons
+  ~
+  ~ Copyright [2017]  Adobe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+ */-->
+
+<sly    data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
+        data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}">
+
+<!--/* These params MUST be loaded before the dependent Asset Share Commons JavaScripts (ie. Modals) */-->
+<input type="hidden"
+       data-sly-test="${config.shareEnabled}"
+       data-asset-share-id="share-url"
+       value="${config.shareActionUrl}"/>
+<input type="hidden"
+       data-sly-test="${config.downloadEnabled}"
+       data-asset-share-id="download-url"
+       value="${config.downloadActionUrl}"/>
+<input type="hidden"
+       data-sly-test="${config.licenseEnabled}"
+       data-asset-share-id="license-url"
+       value="${config.licenseActionUrl}"/>
+<input type="hidden"
+       data-sly-test="${config.cartEnabled}"
+       data-asset-share-id="cart-url"
+       value="${config.cartActionUrl}"/>
+
+</sly>

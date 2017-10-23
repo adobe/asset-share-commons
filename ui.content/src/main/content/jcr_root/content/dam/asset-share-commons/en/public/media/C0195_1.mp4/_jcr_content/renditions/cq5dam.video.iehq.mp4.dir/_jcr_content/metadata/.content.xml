@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="nt:unstructured"
+    audioBitrate="{Long}128"
+    audioChannels="{Long}2"
+    audioCodec="aac"
+    audioSamplingRate="{Long}44100"
+    customArgs="-pix_fmt yuv420p"
+    extension="mp4"
+    htmlType="video/mp4; codecs=&quot;avc1.42E01E, mp4a.40.2&quot;"
+    mimeType="video/mp4"
+    videoBitrate="{Long}6144"
+    videoBitrateTolerance="{Long}8192"
+    videoCodec="libx264"
+    videoFrameRate="24000/1001"/>

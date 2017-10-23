@@ -1,0 +1,21 @@
+/*******************************
+         Theme Overrides
+*******************************/
+
+.ui.styled.accordion > .title:first-child {
+	border-top: 1px solid @borderColor;
+}
+
+.ui.styled.accordion .title.right .dropdown.icon,
+.ui.styled.accordion .accordion .title.right .dropdown.icon {
+	float: right;
+}
+
+.ui.styled.accordion .active.title .dropdown.icon,
+.ui.styled.accordion .accordion .active.title .dropdown.icon {
+  color: @filterPrimaryColor;
+}
+
+.ui.styled.accordion.menu .item .active.title > .dropdown.icon {
+  color: @filterPrimaryColor;
+}

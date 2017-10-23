@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:Iptc4xmpCore="http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/" xmlns:tiff="http://ns.adobe.com/tiff/1.0/" xmlns:xmp="http://ns.adobe.com/xap/1.0/" xmlns:xmpDM="http://ns.adobe.com/xmp/1.0/DynamicMedia/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dam="http://www.day.com/dam/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:mix="http://www.jcp.org/jcr/mix/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:mixinTypes="[mix:referenceable]"
+    jcr:primaryType="dam:Asset"
+    jcr:uuid="51ca2d90-3136-4e30-8c80-c9bac2803e1c">
+    <jcr:content
+        dam:assetState="processed"
+        dam:copiedAt="{Date}2017-10-17T11:32:23.274-04:00"
+        dam:parentAssetID="79978dc5-0d60-4dfe-a46b-aeb180923bb7"
+        dam:relativePath="asset-share-commons/en/public/media/Northernlights2_HD.mp4"
+        jcr:lastModified="{Date}2017-10-17T11:33:08.464-04:00"
+        jcr:lastModifiedBy="admin"
+        jcr:primaryType="dam:AssetContent">
+        <metadata
+            cq:tags="[properties:orientation/landscape,properties:style/color]"
+            dam:extracted="{Date}2017-10-17T11:32:23.292-04:00"
+            dam:sha1="4c5ab7ad9c02f79371f52f6691d0ba4a1c3537a6"
+            dam:size="{Long}2288604"
+            dam:youtube_category="Travel &amp; Events"
+            dam:youtube_privacy="public"
+            dc:description="beautiful northern lights"
+            dc:extent="{Long}4014"
+            dc:format="video/mp4"
+            dc:modified="{Date}2017-10-17T10:46:28.342-04:00"
+            dc:title="Northern Lights"
+            jcr:lastModified="{Date}2017-10-17T11:29:32.144-04:00"
+            jcr:lastModifiedBy="admin"
+            jcr:mixinTypes="[cq:Taggable]"
+            jcr:primaryType="nt:unstructured"
+            tiff:ImageLength="{Long}1080"
+            tiff:ImageWidth="{Long}1920"
+            xmp:CreateDate="{Date}2016-01-13T06:33:10.000Z"
+            xmp:ModifyDate="{Date}2016-01-13T06:33:10.000Z">
+            <xmpDM:duration
+                jcr:primaryType="nt:unstructured"
+                xmpDM:scale="1/600"
+                xmpDM:value="{Long}2482"
+                xmpNodeType="xmpStruct"/>
+            <Iptc4xmpCore:CreatorContactInfo jcr:primaryType="nt:unstructured"/>
+        </metadata>
+        <related jcr:primaryType="nt:unstructured"/>
+    </jcr:content>
+</jcr:root>

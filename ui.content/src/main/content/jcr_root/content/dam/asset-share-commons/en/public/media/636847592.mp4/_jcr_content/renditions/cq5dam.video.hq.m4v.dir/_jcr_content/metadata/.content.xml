@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="nt:unstructured"
+    audioBitrate="{Long}128"
+    audioChannels="{Long}2"
+    audioCodec="aac"
+    audioSamplingRate="{Long}44100"
+    customArgs="-flags +loop -me_method umh -g 250 -qcomp 0.6 -qmin 10 -qmax 51 -qdiff 4 -bf 16 -b_strategy 1 -i_qfactor 0.71 -cmp chroma -subq 8 -me_range 16 -coder 1 -sc_threshold 40 -b-pyramid normal -wpredp 2 -mixed-refs 1 -8x8dct 1 -fast-pskip 1 -keyint_min 25 -refs 4 -trellis 1 -direct-pred 3 -partitions i8x8,i4x4,p8x8,b8x8"
+    extension="m4v"
+    htmlType="video/mp4; codecs=&quot;avc1.42E01E, mp4a.40.2&quot;"
+    mimeType="video/x-m4v"
+    twoPass="true"
+    videoBitrate="{Long}6144"
+    videoBitrateTolerance="{Long}8192"
+    videoCodec="libx264"
+    videoFrameRate="24000/1001"/>

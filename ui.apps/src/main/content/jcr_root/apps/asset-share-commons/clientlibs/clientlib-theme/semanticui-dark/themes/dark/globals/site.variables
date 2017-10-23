@@ -1,0 +1,379 @@
+/*******************************
+         Site Settings
+*******************************/
+
+/*-------------------
+       Fonts
+--------------------*/
+
+@fontName          : 'LatoWeb';
+@fontSmoothing     : antialiased;
+
+@headerFont        : @fontName, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+@pageFont          : @fontName, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+
+
+
+@importGoogleFonts : false;
+
+/*-------------------
+      Base Sizes
+--------------------*/
+
+/* This is the single variable that controls them all */
+@emSize   : 14px; // Brand
+
+/* The size of page text  */
+@fontSize : 14px; // Brand
+
+
+/*-------------------
+    Border Radius
+--------------------*/
+
+/* See Power-user section below
+   for explanation of @px variables
+*/
+@relativeBorderRadius: @relative4px;  // Brand
+@absoluteBorderRadius: @4px;          // Brand
+
+@defaultBorderRadius: @absoluteBorderRadius; // Brand
+
+/*-------------------
+    Brand Colors
+--------------------*/
+
+@primaryColor        : @red; // Brand
+@secondaryColor      : @lightBlack; // Brand
+
+
+@lightPrimaryColor   : @red; // Brand
+@lightSecondaryColor : @offWhite; // TODO
+
+
+
+/*--------------
+  Page Heading
+---------------*/
+
+@headerFontWeight : normal;              // Brand
+@headerLineHeight : unit((14 / 14), em); // TODO
+
+@h1 : unit((28 / 14), rem); // TODO
+@h2 : unit((24 / 14), rem); // TODO
+@h3 : unit((18 / 14), rem); // TODO
+@h4 : unit((15 / 14), rem); // TODO
+@h5 : unit((11 / 14), rem); // TODO
+
+/*--------------
+   Form Input
+---------------*/
+
+/* This adjusts the default form input across all elements */
+@inputBackground        : @fullBlack;          // Brand
+@inputVerticalPadding   : @relative11px;   // TODO
+@inputHorizontalPadding : @relative14px;   // TODO
+@inputPadding           : @inputVerticalPadding @inputHorizontalPadding; // TODO
+
+/*-------------------
+   Input Text Color 
+ --------------------*/
+@inputColor                 : @grey;       // Brand (@black)
+@inputPlaceholderColor      : @offBlack;   // Brand
+@inputPlaceholderFocusColor : @offBlack;   // Brand
+
+/* Line Height Default For Inputs in Browser (Descendors are 17px at 14px base em) */
+@inputLineHeight: unit((17 / 14), em);
+
+/*-------------------
+    Focused Input
+--------------------*/
+
+/* Used on inputs, textarea etc */
+@focusedFormBorderColor: @grey;         // Brand
+
+/* Used on dropdowns, other larger blocks */
+@focusedFormMutedBorderColor: @midBlack;   // Brand
+
+/*-------------------
+        Sizes
+--------------------*/
+
+/*
+  Sizes are all expressed in terms of 14px/em (default em)
+  This ensures these "ratios" remain constant despite changes in EM
+*/
+
+@miniSize        : (11 / 14);
+@tinySize        : (12 / 14);
+@smallSize       : (13 / 14);
+@mediumSize      : (14 / 14);
+@largeSize       : (16 / 14);
+@bigSize         : (18 / 14);
+@hugeSize        : (20 / 14);
+@massiveSize     : (24 / 14);
+
+
+/*-------------------
+        Page
+--------------------*/
+
+@pageBackground      : #3C3C3C; // Brand
+@pageOverflowX       : hidden;
+@sideBarBackground   : #363636; // Brand
+
+@lineHeight          : 1.4285em;  // TODO
+@textColor           : @midGrey;    // TODO
+@disabledTextColor   : @black;
+
+/*-------------------
+      Paragraph
+--------------------*/
+
+@paragraphMargin     : 0em 0em 1em; // TODO
+@paragraphLineHeight : @lineHeight; // TODO
+
+/*-------------------
+       Links
+--------------------*/
+
+@linkColor           : @white;          // Brand
+@linkUnderline       : none;            // Brand
+@linkHoverColor      : @primaryColor;   // Brand
+@linkHoverUnderline  : @linkUnderline;  // Brand
+
+/*-------------------
+    Scroll Bars // TODO
+--------------------*/
+
+@useCustomScrollbars: true;
+
+@customScrollbarWidth: 10px;
+
+@trackBackground: rgba(0, 0, 0, 0.1);
+@trackBorderRadius: 0px;
+
+@thumbBorderRadius: 5px;
+@thumbBackground: rgba(0, 0, 0, 0.25);
+@thumbTransition: color 0.2s ease;
+
+@thumbInactiveBackground: rgba(0, 0, 0, 0.15);
+@thumbHoverBackground: rgba(128, 135, 139, 0.8);
+
+/* Inverted */
+@trackInvertedBackground: rgba(255, 255, 255, 0.1);
+@thumbInvertedBackground: rgba(255, 255, 255, 0.25);
+@thumbInvertedInactiveBackground: rgba(255, 255, 255, 0.15);
+@thumbInvertedHoverBackground: rgba(255, 255, 255, 0.35);
+
+/*-------------------
+  Highlighted Text
+--------------------*/
+
+@highlightBackground      : @fullBlack;          // TODO
+@highlightColor           : @white;         // Brand
+
+@inputHighlightBackground : rgba(100, 100, 100, 0.4); // TODO
+@inputHighlightColor      : @textColor;               // TODO
+
+
+/*-------------------
+       Loader // TODO
+--------------------*/
+
+@loaderSize              : @relativeBig;
+@loaderSpeed             : 0.6s;
+@loaderLineWidth         : 0.2em;
+@loaderFillColor         : rgba(0, 0, 0, 0.1);
+@loaderLineColor         : @grey;
+
+@invertedLoaderFillColor : rgba(255, 255, 255, 0.15);
+@invertedLoaderLineColor : @white;
+
+/*-------------------
+        Grid
+--------------------*/
+
+@columnCount: 16;
+
+/*-------------------
+     Transitions
+--------------------*/
+
+@defaultDuration : 0.1s;
+@defaultEasing   : ease;
+
+/*-------------------
+     Breakpoints
+--------------------*/
+
+@mobileBreakpoint            : 320px;
+@tabletBreakpoint            : 768px;
+@computerBreakpoint          : 992px;
+@largeMonitorBreakpoint      : 1200px;
+@widescreenMonitorBreakpoint : 1920px;
+
+/*-------------------
+      Site Colors
+--------------------*/
+
+/*---  Colors  ---*/
+@red              : #ED1C25; // Brand
+@orange           : #F2711C;
+@yellow           : #EDBD1C; // Brand
+@olive            : #B5CC18;
+@green            : #21BA45;
+@teal             : #2FCC9C; 
+@blue             : #2185D0;
+@violet           : #6435C9;
+@purple           : #741CED; // Brand
+@pink             : #E03997;
+@brown            : #A5673F;
+@grey             : #E0E0E0; // Brand
+@black            : #505050; // Brand
+
+/*---  Light Colors  ---*/
+@lightRed         : lighten(@red, 30);
+@lightOrange      : #FF851B;
+@lightYellow      : lighten(@yellow, 30);;
+@lightOlive       : #D9E778;
+@lightGreen       : #2ECC40;
+@lightTeal        : lighten(@teal, 30);;
+@lightBlue        : #54C8FF;
+@lightViolet      : #A291FB;
+@lightPurple      : #DC73FF;
+@lightPink        : #FF8EDF;
+@lightBrown       : #D67C1C;
+@lightGrey        : @offWhite;
+@lightBlack       : @offBlack;
+
+/*---   Neutrals (Greys, Whites and Blacks)  ---*/
+
+@darkBlack        : #303030;
+@fullBlack        : #343434;   // Brand
+@offBlack         : #707070;  // Brand
+@darkWhite        : @grey;    // Brand
+@midWhite         : @offWhite;// Brand
+@offWhite         : #F0F0F0;  // Brand
+@white            : #FFFFFF;  // Brand
+@hoveredTextColor : @grey;
+
+/*---   Custom Neutrals   ---*/
+@darkGrey         : #A0A0A0;  // Brand
+@midGrey          : #D0D0D0;  // Brand
+@midBlack	      : #606060;  // BRAND
+
+
+
+/*--- Colored Backgrounds ---*/
+@redBackground    : @red;     // Brand
+@orangeBackground : #FFEDDE;
+@yellowBackground : @yellow;  // Brand
+@oliveBackground  : #FBFDEF;
+@greenBackground  : #E5F9E7;
+@tealBackground   : @teal;    // Brand
+@blueBackground   : #DFF0FF;
+@violetBackground : #EAE7FF;
+@purpleBackground : #F6E7FF;
+@pinkBackground   : #FFE3FB;
+@brownBackground  : #F1E2D3;
+
+/*--- Colored Headers ---*/
+@redHeaderColor    : darken(@redTextColor, 30);    // Brand
+@oliveHeaderColor  : darken(@oliveTextColor, 30);
+@greenHeaderColor  : darken(@greenTextColor, 30);
+@yellowHeaderColor : darken(@yellowTextColor, 30); // Brand
+@blueHeaderColor   : darken(@blueTextColor, 30);
+@tealHeaderColor   : darken(@tealTextColor, 30);   // Brand
+@pinkHeaderColor   : darken(@pinkTextColor, 30);
+@violetHeaderColor : darken(@violetTextColor, 30);
+@purpleHeaderColor : darken(@purpleTextColor, 30);
+@orangeHeaderColor : darken(@orangeTextColor, 30);
+@brownHeaderColor  : darken(@brownTextColor, 30);
+
+/*--- Colored Text ---*/
+@redTextColor    : @red;    // Brand
+@orangeTextColor : @orange;
+@yellowTextColor : @yellow; // Brand
+@oliveTextColor  : #8ABC1E; // Olive is difficult to read
+@greenTextColor  : #1EBC30; // Green is difficult to read
+@tealTextColor   : @teal;   // Brand
+@blueTextColor   : @blue;
+@violetTextColor : @violet;
+@purpleTextColor : @purple;
+@pinkTextColor   : @pink;
+@brownTextColor  : @brown;
+
+/*--- Neutral Text Color --*/
+@darkTextColor               : @midBlack;
+@mutedTextColor              : @offBlack;
+@lightTextColor              : @grey;
+
+@unselectedTextColor         : @black;
+@hoveredTextColor            : @white;
+@pressedTextColor            : @midGrey;
+@selectedTextColor           : @white;
+
+/*--- Colored Border ---*/
+@redBorderColor    : @redTextColor;
+@orangeBorderColor : @orangeTextColor;
+@yellowBorderColor : @yellowTextColor;
+@oliveBorderColor  : @oliveTextColor;
+@greenBorderColor  : @greenTextColor;
+@tealBorderColor   : @tealTextColor;
+@blueBorderColor   : @blueTextColor;
+@violetBorderColor : @violetTextColor;
+@purpleBorderColor : @purpleTextColor;
+@pinkBorderColor   : @pinkTextColor;
+@brownBorderColor  : @brownTextColor;
+
+/*-------------------
+     Alpha Colors
+--------------------*/
+
+@subtleTransparentBlack     : rgba(0, 0, 0, 0.03);
+@transparentBlack           : rgba(0, 0, 0, 0.05);
+@strongTransparentBlack     : rgba(0, 0, 0, 0.10);
+@veryStrongTransparentBlack : rgba(0, 0, 0, 0.15);
+
+@subtleTransparentWhite     : rgba(255, 255, 255, 0.02);
+@transparentWhite           : rgba(255, 255, 255, 0.08);
+@strongTransparentWhite     : rgba(255, 255, 255, 0.15);
+
+/*-------------------
+      Borders
+--------------------*/
+
+@borderColor                : @darkGrey; //Brand
+
+/*-------------------
+       Accents
+--------------------*/
+
+/* Differentiating Neutrals */
+@subtleGradient: linear-gradient(transparent, @transparentBlack);
+
+/* Differentiating Layers */
+@subtleShadow:
+        0px 1px 2px 0 @borderColor
+;
+@floatingShadow:
+        0px 2px 4px 0px rgba(34, 36, 38, 0.12),
+        0px 2px 10px 0px rgba(34, 36, 38, 0.15)
+;
+
+/* Resource Paths */ 
+
+/* For source only. Modified in gulp for dist */	
+@imagePath : '../../../assets/resources/images';	//Brand
+@fontPath  : '../../../assets/resources/fonts';	//Brand
+
+
+/*-------------------
+    Emotive Colors
+--------------------*/
+
+/* Positive */
+@positiveColor           : @primaryColor;
+
+@import "theme.variables";

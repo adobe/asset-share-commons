@@ -1,0 +1,6 @@
+
+@verticalPadding : 0.75em;
+@horizontalPadding : 1.5em;
+@fontWeight : normal;
+@basicBackground : transparent;
+@borderWidth: 2px;

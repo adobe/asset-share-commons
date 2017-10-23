@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="cq:Page">
+    <jcr:content
+        cq:lastModified="{Date}2017-10-06T09:21:36.698-04:00"
+        cq:lastModifiedBy="admin"
+        cq:template="/conf/asset-share-commons/settings/wcm/templates/empty-template"
+        jcr:primaryType="cq:PageContent"
+        jcr:title="Modals"
+        sling:resourceType="asset-share-commons/components/structure/page">
+        <root
+            jcr:primaryType="nt:unstructured"
+            sling:resourceType="wcm/foundation/components/responsivegrid">
+            <responsivegrid
+                jcr:created="{Date}2017-10-03T01:33:26.914-04:00"
+                jcr:createdBy="admin"
+                jcr:lastModified="{Date}2017-10-03T01:33:39.638-04:00"
+                jcr:lastModifiedBy="admin"
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="wcm/foundation/components/responsivegrid"/>
+        </root>
+    </jcr:content>
+    <download/>
+    <share/>
+    <license/>
+    <cart/>
+</jcr:root>

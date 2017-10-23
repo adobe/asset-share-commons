@@ -1,0 +1,148 @@
+/*
+ * Asset Share Commons
+ *
+ * Copyright (C) 2017 Adobe
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+package com.adobe.aem.commons.assetshare.components.predicates.impl;
+
+import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
+import com.adobe.aem.commons.assetshare.components.predicates.HiddenPredicate;
+import org.apache.commons.lang.StringUtils;
+import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.resource.AbstractResourceVisitor;
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.models.annotations.Model;
+import org.apache.sling.models.annotations.Required;
+import org.apache.sling.models.annotations.injectorspecific.OSGiService;
+import org.apache.sling.models.annotations.injectorspecific.Self;
+import org.apache.sling.models.annotations.injectorspecific.SlingObject;
+import org.apache.sling.models.factory.ModelFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.*;
+
+@Model(
+        adaptables = {SlingHttpServletRequest.class},
+        adapters = {HiddenPredicate.class},
+        resourceType = {HiddenPredicateImpl.RESOURCE_TYPE}
+)
+public class HiddenPredicateImpl extends AbstractPredicate implements HiddenPredicate {
+    protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/hidden";
+    private static final Logger log = LoggerFactory.getLogger(HiddenPredicateImpl.class);
+    private static final String RT_HIDDEN_PREDICATE = "asset-share-commons/components/search/hidden";
+    private static final String NN_PREDICATES = "predicates";
+    private static final String PN_PREDICATE = "predicate";
+    private static final String PN_VALUE = "value";
+
+    @Self
+    @Required
+    private SlingHttpServletRequest request;
+
+    @SlingObject
+    @Required
+    private Resource resource;
+
+    @OSGiService
+    private ModelFactory modelFactory;
+
+    @Override
+    public boolean isReady() {
+        // Hidden properties should never display to the end-user
+        return false;
+    }
+
+    public HiddenPredicateImpl() {
+
+    }
+
+    @Override
+    public Map<String, String> getParams(final int groupId) {
+        final Map<String, String> params = new HashMap<>();
+
+        if (resource == null) {
+            return params;
+        }
+
+        final Resource predicates = resource.getChild(NN_PREDICATES);
+
+        if (predicates == null) {
+            return params;
+        }
+
+        final Iterator<Resource> iterator = predicates.listChildren();
+
+        while (iterator.hasNext()) {
+            final Resource predicateResource = iterator.next();
+            final ValueMap predicateProperties = predicateResource.getValueMap();
+
+            final String predicate = predicateProperties.get(PN_PREDICATE, String.class);
+            final String value = predicateProperties.get(PN_VALUE, "");
+
+            if (StringUtils.isNotBlank(predicate)) {
+                params.put(groupId + "_group." + predicate, value);
+            }
+        }
+
+        return params;
+    }
+
+    @Override
+    public String getGroup() {
+        throw new UnsupportedOperationException("Hidden predicate groupIds are managed in the PagePredicateImpl automatically");
+    }
+
+    @Override
+    public String getName() {
+        throw new UnsupportedOperationException("Hidden predicates have no name");
+    }
+
+    static final class HiddenPredicateVisitor extends AbstractResourceVisitor {
+        final Collection<HiddenPredicate> hiddenPredicateResources = new ArrayList<>();
+        final SlingHttpServletRequest request;
+        final ModelFactory modelFactory;
+
+        public HiddenPredicateVisitor(SlingHttpServletRequest request, ModelFactory modelFactory) {
+            this.request = request;
+            this.modelFactory = modelFactory;
+        }
+
+        public Collection<HiddenPredicate> getHiddenPredicateResources() {
+            return hiddenPredicateResources;
+        }
+
+        @Override
+        public void accept(Resource resource) {
+            final ValueMap properties = resource.getValueMap();
+            // Only traverse resources that have a sling:resourceType; those without slign:resourceTypes are not components and simply sub-component configurations resources (such as Option lists)
+            if (properties.get("sling:resourceType", String.class) != null) {
+                super.accept(resource);
+            }
+        }
+
+        @Override
+        protected void visit(Resource resource) {
+            if (resource.getResourceResolver().isResourceType(resource, RT_HIDDEN_PREDICATE) && resource.getChild("predicates") != null) {
+                final HiddenPredicate hiddenPredicate = modelFactory.getModelFromWrappedRequest(request, resource, HiddenPredicate.class);
+                if (hiddenPredicate != null) {
+                    hiddenPredicateResources.add(hiddenPredicate);
+                }
+            }
+        }
+    }
+}

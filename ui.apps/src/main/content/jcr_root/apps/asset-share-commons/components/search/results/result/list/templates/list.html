@@ -1,0 +1,92 @@
+<!--/*
+  ~ Asset Share Commons
+  ~
+  ~ Copyright [2017]  Adobe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+ */-->
+
+<template data-sly-template.header="${@ search}">
+
+	<thead>
+		<tr><th class="left aligned">Preview</th>
+			<th>${'Name' @i18n}</th>
+			<th>${'Date' @ i18n}</th>
+			<th>${'Res.' @ i18n}</th>
+			<th>${'Size' @ i18n}</th>
+			<th></th>
+		</tr>
+	</thead>
+
+</template>
+
+<template data-sly-template.row="${@ asset = result, config = config }">
+
+	<sly    data-sly-use.assetDetails="${'com.adobe.aem.commons.assetshare.configuration.AssetDetails' @ request = slingRequest, asset = asset }"></sly>
+
+	<tr     data-asset-share-id="asset"
+			data-asset-share-asset="${asset.path}"
+			id="${asset.path}">
+
+		<td class="image">
+			<a href="${assetDetails.url @ suffix = asset.path}"><img src="${asset.properties['thumbnail'] || properties['missingImage'] @ context = 'attribute'}" alt="${asset.properties['title']}"/></a>
+		</td>
+		<td class="header">
+			<a href="${assetDetails.url @ suffix = asset.path}">${asset.properties['title']}</a>
+		</td>
+		<td>${'yyyy-MM-dd' @ format=asset.properties['jcr:content/jcr:lastModified'], locale=config.locale}</td>
+		<td>
+			<sly data-sly-test="${asset.properties['resolution']}">
+				${asset.properties['resolution']}
+			</sly>
+		</td>
+		<td>${asset.properties['fileSize']}</td>
+		<td>
+			
+			<div class="ui simple dropdown item">
+			   	${'Actions' @ i18n}
+				<i class="dropdown icon"></i>
+  				<div class="menu">
+  					<div class="item"
+  					     data-asset-share-id="download-asset"
+						 data-asset-share-asset="${asset.path}"
+						 data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}"
+						 data-sly-test="${config.downloadEnabled}">${'Download' @ i18n}</div>
+  					<div class="item"
+  					     data-asset-share-id="share-asset"
+						 data-asset-share-asset="${asset.path}"
+						 data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}"
+						 data-sly-test="${config.shareEnabled}">${'Share' @ i18n}</div>
+  					<div class="item"
+  					     data-asset-share-id="add-to-cart"
+						 data-asset-share-asset="${asset.path}"
+						 data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}"
+						 data-sly-test="${config.cartEnabled}">${'Add to Cart' @ i18n}</div>
+  				</div>
+			</div>
+			
+		</td>
+	</tr>
+
+</template>
+
+
+<template data-sly-template.noResults="${@ search = search, config = config }">
+	<tr>
+		<td colspan="7">
+			<h1 class="ui center aligned header">
+				${properties['noResultsText'] || 'No results could be found' @ i18n}
+			</h1>
+		</td>
+	</tr>
+</template>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:Iptc4xmpCore="http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/" xmlns:Iptc4xmpExt="http://iptc.org/std/Iptc4xmpExt/2008-02-29/" xmlns:pdf="http://ns.adobe.com/pdf/1.3/" xmlns:photoshop="http://ns.adobe.com/photoshop/1.0/" xmlns:xmp="http://ns.adobe.com/xap/1.0/" xmlns:xmpGImg="http://ns.adobe.com/xap/1.0/g/img/" xmlns:xmpMM="http://ns.adobe.com/xap/1.0/mm/" xmlns:xmpRights="http://ns.adobe.com/xap/1.0/rights/" xmlns:stEvt="http://ns.adobe.com/xap/1.0/sType/ResourceEvent#" xmlns:stRef="http://ns.adobe.com/xap/1.0/sType/ResourceRef#" xmlns:plus="http://ns.useplus.org/ldf/xmp/1.0/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dam="http://www.day.com/dam/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:mix="http://www.jcp.org/jcr/mix/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:isCheckedOut="{Boolean}true"
+    jcr:mixinTypes="[mix:referenceable,mix:versionable]"
+    jcr:primaryType="dam:Asset"
+    jcr:uuid="d393176b-3251-4a00-bd20-d1da64171192">
+    <jcr:content
+        cq:name="placeholder.pdf"
+        cq:parentPath="/content/dam/asset-share-commons/en/site"
+        dam:assetState="processed"
+        dam:copiedAt="{Date}2017-10-17T11:32:37.322-04:00"
+        dam:parentAssetID="6a43ab75-b980-4da8-868d-7456b7d49c58"
+        dam:relativePath="asset-share-commons/en/site/placeholder.pdf"
+        jcr:lastModified="{Date}2017-10-17T11:32:47.981-04:00"
+        jcr:lastModifiedBy="admin"
+        jcr:primaryType="dam:AssetContent"
+        averageRating="{Double}5.0">
+        <metadata
+            cq:tags="[properties:orientation/portrait,properties:style/color]"
+            cq:tags_xmpArrayType="rdf:Bag"
+            dam:Author="Asset Share Commons Team"
+            dam:extracted="{Date}2017-10-17T11:32:37.335-04:00"
+            dam:numPages="{Long}1"
+            dam:Physicalheightininches="{Decimal}19.38888888888889"
+            dam:Physicalwidthininches="{Decimal}15.0"
+            dam:Producer="Adobe Photoshop for Macintosh -- Image Conversion Plug-in"
+            dam:sha1="3673d3cce8a38d15c47af10cb8a051fc29bf70b0"
+            dam:size="{Long}605493"
+            dc:contributor="[Asset Share Commons Team]"
+            dc:contributor_xmpArrayType="rdf:Bag"
+            dc:creator="[Asset Share Commons Team]"
+            dc:creator_xmpArrayType="rdf:Seq"
+            dc:description="A placeholder document to help AEM Authors configure Asset Share Commons asset details pages."
+            dc:format="application/pdf"
+            dc:language="[en]"
+            dc:language_xmpArrayType="rdf:Bag"
+            dc:modified="{Date}2017-10-09T21:14:03.124-04:00"
+            dc:rights="None"
+            dc:subject="[A placeholder document to help AEM Authors configure Asset Share Commons asset details pages.,Placeholder Document,Placeholder,Asset Share Commons]"
+            dc:subject_xmpArrayType="rdf:Bag"
+            dc:title="Placeholder Document"
+            Iptc4xmpCore:CountryCode="us"
+            Iptc4xmpCore:IntellectualGenre="Abstract"
+            Iptc4xmpCore:Location="East Tower"
+            Iptc4xmpCore:SubjectCode="Placeholder"
+            Iptc4xmpExt:DigitalSourceType="http://cv.iptc.org/newscodes/digitalsourcetype/softwareImage"
+            Iptc4xmpExt:MaxAvailHeight="{Long}1040"
+            Iptc4xmpExt:MaxAvailWidth="{Long}1080"
+            Iptc4xmpExt:OrganisationInImageCode="Asset Share Commons"
+            Iptc4xmpExt:OrganisationInImageName="Asset Share Commons"
+            jcr:lastModified="{Date}2017-10-17T11:32:42.374-04:00"
+            jcr:lastModifiedBy="admin"
+            jcr:mixinTypes="[cq:Taggable]"
+            jcr:primaryType="nt:unstructured"
+            jcr:title="Placeholder Document"
+            pdf:Producer="Adobe Photoshop for Macintosh -- Image Conversion Plug-in"
+            pdf:Title="Placeholder Document"
+            photoshop:AuthorsPosition="Asset Share Commons Contributor"
+            photoshop:City="San Jose"
+            photoshop:ColorMode="{Long}3"
+            photoshop:Country="United States"
+            photoshop:DateCreated="{Date}2017-10-09T21:13:00.000-04:00"
+            photoshop:DocumentAncestors="[xmp.did:4bb91241-1a1b-4edb-8cef-105e5432c737]"
+            photoshop:DocumentAncestors_xmpArrayType="rdf:Bag"
+            photoshop:Headline="Placeholder Document"
+            photoshop:Source="Imagination"
+            photoshop:State="CA"
+            plus:ModelReleaseStatus="http://ns.useplus.org/ldf/vocab/MR-NAP "
+            plus:PropertyReleaseStatus="http://ns.useplus.org/ldf/vocab/PR-NAP"
+            xmp:CreateDate="{Date}2017-10-06T09:31:06.000-04:00"
+            xmp:CreatorTool="Adobe Photoshop CC 2017 (Macintosh)"
+            xmp:MetadataDate="{Date}2017-10-17T08:48:19.000-04:00"
+            xmp:ModifyDate="{Date}2017-10-17T08:48:19.000-04:00"
+            xmpMM:DocumentID="adobe:docid:photoshop:caa6abd3-eda3-117a-b7e3-a80d23e72419"
+            xmpMM:InstanceID="uuid:dbde1f6f-8d05-1f45-b353-ad10aa20143a"
+            xmpMM:OriginalDocumentID="xmp.did:4bb91241-1a1b-4edb-8cef-105e5432c737"
+            xmpRights:Owner="Asset Share Commons Team"
+            xmpRights:UsageTerms="[Not Applicable]"
+            xmpRights:UsageTerms_xmpArrayType="rdf:Alt">
+            <xmpMM:DerivedFrom
+                jcr:primaryType="nt:unstructured"
+                stRef:documentID="adobe:docid:photoshop:d57e1d9e-eb71-117a-b7e3-a80d23e72419"
+                stRef:instanceID="xmp.iid:a33b9da9-a15f-4fef-998c-fe5388117d04"
+                stRef:originalDocumentID="xmp.did:4bb91241-1a1b-4edb-8cef-105e5432c737"
+                xmpNodeType="xmpStruct"/>
+            <Iptc4xmpCore:CreatorContactInfo
+                Iptc4xmpCore:CiAdrCity="San Jose"
+                Iptc4xmpCore:CiAdrCtry="USA"
+                Iptc4xmpCore:CiAdrExtadr="345 Park Avenue"
+                Iptc4xmpCore:CiAdrPcode="95110"
+                Iptc4xmpCore:CiAdrRegion="CA"
+                Iptc4xmpCore:CiTelWork="408-536-6000"
+                Iptc4xmpCore:CiUrlWork="www.adobe.com"
+                jcr:primaryType="nt:unstructured"
+                xmpNodeType="xmpStruct"/>
+            <photoshop:TextLayers
+                jcr:primaryType="nt:unstructured"
+                xmpArraySize="{Long}1"
+                xmpArrayType="rdf:Bag"
+                xmpNodeType="xmpArray">
+                <_x0031_
+                    jcr:primaryType="nt:unstructured"
+                    photoshop:LayerName="Document"
+                    photoshop:LayerText="Document"
+                    xmpNodeType="xmpStruct"/>
+            </photoshop:TextLayers>
+            <xmp:Thumbnails
+                jcr:primaryType="nt:unstructured"
+                xmpArraySize="{Long}1"
+                xmpArrayType="rdf:Alt"
+                xmpNodeType="xmpArray">
+                <_x0031_
+                    jcr:primaryType="nt:unstructured"
+                    xmpGImg:format="JPEG"
+                    xmpGImg:height="{Long}512"
+                    xmpGImg:image="/9j/7QAMQWRvYmVfQ00AAv/uAA5BZG9iZQBkgAAAAAH/2wCEAAwICAgJCAwJCQwRCwoLERUPDAwP&#xa;FRgTExUTExgRDAwMDAwMEQwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwBDQsLDQ4NEA4OEBQO&#xa;Dg4UFA4ODg4UEQwMDAwMEREMDAwMDAwRDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDP/AABEI&#xa;AgABjAMBIgACEQEDEQH/3QAEABn/xAE/AAABBQEBAQEBAQAAAAAAAAADAAECBAUGBwgJCgsBAAEF&#xa;AQEBAQEBAAAAAAAAAAEAAgMEBQYHCAkKCxAAAQQBAwIEAgUHBggFAwwzAQACEQMEIRIxBUFRYRMi&#xa;cYEyBhSRobFCIyQVUsFiMzRygtFDByWSU/Dh8WNzNRaisoMmRJNUZEXCo3Q2F9JV4mXys4TD03Xj&#xa;80YnlKSFtJXE1OT0pbXF1eX1VmZ2hpamtsbW5vY3R1dnd4eXp7fH1+f3EQACAgECBAQDBAUGBwcG&#xa;BTUBAAIRAyExEgRBUWFxIhMFMoGRFKGxQiPBUtHwMyRi4XKCkkNTFWNzNPElBhaisoMHJjXC0kST&#xa;VKMXZEVVNnRl4vKzhMPTdePzRpSkhbSVxNTk9KW1xdXl9VZmdoaWprbG1ub2JzdHV2d3h5ent8f/&#xa;2gAMAwEAAhEDEQA/AOtTgqEqQKkpgZgotY7oTdSjt0EJtKJZhOogpwhSGSdRUghSVwpBRThCksgn&#xa;CiE6alknTBOgldOEwUwEqUu0KaYJ00rgpOmTppCVJJJJtJUnCZOmSXBSSSSjpKxTKRUUCEhYpk5T&#xa;FMIXBYqJKcqJQpcFEpkkyVLlJJJIqtYoVh7IrjAlAOplAr4d2KSdJKmS2KZSTIJWUXHaJ79lJCsM&#xa;mOwSpcNSwTJ0kWRYqJUimSUxKZOUySX/0OrThMptCmpr2krHdEBUApBCkMwnCiE4TSEs04UQnCFK&#xa;ZJwohSCbSWQThRThCkslIKIUwEKSuApgKIUkqSunTJ00hK6SZOgQldJMnTSEqCdJJQndcFJJJJtJ&#xa;tSZOmQISGJUXFSKgSmkLgsVFOkhS9ZMnSSpVrJJ1B7oCVJGrCx0mFBOUyFMo0UmSSKFLlkydMlSW&#xa;LjA80IqbjJUSjS+LApJymSpepRKkmKSmJTJymQS//9HrAERqg0KYVimrbIKQKgFIIEKZhOFEJwmk&#xa;JZhSCgFIIEKZBOFEJwm0lkpBRCk3UoUlm0KYTNCklSV0kydKkrp1FOmkJXTqKdNISyThRThRz2SG&#xa;SSZJRUvXSTJJUpSSSYmEiFBi89lBOUyZTIFkk6SFJtZMnTIUlYoTjJU3nshlAhfDuxSSTJUyKTFO&#xa;mQpKlF3CkoFKkhiVEqRTFJeCxKiVIqJSXhSYp0ySVkycqG7VKlP/0uvSSSVlqLhSCinCSmYThRCc&#xa;JqWYKcKIThAhTMFSCgFIFNISyCI0IbRJRQhSWYTpgnSpK6SZJKkrp1FOgQpdOmSTSE2yCkFAKahm&#xa;vC6SZJMpcukkkhSlKLipE6IZQK6KySSSYuWTJ0yVJWTEp1BxQpIYlRKcqJQplDEpJFMlS8KSSTIK&#xa;UmKkmKSQWBUSplRKS8FiVEqRTFBcCxSSKi50BKlzF7lBIukppTq0S//T65JJJWmovKcFRSSUzBUg&#xa;VAFSBTVMwnBUAVIFBLMKQUAVJupQpSZvCmFAKYSSGYSTBOguUnTJIUpdJMklSmSSZOE0pDMJ0wSU&#xa;BGq8Lp0ySFJXSSSlNISs4qEpEpiVGWQKlJNKaUErymSlMkpRUCpFMUqXBgVEqZUSgvBYlRUimKC8&#xa;LJJJILlkinSSUxKiVIpikuBYFRKmVAlBeGLjCA9ynY5BKcAvCkkkkVz/AP/U61JKUpVpprpJkklL&#xa;gqQKgpApKZgpwVAFSCalmEVogIbAiBBSVqmENqIECuDIJ0wToJUkkkkpSSSSSlKQUQphNnsuiyST&#xa;J1CQvUnTSkmlS6ZxSlQJTSuCiokpEpioyF4XlNKZJBcukmSSUuolOkUkhiVEqRUSgvDEqJUyolBe&#xa;CxSSKSC5SSSaUlKKgSpEqBKC4MSVBxgKRKC8zoiAyBG4yVBTKinLwskkkkl//9Xq5SBUJTgq3TSZ&#xa;pJgU6SlJwUycBJTIaojQoNCI1NKWY4UwoAqQKCkjUQITUQFNK4JJSlRlPKC5eUk0pSkpkkoynlJT&#xa;IKQUQpqOZXhSSZJMSulKZMgVLkqJKRKYphXBYlMnTJhXhSSSZNXLpJk6SlJJJJJYlMVIqJQXAsSo&#xa;lSKiUF4KxTSkSokoLwuSokpiUxKS4LkqBKclQJSXBi4oRU3aqJSXhgVEqRUSivCySSSSX//W6WVI&#xa;FDBUgVdaTMFSBQwVIaoKSDVSAUQiBBC4UwopwUEsgVIFQBUmoKTNU5Q2qQKaVwZgp5UQU8oLmUpS&#xa;opSkplKcKMpwgUhIE8qIKeVEV4XlKUySapdJMkgpSZOmKaVwWTJymTCvCkySSauUkkkglSdMkkpR&#xa;USnJUCUlwUSoEpyVAlNXhYlQJTkqBKTIFyUxKiSmJSXLymKSZJLEqJUyoFJcCwKiVMoZKS8LJJJJ&#xa;Ln//1+hBTgqQxM3/ALjXf9tu/wDIqQxMz/uPd/227/yKu2O7So9mIKKwafFJmJlk649oH9R39yMM&#xa;bK/0Fn+Y7+5Akd1UexYhTCcY+T/obP8AMd/cn+z5P+hs/wAx39ybY7oo9lpSUvs+T/obP8x39yXo&#xa;ZP8AobP8x39yVjumj2KgVNqYUZH+hs/zHf3KbaL/APRP/wA0/wByBIVR7MgVIFMKb/8ARP8A80/3&#xa;KQqu/wBG/wDzSmrgD2XBSlOKrv8ARv8A80pelb/o3/5pSTR7KSlP6V3+jd/mlL0rf9G7/NKCaPZa&#xa;VMJhVb+47/NKl6dv7jvuKEikAqlPKXp2/uO+4penZ+477ioiuXlJL07P3HfcU/p2fuO+4ptJWST+&#xa;nZ+677ilss/cd9xSUsmUtln7jvuKXp2fuO+4ppC4MElL07P3HfcU3p2fuO+4phBXBikpenZ+477i&#xa;l6dn7jvuKFFcwSUjXb+47/NKj6dv+jd/mlCj2SqU0p/Tt/0bv80pvTu/0b/80oUeyViVAlT9O7/R&#xa;v/zSomq7/Rv/AM0pUeyQwJUCUQ03/wCif/mn+5QNOR/on/5p/uQo9mQEIyVAlFOPkf6Kz/Nd/con&#xa;HyP9DZ/mO/uQo9mQEd0aSn9nyf8AQ2f5jv7kvs+R/obP8x39yVHsmx3YJKf2fJ/0Nn+Y7+5L7Pk/&#xa;6Gz/ADHf3JUeybHcIiolGOPk/wChs/zHf3KDsfK/0Fv+Y7+5Kj2SJDuEDihlHOLl/wCgt/zHf3KJ&#xa;xMv/ALj2/wCY7/yKVHsvEh3CFJF+yZn/AHHt/wC23f8AkUvsmZ/3Ht/7bd/5FKj2XcQ7h//Q9VSS&#xa;SSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJ&#xa;SkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSU//9H1VJJJJSkk&#xa;kklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSS&#xa;UpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJT//0vVUkkklKSSSSUpJ&#xa;JJJSxIGp0Tb2+I+9QyP5l3y/KFUgJKb29viPvS3t8R96owEoCSm9vb4j70t7fEfeqMBKAkpvb2+I&#xa;+9Le3xH3qjASgJKb29viPvS3t8R96owEoCSm9vb4j70t7fEfeqMBKAkpvb2+I+9Le3xH3qjASgJK&#xa;b29viPvS3t8R96owEoCSm9vb4j70t7fEfeqMBKAkpvb2+I+9Le3xH3qjASgJKb29viPvS3t8R96o&#xa;wEoCSm9vb4j70t7fEfeqMBKAkpvb2+I+9Le3xH3qjASgJKb29viPvS3t8R96owEoCSm9vb4j70t7&#xa;fEfeqMBKAkpvb2+I+9Le3xH3qjASgJKb29viPvS3t8R96owEoCSm9vb4j70t7fEfeqMBKAkpvb2+&#xa;I+9SVAASPiFfSUpJJJJSkkkklKSSSSU//9P1VJJJJSkkkklKSSSSUxsYHtLSYlC+yt/eP4I6SSkH&#xa;2Vv7x/BL7K394/gjpJKQfZW/vH8Evsrf3j+COkkpB9lb+8fwS+yt/eP4I6SSkH2Vv7x/BL7K394/&#xa;gjpJKQfZW/vH8Evsrf3j+COkkpB9lb+8fwS+yt/eP4I6SSkH2Vv7x/BL7K394/gjpJKQfZW/vH8E&#xa;vsrf3j+COkkpB9lb+8fwS+yt/eP4I6SSkH2Vv7x/BL7K394/gjpJKQfZW/vH8Evsrf3j+COkkpB9&#xa;lb+8fwS+yt/eP4I6SSkH2Vv7x/BL7K394/gjpJKQfZW/vH8Evsrf3j+COkkpB9lb+8fwS+yt/eP4&#xa;I6SSkH2Vv7x/BL7K394/gjpJKQfZW/vH8Evsrf3j+COkkpAMVszuOnwR0kklKSSSSUpJJJJSkkkk&#xa;lP8A/9T1VJJJJSkkkklKSSSSUpJRc5rG7naAKH2in978D/ckpKkhfaKf3vwP9yX2in978D/ckpKk&#xa;hfaKf3vwP9yX2in978D/AHJKSpIX2in978D/AHJfaKf3vwP9ySkqSF9op/e/A/3JfaKf3vwP9ySk&#xa;qSF9op/e/A/3JfaKf3vwP9ySkqSF9op/e/A/3JfaKf3vwP8AckpKkhfaKf3vwP8Acl9op/e/A/3J&#xa;KSpIX2in978D/cl9op/e/A/3JKSpIX2in978D/cl9op/e/A/3JKSpIX2in978D/cl9op/e/A/wBy&#xa;SkqSF9op/e/A/wByX2in978D/ckpKkhfaKf3vwP9yX2in978D/ckpKkhfaKf3vwP9yX2in978D/c&#xa;kpKkhfaKf3vwP9yX2in978D/AHJKSpIX2in978D/AHJfaKf3vwP9ySkqSF9op/e/A/3JfaKf3vwP&#xa;9ySkqSF9op/e/A/3JfaKf3vwP9ySkqSH9oq/e/AoiSlJJJJKUkkkkpSSSSSn/9X1VJJJJSkkkklK&#xa;SSSSUiyP5l3y/KFUV9zWuG1wkHsoehT+6kpppK56FP7qXoU/upKaaSuehT+6l6FP7qSmmkrnoU/u&#xa;pehT+6kpppK56FP7qXoU/upKaaSuehT+6l6FP7qSmmkrnoU/upehT+6kpppK56FP7qXoU/upKaaS&#xa;uehT+6l6FP7qSmmkrnoU/upehT+6kpppK56FP7qXoU/upKaaSuehT+6l6FP7qSmmkrnoU/upehT+&#xa;6kpppK56FP7qXoU/upKaaSuehT+6l6FP7qSmmkrnoU/upehT+6kpppK56FP7qXoU/upKaaSuehT+&#xa;6l6FP7qSmoOR8Qr6H6FX7qIkpSSSSSlJJJJKUkkkkp//1vVUkkklKSSSSUpJJJJSkkkklKSSSSUp&#xa;JJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkk&#xa;klKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklP//X9VSSSSUpJJJJSkkkklMLXllZcORHPxQPtVng&#xa;Px/vRrwTUQBJ00HxVX07P3HfckpJ9qs8B+P96X2qzwH4/wB6H6dn7jvuS9Oz9x33JKSfarPAfj/e&#xa;l9qs8B+P96H6dn7jvuS9Oz9x33JKSfarPAfj/el9qs8B+P8Aeh+nZ+477kvTs/cd9ySkn2qzwH4/&#xa;3pfarPAfj/eh+nZ+477kvTs/cd9ySkn2qzwH4/3pfarPAfj/AHofp2fuO+5L07P3HfckpJ9qs8B+&#xa;P96X2qzwH4/3ofp2fuO+5L07P3HfckpJ9qs8B+P96X2qzwH4/wB6H6dn7jvuS9Oz9x33JKSfarPA&#xa;fj/el9qs8B+P96H6dn7jvuS9Oz9x33JKSfarPAfj/el9qs8B+P8Aeh+nZ+477kvTs/cd9ySkn2qz&#xa;wH4/3pfarPAfj/eh+nZ+477kvTs/cd9ySkn2qzwH4/3pfarPAfj/AHofp2fuO+5L07P3HfckpJ9q&#xa;s8B+P96X2qzwH4/3ofp2fuO+5L07P3HfckpJ9qs8B+P96X2qzwH4/wB6H6dn7jvuS9Oz9x33JKSf&#xa;arPAfj/el9qs8B+P96H6dn7jvuS9Oz9x33JKSfarPAfj/el9qs8B+P8Aeh+nZ+477kvTs/cd9ySk&#xa;n2qzwH4/3pfarPAfj/eh+nZ+477kvTs/cd9ySkn2qzwH4/3pfarPAfj/AHofp2fuO+5L07P3Hfck&#xa;pIMmyQIHPn/erSoiuyR7TyOyvJKUkkkkpSSSSSlJJJJKf//Q9VSSSSUpJJJJSkkkklKSSSSUpJJJ&#xa;JSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklK&#xa;SSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSU//9H1VJJJJSkkkklKSSSSUpJDvJbUSDB01+ar&#xa;erb+8UlN1JUvVt/eKXq2/vFJTdSVL1bf3il6tv7xSU3UlS9W394perb+8UlN1JUvVt/eKXq2/vFJ&#xa;TdSVL1bf3il6tv7xSU3UlS9W394perb+8UlN1JUvVt/eKXq2/vFJTdSVL1bf3il6tv7xSU3UlS9W&#xa;394perb+8UlN1JUvVt/eKXq2/vFJTdSVL1bf3il6tv7xSU3UlS9W394perb+8UlN1JUvVt/eKXq2&#xa;/vFJTdSVL1bf3il6tv7xSU3UlS9W394perb+8UlN1JUvVt/eKXq2/vFJTdSVL1bf3il6tv7xSU3U&#xa;lSFtsj3HkK6kpSSSSSlJJJJKUkkkkp//0vVUkkklKSSSSUpJJJJTC5pfWWt5MflVf7Nb5feraSSm&#xa;p9mt8vvS+zW+X3q2kkpqfZrfL70vs1vl96tpJKan2a3y+9L7Nb5feraSSmp9mt8vvS+zW+X3q2kk&#xa;pqfZrfL70vs1vl96tpJKan2a3y+9L7Nb5feraSSmp9mt8vvS+zW+X3q2kkpqfZrfL70vs1vl96tp&#xa;JKan2a3y+9L7Nb5feraSSmp9mt8vvS+zW+X3q2kkpqfZrfL70vs1vl96tpJKan2a3y+9L7Nb5fer&#xa;aSSmp9mt8vvS+zW+X3q2kkpqfZrfL70vs1vl96tpJKan2a3y+9L7Nb5feraSSmp9mt8vvS+zW+X3&#xa;q2kkpqfZrfL70vs1vl96tpJKagx7ZHHPiraSSSlJJJJKUkkkkpSSSSSn/9P1VJJJJSkkkklKSSSS&#xa;UpJM5zWjc4wB3UPXp/eSUkSQ/Xp/eS9en95JSRJD9en95L16f3klJEkP16f3kvXp/eSUkSQ/Xp/e&#xa;S9en95JSRJD9en95L16f3klJEkP16f3kvXp/eSUkSQ/Xp/eS9en95JSRJD9en95L16f3klJEkP16&#xa;f3kvXp/eSUkSQ/Xp/eS9en95JSRJD9en95L16f3klJEkP16f3kvXp/eSUkSQ/Xp/eS9en95JSRJD&#xa;9en95L16f3klJEkP16f3kvXp/eSUkSQ/Xp/eS9en95JSRJD9en95L16f3klJEkP16v3kRJSkkkkl&#xa;KSSSSUpJJJJT/9T1VJJJJSkkkklKSSSSUiyP5l3y/KFUV5zWvbtdqCofZ6fD8T/ekpqJK39np8Px&#xa;P96X2enw/E/3pKaiSt/Z6fD8T/el9np8PxP96Smokrf2enw/E/3pfZ6fD8T/AHpKaiSt/Z6fD8T/&#xa;AHpfZ6fD8T/ekpqJK39np8PxP96X2enw/E/3pKaiSt/Z6fD8T/el9np8PxP96Smokrf2enw/E/3p&#xa;fZ6fD8T/AHpKaiSt/Z6fD8T/AHpfZ6fD8T/ekpqJK39np8PxP96X2enw/E/3pKaiSt/Z6fD8T/el&#xa;9np8PxP96Smokrf2enw/E/3pfZ6fD8T/AHpKaiSt/Z6fD8T/AHpfZ6fD8T/ekpqJK39np8PxP96X&#xa;2enw/E/3pKaiSt/Z6fD8T/el9np8PxP96Smokrf2enw/E/3pfZ6fD8T/AHpKaiSt/Z6fD8T/AHpf&#xa;Z6fD8T/ekpqJK39np8PxP96X2enw/E/3pKao5HxCvoX2erw/EoqSlJJJJKUkkkkpSSSSSn//1fVU&#xa;kkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSS&#xa;SUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklP//W9VSSSSUp&#xa;JJJJSkkkklMXvDGlx1A8EL7Uz90/h/epZH8y75flCqSkps/amfun8P70vtTP3T+H96rSlKSmz9qZ&#xa;+6fw/vS+1M/dP4f3qtKUpKbP2pn7p/D+9L7Uz90/h/eq0pSkps/amfun8P70vtTP3T+H96rSlKSm&#xa;z9qZ+6fw/vS+1M/dP4f3qtKUpKbP2pn7p/D+9L7Uz90/h/eq0pSkps/amfun8P70vtTP3T+H96rS&#xa;lKSmz9qZ+6fw/vS+1M/dP4f3qtKUpKbP2pn7p/D+9L7Uz90/h/eq0pSkps/amfun8P70vtTP3T+H&#xa;96rSlKSmz9qZ+6fw/vS+1M/dP4f3qtKUpKbP2pn7p/D+9L7Uz90/h/eq0pSkps/amfun8P70vtTP&#xa;3T+H96rSlKSmz9qZ+6fw/vS+1M/dP4f3qtKUpKbP2pn7p/D+9L7Uz90/h/eq0pSkps/amfun8P70&#xa;vtTP3T+H96rSlKSmz9qZ+6fw/vS+1M/dP4f3qtKUpKbP2pkxtOvwR1QB1HxCvpKUkkkkpSSSSSlJ&#xa;JJJKf//X9VSSSSUpJJJJSkkkklLEAiDqE2xn7o+5SSSUx2M/dH3JbGfuj7lJJJTHYz90fclsZ+6P&#xa;uUkklMdjP3R9yWxn7o+5SSSUx2M/dH3JbGfuj7lJJJTHYz90fclsZ+6PuUkklMdjP3R9yWxn7o+5&#xa;SSSUx2M/dH3JbGfuj7lJJJTHYz90fclsZ+6PuUkklMdjP3R9yWxn7o+5SSSUx2M/dH3JbGfuj7lJ&#xa;JJTHYz90fclsZ+6PuUkklMdjP3R9yWxn7o+5SSSUx2M/dH3JbGfuj7lJJJTHYz90fclsZ+6PuUkk&#xa;lMdjP3R9yWxn7o+5SSSUx2M/dH3JbGfuj7lJJJTHYz90fclsZ+6PuUkklMdjP3R9ykkkkpSSSSSl&#xa;JJJJKUkkkkp//9D1VJJJJSkkkklKSSSSUpJDuc5tZc0wRGvzVf17v3vwH9ySm4kqfr3fvfgP7kvX&#xa;u/e/Af3JKbiSp+vd+9+A/uS9e7978B/ckpuJKn693734D+5L17v3vwH9ySm4kqfr3fvfgP7kvXu/&#xa;e/Af3JKbiSp+vd+9+A/uS9e7978B/ckpuJKn693734D+5L17v3vwH9ySm4kqfr3fvfgP7kvXu/e/&#xa;Af3JKbiSp+vd+9+A/uS9e7978B/ckpuJKn693734D+5L17v3vwH9ySm4kqfr3fvfgP7kvXu/e/Af&#xa;3JKbiSp+vd+9+A/uS9e7978B/ckpuJKn693734D+5L17v3vwH9ySm4kqfr3fvfgP7kvXu/e/Af3J&#xa;KbiSp+vd+9+A/uS9e7978B/ckpuJKn693734D+5L17v3vwH9ySm4kqfr3fvfgP7kvXu/e/Af3JKb&#xa;iSp+vd+9+A/uS9e7978B/ckpuJKmL7ZHu7+AVxJSkkkklKSSSSUpJJJJT//R9VSSSSUpJJJJSkkk&#xa;klI7mudWWt1Jj8qr+hd+7+IVxJJTT9C7938Ql6F37v4hXEklNP0Lv3fxCXoXfu/iFcSSU0/Qu/d/&#xa;EJehd+7+IVxJJTT9C7938Ql6F37v4hXEklNP0Lv3fxCXoXfu/iFcSSU0/Qu/d/EJehd+7+IVxJJT&#xa;T9C7938Ql6F37v4hXEklNP0Lv3fxCXoXfu/iFcSSU0/Qu/d/EJehd+7+IVxJJTT9C7938Ql6F37v&#xa;4hXEklNP0Lv3fxCXoXfu/iFcSSU0/Qu/d/EJehd+7+IVxJJTT9C7938Ql6F37v4hXEklNP0Lv3fx&#xa;CXoXfu/iFcSSU0/Qu/d/EJehd+7+IVxJJTT9C7938Ql6F37v4hXEklNP0Lv3fxCXoXfu/iFcSSU0&#xa;xRbI9vfxCuJJJKUkkkkpSSSSSlJJJJKf/9L1VJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJS&#xa;kkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSS&#xa;SSUpJJJJSkkkklKSSSSUpJJJJT//0/VUkkklKSSSSUpJJJJSPI/mXfL8oVST4lXLGb2FsxMa/NB+&#xa;yH98fd/tSUhk+JSk+JRvsh/fH3f7Uvsh/fH3f7UlIZPiUpPiUb7If3x93+1L7If3x93+1JSGT4lK&#xa;T4lG+yH98fd/tS+yH98fd/tSUhk+JSk+JRvsh/fH3f7Uvsh/fH3f7UlIZPiUpPiUb7If3x93+1L7&#xa;If3x93+1JSGT4lKT4lG+yH98fd/tS+yH98fd/tSUhk+JSk+JRvsh/fH3f7Uvsh/fH3f7UlIZPiUp&#xa;PiUb7If3x93+1L7If3x93+1JSGT4lKT4lG+yH98fd/tS+yH98fd/tSUhk+JSk+JRvsh/fH3f7Uvs&#xa;h/fH3f7UlIZPiUfF5f8AL+Kb7If3x93+1EppNcyZmO0cJKSpJJJKUkkkkpSSSSSlJJJJKUkkkkpS&#xa;SSSSlJJJJKUkkkkpSSSSSlJJJJKf/9T1VJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkk&#xa;lKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUp&#xa;JJJJSkkkklKSSSSUpJJJJT//1fVUkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJ&#xa;JSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklK&#xa;SSSSUpJJJJSkkkklP//W9VSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSS&#xa;SUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJS&#xa;kkkklKSSSSU//9k="
+                    xmpGImg:width="{Long}396"
+                    xmpNodeType="xmpStruct"/>
+            </xmp:Thumbnails>
+            <xmpMM:History
+                jcr:primaryType="nt:unstructured"
+                xmpArraySize="{Long}7"
+                xmpArrayType="rdf:Seq"
+                xmpNodeType="xmpArray">
+                <_x0031_
+                    jcr:primaryType="nt:unstructured"
+                    stEvt:action="created"
+                    stEvt:instanceID="xmp.iid:4bb91241-1a1b-4edb-8cef-105e5432c737"
+                    stEvt:softwareAgent="Adobe Photoshop CC 2017 (Macintosh)"
+                    stEvt:when="{Date}2017-10-06T09:31:06.000-04:00"
+                    xmpNodeType="xmpStruct"/>
+                <_x0032_
+                    jcr:primaryType="nt:unstructured"
+                    stEvt:action="converted"
+                    stEvt:parameters="from image/png to application/vnd.adobe.photoshop"
+                    xmpNodeType="xmpStruct"/>
+                <_x0033_
+                    jcr:primaryType="nt:unstructured"
+                    stEvt:action="saved"
+                    stEvt:changed="/"
+                    stEvt:instanceID="xmp.iid:1724e050-5e3c-4315-a2c7-8bc8fae5f2ef"
+                    stEvt:softwareAgent="Adobe Photoshop CC 2017 (Macintosh)"
+                    stEvt:when="{Date}2017-10-06T18:12:15.000-04:00"
+                    xmpNodeType="xmpStruct"/>
+                <_x0034_
+                    jcr:primaryType="nt:unstructured"
+                    stEvt:action="saved"
+                    stEvt:changed="/"
+                    stEvt:instanceID="xmp.iid:a33b9da9-a15f-4fef-998c-fe5388117d04"
+                    stEvt:softwareAgent="Adobe Photoshop CC 2017 (Macintosh)"
+                    stEvt:when="{Date}2017-10-09T21:06:45.000-04:00"
+                    xmpNodeType="xmpStruct"/>
+                <_x0035_
+                    jcr:primaryType="nt:unstructured"
+                    stEvt:action="converted"
+                    stEvt:parameters="from application/vnd.adobe.photoshop to application/pdf"
+                    xmpNodeType="xmpStruct"/>
+                <_x0036_
+                    jcr:primaryType="nt:unstructured"
+                    stEvt:action="derived"
+                    stEvt:parameters="converted from application/vnd.adobe.photoshop to application/pdf"
+                    xmpNodeType="xmpStruct"/>
+                <_x0037_
+                    jcr:primaryType="nt:unstructured"
+                    stEvt:action="saved"
+                    stEvt:changed="/"
+                    stEvt:instanceID="xmp.iid:8e487d5f-a2e0-4f91-8cf2-de725015ef84"
+                    stEvt:softwareAgent="Adobe Photoshop CC 2017 (Macintosh)"
+                    stEvt:when="{Date}2017-10-09T21:06:45.000-04:00"
+                    xmpNodeType="xmpStruct"/>
+            </xmpMM:History>
+        </metadata>
+        <related jcr:primaryType="nt:unstructured"/>
+    </jcr:content>
+</jcr:root>
