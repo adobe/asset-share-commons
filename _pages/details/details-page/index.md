@@ -47,6 +47,8 @@ Many components on the Details Page depend on an valid asset in order to render 
 
 ## Asset Details Components
 
+![Asset Share Commons - Details components - Right](./images/details-component-list.png)
+
 * [Action Buttons](../action-buttons)
 * [AEM Editor Links](../editor-links)
 * [Image](../image)
@@ -54,9 +56,6 @@ Many components on the Details Page depend on an valid asset in order to render 
 * [Renditions](../renditions)
 * [Tags](../tags)
 * [Title](../title)
-
-![Asset Share Commons - Details components](./images/details-component-list.png)
-
 
 ## Technical details
 
