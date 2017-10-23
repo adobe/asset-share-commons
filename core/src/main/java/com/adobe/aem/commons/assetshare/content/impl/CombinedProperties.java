@@ -79,11 +79,11 @@ public final class CombinedProperties implements Map<String, Object> {
         }
 
         if (!result) {
-            result = getProperties().get(propertyName) != null;
+            result = assetProperties.get(propertyName) != null;
         }
 
         if (!result) {
-            result = getMetadataProperties().get(propertyName) != null;
+            result = metaProperties.get(propertyName) != null;
         }
 
         return result;

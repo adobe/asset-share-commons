@@ -70,6 +70,8 @@
                                             sling:resourceType="granite/ui/components/coral/foundation/form/select"
                                             fieldDescription="Metadata property name to populate the date field. Ignored if using computed properties."
                                             fieldLabel="Property Name"
+                                            noneText=""
+                                            noneValue=""
                                             name="./propertyName">
                                         <datasource
                                                 jcr:primaryType="nt:unstructured"
