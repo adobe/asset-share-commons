@@ -17,6 +17,7 @@ MANIFEST.MF
 #gh-pages
 .sass-cache/
 _site
+.jekyll-metadata
 
 #vlt directories
 content/src/main/content/jcr_root/.content.xml
