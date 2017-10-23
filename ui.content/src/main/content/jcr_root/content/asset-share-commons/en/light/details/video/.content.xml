@@ -38,7 +38,7 @@
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="asset-share-commons/components/details/metadata"
                         label="DESCRIPTION"
-                        propertyName="dc:description"
+                        propertyName="./jcr:content/metadata/dc:description"
                         type="text"/>
                     <metadata
                         jcr:created="{Date}2017-09-17T17:37:53.194-04:00"
@@ -50,7 +50,7 @@
                         computedProperty="height"
                         formatDate="dd MMM. y"
                         label="CREATED"
-                        propertyName="jcr:created"
+                        propertyName="./jcr:created"
                         type="date">
                         <cq:responsive jcr:primaryType="nt:unstructured">
                             <default
@@ -112,7 +112,7 @@
                         computedProperty="height"
                         formatDate="relativetime"
                         label="LAST MODIFIED"
-                        propertyName="jcr:content/jcr:lastModified"
+                        propertyName="./jcr:content/jcr:lastModified"
                         type="date">
                         <cq:responsive jcr:primaryType="nt:unstructured">
                             <default
@@ -131,7 +131,6 @@
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="asset-share-commons/components/details/metadata"
                         computedProperty="resolution"
-                        formatDate="dd MMM. y"
                         label="RES."
                         type="computed">
                         <cq:responsive jcr:primaryType="nt:unstructured">
@@ -171,11 +170,9 @@
                         jcr:lastModifiedBy="admin"
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="asset-share-commons/components/details/metadata"
-                        computedProperty="height"
                         emptyText="n/a"
-                        formatDate="dd MMM. y"
                         label="USAGE"
-                        propertyName="xmpRights:UsageTerms"
+                        propertyName="./jcr:content/metadata/xmpRights:UsageTerms"
                         type="text">
                         <cq:responsive jcr:primaryType="nt:unstructured">
                             <default
