@@ -1,0 +1,18 @@
+/*******************************
+            Dropdown
+*******************************/
+
+
+
+@hoveredItemBackground: @filterPrimaryColor;
+@hoveredItemColor: @white;
+
+@selectionFocusBorderColor: @filterPrimaryColor;
+@selectionFocusMenuBoxShadow: none;
+
+@selectionActiveHoverBorderColor: @filterPrimaryColor;
+@selectionActiveHoverBoxShadow: @filterPrimaryColor;
+
+@selectionActiveHoverBorderColor: @filterPrimaryColor;
+@selectionActiveHoverMenuBoxShadow : none;
+

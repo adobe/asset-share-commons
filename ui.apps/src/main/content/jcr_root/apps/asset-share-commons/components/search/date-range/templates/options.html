@@ -1,0 +1,67 @@
+<!--/*
+  ~ Asset Share Commons
+  ~
+  ~ Copyright [2017]  Adobe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+ */-->
+
+<!--/* Date Range */-->
+<template data-sly-template.dateRange="${ @ predicate}">
+
+    <div class="field">
+        <div class="ui calendar rangestart" data-asset-share-calendar-start-id="${predicate.id}">
+            <div class="ui input left icon">
+                <i class="calendar icon"></i>
+                <input type="text"
+                       placeholder="${properties['startPlaceholder']}"
+                       name="${predicate.group}.${predicate.lowerBoundName}"
+                       value="${predicate.initialLowerBound}"
+                       form="${predicate.formId}"
+                       for="${predicate.id}"/>
+            </div>
+        </div>
+    </div>
+    <div class="field">
+        <div class="ui calendar rangeend" data-asset-share-calendar-end-id="${predicate.id}">
+            <div class="ui input left icon">
+                <i class="calendar icon"></i>
+                <input type="text"
+                       placeholder="${properties['endPlaceholder']}"
+                       name="${predicate.group}.${predicate.upperBoundName}"
+                       value="${predicate.initialUpperBound}"
+                       form="${predicate.formId}"
+                       for="${predicate.id}"/>
+            </div>
+        </div>
+    </div>
+</template>
+
+<!--/* Relative Date Rang  */-->
+<template data-sly-template.relativeDateRange="${ @ predicate}">
+    <div class="grouped fields"
+         data-sly-list.option="${predicate.items}">
+        <div class="field">
+            <div class="ui ${predicate.subType} checkbox">
+                <input for="${predicate.id}"
+                       form="${predicate.formId}"
+                       type="${predicate.subType == 'checkbox' ? 'checkbox' : 'radio'}"
+                       name="${predicate.group}.${predicate.name}.lowerBound"
+                       value="${option.value}"
+                       checked="${option.selected}"
+                       disabled="${option.disabled}"/>
+                <label>${option.text}</label>
+            </div>
+        </div>
+    </div>
+</template>

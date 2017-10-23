@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:Iptc4xmpCore="http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/" xmlns:xmpRights="http://ns.adobe.com/xap/1.0/rights/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dam="http://www.day.com/dam/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:mix="http://www.jcp.org/jcr/mix/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:mixinTypes="[mix:referenceable]"
+    jcr:primaryType="dam:Asset"
+    jcr:uuid="fded070f-54c1-4456-bca7-c119146203b9">
+    <jcr:content
+        dam:assetState="processed"
+        dam:copiedAt="{Date}2017-10-17T11:32:13.085-04:00"
+        dam:parentAssetID="7e4c3603-8803-40bb-ac59-8fe0f6e5482c"
+        dam:relativePath="asset-share-commons/en/public/documents/document-sample.docx"
+        jcr:lastModified="{Date}2017-10-17T11:32:13.146-04:00"
+        jcr:lastModifiedBy="admin"
+        jcr:primaryType="dam:AssetContent">
+        <metadata
+            cq:tags="[properties:style/monochrome/grayscale]"
+            dam:Application="Microsoft Macintosh Word"
+            dam:AppVersion="{Decimal}15.0000"
+            dam:Characters="{Long}2658"
+            dam:CharactersWithSpaces="{Long}3118"
+            dam:created="{Date}2017-10-17T12:25:00.000Z"
+            dam:DocSecurity="{Long}0"
+            dam:extracted="{Date}2017-10-17T11:32:13.097-04:00"
+            dam:HyperlinksChanged="false"
+            dam:lastModifiedBy="Daniel Gordon"
+            dam:Lines="{Long}22"
+            dam:LinksUpToDate="false"
+            dam:modified="{Date}2017-10-17T12:27:00.000Z"
+            dam:Pages="{Long}1"
+            dam:Paragraphs="{Long}6"
+            dam:revision="{Long}1"
+            dam:ScaleCrop="false"
+            dam:sha1="5ad3220ec0b39788c91c1a38b114955ddd3b2168"
+            dam:SharedDoc="false"
+            dam:size="{Long}144675"
+            dam:Template="Normal.dotm"
+            dam:TotalTime="{Long}1"
+            dam:Words="{Long}466"
+            dc:creator="[Daniel Gordon,Microsoft Word]"
+            dc:creator_xmpArrayType="rdf:Bag"
+            dc:format="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            dc:modified="{Date}2017-10-17T09:22:51.395-04:00"
+            dc:subject=""
+            jcr:lastModified="{Date}2017-10-17T11:29:44.507-04:00"
+            jcr:lastModifiedBy="admin"
+            jcr:mixinTypes="[cq:Taggable]"
+            jcr:primaryType="nt:unstructured"
+            xmpRights:UsageTerms="Unrestricted">
+            <Iptc4xmpCore:CreatorContactInfo jcr:primaryType="nt:unstructured"/>
+        </metadata>
+        <related jcr:primaryType="nt:unstructured"/>
+    </jcr:content>
+</jcr:root>

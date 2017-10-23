@@ -1,0 +1,3 @@
+
+@circularShadow: 0em 0em 0em 0.1em @borderColor inset;
+@borderedShadow: 0em 0em 0em 0.1em @borderColor inset;

@@ -1,0 +1,6 @@
+#base=.
+
+search-form.js
+search.js
+
+plug-ins/search-infinite-scroll.js

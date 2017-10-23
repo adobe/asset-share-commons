@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:oak="http://jackrabbit.apache.org/oak/ns/1.0" xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:rep="internal"
+    jcr:mixinTypes="[rep:AccessControllable]"
+    jcr:primaryType="sling:OrderedFolder">
+    <rep:policy/>
+    <dam/>
+    <usergenerated/>
+    <projects/>
+    <campaigns/>
+    <phonegap/>
+    <mobileapps/>
+    <launches/>
+    <publications/>
+    <entities/>
+    <forms/>
+    <screens/>
+    <communities/>
+    <sites/>
+    <community-components/>
+    <catalogs/>
+    <experience-fragments/>
+    <we-retail/>
+    <oak:index/>
+    <asset-share-commons/>
+</jcr:root>

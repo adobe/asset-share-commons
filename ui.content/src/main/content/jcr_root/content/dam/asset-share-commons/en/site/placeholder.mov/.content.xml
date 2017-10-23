@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:Iptc4xmpCore="http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/" xmlns:tiff="http://ns.adobe.com/tiff/1.0/" xmlns:xmp="http://ns.adobe.com/xap/1.0/" xmlns:xmpRights="http://ns.adobe.com/xap/1.0/rights/" xmlns:xmpDM="http://ns.adobe.com/xmp/1.0/DynamicMedia/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dam="http://www.day.com/dam/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:mix="http://www.jcp.org/jcr/mix/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:mixinTypes="[mix:referenceable]"
+    jcr:primaryType="dam:Asset"
+    jcr:uuid="ee71888c-2eee-4cca-ad0e-95686430463d">
+    <jcr:content
+        dam:assetState="processed"
+        dam:copiedAt="{Date}2017-10-17T11:32:15.467-04:00"
+        dam:parentAssetID="78ee5da3-cc76-4e78-bf52-45d450bdad1b"
+        dam:relativePath="asset-share-commons/en/site/placeholder.mov"
+        jcr:lastModified="{Date}2017-10-17T11:32:42.335-04:00"
+        jcr:lastModifiedBy="admin"
+        jcr:primaryType="dam:AssetContent">
+        <metadata
+            cq:tags="[properties:style/color,properties:orientation/landscape]"
+            dam:extracted="{Date}2017-10-17T11:32:15.643-04:00"
+            dam:sha1="4e998f9fdaf4b6d36493bd2d2a79db950ea4f524"
+            dam:size="{Long}2168930"
+            dam:youtube_category="Film &amp; Animation"
+            dam:youtube_privacy="public"
+            dc:description="This is a placeholder video"
+            dc:extent="{Long}17052"
+            dc:format="video/quicktime"
+            dc:modified="{Date}2017-10-17T08:57:43.234-04:00"
+            dc:title="Placeholder Video"
+            jcr:lastModified="{Date}2017-10-17T11:32:07.720-04:00"
+            jcr:lastModifiedBy="admin"
+            jcr:mixinTypes="[cq:Taggable]"
+            jcr:primaryType="nt:unstructured"
+            tiff:ImageLength="{Long}360"
+            tiff:ImageWidth="{Long}640"
+            xmp:CreateDate="{Date}2017-10-17T12:53:43.000Z"
+            xmp:ModifyDate="{Date}2017-10-17T12:53:46.000Z"
+            xmpRights:UsageTerms="Unrestricted.">
+            <xmpDM:duration
+                jcr:primaryType="nt:unstructured"
+                xmpDM:scale="1/6000"
+                xmpDM:value="{Long}105100"
+                xmpNodeType="xmpStruct"/>
+            <Iptc4xmpCore:CreatorContactInfo jcr:primaryType="nt:unstructured"/>
+        </metadata>
+        <related jcr:primaryType="nt:unstructured"/>
+    </jcr:content>
+</jcr:root>

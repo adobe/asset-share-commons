@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:Iptc4xmpCore="http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/" xmlns:pdf="http://ns.adobe.com/pdf/1.3/" xmlns:xmp="http://ns.adobe.com/xap/1.0/" xmlns:xmpRights="http://ns.adobe.com/xap/1.0/rights/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dam="http://www.day.com/dam/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:mix="http://www.jcp.org/jcr/mix/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:isCheckedOut="{Boolean}true"
+    jcr:mixinTypes="[mix:referenceable,mix:versionable]"
+    jcr:primaryType="dam:Asset"
+    jcr:uuid="a893ba83-916e-44b3-82b4-3fe1fb539e37">
+    <jcr:content
+        cq:name="document-sample.pdf"
+        cq:parentPath="/content/dam/asset-share-commons/en/public/documents"
+        dam:assetState="processed"
+        dam:copiedAt="{Date}2017-10-17T11:31:58.665-04:00"
+        dam:parentAssetID="4a104e52-00a3-4be7-a01d-c8e2129cd93f"
+        dam:relativePath="asset-share-commons/en/public/documents/document-sample.pdf"
+        jcr:lastModified="{Date}2017-10-17T14:16:08.924-04:00"
+        jcr:lastModifiedBy="admin"
+        jcr:primaryType="dam:AssetContent">
+        <metadata
+            cq:tags="[properties:style/monochrome/grayscale]"
+            cq:tags_xmpArrayType="rdf:Bag"
+            dam:Author="Adobe Acrobat"
+            dam:extracted="{Date}2017-10-17T11:31:58.705-04:00"
+            dam:numPages="{Long}1"
+            dam:Physicalheightininches="{Decimal}11.0"
+            dam:Physicalwidthininches="{Decimal}8.5"
+            dam:Producer="Mac OS X 10.12.6 Quartz PDFContext"
+            dam:sha1="51142495707ffcf7996d490a4c653d1225463749"
+            dam:size="{Long}30356"
+            dc:creator="[Adobe Acrobat]"
+            dc:creator_xmpArrayType="rdf:Seq"
+            dc:description="sample pdf"
+            dc:format="application/pdf"
+            dc:modified="{Date}2017-10-17T09:20:04.439-04:00"
+            dc:subject="sample pdf"
+            dc:title="Sample PDF"
+            jcr:lastModified="{Date}2017-10-17T14:16:08.675-04:00"
+            jcr:lastModifiedBy="admin"
+            jcr:mixinTypes="[cq:Taggable]"
+            jcr:primaryType="nt:unstructured"
+            jcr:title="Sample PDF"
+            pdf:Producer="Mac OS X 10.12.6 Quartz PDFContext"
+            xmp:CreateDate="{Date}2017-10-17T09:18:53.000-04:00"
+            xmp:CreatorTool="Word"
+            xmp:MetadataDate="{Date}2017-10-17T11:31:49.000-04:00"
+            xmp:ModifyDate="{Date}2017-10-17T11:31:49.000-04:00"
+            xmpRights:WebStatement="/content/asset-share-commons/en/light/actions/license/terms-conditions.html">
+            <Iptc4xmpCore:CreatorContactInfo
+                jcr:primaryType="nt:unstructured"
+                xmpNodeType="xmpStruct"/>
+        </metadata>
+        <related jcr:primaryType="nt:unstructured"/>
+    </jcr:content>
+</jcr:root>

@@ -1,0 +1,9 @@
+/*******************************
+         Theme Overrides
+*******************************/
+
+h5 {
+  color: @darkGrey;
+  font-weight: bold;
+  margin: 0;
+}

@@ -1,0 +1,7 @@
+/*******************************
+       Sidebar Overrides
+*******************************/
+
+.ui.sidebar {
+	background-color: @sideBarBackground;
+}

@@ -1,0 +1,15 @@
+/*******************************
+        Modal Variables
+*******************************/
+
+/* Header */
+@headerBackground: @black;
+@headerColor: @textColor;
+@headerBorder: 1px solid @midBlack;
+
+/* Content */
+@contentBackground: @darkBlack;
+
+/* Action */
+@actionBackground: @black;
+@actionBorder: @headerBorder;

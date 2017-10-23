@@ -1,0 +1,13 @@
+/*******************************
+           Theme Variables
+*******************************/
+
+@titleFontSize: 0.9em;
+
+@styledBackground: none;
+@styledBorderRadius: none;
+@styledBoxShadow: none;
+
+@styledTitleMargin: 0em 1em;
+@styledTitlePadding: 0.75em 0em 0.5em 0em;
+@styledTitleFontWeight: normal;

@@ -1,0 +1,19 @@
+/*******************************
+    User Variable Overrides
+*******************************/
+
+/* Card */
+@width: 255px;
+@contentFontSize: .9em;
+@medium: .9em;
+@groupCardMargin: (@rowSpacing / 2) auto;
+@border: 0.75em solid @pageBackground;
+
+@linkHoverTransform: none;
+
+@linkHoverBoxShadow: 0 0 5px @primaryColor;
+
+@shadowBoxShadow: none;
+
+@contentDivider: 0;
+@extraDivider: 0;

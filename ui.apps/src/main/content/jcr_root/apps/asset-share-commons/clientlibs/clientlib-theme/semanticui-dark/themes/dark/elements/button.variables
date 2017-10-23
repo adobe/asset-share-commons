@@ -1,0 +1,18 @@
+@verticalPadding : 0.833em;
+@horizontalPadding : 1.5em;
+
+@textColor : @midGrey;
+
+/* Button */
+
+@background: @fullBlack @backgroundImage;
+
+/* Primary Button */
+@primaryColor  : @buttonPrimaryColor;
+@primaryColorHover  : @buttonPrimaryColorHover;
+
+/* Hovered */
+
+@hoverBackgroundColor: @darkBlack;
+@hoverBoxShadow :  0px 0px 0px 1px @borderColor inset;
+@hoverBackgroundColor: @darkBlack;

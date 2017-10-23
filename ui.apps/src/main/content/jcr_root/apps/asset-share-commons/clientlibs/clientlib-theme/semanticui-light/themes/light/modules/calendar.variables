@@ -1,0 +1,7 @@
+/*******************************
+            Calendar Theme
+*******************************/
+
+@rangeBackground: @filterPrimaryColor;
+@rangeTextColor: @white;
+@focusBoxShadow: inset 0 0 0 1px @filterPrimaryColor;

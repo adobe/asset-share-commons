@@ -1,0 +1,88 @@
+<!--/*
+  ~ Asset Share Commons
+  ~
+  ~ Copyright [2017]  Adobe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+ */-->
+
+<template data-sly-template.card="${@ asset = result, config = config }">
+
+    <sly data-sly-use.assetDetails="${'com.adobe.aem.commons.assetshare.configuration.AssetDetails' @ request = slingRequest, asset = asset }"></sly>
+
+    <article
+            data-asset-share-id="asset"
+            data-asset-share-asset="${asset.path}"
+            id="${asset.path}"
+            class="ui card cmp-card">
+
+        <a class="image cmp-image__wrapper--card" href="${assetDetails.url @ suffix = asset.path}">
+            <img src="${asset.properties['thumbnail'] || properties['missingImage'] @ context = 'attribute'}"
+                 class="cmp-image--card"
+                 alt="${asset.properties['title']}"/>
+        </a>
+
+        <div class="content">
+            <h3 class="header">
+                <a href="${assetDetails.url @ suffix = asset.path}">
+                    ${asset.properties['title']}
+                </a>
+            </h3>
+            <div class="meta">
+				<div class="property three">
+					${'SIZE' @ i18n}
+					<span class="value">${asset.properties['fileSize']}</span>
+				</div>
+				<div class="property three">
+					${'TYPE' @ i18n}
+					<span class="value">${asset.properties['type']}</span>
+				</div>
+				<div class="property three">
+					${'RES.' @ i18n}
+					<span class="value">${asset.properties['resolution']}</span>
+				</div>
+            </div>
+        </div>
+
+        <div class="extra content">
+         <div class="ui divider"></div>
+                <span class="action">
+                    <button class="ui link button"
+                            data-asset-share-id="download-asset"
+                            data-asset-share-asset="${asset.path}"
+                            data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}"
+                            data-sly-test="${config.downloadEnabled}">${'Download' @ i18n}</button>
+                </span>
+                <span class="action">
+                    <button class="ui link button"
+                            data-asset-share-id="share-asset"
+                            data-asset-share-asset="${asset.path}"
+                            data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}"
+                            data-sly-test="${config.shareEnabled}">${'Share' @ i18n}</button>
+                </span>
+                <span class="action">
+                    <button class="ui link button"
+                            data-asset-share-id="add-to-cart"
+                            data-asset-share-asset="${asset.path}"
+                            data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}"
+                            data-sly-test="${config.cartEnabled}">${'Add to Cart' @ i18n}</button>
+                </span>
+        </div>
+    </article>
+</template>
+
+<template data-sly-template.noResults="${@ search = search, config = config }">
+    <h1 class="ui center aligned header">
+        ${properties['noResultsText']}
+    </h1>
+</template>

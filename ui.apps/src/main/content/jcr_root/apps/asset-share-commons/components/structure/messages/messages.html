@@ -1,0 +1,41 @@
+<!--/*
+  ~ Asset Share Commons
+  ~
+  ~ Copyright [2017]  Adobe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+ */-->
+
+<sly data-sly-use.messages="com.adobe.aem.commons.assetshare.configuration.Messages"
+     data-sly-use.messageTemplate="templates/message.html"
+     data-sly-test.ready="${messages.ready}">
+
+    <!--/* Manual wrapping div required since the inclusion mechanism is not adding the cq:htmlTag classes */-->
+    <div class="cmp-structure-messages">
+        <section class="cmp-messages"
+                  data-sly-list.message="${messages.messages}">
+
+            <sly data-sly-test="${message['style'] == 'success'}"
+                 data-sly-call="${messageTemplate.message @ message = message, styleCssClass = 'positive'}"></sly>
+            <sly data-sly-test="${message['style'] == 'error'}"
+                 data-sly-call="${messageTemplate.message @ message = message, styleCssClass = 'negative'}"></sly>
+            <sly data-sly-test="${message['style'] == 'warn'}"
+                 data-sly-call="${messageTemplate.message @ message = message, styleCssClass = 'warning'}"></sly>
+            <sly data-sly-test="${message['style'] == 'notice'}"
+                 data-sly-call="${messageTemplate.message @ message = message, styleCssClass = 'info'}"></sly>
+
+        </section>
+    </div>
+
+</sly>
+<!--/* This is an invisible component configured at the page properties and thus does not have a placeholder */-->

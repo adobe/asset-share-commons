@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:Iptc4xmpCore="http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/" xmlns:Iptc4xmpExt="http://iptc.org/std/Iptc4xmpExt/2008-02-29/" xmlns:tiff="http://ns.adobe.com/tiff/1.0/" xmlns:xmp="http://ns.adobe.com/xap/1.0/" xmlns:xmpDM="http://ns.adobe.com/xmp/1.0/DynamicMedia/" xmlns:plus="http://ns.useplus.org/ldf/xmp/1.0/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dam="http://www.day.com/dam/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:mix="http://www.jcp.org/jcr/mix/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:mixinTypes="[mix:referenceable]"
+    jcr:primaryType="dam:Asset"
+    jcr:uuid="790cae6e-87d5-489a-95e3-a94d6bd19df7">
+    <jcr:content
+        dam:assetState="processed"
+        dam:copiedAt="{Date}2017-10-17T11:29:32.206-04:00"
+        dam:parentAssetID="aef66215-1ecc-4b16-be4f-cbc6b62f0033"
+        dam:relativePath="asset-share-commons/en/public/media/clouds_over_the_mountain_hd_stock_video.mp4"
+        jcr:lastModified="{Date}2017-10-17T11:31:24.607-04:00"
+        jcr:lastModifiedBy="admin"
+        jcr:primaryType="dam:AssetContent">
+        <metadata
+            cq:tags="[properties:style/color,properties:orientation/landscape]"
+            dam:extracted="{Date}2017-10-17T11:29:32.240-04:00"
+            dam:sha1="055217e9a703b2f6fbd3fc8b30ecf86503077f9a"
+            dam:size="{Long}5254093"
+            dam:youtube_category="Travel &amp; Events"
+            dam:youtube_privacy="public"
+            dc:description="clouds flowing over the mountains"
+            dc:extent="{Long}20083"
+            dc:format="video/mp4"
+            dc:modified="{Date}2017-10-17T10:43:16.539-04:00"
+            dc:title="Mountain Clouds"
+            Iptc4xmpExt:DigitalSourceType="http://cv.iptc.org/newscodes/digitalsourcetype/digitalCapture"
+            jcr:lastModified="{Date}2017-10-17T11:29:50.816-04:00"
+            jcr:lastModifiedBy="admin"
+            jcr:mixinTypes="[cq:Taggable]"
+            jcr:primaryType="nt:unstructured"
+            plus:PropertyReleaseStatus="http://ns.useplus.org/ldf/vocab/PR-UPR"
+            tiff:ImageLength="{Long}720"
+            tiff:ImageWidth="{Long}1280"
+            xmp:CreateDate="{Date}2015-12-12T01:37:11.000Z"
+            xmp:ModifyDate="{Date}2015-12-12T01:37:11.000Z">
+            <xmpDM:duration
+                jcr:primaryType="nt:unstructured"
+                xmpDM:scale="1/600"
+                xmpDM:value="{Long}12496"
+                xmpNodeType="xmpStruct"/>
+            <Iptc4xmpCore:CreatorContactInfo jcr:primaryType="nt:unstructured"/>
+        </metadata>
+        <related jcr:primaryType="nt:unstructured"/>
+    </jcr:content>
+</jcr:root>

@@ -1,0 +1,72 @@
+/*******************************
+            Checkbox
+*******************************/
+
+/* Label */
+
+@labelColor: @textColor;
+
+@labelFocusColor: @textColor;
+
+/* Checkbox */
+@checkboxActiveCheckColor: @filterPrimaryColor;
+
+/* Checkbox Border */
+@checkboxBorder: 1px solid @borderColor;
+@checkboxHoverBorderColor : @borderColor;
+@checkboxFocusBorderColor : @borderColor;
+@checkboxPressedBorderColor : @borderColor;
+@checkboxActiveBorderColor : @borderColor;
+
+/* Checkbox Background */
+@checkboxBackground      : @sideBarBackground;
+@checkboxActiveBackground: @checkboxBackground;
+@checkboxFocusBackground : @checkboxBackground;
+@checkboxPressedBackground : @checkboxBackground;
+
+
+/* Focused Checkbox */
+@checkboxActiveFocusBackground: @checkboxBackground;
+@checkboxActiveFocusCheckColor: @filterPrimaryColor;
+@checkboxTransition: none;
+
+/* Radio */
+@radioActiveBackground: @checkboxBackground;
+@radioActiveBorderColor: @filterPrimaryColor;
+@radioActiveBulletColor: @filterPrimaryColor;
+
+/* Focused Radio */
+@radioActiveFocusBackground: @checkboxBackground;
+@radioActiveFocusBorderColor: @filterPrimaryColorFocus;
+@radioActiveFocusBulletColor: @filterPrimaryColorFocus;
+
+
+
+/* Slider Line */
+@sliderLineColor : @labelColor;
+@sliderOnFocusLineColor : @labelColor;
+@sliderOnLineColor: @filterPrimaryColor;
+
+/* Slider Handle */
+@handleBackground : @checkboxBackground;
+@handleBoxShadow  : 0px 0px 0px 2px @borderColor inset;
+
+/* Slider Label */
+@sliderOffLabelColor : @labelColor;
+@sliderOnLabelColor  : @labelColor;
+
+/* Focused Slider */
+@sliderOnFocusLineColor: @filterPrimaryColorFocus;
+
+/* Hover Slider */
+@sliderHoverLaneBackground : @labelColor;
+
+/* Toggle */
+@toggleOffLabelColor: @labelColor;
+@toggleOnLabelColor : @labelColor;
+@toggleLaneBackground : @darkBlack;
+@toggleHoverColor     : @toggleLaneBackground;
+@toggleFocusColor : @filterPrimaryColor;
+@toggleOnLaneColor : @filterPrimaryColor;
+@toggleOnFocusLaneColor : @filterPrimaryColor;
+

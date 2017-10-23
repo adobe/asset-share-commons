@@ -1,0 +1,104 @@
+<!--/*
+  ~ Asset Share Commons
+  ~
+  ~ Copyright [2017]  Adobe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+ */-->
+
+<sly    data-sly-use.config="com.adobe.aem.commons.assetshare.configuration.Config"
+        data-sly-use.cart="com.adobe.aem.commons.assetshare.components.actions.cart.Cart"></sly>
+
+<style data-sly-test="${!wccmode.disabled}">
+     .cmp-modal-cart .ui.modal {
+        position: relative !important;
+        display: block !important;;
+        top: 0 !important;;
+    }
+</style>
+
+<form method="get"
+      action="${currentPage.path}.assetdownload.zip/Cart.zip"
+      data-asset-share-id="cart"
+      data-asset-share-id="cart-modal"
+      data-asset-share-update-method="replace"
+      data-asset-share-update-when="cart-updated"
+      class="ui modal cmp-modal-cart--wrapper cmp-modal">
+
+    <input type="hidden" name="licenseCheck" value="true"/>
+
+    <i class="close icon"></i>
+
+    <div class="header">
+        ${properties['modalTitle']}
+    </div>
+    <div class="scrolling content"
+         data-asset-share-id="cart-items">
+
+        <table  data-sly-test="${cart.assets.size > 0}"
+                class="ui left aligned selectable table">
+            <tbody data-sly-list.asset="${cart.assets}">
+            <tr data-asset-share-id="asset"
+                data-asset-share-asset="${asset.path}"
+                data-sly-use.assetDetails="${'com.adobe.aem.commons.assetshare.configuration.AssetDetails' @ request = slingRequest, asset = asset }">
+
+                <td class="image">
+                    <img src="${asset.properties['thumbnail']}" alt="${asset.properties['title']}"/>
+                </td>
+
+                <td class="header">
+                    <a href="${assetDetails.url @ suffix = asset.path}">
+                        ${asset.properties['title']}
+                    </a>
+                </td>
+
+                <td data-sly-test="${config.licenseEnabled}">${asset.properties['license'] ? 'Licensed' : 'Unlicensed' @ i18n}</td>
+
+                <td class="right aligned">
+                   <button class="ui button link"
+                            data-asset-share-id="remove-from-cart"
+                            data-asset-share-asset="${asset.path}">${'REMOVE' @ i18n}</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p data-sly-test="${cart.assets.size == 0}">
+            ${properties['emptyText']}
+        </p>
+
+    </div>
+    <div class="actions">
+        <div class="ui black deny button">
+            ${properties['closeButton']}
+        </div>
+        <div class="ui black button align left"
+             data-sly-test="${cart.assets.size > 0}"
+             data-asset-share-id="clear-cart">
+            ${properties['clearButton']}
+        </div>
+        <div class="ui primary right labeled icon button"
+        	 data-asset-share-id="share-all"
+             data-sly-test="${config.shareEnabled && cart.assets.size > 0}">
+            ${properties['shareButton']}
+             <i class="send outline icon"></i>
+        </div>
+        <button data-sly-test="${config.downloadEnabled && cart.assets.size > 0}"
+        	    data-asset-share-id="download-all"
+                type="submit"
+                class="ui postive primary right labeled icon button">
+            ${properties['downloadButton']}
+            <i class="download icon"></i>
+        </button>
+    </div>
+</form>

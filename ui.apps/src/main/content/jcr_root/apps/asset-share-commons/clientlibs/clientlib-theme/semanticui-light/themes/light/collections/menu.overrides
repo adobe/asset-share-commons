@@ -1,0 +1,23 @@
+
+
+.ui.secondary.menu .item {
+
+color:  @darkGrey;
+
+
+}
+
+.ui.secondary.menu .primary.menu {
+
+ .item {
+	 border-bottom: @relative3px solid transparent;
+	 text-transform: uppercase;
+	}	
+	
+	.active.item,
+	 a.item:hover,
+	 .link.item:hover {
+	 border-bottom: @relative3px solid @menuPrimaryColor;
+	
+	}
+ }

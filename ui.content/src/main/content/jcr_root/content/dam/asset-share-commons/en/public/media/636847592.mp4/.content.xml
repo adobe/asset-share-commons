@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:Iptc4xmpCore="http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/" xmlns:tiff="http://ns.adobe.com/tiff/1.0/" xmlns:xmp="http://ns.adobe.com/xap/1.0/" xmlns:xmpRights="http://ns.adobe.com/xap/1.0/rights/" xmlns:xmpDM="http://ns.adobe.com/xmp/1.0/DynamicMedia/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dam="http://www.day.com/dam/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:mix="http://www.jcp.org/jcr/mix/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:mixinTypes="[mix:referenceable]"
+    jcr:primaryType="dam:Asset"
+    jcr:uuid="c0a09677-bf4d-4b84-b7f3-3dca436d1ece">
+    <jcr:content
+        dam:assetState="processed"
+        dam:copiedAt="{Date}2017-10-17T11:29:50.969-04:00"
+        dam:parentAssetID="d30d90f5-00af-4bf3-8bdf-f71f39934721"
+        dam:relativePath="asset-share-commons/en/public/media/636847592.mp4"
+        jcr:lastModified="{Date}2017-10-17T14:15:59.110-04:00"
+        jcr:lastModifiedBy="admin"
+        jcr:primaryType="dam:AssetContent">
+        <metadata
+            cq:tags="[properties:orientation/landscape,properties:style/monochrome]"
+            dam:extracted="{Date}2017-10-17T11:29:51.059-04:00"
+            dam:sha1="107f274389743ef6513f06f2ae134a6a01a6487c"
+            dam:size="{Long}18236200"
+            dam:youtube_category="Entertainment"
+            dam:youtube_privacy="public"
+            dc:description="picture perfect sunset on the ocean."
+            dc:extent="{Long}18073"
+            dc:format="video/mp4"
+            dc:modified="{Date}2017-10-17T10:47:34.288-04:00"
+            dc:title="Sunset on ocean"
+            jcr:lastModified="{Date}2017-10-17T14:15:59.109-04:00"
+            jcr:lastModifiedBy="admin"
+            jcr:mixinTypes="[cq:Taggable]"
+            jcr:primaryType="nt:unstructured"
+            tiff:ImageLength="{Long}1080"
+            tiff:ImageWidth="{Long}1920"
+            xmp:CreateDate="{Date}2017-02-07T05:09:43.000Z"
+            xmp:ModifyDate="{Date}2017-02-07T05:09:43.000Z"
+            xmpRights:WebStatement="/content/asset-share-commons/en/light/actions/license/terms-conditions.html">
+            <xmpDM:duration
+                jcr:primaryType="nt:unstructured"
+                xmpDM:scale="1/600"
+                xmpDM:value="{Long}11238"
+                xmpNodeType="xmpStruct"/>
+            <Iptc4xmpCore:CreatorContactInfo jcr:primaryType="nt:unstructured"/>
+        </metadata>
+        <related jcr:primaryType="nt:unstructured"/>
+    </jcr:content>
+</jcr:root>

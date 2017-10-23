@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Asset Share Commons
+  ~
+  ~ Copyright [2017]  Adobe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:granite="http://www.adobe.com/jcr/granite/1.0"
+          xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+          xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+          jcr:primaryType="nt:unstructured"
+          jcr:title="Metadata"
+          sling:resourceType="cq/gui/components/authoring/dialog"
+          extraClientlibs="[assetshare.editor.components.details.metadata]">
+    <content
+            granite:class="cmp-asset-share-metadata--editor"
+            jcr:primaryType="nt:unstructured"
+            sling:resourceType="granite/ui/components/coral/foundation/container">
+        <items jcr:primaryType="nt:unstructured">
+            <tabs
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="granite/ui/components/coral/foundation/tabs"
+                    maximized="{Boolean}true">
+                <items jcr:primaryType="nt:unstructured">
+                    <main
+                            jcr:primaryType="nt:unstructured"
+                            jcr:title="Configuration"
+                            sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns"
+                            margin="{Boolean}true">
+                        <items jcr:primaryType="nt:unstructured">
+                            <column
+                                    jcr:primaryType="nt:unstructured"
+                                    sling:resourceType="granite/ui/components/coral/foundation/container">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <hide-label
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                            fieldDescription="Hide the label."
+                                            name="./hideLabel"
+                                            text="Hide Label"
+                                            value="true"/>
+                                    <label
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Label"
+                                            fieldDescription="Metadata field's label."
+                                            fieldLabel="Label"
+                                            name="./label"/>
+									<empty-text
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            fieldLabel="Empty Text"
+                                            fieldDescription="Text to display if the property is not set on the asset."
+                                            emptyText="Data unavailable"
+                                            name="./emptyText"/>
+                                    <property-name
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                            fieldDescription="Metadata property name to populate the date field. Ignored if using computed properties."
+                                            fieldLabel="Property Name"
+                                            noneText=""
+                                            noneValue=""
+                                            name="./propertyName">
+                                        <datasource
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="asset-share-commons/data-sources/metadata-schema-properties"/>
+                                    </property-name>
+                                    <data-type
+                                            granite:class="cq-dialog-dropdown-showhide"
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                            fieldLabel="Metadata Type"
+                                            name="./type">
+                                        <granite:data
+                                                jcr:primaryType="nt:unstructured"
+                                                cq-dialog-dropdown-showhide-target=".list-option-listfrom-showhide-target"/>
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <computed
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Computed"
+                                                    value="computed"/>
+                                            <text
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Text"
+                                                    value="text"/>
+                                            <date
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Date"
+                                                    value="date"/>
+                                            <number
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Number"
+                                                    value="number"/>
+                                            <tags
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Boolean"
+                                                    value="boolean"/>
+                                        </items>
+                                    </data-type>
+                                    <set-date
+                                            granite:class="hide list-option-listfrom-showhide-target foundation-layout-util-vmargin"
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/container">
+                                        <granite:data
+                                                jcr:primaryType="nt:unstructured"
+                                                showhidetargetvalue="date"/>
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <heading
+                                                    granite:class="coral-Heading coral-Heading--4"
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/heading"
+                                                    level="{Long}4"
+                                                    text="Date Configuration"/>
+                                            <well
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/well">
+                                                <items jcr:primaryType="nt:unstructured">
+                                                    <format
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                                            emptyText="Format Options"
+                                                            fieldDescription="Format to display the field value."
+                                                            fieldLabel="Format"
+                                                            name="./formatDate">
+                                                        <items jcr:primaryType="nt:unstructured">
+                                                            <format0
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    text="Relative Time"
+                                                                    value="relativetime"/>
+                                                            <format1
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    text="yyyy-MM-dd"
+                                                                    value="yyyy-MM-dd"/>
+                                                            <format2
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    text="yyyy-MM-dd hh:mm"
+                                                                    value="yyyy-MM-dd hh:mm"/>
+                                                            <format3
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    text="yyyy-MM-dd hh:mm a"
+                                                                    value="yyyy-MM-dd hh:mm a"/>
+                                                            <format4
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    text="EEEE, d MMM y"
+                                                                    value="EEEE, d MMM y"/>
+                                                            <format5
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    text="dd MMM. y"
+                                                                    value="dd MMM. y"/>
+                                                        </items>
+                                                    </format>
+                                                </items>
+                                            </well>
+                                        </items>
+                                    </set-date>
+                                    <set-number
+                                            granite:class="hide list-option-listfrom-showhide-target foundation-layout-util-vmargin"
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/container">
+                                        <granite:data
+                                                jcr:primaryType="nt:unstructured"
+                                                showhidetargetvalue="number"/>
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <heading
+                                                    granite:class="coral-Heading coral-Heading--4"
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/heading"
+                                                    level="{Long}4"
+                                                    text="Number Configuration"/>
+                                            <well
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/well">
+                                                <items jcr:primaryType="nt:unstructured">
+                                                    <format
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                            emptyText="#.###"
+                                                            fieldDescription="Metadata property name to populate the date field."
+                                                            fieldLabel="Format"
+                                                            name="./formatNumber"/>
+                                                </items>
+                                            </well>
+                                        </items>
+                                    </set-number>
+                                    <set-boolean
+                                            granite:class="hide list-option-listfrom-showhide-target foundation-layout-util-vmargin"
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/container">
+                                        <granite:data
+                                                jcr:primaryType="nt:unstructured"
+                                                showhidetargetvalue="boolean"/>
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <heading
+                                                    granite:class="coral-Heading coral-Heading--4"
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/heading"
+                                                    level="{Long}4"
+                                                    text="True/False Configuration"/>
+                                            <well
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/well">
+                                                <items jcr:primaryType="nt:unstructured">
+                                                    <true-value
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                            fieldLabel="True Label"
+                                                            fieldDescription="The label to display for 'true' values."
+                                                            emptyText="Yes"
+                                                            name="./trueValue"/>
+                                                    <false-value
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                            fieldLabel="True Label"
+                                                            fieldDescription="The label to display for 'true' values."
+                                                            emptyText="No"
+                                                            name="./falseValue"/>
+                                                </items>
+                                            </well>
+                                        </items>
+                                    </set-boolean>
+                                    <set-computed
+                                            granite:class="hide list-option-listfrom-showhide-target foundation-layout-util-vmargin"
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/container">
+                                        <granite:data
+                                                jcr:primaryType="nt:unstructured"
+                                                showhidetargetvalue="computed"/>
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <heading
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/heading"
+                                                    level="{Long}4"
+                                                    text="Computed Property Configuration (When checked, 'Property Name' is ignored)"/>
+                                            <well
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/well">
+                                                <items jcr:primaryType="nt:unstructured">
+                                                    <computed
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                                            emptyText="Available Computed Metadata Properties"
+                                                            fieldDescription="A list of available computed properties."
+                                                            fieldLabel="Computed Metadata Properties"
+                                                            name="./computedProperty"
+                                                            computedPropertyTypes="[metadata]">
+                                                        <datasource
+                                                                jcr:primaryType="nt:unstructured"
+                                                                sling:resourceType="asset-share-commons/data-sources/computed-properties"/>
+                                                    </computed>
+                                                </items>
+                                            </well>
+                                        </items>
+                                    </set-computed>
+                                </items>
+                            </column>
+                        </items>
+                    </main>
+                </items>
+            </tabs>
+        </items>
+    </content>
+</jcr:root>
