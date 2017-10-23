@@ -140,6 +140,9 @@
 					<name>asset-share-commons.ui.content</name>
 					<group>asset-share-commons</group>
 					<filterSource>src/main/content/META-INF/vault/filter.xml</filterSource>
+					<properties>
+						<acHandling>merge_preserve</acHandling>
+					</properties>
 					<targetURL>http://${crx.host}:${crx.port}/crx/packmgr/service.jsp</targetURL>
 				</configuration>
 			</plugin>
