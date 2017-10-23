@@ -4,7 +4,7 @@
     <jcr:content
         cq:lastModified="{Date}2017-10-16T18:46:12.390-04:00"
         cq:lastModifiedBy="admin"
-        cq:template="/conf/asset-share-commons/settings/wcm/templates/asset-details-template-dark"
+        cq:template="/conf/asset-share-commons/settings/wcm/templates/details-template-dark"
         jcr:primaryType="cq:PageContent"
         sling:resourceType="asset-share-commons/components/structure/details-page">
         <root
