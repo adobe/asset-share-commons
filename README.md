@@ -1,4 +1,4 @@
-# Asset Share 2.0 Project
+# Asset Share Commons
 
 This a content package project generated using the AEM Multimodule Lazybones template.
 
