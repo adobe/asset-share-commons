@@ -44,7 +44,15 @@ layout: default
             <ul class="actions">
                 <li><a href="{{ site.baseurl }}/pages/actions" class="button">More about actions</a></li>
             </ul>
-        </article>     
+        </article>
+        <article>
+            <a href="{{ site.baseurl }}/pages/theming" class="image"><img src="{{ site.baseurl }}/pages/images/learn-more/theming.png" alt="" /></a>
+            <h3>Theming</h3>
+            <p>Learn how you can skin Asset Share Commons to match your brand's color scheme.</p>
+            <ul class="actions">
+                <li><a href="{{ site.baseurl }}/pages/theming" class="button">More about actions</a></li>
+            </ul>
+        </article>  
     </div>        
 <section>        
         
