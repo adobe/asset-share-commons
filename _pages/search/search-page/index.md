@@ -46,13 +46,12 @@ Search page authoring can be broken into 2 concerns:
 * Composing the search experience via components.
 
 
-### Page Properties
+### Page Properties / Asset Share / Asset Share Details Configuration
 
-#### Asset Share Tab
+![Asset Details configurations dialog](./images/page-properties-asset-details-configuration.png)
 
-#### Asset Share Details Configuration
 
-##### Asset Details Page Selector
+#### Asset Details Page Selector
 
 Defines how Asset Details pages should be resolved for this content tree.
 
@@ -61,11 +60,11 @@ Defines how Asset Details pages should be resolved for this content tree.
   * Asset Type
     * The "Asset Type" computed property is used to determine the name of the Asset Details pages to use. The asset details page to use for an asset will be `<default-asset-details-page>/<asset-type>`. If no Asset Type can be derived, then the Default Asset Details Page will be used.
     
-##### Default Asset Details Page
+#### Default Asset Details Page
 
 The default asset details page.
 
-##### Placeholder Asset
+#### Placeholder Asset
 
 The default placeholder asset to use. 
 
@@ -73,7 +72,10 @@ This is only used to aid in the authoring of Asset Details pages (since in order
 
 Several placeholder assets provided by Asset Share Commons (`/apps/asset-share-commons/resources/placeholder.XXX`).
 
-#### Actions Configuration
+
+### Page Properties / Asset Share / Actions Configuration
+
+![Actions configurations dialog](./images/page-properties-actions-configuration.png)
 
 ##### Enable Downloading
 
@@ -96,7 +98,11 @@ Select to enable Cart functionality. When disabled, "Add to cart" buttons will n
   * Cart functionality is dependent on the provided ContextHub Cart implementation which must be set via `Page Properties > Personalization > ContextHub Path`.
     * The cart provided by Asset Share Commons  is located at `/etc/cloudsettings/asset-share-commons/contexthub` 
 
-#### Messages Configuration
+
+
+### Page Properties / Asset Share / Messages Configuration
+
+![Message configurations dialog](./images/page-properties-messages-configuration.png)
 
 Message configurations are used to define the style and text of message (or notifications). Currently there are only 2 types of messsages:
 

@@ -9,6 +9,4 @@ The initial version of Asset Share Commons ships with AEM WCM Core Components v1
 
 For more information about what AEM WCM Core Components are and how to leverage them, visit their GitHub web site.
 
-<br/>
-
-<a href="https://github.com/adobe-marketing-cloud/aem-wcm-core-components" class="button">AEM WCM Core Components</a>
+<a href="https://github.com/adobe-marketing-cloud/aem-wcm-core-components" class="button">AEM WCM Core Components GitHub Repo</a>

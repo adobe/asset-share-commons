@@ -63,12 +63,12 @@
 		overflow: hidden;
 
 		img {
-			@include vendor('transition', 'transform #{_duration(transition)} ease');
+			//@include vendor('transition', 'transform #{_duration(transition)} ease');
 		}
 
 		&:hover {
 			img {
-				@include vendor('transform', 'scale(1.075)');
+				//@include vendor('transform', 'scale(1.075)');
 			}
 		}
 	}

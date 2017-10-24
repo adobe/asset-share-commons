@@ -1,0 +1,39 @@
+/* Overrides */
+
+body {
+  font-size: 12pt;
+}
+
+h1 {
+  font-weight: 200;
+}
+
+
+.button, a[href] {
+  font-weight: 400;
+}
+
+
+
+h1 {
+  font-size: 3.25rem;
+  margin-top: 1.6rem;
+}
+
+h2, h3, h4, h5, h6 {
+  font-weight: 400;
+}
+
+#main {
+  padding-left: 0;
+}
+
+#main > .inner {
+  margin: 0 0;
+  max-width: 1200px;
+}
+
+#menu a,
+#menu .opener {
+  font-weight: 400;
+}

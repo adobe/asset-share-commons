@@ -1,0 +1,15 @@
+.image {
+  border: solid 1px _palette(border);
+
+  &:hover {
+    border-bottom: solid 1px _palette(border);
+  }
+}
+
+
+.posts {
+  .image {
+    object-fit: cover;
+    -o-object-fit: cover;
+  }
+}

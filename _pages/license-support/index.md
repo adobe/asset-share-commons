@@ -13,13 +13,9 @@ Please report *ALL* bugs, issues or questions to the project's [GitHub issues](h
 
 In order to expedite any issue resolution, please also provide a Pull Request with the appropiate fix. 
 
-> Please remember, this is an open-source community project. Issue resolution and issue resolution is not guarenteed.
-
 ## Licensing
 
 Asset Share Commons is an open-source project licensed under the Apache License, Version 2.0.
-
-<br/>
 
 <a href="https://www.apache.org/licenses/LICENSE-2.0" class="button">Read the Apache License, Version 2.0</a>
 

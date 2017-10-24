@@ -5,13 +5,13 @@
 
 // Duration.
 	$duration: (
-		nav:				0.5s,
+		nav:				0.3s,
 		transition:			0.2s
 	);
 
 // Size.
 	$size: (
-		border-radius:		0.375em,
+		border-radius:		3px,
 		element-height:		2.75em,
 		element-margin:		2em,
 		sidebar-width:		26em,
@@ -24,9 +24,9 @@
 		family:				('Lato', sans-serif),
 		family-heading:		('Lato', sans-serif),
 		family-fixed:		('Lato', monospace),
-		weight:				400,
-		weight-bold:		600,
-		weight-heading:		700,
+		weight:				300,
+		weight-bold:		400,
+		weight-heading:		300,
 		weight-heading-alt:	400,
 		kerning-heading:	0.075em
 	);
@@ -35,8 +35,8 @@
 	$palette: (
 		bg:					#ffffff,
 		bg-alt:				#f5f6f7,
-		fg:					#7f888f,
-		fg-bold:			#3d4449,
+		fg:					#3d4449, //#7f888f
+		fg-bold:			#000, // #3d4449
 		fg-light:			#9fa3a6,
 		border:				rgba(210,215,217,0.75),
 		border-bg:			transparentize(#e6ebed, 0.75),

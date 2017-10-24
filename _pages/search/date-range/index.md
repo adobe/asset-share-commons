@@ -23,7 +23,7 @@ The asset's date be within the user-selected relative date range. See Authoring 
 
 ### Dialog / Common fields
 
-![Dialof](./images/dialog-shared.png)
+![Dialog](./images/dialog.png)
 
 #### Title
 

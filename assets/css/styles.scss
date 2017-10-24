@@ -4,18 +4,8 @@
 @import "ie8";
 @import "ie9";
 @import "main";
+@import "image";
 @import "content-page";
+@import "component-template-page";
+@import "overrides";
 
-/* Overrides */
-
-body {
-  font-size: 12pt;
-}
-
-h1 {
-  font-weight: 200;
-}
-
-#main {
-  padding-left: 0;
-}

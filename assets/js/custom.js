@@ -16,3 +16,7 @@ $(function() {
         $img.after($('<p class="image__caption">' + $img.attr('alt') + '</p>'));
     });
 });
+
+$(function() {
+    $(document).pjax('a', '#main');
+});
