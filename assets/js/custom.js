@@ -7,7 +7,7 @@ $(function() {
 
 $(function() {
     "use strict";
-
+/*
     $('.doc-page img[alt]').each(function() {
         var $img = $(this),
             $wrapper = $("<div class='image--with-caption'></div>");
@@ -15,6 +15,7 @@ $(function() {
         $img.wrap($wrapper);
         $img.after($('<p class="image__caption">' + $img.attr('alt') + '</p>'));
     });
+*/
 });
 
 $(function() {
