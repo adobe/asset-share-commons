@@ -1,12 +1,21 @@
+{% assign layout = include.layout %}
+
 <section>
     <div class="posts">
 
         {% assign sorted = (site.pages | sort: 'title') %}
         {% assign currentPagePath = page.path | remove: "index.md" %}
         {% for subpage in sorted %}
-        {% capture subFeature %}{% if subpage.path contains currentPagePath and subpage.path != page.path and subpage.layout != 'section-page' %}true{% else %}false{% endif %}{% endcapture %}
+
+
+        {% capture isSubPath %}{% if (subpage.path contains currentPagePath) %}true{% else %}false{% endif %}{% endcapture %}
+        {% capture isNotSame %}{% if (subpage.path != page.path) %}true{% else %}false{% endif %}{% endcapture %}
+        {% capture isCorrectLayout %}{% if (subpage.layout == layout) %}true{% else %}false{% endif %}{% endcapture %}
+
+        {% capture subFeature %}{% if isSubPath == 'true' and isNotSame == 'true' and isCorrectLayout == 'true' %}true{% else %}false{% endif %}{% endcapture %}
+
         {% if subFeature == 'true' %}
-        {% include sub-page.html page=subpage  %}
+        {% include sub-page.html subpage=subpage %}
         {% endif %}
         {% endfor %}
 

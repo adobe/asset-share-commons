@@ -3,4 +3,11 @@ layout: section-page
 title: Search
 ---
 
-{% include sub-pages.html %}
+<h2>Template/Page Components</h2>
+
+{% include sub-pages.html layout='template-page' %}
+
+
+<h2>Components</h2>
+
+{% include sub-pages.html layout='component-page' %}

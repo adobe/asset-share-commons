@@ -1,10 +1,12 @@
-{% assign page = include.page %}
+{% assign p = include.subpage %}
 
 <article>
-    <a href="{{ site.baseurl }}{{ page.url }}" class="image"><img src="{{ site.baseurl }}{{ page.url }}/../images/main.png" alt="{{ page.title }}" /></a>
-    <h3>{{ page.title }}</h3>
-    <p>{{ page.description }}</p>
+    <a href="{{ site.baseurl }}{{ p.url }}" class="image"><img src="{{ site.baseurl }}{{ p.url }}/../images/main.png" alt="{{ p.title }}" /></a>
+
+    <h3>{{ p.title }}</h3>
+    <p>{{ p.description }}</p>
+
     <ul class="actions">
-        <li><a href="{{ site.baseurl }}{{ page.url }}" class="button">Learn more</a></li>
+        <li><a href="{{ site.baseurl }}{{ p.url }}" class="button">{{ p.title }}</a></li>
     </ul>
 </article>
