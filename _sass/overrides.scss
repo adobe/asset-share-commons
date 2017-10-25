@@ -37,3 +37,13 @@ h2, h3, h4, h5, h6 {
 #menu .opener {
   font-weight: 400;
 }
+
+
+
+.posts article .image img {
+  display: block;
+  width: 100%;
+  min-height: 200px;
+  object-fit: cover;
+  -o-object-fit: cover;
+}
