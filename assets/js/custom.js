@@ -7,17 +7,32 @@ $(function() {
 
 $(function() {
     "use strict";
-/*
-    $('.doc-page img[alt]').each(function() {
-        var $img = $(this),
-            $wrapper = $("<div class='image--with-caption'></div>");
 
-        $img.wrap($wrapper);
-        $img.after($('<p class="image__caption">' + $img.attr('alt') + '</p>'));
-    });
-*/
+    var path = window.location.pathname.replace(/\/$/, ''),
+        listItem,
+        subList,
+        opener;
+
+        $("#menu .opener").removeClass("active");
+
+        listItem = $("#menu a[href^='" + path + "']");
+
+        if (listItem.length === 1) {
+            subList = listItem.closest("ul");
+
+            if (subList.length === 1) {
+                opener = subList.siblings('span.opener');
+
+                if (opener) {
+                    opener.addClass("active");
+                }
+            }
+        }
 });
 
 $(function() {
     $(document).pjax('a', '#main');
 });
+
+
+
