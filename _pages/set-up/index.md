@@ -5,7 +5,7 @@ title: Set Up
 
 ## Pre-requisites
 
-* [AEM 6.3 Service Pack 1 on AEM Package Share](https://docs.adobe.com/docs/en/aem/6-3/release-notes/sp1.html)
+* [AEM 6.3 Service Pack 1 (6.3.1.0)](https://docs.adobe.com/docs/en/aem/6-3/release-notes/sp1.html)
 * [ACS AEM Commons 3.11.0+](https://github.com/Adobe-Consulting-Services/acs-aem-commons/releases)
     * _Generally optional, but required for E-mail Sharing._ 
 
