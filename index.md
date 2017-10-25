@@ -50,7 +50,7 @@ layout: default
             <h3>Theming</h3>
             <p>Learn how you can skin Asset Share Commons to match your brand's color scheme.</p>
             <ul class="actions">
-                <li><a href="{{ site.baseurl }}/pages/theming" class="button">More about actions</a></li>
+                <li><a href="{{ site.baseurl }}/pages/development/theming" class="button">More about theming</a></li>
             </ul>
         </article>  
     </div>        
