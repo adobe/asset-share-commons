@@ -39,7 +39,7 @@ Create a page using the Asset Details Template or Asset Details Template Dark.
 
 Standard page properties are inherited from the [Page(v1) core component](https://github.com/Adobe-Marketing-Cloud/aem-core-wcm-components/tree/master/content/src/content/jcr_root/apps/core/wcm/components/page/v1/page). An additional tab for Asset Share is included.
 
-#### Placeholder Asset Override
+### Placeholder Asset Override
 
 ![Place holder details - right](./images/placeholder-details-page.png)
 
