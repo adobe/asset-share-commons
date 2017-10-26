@@ -24,9 +24,11 @@ import org.osgi.annotation.versioning.ConsumerType;
 @ConsumerType
 public interface Result {
     /**
-     * The type of result. This is used by the presentation layer to make decisions.
+     * This is used by the presentation layer to make decisions.
      *
-     * @return
+     * In future versions or extensions, this could return values like "folder", allowing the presentation layer to under the result refers to a Folder and not an Asset.
+     *
+     * @return the type of result.
      */
     String getType();
 
@@ -38,7 +40,7 @@ public interface Result {
 
     /***
      *
-     * @return String node name of an Asset
+     * @return String node name of an Asset,
      */
     String getName();
 }

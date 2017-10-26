@@ -26,6 +26,9 @@ import java.util.Collection;
 
 public interface Header extends Component {
 
+    /**
+     * property in which the site's root is located (usually hyperlinked off the site logo/title)
+     */
     String PN_ROOT_PATH = "rootPath";
 
     /**
@@ -90,37 +93,33 @@ public interface Header extends Component {
         Page getPage();
 
         /**
-         * Gets the active information of the current page
+         * Gets the active information of the current page.
          *
-         * @return true if it is the current page
+         * @return true if if the navigation item represents the current page (ie the current request's current resolved page).
          */
         boolean isActive();
 
         /**
-         * Gets the hierarchy information  of the current page
+         * Gets the hierarchy information  of the current page.
          *
-         * @return true if the current page is a descendant of the navigation page
+         * @return true if the current page is a descendant of the navigation page.
          */
         boolean isHierarchyActive();
 
         /**
-         * Gets the icon associated with the navigation page
+         * Gets the icon associated with the navigation page.
          *
-         * @return the icon associated with the navigation page
+         * @return the icon associated with the navigation page.
          */
         String getIcon();
 
         /**
-         * Gets the URL associated with the navigation. Could be a relative path or an absolute URL.
-         *
-         * @return
+         * @return the URL associated with the navigation. Could be a relative path or an absolute URL.
          */
         String getUrl();
 
         /**
-         * The String value to populate the navigation link text
-         *
-         * @return
+         * @return the String value to populate the navigation link text.
          */
         String getText();
 

@@ -28,47 +28,47 @@ import org.osgi.annotation.versioning.ConsumerType;
 public interface Metadata extends EmptyTextComponent {
 
     /***
-     *
-     * @return an AssetModel representing the current Asset (suffix)
+     * @return an AssetModel representing either the request's resource (if it is resolvable to an Asset) OR the request's suffix path (if that resolved to an Asset)
      */
     AssetModel getAsset();
 
     /***
-     * Returns a ValueMap (from AssetModel) composed of a look up based on: 1)
-     * ComputedProperties, the [dam:Asset]/jcr:content/metadata ValueMap and
-     * finally the [dam:Asset] ValueMap.
+     * Returns a ValueMap (from AssetModel) composed of a look up based on:
+     * 1) ComputedProperties
+     * 2) [dam:Asset]'s ValueMap
+     * 3) [dam:Asset]/jcr:content/metadata's ValueMap
      *
-     * @return
+     * @return a value map of asset properties. See method description for more details.
      */
     ValueMap getProperties();
 
     /***
-     * Return the expected data type of the metadata property
-     *
-     * @return
+     * @return the expected data type of the metadata property.
      */
     DataType getType();
 
     /***
-     * Returns the format pattern for the specified metadata field. Expected to
-     * be an HTL recognized Date Format or Number format.
+     * @return the format pattern for the specified metadata field. Expected to be an HTL recognized Date Format or Number format.
      */
     String getFormat();
 
     /***
      *
-     * @return String representing the raw metadata property name
+     * @return String representing the raw metadata property name.
      */
     String getPropertyName();
 
     /***
-     * Get the locale for formatting purposes. Driven by the current page's
-     * properties Language selection.
-     *
-     * @return String language code
+     * Get the locale for formatting purposes. Driven by the current page's properties Language selection.
+
+     * @return String language code.
      */
     String getLocale();
 
+
+    /**
+     * The DataType are the types of data supported by the Metadata Component that support special formatting.
+     */
     enum DataType {
         COMPUTED("computed"), TEXT("text"), DATE("date"), NUMBER("number"), BOOLEAN("boolean");
 
