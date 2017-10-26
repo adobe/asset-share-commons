@@ -13,7 +13,7 @@ title: Performance Considerations
 
 * ACS's CSS and JavaScript assets should be cached with long TTLs (even for authenticated users). 
     * If acceptable, leverage [ACS AEM Commons Versioned ClientLibs](https://adobe-consulting-services.github.io/acs-aem-commons/features/versioned-clientlibs.html) to aid in this.
-* Asset Share Commons adheres idempotent GET request, thus assuming authentication requirements allow, GET requests can be cached at various levels (CDN / Disaptcher / In Mem).
+* Asset Share Commons adheres to idempotent GET requests (they don't change state in AEM), thus assuming authentication requirements allow, GET requests can be cached at various levels (CDN / Disaptcher / In Mem).
 - Asset Details pages (assuming authentication requirements permit) are highly cache-able. If components such as the [User Menu]({{site.baseurl}}/structure/user-menu) prevent generally cache-able pages from being cached, use [Sling Dynamic Include](https://helpx.adobe.com/experience-manager/kt/platform-repository/using/sling-dynamic-include-technical-video-setup.html) to not cache only the un-cacheable components on the page (by `sling:resourceType`). 
 
 ## Authentication and Caching
