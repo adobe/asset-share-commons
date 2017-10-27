@@ -5,6 +5,9 @@ title: Development Guide
 
 There are many ways that Asset Share Commons could be leveraged on a customer specific project. Detailed below are guidelines for including Asset Share Commons as part of a custom project and instructions on how to extend common areas of an Asset Share implementation.
 
+The guide will center around implementing a custom requirement to show a status label for New and Updated assets. Pertinent code snippets are included below. The full code for the [sample project can be found on GitHub](https://github.com/godanny86/sample-assetshare).
+
+![Screen shot of Sample Assetshare Project](./images/main.png)
 
 ## Using with Maven
 
@@ -115,6 +118,13 @@ In the `content-package-maven-plugin` section of your project's content module (
 </plugins>
 ```
 
+### Example POM files
+
+1. [Parent POM](https://github.com/godanny86/sample-assetshare/blob/master/pom.xml)
+2. [ui.apps POM](https://github.com/godanny86/sample-assetshare/blob/master/ui.apps/pom.xml)
+3. [core POM](https://github.com/godanny86/sample-assetshare/blob/master/core/pom.xml)
+
+
 ## Project Theme Client Library
 
 It is recommended to create a project specific theme to be used to style a project's Asset Share. Asset Share Commons includes two themes: Light and Dark. It is easiest to choose one of these themes to start with and customize from there. A copy of the theme should be made and saved beneath the project's `/apps/clientlibs` folder. This client library will need to be included in the Page Design for all the templates used in the project.
@@ -123,6 +133,8 @@ It is recommended to create a project specific theme to be used to style a proje
 * Dark:  `/apps/asset-share-commons/clientlibs/clientlib-theme/semanticui-dark`
 
 See the [Theming](../../theming) page for more details on customizing a theme. 
+
+#### [Sample clientlib based on Dark Theme](https://github.com/godanny86/sample-assetshare/tree/master/ui.apps/src/main/content/jcr_root/apps/sample-assetshare/clientlibs/clientlib-theme/semanticui-sample)
 
 ## Project Asset Placeholder
 
@@ -134,12 +146,10 @@ Since the Placeholder assets only get rendered in the Author environment it is o
 
 ***NOTE** the Placeholder Asset should not be confused with a **Not Found** thumbnail. Several components like the [Search Results component](#) and the [Image component](#) allow an author to set a Not Found thumbnail to be used if the current asset does not have a valid thumbnail. The Not Found asset **must** be in the DAM or publicly accessible (should never be beneath `/apps`).
 
-
-
-
 ## Editable Templates
 
-Creating project-specific editable templates is the recommended way of integrating Asset Share Commons into a project. The [ui.content](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/releases/tag/asset-share-commons.ui.content-1.0.0) package includes examples of the templates and template-types needed under `/conf/asset-share-commons/settings/wcm/`. *Note that two sets of templates are included in ui.content to support both the Light and Dark theme examples. A project implementation most likely only needs a single set.
+Creating project-specific editable templates is the recommended way of integrating Asset Share Commons into a project. The [ui.content](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/releases/tag/asset-share-commons.ui.content-1.0.0) package includes examples of the templates and template-types needed under `/conf/asset-share-commons/settings/wcm/`. *Note that two sets of templates are included in ui.content to support both the Light and Dark theme examples. A project implementation most likely only needs a single set. [See this sample project for example of templates and template types.](https://github.com/godanny86/sample-assetshare/tree/master/ui.apps/src/main/content/jcr_root/conf/sample-assetshare/settings/wcm)
+
 
 ### Template Types
 
@@ -175,7 +185,7 @@ When setting up a new project it is easiest to copy the template types from `/co
 
 ### Templates
 
-Due to the complex structure of Editable Templates it is recommended to create each project specific Template using the Template Editor in the AEM UI. Templates found beneath `/conf/asset-share-commons/settings/wcm/templates` should be used as a reference but should NOT be copied directly into a project's `/conf` directory. A Structure policy should be created to include *Asset Share Commons - Structure* components (Header, Footer, User menu...) on each Template. Allowed Components policies should also be configured based on the template. Lastly the Page Design for each Template needs to be configured to point to a Semantic UI theme client library (preferrably a project specific one).
+Due to the complex structure of Editable Templates it is recommended to create each project specific Template using the Template Editor in the AEM UI. Templates found beneath `/conf/asset-share-commons/settings/wcm/templates` should be used as a reference but should NOT be copied directly into a project's `/conf` directory. A Structure policy should be created to include *Asset Share Commons - Structure* components (Header, Footer, User menu...) on each Template. Allowed Components policies should also be configured based on the template. Lastly the Page Design for each Template needs to be configured to point to a Semantic UI theme client library (preferrably a project specific one). [See this sample project for example of templates.](https://github.com/godanny86/sample-assetshare/tree/master/ui.apps/src/main/content/jcr_root/conf/sample-assetshare/settings/wcm)
 
 **Search Template**
 
@@ -217,13 +227,9 @@ Due to the complex structure of Editable Templates it is recommended to create e
 * Structure Policy: *Asset Share Commons - Structure*, *Layout Container*
 * Allowed Components: *Asset Share Commons - Content*
 
-#### Search Template Type
-
-A Search Template Type is needed for any Search Templates. The `sling:resourceType` should point to `asset-share-commons/components/structure/search-page` or to a component in which the `sling:resourceSuperType` points to `asset-share-commons/components/structure/search-page`. This will ensure the proper dialog for search configurations is included.
-
 ## Content
 
-A project specific content structure should be created. At the root of the site, the allowed templates should be configured to allow pages to be created from Project templates.
+A project specific content structure should be created. At the root of the site, the allowed templates should be configured to allow pages to be created from Project templates. [See this project for minimum content structure](https://github.com/godanny86/sample-assetshare/tree/master/ui.apps/src/main/content/jcr_root/content/sample-assetshare).
 
 ### Recommended Content Architecture
 
@@ -247,13 +253,13 @@ A project specific content structure should be created. At the root of the site,
 
 More details around the recommended content hierarchy can be found on the [Search Page](#) documentation.
 
-## Custom Computed Properties
+## Extend Computed Properties
 
 [Computed Properties](#) are used throughout Asset Share Commons to display metadata about an individual asset. Implementing a new computed property is one of the easiest ways to extend Asset Share Commons to meet business requirements.
 
 ### Asset Status - Computed Property
 
-To illustrate the concept of Computed Properties we will be implementing a requirement to show a "New" or "Updated" status indicator if an Asset has been created/modified in the last 7 days.
+To illustrate the concept of Computed Properties we will be implementing a requirement to show a "New" or "Updated" status indicator if an Asset has been created/modified in the last 7 days. Code snippets below are highlighted to provide additional clarification, the code in full can be found [here](https://github.com/godanny86/sample-assetshare/blob/master/core/src/main/java/com/sample/assetshare/content/properties/impl/AssetStatusImpl.java).
 
 #### 1. Create AssetStatusImpl.java
 
@@ -278,7 +284,7 @@ Each implementation of a Computed Property needs to provide:
 2. **Label** - a human friendly label, used for data source drop downs
 3. **Type** - a classification of the computed property. Valid types are `metadata`, `rendition`, `url`. This is used by data sources to filter which computed properties are shown to a user. A computed property can have multiple types.
 
-Using the new OSGi annotations we can add an ObjectClassDefinition which will expose the Label and Types as an OSGi Configuration. We will also add a configuration for Days which will determine the period in which an asset is considered "New" or "Updated".
+Using the new OSGi annotations we can add an ObjectClassDefinition which will expose the Label and Types as an OSGi Configuration. We will also add a configuration for Days which will determine the period in which an asset is considered "New" or "Updated", as well as a configurable text for New and Updated labels.
 
 ```
  
@@ -304,6 +310,18 @@ Using the new OSGi annotations we can add an ObjectClassDefinition which will ex
                 description = "Defines the number of days in which an asset is considered 'New' or 'Updated'. Expected to be a negative number."
         )
         int days() default DEFAULT_DAYS;
+        
+        @AttributeDefinition(
+                name = "New Label",
+                description = "Text to display as 'New' status."
+        )
+        String newLabel() default DEFAULT_NEW_LABEL;
+        
+        @AttributeDefinition(
+                name = "Updated Label",
+                description = "Text to display as 'Updated' status."
+        )
+        String updatedLabel() default DEFAULT_UPDATED_LABEL;
     }
     
     @Override
@@ -348,14 +366,14 @@ Finally we can populate the `get(Asset, SlingHttpServletRequest)` method. This i
        
         if(assetCreated.after(weekOld)) {
             //if asset created < one week ago
-            return NEW_STATUS;
+            return cfg.newLabel();
         } else if (assetModified.after(weekOld)) {
             //if asset modified < one week ago
-            return UPDATED_STATUS;
+            return cfg.updatedLabel();
         }
         return null;
     }
-    
+        
     /***
      * 
      * @return a Calendar object to compare asset dates to
@@ -384,9 +402,9 @@ Lastly open up the dialog of a Metadata component on one of the Asset Details pa
 
 ![Metadata Component dialog with Asset Status](./images/asset-status-computed-dialog.png)
 
-The java class in full can be viewed here:
+#### [Full code sample](https://github.com/godanny86/sample-assetshare/blob/master/core/src/main/java/com/sample/assetshare/content/properties/impl/AssetStatusImpl.java)
 
-## Custom Search Results Example
+## Extend Search Results Renderer
 
 Now that we have created a new computed property we want do display the Asset Status in the search results.
 
@@ -419,7 +437,7 @@ In your project's `/apps/components` directory in ui.apps add two new components
     extensionType="asset-share-commons/search/results/result/list"/>
 ```
 
-The `sling:resourceSuperType` inherits from the Default Asset Share Commons card and list components. The `extensionType` ensures the components will appear in the Search Results component dialog dropdown.
+The `sling:resourceSuperType` inherits from the Default Asset Share Commons card and list components. The `extensionType` ensures the components will appear in the Search Results component dialog. The `extensionType` must be set on your components in order for the datasource that populates the dialog dropdown to find them.
 
 #### 2. Copy Card and List Template HTL files
 
@@ -456,25 +474,27 @@ Update the row template to add a column to display the Asset Status computed pro
 			<a href="${assetDetails.url @ suffix = asset.path}"><img src="${asset.properties['thumbnail'] || properties['missingImage'] @ context = 'attribute'}" alt="${asset.properties['title']}"/></a>
 	</td>
 	<!--/* Asset Status Computed Property */-->
-	<td><div class="ui status label">${asset.properties['assetStatus'] @ i18n}</div></td>
-	...
+	 <td><div data-sly-test.status="${asset.properties['assetStatus']}"
+        		class="ui status ${status}status label">
+        		${status @ i18n}
+        </div>
+     </td>	...
 ```
 
 #### 4. Update card.html
 
-Add a status label on in the card template directly inside the `article` tag.
+Add a status label on in the card template directly after the `img` tag inside the `article` tag.
 
 ```
 <template data-sly-template.card="${@ asset = result, config = config }">
 	...
-    <article
-            data-asset-share-id="asset"
-            data-asset-share-asset="${asset.path}"
-            id="${asset.path}"
-            class="ui card cmp-card">
-       <!--/* Asset Status Computed Property */-->
-		<div data-sly-test.status="${asset.properties['assetStatus']}" 
-		     class="floating ui status label">${asset.properties['assetStatus'] @ i18n}</div>
+      <a class="image cmp-image__wrapper--card" href="${assetDetails.url @ suffix = asset.path}">
+            <img src="${asset.properties['thumbnail'] || properties['missingImage'] @ context = 'attribute'}"
+                 class="cmp-image--card"
+                 alt="${asset.properties['title']}"/>
+       </a>
+       <div data-sly-test.status="${asset.properties['assetStatus']}" 
+		     class="ui top right attached status ${status}status label">${status @ i18n}</div>
 	...
 		     
 ```
@@ -492,6 +512,130 @@ You should now see the Asset Status indicator in the search results (for new and
 
 Of course some style changes could be used (especially on Card view).
 
-## Custom Component Example
+#### [Full code sample](https://github.com/godanny86/sample-assetshare/tree/master/ui.apps/src/main/content/jcr_root/apps/sample-assetshare/components/search)
 
-New Status Indicator. OSGi Config for days defaults to 7. Adds to Search Results, Image Component. Image Asset Details component to show a video -> 
+## Extend Theme Styles
+
+LESS and CSS updates should be made in the Semantic UI Theme client library if updating the style for a Semantic UI element (label, card, button, etc...). The Status indicator makes use of the [Semantic UI Label elment](https://semantic-ui.com/elements/label.html).
+
+#### 1. Add 'New' and 'Updated' Color Variables
+
+Add new color variables for @newStatusColor and @updatedStatusColor in your clientlib-theme's `global/theme.variables` file. As a best practice it is recommended to place any color variables related to the theme in this file.
+
+Add the following to the bottom of `/apps/sample-assetshare/clientlibs/clientlib-theme/semanticui-sample/themes/dark/globals/theme.variables`. We can re-use the primary color for the Update status and the New status will be a blue.
+
+```
+...
+
+/* Status Labels */
+@newStatusColor : #2185D0;
+@updatedStatusColor : @primaryColor;
+
+```
+
+#### 2. Update label.overrides in theme
+
+The concept of a "Status" label is new, and so add a new rule to `label.overrides` file beneath the dark theme folder: `/apps/sample-assetshare/clientlibs/clientlib-theme/semanticui-sample/themes/dark/elements/label.overrides`.
+
+```
+...
+/* Status Labels */
+
+/* Uppercase all status */
+.ui.status.labels .label,
+.ui.status.label {
+	text-transform: uppercase;
+}
+
+/* New Status */
+.ui.status.newstatus.labels .label,
+.ui.status.newstatus.label {
+  background-color: @newStatusColor !important;
+  border-color: @newStatusColor !important;
+  color: @white !important;
+}
+
+/* Updated Status */
+.ui.status.updatedstatus.labels .label,
+.ui.status.updatedstatus.label {
+  background-color: @updatedStatusColor !important;
+  border-color: @updatedStatusColor !important;
+  color: @textColor !important;
+}
+
+```
+
+#### 3. Verify Changes
+
+Deploy updates to the clientlibs to AEM. Occasionally LESS are not picked up automatically by AEM client libraries. In order to force an update: delete the clientlib-theme folder benath `/var`: `/var/clientlibs/apps/sample-assetshare/clientlibs/clientlib-theme`.
+
+![Card status with new styles - center](./images/card-status-update-style.png)
+
+![List status with new styles - center](./images/list-status-update-style.png)
+
+#### Full Code Samples
+
+* [clientlib-theme](https://github.com/godanny86/sample-assetshare/tree/master/ui.apps/src/main/content/jcr_root/apps/sample-assetshare/clientlibs/clientlib-theme/semanticui-sample)
+* [theme.variables](https://github.com/godanny86/sample-assetshare/blob/master/ui.apps/src/main/content/jcr_root/apps/sample-assetshare/clientlibs/clientlib-theme/semanticui-sample/themes/dark/globals/theme.variables)
+* [label.overrides](https://github.com/godanny86/sample-assetshare/blob/master/ui.apps/src/main/content/jcr_root/apps/sample-assetshare/clientlibs/clientlib-theme/semanticui-sample/themes/dark/elements/label.overrides)
+
+## Extend Components
+
+Now that the Status indicator appears in the Search Results it would be nice to display on the Asset Details page as well. Extend the Title details component to display the status on the Asset Details page. Sling resource inheritance is recommended when a change to Component dialog or markup is needed.
+
+#### 1. Create a new Title Component in project
+
+Create a new component in `ui.apps` beneath `/apps/sample-assetshare/components/details`:
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    cq:icon="abc"
+    jcr:description="Displays the asset's title."
+    jcr:primaryType="cq:Component"
+    jcr:title="Title"
+    sling:resourceSuperType="asset-share-commons/components/details/title"
+    componentGroup="Sample Assetshare - Details"/>
+```
+
+The `sling:resourceSuperType` will point to the Asset Share Commons version. Since this is a project specific component the `componentGroup` should be updated for the given project. The `jcr:title` may also need to be updated if it is confusing to see two Title components in the component browser.
+
+#### 2. Update title.html
+
+Copy the `title.html` file from `asset-share-commons/components/details/title/title.html` and paste it beneath the project's Title component. Only a markup change is required, so no additonal resources need to be copied from Asset Share Commons. Add a label for the status:
+
+```
+<!--/* title.html */-->
+	...
+   <div class="content">
+   		${title.title}
+       <div  data-sly-test.status="${asset.properties['assetStatus']}" 
+		      class="ui mini status ${status}status label">
+		     ${status @ i18n}
+		</div>
+	</div>
+	...
+```
+Deploy the new Title component to AEM.
+
+#### 3. Update allowed components for Asset Details Template
+
+Update the Asset Details template to add the componentGroup `Sample Assetshare - Details` as allowed components. 
+
+1. Within the Asset Details template click on the Policy icon for the unlocked layout container in the main column.
+2. Update the **Sample Asset Share - Details** policy by checking the `Sample Assetshare - Details` component group.
+
+![Update allowed components to include Sample Assetshare - Details](./images/layout-container-policy.png)
+
+#### 4. Verify Changes
+
+Navigate to an Asset Details page and delete the Asset Share Commons Title component. Add the new Title component to the page.
+
+![Updated Title component with status label](./images/title-status-component.png)
+
+#### [Full code sample](https://github.com/godanny86/sample-assetshare/tree/master/ui.apps/src/main/content/jcr_root/apps/sample-assetshare/components/details/title)
+
+
+
+
+
