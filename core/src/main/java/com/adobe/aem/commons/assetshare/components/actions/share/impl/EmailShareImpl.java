@@ -28,8 +28,10 @@ import org.apache.sling.models.annotations.Default;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
+import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
+import org.apache.sling.xss.XSSAPI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +55,6 @@ public class EmailShareImpl extends ShareImpl implements EmailShare {
     public static final String PN_SIGNATURE = "signature";
     public static final String PN_USE_SHARER_NAME_AS_SIGNATURE = "useSharerSignature";
 
-
     @Self
     @Required
     private SlingHttpServletRequest request;
@@ -64,6 +65,9 @@ public class EmailShareImpl extends ShareImpl implements EmailShare {
     @ValueMapValue
     @Default(values = {"email", "path", "message"})
     private List<String> allowedQueryParams;
+
+    @OSGiService
+    private XSSAPI xssApi;
 
     private Resource resource;
 
@@ -100,7 +104,12 @@ public class EmailShareImpl extends ShareImpl implements EmailShare {
             final String key = keys.nextElement();
 
             if (allowedQueryParams.contains(key)) {
-                userData.put(key, request.getParameterMap().get(key));
+                final Object value = request.getParameterMap().get(key);
+                if (value instanceof  String) {
+                    final String tmp = (String) value;
+                    // #27 - XSS protects content provided by the User
+                    userData.put(key, xssApi.encodeForHTML(tmp));
+                }
             }
         }
 
