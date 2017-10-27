@@ -55,15 +55,20 @@ public class SearchImpl implements Search {
 
     private static final String PN_MODE = "mode";
     private static final String PN_LAYOUT = "layout";
-    @OSGiService
-    List<SearchProvider> searchProviders;
+
     private String DEFAULT_MODE = "search";
     private String DEFAULT_LAYOUT = "card";
+
+    @OSGiService
+    List<SearchProvider> searchProviders;
+
     @Self
     @Required
     private SlingHttpServletRequest request;
+
     @ScriptVariable
     private Page currentPage;
+
     private Results results = null;
 
     private InheritanceValueMap pageProperties;
@@ -89,10 +94,10 @@ public class SearchImpl implements Search {
                     try {
                         results = searchProvider.getResults(request);
                     } catch (UnsafeSearchException e) {
-                        log.warn("An unsafe search was initiated. Aborting with prejudice. Returning zero results.");
+                        log.warn("An unsafe search was initiated. Aborting with prejudice. Returning zero results.", e);
                         results = Results.ERRING_RESULTS;
                     } catch (RepositoryException e) {
-                        log.error("An issue occurred while executing the query. Returning zero results.");
+                        log.error("An issue occurred while executing the query. Returning zero results.", e);
                         results = Results.ERRING_RESULTS;
                     }
                     break;

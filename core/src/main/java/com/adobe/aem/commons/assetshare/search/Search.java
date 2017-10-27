@@ -24,11 +24,32 @@ import org.osgi.annotation.versioning.ProviderType;
 
 @ProviderType
 public interface Search {
+
+    /**
+     * The ID of the form. This is used to associate results w a particular form.
+     * As of Asset Share Commons 1.0.0, only 1 "search" is allowed on the page so this value is not well used.
+     *
+     * @return the form's id.
+     */
     String getFormId();
 
+    /**
+     * This is used to expose state around what layout-type was requested for this search. This makes consumers (HTL) of Search results able to easily make decisions about how to render the search results.
+     *
+     * @return the layout for the search.
+     */
     String getLayout();
 
+    /**
+     * This is used to expose state around what mode was requested for this search. The mode typically is used to engage a specific {@link com.adobe.aem.commons.assetshare.search.providers.SearchProvider}, however this is not mandatory.
+     * In the initial release of Asset Share Commons, the only supported mode is "search".
+     *
+     * @return the search model.
+     */
     String getMode();
 
+    /**
+     * @return the {@link Results} object, that represents the results of the search. {@link Results} contains a list of all results as well as heuristics and other metadata about the search.
+     */
     Results getResults();
 }
