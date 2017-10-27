@@ -51,16 +51,6 @@ public class ShareServlet extends SlingAllMethodsServlet {
     private ShareService shareService;
 
     @Override
-    protected final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            share(request, response);
-        } catch (RepositoryException e) {
-            throw new ServletException(e);
-        }
-    }
-
-    @Override
     protected final void doPost(SlingHttpServletRequest request, SlingHttpServletResponse response)
             throws ServletException, IOException {
         try {
