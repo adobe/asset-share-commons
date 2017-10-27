@@ -89,10 +89,10 @@ public class SearchImpl implements Search {
                     try {
                         results = searchProvider.getResults(request);
                     } catch (UnsafeSearchException e) {
-                        log.warn("An unsafe search was initiated. Aborting with prejudice. Returning zero results.");
+                        log.warn("An unsafe search was initiated. Aborting with prejudice. Returning zero results.",e);
                         results = Results.ERRING_RESULTS;
                     } catch (RepositoryException e) {
-                        log.error("An issue occurred while executing the query. Returning zero results.");
+                        log.error("An issue occurred while executing the query. Returning zero results.",e);
                         results = Results.ERRING_RESULTS;
                     }
                     break;
