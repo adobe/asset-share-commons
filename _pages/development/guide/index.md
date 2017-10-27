@@ -8,6 +8,27 @@ There are many ways that Asset Share Commons could be leveraged on a customer sp
 
 ## Using with Maven
 
+### Use Maven Bundle Plugin v 3.3.0+
+
+Asset Share Commons uses the latest OSGi annotations. In the `<pluginManagement>` section of your project's **parent** pom.xml ensure that the `maven-bundle-plugin` is using a version 3.3.0 or higher.
+
+```
+<!-- parent pom.xml -->
+...
+<build>
+	<pluginManagement>
+    	<plugins>
+    	...
+       <plugin>
+       	<groupId>org.apache.felix</groupId>
+          <artifactId>maven-bundle-plugin</artifactId>
+          <version>3.3.0</version>
+       </plugin>
+       ...
+   </pluginManagement>
+</build>
+```
+
 ### Add Asset Share Commons as a Dependency
 
 In the `<dependencies>` section of your project's **parent** pom.xml add this:
@@ -230,13 +251,246 @@ More details around the recommended content hierarchy can be found on the [Searc
 
 [Computed Properties](#) are used throughout Asset Share Commons to display metadata about an individual asset. Implementing a new computed property is one of the easiest ways to extend Asset Share Commons to meet business requirements.
 
-### New Status - Computed Property
+### Asset Status - Computed Property
 
-To illustrate the concept of Computed Properties we will be implementing a requirement to show a "New" status indicator if an Asset has been created in the last 7 days.
+To illustrate the concept of Computed Properties we will be implementing a requirement to show a "New" or "Updated" status indicator if an Asset has been created/modified in the last 7 days.
+
+#### 1. Create AssetStatusImpl.java
+
+In your project's core bundle add a new implementation class named `AssetStatusImpl.java`. Our new class will extend `AbstractComputedProperty.class`, an abstract class exposed by Asset Share Commons to make use of several common methods:
+
+```
+@Component(service = ComputedProperty.class)
+@Designate(ocd = AssetStatusImpl.Cfg.class)
+public class AssetStatusImpl extends AbstractComputedProperty<String> {
+
+...
+
+```
+
+By extending the AbstractComputedProperty class our new class will implement the `com.adobe.aem.commons.assetshare.content.properties.ComputedProperty` interface.
+
+#### 2. Add ObjectClassDefinition
+
+Each implementation of a Computed Property needs to provide:
+
+1. **Name** - identifies the Computed Property via a ValueMap 
+2. **Label** - a human friendly label, used for data source drop downs
+3. **Type** - a classification of the computed property. Valid types are `metadata`, `rendition`, `url`. This is used by data sources to filter which computed properties are shown to a user. A computed property can have multiple types.
+
+Using the new OSGi annotations we can add an ObjectClassDefinition which will expose the Label and Types as an OSGi Configuration. We will also add a configuration for Days which will determine the period in which an asset is considered "New" or "Updated".
+
+```
+ 
+ public static final String LABEL = "Asset Status";
+ public static final String NAME = "assetStatus";
+ 
+ @ObjectClassDefinition(name = "Sample Asset Share - Computed Property - Asset Status")
+    public @interface Cfg {
+        @AttributeDefinition(
+                name = "Label",
+                description = "Human read-able label."
+        )
+        String label() default LABEL;
+
+        @AttributeDefinition(
+                name = "Types",
+                description = "Defines the type of data this exposes. This classification allows for intelligent exposure of Computed Properties in DataSources, etc."
+        )
+        String[] types() default {Types.METADATA};
+        
+        @AttributeDefinition(
+                name = "Days",
+                description = "Defines the number of days in which an asset is considered 'New' or 'Updated'. Expected to be a negative number."
+        )
+        int days() default DEFAULT_DAYS;
+    }
+    
+    @Override
+    public String getName() {
+        return NAME;
+    }
+
+    @Override
+    public String getLabel() {
+        return cfg.label();
+    }
+
+    @Override
+    public String[] getTypes() {
+       return cfg.types();
+    }
+    
+    @Activate
+    protected void activate(Cfg cfg) {
+        this.cfg = cfg;
+    }
+    
+```
+ 
+The `@Activate` method ensures that if a change is made via the OSGi configuration the component is updated.
+
+#### 3. Populate getter method
+
+Finally we can populate the `get(Asset, SlingHttpServletRequest)` method. This is the entry point in which the real "work" of the computed property takes place. The `com.day.cq.dam.api.Asset` parameter represents the current Asset. `SlingHttpServletRequest` parameters is the current request (useful for internationalization). We will simply get the `jcr:created` and `jcr:content/jcr:lastModified` properties from the current asset and compare them to a date 7 days ago. This will determine the status label returned.
+
+```
+...
+    @Override
+    public String get(Asset asset, SlingHttpServletRequest request) {
+        
+        final ValueMap assetProperties = getAssetProperties(asset);
+        Calendar assetCreated = assetProperties.get(JcrConstants.JCR_CREATED, Calendar.class);
+        Calendar assetModified = assetProperties.get(JcrConstants.JCR_CONTENT + "/" + JcrConstants.JCR_LASTMODIFIED, Calendar.class);
+        
+        //Get a calendar to compare to
+        Calendar weekOld = getCompareCalendar(cfg.days());
+       
+        if(assetCreated.after(weekOld)) {
+            //if asset created < one week ago
+            return NEW_STATUS;
+        } else if (assetModified.after(weekOld)) {
+            //if asset modified < one week ago
+            return UPDATED_STATUS;
+        }
+        return null;
+    }
+    
+    /***
+     * 
+     * @return a Calendar object to compare asset dates to
+     */
+    private Calendar getCompareCalendar(int daysOld) {
+        Calendar compareCal = Calendar.getInstance();
+        // reset hour, minutes, seconds and millis
+        compareCal.set(Calendar.HOUR_OF_DAY, 0);
+        compareCal.set(Calendar.MINUTE, 0);
+        compareCal.set(Calendar.SECOND, 0);
+        compareCal.set(Calendar.MILLISECOND, 0);
+        compareCal.add(Calendar.DAY_OF_MONTH, daysOld);
+        
+        return compareCal;
+    }
+...
+```
+
+#### 4. Verify deployment of Computed Property
+
+After building and deploying the project, navigate to the [OSGi Config manager](http://localhost:4502/system/console/configMgr/com.sample.assetshare.content.properties.impl.AssetStatusImpl). The new computed property and OSGi config should be there.
+
+![OSGi configuration for Asset Status](./images/osgi-config-asset-status.png)
+
+Lastly open up the dialog of a Metadata component on one of the Asset Details pages. The Asset Status should now appear in the Computed Property drop down in the dialog:
+
+![Metadata Component dialog with Asset Status](./images/asset-status-computed-dialog.png)
+
+The java class in full can be viewed here:
 
 ## Custom Search Results Example
 
+Now that we have created a new computed property we want do display the Asset Status in the search results.
 
+#### 1. Create Card and List Result Components
+
+In your project's `/apps/components` directory in ui.apps add two new components named `card` and `list`.
+
+**Card Component**
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:Component"
+    jcr:title="Sample Assetshare Cards"
+    sling:resourceSuperType="asset-share-commons/components/search/results/result/card"
+    componentGroup=".hidden"
+    extensionType="asset-share-commons/search/results/result/card"/>
+
+```
+
+**List Component**
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:Component"
+    jcr:title="Sample Assetshare List"
+    sling:resourceSuperType="asset-share-commons/components/search/results/result/list"
+    componentGroup=".hidden"
+    extensionType="asset-share-commons/search/results/result/list"/>
+```
+
+The `sling:resourceSuperType` inherits from the Default Asset Share Commons card and list components. The `extensionType` ensures the components will appear in the Search Results component dialog dropdown.
+
+#### 2. Copy Card and List Template HTL files
+
+Create a folder named `templates` beneath the card and list components. Copy the HTL template files from the Default Asset Share components beneath the respective components. The structure should look like this:
+
+```
+/apps/sample-assetshare/components/search
+			/card
+				/templates
+					card.html (copied from /apps/asset-share-commons/components/search/results/result/card/templates/card.html)
+			/list
+				/templates
+					list.html (copied from /apps/asset-share-commons/components/search/results/result/list/templates/list.html)
+```
+
+#### 3. Update list.html
+
+Update the header template to add a new column heading for Status after the Preview thumbnail.
+
+```
+<template data-sly-template.header="${@ search}">
+	<thead>
+		<tr><th class="left aligned">Preview</th>
+       <th>${'Status' @i18n}</th>
+   ...
+```
+
+Update the row template to add a column to display the Asset Status computed property. Add the column after the image column (second column).
+
+```
+<template data-sly-template.row="${@ asset = result, config = config }">
+	...
+	<td class="image">
+			<a href="${assetDetails.url @ suffix = asset.path}"><img src="${asset.properties['thumbnail'] || properties['missingImage'] @ context = 'attribute'}" alt="${asset.properties['title']}"/></a>
+	</td>
+	<!--/* Asset Status Computed Property */-->
+	<td><div class="ui status label">${asset.properties['assetStatus'] @ i18n}</div></td>
+	...
+```
+
+#### 4. Update card.html
+
+Add a status label on in the card template directly inside the `article` tag.
+
+```
+<template data-sly-template.card="${@ asset = result, config = config }">
+	...
+    <article
+            data-asset-share-id="asset"
+            data-asset-share-asset="${asset.path}"
+            id="${asset.path}"
+            class="ui card cmp-card">
+       <!--/* Asset Status Computed Property */-->
+		<div data-sly-test.status="${asset.properties['assetStatus']}" 
+		     class="floating ui status label">${asset.properties['assetStatus'] @ i18n}</div>
+	...
+		     
+```
+#### 5. Update Search Results Card and List Renderer
+
+Deploy the new components to AEM. On a Search Results page update the Search Results Component dialog to use the custom Card and List renderers.
+
+![Search Results dialog custom renderers for Card and List](./images/search-results-custom-renderer-dialog.png)
+
+You should now see the Asset Status indicator in the search results (for new and updated assets within the last 7 days).
+
+![Card results with status](./images/search-results-card-status.png)
+
+![List results with status](./images/search-results-list-status.png)
+
+Of course some style changes could be used (especially on Card view).
 
 ## Custom Component Example
 
