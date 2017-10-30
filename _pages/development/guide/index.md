@@ -3,9 +3,18 @@ layout: development-page
 title: Development Guide
 ---
 
-There are many ways that Asset Share Commons could be leveraged on a customer specific project. Detailed below are guidelines for including Asset Share Commons as part of a custom project and instructions on how to extend common areas of an Asset Share implementation.
+There are many ways Asset Share Commons can extended or customized to meet specific project needs. This guide outlines how to:
 
-The guide will center around implementing a custom requirement to show a status label for New and Updated assets. Pertinent code snippets are included below. The full code for the [sample project can be found on GitHub](https://github.com/godanny86/sample-assetshare).
+* Create an AEM project that extends Asset Share Commons
+* Support theming in Asset Share Commons
+* Add custom placeholder assets
+* Define project-specific Asset Share Commons editable templates
+* Set up the page architecture for Asset Share Commons
+* Create a custom Computed Property
+* Create a custom search result renderer
+* Augment an existing Asset Details component
+
+The guide's narrative centers around implementing a custom requirement to show a status label for New and Updated assets. Pertinent code snippets are included below. The full code for the [sample project can be found on GitHub](https://github.com/godanny86/sample-assetshare).
 
 ![Screen shot of Sample Assetshare Project](./images/main.png)
 
@@ -150,8 +159,6 @@ Since the Placeholder assets only get rendered in the Author environment it is o
 
 Creating project-specific editable templates is the recommended way of integrating Asset Share Commons into a project. The [ui.content](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/releases/tag/asset-share-commons.ui.content-1.0.0) package includes examples of the templates and template-types needed under `/conf/asset-share-commons/settings/wcm/`. *Note that two sets of templates are included in ui.content to support both the Light and Dark theme examples. A project implementation most likely only needs a single set. [See for project-specific templates and template types](https://github.com/godanny86/sample-assetshare/tree/master/ui.apps/src/main/content/jcr_root/conf/sample-assetshare/settings/wcm)
 
-
-
 ### Template Types
 
 When setting up a new project it is easiest to copy the template types from `/conf/asset-share-commons/settings/wcm/template-types` in to the project's `/conf` folder.
@@ -271,9 +278,7 @@ In your project's core bundle add a new implementation class named `AssetStatusI
 @Component(service = ComputedProperty.class)
 @Designate(ocd = AssetStatusImpl.Cfg.class)
 public class AssetStatusImpl extends AbstractComputedProperty<String> {
-
 ...
-
 ```
 
 By extending the AbstractComputedProperty class our new class will implement the `com.adobe.aem.commons.assetshare.content.properties.ComputedProperty` interface.
@@ -284,7 +289,7 @@ Each implementation of a Computed Property needs to provide:
 
 1. **Name** - identifies the Computed Property via a ValueMap 
 2. **Label** - a human friendly label, used for data source drop downs
-3. **Type** - a classification of the computed property. Valid types are `metadata`, `rendition`, `url`. This is used by data sources to filter which computed properties are shown to a user. A computed property can have multiple types.
+3. **Type** - a classification of the computed property. Valid types are `metadata`, `rendition`, `url`. This is used by data sources to filter which computed properties are shown to a user. A computed property can have multiple types, and custom types can be added.
 
 Using the new OSGi annotations we can add an ObjectClassDefinition which will expose the Label and Types as an OSGi Configuration. We will also add a configuration for Days which will determine the period in which an asset is considered "New" or "Updated", as well as a configurable text for New and Updated labels.
 
@@ -637,8 +642,3 @@ Navigate to an Asset Details page and delete the Asset Share Commons Title compo
 ![Updated Title component with status label](./images/title-status-component.png)
 
 #### [Full code sample](https://github.com/godanny86/sample-assetshare/tree/master/ui.apps/src/main/content/jcr_root/apps/sample-assetshare/components/details/title)
-
-
-
-
-
