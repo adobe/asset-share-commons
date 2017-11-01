@@ -36,7 +36,7 @@ Label for the filter.
  
  * Labels/Properties are derived from available Metadata Schemas
  * Lightning icon (⚡) indicates this property is optimized for search.
- * Turtle icon (🐢) indicates this property is optimized for search.
+ * Turtle icon (🐢) indicates this property is NOT optimized for search.
 
 #### Operation
 
