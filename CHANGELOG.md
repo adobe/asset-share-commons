@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
-- 16: Changed ui.content/pom.xml to remove the core dependency, distribution config, and jslint plug-in.  
+- 0016: Changed ui.content/pom.xml to remove the core dependency, distribution config, and jslint plug-in.  
+- 0018: Updated components to leverage the ASC modelCache fo models: Config, AssetModel and PagePredicate.
 
 ### Added
 ### Removed
