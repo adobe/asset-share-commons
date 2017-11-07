@@ -38,6 +38,7 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.factory.ModelFactory;
 import org.apache.sling.settings.SlingSettingsService;
+import org.apache.sling.xss.XSSAPI;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -82,11 +83,14 @@ public class EmailShareServiceImpl implements ShareService {
     @Reference
     private ModelFactory modelFactory;
 
+    @Reference
+    private XSSAPI xssAPi;
+
     @Override
     public final void share(final SlingHttpServletRequest request, final SlingHttpServletResponse response, final ValueMap shareParameters) throws ShareException {
         final EmailShare emailShare = request.adaptTo(EmailShare.class);
 
-        shareParameters.putAll(emailShare.getUserData());
+        shareParameters.putAll(xssProtectUserData(emailShare.getUserData()));
 
         // Configured data supercedes user data
         shareParameters.putAll(emailShare.getConfiguredData());
@@ -192,6 +196,23 @@ public class EmailShareServiceImpl implements ShareService {
 
         return StringUtils.defaultIfBlank(emailShare.getConfiguredData().get(EmailShareImpl.PN_SIGNATURE, String.class), cfg.signature());
     }
+
+    /**
+     * Since all emails are expected to be HTML emails in this implementation, we must XSS Protect all values that may end up in the HTML email.
+     *
+     * @param userData the Map of data provided by the end-user (usually derived from the Request) to use in the email.
+     * @return the protected Map; all String's are xss protected for HTML.
+     */
+    private Map<String, Object> xssProtectUserData(Map<String, Object> userData) {
+        for(final Map.Entry<String, Object> entry : userData.entrySet()) {
+            if (entry.getValue() instanceof String) {
+                userData.put(entry.getKey(), xssAPi.encodeForHTML((String)entry.getValue()));
+            }
+        }
+
+        return userData;
+    }
+
 
     @Activate
     protected final void activate(final Cfg config) throws Exception {
