@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
+- 0012: Updated AEM package file names to be: 'asset-share-commons.ui.apps-<version>' and 'asset-share-commons.ui.content-<version>'.
 - 16: Changed ui.content/pom.xml to remove the core dependency, distribution config, and jslint plug-in.  
 - 0027:  XSS Protect user input for Share emails in EmailShareServiceImpl.java
 
