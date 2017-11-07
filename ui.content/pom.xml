@@ -138,6 +138,7 @@
 				<configuration>
 					<name>asset-share-commons.ui.content</name>
 					<group>asset-share-commons</group>
+					<finalName>asset-share-commons.ui.content-${project.version}</finalName>
 					<filterSource>src/main/content/META-INF/vault/filter.xml</filterSource>
 					<properties>
 						<acHandling>merge_preserve</acHandling>
