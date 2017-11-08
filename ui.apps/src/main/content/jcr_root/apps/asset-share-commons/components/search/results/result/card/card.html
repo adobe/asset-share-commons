@@ -19,7 +19,7 @@
 <sly data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
      data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
      data-sly-test.search="${modelCache['com.adobe.aem.commons.assetshare.search.Search']}"
-     data-sly-test.pagePredicate="${modelCache['com.adobe.aem.commons.assetshare.components.predicates.PagePredicate']"
+     data-sly-test.pagePredicate="${modelCache['com.adobe.aem.commons.assetshare.components.predicates.PagePredicate']}"
      data-sly-use.commonTemplate="../templates/common.html"
      data-sly-use.cardTemplate="templates/card.html"></sly>
 
@@ -27,7 +27,7 @@
 <sly data-sly-call="${commonTemplate.data @ search = search, pagePredicate = pagePredicate}"></sly>
 
 <!--/* Common Fragments */-->
-<sly data-sly-call="${commonTemplate.fragments @ search = search}"></sly>
+<sly data-sly-call="${commonTemplate.fragm  ents @ search = search}"></sly>
 
 <!--/* Card Content */-->
 <div data-asset-share-id="results-content"
