@@ -1,4 +1,4 @@
-engines:
+plugins:
   sonar-java:
     enabled: true
     config:
