@@ -5,6 +5,12 @@ plugins:
     config:
       sonar.java.source: 8
 exclude_paths:
-- "tests/"
+- "*.png"
+- "*.jpeg"
+- "*.jpg"
+- "**/META-INF/"
 - "**/clientlib-theme/"
 - "**/vendor/"
+- "**/apps/asset-share-commons/resources/"
+- "**/content/dam/"
+- "**/content/asset-share-commons/"
