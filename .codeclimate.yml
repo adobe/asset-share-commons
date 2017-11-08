@@ -1,6 +1,10 @@
+version: 2
 plugins:
   sonar-java:
     enabled: true
     config:
       sonar.java.source: 8
-      sonar.exclusions: ui.apps/src/main/content/jcr_root/apps/asset-share-commons/clientlibs/clientlib-theme/**/*,ui.apps/src/main/content/jcr_root/apps/asset-share-commons/clientlibs/vendor/**/*
+exclude_paths:
+- "tests/"
+- "**/clientlib-theme/"
+- "**/vendor/"
