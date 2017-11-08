@@ -179,6 +179,24 @@
 					<targetURL>http://${crx.host}:${crx.port}/crx/packmgr/service.jsp</targetURL>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.sling</groupId>
+				<artifactId>htl-maven-plugin</artifactId>
+				<version>1.0.6</version>
+				<configuration>
+					<sourceDirectory>${basedir}/src/main/content/jcr_root</sourceDirectory>
+					<failOnWarnings>true</failOnWarnings>
+				</configuration>
+				<executions>
+					<execution>
+						<id>validate-scripts</id>
+						<goals>
+							<goal>validate</goal>
+						</goals>
+						<phase>compile</phase>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 	<profiles>
