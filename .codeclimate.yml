@@ -4,7 +4,7 @@ plugins:
     enabled: true
     config:
       sonar.java.source: 8
-exclude_paths:
+exclude_patterns:
 - "*.png"
 - "*.jpeg"
 - "*.jpg"
