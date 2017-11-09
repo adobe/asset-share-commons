@@ -39,7 +39,7 @@
                         ${currentStyle['greeting']} ${userMenu.userName}
                         <br/>
                         <a class="cmp-user__action"
-                           href="${currentStyle['logOutUrl']}">
+                           href="${currentStyle['logOutLink']}">
                             ${currentStyle['logOutLabel']}
                         </a>
                     </div>
@@ -47,7 +47,7 @@
 
                 <!--/* Anonymous */-->
                 <a class="ui left cmp-user__action"
-                   href="${currentStyle['loginUrl']}"
+                   href="${currentStyle['logInLink']}"
                    data-sly-test="${!loggedIn}">
                     ${currentStyle['logInLabel']}
                 </a>
