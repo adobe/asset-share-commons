@@ -81,12 +81,12 @@ public class EditorLinksImpl extends AbstractEmptyTextComponent implements Edito
     public boolean isReady() {
         final ResourceResolver resourceResolver = request.getResourceResolver();
 
-        if (asset == null ||
-                !slingSettingsService.getRunModes().contains("author") ||
-                (StringUtils.isBlank(assetDetailsLinkLabel) && StringUtils.isBlank(assetFolderLinkLabel)) ||
-                (resourceResolver.resolve(request, ASSET_DETAILS_PREFIX + asset.getPath()) == null ||
-                        resourceResolver.resolve(request, ASSET_FOLDER_PREFIX + asset.getPath()) == null)) {
+        final boolean publishInstance = !slingSettingsService.getRunModes().contains("author");
+        final boolean missingLabels = StringUtils.isBlank(assetDetailsLinkLabel) && StringUtils.isBlank(assetFolderLinkLabel);
+        final boolean missingTargetResources = resourceResolver.resolve(request, ASSET_DETAILS_PREFIX + asset.getPath()) == null ||
+                resourceResolver.resolve(request, ASSET_FOLDER_PREFIX + asset.getPath()) == null;
 
+        if (asset == null || publishInstance || missingLabels || missingTargetResources) {
             return false;
         }
 

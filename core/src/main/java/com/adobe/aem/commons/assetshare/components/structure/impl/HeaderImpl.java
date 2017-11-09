@@ -172,8 +172,8 @@ public class HeaderImpl implements Header {
 
     @Override
     public String getNavigationRoot() {
-        if (rootPath == null && headerProperties != null) {
-            rootPath = headerProperties.get(PN_ROOT_PATH, String.class);
+        if (rootPath == null) {
+            rootPath = getHeaderProperty(PN_ROOT_PATH);
         }
 
         return rootPath;
@@ -181,9 +181,8 @@ public class HeaderImpl implements Header {
 
     @Override
     public String getLogoPath() {
-        //check beneath header resource first, check design second
-        if (logoPath == null && headerProperties != null) {
-            logoPath = headerProperties.get(PN_LOGO_PATH, currentStyle.get(PN_LOGO_PATH, String.class));
+        if (logoPath == null) {
+            logoPath = getHeaderProperty(PN_LOGO_PATH);
         }
 
         return logoPath;
@@ -191,12 +190,19 @@ public class HeaderImpl implements Header {
 
     @Override
     public String getSiteTitle() {
-        //check beneath header resource first, check design second
-        if (siteTitle == null && headerProperties != null) {
-            siteTitle = headerProperties.get(PN_SITE_TITLE, currentStyle.get(PN_SITE_TITLE, String.class));
+        if (siteTitle == null) {
+            siteTitle = getHeaderProperty(PN_SITE_TITLE);
         }
 
         return siteTitle;
+    }
+
+
+    private String getHeaderProperty(final String propertyName) {
+        if (headerProperties == null) { return null; }
+
+        // Check beneath header resource first, check design second
+        return headerProperties.get(propertyName, currentStyle.get(propertyName, String.class));
     }
 
     @Override
