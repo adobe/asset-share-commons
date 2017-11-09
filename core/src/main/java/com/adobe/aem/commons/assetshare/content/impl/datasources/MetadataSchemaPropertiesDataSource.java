@@ -49,7 +49,6 @@ import java.util.TreeMap;
         configurationPolicy = ConfigurationPolicy.REQUIRE
 )
 public class MetadataSchemaPropertiesDataSource extends SlingSafeMethodsServlet {
-    private static final Logger log = LoggerFactory.getLogger(MetadataSchemaPropertiesDataSource.class);
     private static final String PN_METADATA_FIELD_TYPES = "metadataFieldTypes";
 
     @Reference

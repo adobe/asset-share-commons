@@ -20,5 +20,7 @@
 package com.adobe.aem.commons.assetshare.search;
 
 public class Constants {
+    private Constants() { }
+
     public static final String FORM_ID = "asset-share__form";
 }

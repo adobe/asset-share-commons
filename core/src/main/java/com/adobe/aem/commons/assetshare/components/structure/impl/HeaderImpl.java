@@ -45,7 +45,7 @@ import java.util.List;
 )
 public class HeaderImpl implements Header {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/structure/header";
-    private static final Logger log = LoggerFactory.getLogger(HeaderImpl.class);
+
     private static final String DEFAULT_REL_PATH = "root/main/header";
 
     @ScriptVariable
@@ -101,8 +101,10 @@ public class HeaderImpl implements Header {
      */
     private boolean isEmptyHeader(Resource headerResource) {
         if (headerResource != null) {
-            String rootPath = headerResource.getValueMap().get(PN_ROOT_PATH, String.class);
-            if (headerResource.hasChildren() || StringUtils.isNotBlank(rootPath)) {
+
+            final String rootPathValue = headerResource.getValueMap().get(PN_ROOT_PATH, String.class);
+
+            if (headerResource.hasChildren() || StringUtils.isNotBlank(rootPathValue)) {
                 return false;
             }
         }
@@ -170,33 +172,30 @@ public class HeaderImpl implements Header {
 
     @Override
     public String getNavigationRoot() {
-        if (rootPath == null) {
-            if (headerProperties != null) {
-                rootPath = headerProperties.get(PN_ROOT_PATH, String.class);
-            }
+        if (rootPath == null && headerProperties != null) {
+            rootPath = headerProperties.get(PN_ROOT_PATH, String.class);
         }
+
         return rootPath;
     }
 
     @Override
     public String getLogoPath() {
-        if (logoPath == null) {
-            //check beneath header resource first, check design second
-            if (headerProperties != null) {
-                logoPath = headerProperties.get(PN_LOGO_PATH, currentStyle.get(PN_LOGO_PATH, String.class));
-            }
+        //check beneath header resource first, check design second
+        if (logoPath == null && headerProperties != null) {
+            logoPath = headerProperties.get(PN_LOGO_PATH, currentStyle.get(PN_LOGO_PATH, String.class));
         }
+
         return logoPath;
     }
 
     @Override
     public String getSiteTitle() {
-        if (siteTitle == null) {
-            //check beneath header resource first, check design second
-            if (headerProperties != null) {
-                siteTitle = headerProperties.get(PN_SITE_TITLE, currentStyle.get(PN_SITE_TITLE, String.class));
-            }
+        //check beneath header resource first, check design second
+        if (siteTitle == null && headerProperties != null) {
+            siteTitle = headerProperties.get(PN_SITE_TITLE, currentStyle.get(PN_SITE_TITLE, String.class));
         }
+
         return siteTitle;
     }
 

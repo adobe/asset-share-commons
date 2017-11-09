@@ -61,7 +61,7 @@ public class ResultsImpl implements Results {
     }
 
 
-    public List<? extends Result> getResults() {
+    public List<Result> getResults() {
         return results;
     }
 

@@ -1,0 +1,22 @@
+version: "2"
+plugins:
+  sonar-java:
+    enabled: true
+    config:
+      sonar.java.source: 8
+      minimum_severity: critical
+    checks:
+      squid:S1214:
+        enabled: false
+      squid:S3776:
+        enabled: false
+exclude_patterns:
+- "**/*.png"
+- "**/*.jpeg"
+- "**/*.jpg"
+- "**/META-INF/"
+- "**/clientlib-theme/"
+- "**/vendor/"
+- "**/apps/asset-share-commons/resources/"
+- "**/content/dam/"
+- "**/content/asset-share-commons/"

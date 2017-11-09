@@ -47,12 +47,12 @@ import java.io.IOException;
             configurationPolicy = ConfigurationPolicy.REQUIRE
 )
 public class AssetDetails404Servlet extends SlingSafeMethodsServlet implements OptingServlet {
-    private static final Logger log = LoggerFactory.getLogger(AssetDetails404Servlet.class);
 
     @Override
     protected final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response)
             throws ServletException, IOException {
         // Control which requests enter this method via accepts(..) below.
+
         response.setStatus(SlingHttpServletResponse.SC_NOT_FOUND);
         response.getWriter().print("The path to a valid and accessible asset must be provided to the Asset Details page for it to display.");
         response.getWriter().flush();

@@ -73,11 +73,9 @@ public class MessagesImpl implements Messages {
                         // Tracked path should be relative to the [cq:Page]/jcr:content
                         final String trackedPath = StringUtils.substringAfter(child.getPath(), JcrConstants.JCR_CONTENT);
 
-                        if (!tracker.contains(trackedPath)) {
-                            if (!isMessageEmpty(child.getValueMap())) {
-                                messages.add(child.getValueMap());
-                                tracker.add(trackedPath);
-                            }
+                        if (!tracker.contains(trackedPath) && !isMessageEmpty(child.getValueMap())) {
+                            messages.add(child.getValueMap());
+                            tracker.add(trackedPath);
                         }
                     }
                 }

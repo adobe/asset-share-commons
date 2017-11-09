@@ -46,7 +46,7 @@ import java.util.Collection;
 )
 public class DownloadImpl implements Download {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/modals/download";
-    private static final Logger log = LoggerFactory.getLogger(DownloadImpl.class);
+
     @Self
     @Required
     private SlingHttpServletRequest request;

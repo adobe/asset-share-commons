@@ -49,8 +49,8 @@ import java.util.TreeMap;
         configurationPolicy = ConfigurationPolicy.REQUIRE
 )
 public class OrderablePropertiesDataSource extends SlingSafeMethodsServlet {
-    private static final Logger log = LoggerFactory.getLogger(OrderablePropertiesDataSource.class);
     private static final String PN_ORDERED = "ordered";
+
     @Reference
     private DataSourceBuilder dataSourceBuilder;
 
