@@ -138,11 +138,20 @@
 				<configuration>
 					<name>asset-share-commons.ui.content</name>
 					<group>asset-share-commons</group>
+					<finalName>asset-share-commons.ui.content-${project.version}</finalName>
 					<filterSource>src/main/content/META-INF/vault/filter.xml</filterSource>
 					<properties>
 						<acHandling>merge_preserve</acHandling>
 					</properties>
 					<targetURL>http://${crx.host}:${crx.port}/crx/packmgr/service.jsp</targetURL>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
 				</configuration>
 			</plugin>
 		</plugins>
