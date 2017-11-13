@@ -55,7 +55,10 @@ import java.util.Locale;
 )
 public class ConfigImpl implements Config {
     private static final Logger log = LoggerFactory.getLogger(ConfigImpl.class);
+
     public static String NODE_NAME = "config";
+
+    private static final String HTML_EXTENSION = ".html";
     private static final String[] rootResourceTypes = new String[]{"asset-share-commons/components/structure/search-page"};
 
     // General
@@ -161,22 +164,22 @@ public class ConfigImpl implements Config {
 
     @Override
     public String getDownloadActionUrl() {
-        return properties.get(PN_DOWNLOAD_VIEW_PATH, rootPath + "/actions/download") + "." + viewSelector + ".html";
+        return properties.get(PN_DOWNLOAD_VIEW_PATH, rootPath + "/actions/download") + "." + viewSelector + HTML_EXTENSION;
     }
 
     @Override
     public String getLicenseActionUrl() {
-        return properties.get(PN_LICENSE_AGREEMENT_VIEW_PATH, rootPath + "/actions/license") + "." + viewSelector + ".html";
+        return properties.get(PN_LICENSE_AGREEMENT_VIEW_PATH, rootPath + "/actions/license") + "." + viewSelector + HTML_EXTENSION;
     }
 
     @Override
     public String getShareActionUrl() {
-        return properties.get(PN_SHARE_VIEW_PATH, rootPath + "/actions/share") + "." + viewSelector + ".html";
+        return properties.get(PN_SHARE_VIEW_PATH, rootPath + "/actions/share") + "." + viewSelector + HTML_EXTENSION;
     }
 
     @Override
     public String getCartActionUrl() {
-        return properties.get(PN_CART_VIEW_PATH, rootPath + "/actions/cart") + "." + viewSelector + ".html";
+        return properties.get(PN_CART_VIEW_PATH, rootPath + "/actions/cart") + "." + viewSelector + HTML_EXTENSION;
     }
 
     @Override
@@ -243,7 +246,11 @@ public class ConfigImpl implements Config {
             }
         } while (page != null);
 
-        log.warn("Could not find a valid Asset Share Commons root page for [ {} ]. Check to ensure a parent page sling:resourceSuperTypes one of [ {} ]", currentPage.getPath(), StringUtils.join(rootResourceTypes, ","));
+        if (currentPage != null) {
+            log.warn("Could not find a valid Asset Share Commons root page for [ {} ]. Check to ensure a parent page sling:resourceSuperTypes one of [ {} ]", currentPage.getPath(), StringUtils.join(rootResourceTypes, ","));
+        } else {
+            log.warn("Could not find a valid Asset Share Commons root page for because the current page could not be resolved.");
+        }
 
         return "/";
     }

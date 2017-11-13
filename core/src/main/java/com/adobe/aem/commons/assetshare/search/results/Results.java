@@ -29,7 +29,7 @@ import java.util.List;
 public interface Results {
     Results ERRING_RESULTS = new ResultsImpl(Collections.EMPTY_LIST, Status.ERROR);
 
-    List<? extends Result> getResults();
+    List<Result> getResults();
 
     long getSize();
 

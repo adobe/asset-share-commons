@@ -35,11 +35,12 @@ import org.slf4j.LoggerFactory;
 @Component(service = ComputedProperty.class)
 @Designate(ocd = ThumbnailImpl.Cfg.class)
 public class ThumbnailImpl extends AbstractComputedProperty<String> {
-    private static final Logger log = LoggerFactory.getLogger(ThumbnailImpl.class);
 
     public static final String LABEL = "Thumbnail Rendition";
     public static final String NAME = "thumbnail";
+
     private static final String THUMBNAIL_RENDITION_NAME = "cq5dam.thumbnail.319.319.png";
+
     private Cfg cfg;
 
     @Override

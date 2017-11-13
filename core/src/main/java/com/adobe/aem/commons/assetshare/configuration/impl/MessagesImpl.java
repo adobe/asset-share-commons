@@ -66,19 +66,12 @@ public class MessagesImpl implements Messages {
 
             while (page != null && StringUtils.startsWith(page.getPath(), "/content/")) {
                 final Resource messageResources = page.getContentResource().getChild(MESSAGES_REL_PATH);
+
                 if (messageResources != null) {
                     final Iterator<Resource> children = messageResources.listChildren();
-                    while (children.hasNext()) {
-                        final Resource child = children.next();
-                        // Tracked path should be relative to the [cq:Page]/jcr:content
-                        final String trackedPath = StringUtils.substringAfter(child.getPath(), JcrConstants.JCR_CONTENT);
 
-                        if (!tracker.contains(trackedPath)) {
-                            if (!isMessageEmpty(child.getValueMap())) {
-                                messages.add(child.getValueMap());
-                                tracker.add(trackedPath);
-                            }
-                        }
+                    while (children.hasNext()) {
+                        addToTracker(tracker, children.next());
                     }
                 }
 
@@ -87,6 +80,16 @@ public class MessagesImpl implements Messages {
         }
 
         return messages;
+    }
+
+    private void addToTracker(final List<String> tracker, final Resource child) {
+        // Tracked path should be relative to the [cq:Page]/jcr:content
+        final String trackedPath = StringUtils.substringAfter(child.getPath(), JcrConstants.JCR_CONTENT);
+
+        if (!tracker.contains(trackedPath) && !isMessageEmpty(child.getValueMap())) {
+            messages.add(child.getValueMap());
+            tracker.add(trackedPath);
+        }
     }
 
     private boolean isMessageEmpty(ValueMap properties) {

@@ -45,17 +45,19 @@ import java.util.List;
 )
 public class SortPredicateImpl extends AbstractPredicate implements SortPredicate {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/sort";
+
     protected ValueMap valuesFromRequest = null;
+
     @Self
     @Required
     private SlingHttpServletRequest request;
+
     @Self
     @Required
     private Options coreOptions;
 
     @PostConstruct
     protected void init() {
-        //coreOptions = request.adaptTo(Options.class);
         initPredicate(request, coreOptions);
     }
 

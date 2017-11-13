@@ -137,7 +137,7 @@ public class QuerySearchProviderImpl implements SearchProvider {
             params.put(Predicate.ORDER_BY + "." + Predicate.PARAM_SORT, pagePredicate.getOrderBySort());
         }
 
-        params = cleanParams(params);
+        cleanParams(params);
 
         if (queryParametersPostProcessor != null) {
             params = queryParametersPostProcessor.process(request, params);
@@ -146,11 +146,9 @@ public class QuerySearchProviderImpl implements SearchProvider {
         return params;
     }
 
-    private Map<String, String> cleanParams(Map<String, String> params) {
+    private void cleanParams(Map<String, String> params) {
         params.remove("mode");
         params.remove("layout");
-
-        return params;
     }
 
     private void debugPreQuery(Map <String, String> params) {
