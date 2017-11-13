@@ -14,11 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0016: Changed ui.content/pom.xml to remove the core dependency, distribution config, and jslint plug-in.  
 - 0018: Updated components to leverage the ASC modelCache for models: Config, AssetModel and PagePredicate. Added HTL Maven Plugin to prevent typos in the HTL.
 - 0027: XSS Protect user input for Share emails in EmailShareServiceImpl.java
-- 0056: Updated pom.xml to include ui.content as a module. Updated ui.content/pom.xml so only gets built with profile of 'autoInstallPackage-all' and 'autoInstallPackagePublish-all'
 
 ### Fixed
 
 - 0053: Fixed issue with broken log in and log out links
+- 0056: Updated pom.xml to include ui.content as a module. Updated ui.content/pom.xml so only gets built with profile of 'autoInstallPackage-all' and 'autoInstallPackagePublish-all'
 
 ### Added
 ### Removed
