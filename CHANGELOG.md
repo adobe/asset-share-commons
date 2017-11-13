@@ -15,8 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0018: Updated components to leverage the ASC modelCache for models: Config, AssetModel and PagePredicate. Added HTL Maven Plugin to prevent typos in the HTL.
 - 0027:  XSS Protect user input for Share emails in EmailShareServiceImpl.java
 
+### Fixed
+
+- 0053: Fixed issue with broken log in and log out links
+
 ### Added
 ### Removed
-
-
-
