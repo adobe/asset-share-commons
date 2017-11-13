@@ -266,5 +266,30 @@
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+			<id>autoInstallPackagePublish-all</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.day.jcr.vault</groupId>
+						<artifactId>content-package-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>install-content-package-publish</id>
+								<phase>install</phase>
+								<goals>
+									<goal>install</goal>
+								</goals>
+								<configuration>
+									<targetURL>http://${publish.crx.host}:${publish.crx.port}/crx/packmgr/service.jsp</targetURL>
+									<userId>${publish.crx.username}</userId>
+									<password>${publish.crx.password}</password>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 	</profiles>
 </project>
