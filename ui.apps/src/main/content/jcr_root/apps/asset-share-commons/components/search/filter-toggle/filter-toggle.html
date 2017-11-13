@@ -16,7 +16,8 @@
   ~ limitations under the License.
  */-->
 
-<sly data-sly-use.predicate="com.adobe.aem.commons.assetshare.components.predicates.PagePredicate"
+<sly data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
+     data-sly-test.pagePredicate="${modelCache['com.adobe.aem.commons.assetshare.components.predicates.PagePredicate']}"
      data-sly-test.hideLabels="${properties['hideLabels']}"></sly>
 
 <div class="ui basic segment">

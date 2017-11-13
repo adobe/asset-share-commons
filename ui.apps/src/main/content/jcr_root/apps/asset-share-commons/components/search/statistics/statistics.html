@@ -16,8 +16,8 @@
   ~ limitations under the License.
  */-->
 
-<sly    data-sly-use.config="com.adobe.aem.commons.assetshare.configuration.Config"
-		data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
+<sly    data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
+		data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
 		data-sly-test.search="${modelCache['com.adobe.aem.commons.assetshare.search.Search']}"></sly>
 
 <div class="ui mini ${properties['hideTimeTaken'] ? 'two' : 'three' } statistics">
