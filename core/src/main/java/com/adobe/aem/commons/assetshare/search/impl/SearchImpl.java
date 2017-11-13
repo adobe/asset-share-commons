@@ -71,15 +71,12 @@ public class SearchImpl implements Search {
 
     private Results results = null;
 
-    private InheritanceValueMap pageProperties;
-
     // Results component properties
     private ValueMap properties;
 
     @PostConstruct
     protected void init() {
         properties = request.getResource().getValueMap();
-        pageProperties = new HierarchyNodeInheritanceValueMap(currentPage.getContentResource());
     }
 
     public String getFormId() {

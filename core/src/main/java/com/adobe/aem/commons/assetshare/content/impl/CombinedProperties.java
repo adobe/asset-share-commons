@@ -32,6 +32,9 @@ import java.util.*;
 public final class CombinedProperties implements Map<String, Object> {
     private static final Logger log = LoggerFactory.getLogger(CombinedProperties.class);
 
+    private static final String UNSUPPORTED_OPERATION = "This operation is not permitted on the CombinedProperties map.";
+
+
     private final Map<String, ComputedProperty> computedProperties;
     private final Map<String, Object> cachedValues = new HashMap<>();
     private final SlingHttpServletRequest request;
@@ -71,9 +74,7 @@ public final class CombinedProperties implements Map<String, Object> {
         final ComputedProperty computedProperty = computedProperties.get(propertyName);
 
         if (computedProperty != null) {
-            if (cachedValues.containsKey(propertyName)) {
-                result = true;
-            } else if (computedProperty.accepts(asset, request, propertyName)) {
+            if (cachedValues.containsKey(propertyName) || computedProperty.accepts(asset, request, propertyName)) {
                 result = true;
             }
         }
@@ -143,37 +144,37 @@ public final class CombinedProperties implements Map<String, Object> {
 
     @Override
     public final Object put(String key, Object value) {
-        throw new UnsupportedOperationException("Map is not modifiable");
+        throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
     }
 
     @Override
     public Object remove(Object key) {
-        throw new UnsupportedOperationException("Map is not modifiable");
+        throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
     }
 
     @Override
     public final void putAll(Map<? extends String, ?> m) {
-        throw new UnsupportedOperationException("Map is not modifiable");
+        throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
     }
 
     @Override
     public final void clear() {
-        throw new UnsupportedOperationException("Map is not modifiable");
+        throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
     }
 
     @Override
     public Set<String> keySet() {
-        throw new UnsupportedOperationException("Values are computed, so this cannot be determined.");
+        throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
     }
 
     @Override
     public final Collection<Object> values() {
-        throw new UnsupportedOperationException("Values are computed, so this cannot be determined.");
+        throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
     }
 
     @Override
     public final Set<Entry<String, Object>> entrySet() {
-        throw new UnsupportedOperationException("Values are computed, so this cannot be determined.");
+        throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
     }
 
     @Override

@@ -79,7 +79,6 @@ public class RenditionsImpl extends AbstractEmptyTextComponent implements Rendit
 
     @PostConstruct
     protected void init() {
-        //asset = request.adaptTo(AssetModel.class);
         coreOptions = request.adaptTo(Options.class);
     }
 
@@ -251,7 +250,7 @@ public class RenditionsImpl extends AbstractEmptyTextComponent implements Rendit
 
         @Override
         public String getDownloadFileName() {
-            return label;
+            return getLabel();
         }
 
         @Override

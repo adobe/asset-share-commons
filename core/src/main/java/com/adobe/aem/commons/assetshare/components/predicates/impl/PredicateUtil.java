@@ -27,6 +27,8 @@ import org.apache.sling.api.request.RequestParameter;
 import org.apache.sling.api.resource.ValueMap;
 
 public class PredicateUtil {
+    private PredicateUtil() { }
+
     public static String getParamFromQueryParams(final SlingHttpServletRequest request, final String parameterName) {
         final RequestParameter requestParameter = request.getRequestParameter(parameterName);
 

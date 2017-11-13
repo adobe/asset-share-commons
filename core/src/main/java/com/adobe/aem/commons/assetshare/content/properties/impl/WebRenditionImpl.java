@@ -37,10 +37,10 @@ import org.slf4j.LoggerFactory;
 @Component(service = ComputedProperty.class)
 @Designate(ocd = WebRenditionImpl.Cfg.class)
 public class WebRenditionImpl extends AbstractComputedProperty<String> {
-    private static final Logger log = LoggerFactory.getLogger(WebRenditionImpl.class);
 
     public static final String LABEL = "Web Rendition";
     public static final String NAME = "image";
+
     private Cfg cfg;
 
     @Override
