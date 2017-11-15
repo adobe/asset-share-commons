@@ -115,11 +115,10 @@ public class UserMenuImpl implements UserMenu {
 
     @Override
     public Boolean isLoggedIn() {
-        if (currentUser != null) {
-            if (!ANONYMOUS.equals(currentUser.getAuthorizableID())) {
-                return true;
-            }
+        if (currentUser != null && !ANONYMOUS.equals(currentUser.getAuthorizableID())) {
+            return true;
         }
+
         return false;
     }
 

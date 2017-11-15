@@ -36,13 +36,16 @@ import org.slf4j.LoggerFactory;
 @Component(service = ComputedProperty.class)
 @Designate(ocd = ResolutionImpl.Cfg.class)
 public class ResolutionImpl extends AbstractComputedProperty<String> {
+
     public static final String LABEL = "Resolution";
     public static final String NAME = "resolution";
-    private static final Logger log = LoggerFactory.getLogger(ResolutionImpl.class);
+
     @Reference(target = "(component.name=com.adobe.aem.commons.assetshare.content.properties.impl.HeightImpl)")
     ComputedProperty<Long> height;
+
     @Reference(target = "(component.name=com.adobe.aem.commons.assetshare.content.properties.impl.WidthImpl)")
     ComputedProperty<Long> width;
+
     private Cfg cfg;
 
     @Override

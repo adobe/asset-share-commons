@@ -71,8 +71,6 @@ public class TitleImpl extends AbstractEmptyTextComponent implements Title {
      */
     private ValueMap combinedProperties;
 
-    private String title = null;
-
     @PostConstruct
     public void init() {
         this.combinedProperties = asset.getProperties();

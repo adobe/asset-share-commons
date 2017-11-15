@@ -46,11 +46,12 @@ import java.util.*;
  */
 @Component(factory = "com.day.cq.search.eval.PredicateEvaluator/" + PropertyValuesPredicateEvaluator.PREDICATE_NAME)
 public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
-    private static final Logger log = LoggerFactory.getLogger(PropertyValuesPredicateEvaluator.class);
+
     public static final String PREDICATE_NAME = "propertyvalues";
     public static final String VALUES = "values";
     private static final String DELIMITER = "delimiter";
     private static final String DEFAULT_DELIMITER = ",";
+
     private PredicateEvaluator propertyEvaluator = new com.day.cq.search.eval.JcrPropertyPredicateEvaluator();
 
     private Predicate buildPredicate(Predicate predicate) {
@@ -58,11 +59,11 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
         final List<String> properties = new ArrayList<>();
 
         for (final Map.Entry<String, String> entry : predicate.getParameters().entrySet()) {
-            if (entry.getKey() != null && (VALUES.equals(entry.getKey()) || StringUtils.endsWith(entry.getKey(), "_" + VALUES))) {
-                if (entry.getValue() != null) {
-                    properties.addAll(Arrays.asList(StringUtils.split(entry.getValue(), delimiter)));
-                    predicate.set(entry.getKey(), null);
-                }
+            if (entry.getValue() != null &&
+                    entry.getKey() != null &&
+                    (VALUES.equals(entry.getKey()) || StringUtils.endsWith(entry.getKey(), "_" + VALUES))) {
+                properties.addAll(Arrays.asList(StringUtils.split(entry.getValue(), delimiter)));
+                predicate.set(entry.getKey(), null);
             }
         }
 

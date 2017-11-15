@@ -44,8 +44,6 @@ import java.util.Iterator;
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
 public class FolderResultImpl implements FolderResult {
-    private static final Logger log = LoggerFactory.getLogger(FolderResultImpl.class);
-
     private static final int MAX_SIZE = 1000;
 
     @Self

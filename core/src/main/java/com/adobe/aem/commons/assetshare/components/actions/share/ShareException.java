@@ -22,7 +22,7 @@ package com.adobe.aem.commons.assetshare.components.actions.share;
 /**
  * Exception thrown when an issue with sharing from Asset Share Commons occurs.
  */
-public class ShareException extends Throwable {
+public class ShareException extends Exception {
     /**
      * Creates a new ShareException with a custom message.
      *

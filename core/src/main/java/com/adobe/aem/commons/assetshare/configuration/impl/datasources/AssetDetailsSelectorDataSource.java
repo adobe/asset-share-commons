@@ -46,8 +46,6 @@ import java.util.concurrent.ConcurrentHashMap;
         configurationPolicy = ConfigurationPolicy.REQUIRE
 )
 public class AssetDetailsSelectorDataSource extends SlingSafeMethodsServlet {
-    private static final Logger log = LoggerFactory.getLogger(AssetDetailsSelectorDataSource.class);
-
     @Reference
     private DataSourceBuilder dataSourceBuilder;
 

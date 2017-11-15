@@ -53,7 +53,7 @@ import java.util.Map;
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
 public class PropertyPredicateImpl extends AbstractPredicate implements PropertyPredicate, Options {
-    private static final Logger log = LoggerFactory.getLogger(PropertyPredicateImpl.class);
+
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/property";
     protected static final String PN_TYPE = "type";
 

@@ -16,7 +16,8 @@
   ~ limitations under the License.
  */-->
 
-<sly data-sly-use.asset="com.adobe.aem.commons.assetshare.content.AssetModel"
+<sly data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
+     data-sly-test.asset="${modelCache['com.adobe.aem.commons.assetshare.content.AssetModel']}"
      data-sly-use.editorLinks="com.adobe.aem.commons.assetshare.components.details.EditorLinks"
      data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html"
      data-sly-test.ready="${editorLinks.ready}">
