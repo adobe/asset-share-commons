@@ -14,10 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0016: Changed ui.content/pom.xml to remove the core dependency, distribution config, and jslint plug-in.  
 - 0018: Updated components to leverage the ASC modelCache for models: Config, AssetModel and PagePredicate. Added HTL Maven Plugin to prevent typos in the HTL.
 - 0027:  XSS Protect user input for Share emails in EmailShareServiceImpl.java
-- 0029: Resolve issue with WARN in logs over missing ACS Commons EmailService dependency. 
 
 ### Fixed
 
+- 0029: Resolve issue with WARN in logs over missing ACS Commons EmailService dependency. 
 - 0053: Fixed issue with broken log in and log out links
 
 ### Added
