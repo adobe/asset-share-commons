@@ -52,7 +52,7 @@ import java.util.*;
 )
 public class PagePredicateImpl extends AbstractPredicate implements PagePredicate {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/results";
-    private static final Logger log = LoggerFactory.getLogger(PagePredicateImpl.class);
+
     private static final int MAX_GUESS_TOTAL = 2000;
     private static final int MAX_LIMIT = 1000;
     private static final int DEFAULT_LIMIT = 50;
@@ -60,13 +60,16 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
     private static final String DEFAULT_ORDER_BY = "@jcr:score";
     private static final String DEFAULT_ORDER_BY_SORT = "desc";
     private final String[] DEFAULT_PATHS = {"/content/dam"};
-    @Self
-    @Required
-    SlingHttpServletRequest request;
+
     private String PN_ORDERBY = "orderBy";
     private String PN_ORDERBY_SORT = "orderBySort";
     private String PN_LIMIT = "limit";
     private String PN_PATHS = "paths";
+
+    @Self
+    @Required
+    SlingHttpServletRequest request;
+
     @Inject
     @Required
     private Page currentPage;
@@ -79,8 +82,6 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
     private ModelFactory modelFactory;
 
     private ValueMap properties;
-
-    private Collection<HiddenPredicate> hiddenPredicates;
 
     @PostConstruct
     protected void init() {

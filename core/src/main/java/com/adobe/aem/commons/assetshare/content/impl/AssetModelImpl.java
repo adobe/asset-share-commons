@@ -47,7 +47,6 @@ import java.util.List;
         adapters = {AssetModel.class}
 )
 public class AssetModelImpl implements AssetModel {
-    private static final Logger log = LoggerFactory.getLogger(AssetModelImpl.class);
 
     @Self
     @Required

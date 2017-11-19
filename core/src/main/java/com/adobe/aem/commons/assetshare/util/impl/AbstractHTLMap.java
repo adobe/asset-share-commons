@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class AbstractHTLMap implements Map<String, Object> {
+    private static final String MAP_NOT_MODIFIABLE = "Map is not modifiable";
+
     @Override
     public int size() {
         return 0;
@@ -28,22 +30,22 @@ public abstract class AbstractHTLMap implements Map<String, Object> {
 
     @Override
     public final Object put(String key, Object value) {
-        throw new UnsupportedOperationException("Map is not modifiable");
+        throw new UnsupportedOperationException(MAP_NOT_MODIFIABLE);
     }
 
     @Override
     public Object remove(Object key) {
-        throw new UnsupportedOperationException("Map is not modifiable");
+        throw new UnsupportedOperationException(MAP_NOT_MODIFIABLE);
     }
 
     @Override
     public final void putAll(Map<? extends String, ?> m) {
-        throw new UnsupportedOperationException("Map is not modifiable");
+        throw new UnsupportedOperationException(MAP_NOT_MODIFIABLE);
     }
 
     @Override
     public final void clear() {
-        throw new UnsupportedOperationException("Map is not modifiable");
+        throw new UnsupportedOperationException(MAP_NOT_MODIFIABLE);
     }
 
     @Override

@@ -50,7 +50,7 @@ import java.util.List;
 )
 public class DatePredicateImpl extends AbstractPredicate implements DatePredicate {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/date-range";
-    private static final Logger log = LoggerFactory.getLogger(DatePredicateImpl.class);
+
     @Self
     @Required
     private SlingHttpServletRequest request;

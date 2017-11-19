@@ -16,8 +16,9 @@
   ~ limitations under the License.
  */-->
 
-<sly data-sly-use.userMenu="com.adobe.aem.commons.assetshare.components.structure.UserMenu"
-     data-sly-use.config="com.adobe.aem.commons.assetshare.configuration.Config"
+<sly data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
+     data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
+     data-sly-use.userMenu="com.adobe.aem.commons.assetshare.components.structure.UserMenu"
      data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html"
      data-sly-test.ready="${userMenu.ready}">
 
@@ -39,7 +40,7 @@
                         ${currentStyle['greeting']} ${userMenu.userName}
                         <br/>
                         <a class="cmp-user__action"
-                           href="${currentStyle['logOutUrl']}">
+                           href="${currentStyle['logOutLink']}">
                             ${currentStyle['logOutLabel']}
                         </a>
                     </div>
@@ -47,7 +48,7 @@
 
                 <!--/* Anonymous */-->
                 <a class="ui left cmp-user__action"
-                   href="${currentStyle['loginUrl']}"
+                   href="${currentStyle['logInLink']}"
                    data-sly-test="${!loggedIn}">
                     ${currentStyle['logInLabel']}
                 </a>

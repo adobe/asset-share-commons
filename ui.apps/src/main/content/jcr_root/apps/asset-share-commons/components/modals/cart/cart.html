@@ -16,7 +16,8 @@
   ~ limitations under the License.
  */-->
 
-<sly    data-sly-use.config="com.adobe.aem.commons.assetshare.configuration.Config"
+<sly    data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
+        data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
         data-sly-use.cart="com.adobe.aem.commons.assetshare.components.actions.cart.Cart"></sly>
 
 <style data-sly-test="${!wccmode.disabled}">

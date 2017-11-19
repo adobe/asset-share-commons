@@ -50,7 +50,7 @@ import java.util.Locale;
 )
 public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/details/tags";
-    private static final Logger log = LoggerFactory.getLogger(TagsImpl.class);
+
     @Self
     @Required
     private SlingHttpServletRequest request;
@@ -81,7 +81,7 @@ public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
     }
 
     private List<String> getOverrideTags() {
-        final List<String> tagTitles = new ArrayList<>();
+        final List<String> overrideTagTitles = new ArrayList<>();
         final Locale locale = currentPage == null ? request.getLocale() : currentPage.getLanguage(false);
 
         final TagManager tagManager = request.getResourceResolver().adaptTo(TagManager.class);
@@ -91,11 +91,11 @@ public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
             final Tag tag = tagManager.resolve(tagId);
 
             if (tag != null) {
-                tagTitles.add(tag.getTitle(locale));
+                overrideTagTitles.add(tag.getTitle(locale));
             }
         }
 
-        return tagTitles;
+        return overrideTagTitles;
     }
 
     @Override
