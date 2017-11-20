@@ -17,7 +17,7 @@
  *
  */
 
-package com.adobe.aem.commons.assetshare.search.results.impl;
+package com.adobe.aem.commons.assetshare.search.results.impl.result;
 
 import com.adobe.aem.commons.assetshare.search.results.FolderResult;
 import com.adobe.aem.commons.assetshare.search.results.Size;

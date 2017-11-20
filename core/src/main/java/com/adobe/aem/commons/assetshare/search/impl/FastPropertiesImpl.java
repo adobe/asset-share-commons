@@ -48,8 +48,7 @@ public class FastPropertiesImpl implements FastProperties {
     @Reference
     private ResourceResolverFactory resourceResolverFactory;
 
-
-    public final List<String> getFastProperties(final String propertyName) {
+    public final List<String> getFastProperties(final String indexConfigFlagPropertyName) {
         final List<String> fastProperties = new ArrayList<>();
 
         ResourceResolver resourceResolver = null;
@@ -71,7 +70,7 @@ public class FastPropertiesImpl implements FastProperties {
                     final Resource indexRule = indexRules.next();
                     final ValueMap properties = indexRule.getValueMap();
 
-                    if (properties.get(propertyName, false)) {
+                    if (properties.get(indexConfigFlagPropertyName, false)) {
                         final String relPath = properties.get(PN_NAME, String.class);
                         if (StringUtils.isNotBlank(relPath)) {
                             fastProperties.add(relPath);

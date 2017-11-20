@@ -23,11 +23,13 @@ import com.adobe.aem.commons.assetshare.components.predicates.PagePredicate;
 import com.adobe.aem.commons.assetshare.search.QueryParameterPostProcessor;
 import com.adobe.aem.commons.assetshare.search.SearchSafety;
 import com.adobe.aem.commons.assetshare.search.UnsafeSearchException;
+import com.adobe.aem.commons.assetshare.search.providers.QuerySearchPostProcessor;
+import com.adobe.aem.commons.assetshare.search.providers.QuerySearchPreProcessor;
 import com.adobe.aem.commons.assetshare.search.providers.SearchProvider;
 import com.adobe.aem.commons.assetshare.search.results.AssetResult;
 import com.adobe.aem.commons.assetshare.search.results.Result;
 import com.adobe.aem.commons.assetshare.search.results.Results;
-import com.adobe.aem.commons.assetshare.search.results.impl.ResultsImpl;
+import com.adobe.aem.commons.assetshare.search.results.impl.results.QueryBuilderResultsImpl;
 import com.day.cq.search.Predicate;
 import com.day.cq.search.PredicateGroup;
 import com.day.cq.search.Query;
@@ -46,7 +48,6 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.osgi.framework.Constants.SERVICE_RANKING;
 
@@ -54,6 +55,7 @@ import static org.osgi.framework.Constants.SERVICE_RANKING;
         SERVICE_RANKING + ":Integer=" + Integer.MIN_VALUE
 })
 public class QuerySearchProviderImpl implements SearchProvider {
+    private static final String PROVIDER_NAME = "com.adobe.aem.commons.assetshare.search.providers.impl.QuerySearchProviderImpl";
     private static final Logger log = LoggerFactory.getLogger(QuerySearchProviderImpl.class);
 
     @Reference
@@ -66,6 +68,12 @@ public class QuerySearchProviderImpl implements SearchProvider {
     private ModelFactory modelFactory;
 
     @Reference(cardinality = ReferenceCardinality.OPTIONAL)
+    private QuerySearchPreProcessor querySearchPreProcessor;
+
+    @Reference(cardinality = ReferenceCardinality.OPTIONAL)
+    private QuerySearchPostProcessor querySearchPostProcessor;
+
+    @Reference(cardinality = ReferenceCardinality.OPTIONAL)
     private QueryParameterPostProcessor queryParametersPostProcessor;
 
     public boolean accepts(SlingHttpServletRequest request) {
@@ -76,14 +84,20 @@ public class QuerySearchProviderImpl implements SearchProvider {
     public Results getResults(final SlingHttpServletRequest request) throws UnsafeSearchException, RepositoryException {
         final List<Result> results = new ArrayList<Result>();
 
-        final Map<String, String> params = getParams(request);
-        final PredicateGroup predicates = PredicateGroup.create(params);
+        final PredicateGroup predicates;
+
+        if (querySearchPreProcessor != null) {
+            predicates = querySearchPreProcessor.process(request, getParams(request));
+        } else {
+            predicates = PredicateGroup.create(getParams(request));
+        }
+
 
         if (!searchSafety.isSafe(request.getResourceResolver(), predicates)) {
             throw new UnsafeSearchException("Search query will initiate an traversing query");
         }
 
-        debugPreQuery(params);
+        debugPreQuery(predicates.getParameters());
 
         final Query query = queryBuilder.createQuery(predicates, request.getResourceResolver().adaptTo(Session.class));
         final SearchResult searchResult = query.getResult();
@@ -103,18 +117,17 @@ public class QuerySearchProviderImpl implements SearchProvider {
 
         debugPostAdaptation(results);
 
-        long runningTotal = searchResult.getStartIndex() + searchResult.getHits().size();
+        QueryBuilderResultsImpl resultsImpl = new QueryBuilderResultsImpl(searchResult);
 
-        return new ResultsImpl(results,
-                searchResult.getExecutionTimeMillis(),
-                runningTotal,
-                searchResult.getTotalMatches(),
-                searchResult.getNextPage() != null ? searchResult.getNextPage().getStart() : -1,
-                searchResult.hasMore() || runningTotal < searchResult.getTotalMatches());
+        if (querySearchPostProcessor != null) {
+            return querySearchPostProcessor.process(request, query, resultsImpl, searchResult);
+        } else {
+            return resultsImpl;
+        }
     }
 
     /**
-     * Generates the querybuilder query params from the Page Predicate settings and the request attributes.
+     * Generates the QueryBuilder query params from the Page Predicate settings and the request attributes.
      *
      * @param request
      * @return

@@ -25,17 +25,38 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * OSGi Service interface to composed lists (usually for Granite DataSources) of JCR properties that have/have not been optimized for AEM search..
+ */
 @ProviderType
 public interface FastProperties {
-    String SLOW = "\uD83D\uDC22";
-    String FAST = "\u26A1";
+    String SLOW = "\uD83D\uDC22"; // Turtle in Unicode
+    String FAST = "\u26A1"; // Lightning bolt in Unicode
 
-    List<String> getFastProperties(String propertyName);
+    /**
+     * Checks if the /oak:index/damAssetLucene index (or whatever may be overridden via FastPropertiesImpl OSGi Config) has a indexRule property config with the a property named {@param indexConfigFlagPropertyName} set to true.
+     * If it does, this propertyName (ie. jcr:content/metdata/dc:title) is added to the return list.
+     * @param indexConfigFlagPropertyName
+     * @return a list of property paths as who are configured with @{param indexConfigFlagPropertyName} set to `true`
+     */
+    List<String> getFastProperties(String indexConfigFlagPropertyName);
 
+    /**
+     * @param fastProperties a list relative property paths that are considered to be fast.
+     * @param otherProperties a list of other relative property paths.
+     * @return the delta between the {@param fastProperties} and the {@param otherProperties}.
+     */
     List<String> getDeltaProperties(Collection<String> fastProperties, Collection<String> otherProperties);
 
+    /**
+     * @param label the label text
+     * @return the FASE icon suffixed with the {@param label}
+     */
     String getFastLabel(String label);
 
+    /**
+     * @param label the label text
+     * @return the SLOW icon suffixed with the {@param label}
+     */
     String getSlowLabel(String label);
-
 }
