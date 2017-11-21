@@ -35,7 +35,7 @@ public abstract class AbstractResultsImpl implements Results {
     protected Status status;
     protected long timeTaken = -1;
     protected long runningTotal;
-    protected Map<String, Object> additionalData = new HashMap<>();
+    protected ValueMap additionalData = new ValueMapDecorator(new HashMap<>());
 
     @Override
     public List<Result> getResults() {
@@ -78,7 +78,7 @@ public abstract class AbstractResultsImpl implements Results {
     }
 
     @Override
-    public Map<String, Object> getAdditionalData() {
+    public ValueMap getAdditionalData() {
         return additionalData;
     }
 }

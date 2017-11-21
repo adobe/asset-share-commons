@@ -20,6 +20,7 @@
 package com.adobe.aem.commons.assetshare.search.results;
 
 import com.adobe.aem.commons.assetshare.search.results.impl.results.ErringResultsImpl;
+import org.apache.sling.api.resource.ValueMap;
 import org.osgi.annotation.versioning.ProviderType;
 
 import java.util.List;
@@ -80,7 +81,9 @@ public interface Results {
     /**
      * This method acts as a flexible extension point to expose additional data.
      *
-     * @return a map (optionally) populated with additional data by applications implementing Asset Share Commons.
+     * Note: the returning ValueMap supports modifying operations (ie. put, putAll).
+     *
+     * @return a ValueMap (optionally) populated with additional data by applications implementing Asset Share Commons.
      */
-    Map<String, Object> getAdditionalData();
+    ValueMap getAdditionalData();
 }

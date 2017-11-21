@@ -23,7 +23,6 @@ import com.adobe.aem.commons.assetshare.components.predicates.PagePredicate;
 import com.adobe.aem.commons.assetshare.search.QueryParameterPostProcessor;
 import com.adobe.aem.commons.assetshare.search.SearchSafety;
 import com.adobe.aem.commons.assetshare.search.UnsafeSearchException;
-import com.adobe.aem.commons.assetshare.search.providers.FacetPostProcessor;
 import com.adobe.aem.commons.assetshare.search.providers.QuerySearchPostProcessor;
 import com.adobe.aem.commons.assetshare.search.providers.QuerySearchPreProcessor;
 import com.adobe.aem.commons.assetshare.search.providers.SearchProvider;
@@ -48,7 +47,11 @@ import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import static org.osgi.framework.Constants.SERVICE_RANKING;
 
@@ -56,7 +59,6 @@ import static org.osgi.framework.Constants.SERVICE_RANKING;
         SERVICE_RANKING + ":Integer=" + Integer.MIN_VALUE
 })
 public class QuerySearchProviderImpl implements SearchProvider {
-    private static final String PROVIDER_NAME = "com.adobe.aem.commons.assetshare.search.providers.impl.QuerySearchProviderImpl";
     private static final Logger log = LoggerFactory.getLogger(QuerySearchProviderImpl.class);
 
     @Reference
@@ -75,9 +77,6 @@ public class QuerySearchProviderImpl implements SearchProvider {
     private QuerySearchPostProcessor querySearchPostProcessor;
 
     @Reference(cardinality = ReferenceCardinality.OPTIONAL)
-    private FacetPostProcessor facetPostProcessor;
-
-    @Reference(cardinality = ReferenceCardinality.OPTIONAL)
     private QueryParameterPostProcessor queryParametersPostProcessor;
 
     public boolean accepts(SlingHttpServletRequest request) {
@@ -93,7 +92,6 @@ public class QuerySearchProviderImpl implements SearchProvider {
         } else {
             predicates = PredicateGroup.create(getParams(request));
         }
-
 
         if (!searchSafety.isSafe(request.getResourceResolver(), predicates)) {
             throw new UnsafeSearchException("Search query will initiate an traversing query");
@@ -120,7 +118,7 @@ public class QuerySearchProviderImpl implements SearchProvider {
 
         debugPostAdaptation(results);
 
-        final QueryBuilderResultsImpl resultsImpl = new QueryBuilderResultsImpl(request, results, searchResult, facetPostProcessor);
+        final QueryBuilderResultsImpl resultsImpl = new QueryBuilderResultsImpl(results, searchResult);
 
         if (querySearchPostProcessor != null) {
             return querySearchPostProcessor.process(request, query, resultsImpl, searchResult);
@@ -133,7 +131,7 @@ public class QuerySearchProviderImpl implements SearchProvider {
      * Generates the QueryBuilder query params from the Page Predicate settings and the request attributes.
      *
      * @param request
-     * @return
+     * @return the QueryBuilder parameter map.
      */
     private Map<String, String> getParams(final SlingHttpServletRequest request) {
         Map<String, String> params = new HashMap<>();

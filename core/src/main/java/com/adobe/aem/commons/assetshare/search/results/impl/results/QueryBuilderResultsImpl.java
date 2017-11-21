@@ -19,12 +19,10 @@
 
 package com.adobe.aem.commons.assetshare.search.results.impl.results;
 
-import com.adobe.aem.commons.assetshare.search.providers.FacetPostProcessor;
 import com.adobe.aem.commons.assetshare.search.results.Result;
 import com.adobe.aem.commons.assetshare.search.results.Results;
 import com.day.cq.search.facets.Facet;
 import com.day.cq.search.result.SearchResult;
-import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.ValueMap;
 
 import javax.jcr.RepositoryException;
@@ -33,30 +31,23 @@ import java.util.List;
 import java.util.Map;
 
 public class QueryBuilderResultsImpl extends AbstractResultsImpl implements Results {
-    private final SlingHttpServletRequest request;
-    private final List<Result> results;
     private final SearchResult searchResult;
-    private final FacetPostProcessor facetPostProcessor;
 
     private Map<String, Facet> facets = null;
 
-
-    public QueryBuilderResultsImpl(SlingHttpServletRequest request,
-                                      List<Result> results,
-                                      SearchResult searchResult,
-                                      FacetPostProcessor facetPostProcessor)  {
-
-        this.request = request;
-        this.facetPostProcessor = facetPostProcessor;
+    public QueryBuilderResultsImpl(List<Result> results,
+                                      SearchResult searchResult)  {
         this.results = Collections.unmodifiableList(results);
+        this.size = this.results.size();
+
         this.searchResult = searchResult;
 
-        this.more = searchResult.hasMore() || runningTotal < searchResult.getTotalMatches();
-        this.size = this.results.size();
         this.total = searchResult.getTotalMatches();
         this.timeTaken = searchResult.getExecutionTimeMillis();
         this.nextOffset = searchResult.getNextPage() != null ? searchResult.getNextPage().getStart() : -1;
         this.runningTotal = searchResult.getStartIndex() + searchResult.getHits().size();
+
+        this.more = searchResult.hasMore() || this.runningTotal < searchResult.getTotalMatches();
         this.status = Status.SUCCESS;
     }
 
@@ -72,9 +63,7 @@ public class QueryBuilderResultsImpl extends AbstractResultsImpl implements Resu
                 tmp = getSearchResult().getFacets();
             }
 
-            if (facetPostProcessor != null) {
-                facets = facetPostProcessor.process(request, searchResult, tmp);
-            }
+            facets = tmp;
         }
 
         return facets;
@@ -82,6 +71,6 @@ public class QueryBuilderResultsImpl extends AbstractResultsImpl implements Resu
 
     @Override
     public ValueMap getAdditionalData() {
-        return null;
+        return additionalData;
     }
 }
