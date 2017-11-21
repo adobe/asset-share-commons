@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.components.predicates.PagePredicate;
 import com.adobe.aem.commons.assetshare.search.QueryParameterPostProcessor;
 import com.adobe.aem.commons.assetshare.search.SearchSafety;
 import com.adobe.aem.commons.assetshare.search.UnsafeSearchException;
+import com.adobe.aem.commons.assetshare.search.providers.FacetPostProcessor;
 import com.adobe.aem.commons.assetshare.search.providers.QuerySearchPostProcessor;
 import com.adobe.aem.commons.assetshare.search.providers.QuerySearchPreProcessor;
 import com.adobe.aem.commons.assetshare.search.providers.SearchProvider;
@@ -74,6 +75,9 @@ public class QuerySearchProviderImpl implements SearchProvider {
     private QuerySearchPostProcessor querySearchPostProcessor;
 
     @Reference(cardinality = ReferenceCardinality.OPTIONAL)
+    private FacetPostProcessor facetPostProcessor;
+
+    @Reference(cardinality = ReferenceCardinality.OPTIONAL)
     private QueryParameterPostProcessor queryParametersPostProcessor;
 
     public boolean accepts(SlingHttpServletRequest request) {
@@ -82,8 +86,6 @@ public class QuerySearchProviderImpl implements SearchProvider {
     }
 
     public Results getResults(final SlingHttpServletRequest request) throws UnsafeSearchException, RepositoryException {
-        final List<Result> results = new ArrayList<Result>();
-
         final PredicateGroup predicates;
 
         if (querySearchPreProcessor != null) {
@@ -104,6 +106,7 @@ public class QuerySearchProviderImpl implements SearchProvider {
 
         debugPostQuery(searchResult);
 
+        final List<Result> results = new ArrayList<>();
         for (final Hit hit : searchResult.getHits()) {
             try {
                 final AssetResult assetSearchResult = modelFactory.getModelFromWrappedRequest(request, hit.getResource(), AssetResult.class);
@@ -117,7 +120,7 @@ public class QuerySearchProviderImpl implements SearchProvider {
 
         debugPostAdaptation(results);
 
-        QueryBuilderResultsImpl resultsImpl = new QueryBuilderResultsImpl(searchResult);
+        final QueryBuilderResultsImpl resultsImpl = new QueryBuilderResultsImpl(request, results, searchResult, facetPostProcessor);
 
         if (querySearchPostProcessor != null) {
             return querySearchPostProcessor.process(request, query, resultsImpl, searchResult);

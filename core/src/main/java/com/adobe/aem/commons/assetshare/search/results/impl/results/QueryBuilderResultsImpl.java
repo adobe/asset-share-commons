@@ -19,21 +19,38 @@
 
 package com.adobe.aem.commons.assetshare.search.results.impl.results;
 
+import com.adobe.aem.commons.assetshare.search.providers.FacetPostProcessor;
+import com.adobe.aem.commons.assetshare.search.results.Result;
 import com.adobe.aem.commons.assetshare.search.results.Results;
 import com.day.cq.search.facets.Facet;
 import com.day.cq.search.result.SearchResult;
+import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.ValueMap;
 
 import javax.jcr.RepositoryException;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public class QueryBuilderResultsImpl extends AbstractResultsImpl implements Results {
-    private SearchResult searchResult;
+    private final SlingHttpServletRequest request;
+    private final List<Result> results;
+    private final SearchResult searchResult;
+    private final FacetPostProcessor facetPostProcessor;
 
-    public QueryBuilderResultsImpl(final SearchResult searchResult) {
-        this.searchResult = searchResult;
+    private Map<String, Facet> facets = null;
+
+
+    public QueryBuilderResultsImpl(SlingHttpServletRequest request,
+                                      List<Result> results,
+                                      SearchResult searchResult,
+                                      FacetPostProcessor facetPostProcessor)  {
+
+        this.request = request;
+        this.facetPostProcessor = facetPostProcessor;
         this.results = Collections.unmodifiableList(results);
+        this.searchResult = searchResult;
+
         this.more = searchResult.hasMore() || runningTotal < searchResult.getTotalMatches();
         this.size = this.results.size();
         this.total = searchResult.getTotalMatches();
@@ -48,11 +65,19 @@ public class QueryBuilderResultsImpl extends AbstractResultsImpl implements Resu
     }
 
     final Map<String, Facet> getFacets() throws RepositoryException {
-        if (getSearchResult() != null) {
-            return getSearchResult().getFacets();
-        } else {
-            return Collections.EMPTY_MAP;
+        if (facets == null) {
+            Map<String, Facet> tmp = Collections.EMPTY_MAP;
+
+            if (getSearchResult() != null) {
+                tmp = getSearchResult().getFacets();
+            }
+
+            if (facetPostProcessor != null) {
+                facets = facetPostProcessor.process(request, searchResult, tmp);
+            }
         }
+
+        return facets;
     }
 
     @Override
