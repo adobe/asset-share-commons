@@ -22,6 +22,7 @@ package com.adobe.aem.commons.assetshare.components.predicates.impl;
 import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.HiddenPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.PagePredicate;
+import com.adobe.aem.commons.assetshare.util.ComponentModelVisitor;
 import com.day.cq.dam.api.DamConstants;
 import com.day.cq.wcm.api.Page;
 import org.apache.commons.lang3.StringUtils;
@@ -196,8 +197,12 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
     }
 
     private Collection<HiddenPredicate> getHiddenPredicates(final Page page) {
-        final HiddenPredicateImpl.HiddenPredicateVisitor visitor = new HiddenPredicateImpl.HiddenPredicateVisitor(request, modelFactory);
+        final ComponentModelVisitor<HiddenPredicate> visitor = new ComponentModelVisitor<HiddenPredicate>(request,
+                modelFactory,
+                new String[]{HiddenPredicateImpl.RESOURCE_TYPE},
+                HiddenPredicate.class);
+
         visitor.accept(page.getContentResource());
-        return visitor.getHiddenPredicateResources();
+        return visitor.getModels();
     }
 }

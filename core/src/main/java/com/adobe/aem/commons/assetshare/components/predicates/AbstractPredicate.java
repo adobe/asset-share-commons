@@ -69,13 +69,17 @@ public abstract class AbstractPredicate implements Predicate {
         return ValueMap.EMPTY;
     }
 
+    public String getId() {
+        if (request.getResource() != null) {
+            return getName() + "_" + String.valueOf(request.getResource().getPath().hashCode());
+        } else {
+            return coreField.getId();
+        }
+    }
+
     /**
      * Core Field Component Delegates
      **/
-
-    public String getId() {
-        return coreField.getId();
-    }
 
     public String getTitle() {
         return coreField.getTitle();

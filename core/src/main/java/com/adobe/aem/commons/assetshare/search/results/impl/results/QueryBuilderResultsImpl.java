@@ -25,7 +25,6 @@ import com.day.cq.search.facets.Facet;
 import com.day.cq.search.result.SearchResult;
 import org.apache.sling.api.resource.ValueMap;
 
-import javax.jcr.RepositoryException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -53,20 +52,6 @@ public class QueryBuilderResultsImpl extends AbstractResultsImpl implements Resu
 
     final SearchResult getSearchResult() {
         return this.searchResult;
-    }
-
-    final Map<String, Facet> getFacets() throws RepositoryException {
-        if (facets == null) {
-            Map<String, Facet> tmp = Collections.EMPTY_MAP;
-
-            if (getSearchResult() != null) {
-                tmp = getSearchResult().getFacets();
-            }
-
-            facets = tmp;
-        }
-
-        return facets;
     }
 
     @Override
