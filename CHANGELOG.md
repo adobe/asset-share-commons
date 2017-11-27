@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0012: Updated AEM package file names to be: 'asset-share-commons.ui.apps-<version>' and 'asset-share-commons.ui.content-<version>'.
 - 0016: Changed ui.content/pom.xml to remove the core dependency, distribution config, and jslint plug-in.  
 - 0018: Updated components to leverage the ASC modelCache for models: Config, AssetModel and PagePredicate. Added HTL Maven Plugin to prevent typos in the HTL.
-- 0021: Reduced file sizes of image in ui.content project
+- 0021: Reduced file sizes of image in ui.content project.
 - 0027: XSS Protect user input for Share emails in EmailShareServiceImpl.java
 
 ### Fixed
