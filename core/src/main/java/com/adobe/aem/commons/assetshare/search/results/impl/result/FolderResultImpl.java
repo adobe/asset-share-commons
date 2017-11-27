@@ -97,6 +97,7 @@ public class FolderResultImpl implements FolderResult {
         return resource.getPath();
     }
 
+    @SuppressWarnings("squid:S3776")
     public Size getSize() {
         if (size == null) {
             int count = 0;

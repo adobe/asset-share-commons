@@ -74,21 +74,28 @@ public final class ComponentModelVisitor<T> extends AbstractResourceVisitor {
     @Override
     protected final void visit(Resource resource) {
         for (final String resourceType : resourceTypes) {
-
-            if (resource.getResourceResolver().isResourceType(resource, resourceType)) {
-                if (resource != null) {
-                    resources.add(resource);
-
-                    if (clazz != null) {
-                        final T model = modelFactory.getModelFromWrappedRequest(request, resource, clazz);
-
-                        if (model != null) {
-                            models.add(model);
-                        }
-                    }
-                }
-
+            if (handleResourceVisit(resource, resourceType)) {
+                handleModelVisit(resource);
                 break;
+            }
+        }
+    }
+
+    private boolean handleResourceVisit(Resource resource, String resourceType) {
+        if (resource != null && resource.getResourceResolver().isResourceType(resource, resourceType)) {
+            resources.add(resource);
+            return true;
+        }
+
+        return false;
+    }
+
+    private void handleModelVisit(Resource resource) {
+        if (clazz != null) {
+            final T model = modelFactory.getModelFromWrappedRequest(request, resource, clazz);
+
+            if (model != null) {
+                models.add(model);
             }
         }
     }
