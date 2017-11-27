@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.HiddenPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.PagePredicate;
 import com.adobe.aem.commons.assetshare.util.ComponentModelVisitor;
+import com.adobe.aem.commons.assetshare.util.PredicateUtil;
 import com.day.cq.dam.api.DamConstants;
 import com.day.cq.wcm.api.Page;
 import org.apache.commons.lang3.StringUtils;
