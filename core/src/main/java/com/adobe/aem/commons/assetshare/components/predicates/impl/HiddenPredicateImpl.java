@@ -107,38 +107,4 @@ public class HiddenPredicateImpl extends AbstractPredicate implements HiddenPred
     public String getName() {
         throw new UnsupportedOperationException("Hidden predicates have no name");
     }
-
-    static final class HiddenPredicateVisitor extends AbstractResourceVisitor {
-        final Collection<HiddenPredicate> hiddenPredicateResources = new ArrayList<>();
-        final SlingHttpServletRequest request;
-        final ModelFactory modelFactory;
-
-        public HiddenPredicateVisitor(SlingHttpServletRequest request, ModelFactory modelFactory) {
-            this.request = request;
-            this.modelFactory = modelFactory;
-        }
-
-        public Collection<HiddenPredicate> getHiddenPredicateResources() {
-            return hiddenPredicateResources;
-        }
-
-        @Override
-        public void accept(Resource resource) {
-            final ValueMap properties = resource.getValueMap();
-            // Only traverse resources that have a sling:resourceType; those without slign:resourceTypes are not components and simply sub-component configurations resources (such as Option lists)
-            if (properties.get("sling:resourceType", String.class) != null) {
-                super.accept(resource);
-            }
-        }
-
-        @Override
-        protected void visit(Resource resource) {
-            if (resource.getResourceResolver().isResourceType(resource, RT_HIDDEN_PREDICATE) && resource.getChild("predicates") != null) {
-                final HiddenPredicate hiddenPredicate = modelFactory.getModelFromWrappedRequest(request, resource, HiddenPredicate.class);
-                if (hiddenPredicate != null) {
-                    hiddenPredicateResources.add(hiddenPredicate);
-                }
-            }
-        }
-    }
 }

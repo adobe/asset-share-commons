@@ -24,6 +24,7 @@ import com.adobe.aem.commons.assetshare.components.predicates.TagsPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.impl.options.TagOptionItem;
 import com.adobe.aem.commons.assetshare.configuration.Config;
 import com.adobe.aem.commons.assetshare.search.impl.predicateevaluators.PropertyValuesPredicateEvaluator;
+import com.adobe.aem.commons.assetshare.util.PredicateUtil;
 import com.adobe.cq.commerce.common.ValueMapDecorator;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
@@ -134,7 +135,7 @@ public class TagsPredicateImpl extends AbstractPredicate implements TagsPredicat
             final Locale locale = request.adaptTo(Config.class).getLocale();
 
             for (final Tag tag : tags) {
-                items.add(new TagOptionItem(tag, locale, PredicateUtil.isOptionInInitialValues(getGroup(), tag.getTagID(), initialValues)));
+                items.add(new TagOptionItem(tag, locale, PredicateUtil.isOptionInInitialValues(tag.getTagID(), initialValues)));
             }
         }
 

@@ -19,12 +19,17 @@
 
 package com.adobe.aem.commons.assetshare.search;
 
+import com.adobe.aem.commons.assetshare.search.providers.QuerySearchPreProcessor;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.osgi.annotation.versioning.ConsumerType;
 
 import java.util.Map;
 
+/**
+ *@deprecated use {@link QuerySearchPreProcessor} instead.
+ */
 @ConsumerType
+@Deprecated
 public interface QueryParameterPostProcessor {
     Map<String, String> process(SlingHttpServletRequest request, Map<String, String> currentParameters);
 }
