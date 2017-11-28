@@ -156,6 +156,7 @@
 				<configuration>
 					<name>asset-share-commons.ui.apps</name>
 					<group>asset-share-commons</group>
+					<finalName>asset-share-commons.ui.apps-${project.version}</finalName>
 					<filterSource>src/main/content/META-INF/vault/filter.xml</filterSource>
 					<properties>
 						<acHandling>merge_preserve</acHandling>
@@ -178,6 +179,24 @@
 					</subPackages>
 					<targetURL>http://${crx.host}:${crx.port}/crx/packmgr/service.jsp</targetURL>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.sling</groupId>
+				<artifactId>htl-maven-plugin</artifactId>
+				<version>1.0.6</version>
+				<configuration>
+					<sourceDirectory>${basedir}/src/main/content/jcr_root</sourceDirectory>
+					<failOnWarnings>true</failOnWarnings>
+				</configuration>
+				<executions>
+					<execution>
+						<id>validate-scripts</id>
+						<goals>
+							<goal>validate</goal>
+						</goals>
+						<phase>compile</phase>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -241,6 +260,31 @@
 								<goals>
 									<goal>install</goal>
 								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>autoInstallPackagePublish-all</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.day.jcr.vault</groupId>
+						<artifactId>content-package-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>install-content-package-publish</id>
+								<phase>install</phase>
+								<goals>
+									<goal>install</goal>
+								</goals>
+								<configuration>
+									<targetURL>http://${publish.crx.host}:${publish.crx.port}/crx/packmgr/service.jsp</targetURL>
+									<userId>${publish.crx.username}</userId>
+									<password>${publish.crx.password}</password>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>

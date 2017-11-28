@@ -44,8 +44,8 @@ import java.util.*;
 )
 public class HiddenPredicateImpl extends AbstractPredicate implements HiddenPredicate {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/hidden";
-    private static final Logger log = LoggerFactory.getLogger(HiddenPredicateImpl.class);
-    private static final String RT_HIDDEN_PREDICATE = "asset-share-commons/components/search/hidden";
+
+    private static final String RT_HIDDEN_PREDICATE = RESOURCE_TYPE;
     private static final String NN_PREDICATES = "predicates";
     private static final String PN_PREDICATE = "predicate";
     private static final String PN_VALUE = "value";
@@ -65,10 +65,6 @@ public class HiddenPredicateImpl extends AbstractPredicate implements HiddenPred
     public boolean isReady() {
         // Hidden properties should never display to the end-user
         return false;
-    }
-
-    public HiddenPredicateImpl() {
-
     }
 
     @Override
@@ -110,39 +106,5 @@ public class HiddenPredicateImpl extends AbstractPredicate implements HiddenPred
     @Override
     public String getName() {
         throw new UnsupportedOperationException("Hidden predicates have no name");
-    }
-
-    static final class HiddenPredicateVisitor extends AbstractResourceVisitor {
-        final Collection<HiddenPredicate> hiddenPredicateResources = new ArrayList<>();
-        final SlingHttpServletRequest request;
-        final ModelFactory modelFactory;
-
-        public HiddenPredicateVisitor(SlingHttpServletRequest request, ModelFactory modelFactory) {
-            this.request = request;
-            this.modelFactory = modelFactory;
-        }
-
-        public Collection<HiddenPredicate> getHiddenPredicateResources() {
-            return hiddenPredicateResources;
-        }
-
-        @Override
-        public void accept(Resource resource) {
-            final ValueMap properties = resource.getValueMap();
-            // Only traverse resources that have a sling:resourceType; those without slign:resourceTypes are not components and simply sub-component configurations resources (such as Option lists)
-            if (properties.get("sling:resourceType", String.class) != null) {
-                super.accept(resource);
-            }
-        }
-
-        @Override
-        protected void visit(Resource resource) {
-            if (resource.getResourceResolver().isResourceType(resource, RT_HIDDEN_PREDICATE) && resource.getChild("predicates") != null) {
-                final HiddenPredicate hiddenPredicate = modelFactory.getModelFromWrappedRequest(request, resource, HiddenPredicate.class);
-                if (hiddenPredicate != null) {
-                    hiddenPredicateResources.add(hiddenPredicate);
-                }
-            }
-        }
     }
 }

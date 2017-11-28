@@ -16,14 +16,15 @@
   ~ limitations under the License.
  */-->
 
-<sly data-sly-use.predicate="com.adobe.aem.commons.assetshare.components.predicates.PagePredicate"
+<sly data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
+     data-sly-test.pagePredicate="${modelCache['com.adobe.aem.commons.assetshare.components.predicates.PagePredicate']}"
      data-sly-test.hideLabels="${properties['hideLabels']}"></sly>
 
 <div class="ui basic segment">
     <div class="ui column grid">
         <div class="eight wide column">
             <button type="submit"
-                    form="${predicate.formId}"
+                    form="${pagePredicate.formId}"
                     class="ui icon fluid button ${hideLabels ? '' : 'labeled'}">
                 <i class=" filter icon"></i>
                 <span data-sly-test="${!hideLabels}">${properties['applyFilterLabel']}</span>

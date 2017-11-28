@@ -69,13 +69,17 @@ public abstract class AbstractPredicate implements Predicate {
         return ValueMap.EMPTY;
     }
 
+    public String getId() {
+        if (request.getResource() != null) {
+            return getName() + "_" + String.valueOf(request.getResource().getPath().hashCode());
+        } else {
+            return coreField.getId();
+        }
+    }
+
     /**
      * Core Field Component Delegates
      **/
-
-    public String getId() {
-        return coreField.getId();
-    }
 
     public String getTitle() {
         return coreField.getTitle();
@@ -98,14 +102,27 @@ public abstract class AbstractPredicate implements Predicate {
     }
 
     /**
-     * Initializers
+     * Initializer Methods.
      **/
 
+    /**
+     * Initializes the abstract predicate; This is used to:
+     * - Initialize the predicate group number for the Model.
+     * - Initialize the Core Components Field Sling Model which the Asset Share Commons Predicates Components delegate to.
+     *
+     * @param request the current SlingHttpServletRequest object
+     * @param coreField the Core Components Field component (if the request can be adapted to one by the concrete implementing class).
+     */
     protected final void initPredicate(final SlingHttpServletRequest request, final Field coreField) {
         this.coreField = coreField;
         initGroup(request);
     }
 
+    /**
+     * Initializes the predicate group number from the tracking request attribute, and increments for the next Sling Model calling this method.
+     *
+     * @param request the current SlingHttpServletRequest object.
+     */
     protected synchronized final void initGroup(final SlingHttpServletRequest request) {
         /* Track Predicate Groups across Request */
 

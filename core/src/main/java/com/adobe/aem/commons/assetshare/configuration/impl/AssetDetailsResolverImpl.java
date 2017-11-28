@@ -48,7 +48,6 @@ import java.util.concurrent.ConcurrentHashMap;
         }
 )
 public class AssetDetailsResolverImpl implements AssetDetailsResolver {
-    private static final Logger log = LoggerFactory.getLogger(AssetDetailsResolverImpl.class);
 
     private Map<String, AssetDetailsSelector> assetDetailsSelectors = new ConcurrentHashMap<String, AssetDetailsSelector>();
 

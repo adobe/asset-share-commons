@@ -19,15 +19,13 @@
 
 package com.adobe.aem.commons.assetshare.search.impl;
 
-import com.adobe.aem.commons.assetshare.components.predicates.impl.PredicateUtil;
 import com.adobe.aem.commons.assetshare.search.Constants;
 import com.adobe.aem.commons.assetshare.search.Search;
 import com.adobe.aem.commons.assetshare.search.UnsafeSearchException;
 import com.adobe.aem.commons.assetshare.search.providers.SearchProvider;
 import com.adobe.aem.commons.assetshare.search.results.Results;
-import com.adobe.aem.commons.assetshare.search.results.impl.ResultsImpl;
-import com.day.cq.commons.inherit.HierarchyNodeInheritanceValueMap;
-import com.day.cq.commons.inherit.InheritanceValueMap;
+import com.adobe.aem.commons.assetshare.search.results.impl.results.EmptyResultsImpl;
+import com.adobe.aem.commons.assetshare.util.PredicateUtil;
 import com.day.cq.wcm.api.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -42,7 +40,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.jcr.RepositoryException;
-import java.util.Collections;
 import java.util.List;
 
 @Model(
@@ -55,18 +52,21 @@ public class SearchImpl implements Search {
 
     private static final String PN_MODE = "mode";
     private static final String PN_LAYOUT = "layout";
-    @OSGiService
-    List<SearchProvider> searchProviders;
+
     private String DEFAULT_MODE = "search";
     private String DEFAULT_LAYOUT = "card";
+
+    @OSGiService
+    List<SearchProvider> searchProviders;
+
     @Self
     @Required
     private SlingHttpServletRequest request;
+
     @ScriptVariable
     private Page currentPage;
-    private Results results = null;
 
-    private InheritanceValueMap pageProperties;
+    private Results results = null;
 
     // Results component properties
     private ValueMap properties;
@@ -74,7 +74,6 @@ public class SearchImpl implements Search {
     @PostConstruct
     protected void init() {
         properties = request.getResource().getValueMap();
-        pageProperties = new HierarchyNodeInheritanceValueMap(currentPage.getContentResource());
     }
 
     public String getFormId() {
@@ -89,10 +88,10 @@ public class SearchImpl implements Search {
                     try {
                         results = searchProvider.getResults(request);
                     } catch (UnsafeSearchException e) {
-                        log.warn("An unsafe search was initiated. Aborting with prejudice. Returning zero results.");
+                        log.warn("An unsafe search was initiated. Aborting with prejudice. Returning zero results.", e);
                         results = Results.ERRING_RESULTS;
                     } catch (RepositoryException e) {
-                        log.error("An issue occurred while executing the query. Returning zero results.");
+                        log.error("An issue occurred while executing the query. Returning zero results.", e);
                         results = Results.ERRING_RESULTS;
                     }
                     break;
@@ -100,7 +99,7 @@ public class SearchImpl implements Search {
             }
 
             if (results == null) {
-                results = new ResultsImpl(Collections.EMPTY_LIST, 0);
+                results = new EmptyResultsImpl();
             }
         }
 

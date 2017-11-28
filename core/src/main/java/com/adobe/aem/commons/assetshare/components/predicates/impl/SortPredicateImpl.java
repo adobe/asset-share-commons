@@ -22,6 +22,7 @@ package com.adobe.aem.commons.assetshare.components.predicates.impl;
 import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.SortPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.impl.options.SelectedOptionItem;
+import com.adobe.aem.commons.assetshare.util.PredicateUtil;
 import com.adobe.cq.commerce.common.ValueMapDecorator;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
@@ -45,17 +46,19 @@ import java.util.List;
 )
 public class SortPredicateImpl extends AbstractPredicate implements SortPredicate {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/sort";
+
     protected ValueMap valuesFromRequest = null;
+
     @Self
     @Required
     private SlingHttpServletRequest request;
+
     @Self
     @Required
     private Options coreOptions;
 
     @PostConstruct
     protected void init() {
-        //coreOptions = request.adaptTo(Options.class);
         initPredicate(request, coreOptions);
     }
 
@@ -65,7 +68,7 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
         final List<OptionItem> processedOptionItems = new ArrayList<>();
 
         for (final OptionItem optionItem : coreOptions.getItems()) {
-            if (PredicateUtil.isOptionInInitialValues(getGroup(), optionItem, initialValues)) {
+            if (PredicateUtil.isOptionInInitialValues(optionItem, initialValues)) {
                 processedOptionItems.add(new SelectedOptionItem(optionItem));
             } else {
                 processedOptionItems.add(optionItem);

@@ -21,6 +21,7 @@ package com.adobe.aem.commons.assetshare.components.predicates.impl;
 
 import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.FulltextPredicate;
+import com.adobe.aem.commons.assetshare.util.PredicateUtil;
 import com.adobe.cq.commerce.common.ValueMapDecorator;
 import com.adobe.cq.wcm.core.components.models.form.Text;
 import com.day.cq.search.eval.FulltextPredicateEvaluator;

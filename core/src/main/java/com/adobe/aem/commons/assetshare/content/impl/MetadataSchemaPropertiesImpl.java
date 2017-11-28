@@ -79,10 +79,10 @@ public class MetadataSchemaPropertiesImpl implements MetadataProperties {
             final String type = properties.get("type", String.class);
             final String metaType = properties.get("metaType", String.class);
 
-            if (metadataFieldTypes.size() > 0) {
-                if (!metadataFieldTypes.contains(type) && !metadataFieldTypes.contains(metaType)) {
-                    return;
-                }
+            if (metadataFieldTypes.size() > 0 &&
+                    !metadataFieldTypes.contains(type) &&
+                    !metadataFieldTypes.contains(metaType)) {
+                return;
             }
 
             final String fieldLabel = properties.get("fieldLabel", String.class);

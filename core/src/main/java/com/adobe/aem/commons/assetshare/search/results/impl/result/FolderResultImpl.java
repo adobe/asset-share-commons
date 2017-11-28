@@ -17,7 +17,7 @@
  *
  */
 
-package com.adobe.aem.commons.assetshare.search.results.impl;
+package com.adobe.aem.commons.assetshare.search.results.impl.result;
 
 import com.adobe.aem.commons.assetshare.search.results.FolderResult;
 import com.adobe.aem.commons.assetshare.search.results.Size;
@@ -44,8 +44,6 @@ import java.util.Iterator;
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
 public class FolderResultImpl implements FolderResult {
-    private static final Logger log = LoggerFactory.getLogger(FolderResultImpl.class);
-
     private static final int MAX_SIZE = 1000;
 
     @Self
@@ -99,6 +97,7 @@ public class FolderResultImpl implements FolderResult {
         return resource.getPath();
     }
 
+    @SuppressWarnings("squid:S3776")
     public Size getSize() {
         if (size == null) {
             int count = 0;

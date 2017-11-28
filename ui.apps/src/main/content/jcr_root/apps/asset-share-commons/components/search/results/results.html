@@ -16,14 +16,14 @@
   ~ limitations under the License.
  */-->
 
-<sly    data-sly-use.config="com.adobe.aem.commons.assetshare.configuration.Config"
-        data-sly-use.predicate="com.adobe.aem.commons.assetshare.components.predicates.PagePredicate"
-        data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
-        data-sly-test.search="${modelCache['com.adobe.aem.commons.assetshare.search.Search']}"></sly>
+<sly    data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
+        data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
+        data-sly-test.search="${modelCache['com.adobe.aem.commons.assetshare.search.Search']}"
+        data-sly-test.pagePredicate="${modelCache['com.adobe.aem.commons.assetshare.components.predicates.PagePredicate']}"></sly>
 
 <form   role="search"
         class="ui form"
-        id="${predicate.formId}"
+        id="${pagePredicate.formId}"
         action="${currentPage.path @ extension = 'html'}"
         data-asset-share-action="${resource.path}"
         data-asset-share-id="form">

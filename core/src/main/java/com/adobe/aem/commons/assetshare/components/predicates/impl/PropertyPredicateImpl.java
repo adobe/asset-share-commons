@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.PropertyPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.impl.options.SelectedOptionItem;
 import com.adobe.aem.commons.assetshare.search.impl.predicateevaluators.PropertyValuesPredicateEvaluator;
+import com.adobe.aem.commons.assetshare.util.PredicateUtil;
 import com.adobe.cq.commerce.common.ValueMapDecorator;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
@@ -36,8 +37,6 @@ import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
@@ -53,7 +52,7 @@ import java.util.Map;
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
 public class PropertyPredicateImpl extends AbstractPredicate implements PropertyPredicate, Options {
-    private static final Logger log = LoggerFactory.getLogger(PropertyPredicateImpl.class);
+
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/property";
     protected static final String PN_TYPE = "type";
 
@@ -101,7 +100,7 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
         final List<OptionItem> processedOptionItems = new ArrayList<>();
 
         for (final OptionItem optionItem : coreOptions.getItems()) {
-            if (PredicateUtil.isOptionInInitialValues(getGroup(), optionItem, initialValues)) {
+            if (PredicateUtil.isOptionInInitialValues(optionItem, initialValues)) {
                 processedOptionItems.add(new SelectedOptionItem(optionItem));
                 foundValueFromRequest = true;
             } else {

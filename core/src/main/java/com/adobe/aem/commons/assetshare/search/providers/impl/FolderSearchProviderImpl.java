@@ -25,7 +25,7 @@ import com.adobe.aem.commons.assetshare.search.results.AssetResult;
 import com.adobe.aem.commons.assetshare.search.results.FolderResult;
 import com.adobe.aem.commons.assetshare.search.results.Result;
 import com.adobe.aem.commons.assetshare.search.results.Results;
-import com.adobe.aem.commons.assetshare.search.results.impl.ResultsImpl;
+import com.adobe.aem.commons.assetshare.search.results.impl.results.FolderResultsImpl;
 import com.day.cq.dam.commons.util.DamUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -41,7 +41,7 @@ import java.util.List;
 import static org.osgi.framework.Constants.SERVICE_RANKING;
 
 @Component(property = {
-        SERVICE_RANKING + ":Integer=0"
+        SERVICE_RANKING + ":Integer=-10000"
 })
 public class FolderSearchProviderImpl implements SearchProvider {
     private static final Logger log = LoggerFactory.getLogger(FolderSearchProviderImpl.class);
@@ -70,9 +70,9 @@ public class FolderSearchProviderImpl implements SearchProvider {
         final long timeTaken = System.currentTimeMillis() - start;
 
         if (folder == null) {
-            return new ResultsImpl(getRootContents(roots), timeTaken);
+            return new FolderResultsImpl(getRootContents(roots), timeTaken);
         } else {
-            return new ResultsImpl(getFolderContents(folder), timeTaken);
+            return new FolderResultsImpl(getFolderContents(folder), timeTaken);
         }
     }
 

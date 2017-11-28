@@ -47,7 +47,6 @@ import java.util.*;
         configurationPolicy = ConfigurationPolicy.REQUIRE
 )
 public class FilterablePropertiesDataSource extends SlingSafeMethodsServlet {
-    private static final Logger log = LoggerFactory.getLogger(FilterablePropertiesDataSource.class);
     private static final String PN_METADATA_FIELD_TYPES = "metadataFieldTypes";
     private static final String PN_PROPERTY_INDEX = "propertyIndex";
 

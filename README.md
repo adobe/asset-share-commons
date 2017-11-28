@@ -2,6 +2,10 @@
 
 This a content package project generated using the AEM Multimodule Lazybones template.
 
+### Documentation
+
+[https://adobe-marketing-cloud.github.io/asset-share-commons/](https://adobe-marketing-cloud.github.io/asset-share-commons/)
+
 ## Building
 
 This project uses Maven for building. Common commands:

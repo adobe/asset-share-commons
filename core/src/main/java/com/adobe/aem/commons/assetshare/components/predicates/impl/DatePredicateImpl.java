@@ -22,6 +22,7 @@ package com.adobe.aem.commons.assetshare.components.predicates.impl;
 import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.DatePredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.impl.options.SelectedOptionItem;
+import com.adobe.aem.commons.assetshare.util.PredicateUtil;
 import com.adobe.cq.commerce.common.ValueMapDecorator;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
@@ -34,8 +35,6 @@ import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -50,7 +49,7 @@ import java.util.List;
 )
 public class DatePredicateImpl extends AbstractPredicate implements DatePredicate {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/date-range";
-    private static final Logger log = LoggerFactory.getLogger(DatePredicateImpl.class);
+
     @Self
     @Required
     private SlingHttpServletRequest request;
@@ -95,7 +94,7 @@ public class DatePredicateImpl extends AbstractPredicate implements DatePredicat
         final List<OptionItem> processedOptionItems = new ArrayList<>();
 
         for (final OptionItem optionItem : coreOptions.getItems()) {
-            if (PredicateUtil.isOptionInInitialValues(getGroup(), optionItem, initialValues)) {
+            if (PredicateUtil.isOptionInInitialValues(optionItem, initialValues)) {
                 processedOptionItems.add(new SelectedOptionItem(optionItem));
             } else {
                 processedOptionItems.add((optionItem));

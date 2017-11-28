@@ -17,7 +17,7 @@
  *
  */
 
-package com.adobe.aem.commons.assetshare.search.results.impl;
+package com.adobe.aem.commons.assetshare.search.results.impl.result;
 
 import com.adobe.aem.commons.assetshare.content.impl.AssetModelImpl;
 import com.adobe.aem.commons.assetshare.search.results.AssetResult;

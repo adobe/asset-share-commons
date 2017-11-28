@@ -23,6 +23,39 @@ AssetShare.SemanticUI.Modal = (function ($, ns) {
 
     var tracker = [];
 
+    function isPreviewMode() {
+        var topWindow = $(window.top);
+
+        return topWindow.length > 0 &&
+            topWindow[0].Granite &&
+            topWindow[0].Granite.author &&
+            topWindow[0].Granite.author.layerManager &&
+            topWindow[0].Granite.author.layerManager.getCurrentLayerName &&
+            topWindow[0].Granite.author.layerManager.getCurrentLayerName() === 'Preview';
+    }
+
+    function onShowModalInPreviewMode(modal) {
+        var topWindow = $(window.top),
+            padding = 50,
+            scroll,
+            modalHeight,
+            top,
+            offset;
+
+        modal = $(modal);
+
+        scroll = $("#ContentScrollView", $(topWindow)[0].document).scrollTop();
+        modalHeight = modal.outerHeight();
+        top = scroll + (topWindow.height() - modalHeight)/2;
+        offset = ($(window).height()-scroll) - (modalHeight + padding);
+
+        if (offset < 0) {
+            top = top + offset;
+        }
+
+        modal.css('top', top + 'px').css('margin-top', '');
+    }
+
     function addToOpenModals(id) {
         if(tracker.indexOf(id) === -1) {
             tracker.push(id);
@@ -59,6 +92,9 @@ AssetShare.SemanticUI.Modal = (function ($, ns) {
                         closable: true,
                         onShow: function() {
                             addToOpenModals(modal.id);
+                            if (isPreviewMode()) {
+                                onShowModalInPreviewMode(this);
+                            }
                         },
                         onHidden: function() {
                             removeFromOpenModals(modal.id);
