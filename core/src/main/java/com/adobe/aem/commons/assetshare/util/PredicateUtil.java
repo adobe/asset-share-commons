@@ -69,20 +69,28 @@ public final class PredicateUtil {
      * @return true if {@param value} is in {@initialValues}.
      */
     public static boolean isOptionInInitialValues(String value, ValueMap initialValues) {
-        boolean found = false;
         for (final String key : initialValues.keySet()) {
-            if (initialValues.get(key) instanceof String) {
-                final String tmp = initialValues.get(key, String.class);
-                found = StringUtils.equals(tmp, value);
-            } else if (initialValues.get(key) instanceof String[]) {
-                final String[] tmp = initialValues.get(key, new String[]{});
-                found = ArrayUtils.contains(tmp, value);
-            }
-
-            if (found) {
+            if (isValueInValueMap(value, initialValues.get(key))) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * @param needle the value to check for.
+     * @param haystack they values to check if the {@param needle} is in (must be String or String[]).
+     * @return true is the needle exists in the haystack.
+     */
+    private static boolean isValueInValueMap(String needle, Object haystack) {
+        boolean found = false;
+
+        if (haystack instanceof String) {
+            found = StringUtils.equals((String) haystack, needle);
+        } else if (haystack instanceof String[]) {
+            found = ArrayUtils.contains((String[])haystack, needle);
+        }
+
+        return found;
     }
 }
