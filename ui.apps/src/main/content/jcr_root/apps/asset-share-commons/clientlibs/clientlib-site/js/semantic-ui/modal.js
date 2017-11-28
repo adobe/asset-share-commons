@@ -37,13 +37,17 @@ AssetShare.SemanticUI.Modal = (function ($, ns) {
     function onShowModalInPreviewMode(modal) {
         var topWindow = $(window.top),
             padding = 50,
-            modal = $(modal);
+            scroll,
+            modalHeight,
+            top,
+            offset;
 
-        var scroll = $("#ContentScrollView", $(topWindow)[0].document).scrollTop(),
-            modalHeight = modal.outerHeight(),
-            top = scroll + (topWindow.height() - modalHeight)/2,
-            // Offset to avoid the modal to disappear at the bottom
-            offset = ($(window).height()-scroll) - (modalHeight + padding);
+        modal = $(modal);
+
+        scroll = $("#ContentScrollView", $(topWindow)[0].document).scrollTop();
+        modalHeight = modal.outerHeight();
+        top = scroll + (topWindow.height() - modalHeight)/2;
+        offset = ($(window).height()-scroll) - (modalHeight + padding);
 
         if (offset < 0) {
             top = top + offset;
