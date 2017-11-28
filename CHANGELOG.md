@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [v1.0.2]
 
 ### Changed
 
@@ -21,6 +21,3 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0029: Resolve issue with WARN in logs over missing ACS Commons EmailService dependency. 
 - 0053: Fixed issue with broken log in and log out links
 - 0056: Updated pom.xml to include ui.content as a module. Updated ui.content/pom.xml so only gets built with profile of 'autoInstallPackage-all' and 'autoInstallPackagePublish-all'
-
-### Added
-### Removed
