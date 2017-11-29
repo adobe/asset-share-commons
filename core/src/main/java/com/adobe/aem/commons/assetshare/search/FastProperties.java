@@ -35,7 +35,7 @@ public interface FastProperties {
 
     /**
      * Checks if the /oak:index/damAssetLucene index (or whatever may be overridden via FastPropertiesImpl OSGi Config) has a indexRule property config with the a property named indexConfigFlagPropertyName set to true.
-     * If it does, this propertyName (ie. jcr:content/metdata/dc:title) is added to the return list.
+     * If it does, this propertyName (ie. jcr:content/metadata/dc:title) is added to the return list.
      * @param indexConfigFlagPropertyName the oak index property name that acts as the true/false flag to check.
      * @return a list of property paths as who are configured with @{param indexConfigFlagPropertyName} set to `true`
      */
@@ -56,7 +56,6 @@ public interface FastProperties {
 
     /**
      * @param label the label text
-     * @return the SLOW icon suffixed with the label.
      * @return the SLOW icon suffixed with the label.
      */
     String getSlowLabel(String label);

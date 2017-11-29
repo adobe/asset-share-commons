@@ -559,10 +559,8 @@
     <distributionManagement>
         <repository>
             <id>bintray</id>
-            <!-- Matches releaseRepository-Name in .settings.xml for the bintray profiles -->
             <name>asc-releases-asset-share-commons</name>
             <url>https://api.bintray.com/maven/asc/releases/asset-share-commons</url>
-            <!-- <url>https://api.bintray.com/maven/asc/releases/asset-share-commons/;publish=1</url> -->
         </repository>
     </distributionManagement>
 </project>
