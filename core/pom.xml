@@ -177,6 +177,15 @@
 						*.impl
 					</excludePackageNames>
 				</configuration>
+				<executions>
+					<execution>
+						<id>test-javadoc</id>
+						<goals>
+							<goal>javadoc</goal>
+						</goals>
+						<phase>test</phase>
+					</execution>
+				</executions>
 			</plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
