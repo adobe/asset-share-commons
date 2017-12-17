@@ -143,7 +143,7 @@ It is recommended to create a project specific theme to be used to style a proje
 * Light: `/apps/asset-share-commons/clientlibs/clientlib-theme/semanticui-light`
 * Dark:  `/apps/asset-share-commons/clientlibs/clientlib-theme/semanticui-dark`
 
-See the [Theming](../../theming) page for more details on customizing a theme. See here for a sample [clientlib based on Dark Theme](https://github.com/godanny86/sample-assetshare/tree/master/ui.apps/src/main/content/jcr_root/apps/sample-assetshare/clientlibs/clientlib-theme/semanticui-sample). Also see **Extend Theme Styles** below for a real-world scenario in extending the theme styles.
+See the [Theming](../theming) page for more details on customizing a theme. See here for a sample [clientlib based on Dark Theme](https://github.com/godanny86/sample-assetshare/tree/master/ui.apps/src/main/content/jcr_root/apps/sample-assetshare/clientlibs/clientlib-theme/semanticui-sample). Also see **Extend Theme Styles** below for a real-world scenario in extending the theme styles.
 
 ## Project Asset Placeholder
 
