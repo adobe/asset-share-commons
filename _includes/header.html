@@ -1,7 +1,13 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>{{ site.title }}</title>
+    
+    {% if site.title == page.title %}
+        <title>{{ site.title }}</title>
+    {% elsif %}
+        <title>{{ page.title }} | {{ site.title }}</title>
+    {% endif %}
+    
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <meta name="google-site-verification" content="nxGc4FuU-7YLqfNeEnRy3dIJI6uKzYpkPMCuDb7Dtqs" />
