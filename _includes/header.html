@@ -2,10 +2,10 @@
 <html>
 <head>
     
-    {% if site.title == page.title %}
-        <title>{{ site.title }}</title>
-    {% elsif %}
+    {% if page.title %}
         <title>{{ page.title }} | {{ site.title }}</title>
+    {% else %}
+        <title>{{ site.title }}</title>
     {% endif %}
     
     <meta charset="utf-8" />
@@ -31,3 +31,4 @@
 
 <!-- Wrapper -->
 <div id="wrapper">
+    >{{ page.title }}<
