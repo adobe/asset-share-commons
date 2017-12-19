@@ -24,6 +24,7 @@ AssetShare.Cart = (function ($, ns, contextHubStore) {
     var EVENT_CART_ADD = "asset-share-commons.cart.add",
         EVENT_CART_REMOVE = "asset-share-commons.cart.remove",
         EVENT_CART_UPDATE = "asset-share-commons.cart.update",
+        EVENT_CART_CLEAR = "asset-share-commons.cart.clear",
         EVENT_CART_ALREADY_EXISTS = "asset-share-commons.cart.exists";
 
     function enabled() {
@@ -98,6 +99,7 @@ AssetShare.Cart = (function ($, ns, contextHubStore) {
             contextHubStore.clear();
 
             $("body").trigger(EVENT_CART_UPDATE, [getSize(), getPaths()]);
+            $("body").trigger(EVENT_CART_CLEAR, [getSize(), getPaths()]);
         }
     }
 
