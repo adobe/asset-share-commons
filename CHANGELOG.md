@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 ### Fixed
 ### Added
+- 0090: Added asset-share-commons.cart.clear JavaScript event when cart is cleared
 ### Removed
 
 ## [v1.0.2]
