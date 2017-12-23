@@ -2,5 +2,6 @@
 
 search-form.js
 search.js
+quick-actions.js
 
 plug-ins/search-infinite-scroll.js
