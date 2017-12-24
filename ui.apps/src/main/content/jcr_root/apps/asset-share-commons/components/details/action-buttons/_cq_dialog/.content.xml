@@ -82,12 +82,12 @@
                                             fieldLabel="Add to Cart Label"
                                             name="./addToCartLabel"/>
                                     <remove-from-cart-label
-                                        jcr:primaryType="nt:unstructured"
-                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                        emptyText="Remove From Cart"
-                                        fieldDescription="Label for the remove from cart button."
-                                        fieldLabel="Remove From Cart Label"
-                                        name="./removeFromCartLabel"/>
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Remove From Cart"
+                                            fieldDescription="Label for the remove from cart button."
+                                            fieldLabel="Remove From Cart Label"
+                                            name="./removeFromCartLabel"/>
                                 </items>
                             </column>
                         </items>
