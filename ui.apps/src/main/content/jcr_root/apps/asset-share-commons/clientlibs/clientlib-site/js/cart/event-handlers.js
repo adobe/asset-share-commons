@@ -50,7 +50,7 @@ jQuery((function($, ns, cart) {
 
 	function handleButtonsUpdateOnDetails() {
 		var asset = element.find('[data-asset-share-id="'+ REMOVE_FROM_CART + '"]'),
-			assetPath = asset.data('asset-share-asset');
+		    assetPath = asset.data('asset-share-asset');
 		flipAction(assetPath, element);
 	}
 
@@ -80,8 +80,8 @@ jQuery((function($, ns, cart) {
 	
 	function toggleCartButtons(addOperation, paths) {
 		var showState = REMOVE_FROM_CART,
-			hideState = ADD_TO_CART,
-			$el;
+		    hideState = ADD_TO_CART,
+		    $el;
 		if (!addOperation) {
 			showState = ADD_TO_CART;
 			hideState = REMOVE_FROM_CART;
