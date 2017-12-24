@@ -72,14 +72,12 @@ jQuery((function($, ns, cart) {
 
 	function flipAction(assetPath, div) {
 		if (cart.contains(assetPath)) {
-			div.find('[data-asset-share-id="'+ ADD_TO_CART + '"]').hide();
-			div.find('[data-asset-share-id="'+ REMOVE_FROM_CART + '"]').show();
+			toggleCartButtons(true, assetPath);
 		} else {
-			div.find('[data-asset-share-id="'+ ADD_TO_CART + '"]').show();
-			div.find('[data-asset-share-id="'+ REMOVE_FROM_CART + '"]').hide();
+			toggleCartButtons(false, assetPath);
 		}
 	}
-
+	
 	function toggleCartButtons(addOperation, paths) {
 		var showState = REMOVE_FROM_CART,
 			hideState = ADD_TO_CART,
