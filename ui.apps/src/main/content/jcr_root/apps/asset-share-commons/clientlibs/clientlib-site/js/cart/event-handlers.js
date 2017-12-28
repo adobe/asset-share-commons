@@ -19,17 +19,15 @@
 /*global jQuery: false, AssetShare: false, handleButtonsUpdateOnDetails, handleBulkCartButtonsUpdate, toggleCartButtons, flipAction  */
 jQuery((function($, ns, cart) {
 	"use strict";
-	var element,
-		ADD_TO_CART = "add-to-cart",
+	var ADD_TO_CART = "add-to-cart",
 		REMOVE_FROM_CART = "remove-from-cart",
-		EVENT_DETAILS_PAGE_LOAD = "asset-share-commons.details.load",
+		EVENT_PAGE_LOAD = "asset-share-commons.page.load",
 		EVENT_SEARCH_END = "asset-share-commons.search.end",
 		EVENT_CART_CLEAR = "asset-share-commons.cart.clear",
 		EVENT_CART_ADD = "asset-share-commons.cart.add",
 		EVENT_CART_REMOVE = "asset-share-commons.cart.remove";
-	$("body").on(EVENT_DETAILS_PAGE_LOAD,function(event, actionButtons) {
-		element = actionButtons;
-		handleButtonsUpdateOnDetails();
+	$("body").on(EVENT_PAGE_LOAD,function(event, actionButtons) {
+		handleBulkCartButtonsUpdate();
 	});
 
 	$("body").on(EVENT_SEARCH_END, function(event, search) {
@@ -48,29 +46,17 @@ jQuery((function($, ns, cart) {
 		toggleCartButtons(false, paths);
 	});
 
-	function handleButtonsUpdateOnDetails() {
-		var asset = element.find('[data-asset-share-id="'+ REMOVE_FROM_CART + '"]'),
-		    assetPath = asset.data('asset-share-asset');
-		flipAction(assetPath, element);
-	}
-
 	function handleBulkCartButtonsUpdate() {
-		var $el, asset, assetPath;
-		if (element !== undefined) {
-			$el = element;
-			asset = $el.find('[data-asset-share-id="'+ REMOVE_FROM_CART + '"]');
-			assetPath = asset.data('asset-share-asset');
-			flipAction(assetPath, $el);
-		} else {
-			$el = $('[data-asset-share-id="results-content"]');
-			$el.find('[data-asset-share-id="asset"]').each(function(index) {
+		var assetPath;
+		if($('[data-asset-share-id="add-to-cart"]').length > 0){
+			$('[data-asset-share-id="add-to-cart"]').each(function(index) {
 				assetPath = ns.Data.attr(this, "asset");
-				flipAction(assetPath, $(this));
+				flipAction(assetPath);
 			});
 		}
 	}
 
-	function flipAction(assetPath, div) {
+	function flipAction(assetPath) {
 		if (cart.contains(assetPath)) {
 			toggleCartButtons(true, assetPath);
 		} else {
@@ -86,14 +72,15 @@ jQuery((function($, ns, cart) {
 			showState = ADD_TO_CART;
 			hideState = REMOVE_FROM_CART;
 		}
-
-		if (element !== undefined) {
-			$el = element;
-		} else {
-			$el = $('[data-asset-share-asset="' + paths + '"]');
+		
+		$el = $('[data-asset-share-asset="' + paths + '"]');
+		if($el.find('[data-asset-share-id="' + showState + '"]').length > 0 ){
+			$el.find('[data-asset-share-id="' + showState + '"]').removeClass("hidden");
+			$el.find('[data-asset-share-id="' + hideState + '"]').addClass("hidden");
+		}else{
+			$('[data-asset-share-id="' + showState + '"]').removeClass("hidden");
+			$('[data-asset-share-id="' + hideState + '"]').addClass("hidden");
 		}
-		$el.find('[data-asset-share-id="' + showState + '"]').show();
-		$el.find('[data-asset-share-id="' + hideState + '"]').hide();
 	}
 
 }(jQuery, AssetShare, AssetShare.Cart)));

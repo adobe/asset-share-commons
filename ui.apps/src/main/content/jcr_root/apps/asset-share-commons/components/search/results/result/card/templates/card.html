@@ -78,8 +78,7 @@
                             data-sly-test="${config.cartEnabled}">${'Add to Cart' @ i18n}</button>
                 </span>
                 <span class="action">
-                    <button class="ui link button"
-			    style="display: none;"
+                    <button class="ui link button hidden"
                             data-asset-share-id="remove-from-cart"
                             data-asset-share-asset="${asset.path}"
                             data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}"

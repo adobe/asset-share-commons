@@ -2,3 +2,4 @@
 
 cart.js
 event-handlers.js
+cart-actions.js
