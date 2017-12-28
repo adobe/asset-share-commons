@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-/*global jQuery: false, AssetShare: false, handleButtonsUpdateOnDetails, handleBulkCartButtonsUpdate, toggleCartButtons, flipAction  */
+/*global jQuery: false, AssetShare: false, handleCartButtonsUpdate, toggleCartButtons, flipAction  */
 jQuery((function($, ns, cart) {
 	"use strict";
 	var ADD_TO_CART = "add-to-cart",
@@ -27,15 +27,15 @@ jQuery((function($, ns, cart) {
 		EVENT_CART_ADD = "asset-share-commons.cart.add",
 		EVENT_CART_REMOVE = "asset-share-commons.cart.remove";
 	$("body").on(EVENT_PAGE_LOAD,function(event, actionButtons) {
-		handleBulkCartButtonsUpdate();
+		handleCartButtonsUpdate();
 	});
 
 	$("body").on(EVENT_SEARCH_END, function(event, search) {
-		handleBulkCartButtonsUpdate();
+		handleCartButtonsUpdate();
 	});
 
 	$("body").on(EVENT_CART_CLEAR, function(event, search) {
-		handleBulkCartButtonsUpdate();
+		handleCartButtonsUpdate();
 	});
 
 	$("body").on(EVENT_CART_ADD, function(event, size, paths) {
@@ -46,7 +46,7 @@ jQuery((function($, ns, cart) {
 		toggleCartButtons(false, paths);
 	});
 
-	function handleBulkCartButtonsUpdate() {
+	function handleCartButtonsUpdate() {
 		var assetPath;
 		if($('[data-asset-share-id="add-to-cart"]').length > 0){
 			$('[data-asset-share-id="add-to-cart"]').each(function(index) {
