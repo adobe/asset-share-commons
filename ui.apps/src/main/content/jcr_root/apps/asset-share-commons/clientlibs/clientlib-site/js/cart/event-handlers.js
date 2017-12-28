@@ -20,12 +20,12 @@
 jQuery((function($, ns, cart) {
 	"use strict";
 	var ADD_TO_CART = "add-to-cart",
-		REMOVE_FROM_CART = "remove-from-cart",
-		EVENT_PAGE_LOAD = "asset-share-commons.page.load",
-		EVENT_SEARCH_END = "asset-share-commons.search.end",
-		EVENT_CART_CLEAR = "asset-share-commons.cart.clear",
-		EVENT_CART_ADD = "asset-share-commons.cart.add",
-		EVENT_CART_REMOVE = "asset-share-commons.cart.remove";
+	    REMOVE_FROM_CART = "remove-from-cart",
+	    EVENT_PAGE_LOAD = "asset-share-commons.page.load",
+	    EVENT_SEARCH_END = "asset-share-commons.search.end",
+	    EVENT_CART_CLEAR = "asset-share-commons.cart.clear",
+	    EVENT_CART_ADD = "asset-share-commons.cart.add",
+	    EVENT_CART_REMOVE = "asset-share-commons.cart.remove";
 	$("body").on(EVENT_PAGE_LOAD,function(event, actionButtons) {
 		handleCartButtonsUpdate();
 	});
