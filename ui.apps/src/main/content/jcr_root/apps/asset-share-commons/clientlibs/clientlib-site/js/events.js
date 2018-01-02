@@ -17,12 +17,23 @@
  */
 
 /*global jQuery: false, AssetShare: false */
-jQuery((function($, ns) {
-	"use strict";
-	$(document).ready(function() {
-		if ($('[data-asset-share-id="add-to-cart"]').length > 0) {
-			$("body").trigger("asset-share-commons.page.load");
-		}
-	});
 
-}(jQuery, AssetShare)));
+AssetShare.Events = {
+    CART_ADD: "asset-share-commons.cart.add",
+    CART_REMOVE: "asset-share-commons.cart.remove",
+    CART_UPDATE: "asset-share-commons.cart.update",
+    CART_CLEAR: "asset-share-commons.cart.clear",
+    CART_ALREADY_EXISTS: "asset-share-commons.cart.exists",
+
+	PAGE_LOAD: "asset-share-commons.page.load",
+
+    SEARCH_BEGIN: "asset-share-commons.search.begin",
+    SEARCH_END: "asset-share-commons.search.end"
+};
+
+jQuery((function($) {
+	"use strict";
+
+	// Always trigger this event on Asset Share Commons pages
+	$("body").trigger("asset-share-commons.page.load");
+}(jQuery)));

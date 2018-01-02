@@ -249,7 +249,8 @@
                         jcr:lastModifiedBy="admin"
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="asset-share-commons/components/details/action-buttons"
-                        cartLabel="Add to Cart"
+                        addToCartLabel="Add to Cart"
+                        removeFromCartLabel="Remove from Cart"
                         downloadLabel="Download"
                         label="Actions"
                         shareLabel="Share">

@@ -16,7 +16,6 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
 <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
           xmlns:jcr="http://www.jcp.org/jcr/1.0"
           xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
@@ -75,22 +74,22 @@
                         </cart-add-fieldset>
 
 
-                        <!-- Already Exists In Cart Message -->
-                        <cart-exists-fieldset
+                        <!-- ARemove from Cart Message -->
+                        <cart-remove-fieldset
                                 jcr:primaryType="nt:unstructured"
-                                jcr:title="Assets Already Exists in Cart"
+                                jcr:title="Asset Removed from Cart"
                                 sling:resourceType="granite/ui/components/coral/foundation/form/fieldset">
                             <items jcr:primaryType="nt:unstructured">
                                 <event-id
                                         jcr:primaryType="nt:unstructured"
                                         sling:resourceType="granite/ui/components/coral/foundation/form/hidden"
-                                        value="cart-exists"
-                                        name="./config/messages/cart-exists/eventId"/>
+                                        value="cart-remove"
+                                        name="./config/messages/cart-remove/eventId"/>
                                 <style
                                         jcr:primaryType="nt:unstructured"
                                         sling:resourceType="granite/ui/components/coral/foundation/form/select"
                                         fieldLabel="Message Style"
-                                        name="./config/messages/cart-exists/style">
+                                        name="./config/messages/cart-remove/style">
                                     <items jcr:primaryType="nt:unstructured">
                                         <success jcr:primaryType="nt:unstructured"
                                                  text="Success"
@@ -110,9 +109,9 @@
                                         jcr:primaryType="nt:unstructured"
                                         sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
                                         fieldLabel="Message Text"
-                                        name="./config/messages/cart-exists/text"/>
+                                        name="./config/messages/cart-remove/text"/>
                             </items>
-                        </cart-exists-fieldset>
+                        </cart-remove-fieldset>
                     </items>
                 </fieldset>
             </items>

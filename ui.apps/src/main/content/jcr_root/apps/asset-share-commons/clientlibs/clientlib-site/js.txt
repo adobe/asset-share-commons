@@ -8,6 +8,7 @@ data.js
 navigation.js
 form-data.js
 ajax.js
+events.js
 
 
 
