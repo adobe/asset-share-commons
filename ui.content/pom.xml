@@ -19,17 +19,7 @@
 	<name>Asset Share Commons UI.Content Package</name>
 	<description>Sample content for Asset Share Commons project.</description>
 
-	<scm>
-		<developerConnection>scm:git:git@github.com:Adobe-Marketing-Cloud/asset-share-commons.git</developerConnection>
-		<tag>HEAD</tag>
-	</scm>
-
 	<dependencies>
-		<dependency>
-			<groupId>com.adobe.aem.commons</groupId>
-			<artifactId>assetshare.core</artifactId>
-			<version>1.0.3-SNAPSHOT</version>
-		</dependency>
 		<dependency>
 			<groupId>org.osgi</groupId>
 			<artifactId>org.osgi.core</artifactId>
@@ -115,28 +105,6 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jslint-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>jslint</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<sourceJsFolder>src/main/content/jcr_root</sourceJsFolder>
-					<failOnIssues>true</failOnIssues>
-					<predefinedVars>jQuery,window,$,use,properties,pageProperties,inheritedPageProperties,component,componentContext,currentDesign,currentNode,currentPage,currentSession,currentStyle,designer,editContext,log,out,pageManager,reader,request,resource,resourceDesign,resourcePage,response,sling,slyWcmHelper,wcmmode,xssAPI,Bloodhound</predefinedVars>
-					<excludes>
-						<exclude>**/extensions/**/*.js</exclude>
-						<exclude>**/vendor/**/*.js</exclude>
-						<exclude>**/clientlib-theme/**/*.js</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-
-			<plugin>
 				<groupId>com.day.jcr.vault</groupId>
 				<artifactId>content-package-maven-plugin</artifactId>
 				<extensions>true</extensions>
@@ -208,10 +176,4 @@
 			</build>
 		</profile>
 	</profiles>
-	<distributionManagement>
-		<repository>
-			<id>bintray</id>
-			<url>https://api.bintray.com/maven/asc/releases/asset-share-commons</url>
-		</repository>
-	</distributionManagement>
 </project>

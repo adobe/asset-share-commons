@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 ### Fixed
+
+- 0074: Removed unused configurations (originally added for release purposes) from ui.content pom.xml
+
 ### Added
 - 0090: Added asset-share-commons.cart.clear JavaScript event when cart is cleared
 ### Removed
