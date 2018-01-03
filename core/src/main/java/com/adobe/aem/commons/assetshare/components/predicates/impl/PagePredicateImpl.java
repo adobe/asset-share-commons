@@ -22,9 +22,11 @@ package com.adobe.aem.commons.assetshare.components.predicates.impl;
 import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.HiddenPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.PagePredicate;
+import com.adobe.aem.commons.assetshare.components.predicates.Predicate;
 import com.adobe.aem.commons.assetshare.util.ComponentModelVisitor;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
 import com.day.cq.dam.api.DamConstants;
+import com.day.cq.search.eval.TypePredicateEvaluator;
 import com.day.cq.wcm.api.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -173,10 +175,10 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
     }
 
     public Map<String, String> getParams() {
-        int systemGroupId = Integer.MAX_VALUE;
+        int systemGroupId = -1;
         final Map<String, String> params = new HashMap<>();
 
-        params.put("type", DamConstants.NT_DAM_ASSET);
+        params.put(TypePredicateEvaluator.TYPE, DamConstants.NT_DAM_ASSET);
 
         int i = 0;
         final String pathGroup = String.valueOf(systemGroupId--) + "_group";
@@ -190,9 +192,8 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
             params.putAll(hiddenPredicate.getParams(systemGroupId--));
         }
 
-        params.put("p.limit", String.valueOf(getLimit()));
-        params.put("p.guessTotal", getGuessTotal());
-
+        params.put("p." + com.day.cq.search.Predicate.PARAM_LIMIT, String.valueOf(getLimit()));
+        params.put("p." + com.day.cq.search.Predicate.PARAM_GUESS_TOTAL, getGuessTotal());
 
         return params;
     }

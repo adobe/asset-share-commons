@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Changed
+
+- 0080: Set for Predicate components, update the groupId to be derived from the predicate component resource. 
+
 ### Fixed
 
 - 0074: Removed unused configurations (originally added for release purposes) from ui.content pom.xml

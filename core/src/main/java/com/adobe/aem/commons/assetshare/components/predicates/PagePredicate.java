@@ -19,20 +19,42 @@
 
 package com.adobe.aem.commons.assetshare.components.predicates;
 
+import org.apache.sling.api.resource.ValueMap;
+
 import java.util.List;
 import java.util.Map;
 
 public interface PagePredicate extends Predicate {
 
+    /**
+     * @return the QueryBuilder order by property as exposed by the PagePredicate Model.
+     */
     String getOrderBy();
 
+    /**
+     * @return the QueryBuilder order by direction  as exposed by the PagePredicate Model.
+     */
     String getOrderBySort();
 
+    /**
+     * @return the QueryBuilder limit as exposed by the PagePredicate Model.
+     */
     int getLimit();
 
+    /**
+     * @return the QueryBuilder guessTotal as exposed by the PagePredicate Model.
+     */
     String getGuessTotal();
 
+    /**
+     * @return the QueryBuilder paths as exposed by the PagePredicate Model.
+     */
     List<String> getPaths();
 
+    /**
+     * Note that these groups for the PagePredicate are always < 0 to avoid collisions with user provided params.
+     *
+     * @return the QueryBuilder param map that represents the PredicateModel.
+     */
     Map<String, String> getParams();
 }
