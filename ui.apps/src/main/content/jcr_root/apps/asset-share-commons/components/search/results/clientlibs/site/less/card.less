@@ -45,9 +45,23 @@
     justify-content: space-between;
     min-height: 2rem;
 
-    li .ui.button {
-      margin: 0;
-      min-width: 60px;
+    li {
+      .ui.button {
+        margin: 0;
+        min-width: 60px;
+      }
+
+      &:last-child {
+        .ui.button {
+          text-align: right;
+        }
+      }
+
+      &:first-child {
+        .ui.button {
+          text-align: left;
+        }
+      }
     }
   }
 }
