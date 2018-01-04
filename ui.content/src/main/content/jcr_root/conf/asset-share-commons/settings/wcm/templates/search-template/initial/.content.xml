@@ -72,6 +72,7 @@
                         jcr:primaryType="nt:unstructured"
                         jcr:title="TYPE"
                         sling:resourceType="asset-share-commons/components/search/property"
+                        predicateGroupId="{Long}1"
                         operation="equals"
                         property="jcr:content/metadata/dc:format"
                         source="local"
@@ -107,6 +108,7 @@
                         jcr:primaryType="nt:unstructured"
                         jcr:title="LAST MODIFIED"
                         sling:resourceType="asset-share-commons/components/search/date-range"
+                        predicateGroupId="{Long}2"
                         dateType="relativedaterange"
                         property="jcr:content/jcr:lastModified"
                         type="radio">
@@ -133,6 +135,7 @@
                         jcr:primaryType="nt:unstructured"
                         jcr:title="CREATED"
                         sling:resourceType="asset-share-commons/components/search/date-range"
+                        predicateGroupId="{Long}3"
                         dateType="daterange"
                         endPlaceholder="End Date"
                         property="jcr:created"
@@ -147,6 +150,7 @@
                         jcr:primaryType="nt:unstructured"
                         jcr:title="STYLE"
                         sling:resourceType="asset-share-commons/components/search/tags"
+                        predicateGroupId="{Long}4"
                         operation="equals"
                         type="slider"/>
                     <tags_1940742412
@@ -158,6 +162,7 @@
                         jcr:primaryType="nt:unstructured"
                         jcr:title="ORIENTATION"
                         sling:resourceType="asset-share-commons/components/search/tags"
+                        predicateGroupId="{Long}5"
                         operation="equals"
                         type="toggle"/>
                     <hidden

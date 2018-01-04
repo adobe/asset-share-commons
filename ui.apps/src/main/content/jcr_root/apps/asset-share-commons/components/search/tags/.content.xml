@@ -23,4 +23,5 @@
     sling:resourceSuperType="asset-share-commons/components/search/property"
     componentGroup="Asset Share Commons - Search"
     cq:icon="tags"
+    generatePredicateGroupId="{Boolean}true"
     jcr:description="Allows a user to filter search results based on cq:tags"/>
