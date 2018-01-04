@@ -1,6 +1,5 @@
 package com.adobe.aem.commons.assetshare.components.predicates.impl.postprocessor;
 
-import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.commons.WCMUtils;
@@ -14,11 +13,7 @@ import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.jcr.resource.api.JcrResourceConstants;
 import org.apache.sling.servlets.post.Modification;
 import org.apache.sling.servlets.post.SlingPostProcessor;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.metatype.annotations.AttributeDefinition;
-import org.osgi.service.metatype.annotations.Designate;
-import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
 import java.util.Collection;
 import java.util.List;
@@ -28,7 +23,7 @@ import java.util.TreeSet;
 @Component(service = SlingPostProcessor.class)
 public class PredicateGroupIdPostProcessor implements SlingPostProcessor {
     public static final String PN_GROUP_ID = "predicateGroupId";
-    public static final String PN_GENERATE_GROUP_ID = "generateGroupId";
+    public static final String PN_GENERATE_GROUP_ID = "generatePredicateGroupId";
     @Override
     synchronized public void process(final SlingHttpServletRequest request, final List<Modification> list) throws Exception {
 
