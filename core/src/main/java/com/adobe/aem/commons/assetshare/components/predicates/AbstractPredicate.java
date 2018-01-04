@@ -19,17 +19,20 @@
 
 package com.adobe.aem.commons.assetshare.components.predicates;
 
+import com.adobe.aem.commons.assetshare.components.predicates.impl.postprocessor.PredicateGroupIdPostProcessor;
 import com.adobe.cq.wcm.core.components.models.form.Field;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.Default;
+import org.apache.sling.models.annotations.Optional;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
+import javax.inject.Named;
+
 public abstract class AbstractPredicate implements Predicate {
-    private static final String REQUEST_ATTR_PREDICATE_GROUP_TRACKER = "asset-share-commons__predicate-group";
     private static final String REQUEST_ATTR_FORM_ID_TRACKER = "asset-share-commons__form-id";
 
     @Self
@@ -38,9 +41,13 @@ public abstract class AbstractPredicate implements Predicate {
 
     @ValueMapValue
     @Default(booleanValues = false)
+    @Optional
     private boolean expanded;
 
-    private int group = 1;
+    @ValueMapValue @Named(PredicateGroupIdPostProcessor.PN_GROUP_ID)
+    @Optional
+    @Default(longValues = -1l)
+    private Long groupId;
 
     private Field coreField;
 
@@ -58,7 +65,11 @@ public abstract class AbstractPredicate implements Predicate {
     }
 
     public String getGroup() {
-        return group + "_group";
+        if (groupId < 0) {
+            return String.valueOf(Math.abs(request.getResource().getPath().hashCode() - 1)) + "_group";
+        } else {
+            return groupId + "_group";
+        }
     }
 
     public String getInitialValue() {
@@ -70,11 +81,7 @@ public abstract class AbstractPredicate implements Predicate {
     }
 
     public String getId() {
-        if (request.getResource() != null) {
-            return getName() + "_" + String.valueOf(request.getResource().getPath().hashCode());
-        } else {
-            return coreField.getId();
-        }
+        return getName() + "_" + coreField.getId();
     }
 
     /**
@@ -115,22 +122,5 @@ public abstract class AbstractPredicate implements Predicate {
      */
     protected final void initPredicate(final SlingHttpServletRequest request, final Field coreField) {
         this.coreField = coreField;
-        initGroup(request);
-    }
-
-    /**
-     * Initializes the predicate group number from the tracking request attribute, and increments for the next Sling Model calling this method.
-     *
-     * @param request the current SlingHttpServletRequest object.
-     */
-    protected synchronized final void initGroup(final SlingHttpServletRequest request) {
-        /* Track Predicate Groups across Request */
-
-        final Object groupTracker = request.getAttribute(REQUEST_ATTR_PREDICATE_GROUP_TRACKER);
-        if (groupTracker != null && (groupTracker instanceof Integer)) {
-            group = (Integer) groupTracker + 1;
-        }
-
-        request.setAttribute(REQUEST_ATTR_PREDICATE_GROUP_TRACKER, group);
     }
 }
