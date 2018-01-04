@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Changed
+
+- 0080: Search predicate components now set the predicate group id via a SlingPostProcessor.
+
 ### Fixed
 
 - 0074: Removed unused configurations (originally added for release purposes) from ui.content pom.xml

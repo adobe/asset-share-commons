@@ -1,10 +1,8 @@
 package com.adobe.aem.commons.assetshare.util;
 
+import com.adobe.aem.commons.assetshare.util.impl.AbstractSlingResourceTypeResourceVisitor;
 import org.apache.sling.api.SlingHttpServletRequest;
-import org.apache.sling.api.resource.AbstractResourceVisitor;
 import org.apache.sling.api.resource.Resource;
-import org.apache.sling.api.resource.ValueMap;
-import org.apache.sling.jcr.resource.api.JcrResourceConstants;
 import org.apache.sling.models.factory.ModelFactory;
 
 import java.util.ArrayList;
@@ -17,7 +15,7 @@ import java.util.Collection;
  *
  * @param <T> The Model type to collect.
  */
-public final class ComponentModelVisitor<T> extends AbstractResourceVisitor {
+public final class ComponentModelVisitor<T> extends AbstractSlingResourceTypeResourceVisitor {
     final Collection<T> models = new ArrayList<>();
     final Collection<Resource> resources = new ArrayList<>();
 
@@ -58,18 +56,6 @@ public final class ComponentModelVisitor<T> extends AbstractResourceVisitor {
         return resources;
     }
 
-    @Override
-    /**
-     * {@inheritDoc}
-     **/
-    public final void accept(Resource resource) {
-        final ValueMap properties = resource.getValueMap();
-
-        // Only traverse resources that have a sling:resourceType; those without sling:resourceTypes are not components and simply sub-component configurations resources (such as Option lists)
-        if (properties.get(JcrResourceConstants.SLING_RESOURCE_TYPE_PROPERTY, String.class) != null) {
-            super.accept(resource);
-        }
-    }
 
     @Override
     protected final void visit(Resource resource) {
