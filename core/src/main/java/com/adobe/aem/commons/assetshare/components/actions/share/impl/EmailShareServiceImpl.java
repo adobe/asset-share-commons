@@ -17,6 +17,16 @@
  *
  */
 
+/**
+ * This file is a copy-down of the ACS AEM Commons Email Service feature with slight modifications.
+ * This copy-down was necessary due to issues with OSGi service resolution when the service was
+ * provided by the ACS AEM Commons project.
+ *
+ * > https://adobe-consulting-services.github.io/acs-aem-commons/features/e-mail/email-api/index.html
+ *
+ * Please see the above ACS AEM Commons copyright for copyright details.
+ **/
+
 package com.adobe.aem.commons.assetshare.components.actions.share.impl;
 
 import com.adobe.acs.commons.email.EmailService;
@@ -69,7 +79,7 @@ public class EmailShareServiceImpl implements ShareService {
 
     private Cfg cfg;
 
-    @Reference(policy = ReferencePolicy.DYNAMIC)
+    @Reference
     private EmailService emailService;
 
     @Reference
