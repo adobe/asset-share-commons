@@ -3,7 +3,7 @@
 *******************************/
 
 /* Card */
-@width: 303px;
+@width: 255px;
 @contentFontSize: .9em;
 @medium: .9em;
 @groupCardMargin: (@rowSpacing / 2) auto;
