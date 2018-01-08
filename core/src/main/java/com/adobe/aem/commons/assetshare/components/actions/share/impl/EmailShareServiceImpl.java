@@ -29,13 +29,13 @@
 
 package com.adobe.aem.commons.assetshare.components.actions.share.impl;
 
-import com.adobe.acs.commons.email.EmailService;
 import com.adobe.aem.commons.assetshare.components.actions.share.EmailShare;
 import com.adobe.aem.commons.assetshare.components.actions.share.ShareException;
 import com.adobe.aem.commons.assetshare.components.actions.share.ShareService;
 import com.adobe.aem.commons.assetshare.configuration.AssetDetailsResolver;
 import com.adobe.aem.commons.assetshare.configuration.Config;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.aem.commons.assetshare.util.EmailService;
 import com.adobe.granite.security.user.UserProperties;
 import com.adobe.granite.security.user.UserPropertiesManager;
 import com.day.cq.commons.Externalizer;
