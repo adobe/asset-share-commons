@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - 0074: Removed unused configurations (originally added for release purposes) from ui.content pom.xml
+- 0080: Handle the numbering of predicate search components after insert, and made group numbering mode logical.
 
 ### Added
 - 0090: Added asset-share-commons.cart.clear JavaScript event when cart is cleared
