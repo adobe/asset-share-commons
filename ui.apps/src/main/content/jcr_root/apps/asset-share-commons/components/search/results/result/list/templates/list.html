@@ -59,22 +59,26 @@
   				<div class="menu">
   					<div class="item"
   					     data-asset-share-id="download-asset"
-						 data-asset-share-asset="${asset.path}"
-						 data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}"
-						 data-sly-test="${config.downloadEnabled}">${'Download' @ i18n}</div>
+					     data-asset-share-asset="${asset.path}"
+					     data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}"
+					     data-sly-test="${config.downloadEnabled}">${'Download' @ i18n}</div>
   					<div class="item"
   					     data-asset-share-id="share-asset"
-						 data-asset-share-asset="${asset.path}"
-						 data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}"
-						 data-sly-test="${config.shareEnabled}">${'Share' @ i18n}</div>
+					     data-asset-share-asset="${asset.path}"
+					     data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}"
+					     data-sly-test="${config.shareEnabled}">${'Share' @ i18n}</div>
   					<div class="item"
   					     data-asset-share-id="add-to-cart"
-						 data-asset-share-asset="${asset.path}"
-						 data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}"
-						 data-sly-test="${config.cartEnabled}">${'Add to Cart' @ i18n}</div>
+					     data-asset-share-asset="${asset.path}"
+					     data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}"
+					     data-sly-test="${config.cartEnabled}">${'Add to Cart' @ i18n}</div>
+					<div class="item hidden"
+  					     data-asset-share-id="remove-from-cart"
+					     data-asset-share-asset="${asset.path}"
+					     data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}"
+					     data-sly-test="${config.cartEnabled}">${'Remove From Cart' @ i18n}</div>
   				</div>
 			</div>
-			
 		</td>
 	</tr>
 

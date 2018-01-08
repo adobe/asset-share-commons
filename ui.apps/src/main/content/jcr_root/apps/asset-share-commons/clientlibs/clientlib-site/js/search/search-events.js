@@ -31,7 +31,7 @@ jQuery((function ($, ns, search) {
 
     $("body").on("click", ns.Elements.selector("switch-layout"), search.switchLayout);
 
-    /* Required for IE */
+    /*  The following code is required for IE */
 
     /* Note that search.search(..) has its tracker ot ensure parallel searches do not occurr */
 

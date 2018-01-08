@@ -24,5 +24,6 @@
           label="Actions"
           downloadLabel="Download"
           shareLabel="Share"
-          cartLabel="Add to Cart">
+          addToCartLabel="Add to Cart"
+          removeFromCartLabel="Remove from Cart">
 </jcr:root>

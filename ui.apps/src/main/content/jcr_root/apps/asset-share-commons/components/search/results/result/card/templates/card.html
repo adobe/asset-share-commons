@@ -56,27 +56,32 @@
 
         <div class="extra content">
          <div class="ui divider"></div>
-                <span class="action">
+            <ul class="cmp_card__action-buttons">
+                <li data-sly-test="${config.downloadEnabled}">
                     <button class="ui link button"
                             data-asset-share-id="download-asset"
                             data-asset-share-asset="${asset.path}"
-                            data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}"
-                            data-sly-test="${config.downloadEnabled}">${'Download' @ i18n}</button>
-                </span>
-                <span class="action">
+                            data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}">${'Download' @ i18n}</button>
+                </li>
+                <li data-sly-test="${config.shareEnabled}">
                     <button class="ui link button"
                             data-asset-share-id="share-asset"
                             data-asset-share-asset="${asset.path}"
-                            data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}"
-                            data-sly-test="${config.shareEnabled}">${'Share' @ i18n}</button>
-                </span>
-                <span class="action">
+                            data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}">${'Share' @ i18n}</button>
+                </li>
+                <li data-sly-test="${config.cartEnabled}">
+
                     <button class="ui link button"
                             data-asset-share-id="add-to-cart"
                             data-asset-share-asset="${asset.path}"
-                            data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}"
-                            data-sly-test="${config.cartEnabled}">${'Add to Cart' @ i18n}</button>
-                </span>
+                            data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}">${'Add to Cart' @ i18n}</button>
+                    
+                    <button class="ui link button hidden"
+                            data-asset-share-id="remove-from-cart"
+                            data-asset-share-asset="${asset.path}"
+                            data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}">${'Remove From Cart' @ i18n}</button>
+                </li>
+            </ul>
         </div>
     </article>
 </template>
