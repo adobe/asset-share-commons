@@ -35,7 +35,7 @@ List of Asset metadata properties available for filtering.
 
 * Labels/Properties are derived from available Metadata Schemas
 * Lightning (⚡) indicates this property is optimized for search.
-* Turtle (🐢) indicates this property is optimized for search.
+* Turtle (🐢) indicates this property is NOT optimized for search.
 
 #### Start Expanded
 
