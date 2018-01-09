@@ -67,8 +67,7 @@
                                 name="./config/actions/share/enabled"
                                 value="true"
                                 uncheckedValue="false"
-                                text="Enable Sharing"
-                                fieldDescription="Sharing may be disabled even when checked, if sharing functionality itself is not available in AEM."/>
+                                text="Enable Sharing"/>
                         <share
                                 jcr:primaryType="nt:unstructured"
                                 sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
