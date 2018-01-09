@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0074: Removed unused configurations (originally added for release purposes) from ui.content pom.xml
 - 0080: Handle the numbering of predicate search components after insert, and made group numbering mode logical.
 - 0086: Moved ACS AEM Commons E-mail Service dependency into the Asset Share Commons project to reduce the service resolution issues as reported by #86. This now removes the dependency on ACS AEM Commons.
+- 0096: Corrected wording on Share Action checkbox to reflect new behavior. Only generate groupIds for "ready" components.
 
 ### Added
 - 0090: Added asset-share-commons.cart.clear JavaScript event when cart is cleared

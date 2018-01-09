@@ -133,7 +133,7 @@ public abstract class AbstractPredicate implements Predicate {
     protected synchronized final void initGroup(final SlingHttpServletRequest request) {
         /* Track Predicate Groups across Request */
 
-        if (!isGroupIdGeneratingComponent(request) || !generateGroupId(request)) {
+        if (!isGroupIdGeneratingComponent(request) || !isReady() || !generateGroupId(request)) {
             generateLegacyGroupId(request);
         }
     }
