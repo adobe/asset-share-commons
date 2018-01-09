@@ -45,11 +45,18 @@ The button label for the share action button.
 
   * If left blank, this button does not display.
 
-#### Cart Label
+#### Add to Cart Label (v1.1.0)
 
 The button label for the add to cart action button.
 
-  * If left blank, this button does not display.
+  * If left blank, the cart action button does not display.
+
+#### Remove from Cart Label (v1.1.0)
+
+The button label for the remove from cart action button.
+
+  * If left blank, the cart action button does not display.
+
 
 ## Technical details
 

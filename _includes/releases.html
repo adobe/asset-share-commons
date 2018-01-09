@@ -1,0 +1,12 @@
+<ul>
+        {% assign sorted = (site.pages | sort: 'title' | reverse ) %}
+        {% assign currentPagePath = page.path | remove: "index.md" %}
+        {% for subpage in sorted %}
+
+        {% capture isReleasePage %}{% if (subpage.path contains '/releases/v') %}true{% else %}false{% endif %}{% endcapture %}
+
+        {% if isReleasePage == 'true' %}
+            <li><a href="{{ site.baseurl }}{{ subpage.url }}">{{ subpage.title }}</a></li>
+        {% endif %}
+        {% endfor %}
+</ul>

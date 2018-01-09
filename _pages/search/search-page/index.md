@@ -107,7 +107,7 @@ Select to enable Cart functionality. When disabled, "Add to cart" buttons will n
 Message configurations are used to define the style and text of message (or notifications). Currently there are only 2 types of messsages:
 
   * Asset Added to Cart
-  * Assets Already Exists in Cart
+  * Remove Asset from Cart
 
 Each message can have configured attributes:
 
