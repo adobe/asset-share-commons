@@ -19,6 +19,11 @@
 	<name>Asset Share Commons UI.Content Package</name>
 	<description>Sample content for Asset Share Commons project.</description>
 
+	<scm>
+		<developerConnection>scm:git:git@github.com:Adobe-Marketing-Cloud/asset-share-commons.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.osgi</groupId>
@@ -176,4 +181,10 @@
 			</build>
 		</profile>
 	</profiles>
+	<distributionManagement>
+		<repository>
+			<id>bintray</id>
+			<url>https://api.bintray.com/maven/asc/releases/asset-share-commons</url>
+		</repository>
+	</distributionManagement>
 </project>
