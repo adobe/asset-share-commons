@@ -7,7 +7,8 @@ title: Set Up
 
 * [AEM 6.3 Service Pack 1 (6.3.1.0)](https://docs.adobe.com/docs/en/aem/6-3/release-notes/sp1.html)
 * [ACS AEM Commons 3.11.0+](https://github.com/Adobe-Consulting-Services/acs-aem-commons/releases)
-    * _Generally optional, but required for E-mail Sharing._ 
+    * Prior to v1.1.0 generally optional, but required for E-mail Sharing. 
+    * Starting with v1.1.0, ACS AEM Commons is no longer a dependency.
 
 ## Asset Share Commons Downloads
 

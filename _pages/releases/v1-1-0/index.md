@@ -40,7 +40,7 @@ v1.1.0 enhances how the Predicate Group Id's are generated. This may change the 
 Starting in v1.1.0 is recommended that any custom search predicate components that require the submission of a QueryBuilder group id, set the following property on the `cq:Component` node.
 
 ```
-[cq:Component]@genereatePredicateId="true"
+[cq:Component]@generatePredicateGroupId="true"
 ```
 
 If this is not set the group id for this component will start at 10000 (which will work, but looks odd).
