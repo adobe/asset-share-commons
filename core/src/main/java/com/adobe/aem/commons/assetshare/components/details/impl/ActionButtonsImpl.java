@@ -64,13 +64,23 @@ public class ActionButtonsImpl extends AbstractEmptyTextComponent implements Act
         Config config = request.adaptTo(Config.class);
         if (config == null) {
             return false;
-        } else if ((config.isCartEnabled() && StringUtils.isNotBlank(addToCartLabel) && StringUtils.isNotBlank(removeFromCartLabel)) ||
-                (config.isDownloadEnabled() && StringUtils.isNotBlank(downloadLabel)) ||
-                (config.isShareEnabled() && StringUtils.isNotBlank(shareLabel))) {
+        } else if (isCartEnabled(config) || isDownloadEnabled(config) || isShareEnabled(config)) {
             // At least one action is available
             return true;
         }
 
         return false;
+    }
+
+    private boolean isCartEnabled(Config config) {
+        return config.isCartEnabled() && StringUtils.isNotBlank(addToCartLabel) && StringUtils.isNotBlank(removeFromCartLabel);
+    }
+
+    private boolean isDownloadEnabled(Config config) {
+        return config.isDownloadEnabled() && StringUtils.isNotBlank(downloadLabel);
+    }
+
+    private boolean isShareEnabled(Config config) {
+        return config.isShareEnabled() && StringUtils.isNotBlank(shareLabel);
     }
 }
