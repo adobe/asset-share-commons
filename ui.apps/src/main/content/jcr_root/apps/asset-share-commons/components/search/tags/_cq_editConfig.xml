@@ -22,5 +22,6 @@
     dialogLayout="floating">
     <cq:listeners
         jcr:primaryType="cq:EditListenersConfig"
+        afterinsert="REFRESH_PAGE"
         afteredit="REFRESH_PAGE"/>
 </jcr:root>
