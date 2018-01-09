@@ -1,4 +1,4 @@
 #base=js
 
 cart.js
-add-to-cart.js
+cart-actions.js

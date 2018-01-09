@@ -36,4 +36,32 @@
       height: 175px !important;
     }
   }
+
+  .cmp_card__action-buttons {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    min-height: 2rem;
+
+    li {
+      .ui.button {
+        margin: 0;
+        min-width: 60px;
+      }
+
+      &:last-child {
+        .ui.button {
+          text-align: right;
+        }
+      }
+
+      &:first-child {
+        .ui.button {
+          text-align: left;
+        }
+      }
+    }
+  }
 }

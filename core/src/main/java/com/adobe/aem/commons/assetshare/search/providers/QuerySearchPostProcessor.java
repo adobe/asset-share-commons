@@ -26,7 +26,7 @@ public interface QuerySearchPostProcessor {
      *
      *
      * @param request the {@link SlingHttpServletRequest} object that initiates this search.
-     * @param query the QueryBuilder query executed to generate the {@param} results and {@param} searchResult.
+     * @param query the QueryBuilder query executed to generate the results and searchResult.
      * @param results the results as created by {@link QuerySearchProviderImpl}
      * @param searchResult the "raw" QueryBuilder {@link SearchResult} object.
      * @return the adjusted results object (may be a brand new {@link Results} obj).

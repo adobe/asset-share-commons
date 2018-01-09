@@ -34,11 +34,11 @@
                     eventId="cart-add"
                     style="success"
                     text="Asset added to cart"/>
-                <cart-exists
+                <cart-remove
                     jcr:primaryType="nt:unstructured"
-                    eventId="cart-exists"
+                    eventId="cart-remove"
                     style="notice"
-                    text="Asset already exists in cart"/>
+                    text="Asset removed from cart"/>
             </messages>
         </config>
         <root

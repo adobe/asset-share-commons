@@ -22,4 +22,5 @@
     jcr:title="Date Range Filter"
     componentGroup="Asset Share Commons - Search"
     cq:icon="calendar"
+    generatePredicateGroupId="{Boolean}true"
     jcr:description="Allows a user to filter search results by a date range or relative date range property."/>

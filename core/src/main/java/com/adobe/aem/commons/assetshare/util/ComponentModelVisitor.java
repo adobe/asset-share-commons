@@ -29,7 +29,7 @@ public final class ComponentModelVisitor<T> extends AbstractResourceVisitor {
     /**
      * @param request the SlingHttpServletRequest object
      * @param modelFactory the ModelFactory object used to construct the Model
-     * @param resourceTypes the resource types that will be attempted to be resolved to the {@param T} type.
+     * @param resourceTypes the resource types that will be attempted to be resolved to the T type.
      * @param clazz the Model class the resources should be made into.
      */
     public ComponentModelVisitor(SlingHttpServletRequest request,
@@ -44,7 +44,7 @@ public final class ComponentModelVisitor<T> extends AbstractResourceVisitor {
 
     /**
      * Note that getModels() may return a SUBSET of getResources(). If a resource matches the resource type check but cannot be turned into a model, the resources will be in getResources() but not in getModels().
-     * @return a list of Models representing the visited resources (assuming they match the {@param resourceTypes} and can be made into the {@param clazz} model type.
+     * @return a list of Models representing the visited resources (assuming they match the resourceTypes and can be made into the clazz model type.
      */
     public final Collection<T> getModels() {
         return models;
