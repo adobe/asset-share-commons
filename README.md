@@ -32,6 +32,6 @@ mvn -Dcrx.host=otherhost -Dcrx.port=5502 <goals>
 ## Dependencies
 
 * AEM 6.3 + [Service Pack 1](https://docs.adobe.com/docs/en/aem/6-3/release-notes/sp1.html)
-* (optional) [ACS AEM Commons 3.11.0](https://github.com/Adobe-Consulting-Services/acs-aem-commons/releases/tag/acs-aem-commons-3.11.0) to enable e-mail share functionality
+* The (optional) [ACS AEM Commons 3.11.0](https://github.com/Adobe-Consulting-Services/acs-aem-commons/releases/tag/acs-aem-commons-3.11.0) to enable e-mail share functionality was removed in v1.1.0.
 
 

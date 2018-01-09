@@ -112,15 +112,6 @@
 			<version>3.4.2</version>
 		</dependency>
 		<dependency>
-    		<groupId>com.adobe.acs</groupId>
-		    <artifactId>acs-aem-commons-bundle</artifactId>
-    	</dependency>
-		<!-- Required for Email functionality -->
-	    <dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-		</dependency>
-		<dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.annotation</artifactId>
         </dependency>
@@ -131,6 +122,15 @@
     	<dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.service.component.annotations</artifactId>
+        </dependency>
+		<!-- Required for E-mail functionality -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+		</dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-email</artifactId>
         </dependency>
     </dependencies>
 
