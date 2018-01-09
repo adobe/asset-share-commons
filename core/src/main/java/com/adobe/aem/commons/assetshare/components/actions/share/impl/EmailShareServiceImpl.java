@@ -17,15 +17,25 @@
  *
  */
 
+/**
+ * This file is a copy-down of the ACS AEM Commons Email Service feature with slight modifications.
+ * This copy-down was necessary due to issues with OSGi service resolution when the service was
+ * provided by the ACS AEM Commons project.
+ *
+ * > https://adobe-consulting-services.github.io/acs-aem-commons/features/e-mail/email-api/index.html
+ *
+ * Please see the above ACS AEM Commons copyright for copyright details.
+ **/
+
 package com.adobe.aem.commons.assetshare.components.actions.share.impl;
 
-import com.adobe.acs.commons.email.EmailService;
 import com.adobe.aem.commons.assetshare.components.actions.share.EmailShare;
 import com.adobe.aem.commons.assetshare.components.actions.share.ShareException;
 import com.adobe.aem.commons.assetshare.components.actions.share.ShareService;
 import com.adobe.aem.commons.assetshare.configuration.AssetDetailsResolver;
 import com.adobe.aem.commons.assetshare.configuration.Config;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.aem.commons.assetshare.util.EmailService;
 import com.adobe.granite.security.user.UserProperties;
 import com.adobe.granite.security.user.UserPropertiesManager;
 import com.day.cq.commons.Externalizer;
@@ -69,7 +79,7 @@ public class EmailShareServiceImpl implements ShareService {
 
     private Cfg cfg;
 
-    @Reference(policy = ReferencePolicy.DYNAMIC)
+    @Reference
     private EmailService emailService;
 
     @Reference
