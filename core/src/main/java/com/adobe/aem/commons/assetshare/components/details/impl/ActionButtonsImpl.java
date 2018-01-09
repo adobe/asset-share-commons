@@ -46,7 +46,10 @@ public class ActionButtonsImpl extends AbstractEmptyTextComponent implements Act
     private String downloadLabel;
 
     @ValueMapValue
-    private String cartLabel;
+    private String addToCartLabel;
+
+    @ValueMapValue
+    private String removeFromCartLabel;
 
     @ValueMapValue
     private String shareLabel;
@@ -61,7 +64,7 @@ public class ActionButtonsImpl extends AbstractEmptyTextComponent implements Act
         Config config = request.adaptTo(Config.class);
         if (config == null) {
             return false;
-        } else if ((config.isCartEnabled() && StringUtils.isNotBlank(cartLabel)) ||
+        } else if ((config.isCartEnabled() && StringUtils.isNotBlank(addToCartLabel) && StringUtils.isNotBlank(removeFromCartLabel)) ||
                 (config.isDownloadEnabled() && StringUtils.isNotBlank(downloadLabel)) ||
                 (config.isShareEnabled() && StringUtils.isNotBlank(shareLabel))) {
             // At least one action is available
