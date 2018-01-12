@@ -79,7 +79,6 @@ import java.util.Map;
  *      List<String> participantList = emailService.sendEmail(htmlEmailTemplatePath, emailParams, attachments, key);
  */
 @Component(
-        name = "Asset Share Commons - Email Service",
         service = EmailService.class
 )
 @Designate(ocd = EmailServiceImpl.Cfg.class)
@@ -293,7 +292,7 @@ public final class EmailServiceImpl implements EmailService {
         this.cfg = cfg;
     }
 
-    @ObjectClassDefinition(name = "Asset Share Commons - Email Service")
+    @ObjectClassDefinition(name = "Asset Share Commons - E-mail Service")
     public @interface Cfg {
         @AttributeDefinition(
                 name = "Socket Timeout",

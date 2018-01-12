@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unrelease]
 
+### Fixed
+- 0102: Fixed the PID for the Asset Share Commons - E-mail Service to the fully qualified class name.
+
 ## [v1.1.0]
 
 ### Fixed
