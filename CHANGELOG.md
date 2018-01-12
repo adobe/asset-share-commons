@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unrelease]
 
+### Fixed
+- 0103: Resolve the search results hits using the request's resource resolver to prevent resource leakage.
+
 ## [v1.1.0]
 
 ### Fixed
