@@ -1,6 +1,6 @@
 ---
 layout: content-page
-title: v1.1.0
+title: v1.1.2
 ---
 
 ## v1.1.2 release notes
