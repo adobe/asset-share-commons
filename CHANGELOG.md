@@ -4,9 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [Unrelease]
 
-### Changed
+## [v1.1.0]
 
 ### Fixed
 - 0074: Removed unused configurations (originally added for release purposes) from ui.content pom.xml
@@ -15,9 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0096: Corrected wording on Share Action checkbox to reflect new behavior. Only generate groupIds for "ready" components.
 
 ### Added
+- 0070: Added button to 'Remove from Cart' once an asset has been added
 - 0090: Added asset-share-commons.cart.clear JavaScript event when cart is cleared
-
-### Removed
 
 ## [v1.0.2]
 

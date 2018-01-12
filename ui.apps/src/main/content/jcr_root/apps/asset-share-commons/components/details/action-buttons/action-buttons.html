@@ -43,14 +43,14 @@
                     data-asset-share-id="add-to-cart"
                     data-asset-share-asset="${asset.path}"
                     data-asset-share-license="${asset.properties['license']}"
-                    data-sly-test="${properties['cartLabel'] && config.cartEnabled}">
+                    data-sly-test.cartEnabled="${properties['addToCartLabel'] && properties['removeFromCartLabel'] && config.cartEnabled}">
                 ${properties['addToCartLabel']}
             </button>
             <button class="ui button cmp-action-buttons__button hidden"
                     data-asset-share-id="remove-from-cart"
                     data-asset-share-asset="${asset.path}"
                     data-asset-share-license="${asset.properties['license']}"
-                    data-sly-test="${properties['cartLabel'] && config.cartEnabled}">
+                    data-sly-test="${cartEnabled}">
                ${properties['removeFromCartLabel']}
             </button>
         </div>	
