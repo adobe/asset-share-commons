@@ -3,8 +3,9 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
-
 ## [Unrelease]
+
+## [v1.1.2]
 
 ### Fixed
 - 0102: Fixed the PID for the Asset Share Commons - E-mail Service to the fully qualified class name.
