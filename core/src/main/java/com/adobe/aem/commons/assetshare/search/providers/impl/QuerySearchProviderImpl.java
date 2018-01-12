@@ -38,6 +38,7 @@ import com.day.cq.search.result.Hit;
 import com.day.cq.search.result.SearchResult;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestParameter;
+import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.models.factory.ModelFactory;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -85,6 +86,7 @@ public class QuerySearchProviderImpl implements SearchProvider {
     }
 
     public Results getResults(final SlingHttpServletRequest request) throws UnsafeSearchException, RepositoryException {
+        final ResourceResolver resourceResolver = request.getResourceResolver();
         final PredicateGroup predicates;
 
         if (querySearchPreProcessor != null) {
@@ -99,7 +101,7 @@ public class QuerySearchProviderImpl implements SearchProvider {
 
         debugPreQuery(predicates.getParameters());
 
-        final Query query = queryBuilder.createQuery(predicates, request.getResourceResolver().adaptTo(Session.class));
+        final Query query = queryBuilder.createQuery(predicates, resourceResolver.adaptTo(Session.class));
         final SearchResult searchResult = query.getResult();
 
         debugPostQuery(searchResult);
@@ -107,7 +109,8 @@ public class QuerySearchProviderImpl implements SearchProvider {
         final List<Result> results = new ArrayList<>();
         for (final Hit hit : searchResult.getHits()) {
             try {
-                final AssetResult assetSearchResult = modelFactory.getModelFromWrappedRequest(request, hit.getResource(), AssetResult.class);
+                final AssetResult assetSearchResult = modelFactory.getModelFromWrappedRequest(request,
+                        resourceResolver.getResource(hit.getPath()), AssetResult.class);
                 if (assetSearchResult != null) {
                     results.add(assetSearchResult);
                 }
