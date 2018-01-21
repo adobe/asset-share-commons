@@ -31,9 +31,13 @@ jQuery((function($, ns, cart) {
     });
 
     // Page init
-    (function() {
+    function init() {
         updateCartCountBadge(cart.size);
-    }());
+    }
+
+    init();
+
+    cart.store().eventing.on(ContextHub.Constants.EVENT_STORE_READY, init);
 
 }(jQuery,
     AssetShare,
