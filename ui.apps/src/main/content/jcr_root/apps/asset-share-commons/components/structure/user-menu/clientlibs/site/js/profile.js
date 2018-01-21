@@ -70,14 +70,14 @@ jQuery((function($, ns, cart, contextHub, profile) {
         } else {
             showAuthenticated();
         }
-    };
+    }
 
     // Events
     $("body").on("click", ns.Elements.selector("cmp-user-menu__logout-link"), function() {
         cart.clear();
     });
 
-    profile.eventing.on(ContextHub.Constants.EVENT_STORE_READY, init);
+    profile.eventing.on(contextHub.Constants.EVENT_STORE_READY, init);
 
 }(jQuery,
     AssetShare,
