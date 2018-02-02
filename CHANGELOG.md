@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - 0114: Removed replication status properties from templates and policies.
 
+### Changed
+- 0076: Reduced sample video asset file sizes in ui.content project.
+- 0101: User Menu's profile information to be driven via ContextHub rather than uncache-able server-side code; Also added a variety of OOTB context hub stores (profile, surfer info, etc.) 
+- 0108: Updated Download Modal to all for the exclusion of original assets in the download zip.
 
 ## [v1.1.2]
 

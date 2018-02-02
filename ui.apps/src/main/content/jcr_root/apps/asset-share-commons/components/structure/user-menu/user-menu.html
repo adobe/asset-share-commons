@@ -19,6 +19,7 @@
 <sly data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
      data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
      data-sly-use.userMenu="com.adobe.aem.commons.assetshare.components.structure.UserMenu"
+     data-sly-use.profileTemplate="templates/profile.html"
      data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html"
      data-sly-test.ready="${userMenu.ready}">
 
@@ -26,32 +27,8 @@
         <div class="ui column grid">
 
             <div class="eleven wide column cmp-user">
-                <!--/* Logged In */-->
-                <sly data-sly-test.loggedIn="${userMenu.isLoggedIn}">
-
-                    <img class="ui avatar mini image cmp-user__image"
-                         data-sly-test.profilePic="${userMenu.userProfileImg}"
-                         src="${profilePic}"/>
-
-                    <i class="circular large user icon cmp-user__image cmp-user__image--unavailable"
-                        data-sly-test="${!profilePic}"></i>
-
-                    <div class="cmp-user__message">
-                        ${currentStyle['greeting']} ${userMenu.userName}
-                        <br/>
-                        <a class="cmp-user__action"
-                           href="${currentStyle['logOutLink']}">
-                            ${currentStyle['logOutLabel']}
-                        </a>
-                    </div>
-                </sly>
-
-                <!--/* Anonymous */-->
-                <a class="ui left cmp-user__action"
-                   href="${currentStyle['logInLink']}"
-                   data-sly-test="${!loggedIn}">
-                    ${currentStyle['logInLabel']}
-                </a>
+                <sly data-sly-call="${profileTemplate.anonymous @ userMenu = userMenu}"></sly>
+                <sly data-sly-call="${profileTemplate.authenticated @ userMenu = userMenu}"></sly>
             </div>
 
             <div class="five wide column">
