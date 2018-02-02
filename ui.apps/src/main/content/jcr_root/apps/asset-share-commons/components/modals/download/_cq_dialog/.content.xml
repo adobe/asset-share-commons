@@ -81,7 +81,7 @@
                     </tab-1>
                     <tab-2
                         jcr:primaryType="nt:unstructured"
-                        jcr:title="File"
+                        jcr:title="Download Options"
                         sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns"
                         margin="{Boolean}true">
                         <items jcr:primaryType="nt:unstructured">
@@ -89,14 +89,22 @@
                                 jcr:primaryType="nt:unstructured"
                                 sling:resourceType="granite/ui/components/coral/foundation/container">
                                 <items jcr:primaryType="nt:unstructured">
+                                    <exclude-original-assets
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                            fieldDescription="Check to exclude the original renditions from the download. Checking this forces Include Renditions to be checked."
+                                            text="Exclude Original Assets from ZIP File"
+                                            name="./excludeOriginalAssets"
+                                            value="{Boolean}true"
+                                            uncheckedValue="{Boolean}false"/>
                                     <zip-file-name
-                                        jcr:primaryType="nt:unstructured"
-                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                        emptyText="Assets"
-                                        fieldDescription="The name of the file that a user will download."
-                                        fieldLabel="ZIP File Name"
-                                        name="./zipFileName"
-                                        required="{Boolean}true"/>
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Assets"
+                                            fieldDescription="The name of the file that a user will download."
+                                            fieldLabel="ZIP File Name"
+                                            name="./zipFileName"
+                                            required="{Boolean}true"/>
                                 </items>
                             </column>
                         </items>

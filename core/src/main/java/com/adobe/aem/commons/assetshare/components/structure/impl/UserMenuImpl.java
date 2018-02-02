@@ -43,12 +43,13 @@ import javax.jcr.RepositoryException;
         resourceType = UserMenuImpl.RESOURCE_TYPE
 )
 public class UserMenuImpl implements UserMenu {
-    protected static final String RESOURCE_TYPE = "asset-share-commons/components/structure/user-menu";
     private static final Logger log = LoggerFactory.getLogger(UserMenuImpl.class);
+
+    protected static final String RESOURCE_TYPE = "asset-share-commons/components/structure/user-menu";
+
     private static final String PROFILE_PATH_SUFFIX = "/primary/image.prof.thumbnail.48.48.png";
 
     private static final String ANONYMOUS = "anonymous";
-
     private static final String NN_PROFILE = "profile";
 
     private static final String PN_LOG_IN_LABEL = "logInLabel";
@@ -71,6 +72,7 @@ public class UserMenuImpl implements UserMenu {
         setCurrentUser();
     }
 
+    @Deprecated
     private void setCurrentUser() {
         final Authorizable auth = request.getResourceResolver().adaptTo(Authorizable.class);
         final UserPropertiesManager upm = request.getResourceResolver().adaptTo(UserPropertiesManager.class);
@@ -85,6 +87,7 @@ public class UserMenuImpl implements UserMenu {
     }
 
     @Override
+    @Deprecated
     public String getUserName() {
         if (currentUser != null) {
             try {
@@ -98,6 +101,7 @@ public class UserMenuImpl implements UserMenu {
     }
 
     @Override
+    @Deprecated
     public String getUserProfileImg() {
 
         if (currentUser != null) {
@@ -114,6 +118,7 @@ public class UserMenuImpl implements UserMenu {
     }
 
     @Override
+    @Deprecated
     public Boolean isLoggedIn() {
         if (currentUser != null && !ANONYMOUS.equals(currentUser.getAuthorizableID())) {
             return true;
