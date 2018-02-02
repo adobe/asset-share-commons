@@ -97,7 +97,12 @@ AssetShare.Cart = (function ($, ns, contextHubStore) {
         }
     }
 
+    function getContextHubStore() {
+        return contextHubStore;
+    }
+
     return {
+        store: getContextHubStore,
         add: add,
         clear: clear,
         remove: remove,

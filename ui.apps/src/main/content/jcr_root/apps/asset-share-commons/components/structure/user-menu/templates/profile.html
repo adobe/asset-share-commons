@@ -1,0 +1,58 @@
+<!--/*
+  ~ Asset Share Commons
+  ~
+  ~ Copyright [2017]  Adobe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+ */-->
+
+<!--/* Anonymous User */-->
+<template data-sly-template.anonymous="${ @ userMenu}">
+
+    <span class="cmp-user-menu__profile--anonymous"
+          data-asset-share-id="cmp-user-menu__profile--anonymous">
+        <a class="ui left cmp-user__action"
+           href="${currentStyle['logInLink']}"
+           data-sly-test="${!loggedIn}">
+            ${currentStyle['logInLabel']}
+        </a>
+    </span>
+
+</template>
+
+
+<!--/* Authenticated User  */-->
+<template data-sly-template.authenticated="${ @ userMenu}">
+
+    <span   class="cmp-user-menu__profile--authenticated"
+            data-asset-share-id="cmp-user-menu__profile--authenticated">
+        <img class="ui avatar mini image cmp-user__image cmp-user-menu__profile-pic--available"
+             data-asset-share-id="cmp-user-menu__profile-pic--available"/>
+
+        <i class="circular large user icon cmp-user__image cmp-user__image--unavailable"
+           data-asset-share-id="cmp-user-menu__profile-pic--unavailable"></i>
+
+        <div class="cmp-user__message">
+            ${currentStyle['greeting']} <span data-asset-share-id="cmp-user-menu__profile-display-name"></span>
+
+            <br/>
+
+            <a class="cmp-user__action"
+               href="${currentStyle['logOutLink']}"
+               data-asset-share-id="cmp-user-menu__logout-link">
+                ${currentStyle['logOutLabel']}
+            </a>
+        </div>
+    </span>
+
+</template>
