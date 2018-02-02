@@ -4,7 +4,6 @@
     <jcr:content
         cq:lastModified="{Date}2017-10-16T17:48:07.026-04:00"
         cq:lastModifiedBy="admin"
-        cq:lastReplicationAction="Activate"
         cq:templateType="/conf/asset-share-commons/settings/wcm/template-types/details-page"
         jcr:description="A template for displaying metadata details about an asset."
         jcr:primaryType="cq:PageContent"

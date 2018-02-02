@@ -14,10 +14,6 @@
                         sling:resourceType="wcm/core/components/policy/policy"
                         components="[/libs/wcm/foundation/components/responsivegrid,group:Asset Share Commons - Structure]">
                         <jcr:content
-                            cq:lastReplicated="{Date}2017-10-03T01:33:59.928-04:00"
-                            cq:lastReplicatedBy="admin"
-                            cq:lastReplicationAction="Activate"
-                            jcr:mixinTypes="[cq:ReplicationStatus]"
                             jcr:primaryType="nt:unstructured"/>
                     </policy_10069721106623>
                     <policy_10145173992105
@@ -28,10 +24,6 @@
                         sling:resourceType="wcm/core/components/policy/policy"
                         components="[/libs/wcm/foundation/components/responsivegrid,group:Asset Share Commons - Content,group:Asset Share Commons - Search]">
                         <jcr:content
-                            cq:lastReplicated="{Date}2017-10-03T08:26:21.940-04:00"
-                            cq:lastReplicatedBy="admin"
-                            cq:lastReplicationAction="Activate"
-                            jcr:mixinTypes="[cq:ReplicationStatus]"
                             jcr:primaryType="nt:unstructured"/>
                     </policy_10145173992105>
                     <policy_1504902064537
@@ -42,10 +34,6 @@
                         sling:resourceType="wcm/core/components/policy/policy"
                         components="[group:Asset Share Commons - Modals]">
                         <jcr:content
-                            cq:lastReplicated="{Date}2017-10-03T08:27:57.482-04:00"
-                            cq:lastReplicatedBy="admin"
-                            cq:lastReplicationAction="Activate"
-                            jcr:mixinTypes="[cq:ReplicationStatus]"
                             jcr:primaryType="nt:unstructured"/>
                     </policy_1504902064537>
                     <policy_1505268753836
@@ -56,10 +44,6 @@
                         sling:resourceType="wcm/core/components/policy/policy"
                         components="[group:Asset Share Commons - Content,group:Asset Share Commons - Details]">
                         <jcr:content
-                            cq:lastReplicated="{Date}2017-10-03T01:45:19.980-04:00"
-                            cq:lastReplicatedBy="admin"
-                            cq:lastReplicationAction="Activate"
-                            jcr:mixinTypes="[cq:ReplicationStatus]"
                             jcr:primaryType="nt:unstructured"/>
                     </policy_1505268753836>
                     <policy_32005087383376
@@ -70,10 +54,6 @@
                         sling:resourceType="wcm/core/components/policy/policy"
                         components="[/libs/wcm/foundation/components/responsivegrid,group:Asset Share Commons - Content]">
                         <jcr:content
-                            cq:lastReplicated="{Date}2017-10-03T01:33:59.928-04:00"
-                            cq:lastReplicatedBy="admin"
-                            cq:lastReplicationAction="Activate"
-                            jcr:mixinTypes="[cq:ReplicationStatus]"
                             jcr:primaryType="nt:unstructured"/>
                         <cq:authoring jcr:primaryType="nt:unstructured">
                             <assetToComponentMapping jcr:primaryType="nt:unstructured">
@@ -102,10 +82,6 @@
                         sling:resourceType="wcm/core/components/policy/policy"
                         clientlibs="asset-share-commons.semantic-ui-light">
                         <jcr:content
-                            cq:lastReplicated="{Date}2017-10-03T08:26:21.940-04:00"
-                            cq:lastReplicatedBy="admin"
-                            cq:lastReplicationAction="Activate"
-                            jcr:mixinTypes="[cq:ReplicationStatus]"
                             jcr:primaryType="nt:unstructured"/>
                     </policy_1505596518330>
                     <policy_1507903461206
@@ -149,10 +125,6 @@
                         sling:resourceType="wcm/core/components/policy/policy"
                         clientlibs="asset-share-commons.semantic-ui-light">
                         <jcr:content
-                            cq:lastReplicated="{Date}2017-10-03T01:35:48.546-04:00"
-                            cq:lastReplicatedBy="admin"
-                            cq:lastReplicationAction="Activate"
-                            jcr:mixinTypes="[cq:ReplicationStatus]"
                             jcr:primaryType="nt:unstructured"/>
                     </policy_1505683782054>
                     <policy_1507904573557
