@@ -3,7 +3,6 @@
     jcr:primaryType="cq:Page">
     <jcr:content
         cq:deviceGroups="[/etc/mobile/groups/responsive]"
-        cq:lastReplicationAction="Activate"
         cq:template="/conf/asset-share-commons/settings/wcm/templates/details-template"
         jcr:isCheckedOut="{Boolean}true"
         jcr:mixinTypes="[mix:versionable]"
