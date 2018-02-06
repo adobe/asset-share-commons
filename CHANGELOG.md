@@ -6,10 +6,31 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-### Changed
 ### Fixed
+- 0114: Removed replication status properties from templates and policies.
+
+### Changed
+- 0076: Reduced sample video asset file sizes in ui.content project.
+- 0101: User Menu's profile information to be driven via ContextHub rather than uncache-able server-side code; Also added a variety of OOTB context hub stores (profile, surfer info, etc.) 
+- 0108: Updated Download Modal to all for the exclusion of original assets in the download zip.
+
+## [v1.1.2]
+
+### Fixed
+- 0102: Fixed the PID for the Asset Share Commons - E-mail Service to the fully qualified class name.
+- 0103: Resolve the search results hits using the request's resource resolver to prevent resource leakage.
+
+## [v1.1.0]
+
+### Fixed
+- 0074: Removed unused configurations (originally added for release purposes) from ui.content pom.xml
+- 0080: Handle the numbering of predicate search components after insert, and made group numbering mode logical.
+- 0086: Moved ACS AEM Commons E-mail Service dependency into the Asset Share Commons project to reduce the service resolution issues as reported by #86. This now removes the dependency on ACS AEM Commons.
+- 0096: Corrected wording on Share Action checkbox to reflect new behavior. Only generate groupIds for "ready" components.
+
 ### Added
-### Removed
+- 0070: Added button to 'Remove from Cart' once an asset has been added
+- 0090: Added asset-share-commons.cart.clear JavaScript event when cart is cleared
 
 ## [v1.0.2]
 

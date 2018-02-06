@@ -20,6 +20,7 @@
 package com.adobe.aem.commons.assetshare.components.predicates;
 
 import com.adobe.cq.wcm.core.components.models.form.Field;
+import com.day.cq.wcm.commons.WCMUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.ValueMap;
@@ -30,7 +31,13 @@ import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
 public abstract class AbstractPredicate implements Predicate {
     private static final String REQUEST_ATTR_PREDICATE_GROUP_TRACKER = "asset-share-commons__predicate-group";
+    private static final String REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER = "asset-share-commons__legacy_predicate-group";
+
     private static final String REQUEST_ATTR_FORM_ID_TRACKER = "asset-share-commons__form-id";
+    private static final String PN_GENERATE_PREDICATE_GROUP_ID = "generatePredicateGroupId";
+
+    private static final Integer INITIAL_GROUP_ID = 0;
+    private static final Integer INITIAL_LEGACY_GROUP_ID = 10000 - 1;
 
     @Self
     @Required
@@ -126,11 +133,59 @@ public abstract class AbstractPredicate implements Predicate {
     protected synchronized final void initGroup(final SlingHttpServletRequest request) {
         /* Track Predicate Groups across Request */
 
-        final Object groupTracker = request.getAttribute(REQUEST_ATTR_PREDICATE_GROUP_TRACKER);
-        if (groupTracker != null && (groupTracker instanceof Integer)) {
-            group = (Integer) groupTracker + 1;
+        if (!isGroupIdGeneratingComponent(request) || !isReady() || !generateGroupId(request)) {
+            generateLegacyGroupId(request);
+        }
+    }
+
+    /**
+     * @param request the Sling Http Request object.
+     * @return true if the component is marked as generating a predicate group Id.
+     */
+    private boolean isGroupIdGeneratingComponent(SlingHttpServletRequest request) {
+        final com.day.cq.wcm.api.components.Component component = WCMUtils.getComponent(request.getResource());
+        return component != null && component.getProperties().get(PN_GENERATE_PREDICATE_GROUP_ID, false);
+    }
+
+    /**
+     * Set the groupId and set the request attribute.
+     *
+     * @param request the Sling Http Request object.
+     * @return true if a group id was generated.
+     */
+    private boolean generateGroupId(SlingHttpServletRequest request) {
+        Object groupTracker = request.getAttribute(REQUEST_ATTR_PREDICATE_GROUP_TRACKER);
+
+        if (groupTracker == null) {
+            groupTracker = INITIAL_GROUP_ID;
         }
 
-        request.setAttribute(REQUEST_ATTR_PREDICATE_GROUP_TRACKER, group);
+        if (groupTracker instanceof Integer) {
+            group = (Integer) groupTracker + 1;
+            request.setAttribute(REQUEST_ATTR_PREDICATE_GROUP_TRACKER, group);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Set the legacy groupId and set the request attribute.
+     *
+     * @param request the Sling Http Request object.
+     */
+    private void generateLegacyGroupId(SlingHttpServletRequest request) {
+        Object legacyGroupTracker = request.getAttribute(REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER);
+
+        if (legacyGroupTracker == null) {
+            legacyGroupTracker = INITIAL_LEGACY_GROUP_ID;
+        }
+
+        if (legacyGroupTracker instanceof Integer) {
+            group = (Integer) legacyGroupTracker + 1;
+            request.setAttribute(REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER, group);
+        } else {
+            group = -1;
+        }
     }
 }

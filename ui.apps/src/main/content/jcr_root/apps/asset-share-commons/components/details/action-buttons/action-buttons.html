@@ -26,25 +26,32 @@
     <div class="ui basic segment">
         <h4 class="ui header" data-sly-test="${!properties['hideLabel']}">${properties['label']}</h4>
 		<div class="actions cmp-action-buttons">
-            <button class="ui primary button cmp-action-buttons__button "
+            <button class="ui primary button cmp-action-buttons__button"
                     data-asset-share-id="download-asset"
                     data-asset-share-asset="${asset.path}"
                     data-asset-share-license="${asset.properties['license']}"
                     data-sly-test="${properties['downloadLabel'] && config.downloadEnabled}">
                 ${properties['downloadLabel']}
             </button>
-            <button class="ui button cmp-action-buttons__button "
+            <button class="ui button cmp-action-buttons__button"
                     data-asset-share-id="share-asset"
                     data-asset-share-asset="${asset.path}"
                     data-sly-test="${properties['shareLabel'] && config.shareEnabled}">
                 ${properties['shareLabel']}
             </button>
-            <button class="ui button cmp-action-buttons__button "
+            <button class="ui button cmp-action-buttons__button"
                     data-asset-share-id="add-to-cart"
                     data-asset-share-asset="${asset.path}"
                     data-asset-share-license="${asset.properties['license']}"
-                    data-sly-test="${properties['cartLabel'] && config.cartEnabled}">
-                ${properties['cartLabel']}
+                    data-sly-test.cartEnabled="${properties['addToCartLabel'] && properties['removeFromCartLabel'] && config.cartEnabled}">
+                ${properties['addToCartLabel']}
+            </button>
+            <button class="ui button cmp-action-buttons__button hidden"
+                    data-asset-share-id="remove-from-cart"
+                    data-asset-share-asset="${asset.path}"
+                    data-asset-share-license="${asset.properties['license']}"
+                    data-sly-test="${cartEnabled}">
+               ${properties['removeFromCartLabel']}
             </button>
         </div>	
     </div>

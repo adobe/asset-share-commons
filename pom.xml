@@ -25,7 +25,7 @@
 
     <groupId>com.adobe.aem.commons</groupId>
     <artifactId>assetshare</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.1.3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Asset Share Commons - Reactor Project</name>
@@ -203,12 +203,6 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>com.adobe.acs</groupId>
-                <artifactId>acs-aem-commons-bundle</artifactId>
-                <version>3.11.0</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
                 <groupId>javax.mail</groupId>
                 <artifactId>mail</artifactId>
                 <version>1.5.0-b01</version>
@@ -230,6 +224,12 @@
                 <groupId>org.osgi</groupId>
                 <artifactId>org.osgi.service.component.annotations</artifactId>
                 <version>1.3.0</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-email</artifactId>
+                <version>1.2</version>
                 <scope>provided</scope>
             </dependency>
         </dependencies>
@@ -559,10 +559,8 @@
     <distributionManagement>
         <repository>
             <id>bintray</id>
-            <!-- Matches releaseRepository-Name in .settings.xml for the bintray profiles -->
             <name>asc-releases-asset-share-commons</name>
             <url>https://api.bintray.com/maven/asc/releases/asset-share-commons</url>
-            <!-- <url>https://api.bintray.com/maven/asc/releases/asset-share-commons/;publish=1</url> -->
         </repository>
     </distributionManagement>
 </project>

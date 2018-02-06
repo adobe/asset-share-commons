@@ -22,4 +22,5 @@
     jcr:title="Property Filter"
     sling:resourceSuperType="core/wcm/components/form/options/v1/options"
     componentGroup="Asset Share Commons - Search"
+    generatePredicateGroupId="{Boolean}true"
     jcr:description="Allows a user to filter search results by a jcr metadata property."/>

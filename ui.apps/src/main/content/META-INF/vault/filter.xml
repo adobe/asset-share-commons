@@ -2,6 +2,7 @@
 <workspaceFilter version="1.0">
     <filter root="/apps/asset-share-commons"/>
     <filter root="/etc/notification/email/asset-share-commons"/>
+    <filter root="/etc/notification/email/rep:policy"/>
     <filter root="/etc/cloudsettings/asset-share-commons/contexthub" mode="merge"/>
     <filter root="/home/users/system/asset-share-commons"/>
     <filter root="/oak:index/rep:policy"/>

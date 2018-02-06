@@ -21,11 +21,6 @@
 AssetShare.Cart = (function ($, ns, contextHubStore) {
     "use strict";
 
-    var EVENT_CART_ADD = "asset-share-commons.cart.add",
-        EVENT_CART_REMOVE = "asset-share-commons.cart.remove",
-        EVENT_CART_UPDATE = "asset-share-commons.cart.update",
-        EVENT_CART_ALREADY_EXISTS = "asset-share-commons.cart.exists";
-
     function enabled() {
         return contextHubStore !== null && typeof contextHubStore !== "undefined";
     }
@@ -70,11 +65,11 @@ AssetShare.Cart = (function ($, ns, contextHubStore) {
             if(!contains(assetPath)) {
                 contextHubStore.add(assetPath);
 
-                $("body").trigger(EVENT_CART_ADD, [getSize(), assetPath]);
-                $("body").trigger(EVENT_CART_UPDATE, [getSize(), getPaths()]);
+                $("body").trigger(ns.Events.CART_ADD, [getSize(), assetPath]);
+                $("body").trigger(ns.Events.CART_UPDATE, [getSize(), getPaths()]);
                 return true;
             } else {
-                $("body").trigger(EVENT_CART_ALREADY_EXISTS, [getSize(), getPaths()]);
+                $("body").trigger(ns.Events.CART_ALREADY_EXISTS, [getSize(), getPaths()]);
             }
         }
 
@@ -85,8 +80,8 @@ AssetShare.Cart = (function ($, ns, contextHubStore) {
         if (enabled() && contains(assetPath)) {
             contextHubStore.remove(assetPath);
 
-            $("body").trigger(EVENT_CART_REMOVE, [getSize(), assetPath]);
-            $("body").trigger(EVENT_CART_UPDATE, [getSize(), getPaths()]);
+            $("body").trigger(ns.Events.CART_REMOVE, [getSize(), assetPath]);
+            $("body").trigger(ns.Events.CART_UPDATE, [getSize(), getPaths()]);
             return true;
         }
 
@@ -97,11 +92,17 @@ AssetShare.Cart = (function ($, ns, contextHubStore) {
         if (enabled() && contextHubStore.get() && contextHubStore.get().length > 0) {
             contextHubStore.clear();
 
-            $("body").trigger(EVENT_CART_UPDATE, [getSize(), getPaths()]);
+            $("body").trigger(ns.Events.CART_UPDATE, [getSize(), getPaths()]);
+            $("body").trigger(ns.Events.CART_CLEAR, [getSize(), getPaths()]);
         }
     }
 
+    function getContextHubStore() {
+        return contextHubStore;
+    }
+
     return {
+        store: getContextHubStore,
         add: add,
         clear: clear,
         remove: remove,

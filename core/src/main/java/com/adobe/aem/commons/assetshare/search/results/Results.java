@@ -49,7 +49,7 @@ public interface Results {
     long getSize();
 
     /**
-     * @return the total number of results for the search. This will be >= `getSize()`. This may be a guess as well.
+     * @return the total number of results for the search. This will be greater than or equal to getSize(). This may be a guess as well.
      */
     long getTotal();
 

@@ -21,9 +21,7 @@
 AssetShare.Search = (function (window, $, ns, ajax) {
     "use strict";
 
-    var EVENT_SEARCH_BEGIN = "asset-share-commons.search.begin",
-        EVENT_SEARCH_END = "asset-share-commons.search.end",
-        EVENT_SEARCH_TYPE_FULL = "search",
+    var EVENT_SEARCH_TYPE_FULL = "search",
         EVENT_SEARCH_TYPE_LOAD_MORE = "load-more",
 
         ACTION_SEARCH = "search",
@@ -55,7 +53,7 @@ AssetShare.Search = (function (window, $, ns, ajax) {
         ns.Navigation.gotoTop();
         setAddressBar(form.serializeFor(ACTION_DEEP_LINK));
 
-        trigger(EVENT_SEARCH_END, [EVENT_SEARCH_TYPE_FULL]);
+        trigger(ns.Events.SEARCH_END, [EVENT_SEARCH_TYPE_FULL]);
         running = false;
     }
 
@@ -64,7 +62,7 @@ AssetShare.Search = (function (window, $, ns, ajax) {
 
         setAddressBar(form.serializeFor(ACTION_DEEP_LINK));
 
-        trigger(EVENT_SEARCH_END, [EVENT_SEARCH_TYPE_LOAD_MORE]);
+        trigger(ns.Events.SEARCH_END, [EVENT_SEARCH_TYPE_LOAD_MORE]);
         running = false;
     }
 
@@ -74,7 +72,7 @@ AssetShare.Search = (function (window, $, ns, ajax) {
         }
         if (!running) {
             running = true;
-            trigger(EVENT_SEARCH_BEGIN, [EVENT_SEARCH_TYPE_FULL]);
+            trigger(ns.Events.SEARCH_BEGIN, [EVENT_SEARCH_TYPE_FULL]);
             $.when($.get(form.url(), form.serializeFor(ACTION_SEARCH, true))).then(processSearch);
         }
     }
@@ -85,7 +83,7 @@ AssetShare.Search = (function (window, $, ns, ajax) {
         }
         if (!running) {
             running = true;
-            trigger(EVENT_SEARCH_BEGIN, [EVENT_SEARCH_TYPE_LOAD_MORE]);
+            trigger(ns.Events.SEARCH_BEGIN, [EVENT_SEARCH_TYPE_LOAD_MORE]);
             $.when($.get(form.url(), form.serializeFor(ACTION_LOAD_MORE))).then(processLoadMore);
         }
     }
@@ -96,7 +94,7 @@ AssetShare.Search = (function (window, $, ns, ajax) {
         }
         if (!running) {
             running = true;
-            trigger(EVENT_SEARCH_BEGIN, [EVENT_SEARCH_TYPE_FULL]);
+            trigger(ns.Events.SEARCH_BEGIN, [EVENT_SEARCH_TYPE_FULL]);
             $.when($.get(form.url(), form.serializeFor(ACTION_SORT))).then(processSearch);
         }
     }
@@ -105,7 +103,7 @@ AssetShare.Search = (function (window, $, ns, ajax) {
         e.preventDefault();
         if (!running) {
             running = true;
-            trigger(EVENT_SEARCH_BEGIN, [EVENT_SEARCH_TYPE_FULL]);
+            trigger(ns.Events.SEARCH_BEGIN, [EVENT_SEARCH_TYPE_FULL]);
             ns.Data.val("layout", $(this).val());
             $.when($.get(form.url(), form.serializeFor(ACTION_SWITCH_LAYOUT))).then(processSearch);
         }
@@ -128,7 +126,7 @@ AssetShare.Search = (function (window, $, ns, ajax) {
 
         /* Required for IE */
         $("button[form='" + formId + "']").on("click", search);
-        $("input[form='" + formId + "']").keypress(function(e){
+        $("input[form='" + formId + "']").keypress(function(e) {
             if ((e.keyCode || e.which) === 13) {
                 search(e);
             }

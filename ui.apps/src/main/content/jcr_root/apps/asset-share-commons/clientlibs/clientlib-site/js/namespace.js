@@ -18,6 +18,8 @@
 
 var AssetShare = {};
 
+AssetShare.Events = {};
+
 AssetShare.Search = {};
 
 AssetShare.Cart = {};

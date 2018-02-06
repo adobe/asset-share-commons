@@ -16,7 +16,8 @@
   ~ limitations under the License.
  */-->
 
-<sly data-sly-use.download="com.adobe.aem.commons.assetshare.components.actions.download.Download"></sly>
+<sly data-sly-use.download="com.adobe.aem.commons.assetshare.components.actions.download.Download"
+     data-sly-test.downloadAssets="${properties.excludeOriginalAssets ? false : true}"></sly>
 
 <style data-sly-test="${!wccmode.disabled}">
     .cmp-modal-download .ui.modal {
@@ -33,6 +34,9 @@
 
     <input type="hidden" name="licenseCheck" value="true"/>
     <input type="hidden" name="flatStructure" value="false"/>
+
+    <input type="hidden" name="downloadAssets"
+           value="${downloadAssets ? 'true' : 'false'}"/>
 
     <i class="close icon"></i>
 
@@ -63,8 +67,11 @@
 
             <div class="field">
                 <div class="ui checkbox">
-                    <input type="checkbox" tabindex="3" class="hidden" name="downloadRenditions" value="true">
-                    <label>${"Include Renditions" @ i18n}</label>
+                    <input type="checkbox" tabindex="3" class="hidden" name="downloadRenditions" value="true"
+                           data-sly-attribute.checked="${!downloadAssets}"
+                           data-sly-attribute.required="${!downloadAssets}"
+                           data-sly-attribute.readonly="${!downloadAssets}">
+                    <label>${"Include Renditions" @ i18n} ${downloadAssets}</label>
                 </div>
             </div>
 

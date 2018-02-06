@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:mix="http://www.jcp.org/jcr/mix/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:lastModified="{Date}2018-01-12T12:35:16.957-05:00"
+    jcr:lastModifiedBy="admin"
     jcr:mixinTypes="[mix:lastModified,sling:HierarchyNode]"
     jcr:primaryType="nt:unstructured"
     jcr:title="ContextHub Configuration"
@@ -7,4 +9,65 @@
     debug="{Boolean}false"
     disabled="{Boolean}false">
     <cart/>
+    <geolocation
+        jcr:primaryType="nt:unstructured"
+        jcr:title="Geolocation"
+        sling:resourceType="/libs/granite/contexthub/cloudsettings/components/basestore"
+        configjson="\{&#xd;&#xa;    &quot;geocoder&quot;: {&#xd;&#xa;        &quot;enabled&quot;: true&#xd;&#xa;    }&#xd;&#xa;}"
+        enabled="{Boolean}true"
+        googleClientId="gme-adobesystemsincorporated"
+        googleCryptoKey="GT8Eznytt7Hb1u2wocDh8Jkf6FA="
+        required="{Boolean}true"
+        storeType="contexthub.geolocation"/>
+    <surferinfo
+        jcr:primaryType="nt:unstructured"
+        jcr:title="Surferinfo"
+        sling:resourceType="/libs/granite/contexthub/cloudsettings/components/basestore"
+        enabled="{Boolean}true"
+        required="{Boolean}true"
+        storeType="contexthub.surferinfo"/>
+    <profile
+        jcr:primaryType="nt:unstructured"
+        jcr:title="Profile"
+        sling:resourceType="/libs/granite/contexthub/cloudsettings/components/basestore"
+        enabled="{Boolean}true"
+        required="{Boolean}true"
+        storeType="granite.profile"/>
+    <pagedata
+        jcr:primaryType="nt:unstructured"
+        jcr:title="Page Data"
+        sling:resourceType="/libs/granite/contexthub/cloudsettings/components/basestore"
+        enabled="{Boolean}true"
+        required="{Boolean}true"
+        storeType="aem.pagedata"/>
+    <recentlyviewed
+        jcr:primaryType="nt:unstructured"
+        jcr:title="Recently Viewed Products"
+        sling:resourceType="/libs/granite/contexthub/cloudsettings/components/basestore"
+        enabled="{Boolean}true"
+        required="{Boolean}true"
+        storeType="commerce.recentlyviewed"/>
+    <segmentation
+        jcr:primaryType="nt:unstructured"
+        jcr:title="Segmentation"
+        sling:resourceType="/libs/granite/contexthub/cloudsettings/components/basestore"
+        enabled="{Boolean}true"
+        required="{Boolean}true"
+        storeType="aem.segmentation"/>
+    <eventdata
+        jcr:primaryType="nt:unstructured"
+        jcr:title="Analytics Data"
+        sling:resourceType="/libs/granite/contexthub/cloudsettings/components/basestore"
+        enabled="{Boolean}true"
+        required="{Boolean}true"
+        storeType="aem.analyticsdata"/>
+    <emulators
+        jcr:primaryType="nt:unstructured"
+        jcr:title="Emulators"
+        sling:resourceType="/libs/granite/contexthub/cloudsettings/components/basestore"
+        enabled="{Boolean}true"
+        required="{Boolean}true"
+        storeType="granite.emulators"/>
+    <device/>
+    <persona/>
 </jcr:root>

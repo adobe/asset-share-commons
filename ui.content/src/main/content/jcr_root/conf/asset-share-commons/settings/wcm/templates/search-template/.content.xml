@@ -4,9 +4,6 @@
     <jcr:content
         cq:lastModified="{Date}2017-10-16T18:37:31.996-04:00"
         cq:lastModifiedBy="admin"
-        cq:lastReplicated="{Date}2017-10-03T08:27:57.482-04:00"
-        cq:lastReplicatedBy="admin"
-        cq:lastReplicationAction="Activate"
         cq:templateType="/conf/asset-share-commons/settings/wcm/template-types/search-page"
         jcr:primaryType="cq:PageContent"
         jcr:title="Search Template"

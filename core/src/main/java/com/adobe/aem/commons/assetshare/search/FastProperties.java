@@ -34,9 +34,9 @@ public interface FastProperties {
     String FAST = "\u26A1"; // Lightning bolt in Unicode
 
     /**
-     * Checks if the /oak:index/damAssetLucene index (or whatever may be overridden via FastPropertiesImpl OSGi Config) has a indexRule property config with the a property named {@param indexConfigFlagPropertyName} set to true.
-     * If it does, this propertyName (ie. jcr:content/metdata/dc:title) is added to the return list.
-     * @param indexConfigFlagPropertyName
+     * Checks if the /oak:index/damAssetLucene index (or whatever may be overridden via FastPropertiesImpl OSGi Config) has a indexRule property config with the a property named indexConfigFlagPropertyName set to true.
+     * If it does, this propertyName (ie. jcr:content/metadata/dc:title) is added to the return list.
+     * @param indexConfigFlagPropertyName the oak index property name that acts as the true/false flag to check.
      * @return a list of property paths as who are configured with @{param indexConfigFlagPropertyName} set to `true`
      */
     List<String> getFastProperties(String indexConfigFlagPropertyName);
@@ -44,19 +44,19 @@ public interface FastProperties {
     /**
      * @param fastProperties a list relative property paths that are considered to be fast.
      * @param otherProperties a list of other relative property paths.
-     * @return the delta between the {@param fastProperties} and the {@param otherProperties}.
+     * @return the delta between the fastProperties and the otherProperties.
      */
     List<String> getDeltaProperties(Collection<String> fastProperties, Collection<String> otherProperties);
 
     /**
      * @param label the label text
-     * @return the FASE icon suffixed with the {@param label}
+     * @return the FASE icon suffixed with the label.
      */
     String getFastLabel(String label);
 
     /**
      * @param label the label text
-     * @return the SLOW icon suffixed with the {@param label}
+     * @return the SLOW icon suffixed with the label.
      */
     String getSlowLabel(String label);
 }
