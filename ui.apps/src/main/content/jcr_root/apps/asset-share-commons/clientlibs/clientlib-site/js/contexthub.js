@@ -37,6 +37,8 @@ AssetShare.ContextHub.Profile = (function ($, ns, contextHub) {
 
                     if (!contextHubUser || contextHubUser !== requestUser) {
                         profileStore.loadProfile(requestUser);
+                    } else {
+                        profileStore.announceReadiness();
                     }
                 }
             }
