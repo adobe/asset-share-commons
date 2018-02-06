@@ -3,6 +3,7 @@
     jcr:primaryType="cq:ClientLibraryFolder"
     allowProxy="{Boolean}true"
     categories="[asset-share-commons.semantic-ui-dark]"
+    dependencies="[asset-share-commons.base]"
     embed="[
             asset-share-commons.semantic-ui-dark.globals,
             asset-share-commons.semantic-ui-dark.elements,

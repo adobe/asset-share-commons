@@ -4,12 +4,9 @@
     <jcr:content
         cq:lastModified="{Date}2017-10-13T10:23:27.027-04:00"
         cq:lastModifiedBy="admin"
-        cq:lastReplicated="{Date}2017-10-03T08:27:57.482-04:00"
-        cq:lastReplicatedBy="admin"
-        cq:lastReplicationAction="Activate"
         cq:policy="asset-share-commons/components/structure/page/policy_1505683782054"
         jcr:isCheckedOut="{Boolean}true"
-        jcr:mixinTypes="[cq:ReplicationStatus,mix:versionable]"
+        jcr:mixinTypes="[mix:versionable]"
         jcr:primaryType="nt:unstructured"
         jcr:uuid="dac13ec1-dc01-43f1-ac77-5a2fbd10484e"
         sling:resourceType="wcm/core/components/policies/mappings">

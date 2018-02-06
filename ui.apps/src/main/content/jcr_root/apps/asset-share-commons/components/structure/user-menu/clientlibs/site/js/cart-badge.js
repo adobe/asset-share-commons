@@ -16,9 +16,9 @@
  * limitations under the License.
  */
 
-/*global jQuery: false, AssetShare: false*/
+/*global jQuery: false, AssetShare: false, ContextHub: false*/
 
-jQuery((function($, ns, cart) {
+jQuery((function($, ns, cart, contextHub) {
     "use strict";
 
     function updateCartCountBadge(size) {
@@ -31,10 +31,15 @@ jQuery((function($, ns, cart) {
     });
 
     // Page init
-    (function() {
+    function init() {
         updateCartCountBadge(cart.size);
-    }());
+    }
+
+    init();
+
+    cart.store().eventing.on(contextHub.Constants.EVENT_STORE_READY, init);
 
 }(jQuery,
     AssetShare,
-    AssetShare.Cart)));
+    AssetShare.Cart,
+    ContextHub)));
