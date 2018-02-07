@@ -54,7 +54,11 @@ The text for the button that lets users download the assets.
 
 ### Dialog / File
 
-![File dialog](./images/dialog-file.png)
+![File dialog](./images/dialog-download-options.png)
+
+#### Exclude Original Assets from ZIP File (since v1.2.0)
+ 
+Check to exclude original assets from the downloaded zip file. This applies for all uses of this Download modal.
 
 #### ZIP File Name
  

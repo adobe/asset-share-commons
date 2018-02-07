@@ -56,4 +56,13 @@ The User Menu will attempt to display the currently logged-in User's profile pic
 
 ### Cache Considerations
 
+#### Since v1.2.0
+
+Since v1.2.0 the user menu's anonymous vs. authenticated state has moved to using client-side ContextHub logic that is cache-friendly.
+
+An AJAX HTTP GET is made to `/libs/granite/security/currentuser.json?nocache=<time-in-ms>` on page loads to retrieve the current user. This URI must be allowed via AEM Dispatcher.  
+
+
+#### Prior to v1.2.0
+
 If caching pages for an authenticated user there is a potential issue in that User Menu component could be saved to the HTML cache. A feature like [Sling Dynamic Include](https://helpx.adobe.com/experience-manager/kt/platform-repository/using/sling-dynamic-include-technical-video-setup.html) should be used for the above use case.
