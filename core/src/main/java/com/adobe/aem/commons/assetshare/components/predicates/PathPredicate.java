@@ -19,33 +19,28 @@
 
 package com.adobe.aem.commons.assetshare.components.predicates;
 
+import com.adobe.cq.wcm.core.components.models.form.OptionItem;
+import com.adobe.cq.wcm.core.components.models.form.Options;
 import org.osgi.annotation.versioning.ProviderType;
 
 import java.util.List;
-import java.util.Map;
 
 @ProviderType
-public interface PagePredicate extends Predicate {
-    enum ParamTypes {
-        NODE_TYPE,
-        PATH,
-        GUESS_TOTAL,
-        LIMIT,
-        HIDDEN_PREDICATES
-    }
+public interface PathPredicate extends Predicate {
 
-    String getOrderBy();
+    /**
+     * @return a list of the Path filtering options.
+     */
+    List<OptionItem> getItems();
 
-    String getOrderBySort();
+    /**
+     * @return the Options.Type (checkbox, drop-down, etc.)
+     */
+    Options.Type getType();
 
-    int getLimit();
-
-    String getGuessTotal();
-
-    List<String> getPaths();
-
-    Map<String, String> getParams();
-
-    Map<String, String> getParams(ParamTypes... excludeParamTypes);
-
+    /**
+     * @return the variation of the type (checkbox or radio)
+     */
+    String getSubType();
 }
+
