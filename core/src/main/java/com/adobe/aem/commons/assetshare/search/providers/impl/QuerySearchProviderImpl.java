@@ -39,6 +39,7 @@ import com.day.cq.search.QueryBuilder;
 import com.day.cq.search.eval.PathPredicateEvaluator;
 import com.day.cq.search.result.Hit;
 import com.day.cq.search.result.SearchResult;
+import com.day.text.Text;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jackrabbit.vault.util.PathUtil;
@@ -187,7 +188,7 @@ public class QuerySearchProviderImpl implements SearchProvider {
 
         boolean hasAllowed = false;
         for (final String key : pathPredicates.keySet()) {
-            final String value = PathUtil.makePath("", pathPredicates.get(key, String.class));
+            final String value = Text.makeCanonicalPath(pathPredicates.get(key, String.class));
 
             if (StringUtils.startsWithAny(value, allowedPathPrefixes) || allowedPaths.contains(value)) {
                 hasAllowed = true;

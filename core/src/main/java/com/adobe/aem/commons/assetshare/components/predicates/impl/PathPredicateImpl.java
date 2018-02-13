@@ -32,6 +32,7 @@ import com.day.cq.search.eval.PathPredicateEvaluator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestParameter;
+import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.Default;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
@@ -93,11 +94,14 @@ public class PathPredicateImpl extends AbstractPredicate implements PathPredicat
         final List<OptionItem> processedOptionItems = new ArrayList<>();
 
         for (final OptionItem optionItem : coreOptions.getItems()) {
-            if (PredicateUtil.isOptionInInitialValues(optionItem, initialValues)) {
-                processedOptionItems.add(new SelectedOptionItem(optionItem));
-                foundValueFromRequest = true;
-            } else {
-                processedOptionItems.add((optionItem));
+            if (request.getResourceResolver().getResource(optionItem.getValue()) != null) {
+                // Resource must be read-able by this user for them to see the option
+                if (PredicateUtil.isOptionInInitialValues(optionItem, initialValues)) {
+                    processedOptionItems.add(new SelectedOptionItem(optionItem));
+                    foundValueFromRequest = true;
+                } else {
+                    processedOptionItems.add((optionItem));
+                }
             }
         }
         return processedOptionItems;
