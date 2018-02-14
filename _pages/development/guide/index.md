@@ -16,7 +16,7 @@ There are many ways Asset Share Commons can extended or customized to meet speci
 
 The guide's narrative centers around implementing a custom requirement to show a status label for New and Updated assets. Pertinent code snippets are included below. The full code for the [sample project can be found on GitHub](https://github.com/godanny86/sample-assetshare).
 
-![Screen shot of Sample Assetshare Project](./images/main.png)
+![Screen shot of Sample Asset Share Project](./images/main.png)
 
 ## Using with Maven
 
