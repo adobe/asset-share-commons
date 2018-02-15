@@ -64,7 +64,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Component(service = ShareService.class)
 @Designate(ocd = EmailShareServiceImpl.Cfg.class)
 public class EmailShareServiceImpl implements ShareService {
     private static final Logger log = LoggerFactory.getLogger(EmailShareServiceImpl.class);

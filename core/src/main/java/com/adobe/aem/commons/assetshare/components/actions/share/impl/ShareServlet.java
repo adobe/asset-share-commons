@@ -28,6 +28,7 @@ import org.apache.sling.api.servlets.SlingAllMethodsServlet;
 import org.apache.sling.api.wrappers.ValueMapDecorator;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +48,7 @@ import java.util.HashMap;
 public class ShareServlet extends SlingAllMethodsServlet {
     private static final Logger log = LoggerFactory.getLogger(ShareServlet.class);
 
-    @Reference
+    @Reference(policyOption = ReferencePolicyOption.GREEDY)
     private ShareService shareService;
 
     @Override
