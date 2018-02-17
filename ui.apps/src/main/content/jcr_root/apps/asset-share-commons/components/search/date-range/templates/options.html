@@ -28,7 +28,8 @@
                        name="${predicate.group}.${predicate.lowerBoundName}"
                        value="${predicate.initialLowerBound}"
                        form="${predicate.formId}"
-                       for="${predicate.id}"/>
+                       for="${predicate.id}"
+                       data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}"/>
             </div>
         </div>
     </div>
@@ -41,13 +42,14 @@
                        name="${predicate.group}.${predicate.upperBoundName}"
                        value="${predicate.initialUpperBound}"
                        form="${predicate.formId}"
-                       for="${predicate.id}"/>
+                       for="${predicate.id}"
+                       data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}"/>
             </div>
         </div>
     </div>
 </template>
 
-<!--/* Relative Date Rang  */-->
+<!--/* Relative Date Range  */-->
 <template data-sly-template.relativeDateRange="${ @ predicate}">
     <div class="grouped fields"
          data-sly-list.option="${predicate.items}">
@@ -59,7 +61,8 @@
                        name="${predicate.group}.${predicate.name}.lowerBound"
                        value="${option.value}"
                        checked="${option.selected}"
-                       disabled="${option.disabled}"/>
+                       disabled="${option.disabled}"
+                       data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}"/>
                 <label>${option.text}</label>
             </div>
         </div>

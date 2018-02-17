@@ -47,6 +47,10 @@ public abstract class AbstractPredicate implements Predicate {
     @Default(booleanValues = false)
     private boolean expanded;
 
+    @ValueMapValue
+    @Default(booleanValues = false)
+    private boolean autoSearch;
+
     private int group = 1;
 
     private Field coreField;
@@ -62,6 +66,10 @@ public abstract class AbstractPredicate implements Predicate {
         }
 
         return expanded;
+    }
+
+    public boolean isAutoSearch() {
+        return autoSearch;
     }
 
     public String getGroup() {
