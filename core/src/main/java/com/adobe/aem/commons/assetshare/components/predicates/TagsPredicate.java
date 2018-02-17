@@ -19,28 +19,11 @@
 
 package com.adobe.aem.commons.assetshare.components.predicates;
 
-import com.adobe.cq.wcm.core.components.models.form.OptionItem;
-import com.adobe.cq.wcm.core.components.models.form.Options;
+import org.osgi.annotation.versioning.ProviderType;
 
-import java.util.List;
+@ProviderType
+public interface TagsPredicate extends PropertyPredicate {
 
-public interface TagsPredicate extends Predicate {
+    // TagsPredicate is a special case (impl details) of the PropertyPredicate.
 
-    String getOperation();
-
-    boolean hasOperation();
-
-    boolean hasAnd();
-
-    Boolean getAnd();
-
-    List<OptionItem> getItems();
-
-    Options.Type getType();
-
-    String getSubType();
-
-    String getProperty();
-
-    String getValuesKey();
 }

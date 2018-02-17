@@ -22,6 +22,7 @@ package com.adobe.aem.commons.assetshare.components.predicates.impl;
 import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.PropertyPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.impl.options.SelectedOptionItem;
+import com.adobe.aem.commons.assetshare.components.predicates.impl.options.UnselectedOptionItem;
 import com.adobe.aem.commons.assetshare.search.impl.predicateevaluators.PropertyValuesPredicateEvaluator;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
 import com.adobe.cq.commerce.common.ValueMapDecorator;
@@ -59,7 +60,6 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
 
     protected String valueFromRequest = null;
     protected ValueMap valuesFromRequest = null;
-    protected boolean foundValueFromRequest = false;
 
     @Self
     @Required
@@ -99,13 +99,15 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
     public List<OptionItem> getItems() {
         final ValueMap initialValues = getInitialValues();
         final List<OptionItem> processedOptionItems = new ArrayList<>();
+        final boolean useDefaultSelected = !isParameterizedSearchRequest();
 
         for (final OptionItem optionItem : coreOptions.getItems()) {
             if (PredicateUtil.isOptionInInitialValues(optionItem, initialValues)) {
                 processedOptionItems.add(new SelectedOptionItem(optionItem));
-                foundValueFromRequest = true;
-            } else {
+            } else if (useDefaultSelected) {
                 processedOptionItems.add((optionItem));
+            } else {
+                processedOptionItems.add(new UnselectedOptionItem(optionItem));
             }
         }
         return processedOptionItems;
@@ -154,7 +156,7 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
 
     @Override
     public boolean isReady() {
-        return getItems().size() > 0;
+        return coreOptions.getItems().size() > 0;
     }
 
     @Override

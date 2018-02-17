@@ -163,6 +163,7 @@ public class QuerySearchProviderImpl implements SearchProvider {
         if (params.get(Predicate.ORDER_BY) == null) {
             params.put(Predicate.ORDER_BY, pagePredicate.getOrderBy());
         }
+
         if (params.get(Predicate.ORDER_BY + "." + Predicate.PARAM_SORT) == null) {
             params.put(Predicate.ORDER_BY + "." + Predicate.PARAM_SORT, pagePredicate.getOrderBySort());
         }
@@ -188,9 +189,9 @@ public class QuerySearchProviderImpl implements SearchProvider {
 
         boolean hasAllowed = false;
         for (final String key : pathPredicates.keySet()) {
-            final String value = Text.makeCanonicalPath(pathPredicates.get(key, String.class));
+            final String path = Text.makeCanonicalPath(pathPredicates.get(key, String.class));
 
-            if (StringUtils.startsWithAny(value, allowedPathPrefixes) || allowedPaths.contains(value)) {
+            if (StringUtils.startsWithAny(path, allowedPathPrefixes) || allowedPaths.contains(path)) {
                 hasAllowed = true;
             } else {
                 requestParams.remove(key);

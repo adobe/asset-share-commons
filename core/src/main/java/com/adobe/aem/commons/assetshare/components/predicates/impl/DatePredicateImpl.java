@@ -50,6 +50,9 @@ import java.util.List;
 public class DatePredicateImpl extends AbstractPredicate implements DatePredicate {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/date-range";
 
+    private static final String RELATIVE_DATE_RANGE = "relativedaterange";
+    private static final String DATE_RANGE = "daterange";
+
     @Self
     @Required
     private SlingHttpServletRequest request;
@@ -133,7 +136,7 @@ public class DatePredicateImpl extends AbstractPredicate implements DatePredicat
 
     @Override
     public boolean isReady() {
-        return ("relativedaterange".equals(dateType) && getItems().size() > 0) || "daterange".equals(dateType);
+        return (RELATIVE_DATE_RANGE.equals(dateType) && coreOptions.getItems().size() > 0) || DATE_RANGE.equals(dateType);
     }
 
     @Override

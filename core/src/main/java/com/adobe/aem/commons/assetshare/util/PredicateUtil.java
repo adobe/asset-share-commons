@@ -29,12 +29,10 @@ import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestParameter;
 import org.apache.sling.api.resource.ValueMap;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Utility class that helps with common patterns found in Predicate implementations.
@@ -114,6 +112,11 @@ public final class PredicateUtil {
      */
     public static String getInitialValue(SlingHttpServletRequest request, Predicate predicate, String predicateValueName) {
         RequestParameter requestParameter = request.getRequestParameter(predicate.getGroup() + "." + predicate.getName() + "." + predicateValueName);
+
+        if (requestParameter == null && (StringUtils.equals(predicate.getName(), predicateValueName) || StringUtils.isBlank(predicateValueName))) {
+            requestParameter = request.getRequestParameter(predicate.getGroup() + "." + predicate.getName());
+        }
+
         if (requestParameter != null) {
             return requestParameter.getString();
         } else {
@@ -130,17 +133,19 @@ public final class PredicateUtil {
      * @return a map of the initial values.
      */
     public static ValueMap getInitialValues(SlingHttpServletRequest request, Predicate predicate, String predicateValueName) {
-        ValueMap valuesFromRequest = new ValueMapDecorator(new HashMap<>());
+        final ValueMap valuesFromRequest = new ValueMapDecorator(new HashMap<>());
+
+        final Pattern p = Pattern.compile("^(" + predicate.getGroup() + "\\.)?(\\d+_)?" + predicate.getName() + "(\\.((\\d+_)?" + predicateValueName + "))?$");
 
         for (final Map.Entry<String, RequestParameter[]> entry : request.getRequestParameterMap().entrySet()) {
-            final List<String> values = new ArrayList<>();
+            List<String> values = new ArrayList<>();
+            final Matcher matcher = p.matcher(entry.getKey());
 
-            if (entry.getKey().matches("^" + predicate.getGroup() + "." + predicate.getName() + ".\\d*_?" + predicateValueName + "$")) {
-                for (final RequestParameter tmp : entry.getValue()) {
-                    if (org.apache.commons.lang.StringUtils.isNotBlank(tmp.getString())) {
-                        values.add(tmp.getString());
-                    }
-                }
+            if (matcher.matches()) {
+                values = Arrays.stream(entry.getValue())
+                            .map(RequestParameter::getString)
+                            .filter(StringUtils::isNotBlank)
+                            .collect(Collectors.toList());
             }
 
             if (!values.isEmpty()) {
@@ -167,13 +172,12 @@ public final class PredicateUtil {
         }
 
         final ValueMap foundPredicates = new ValueMapDecorator(new HashMap<>());
+
         final Pattern p = Pattern.compile("^((\\d+_)?group\\.)?(\\d+_)?" + predicateName + "(\\.((\\d+_)?" + predicateValueName + "))?$");
-        for (final String key : queryBuilderParams.keySet()) {
-            final Matcher m = p.matcher(key);
-            if (m.matches()) {
-                foundPredicates.put(key, queryBuilderParams.get(key));
-            }
-        }
+
+        queryBuilderParams.keySet().stream()
+                .filter(key -> p.matcher(key).matches())
+                .forEach(key -> foundPredicates.put(key, queryBuilderParams.get(key)));
 
         return foundPredicates;
     }

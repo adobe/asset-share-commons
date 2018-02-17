@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.PathPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.PropertyPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.impl.options.SelectedOptionItem;
+import com.adobe.aem.commons.assetshare.components.predicates.impl.options.UnselectedOptionItem;
 import com.adobe.aem.commons.assetshare.search.impl.predicateevaluators.PropertyValuesPredicateEvaluator;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
 import com.adobe.cq.commerce.common.ValueMapDecorator;
@@ -92,18 +93,20 @@ public class PathPredicateImpl extends AbstractPredicate implements PathPredicat
     public List<OptionItem> getItems() {
         final ValueMap initialValues = getInitialValues();
         final List<OptionItem> processedOptionItems = new ArrayList<>();
+        final boolean useDefaultSelected = !isParameterizedSearchRequest();
 
-        for (final OptionItem optionItem : coreOptions.getItems()) {
-            if (request.getResourceResolver().getResource(optionItem.getValue()) != null) {
-                // Resource must be read-able by this user for them to see the option
-                if (PredicateUtil.isOptionInInitialValues(optionItem, initialValues)) {
-                    processedOptionItems.add(new SelectedOptionItem(optionItem));
-                    foundValueFromRequest = true;
-                } else {
-                    processedOptionItems.add((optionItem));
-                }
-            }
-        }
+        coreOptions.getItems().stream()
+                .filter(optionItem -> request.getResourceResolver().getResource(optionItem.getValue()) != null)
+                .forEach(optionItem -> {
+                    if (PredicateUtil.isOptionInInitialValues(optionItem, initialValues)) {
+                        processedOptionItems.add(new SelectedOptionItem(optionItem));
+                    } else if (useDefaultSelected) {
+                        processedOptionItems.add(optionItem);
+                    } else {
+                        processedOptionItems.add(new UnselectedOptionItem(optionItem));
+                    }
+                });
+
         return processedOptionItems;
     }
 
@@ -126,7 +129,7 @@ public class PathPredicateImpl extends AbstractPredicate implements PathPredicat
 
     @Override
     public boolean isReady() {
-        return getItems().size() > 0;
+        return coreOptions.getItems().size() > 0;
     }
 
     @Override

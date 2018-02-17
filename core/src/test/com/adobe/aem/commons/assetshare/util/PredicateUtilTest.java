@@ -12,29 +12,31 @@ class PredicateUtilTest {
 
     @Test
     void findPredicate() {
+        final String PATH = "/content/dam/a";
+
         final Map<String, String> input = new HashMap<>();
-        input.put("group.path", "/content/dam/a/b");
-        input.put("group.path.path", "/content/dam/a/b");
-        input.put("group.path.1_path", "/content/dam/a/b");
-        input.put("1_group.path", "/content/dam/a/b");
-        input.put("1_group.path.path", "/content/dam/a/b");
-        input.put("1_group.path.1_path", "/content/dam/a/b");
-        input.put("1_group.1_path", "/content/dam/a/b");
-        input.put("1_group.1_path.path", "/content/dam/a/b");
-        input.put("1_group.1_path.1_path", "/content/dam/a/b");
+        input.put("group.path", PATH);
+        input.put("group.path.path", PATH);
+        input.put("group.path.1_path", PATH);
+        input.put("1_group.path", PATH);
+        input.put("1_group.path.path", PATH);
+        input.put("1_group.path.1_path", PATH);
+        input.put("1_group.1_path", PATH);
+        input.put("1_group.1_path.path", PATH);
+        input.put("1_group.1_path.1_path", PATH);
 
         input.put("type", "dam:Asset");
 
         final Map<String, String> expected = new HashMap<>();
-        expected.put("group.path", "/content/dam/a/b");
-        expected.put("group.path.path", "/content/dam/a/b");
-        expected.put("group.path.1_path", "/content/dam/a/b");
-        expected.put("1_group.path", "/content/dam/a/b");
-        expected.put("1_group.path.path", "/content/dam/a/b");
-        expected.put("1_group.path.1_path", "/content/dam/a/b");
-        expected.put("1_group.1_path", "/content/dam/a/b");
-        expected.put("1_group.1_path.path", "/content/dam/a/b");
-        expected.put("1_group.1_path.1_path", "/content/dam/a/b");
+        expected.put("group.path", PATH);
+        expected.put("group.path.path", PATH);
+        expected.put("group.path.1_path", PATH);
+        expected.put("1_group.path", PATH);
+        expected.put("1_group.path.path", PATH);
+        expected.put("1_group.path.1_path", PATH);
+        expected.put("1_group.1_path", PATH);
+        expected.put("1_group.1_path.path", PATH);
+        expected.put("1_group.1_path.1_path", PATH);
 
         ValueMap actual = PredicateUtil.findPredicate(input, "path", "path");
 
