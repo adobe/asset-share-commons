@@ -101,15 +101,17 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
         final List<OptionItem> processedOptionItems = new ArrayList<>();
         final boolean useDefaultSelected = !isParameterizedSearchRequest();
 
-        for (final OptionItem optionItem : coreOptions.getItems()) {
-            if (PredicateUtil.isOptionInInitialValues(optionItem, initialValues)) {
-                processedOptionItems.add(new SelectedOptionItem(optionItem));
-            } else if (useDefaultSelected) {
-                processedOptionItems.add((optionItem));
-            } else {
-                processedOptionItems.add(new UnselectedOptionItem(optionItem));
-            }
-        }
+        coreOptions.getItems().stream()
+                .forEach(optionItem -> {
+                    if (PredicateUtil.isOptionInInitialValues(optionItem, initialValues)) {
+                        processedOptionItems.add(new SelectedOptionItem(optionItem));
+                    } else if (useDefaultSelected) {
+                        processedOptionItems.add(optionItem);
+                    } else {
+                        processedOptionItems.add(new UnselectedOptionItem(optionItem));
+                    }
+                });
+
         return processedOptionItems;
     }
 
