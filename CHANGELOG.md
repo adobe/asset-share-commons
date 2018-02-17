@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 - 0128: Path Filter search component.
+- 0130: Added auto-search capabilities to search predicate components.
 
 ## [v1.2.2]
 
