@@ -49,9 +49,6 @@ import java.util.Map;
 public class EmailShareImpl extends ShareImpl implements EmailShare {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/modals/share";
 
-    public static final String PN_SIGNATURE = "signature";
-    public static final String PN_USE_SHARER_NAME_AS_SIGNATURE = "useSharerSignature";
-
     @Self
     @Required
     private SlingHttpServletRequest request;

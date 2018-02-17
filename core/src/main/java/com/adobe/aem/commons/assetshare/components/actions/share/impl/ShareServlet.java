@@ -19,12 +19,10 @@
 
 package com.adobe.aem.commons.assetshare.components.actions.share.impl;
 
-import com.adobe.aem.commons.assetshare.components.actions.share.Share;
 import com.adobe.aem.commons.assetshare.components.actions.share.ShareException;
 import com.adobe.aem.commons.assetshare.components.actions.share.ShareService;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
-import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.servlets.SlingAllMethodsServlet;
 import org.apache.sling.api.wrappers.ValueMapDecorator;
 import org.osgi.service.component.annotations.Component;
@@ -39,15 +37,17 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component(service = Servlet.class,
            property = {
-            "sling.servlet.methods=POST",
-            "sling.servlet.resourceTypes=asset-share-commons/actions/share",
-            "sling.servlet.selectors=share",
-            "sling.servlet.extensions=html",
-            "sling.servlet.extensions=json"
-            }
+                   "sling.servlet.methods=POST",
+                   "sling.servlet.resourceTypes=asset-share-commons/actions/share",
+                   "sling.servlet.selectors=share",
+                   "sling.servlet.extensions=html",
+                   "sling.servlet.extensions=json"
+           }
 )
 public class ShareServlet extends SlingAllMethodsServlet {
     private static final Logger log = LoggerFactory.getLogger(ShareServlet.class);
@@ -69,21 +69,31 @@ public class ShareServlet extends SlingAllMethodsServlet {
     }
 
     private final void share(SlingHttpServletRequest request, SlingHttpServletResponse response) throws RepositoryException {
+
+        // Make this map write-able by copying the Request parameters into a new hash map
+        final AtomicInteger counter = new AtomicInteger(0);
+
+        // Call all accepting ShareService implementations
+        shareServices.stream()
+                .filter(Objects::nonNull)
+                .filter(shareService -> shareService.accepts(request))
+                .forEach(shareService -> {
+                    try {
+                        shareService.share(request, response,
+                                // Make map write-able
+                                new ValueMapDecorator(new HashMap<String, Object>(request.getParameterMap())));
+                        counter.incrementAndGet();
+                    } catch (ShareException e) {
+                        log.error("Failed to not share assets using [ {} ]", shareService.getClass().getName(), e);
+                    }
+                });
+
         try {
-            // Make this map write-able by copying the Request parameters into a new hash map
-            final ValueMap shareParameters = new ValueMapDecorator(new HashMap<String, Object>(request.getParameterMap()));
-
-            int shareCount = 0;
-            // Call the best ranking Share Service
-            for(final ShareService shareService : shareServices) {
-                if (shareService.accepts(request)) {
-                    shareService.share(request, response, shareParameters);
-                    shareCount++;
-                }
-            }
-
-            if (shareCount == 0) {
-                defaultShareService.share(request, response, shareParameters);
+            // If no accepting implementations can be found, use the default ASC Email implementation.
+            if (counter.get() == 0) {
+                defaultShareService.share(request, response,
+                        // Make map write-able
+                        new ValueMapDecorator(new HashMap<String, Object>(request.getParameterMap())));
             }
         } catch (ShareException ex) {
             log.error("Unable to share assets from Asset Share Commons", ex);
