@@ -124,6 +124,9 @@ AssetShare.Search = (function (window, $, ns, ajax) {
         $("body").on("change", ns.Elements.selector("sort"), sortResults);
         $("body").on("click", ns.Elements.selector("switch-layout"), switchLayout);
 
+        $("body").on("change", "[data-asset-share-search-on='change']", search);
+        $("body").on("click", "[data-asset-share-search-on='click']", search);
+
         /* Required for IE */
         $("button[form='" + formId + "']").on("click", search);
         $("input[form='" + formId + "']").keypress(function(e) {

@@ -26,34 +26,34 @@ $(function () {
     $(".ui.accordion").accordion();
     $(".ui.dropdown").dropdown();
 
-});
+    /** Semantic UI Calendar Plugins - Initialize Date Range Predicates **/
+    function dateFormatter(date, settings) {
+        var day, month, year;
 
-/** Semantic UI Calendar Plugins - Initialize Date Range Predicates **/
-$(function () {
-    "use strict";
+        if (!date) {
+            return '';
+        }
 
-    var rangeStart = $('.ui.calendar.rangestart');
+        day = date.getDate();
+        month = date.getMonth() + 1;
+        year = date.getFullYear();
 
-    $(rangeStart).each(function (index) {
+        return year + '-' + month + '-' + day;
+    }
+
+    $('.ui.calendar.rangestart').each(function (index) {
         var predicateId = $(this).attr('data-asset-share-calendar-start-id'),
+            rangeStart = $(this),
             rangeEnd = $('[data-asset-share-calendar-end-id="' + predicateId + '"]');
 
-        $(this).calendar({
+        $(rangeStart).calendar({
             type: 'date',
             endCalendar: $(rangeEnd),
             formatter: {
-                date: function (date, settings) {
-                    var day, month, year;
-
-                    if (!date) {
-                        return '';
-                    }
-                    day = date.getDate();
-                    month = date.getMonth() + 1;
-                    year = date.getFullYear();
-
-                    return year + '-' + month + '-' + day;
-                }
+                date: dateFormatter
+            },
+            onChange: function (date, text, mode) {
+                $(rangeStart).find('input[type="text"]').trigger("change");
             }
         });
 
@@ -61,18 +61,10 @@ $(function () {
             type: 'date',
             startCalendar: $(this),
             formatter: {
-                date: function (date, settings) {
-                    var day, month, year;
-
-                    if (!date) {
-                        return '';
-                    }
-                    day = date.getDate();
-                    month = date.getMonth() + 1;
-                    year = date.getFullYear();
-
-                    return year + '-' + month + '-' + day;
-                }
+                date: dateFormatter
+            },
+            onChange: function (date, text, mode) {
+                $(rangeEnd).find('input[type="text"]').trigger("change");
             }
         });
     });

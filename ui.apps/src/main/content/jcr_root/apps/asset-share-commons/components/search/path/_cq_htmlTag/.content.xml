@@ -18,28 +18,6 @@
   -->
 
 <jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    cq:tagName="div"
     jcr:primaryType="nt:unstructured"
-    autoSearch="{Boolean}true"
-    ascendingLabel="Ascending"
-    descendingLabel="Descending"
-    orderByLabel="Sort By"
-    orderBySortLabel="Sort Direction">
-    <items jcr:primaryType="nt:unstructured">
-        <item0
-            jcr:primaryType="nt:unstructured"
-            text="Size"
-            value="@jcr:content/metadata/dam:size"/>
-        <item1
-            jcr:primaryType="nt:unstructured"
-            text="Last Modified"
-            value="@jcr:content/jcr:lastModified"/>
-        <item2
-            jcr:primaryType="nt:unstructured"
-            text="Width"
-            value="@jcr:content/metadata/tiff:ImageWidth"/>
-        <item3
-            jcr:primaryType="nt:unstructured"
-            text="Length"
-            value="@jcr:content/metadata/tiff:ImageLength"/>
-    </items>
-</jcr:root>
+    class="cmp cmp-search-path"/>

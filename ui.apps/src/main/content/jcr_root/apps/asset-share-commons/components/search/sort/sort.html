@@ -27,6 +27,7 @@
 				form="${predicate.formId}"
 				data-asset-share-id="sort"
 				data-asset-share-search-actions="all"
+				data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}"
 				data-sly-list.item="${predicate.items}"/>
 		<i class="dropdown icon"></i>
 		<div class="text">${properties['orderByLabel']}</div>
@@ -43,6 +44,7 @@
 				form="${predicate.formId}"
 				data-asset-share-id="sort"
 				data-asset-share-search-actions="all"
+				data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}"
 				data-sly-list.item="${predicate.items}"/>
 		<i class="dropdown icon"></i>
 		<div class="text">${properties['orderBySortLabel']}</div>

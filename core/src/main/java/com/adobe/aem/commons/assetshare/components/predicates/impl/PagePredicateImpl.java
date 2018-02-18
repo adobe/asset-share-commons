@@ -25,7 +25,9 @@ import com.adobe.aem.commons.assetshare.components.predicates.PagePredicate;
 import com.adobe.aem.commons.assetshare.util.ComponentModelVisitor;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
 import com.day.cq.dam.api.DamConstants;
+import com.day.cq.search.eval.PathPredicateEvaluator;
 import com.day.cq.wcm.api.Page;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestParameter;
@@ -160,7 +162,7 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
         final List<String> paths = new ArrayList<>();
 
         for (final String path : uncheckedPaths) {
-            if (StringUtils.equals(path, "/content/dam") || StringUtils.startsWith(path, "/content/dam/")) {
+            if (StringUtils.equals(path, DamConstants.MOUNTPOINT_ASSETS) || StringUtils.startsWith(path, DamConstants.MOUNTPOINT_ASSETS)) {
                 paths.add(path);
             }
         }
@@ -172,27 +174,44 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
         }
     }
 
+    @Override
     public Map<String, String> getParams() {
+        return getParams(new ParamTypes[]{});
+    }
+
+
+    public Map<String, String> getParams(ParamTypes... excludeParamTypes) {
         int systemGroupId = Integer.MAX_VALUE;
         final Map<String, String> params = new HashMap<>();
 
-        params.put("type", DamConstants.NT_DAM_ASSET);
-
         int i = 0;
-        final String pathGroup = String.valueOf(systemGroupId--) + "_group";
-        params.put(pathGroup + ".p.or", "true");
-        for (final String path : getPaths()) {
-            params.put(pathGroup + "." + i++ + "_path", path);
+
+        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.NODE_TYPE)) {
+            params.put("type", DamConstants.NT_DAM_ASSET);
         }
 
-        // Start large to avoid any conflicts w parameterized
-        for (final HiddenPredicate hiddenPredicate : getHiddenPredicates(currentPage)) {
-            params.putAll(hiddenPredicate.getParams(systemGroupId--));
+        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.PATH)) {
+            final String pathGroup = String.valueOf(systemGroupId--) + "_group";
+            params.put(pathGroup + ".p.or", "true");
+            for (final String path : getPaths()) {
+                params.put(pathGroup + "." + i++ + "_path", path);
+            }
         }
 
-        params.put("p.limit", String.valueOf(getLimit()));
-        params.put("p.guessTotal", getGuessTotal());
+        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.HIDDEN_PREDICATES)) {
+            // Start large to avoid any conflicts w parameterized
+            for (final HiddenPredicate hiddenPredicate : getHiddenPredicates(currentPage)) {
+                params.putAll(hiddenPredicate.getParams(systemGroupId--));
+            }
+        }
 
+        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.LIMIT)) {
+            params.put("p.limit", String.valueOf(getLimit()));
+        }
+
+        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.GUESS_TOTAL)) {
+            params.put("p.guessTotal", getGuessTotal());
+        }
 
         return params;
     }

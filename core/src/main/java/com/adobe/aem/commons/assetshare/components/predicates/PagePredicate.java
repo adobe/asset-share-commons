@@ -19,10 +19,20 @@
 
 package com.adobe.aem.commons.assetshare.components.predicates;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 import java.util.List;
 import java.util.Map;
 
+@ProviderType
 public interface PagePredicate extends Predicate {
+    enum ParamTypes {
+        NODE_TYPE,
+        PATH,
+        GUESS_TOTAL,
+        LIMIT,
+        HIDDEN_PREDICATES
+    }
 
     String getOrderBy();
 
@@ -35,4 +45,7 @@ public interface PagePredicate extends Predicate {
     List<String> getPaths();
 
     Map<String, String> getParams();
+
+    Map<String, String> getParams(ParamTypes... excludeParamTypes);
+
 }

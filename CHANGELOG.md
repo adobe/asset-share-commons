@@ -4,8 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [v1.3.0]
 
+### Fixed
+- 0131: Fixed ContextHub eventing condition that cause the user menu profile to act as "anonymous" on the first page via by an auth'd user.
+
+### Added
+- 0128: Path Filter search component.
+- 0130: Added auto-search capabilities to search predicate components.
 - 0134: Allow multiple ShareServices to be registered and allow each to accept the request.
 
 ## [v1.2.2]

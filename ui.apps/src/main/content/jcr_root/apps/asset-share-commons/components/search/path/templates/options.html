@@ -32,11 +32,10 @@
 				<input for="${predicate.id}"
 					   form="${predicate.formId}"
 					   type="${predicate.subType == 'checkbox' ? 'checkbox' : 'radio'}"
-					   name="${predicate.group}.${predicate.name}.${predicate.subType == 'checkbox' ? optionList.index : '0'}_${predicate.valuesKey}"
+					   name="${predicate.group}.${predicate.subType == 'checkbox' ? optionList.index : '0'}_${predicate.name}"
 					   value="${option.value}"
 					   checked="${option.selected}"
-					   disabled="${option.disabled}"
-					   data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}"/>
+					   disabled="${option.disabled}" />
 				<label>${option.text}</label>
 			</div>
 		</div>
@@ -44,16 +43,14 @@
 </div>
 </template>
 
-
 <!--/* Dropdown Template - renders a dropdown */-->
 <template data-sly-template.dropdown="${ @ predicate}">
     <select class="ui fluid dropdown"
-            name="${predicate.group}.${predicate.name}.${predicate.valuesKey}"
+            name="${predicate.group}.${predicate.name}"
 			value="${predicate.intialValue}"
 			form="${predicate.formId}"
-			for="${predicate.id}"
-			data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}">
-	<option value="">${predicate.title}</option>
+			for="${predicate.id}">
+    	<option value="">${predicate.title}</option>
     	<sly data-sly-list.optionItem="${predicate.items}">
     		<option value="${optionItem.value}"
     		        disabled="${optionItem.disabled}"
