@@ -57,7 +57,7 @@ Enumerates available filter options (ie. values)
 * **Component**: `/apps/asset-share-commons/components/search/path`
 * **Sling Model**: `com.adobe.aem.commons.assetshare.search.predicates.impl.PathPredicateImpl`
 
-This filter implements a wrapped version of AEM Query Builder's [PathPredicateEvaluator](https://docs.adobe.com/docs/en/aem/6-3/develop/ref/javadoc/com/day/cq/search/eval/PathPredicateEvaluator.html). 
+This filter leverages AEM Query Builder's [PathPredicateEvaluator](https://docs.adobe.com/docs/en/aem/6-3/develop/ref/javadoc/com/day/cq/search/eval/PathPredicateEvaluator.html). 
 
 Example generated Query Builder predicate output: 
 
@@ -66,4 +66,12 @@ Example generated Query Builder predicate output:
 1_group.2_path=/content/dam/my/other/assets
 ```      
 
+This filter component forces the following [AEM QueryBuilder Path](https://helpx.adobe.com/experience-manager/6-3/sites/developing/using/reference-materials/javadoc/com/day/cq/search/eval/PathPredicateEvaluator.html) Predicate properties:
+
+* `exact` = `false`
+    * *if exact is true/on, the exact path must match, but it can contain simple wildcards (*), that match names, but not "/"; if it is false (default) all descendants are included.*
+* `flat` = `false`
+    * *searches only the direct children (like appending "/*" in xpath) (only used if 'exact' is not true, optional)*
+* `self` = `true`
+    * *searches the subtree but includes the base node given as path (no wildcards)*
 

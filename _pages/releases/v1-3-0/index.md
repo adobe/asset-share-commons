@@ -11,7 +11,7 @@ title: v1.3.0
 ### Added
 - 0128: Introduction of the <a href="{{ site.baseurl }}/pages/search/path">Path Filter Search component</a> that allows for pre-authored path restrictions to be selected by end-users to refine searches.
 - 0130: Added auto-search capabilities to Search Components: 
-    - <a href="{{ site.baseurl }}/pages/search/property">Property Filter</a>,
+    - <a href="{{ site.baseurl }}/pages/search/property">Property Filter</a>
     - <a href="{{ site.baseurl }}/pages/search/date-range">Date Range Filter</a>
     - <a href="{{ site.baseurl }}/pages/search/tags">Tags Filter</a>
     - <a href="{{ site.baseurl }}/pages/search/path">Path Filter</a>
