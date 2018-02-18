@@ -16,6 +16,14 @@ Only one sort may be applied at a time. For example, this component does NOT sup
 
 Authors may specify all ordering options.
 
+### Dialog / Sort tab 
+
+ ![Sort dialog](./images/dialog-sort.png)
+
+#### Auto-Search on Change (v1.3.0)
+
+Select to automatically perform a search whenever the end-user selected filter criteria of this component changes.
+
 ### Dialog / Sort By tab 
  
  ![Sort By dialog](./images/dialog-sort-by.png)

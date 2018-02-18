@@ -48,7 +48,7 @@ The search operation to perform between the Metadata Property and Option(s).
   * Does not equals
     * Metadata property does not matches value
         
-#### Auto-Search on Change     
+#### Auto-Search on Change (v1.3.0)
 
 Select to automatically perform a search whenever the end-user selected filter criteria of this component changes.
         
