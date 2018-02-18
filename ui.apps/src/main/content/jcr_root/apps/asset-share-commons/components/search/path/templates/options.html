@@ -35,7 +35,8 @@
 					   name="${predicate.group}.${predicate.subType == 'checkbox' ? optionList.index : '0'}_${predicate.name}"
 					   value="${option.value}"
 					   checked="${option.selected}"
-					   disabled="${option.disabled}" />
+					   disabled="${option.disabled}"
+					   data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}"/>
 				<label>${option.text}</label>
 			</div>
 		</div>
@@ -49,7 +50,8 @@
             name="${predicate.group}.${predicate.name}"
 			value="${predicate.intialValue}"
 			form="${predicate.formId}"
-			for="${predicate.id}">
+			for="${predicate.id}"
+			data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}">
     	<option value="">${predicate.title}</option>
     	<sly data-sly-list.optionItem="${predicate.items}">
     		<option value="${optionItem.value}"
