@@ -25,6 +25,11 @@ import java.util.Map;
 
 @ProviderType
 public interface HiddenPredicate extends Predicate {
+    /**
+     *
+     * @param groupId the groupId to namespace these QueryBuilder parameters to.
+     * @return a map of query builder parameters for this predicate, namespaced by the groupId.
+     */
     Map<String, String> getParams(int groupId);
 }
 

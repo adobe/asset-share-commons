@@ -32,6 +32,13 @@ import org.osgi.annotation.versioning.ConsumerType;
 @ConsumerType
 public interface ShareService {
     /**
+     *
+     * @param request         the request that provides context of which Asset Share instance the request is coming to.
+     * @return true if the share service should process the request.
+     */
+    boolean accepts(SlingHttpServletRequest request);
+
+    /**
      * Share method to use in the context of a request; Typically a Servlet will call this method on the appropriate ShareService implementation.
      *
      * @param request         the request that provides context of which Asset Share instance the request is coming to.

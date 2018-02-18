@@ -29,6 +29,8 @@ import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
+import java.util.Arrays;
+
 public abstract class AbstractPredicate implements Predicate {
     private static final String REQUEST_ATTR_PREDICATE_GROUP_TRACKER = "asset-share-commons__predicate-group";
     private static final String REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER = "asset-share-commons__legacy_predicate-group";
@@ -47,6 +49,10 @@ public abstract class AbstractPredicate implements Predicate {
     @Default(booleanValues = false)
     private boolean expanded;
 
+    @ValueMapValue
+    @Default(booleanValues = false)
+    private boolean autoSearch;
+
     private int group = 1;
 
     private Field coreField;
@@ -62,6 +68,10 @@ public abstract class AbstractPredicate implements Predicate {
         }
 
         return expanded;
+    }
+
+    public boolean isAutoSearch() {
+        return autoSearch;
     }
 
     public String getGroup() {
@@ -106,6 +116,13 @@ public abstract class AbstractPredicate implements Predicate {
         }
 
         return REQUEST_ATTR_FORM_ID_TRACKER + "__" + String.valueOf(request.getAttribute(REQUEST_ATTR_FORM_ID_TRACKER));
+    }
+
+    /**
+     * @return true if the request appears to be a request that has search parameters.
+     */
+    public boolean isParameterizedSearchRequest() {
+        return Arrays.stream(new String[]{"p.", "", "_group."}).anyMatch(needle -> StringUtils.contains(request.getQueryString(), needle));
     }
 
     /**

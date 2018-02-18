@@ -132,6 +132,14 @@
                                     -->
                                 </items>
                             </operation>
+                            <auto-search
+                                jcr:primaryType="nt:unstructured"
+                                sling:orderBefore="name"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                fieldDescription="Check this field to automatically apply this filter via a new search when this value is changed."
+                                name="./autoSearch"
+                                text="Auto-Search on Change"
+                                value="true"/>
                             <expanded
                                 jcr:primaryType="nt:unstructured"
                                 sling:orderBefore="name"

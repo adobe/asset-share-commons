@@ -52,7 +52,6 @@ import org.apache.sling.xss.XSSAPI;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
@@ -64,10 +63,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Component(service = ShareService.class)
 @Designate(ocd = EmailShareServiceImpl.Cfg.class)
 public class EmailShareServiceImpl implements ShareService {
     private static final Logger log = LoggerFactory.getLogger(EmailShareServiceImpl.class);
+
+    public static final String SHARE_SERVICE_ACCEPTANCE_KEY = "asset-share-commons__share--email";
 
     /**
      * Share Parameters
@@ -96,6 +97,11 @@ public class EmailShareServiceImpl implements ShareService {
 
     @Reference
     private XSSAPI xssAPi;
+
+    @Override
+    public boolean accepts(final SlingHttpServletRequest request) {
+        return "true".equals(request.getParameter(SHARE_SERVICE_ACCEPTANCE_KEY));
+    }
 
     @Override
     public final void share(final SlingHttpServletRequest request, final SlingHttpServletResponse response, final ValueMap shareParameters) throws ShareException {
