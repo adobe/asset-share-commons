@@ -78,7 +78,8 @@ public class TagsPredicateImpl extends AbstractPredicate implements TagsPredicat
     @ValueMapValue @Default(values = JcrPropertyPredicateEvaluator.OP_EQUALS)
     private String operation;
 
-    private ValueMap valuesFromRequest = null;
+    private String valueFromRequest;
+    private ValueMap valuesFromRequest;
 
     @PostConstruct
     protected void init() {
@@ -96,6 +97,7 @@ public class TagsPredicateImpl extends AbstractPredicate implements TagsPredicat
         return typeString;
     }
 
+    @Override
     public String getProperty() {
         return StringUtils.defaultIfBlank(property, "jcr:content/metadata/cq:tags");
     }
@@ -144,33 +146,23 @@ public class TagsPredicateImpl extends AbstractPredicate implements TagsPredicat
 
     @Override
     public boolean isReady() {
-        return getItems().size() > 0;
+        final TagManager tagManager = request.getResourceResolver().adaptTo(TagManager.class);
+        return tagManager.getTags(request.getResource()).length > 0;
     }
 
     @Override
     public String getInitialValue() {
-        return null;
+        if (valueFromRequest == null) {
+            valueFromRequest = PredicateUtil.getInitialValue(request, this, PropertyValuesPredicateEvaluator.VALUES);
+        }
+
+        return valueFromRequest;
     }
 
     @Override
     public ValueMap getInitialValues() {
         if (valuesFromRequest == null) {
-            valuesFromRequest = new ValueMapDecorator(new HashMap<>());
-
-            for (Map.Entry<String, RequestParameter[]> entry : request.getRequestParameterMap().entrySet()) {
-                final List<String> values = new ArrayList<>();
-                if (entry.getKey().matches("^" + getGroup() + "." + getName() + ".\\d*_?" + PropertyValuesPredicateEvaluator.VALUES + "$")) {
-                    for (final RequestParameter tmp : entry.getValue()) {
-                        if (StringUtils.isNotBlank(tmp.getString())) {
-                            values.add(tmp.getString());
-                        }
-                    }
-                }
-
-                if (!values.isEmpty()) {
-                    valuesFromRequest.put(entry.getKey(), values.toArray(new String[values.size()]));
-                }
-            }
+            valuesFromRequest = PredicateUtil.getInitialValues(request, this, PropertyValuesPredicateEvaluator.VALUES);
         }
 
         return valuesFromRequest;

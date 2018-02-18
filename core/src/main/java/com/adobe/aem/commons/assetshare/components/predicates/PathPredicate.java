@@ -20,15 +20,27 @@
 package com.adobe.aem.commons.assetshare.components.predicates;
 
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
+import com.adobe.cq.wcm.core.components.models.form.Options;
 import org.osgi.annotation.versioning.ProviderType;
 
 import java.util.List;
 
 @ProviderType
-public interface SortPredicate extends Predicate {
+public interface PathPredicate extends Predicate {
+
     /**
-     * @return the option items for this predicate.
+     * @return a list of the Path filtering options.
      */
     List<OptionItem> getItems();
+
+    /**
+     * @return the Options.Type (checkbox, drop-down, etc.)
+     */
+    Options.Type getType();
+
+    /**
+     * @return the variation of the type (checkbox or radio)
+     */
+    String getSubType();
 }
 
