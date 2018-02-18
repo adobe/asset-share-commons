@@ -8,7 +8,11 @@ layout: default
         <ul class="component-details__list">
             <li><span class="component-details--label">Component title:</span> {{ page.title }}</li>
             <li><span class="component-details--label">Component group:</span> Asset Share Commons - {{ page.component-group }}</li>
-            <!--<li class="component-details--only-used">Only to be used on the <a href="../">{{ page.component-group }} page template</a></li>-->
+            <li><span class="component-details--label">Released with version </span> {{ page.initial-version | default: "1.0.0" }}</li>
+
+            {% if page.last-updated-version %}
+            <li><span class="component-details--label">Last updated in version </span> {{ page.last-updated-version }}</li>
+            {% endif %}
         </ul>
     </section>
 

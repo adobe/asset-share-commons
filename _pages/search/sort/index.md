@@ -2,6 +2,7 @@
 title: Sort
 layout: component-page
 tags: search,component
+last-updated-version: 1.3.0
 --- 
 
 ![Sort component](./images/main.png)

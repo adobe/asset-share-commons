@@ -2,6 +2,7 @@
 title: Property Filter
 layout: component-page
 component-group: search
+last-updated-version: 1.3.0
 ---
 
 ![Property filter component](./images/main.png)
@@ -47,6 +48,10 @@ The search operation to perform between the Metadata Property and Option(s).
   * Does not equals
     * Metadata property does not matches value
         
+#### Auto-Search on Change     
+
+Select to automatically perform a search whenever the end-user selected filter criteria of this component changes.
+        
 #### Start Expanded        
 
 Select to initially display the component filter in an expanded mode, showing the selection options.
@@ -68,7 +73,7 @@ Enumerates available filter options (ie. values)
 ## Technical details
 
 * **Component**: `/apps/asset-share-commons/components/search/property`
-* **Sling Model**: `com.adobe.aem.commons.assetshare.search.predicates.impl.PredicateImpl`
+* **Sling Model**: `com.adobe.aem.commons.assetshare.search.predicates.impl.PropertyPredicateImpl`
 
 This filter implements a wrapped version of AEM Query Builder's [JcrPropertyPredicateEvaluator](https://docs.adobe.com/docs/en/aem/6-3/develop/ref/javadoc/com/day/cq/search/eval/JcrPropertyPredicateEvaluator.html). 
 The Asset Share Commons' provided predicate wrapper (`com.adobe.aem.commons.assetshare.search.impl.predicateevaluators.PropertyValuesPredicateEvaluator`) allows for the values to be provided as comma-delimited values to be transformed into `#_value` parameters for evaluation by AEM's JcrPropertyPredicateEvaluator; 

@@ -2,6 +2,7 @@
 layout: component-page
 title: Tags Filter
 component-group: search
+last-updated-version: 1.3.0
 ---
 
 ![Tags filter component](./images/main.png)
@@ -45,6 +46,10 @@ The search operation to perform between the Metadata Property and Option(s).
       * Metadata property exactly matches value
   * **Does not equals**
       * Metadata property does not matches value
+
+#### Auto-Search on Change     
+
+Select to automatically perform a search whenever the end-user selected filter criteria of this component changes.
 
 #### Start Expanded      
   

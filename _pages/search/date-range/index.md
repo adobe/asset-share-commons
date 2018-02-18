@@ -2,6 +2,7 @@
 layout: component-page
 title: Date Range Filter
 component-group: search
+last-updated-version: 1.3.0
 ---
 
 ![Date range component](./images/main.png)
@@ -36,6 +37,10 @@ List of Asset metadata properties available for filtering.
 * Labels/Properties are derived from available Metadata Schemas
 * Lightning (⚡) indicates this property is optimized for search.
 * Turtle (🐢) indicates this property is NOT optimized for search.
+
+#### Auto-Search on Change     
+
+Select to automatically perform a search whenever the end-user selected filter criteria of this component changes.
 
 #### Start Expanded
 
