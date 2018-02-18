@@ -226,7 +226,8 @@
                                                                 jcr:description="The absolute DAM path (starting with /content/dam) to restrict this search filter to."
                                                                 required="{Boolean}true"
                                                                 fieldLabel="Path"
-                                                                name="value"/>
+                                                                name="value"
+                                                                rootPath="/content/dam"/>
                                                     </items>
                                                 </option>
                                             </items>
