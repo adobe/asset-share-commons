@@ -17,18 +17,35 @@
  *
  */
 
-package com.adobe.aem.commons.assetshare.components.predicates;
+package com.adobe.aem.commons.assetshare.components.predicates.impl.options;
 
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
-import org.osgi.annotation.versioning.ProviderType;
 
-import java.util.List;
+public class UnselectedOptionItem implements OptionItem {
 
-@ProviderType
-public interface SortPredicate extends Predicate {
-    /**
-     * @return the option items for this predicate.
-     */
-    List<OptionItem> getItems();
+    private OptionItem wrappedOptionItem = null;
+
+    public UnselectedOptionItem(OptionItem wrappedOptionItem) {
+        this.wrappedOptionItem = wrappedOptionItem;
+    }
+
+    @Override
+    public boolean isSelected() {
+        return false;
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return wrappedOptionItem.isDisabled();
+    }
+
+    @Override
+    public String getValue() {
+        return wrappedOptionItem.getValue();
+    }
+
+    @Override
+    public String getText() {
+        return wrappedOptionItem.getText();
+    }
 }
-

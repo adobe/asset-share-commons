@@ -20,6 +20,7 @@
 package com.adobe.aem.commons.assetshare.components.predicates.impl;
 
 import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
+import com.adobe.aem.commons.assetshare.components.predicates.PathPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.PropertyPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.impl.options.SelectedOptionItem;
 import com.adobe.aem.commons.assetshare.components.predicates.impl.options.UnselectedOptionItem;
@@ -32,6 +33,7 @@ import com.day.cq.search.eval.PathPredicateEvaluator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestParameter;
+import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.Default;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
@@ -49,17 +51,17 @@ import java.util.Map;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {PropertyPredicate.class},
-        resourceType = {PropertyPredicateImpl.RESOURCE_TYPE},
+        adapters = {PathPredicate.class},
+        resourceType = {PathPredicateImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
-public class PropertyPredicateImpl extends AbstractPredicate implements PropertyPredicate, Options {
-
-    protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/property";
+public class PathPredicateImpl extends AbstractPredicate implements PathPredicate, Options {
+    protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/path";
     protected static final String PN_TYPE = "type";
 
     protected String valueFromRequest = null;
     protected ValueMap valuesFromRequest = null;
+    protected boolean foundValueFromRequest = false;
 
     @Self
     @Required
@@ -73,21 +75,13 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
     private String label;
 
     @ValueMapValue
-    private String property;
-
-    @ValueMapValue
     private String operation;
 
     @ValueMapValue
     private Boolean expanded;
 
-    @ValueMapValue(name = PropertyPredicateImpl.PN_TYPE)
+    @ValueMapValue(name = PathPredicateImpl.PN_TYPE)
     private String typeString;
-
-    @ValueMapValue
-    @Named("and")
-    @Default(booleanValues = false)
-    private boolean and;
 
     @PostConstruct
     protected void init() {
@@ -102,6 +96,7 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
         final boolean useDefaultSelected = !isParameterizedSearchRequest();
 
         coreOptions.getItems().stream()
+                .filter(optionItem -> request.getResourceResolver().getResource(optionItem.getValue()) != null)
                 .forEach(optionItem -> {
                     if (PredicateUtil.isOptionInInitialValues(optionItem, initialValues)) {
                         processedOptionItems.add(new SelectedOptionItem(optionItem));
@@ -121,39 +116,15 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
 
     /* Property Predicate Specific */
 
+    @Override
     public String getSubType() {
         //support variation of Checkboxes
         return typeString;
     }
 
-    public String getProperty() {
-        return property;
-    }
-
-    @Override
-    public String getValuesKey() {
-        return PropertyValuesPredicateEvaluator.VALUES;
-    }
-
-    public boolean hasOperation() {
-        return StringUtils.isNotBlank(getOperation());
-    }
-
-    public String getOperation() {
-        return operation;
-    }
-
-    public boolean hasAnd() {
-        return and;
-    }
-
-    public Boolean getAnd() {
-        return and;
-    }
-
     @Override
     public String getName() {
-        return PropertyValuesPredicateEvaluator.PREDICATE_NAME;
+        return PathPredicateEvaluator.PATH;
     }
 
     @Override
@@ -164,7 +135,7 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
     @Override
     public String getInitialValue() {
         if (valueFromRequest == null) {
-            valueFromRequest = PredicateUtil.getInitialValue(request, this, PropertyValuesPredicateEvaluator.VALUES);
+            valueFromRequest = PredicateUtil.getInitialValue(request, this, getName());
         }
 
         return valueFromRequest;
@@ -173,7 +144,7 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
     @Override
     public ValueMap getInitialValues() {
         if (valuesFromRequest == null) {
-            valuesFromRequest = PredicateUtil.getInitialValues(request, this, PropertyValuesPredicateEvaluator.VALUES);
+            valuesFromRequest = PredicateUtil.getInitialValues(request, this, getName());
         }
 
         return valuesFromRequest;
