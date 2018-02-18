@@ -31,7 +31,6 @@ public interface Predicate extends Component, Field {
      * In version 1.x.x of this project, this will always be "asset-share-commons__form-id__1".
      *
      * @return the Form id, use to bind inputs to a form via &lt;input form="${predicate.formId}"... &gt;.
-     *
      */
     String getFormId();
 
@@ -46,6 +45,15 @@ public interface Predicate extends Component, Field {
      * @return true is the predicate view should be expanded.
      */
     boolean isExpanded();
+
+    /**
+     * The support and implementation of autoSearch is component-implementation dependent.
+     *
+     * @return true if auto searching should be enabled for this predicate.
+     */
+    default boolean isAutoSearch() {
+        return false;
+    }
 
     /**
      * GUIDANCE NOTICE
