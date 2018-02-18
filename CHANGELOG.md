@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [v1.3.0]
 
+### Fixed
+- 0131: Fixed ContextHub eventing condition that cause the user menu profile to act as "anonymous" on the first page via by an auth'd user.
+
 ### Added
 - 0128: Path Filter search component.
 - 0130: Added auto-search capabilities to search predicate components.

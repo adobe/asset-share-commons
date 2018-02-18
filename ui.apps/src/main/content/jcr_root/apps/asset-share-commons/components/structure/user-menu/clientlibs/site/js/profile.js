@@ -18,10 +18,11 @@
 
 /*global jQuery: false, AssetShare: false, ContextHub: false*/
 
-jQuery((function($, ns, cart, contextHub, profile) {
+jQuery((function($, ns, cart) {
     "use strict";
 
-    var ANONYMOUS_SECTION_ID = "cmp-user-menu__profile--anonymous",
+    var profile = ContextHub.getStore("profile"),
+        ANONYMOUS_SECTION_ID = "cmp-user-menu__profile--anonymous",
         AUTHENTICATED_SECTION_ID = "cmp-user-menu__profile--authenticated",
         AUTHENTICATED_DISPLAY_NAME_ID = "cmp-user-menu__profile-display-name",
         AUTHENTICATED_PROFILE_PIC_ID = "cmp-user-menu__profile-pic--available",
@@ -64,11 +65,15 @@ jQuery((function($, ns, cart, contextHub, profile) {
         authenticatedSection.show();
     }
 
-    function init() {
-        if (isAnonymous()) {
-            showAnonymous();
-        } else {
-            showAuthenticated();
+    function init(event, eventData) {
+        if (eventData.store === "profile") {
+            // Only perform this check when the profile store is updated
+            // For some reason the event handler below triggers for all stores and not just the profile store.
+            if (isAnonymous()) {
+                showAnonymous();
+            } else {
+                showAuthenticated();
+            }
         }
     }
 
@@ -77,10 +82,9 @@ jQuery((function($, ns, cart, contextHub, profile) {
         cart.clear();
     });
 
-    profile.eventing.on(contextHub.Constants.EVENT_STORE_READY, init);
+    profile.eventing.on(ContextHub.Constants.EVENT_STORE_UPDATED, init);
 
 }(jQuery,
     AssetShare,
-    AssetShare.Cart,
-    ContextHub,
-    ContextHub.getStore("profile"))));
+    AssetShare.Cart)));
+
