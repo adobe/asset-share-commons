@@ -31,7 +31,7 @@ AssetShare.Search.Form = function (ns) {
 
     /** Operations **/
     function getUrl() {
-        return url + ".layout." + (ns.Data.val("layout") || "card") + ".html";
+        return url;
     }
 
     function reset() {

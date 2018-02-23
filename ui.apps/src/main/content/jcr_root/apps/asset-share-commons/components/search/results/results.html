@@ -25,7 +25,7 @@
         class="ui form"
         id="${pagePredicate.formId}"
         action="${currentPage.path @ extension = 'html'}"
-        data-asset-share-action="${resource.path}"
+        data-asset-share-action="${currentPage.path @ selectors = 'results', extension = 'html'}"
         data-asset-share-id="form">
     <div class="ui one column grid">
         <div class="column" data-asset-share-id="layout-container">
