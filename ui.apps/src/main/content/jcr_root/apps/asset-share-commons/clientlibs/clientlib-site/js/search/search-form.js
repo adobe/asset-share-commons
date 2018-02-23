@@ -31,8 +31,6 @@ AssetShare.Search.Form = function (ns) {
 
     /** Operations **/
     function getUrl() {
-        //return url + ".layout." + (ns.Data.val("layout") || "card") + ".html";
-        console.log(url);
         return url;
     }
 
@@ -130,8 +128,7 @@ AssetShare.Search.Form = function (ns) {
 
     function init() {
         // On init, the DOM is king as its populated by the server page load
-        //url = ns.Data.attr(ns.Elements.element("form"), "action");
-        url = ns.Elements.element("form").attr("action");
+        url = ns.Data.attr(ns.Elements.element("form"), "action");
         mode = ns.Data.val("mode");
 
         reset();
