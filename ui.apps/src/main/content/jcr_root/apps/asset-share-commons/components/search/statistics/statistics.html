@@ -18,9 +18,12 @@
 
 <sly    data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
 		data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
-		data-sly-test.search="${modelCache['com.adobe.aem.commons.assetshare.search.Search']}"></sly>
+		data-sly-test.search="${modelCache['com.adobe.aem.commons.assetshare.search.Search']}"
+		data-sly-use.component="com.adobe.aem.commons.assetshare.search.Statistics"></sly>
 
-<div class="ui mini ${properties['hideTimeTaken'] ? 'two' : 'three' } statistics">
+<div class="ui mini ${properties['hideTimeTaken'] ? 'two' : 'three' } statistics"
+     data-asset-share-id="${component.id}"
+     data-asset-asset-update-method="replace">
 	<div class="statistic">
 		<div class="value"
 			 data-asset-share-id="results-running-total">
