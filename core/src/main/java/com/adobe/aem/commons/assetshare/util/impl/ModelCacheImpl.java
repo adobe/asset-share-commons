@@ -38,15 +38,19 @@ public class ModelCacheImpl extends AbstractHTLMap implements ModelCache {
 
         try {
             clazz = Class.forName((String) key, true, dynamicClassLoaderManager.getDynamicClassLoader());
+            return get(clazz);
         } catch (ClassNotFoundException e) {
             throw new IllegalArgumentException("Unable to derive a class from " + (String)key);
         }
+    }
 
+    @Override
+    public final <T> T get(Class<T> clazz) {
         final String requestAttributeKey = getRequestAttributeKey(clazz);
         final Object cachedModel = request.getAttribute(requestAttributeKey);
 
         if (cachedModel == null) {
-            final Object model = request.adaptTo(clazz);
+            final T model = request.adaptTo(clazz);
             if (model != null) {
                 request.setAttribute(requestAttributeKey, model);
                 log.debug("Initial caching of model [ {} ]", clazz.getName());
@@ -57,7 +61,7 @@ public class ModelCacheImpl extends AbstractHTLMap implements ModelCache {
             }
         } else {
             log.debug("Served model for [ {} ] from cache", clazz.getName());
-            return cachedModel;
+            return (T) cachedModel;
         }
     }
 

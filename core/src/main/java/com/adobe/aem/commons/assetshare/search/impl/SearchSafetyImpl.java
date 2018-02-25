@@ -21,19 +21,11 @@ package com.adobe.aem.commons.assetshare.search.impl;
 
 import com.adobe.aem.commons.assetshare.search.SearchSafety;
 import com.day.cq.search.PredicateGroup;
-import com.day.cq.search.QueryBuilder;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.osgi.service.component.annotations.Component;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
-import javax.jcr.Session;
-import javax.jcr.query.*;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 @Component
 public class SearchSafetyImpl implements SearchSafety {
@@ -45,16 +37,18 @@ public class SearchSafetyImpl implements SearchSafety {
 
     @Override
     public boolean isSafe(ResourceResolver resourceResolver, PredicateGroup predicateGroup) throws RepositoryException {
-        final QueryBuilder queryBuilder = resourceResolver.adaptTo(QueryBuilder.class);
-        final com.day.cq.search.Query query = queryBuilder.createQuery(predicateGroup, resourceResolver.adaptTo(Session.class));
+        /**
+         * Unfortunately because Oak explain cannot handle UNIONs in AEM 6.3 SP1, this time (fix in AEM 6.4) we cannot consistently check for safe queries, so for now we will not check at all.
+         * In the future this hook will be implemented to help ensure only safe queries are allow.
+         */
 
-        return isSafe(resourceResolver, Query.XPATH, query.getResult().getQueryStatement());
+         return true;
     }
 
     @Override
     public boolean isSafe(ResourceResolver resourceResolver, String language, String statement) throws RepositoryException {
         /**
-         * Unfortunately because Oak explain cannot handle UNIONs at this time (fix is pending release) we cannot consistently check for safe queries, so for now we will not check at all.
+         * Unfortunately because Oak explain cannot handle UNIONs in AEM 6.3 SP1, (fix in AEM 6.4) we cannot consistently check for safe queries, so for now we will not check at all.
          * In the future this hook will be implemented to help ensure only safe queries are allow.
          */
         return true;

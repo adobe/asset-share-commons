@@ -16,43 +16,41 @@
   ~ limitations under the License.
  */-->
 
-<sly    data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
-		data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
-		data-sly-test.search="${modelCache['com.adobe.aem.commons.assetshare.search.Search']}"
-		data-sly-use.component="com.adobe.aem.commons.assetshare.search.Statistics"></sly>
+<sly data-sly-use.component="com.adobe.aem.commons.assetshare.components.search.Statistics"
+	    data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html"
+		data-sly-test.ready="${component.ready}">
 
-<div class="ui mini ${properties['hideTimeTaken'] ? 'two' : 'three' } statistics"
-     data-asset-share-id="${component.id}"
-     data-asset-asset-update-method="replace">
-	<div class="statistic">
-		<div class="value"
-			 data-asset-share-id="results-running-total">
-			${search.results.runningTotal}
+	<div class="ui mini ${properties['hideTimeTaken'] ? 'two' : 'three' } statistics"
+		 data-asset-share-id="${component.id}__statistics"
+		 data-asset-share-update-method="replace">
+		<div class="statistic">
+			<div class="value">
+				${component.runningTotal}
+			</div>
+			<div class="label">
+				${properties['runningTotalLabel']}
+			</div>
 		</div>
-		<div class="label">
-			${properties['runningTotalLabel']}
+
+		<div class="statistic">
+			<div class="value">
+				${component.total}${component.more ? '+' : '' @ i18n}
+			</div>
+			<div class="label">
+				${properties['totalLabel']}
+			</div>
+		</div>
+
+		<div class="statistic"
+			  data-sly-test="${!properties['hideTimeTaken']}">
+			<div class="value">
+				${component.timeTaken}
+			</div>
+			<div class="label">
+				${properties['timeTakenLabel']}
+			</div>
 		</div>
 	</div>
 
-	<div class="statistic">
-		<div class="value"
-			 data-asset-share-id="results-total">
-			${search.results.total}${search.results.more ? '+' : '' @ i18n}
-		</div>
-		<div class="label">
-			${properties['totalLabel']}
-		</div>
-	</div>
-
-	<div class="statistic"
-		  data-sly-test="${!properties['hideTimeTaken']}">
-		<div class="value"
-			 data-asset-share-id="results-time-taken">
-			${search.results.timeTaken}
-		</div>
-		<div class="label">
-			${properties['timeTakenLabel']}
-		</div>
-	</div>
-</div>
-
+</sly>
+<sly data-sly-call="${placeholderTemplate.placeholder @ isEmpty=!ready}"></sly>

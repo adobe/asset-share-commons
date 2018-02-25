@@ -28,10 +28,15 @@ import org.apache.sling.models.annotations.Default;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.inject.Named;
 import java.util.Arrays;
 
 public abstract class AbstractPredicate implements Predicate {
+    private static final Logger log = LoggerFactory.getLogger(AbstractPredicate.class);
+
     private static final String REQUEST_ATTR_PREDICATE_GROUP_TRACKER = "asset-share-commons__predicate-group";
     private static final String REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER = "asset-share-commons__legacy_predicate-group";
 
@@ -52,6 +57,11 @@ public abstract class AbstractPredicate implements Predicate {
     @ValueMapValue
     @Default(booleanValues = false)
     private boolean autoSearch;
+
+    @ValueMapValue
+    @Named("updateMethod")
+    @Default(values = "never")
+    private String componentUpdateMethod;
 
     private int group = 1;
 
@@ -88,10 +98,14 @@ public abstract class AbstractPredicate implements Predicate {
 
     public String getId() {
         if (request.getResource() != null) {
-            return getName() + "_" + String.valueOf(request.getResource().getPath().hashCode());
+            return "cmp-" + getName() + "_" + String.valueOf(request.getResource().getPath().hashCode());
         } else {
-            return coreField.getId();
+            return "cmp-" + coreField.getId();
         }
+    }
+
+    public String getComponentUpdateMethod() {
+        return componentUpdateMethod;
     }
 
     /**

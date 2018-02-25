@@ -18,8 +18,8 @@
   -->
 
 <jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
-    cq:icon="search"
-    jcr:primaryType="cq:Component"
-    jcr:title="Search Bar"
-    componentGroup="Asset Share Commons - Search"
-    jcr:description="Allows a user to key word search for assets."/>
+          jcr:primaryType="cq:Component"
+          jcr:title="Search Bar"
+          jcr:description="Allows a user to key word search for assets."
+          cq:icon="search"
+          componentGroup="Asset Share Commons - Search"/>
