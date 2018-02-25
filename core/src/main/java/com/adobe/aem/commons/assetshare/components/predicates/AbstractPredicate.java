@@ -60,7 +60,7 @@ public abstract class AbstractPredicate implements Predicate {
 
     @ValueMapValue
     @Named("updateMethod")
-    @Default(values = "never")
+    @Default(values = "")
     private String componentUpdateMethod;
 
     private int group = 1;

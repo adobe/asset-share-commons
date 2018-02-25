@@ -21,9 +21,9 @@
           xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
           jcr:primaryType="nt:unstructured">
     <tabs jcr:primaryType="nt:unstructured">
-        <search-mechanics
+        <search-behavior
                 jcr:primaryType="nt:unstructured"
-                jcr:title="Search Mechanics"
+                jcr:title="Search Behavior"
                 sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns"
                 margin="{Boolean}true">
             <items jcr:primaryType="nt:unstructured">
@@ -51,7 +51,7 @@
                                 <never
                                         jcr:primaryType="nt:unstructured"
                                         text="Never"
-                                        value="never"/>
+                                        value=""/>
                                 <replace
                                         jcr:primaryType="nt:unstructured"
                                         text="Replace"
@@ -61,6 +61,6 @@
                     </items>
                 </column>
             </items>
-        </search-mechanics>
+        </search-behavior>
     </tabs>
 </jcr:root>
