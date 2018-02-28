@@ -72,6 +72,7 @@ AssetShare.Elements = (function (document, $, ns) {
 
             id = ns.Data.attr(srcEl, "id");
             method = ns.Data.attr(srcEl, "update-method");
+            method = method ? method.toLowerCase() : '';
 
             if (id) {
                 getElementsByAssetShareId(id, document).each(function (index, destEl) {

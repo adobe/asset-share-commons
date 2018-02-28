@@ -56,6 +56,16 @@ public interface Predicate extends Component, Field {
     }
 
     /**
+     * Intended to drive the the data-asset-share-update-method attribute value in a component.
+     * It is up to each component to respect this value.
+     *
+     * @return the update method for this component.
+     */
+    default String getComponentUpdateMethod() {
+        return "never";
+    }
+
+    /**
      * GUIDANCE NOTICE
      * It is (almost) always preferred to use getInitialValues() even if only one initial value is present as it allows for easier and better future-proofing and extension.
      *

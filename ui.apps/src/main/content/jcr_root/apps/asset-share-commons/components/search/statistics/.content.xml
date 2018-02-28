@@ -17,9 +17,9 @@
   ~ limitations under the License.
   -->
 
-<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
-    jcr:primaryType="cq:Component"
-    jcr:title="Search Statistics"
-    cq:icon="graphTrend"
-    componentGroup="Asset Share Commons - Search"
-    jcr:description="Displays some high level statistics about the current search."/>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+          jcr:primaryType="cq:Component"
+          jcr:title="Search Statistics"
+          jcr:description="Displays some high level statistics about the current search."
+          cq:icon="graphTrend"
+          componentGroup="Asset Share Commons - Search"/>
