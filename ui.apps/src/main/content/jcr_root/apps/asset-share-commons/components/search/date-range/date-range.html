@@ -37,7 +37,9 @@
                 ${predicate.title}
             </div>
 
-            <div class="${predicate.expanded ? 'active' : ''} content field">
+            <div    class="${predicate.expanded ? 'active' : ''} content field"
+                    data-asset-share-id="${predicate.id}__fields"
+                    data-asset-share-update-method="${predicate.componentUpdateMethod}">
                 <sly data-sly-test="${predicate.dateType == 'daterange'}">
                     <sly data-sly-call="${optionsTemplate.dateRange @ predicate = predicate}"></sly>
                 </sly>

@@ -24,7 +24,10 @@
 	<i class="dropdown icon"></i> ${predicate.title}
 </div>
 
-<div class="${predicate.isExpanded ? 'active' : ''} content field">
+<div class="${predicate.isExpanded ? 'active' : ''} content field"
+	 data-asset-share-id="${predicate.id}__fields"
+	 data-asset-share-update-method="${predicate.componentUpdateMethod}">
+
 	<div class="grouped fields"
 		 data-sly-list.option="${predicate.items}">
 		<div class="field">
@@ -52,7 +55,9 @@
 			value="${predicate.intialValue}"
 			form="${predicate.formId}"
 			for="${predicate.id}"
-			data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}">
+			data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}"
+			data-asset-share-id="${predicate.id}__fields"
+			data-asset-share-update-method="${predicate.componentUpdateMethod}">
 	<option value="">${predicate.title}</option>
     	<sly data-sly-list.optionItem="${predicate.items}">
     		<option value="${optionItem.value}"

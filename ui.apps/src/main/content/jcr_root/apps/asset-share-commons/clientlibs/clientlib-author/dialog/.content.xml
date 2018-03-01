@@ -17,11 +17,7 @@
   ~ limitations under the License.
   -->
 
-<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0"
-          xmlns:jcr="http://www.jcp.org/jcr/1.0"
-          jcr:primaryType="cq:Component"
-          jcr:title="Path Filter"
-          jcr:description="Allows a user to filter search results by preset paths."
-          cq:icon="graphPathing"
-          componentGroup="Asset Share Commons - Search"
-          generatePredicateGroupId="{Boolean}true"/>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:ClientLibraryFolder"
+    categories="[asset-share-commons.author.dialog]"
+    jsProcessor="[min:gcc,default:none]"/>

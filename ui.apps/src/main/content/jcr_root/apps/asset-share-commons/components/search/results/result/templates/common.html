@@ -48,25 +48,7 @@
     </span>
 </template>
 
-<template data-sly-template.fragments="${@ search}">
-    <span style="display: none">
-        <div data-asset-share-id="results-running-total"
-             data-asset-share-update-method="replace">
-            ${search.results.runningTotal}
-        </div>
-
-        <div data-asset-share-id="results-total"
-             data-asset-share-update-method="replace">
-            ${search.results.total}${search.results.more ? '+' : ''}
-        </div>
-
-        <div data-asset-share-id="results-time-taken"
-             data-asset-share-update-method="replace">
-            ${search.results.timeTaken}
-        </div>
-    </span>
-</template>
-
+<template data-sly-template.fragments="${@ search}"></template>
 
 <template data-sly-template.footer="${@ search}">
     <div data-asset-share-id="results-footer"
