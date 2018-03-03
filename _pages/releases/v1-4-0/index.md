@@ -1,24 +1,23 @@
 ---
 layout: content-page
-title: v1.3.0
+title: v1.4.0
 ---
 
-## v1.3.0 release notes
+## v1.4.0 release notes
 
-### Fixed
-- 0131: Fixed ContextHub eventing condition that cause the user menu profile to act as "anonymous" on the first page via by an authenticated user.
+## [v1.4.0]
 
-### Added
-- 0128: Introduction of the <a href="{{ site.baseurl }}/pages/search/path">Path Filter Search component</a> that allows for pre-authored path restrictions to be selected by end-users to refine searches.
-- 0130: Added auto-search capabilities to Search Components: 
-    - <a href="{{ site.baseurl }}/pages/search/property">Property Filter</a>
-    - <a href="{{ site.baseurl }}/pages/search/date-range">Date Range Filter</a>
-    - <a href="{{ site.baseurl }}/pages/search/tags">Tags Filter</a>
-    - <a href="{{ site.baseurl }}/pages/search/path">Path Filter</a>
-    - <a href="{{ site.baseurl }}/pages/search/sort">Sort</a>
-- 0134: Allow multiple ShareServices to be registered and allow each to accept the request.
+### Changed
+
+- 0141: Updated Search results to request the main and rail content to allow for more simpler and more robust use of data-asset-share-update-method.
 
 ## Important upgrade considerations
 
-* Clear your browser cache to ensure new JavaScript is loaded; as 0130 and 0131 introduced new JavaScript.
-* To leverage Auto-Search (0130) on existing Asset Share deployments, you must edit (autho) the components (Path, Property, Tags, Date, Sort) and check the "Auto-Search on Change" checkbox, and publish the changes. Dragging NEW components on will default the Auto-Search on Change state to true.  
+* The change in 0141 has the following impacts:
+  * AJAX search results are now requested via an `XHR HTTP GET /content/the/search-page.results.html`
+    * Previously a request to the search-results component resource under the page's jcr:content node was used.
+  * By default the results include the search page's Main Layout Container and the Rail Layout Container's contents. 
+  * Which resources included into the search's AJAX response can be customized by overlaying the `search-page`'s `results.html`.
+  * Search components now have a "Search Behavior" tab that allows search components to be re-rendered after each search.
+     * This is generally unneeded for the OOTB search components at this time, however is handy for custom dynamic facet filtering components, and the like.
+         

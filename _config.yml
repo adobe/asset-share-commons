@@ -30,3 +30,5 @@ exclude:
 collections:
   pages:
     output: true
+  apidocs:
+    output: true
