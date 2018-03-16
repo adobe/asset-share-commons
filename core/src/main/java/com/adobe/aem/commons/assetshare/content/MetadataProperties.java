@@ -29,9 +29,9 @@ import java.util.Map;
 public interface MetadataProperties {
     /**
      * Collect the Metadata fields across Assets Metadata Schemas. To be collected the following must be true:
-     * > The metadata field must be of resource type: metadataFieldResourceTypes
-     * > Only the top-most matching field is collected (ie. in multi-value fields, the top level field is used).
-     * > The field bust have a non-blank Label AND PropertyName defined.
+     * - The metadata field must be of resource type: metadataFieldResourceTypes
+     * - Only the top-most matching field is collected (ie. in multi-value fields, the top level field is used).
+     * - The field bust have a non-blank Label AND PropertyName defined.
      *
      * @param request the request object.
      * @param metadataFieldResourceTypes the sling:resourceTypes that identify candidate metadata schema widget resources.
