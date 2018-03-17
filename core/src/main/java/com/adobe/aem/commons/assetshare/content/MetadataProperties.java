@@ -35,7 +35,7 @@ public interface MetadataProperties {
      *
      * @param request the request object.
      * @param metadataFieldResourceTypes the sling:resourceTypes that identify candidate metadata schema widget resources.
-     * @return a map, indexed by propertyName of propertyName -> labels[] defined in all metadata schemas that meet the metadataFieldResourceTypes acceptance check.
+     * @return a map, indexed by propertyName of propertyName: labels[] defined in all metadata schemas that meet the metadataFieldResourceTypes acceptance check.
      */
     Map<String, List<String>> getMetadataProperties(SlingHttpServletRequest request, List<String> metadataFieldResourceTypes);
 
