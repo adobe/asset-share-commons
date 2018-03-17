@@ -46,7 +46,7 @@ public interface MetadataProperties {
      * - The field bust have a non-blank Label AND PropertyName defined.
      *
      * @param request the request object.
-     * @return a map, indexed by propertyName of propertyName -> labels[] defined in all metadata schemas that meet the metadataFieldResourceTypes acceptance check.
+     * @return a map, indexed by propertyName of propertyName: labels[] defined in all metadata schemas that meet the metadataFieldResourceTypes acceptance check.
      */
     Map<String, List<String>> getMetadataProperties(SlingHttpServletRequest request);
 }
