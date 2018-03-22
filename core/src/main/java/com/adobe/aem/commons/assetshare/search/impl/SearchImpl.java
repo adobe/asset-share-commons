@@ -44,8 +44,7 @@ import java.util.List;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {Search.class},
-        cache = true
+        adapters = {Search.class}
 )
 public class SearchImpl implements Search {
     private static final Logger log = LoggerFactory.getLogger(SearchImpl.class);
