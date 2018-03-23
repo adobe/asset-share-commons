@@ -3,7 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
-## [Unrelease]
+
+## [v1.1.4]
+
+### Fixed
+- 0152: More resilient fix for #0103 to prevent resource leakage via QueryBuilder use (as #0103 did not seem to resolve the issue upon further testing).
 
 ## [v1.1.2]
 
