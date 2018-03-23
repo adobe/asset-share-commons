@@ -46,9 +46,12 @@ import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.models.factory.ModelFactory;
+import org.apache.sling.scripting.core.ScriptHelper;
 import org.apache.sling.settings.SlingSettingsService;
 import org.apache.sling.xss.XSSAPI;
+import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -79,6 +82,7 @@ public class EmailShareServiceImpl implements ShareService {
     private static final String EMAIL_ASSET_LINK_LIST_HTML = "assetLinksHTML";
 
     private Cfg cfg;
+    private BundleContext bundleContext;
 
     @Reference
     private EmailService emailService;
@@ -105,6 +109,12 @@ public class EmailShareServiceImpl implements ShareService {
 
     @Override
     public final void share(final SlingHttpServletRequest request, final SlingHttpServletResponse response, final ValueMap shareParameters) throws ShareException {
+    	
+    		/** Work around for regression issue introduced in AEM 6.4 **/
+        SlingBindings bindings = new SlingBindings();
+        bindings.setSling( new ScriptHelper(bundleContext, null, request, response));
+        request.setAttribute(SlingBindings.class.getName(), bindings);
+        
         final EmailShare emailShare = request.adaptTo(EmailShare.class);
 
         shareParameters.putAll(xssProtectUserData(emailShare.getUserData()));
@@ -232,8 +242,9 @@ public class EmailShareServiceImpl implements ShareService {
 
 
     @Activate
-    protected final void activate(final Cfg config) throws Exception {
+    protected final void activate(final Cfg config, final BundleContext bundleContext) throws Exception {
         this.cfg = config;
+        this.bundleContext = bundleContext;
     }
 
     @ObjectClassDefinition(name = "Asset Share Commons - E-mail Share Service")
