@@ -55,7 +55,7 @@
                 paths = [paths];
             }
 
-            current = this.get();
+            current = $.extend(true, [], this.get());
 
             paths.forEach(function (path) {
                 if (current.indexOf(path) === -1) {
@@ -64,7 +64,7 @@
                 }
             });
 
-            if (this.get().length !== current.length) {
+            if (dirty) {
                 this.setItem(KEY_ASSETS, current);
                 return true;
             } else {
@@ -74,7 +74,8 @@
 
         /** Remove a specific set of Assets **/
         remove: function (paths) {
-            var current = this.get();
+            var current = $.extend(true, [], this.get()),
+                dirty = false;
 
             if (!Array.isArray(paths)) {
                 paths = [paths];
@@ -83,11 +84,12 @@
             paths.forEach(function (path) {
                 var index = current.indexOf(path);
                 if (index !== -1) {
+                    dirty = true;
                     current.splice(index, 1);
                 }
             });
 
-            if (this.get().length !== current.length) {
+            if (dirty) {
                 this.setItem(KEY_ASSETS, current);
                 return true;
             } else {
