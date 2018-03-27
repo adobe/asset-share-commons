@@ -21,16 +21,30 @@
      data-sly-test.ready="${video.ready}">
 
         <div class="cmp-wrapper image background">
-
+     	
+     	<h1 class="ui center aligned header" data-sly-test="${!video.isVideoAsset}">
+        	Not a Video Asset!
+    	</h1>
        	<!--/* Video element with a max height */-->
-        <video class="ui centered image cmp-image" src="${video.src}" class="cmp-image--max-height" poster="${properties['posterImage']}"
+        <video class="ui centered image cmp-image" class="cmp-image--max-height" poster="${properties['posterImage']}"
                style="height:${height @ context = 'styleToken'}px;" controls controlsList="nodownload"
-               data-sly-test.height="${properties['height']}"></video>
+               data-sly-test.height="${properties['height']}" data-sly-test="${video.isVideoAsset}">
+         	<source src="${video.src}" 
+          		type='video/webm;codecs="vp8, vorbis"'/>
+  			<source src="${video.src}"
+          		type='video/mp4;codecs="avc1.42E01E, mp4a.40.2"'/>       
+               
+        </video>
 
         <!--/* Video element without a max height */-->
         <video class="ui centered image cmp-image"
-             src="${video.src}" poster="${properties['posterImage']}" controls controlsList="nodownload"
-             data-sly-test="${!height}"></video>
+             poster="${properties['posterImage']}" controls controlsList="nodownload"
+             data-sly-test="${!height}" data-sly-test="${video.isVideoAsset}">
+        	<source src="${video.src}" 
+          		type='video/webm;codecs="vp8, vorbis"'/>
+  			<source src="${video.src}"
+          		type='video/mp4;codecs="avc1.42E01E, mp4a.40.2"'/>        
+        </video>
 
 
        </div>

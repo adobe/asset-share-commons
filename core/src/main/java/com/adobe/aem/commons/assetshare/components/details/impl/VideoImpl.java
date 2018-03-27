@@ -13,6 +13,8 @@ import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
 import com.adobe.aem.commons.assetshare.components.details.Video;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.day.cq.dam.api.Asset;
+import com.day.cq.dam.api.DamConstants;
 
 @Model(
         adaptables = { SlingHttpServletRequest.class },
@@ -25,7 +27,7 @@ public class VideoImpl extends AbstractEmptyTextComponent implements Video {
 
     @Self
     @Required
-    private AssetModel asset;
+    private AssetModel assetModel;
 
     @ValueMapValue
     private String computedProperty;
@@ -36,8 +38,8 @@ public class VideoImpl extends AbstractEmptyTextComponent implements Video {
 
     @PostConstruct
     public void init() {
-        if (asset != null) {
-            combinedProperties = asset.getProperties();
+        if (assetModel != null) {
+            combinedProperties = assetModel.getProperties();
         }
     }
 
@@ -57,6 +59,17 @@ public class VideoImpl extends AbstractEmptyTextComponent implements Video {
             src = combinedProperties.get(computedProperty, String.class);
         }
         return src;
+    }
+
+    @Override
+    public boolean isVideoAsset() {
+        if (null != assetModel && null != assetModel.getResource()) {
+            final Asset asset = assetModel.getResource().adaptTo(Asset.class);
+            if (asset.getMetadataValue(DamConstants.DC_FORMAT).startsWith("video")) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

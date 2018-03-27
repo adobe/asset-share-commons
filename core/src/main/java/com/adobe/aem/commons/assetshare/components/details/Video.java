@@ -7,4 +7,6 @@ public interface Video extends EmptyTextComponent {
      */
     String getSrc();
 
+    boolean isVideoAsset();
+
 }
