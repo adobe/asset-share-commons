@@ -31,9 +31,10 @@ AssetShare.Events = {
     SEARCH_END: "asset-share-commons.search.end"
 };
 
-jQuery((function($) {
+jQuery((function($, ns) {
 	"use strict";
 
 	// Always trigger this event on Asset Share Commons pages
-	$("body").trigger("asset-share-commons.page.load");
-}(jQuery)));
+    $("body").trigger(ns.Events.PAGE_LOAD);
+
+}(jQuery, AssetShare)));

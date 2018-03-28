@@ -95,10 +95,6 @@ jQuery((function ($, ns, messages, cart, semanticModal, licenseModal) {
         });
     }
 
-    $("body").on(ns.Events.PAGE_LOAD,function() {
-        handleCartButtonsUpdate();
-    });
-
     $("body").on(ns.Events.SEARCH_END, function() {
         handleCartButtonsUpdate();
     });
@@ -118,6 +114,9 @@ jQuery((function ($, ns, messages, cart, semanticModal, licenseModal) {
 
         toggleCartButtons(false, paths);
     });
+
+    // Handle DOM Ready AKA Page Load
+    handleCartButtonsUpdate();
 
 }(jQuery,
     AssetShare,
