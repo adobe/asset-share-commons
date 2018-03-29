@@ -7,6 +7,6 @@
     <filter root="/home/users/system/asset-share-commons"/>
     <filter root="/oak:index/rep:policy"/>
 
-    <!-- Responsive Grid AEM 6.4 Patch; Only installs for AEM 6.4 via Package Dependencies -->
+    <!-- Responsive Grid AEM 6.3 Patch; Only installs for AEM 6.3 via Package Dependencies -->
     <filter root="/etc/packages/asset-share-commons/asset-share-commons.ui.apps.grid-1.0.0.zip"/>
 </workspaceFilter>
