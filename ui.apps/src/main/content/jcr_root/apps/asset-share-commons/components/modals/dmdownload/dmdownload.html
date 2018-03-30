@@ -26,14 +26,20 @@
     }
 </style>
 
+<sly data-sly-test="${wcmmode.edit && !download.isDynamicMediaEnabled}">
+    <p>Note: Dynamic Media is not enabled. Please enable it before configuring the download modal.</p>
+</sly>
+
 <form method="post"
       action="/content/dam.assetdownload.zip/${download.zipFileName}.zip"
-      data-asset-share-id="download-modal"
+      data-asset-share-id="dm-download-modal"
       class="ui modal cmp-modal-download--wrapper cmp-modal">
 
     <input type="hidden" name="licenseCheck" value="true"/>
     <input type="hidden" name="flatStructure" value="false"/>
-    <input type="checkbox" name="downloadAssets" value="false" disabled>
+
+    <input type="hidden" name="downloadAssets"
+           value="${downloadAssets ? 'true' : 'false'}"/>
 
     <i class="close icon"></i>
 
@@ -61,17 +67,14 @@
         <div class="description ui form">
             <div class="ui header">${properties['downloadOptionsTitle']}</div>
 
-            <div class="field">
-                <div class="ui checkbox">
-                    <input type="checkbox" name="downloadAssets" value="true" checked="">
-                    <label>${"Include Original" @ i18n}</label>
-                </div>
-            </div>
 
             <div class="field">
                 <div class="ui checkbox">
-                    <input type="checkbox" tabindex="4" class="hidden" name="downloadRenditions" value="true">
-                    <label>${"Include Renditions" @ i18n}</label>
+                    <input type="checkbox" tabindex="3" class="hidden" name="downloadRenditions" value="true"
+                           data-sly-attribute.checked="${!downloadAssets}"
+                           data-sly-attribute.required="${!downloadAssets}"
+                           data-sly-attribute.readonly="${!downloadAssets}">
+                    <label>${"Include Renditions" @ i18n} ${downloadAssets}</label>
                 </div>
             </div>
 
@@ -82,14 +85,13 @@
                 </div>
             </div>
 
-            <div class="ui selection dropdown" data-asset-share-id="dm-image-presets" data-sly-test="${download.isDynamicMediaEnabled}">
-                <!-- s7exportsettings = {imagepreset:presetname} -->
+            <div class="ui selection dropdown search" data-asset-share-id="dm-image-presets" data-sly-test="${download.isDynamicMediaEnabled}" multiple="">
+                <!--/* s7exportsettings={imagepreset:presetname} */-->
                 <input type="hidden" name="s7exportsettings">
                 <i class="dropdown icon"></i>
                 <div class="default text">${"Select Dynamic Media Preset" @i18n}</div>
-                <div class="menu">
-                    <div class="item" data-value="preset1">Preset 1</div>
-                    <div class="item" data-value="preset2">Preset 2</div>
+                <div class="menu" data-sly-list.preset="${download.imagePresets}">
+                    <div class="item" data-value="${preset}">${preset}</div>
                 </div>
             </div>
         </div>
@@ -106,7 +108,8 @@
 
     <script>
         $(function() {
-            $('[data-asset-share-id="download-modal"] .ui.checkbox').checkbox();
+            $('[data-asset-share-id="dm-download-modal"] .ui.checkbox').checkbox();
+            $('[data-asset-share-id="dm-download-modal"] .ui.dropdown').dropdown();
         });
     </script>
 </form>

@@ -22,7 +22,7 @@ jQuery((function(ns, semanticModal, licenseModal) {
     "use strict";
     AssetShare.SemanticUI.Modals.DownloadModal = (function () {
         var DOWNLOAD_URL = ns.Data.val("download-url"),
-            DOWNLOAD_MODAL_ID = "download-modal",
+            DOWNLOAD_MODAL_ID = "dm-download-modal",
             DOWNLOAD_BUTTON_ID = "download-asset",
             DM_IMAGE_PRESETS = "dm-image-presets";
 
@@ -80,7 +80,8 @@ jQuery((function(ns, semanticModal, licenseModal) {
 
         function setImagePresetProperty(e) {
             var selectedPreset = $(this).dropdown('get value');
-            $(e.target).val("{imagepreset :" + selectedPreset + "}");
+            // set the hidden input value with the imagepreset selected
+            $(e.target).val("{imagepreset:" + selectedPreset + "}");
         }
 
         /** REGISTER EVENTS WHEN DOCUMENT IS READY **/

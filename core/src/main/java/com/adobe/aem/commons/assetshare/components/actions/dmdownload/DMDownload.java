@@ -32,5 +32,5 @@ public interface DMDownload {
 
     boolean isDynamicMediaEnabled();
 
-    Collection<String> getImagePresets();
+    String[] getImagePresets();
 }

@@ -25,7 +25,6 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.day.cq.dam.entitlement.api.EntitlementConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
-import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.featureflags.Features;
 import org.apache.sling.models.annotations.Default;
@@ -36,14 +35,11 @@ import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.SlingObject;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
-import org.apache.sling.tenant.Tenant;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
+
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
@@ -63,6 +59,11 @@ public class DMDownloadImpl implements DMDownload {
     @Default(values = "Assets")
     private String zipFileName;
 
+    @ValueMapValue
+    @Optional
+    @Default(values = {})
+    private String[] imagePresets;
+
     @OSGiService
     @Required
     private ActionHelper actionHelper;
@@ -75,17 +76,10 @@ public class DMDownloadImpl implements DMDownload {
     private ResourceResolver resourceResolver;
 
     private final String SCENE7_FEATURE_FLAG = "com.adobe.dam.asset.scene7.feature.flag";
-    private final String IAMGE_PRESET_PATH_DEFAULT = "/macros";
-    private final String IMAGE_SERVER_PATH_ROOT = "/etc/dam/imageserver";
-    private final String IAMGE_PRESET_PATH_DEFAULT_CONF = "/conf/global/settings/dam/dm/presets";
-
-    private final Logger log = LoggerFactory.getLogger(DMDownload.class);
 
     private Collection<AssetModel> assets = new ArrayList<>();
 
     private boolean isDynamicMediaEnabled;
-
-    private Collection<String> imagePresets = new ArrayList<>();
 
     @PostConstruct
     protected void init() {
@@ -97,9 +91,6 @@ public class DMDownloadImpl implements DMDownload {
         if(features.isEnabled(EntitlementConstants.ASSETS_DYNAMICMEDIA_FEATURE_FLAG_PID) ||
                 features.isEnabled(SCENE7_FEATURE_FLAG)) {
             isDynamicMediaEnabled = true;
-            setImagePresets();
-
-            log.info("Presets {}", imagePresets.toString());
         }
 
         assets = actionHelper.getAssetsFromQueryParameter(request, "path");
@@ -119,29 +110,7 @@ public class DMDownloadImpl implements DMDownload {
 
     public boolean isDynamicMediaEnabled() { return isDynamicMediaEnabled; }
 
-    public Collection<String> getImagePresets() {
+    public String[] getImagePresets() {
         return imagePresets;
-    }
-
-    private void setImagePresets() {
-        Tenant tenant = resourceResolver.adaptTo(Tenant.class);
-        String tenantId = null;
-        String imagePresetPath = IMAGE_SERVER_PATH_ROOT;
-        if (tenant != null && tenant.getId() != null) {
-            imagePresetPath += "/tenants/" + tenant.getId() + IAMGE_PRESET_PATH_DEFAULT;
-        } else {
-            imagePresetPath += IAMGE_PRESET_PATH_DEFAULT;
-        }
-
-        Resource imgPresetResource = resourceResolver.getResource(imagePresetPath);
-        if (imgPresetResource != null) {
-            Iterator<Resource> imgPresetIterator = imgPresetResource.listChildren();
-            while (imgPresetIterator.hasNext()) {
-                Resource imgPreset = imgPresetIterator.next();
-                if (imgPreset != null){
-                    imagePresets.add(imgPreset.getName());
-                }
-            }
-        }
     }
 }
