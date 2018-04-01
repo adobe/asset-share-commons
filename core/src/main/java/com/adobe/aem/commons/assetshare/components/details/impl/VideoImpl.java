@@ -69,17 +69,24 @@ public class VideoImpl extends AbstractEmptyTextComponent implements Video {
         if (src == null) {
             src = combinedProperties.get(computedProperty, String.class);
             if (StringUtils.isBlank(src) && StringUtils.isNotBlank(renditionRegex)) {
-                final Pattern pattern = Pattern.compile(renditionRegex);
-                for (final Rendition rendition : assetModel.getRenditions()) {
-                    if (!"video/x-flv".equalsIgnoreCase(rendition.getMimeType())
-                            && pattern.matcher(rendition.getName()).matches()) {
-                        src = rendition.getPath();
-                        break;
-                    }
-                }
+                fetchSrcFromRegex();
             }
         }
         return src;
+    }
+
+    /**
+     * Method fetches the rendition path from regex
+     */
+    private void fetchSrcFromRegex() {
+        final Pattern pattern = Pattern.compile(renditionRegex);
+        for (final Rendition rendition : assetModel.getRenditions()) {
+            if (!"video/x-flv".equalsIgnoreCase(rendition.getMimeType())
+                    && pattern.matcher(rendition.getName()).matches()) {
+                src = rendition.getPath();
+                break;
+            }
+        }
     }
 
     @Override
