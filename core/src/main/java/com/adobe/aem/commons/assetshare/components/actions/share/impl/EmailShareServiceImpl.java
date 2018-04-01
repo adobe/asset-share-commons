@@ -237,18 +237,26 @@ public class EmailShareServiceImpl implements ShareService {
         for(final Map.Entry<String, Object> entry : dirtyUserData.entrySet()) {
         		
             if (entry.getValue() instanceof String[]) {
-            		List<String> cleanValues = new ArrayList<String>();
-            		for(String val : (String[])entry.getValue()) {
-            			cleanValues.add(xssAPi.encodeForHTML(xssAPi.filterHTML(val)));
-            		}
-            		cleanUserData.put(entry.getKey(), cleanValues.toArray());
+            		cleanUserData.put(entry.getKey(), xssCleanData((String[])entry.getValue()));
             }
             else if (entry.getValue() instanceof String) {
-            	    cleanUserData.put(entry.getKey(), xssAPi.encodeForHTML(xssAPi.filterHTML((String)entry.getValue())));
+            	    cleanUserData.put(entry.getKey(), xssCleanData((String)entry.getValue()));
             }
         }
 
         return cleanUserData;
+    }
+    
+    private String[] xssCleanData(String[] dirtyData) {
+    	    List<String> cleanValues = new ArrayList<String>();
+		for(String val : dirtyData) {
+			cleanValues.add(xssAPi.encodeForHTML(xssAPi.filterHTML(val)));
+		}
+		return cleanValues.toArray(new String[0]);
+    }
+    
+    private String xssCleanData(String dirtyData) {
+        return xssAPi.encodeForHTML(xssAPi.filterHTML(dirtyData));
     }
 
 
