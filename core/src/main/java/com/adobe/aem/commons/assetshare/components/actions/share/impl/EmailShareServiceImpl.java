@@ -112,6 +112,7 @@ public class EmailShareServiceImpl implements ShareService {
     	
     		/** Work around for regression issue introduced in AEM 6.4 **/
         SlingBindings bindings = new SlingBindings();
+        //intentionally setting the second argument to 'null' since there is no SlingScript to pass in
         bindings.setSling( new ScriptHelper(bundleContext, null, request, response));
         request.setAttribute(SlingBindings.class.getName(), bindings);
         
