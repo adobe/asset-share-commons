@@ -18,37 +18,22 @@
 
 <sly data-sly-use.video="com.adobe.aem.commons.assetshare.components.details.Video"
      data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html"
+     data-sly-use.optionsTemplate="templates/options.html"
      data-sly-test.ready="${video.ready}">
 
-        <div class="cmp-wrapper image background">
-     	
-     	<h1 class="ui center aligned header" data-sly-test="${!video.isVideoAsset}">
-        	Not a Video Asset!
-    	</h1>
-       	<!--/* Video element with a max height */-->
-        <video class="ui centered image cmp-image" class="cmp-image--max-height" poster="${properties['posterImage']}"
-               style="height:${height @ context = 'styleToken'}px;" controls controlsList="nodownload"
-               data-sly-test.height="${properties['height']}" data-sly-test="${video.isVideoAsset}">
-         	<source src="${video.src}" 
-          		type='video/webm;codecs="vp8, vorbis"'/>
-  			<source src="${video.src}"
-          		type='video/mp4;codecs="avc1.42E01E, mp4a.40.2"'/>       
-               
-        </video>
-
-        <!--/* Video element without a max height */-->
-        <video class="ui centered image cmp-image"
-             poster="${properties['posterImage']}" controls controlsList="nodownload"
-             data-sly-test="${!height}" data-sly-test="${video.isVideoAsset}">
-        	<source src="${video.src}" 
-          		type='video/webm;codecs="vp8, vorbis"'/>
-  			<source src="${video.src}"
-          		type='video/mp4;codecs="avc1.42E01E, mp4a.40.2"'/>        
-        </video>
-
-
-       </div>
-
+     	<h4 class="ui header center aligned" data-sly-test="${!video.isVideoAsset}">
+        	${properties['invalidFormatMsg']}
+    	</h4>
+    	
+    	<sly data-sly-test="${video.isVideoAsset}">
+    		<sly data-sly-test="${properties.computedProperty =='thumbnail'}">
+		 		<sly data-sly-call="${optionsTemplate.image @ image = video}" />
+		 	</sly>
+		 	
+		 	<sly data-sly-test="${properties.computedProperty !='thumbnail'}">
+		 		<sly data-sly-call="${optionsTemplate.video @ video = video}"/>
+		 	</sly>
+		</sly>
 </sly>
 <sly data-sly-call="${placeholderTemplate.placeholder @ isEmpty=!ready}"></sly>
 

@@ -1,5 +1,7 @@
 package com.adobe.aem.commons.assetshare.components.details.impl;
 
+import java.util.regex.Pattern;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
@@ -14,8 +16,14 @@ import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 import com.adobe.aem.commons.assetshare.components.details.Video;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.day.cq.dam.api.Asset;
-import com.day.cq.dam.api.DamConstants;
+import com.day.cq.dam.api.Rendition;
+import com.day.cq.dam.commons.util.DamUtil;
 
+/**
+ *
+ * Sling Model for Video Component
+ *
+ */
 @Model(
         adaptables = { SlingHttpServletRequest.class },
         adapters = { Video.class },
@@ -31,6 +39,9 @@ public class VideoImpl extends AbstractEmptyTextComponent implements Video {
 
     @ValueMapValue
     private String computedProperty;
+
+    @ValueMapValue
+    private String renditionRegex;
 
     private ValueMap combinedProperties;
 
@@ -57,6 +68,16 @@ public class VideoImpl extends AbstractEmptyTextComponent implements Video {
     public String getSrc() {
         if (src == null) {
             src = combinedProperties.get(computedProperty, String.class);
+            if (StringUtils.isBlank(src) && StringUtils.isNotBlank(renditionRegex)) {
+                final Pattern pattern = Pattern.compile(renditionRegex);
+                for (final Rendition rendition : assetModel.getRenditions()) {
+                    if (!"video/x-flv".equalsIgnoreCase(rendition.getMimeType())
+                            && pattern.matcher(rendition.getName()).matches()) {
+                        src = rendition.getPath();
+                        break;
+                    }
+                }
+            }
         }
         return src;
     }
@@ -65,7 +86,7 @@ public class VideoImpl extends AbstractEmptyTextComponent implements Video {
     public boolean isVideoAsset() {
         if (null != assetModel && null != assetModel.getResource()) {
             final Asset asset = assetModel.getResource().adaptTo(Asset.class);
-            if (asset.getMetadataValue(DamConstants.DC_FORMAT).startsWith("video")) {
+            if (DamUtil.isVideo(asset)) {
                 return true;
             }
         }
