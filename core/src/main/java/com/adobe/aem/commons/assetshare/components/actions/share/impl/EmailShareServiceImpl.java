@@ -60,8 +60,8 @@ import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.jcr.RepositoryException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -230,14 +230,24 @@ public class EmailShareServiceImpl implements ShareService {
      * @param userData the Map of data provided by the end-user (usually derived from the Request) to use in the email.
      * @return the protected Map; all String's are xss protected for HTML.
      */
-    private Map<String, Object> xssProtectUserData(Map<String, Object> userData) {
-        for(final Map.Entry<String, Object> entry : userData.entrySet()) {
-            if (entry.getValue() instanceof String) {
-                userData.put(entry.getKey(), xssAPi.encodeForHTML((String)entry.getValue()));
+    private Map<String, Object> xssProtectUserData(Map<String, Object> dirtyUserData) {
+    	    
+    	    Map<String, Object> cleanUserData = new HashMap<String, Object>();
+        for(final Map.Entry<String, Object> entry : dirtyUserData.entrySet()) {
+        		
+            if (entry.getValue() instanceof String[]) {
+            		List<String> cleanValues = new ArrayList<String>();
+            		for(String val : (String[])entry.getValue()) {
+            			cleanValues.add(xssAPi.encodeForHTML(xssAPi.filterHTML(val)));
+            		}
+            		cleanUserData.put(entry.getKey(), cleanValues.toArray());
+            }
+            else if (entry.getValue() instanceof String) {
+            	    cleanUserData.put(entry.getKey(), xssAPi.encodeForHTML(xssAPi.filterHTML((String)entry.getValue())));
             }
         }
 
-        return userData;
+        return cleanUserData;
     }
 
 
