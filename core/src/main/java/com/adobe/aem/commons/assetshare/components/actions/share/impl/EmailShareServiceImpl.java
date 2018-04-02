@@ -100,7 +100,7 @@ public class EmailShareServiceImpl implements ShareService {
     private ModelFactory modelFactory;
 
     @Reference
-    private XSSAPI xssAPi;
+    private XSSAPI xssAPI;
 
     @Override
     public boolean accepts(final SlingHttpServletRequest request) {
@@ -232,33 +232,30 @@ public class EmailShareServiceImpl implements ShareService {
      * @return the protected Map; all String's are xss protected for HTML.
      */
     private Map<String, Object> xssProtectUserData(Map<String, Object> dirtyUserData) {
-    	    
-    	    Map<String, Object> cleanUserData = new HashMap<String, Object>();
-        for(final Map.Entry<String, Object> entry : dirtyUserData.entrySet()) {
-        		
+        Map<String, Object> cleanUserData = new HashMap<String, Object>();
+        for (final Map.Entry<String, Object> entry : dirtyUserData.entrySet()) {
+
             if (entry.getValue() instanceof String[]) {
-            		cleanUserData.put(entry.getKey(), xssCleanData((String[])entry.getValue()));
-            }
-            else if (entry.getValue() instanceof String) {
-            	    cleanUserData.put(entry.getKey(), xssCleanData((String)entry.getValue()));
-            }
+                cleanUserData.put(entry.getKey(), xssCleanData((String[]) entry.getValue()));
+            } else if (entry.getValue() instanceof String) {
+                cleanUserData.put(entry.getKey(), xssCleanData((String) entry.getValue()));
+            }   
         }
 
         return cleanUserData;
     }
-    
+
     private String[] xssCleanData(String[] dirtyData) {
-    	    List<String> cleanValues = new ArrayList<String>();
-		for(String val : dirtyData) {
-			cleanValues.add(xssAPi.encodeForHTML(xssAPi.filterHTML(val)));
-		}
-		return cleanValues.toArray(new String[0]);
-    }
-    
-    private String xssCleanData(String dirtyData) {
-        return xssAPi.encodeForHTML(xssAPi.filterHTML(dirtyData));
+        List<String> cleanValues = new ArrayList<String>();
+        for (String val : dirtyData) {
+            cleanValues.add(xssAPI.encodeForHTML(xssAPI.filterHTML(val)));
+        }
+        return cleanValues.toArray(new String[0]);
     }
 
+    private String xssCleanData(String dirtyData) {
+        return xssAPI.encodeForHTML(xssAPI.filterHTML(dirtyData));
+    }
 
     @Activate
     protected final void activate(final Cfg config, final BundleContext bundleContext) throws Exception {
