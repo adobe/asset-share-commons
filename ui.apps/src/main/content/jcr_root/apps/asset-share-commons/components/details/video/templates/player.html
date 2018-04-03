@@ -18,29 +18,29 @@
 <template data-sly-template.image="${ @ image}">
 	<!--/* Img element with a max height */-->
 	<img class="ui centered image cmp-image" 
-		 src="${image.src}"
-         class="cmp-image--max-height"
-         style="height:${height @ context = 'styleToken'}px;"
-         data-sly-test.height="${properties['height']}"/>
+	     src="${image.src}"
+	     class="cmp-image--max-height"
+	     style="height:${height @ context = 'styleToken'}px;"
+	     data-sly-test.height="${properties['height']}"/>
          
 	<!--/* Img element without a max height */-->
 	<img class="ui centered image cmp-image"
-		 src="${image.src}"
-		 data-sly-test="${!height}"/>
+	     src="${image.src}"
+	     data-sly-test="${!height}"/>
 </template>
 
 
 <template data-sly-template.video="${ @ video}">
-		<!--/* Video element with a max height */-->	
+	<!--/* Video element with a max height */-->	
         <video class="ui centered image cmp-image" class="cmp-image--max-height" 
-        	   poster="${properties['posterImage']}"
-               style="height:${height @ context = 'styleToken'}px;"
-               controls controlsList="nodownload"
-               data-sly-test.height="${properties['height']}">
+	       poster="${properties['posterImage']}"
+	       style="height:${height @ context = 'styleToken'}px;"
+	       controls controlsList="nodownload"
+	       data-sly-test.height="${properties['height']}">
          	<source src="${video.src}" 
-          			type="video/webm"/>
-  			<source src="${video.src}"
-          			type="video/mp4"/>       
+          		type="video/webm"/>
+  		<source src="${video.src}"
+          		type="video/mp4"/>       
                
         </video>
 
@@ -49,9 +49,9 @@
                poster="${properties['posterImage']}" controls controlsList="nodownload"
                data-sly-test="${!height}">
         	<source src="${video.src}" 
-          			type="video/webm"/>
-  			<source src="${video.src}"
-          			type="video/mp4" />        
+          		type="video/webm"/>
+  		<source src="${video.src}"
+          		type="video/mp4" />        
         </video>
 
 </template>
