@@ -17,23 +17,22 @@
  */-->
 
 <sly data-sly-use.video="com.adobe.aem.commons.assetshare.components.details.Video"
-     data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html"
-     data-sly-use.optionsTemplate="templates/options.html"
-     data-sly-test.ready="${video.ready}">
+	 data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html"
+	 data-sly-use.playerTemplate="templates/player.html"
+	 data-sly-test.ready="${video.ready}">
 
-     	<h4 class="ui header center aligned" data-sly-test="${!video.isVideoAsset}">
-        	${properties['invalidFormatMsg']}
-    	</h4>
-    	
-    	<sly data-sly-test="${video.isVideoAsset}">
-    		<sly data-sly-test="${properties.computedProperty =='thumbnail'}">
-		 		<sly data-sly-call="${optionsTemplate.image @ image = video}" />
-		 	</sly>
-		 	
-		 	<sly data-sly-test="${properties.computedProperty !='thumbnail'}">
-		 		<sly data-sly-call="${optionsTemplate.video @ video = video}"/>
-		 	</sly>
+<h4 class="ui header center aligned"
+	data-sly-test="${!video.isVideoAsset}">
+	${properties['invalidFormatMsg']}</h4>
+
+	<sly data-sly-test="${video.isVideoAsset}">
+		<sly data-sly-test="${properties.computedProperty =='thumbnail'}">
+			<sly data-sly-call="${playerTemplate.image @ image = video}" />
 		</sly>
+		<sly data-sly-test="${properties.computedProperty !='thumbnail'}">
+			<sly data-sly-call="${playerTemplate.video @ video = video}" />
+		</sly>
+	</sly>
 </sly>
 <sly data-sly-call="${placeholderTemplate.placeholder @ isEmpty=!ready}"></sly>
 

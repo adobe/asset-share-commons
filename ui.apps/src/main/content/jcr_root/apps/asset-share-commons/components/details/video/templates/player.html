@@ -32,24 +32,26 @@
 
 <template data-sly-template.video="${ @ video}">
 		<!--/* Video element with a max height */-->	
-        <video class="ui centered image cmp-image" class="cmp-image--max-height" poster="${properties['posterImage']}"
-               style="height:${height @ context = 'styleToken'}px;" controls controlsList="nodownload"
+        <video class="ui centered image cmp-image" class="cmp-image--max-height" 
+        	   poster="${properties['posterImage']}"
+               style="height:${height @ context = 'styleToken'}px;"
+               controls controlsList="nodownload"
                data-sly-test.height="${properties['height']}">
          	<source src="${video.src}" 
-          		type='video/webm;codecs="vp8, vorbis"'/>
+          			type="video/webm"/>
   			<source src="${video.src}"
-          		type='video/mp4;codecs="avc1.42E01E, mp4a.40.2"'/>       
+          			type="video/mp4"/>       
                
         </video>
 
         <!--/* Video element without a max height */-->
         <video class="ui centered image cmp-image"
-             poster="${properties['posterImage']}" controls controlsList="nodownload"
-             data-sly-test="${!height}">
+               poster="${properties['posterImage']}" controls controlsList="nodownload"
+               data-sly-test="${!height}">
         	<source src="${video.src}" 
-          		type='video/webm;codecs="vp8, vorbis"'/>
+          			type="video/webm"/>
   			<source src="${video.src}"
-          		type='video/mp4;codecs="avc1.42E01E, mp4a.40.2"'/>        
+          			type="video/mp4" />        
         </video>
 
 </template>
