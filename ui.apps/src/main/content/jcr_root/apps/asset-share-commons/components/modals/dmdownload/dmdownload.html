@@ -16,7 +16,8 @@
   ~ limitations under the License.
  */-->
 
-<sly data-sly-use.download="com.adobe.aem.commons.assetshare.components.actions.dmdownload.DMDownload"></sly>
+<sly data-sly-use.download="com.adobe.aem.commons.assetshare.components.actions.dmdownload.DMDownload"
+     data-sly-test.downloadAssets="${properties.excludeOriginalAssets ? false : true}"></sly>
 
 <style data-sly-test="${!wccmode.disabled}">
     .cmp-modal-download .ui.modal {
@@ -31,10 +32,11 @@
 </sly>
 
 <form method="post"
-      action="/content/dam.assetdownload.zip/${download.zipFileName}.zip"
+      action="${download.assets[0].path}.assetdownload.zip/${download.zipFileName}.zip"
       data-asset-share-id="dm-download-modal"
       class="ui modal cmp-modal-download--wrapper cmp-modal">
 
+    <input type="hidden" name="_charset_" value="utf-8"/>
     <input type="hidden" name="licenseCheck" value="true"/>
     <input type="hidden" name="flatStructure" value="false"/>
 
@@ -55,10 +57,6 @@
                     <i class="file icon"></i>
                     <div class="content">
                         <div class="header">${asset.title}</div>
-
-                        <sly data-sly-list.asset="${download.assets}">
-                            <input type="hidden" name="path"  value="${asset.path}"/>
-                        </sly>
                     </div>
                 </div>
             </div>
@@ -67,6 +65,9 @@
         <div class="description ui form">
             <div class="ui header">${properties['downloadOptionsTitle']}</div>
 
+            <sly data-sly-list.asset="${download.assets}">
+                <input type="hidden" name="path"  value="${asset.path}"/>
+            </sly>
 
             <div class="field">
                 <div class="ui checkbox">
@@ -85,7 +86,7 @@
                 </div>
             </div>
 
-            <div class="ui selection dropdown search" data-asset-share-id="dm-image-presets" data-sly-test="${download.isDynamicMediaEnabled}" multiple="">
+            <div class="ui selection dropdown" data-asset-share-id="dm-image-presets" data-sly-test="${download.isDynamicMediaEnabled}" multiple="">
                 <!--/* s7exportsettings={imagepreset:presetname} */-->
                 <input type="hidden" name="s7exportsettings">
                 <i class="dropdown icon"></i>

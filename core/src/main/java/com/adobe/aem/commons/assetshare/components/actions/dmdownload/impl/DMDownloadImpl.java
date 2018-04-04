@@ -81,6 +81,8 @@ public class DMDownloadImpl implements DMDownload {
 
     private boolean isDynamicMediaEnabled;
 
+    private String path;
+
     @PostConstruct
     protected void init() {
         if(features == null) {

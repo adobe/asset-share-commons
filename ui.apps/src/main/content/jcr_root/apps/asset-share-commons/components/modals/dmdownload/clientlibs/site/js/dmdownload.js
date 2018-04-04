@@ -81,7 +81,7 @@ jQuery((function(ns, semanticModal, licenseModal) {
         function setImagePresetProperty(e) {
             var selectedPreset = $(this).dropdown('get value');
             // set the hidden input value with the imagepreset selected
-            $(e.target).val("{imagepreset:" + selectedPreset + "}");
+            $(e.target).val(encodeURIComponent("{imagepreset:" + selectedPreset + "}"));
         }
 
         /** REGISTER EVENTS WHEN DOCUMENT IS READY **/
