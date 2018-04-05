@@ -48,7 +48,7 @@ import java.util.Collection;
         cache = true
 )
 public class DMDownloadImpl implements DMDownload {
-    protected static final String RESOURCE_TYPE = "asset-share-commons/components/modals/download";
+    protected static final String RESOURCE_TYPE = "asset-share-commons/components/modals/dmdownload";
 
     @Self
     @Required
