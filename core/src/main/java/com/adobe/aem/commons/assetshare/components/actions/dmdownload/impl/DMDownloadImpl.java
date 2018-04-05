@@ -81,8 +81,6 @@ public class DMDownloadImpl implements DMDownload {
 
     private boolean isDynamicMediaEnabled;
 
-    private String path;
-
     @PostConstruct
     protected void init() {
         if(features == null) {
@@ -102,17 +100,11 @@ public class DMDownloadImpl implements DMDownload {
         }
     }
 
-    public Collection<AssetModel> getAssets() {
-        return assets;
-    }
+    public Collection<AssetModel> getAssets() { return assets; }
 
-    public String getZipFileName() {
-        return StringUtils.removeEndIgnoreCase(zipFileName, ".zip");
-    }
+    public String getZipFileName() { return StringUtils.removeEndIgnoreCase(zipFileName, ".zip"); }
 
     public boolean isDynamicMediaEnabled() { return isDynamicMediaEnabled; }
 
-    public String[] getImagePresets() {
-        return imagePresets;
-    }
+    public String[] getImagePresets() { return imagePresets; }
 }

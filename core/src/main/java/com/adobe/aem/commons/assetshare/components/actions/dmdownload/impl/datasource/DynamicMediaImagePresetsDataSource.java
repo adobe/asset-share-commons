@@ -85,7 +85,7 @@ public class DynamicMediaImagePresetsDataSource extends SlingSafeMethodsServlet 
             Iterator<Resource> imgPresetIterator = imgPresetResourceEtc.listChildren();
             while (imgPresetIterator.hasNext()) {
                 Resource imgPreset = imgPresetIterator.next();
-                if (imgPreset != null){
+                if (imgPreset != null && !imgPreset.getName().contains(":")){
                     data.put(imgPreset.getName(), imgPreset.getName());
                 }
             }
@@ -95,7 +95,7 @@ public class DynamicMediaImagePresetsDataSource extends SlingSafeMethodsServlet 
             Iterator<Resource> imgPresetIterator = imgPresetResourceConf.listChildren();
             while (imgPresetIterator.hasNext()) {
                 Resource imgPreset = imgPresetIterator.next();
-                if (imgPreset != null){
+                if (imgPreset != null && !imgPreset.getName().contains(":")){
                     data.put(imgPreset.getName(), imgPreset.getName());
                 }
             }

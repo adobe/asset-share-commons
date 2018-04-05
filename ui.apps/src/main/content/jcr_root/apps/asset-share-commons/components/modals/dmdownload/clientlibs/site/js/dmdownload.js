@@ -80,7 +80,7 @@ jQuery((function(ns, semanticModal, licenseModal) {
 
         function setImagePresetProperty(e) {
             var selectedPreset = $(this).dropdown('get value');
-            // set the hidden input value with the imagepreset selected
+            // set the hidden input value with the imagepreset selected - s7exportsettings={imagepreset:presetname}
             $(e.target).val(encodeURIComponent("{imagepreset:" + selectedPreset + "}"));
         }
 
