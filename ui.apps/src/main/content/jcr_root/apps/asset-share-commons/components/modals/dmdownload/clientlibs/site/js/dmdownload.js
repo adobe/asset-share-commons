@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-/*global jQuery: false, AssetShare: false, console: false*/
+/*global jQuery: false, AssetShare: false*/
 
 jQuery((function(ns, semanticModal, licenseModal) {
     "use strict";
