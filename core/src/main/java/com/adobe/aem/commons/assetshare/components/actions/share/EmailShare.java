@@ -24,11 +24,32 @@ import org.osgi.annotation.versioning.ProviderType;
 
 @ProviderType
 public interface EmailShare extends Share {
+
+    String PN_SIGNATURE = "signature";
+
+    String PN_USE_SHARER_NAME_AS_SIGNATURE = "useSharerSignature";
+
+    /**
+     * For example, in the default ASC Email Share implementation, this is the valuemap for the Email Share Modal Component.
+     *
+     * @return a value map of the share component's resource.
+     */
     ValueMap getProperties();
 
+    /**
+     * This data is considered "safe" is it is configured at the Component level by the Author, and not passed in by the end-user.
+     *
+     * @return the data provided via the Share form's component configuration.
+     */
     ValueMap getConfiguredData();
 
+    /**
+     * @return the data provided by the end user via the Share submissions form.
+     */
     ValueMap getUserData();
 
+    /**
+     * @return the absolute path to the E0mail Template to use.
+     */
     String getEmailTemplatePath();
 }

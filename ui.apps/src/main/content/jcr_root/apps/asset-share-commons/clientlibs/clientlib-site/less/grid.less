@@ -16,8 +16,19 @@
  * limitations under the License.
  */
 
+/*
+ * The import of grid_base.less via this "copy-down" location is required by Asset Share Commons to support both AEM 6.3.1 and 6.4.
+ *
+ * This file is a copy-down from AEM 6.4.0 @ /libs/wcm/foundation/clientlibs/grid/grid_base.less
+ *
+ * Normally, the AEM-provided grid_base.less file would be directly referenced on the target version of AEM.
+ *
+ *  - AEM 6.3.1: /etc/clientlibs/wcm/foundation/grid/grid_base.less
+ *  - AEM 6.4: /libs/wcm/foundation/clientlibs/grid/grid_base.less
+ *
+**/
+@import (once) "/apps/asset-share-commons/clientlibs/clientlib-dependencies/less/grid_base.less";
 
-@import (once) "/etc/clientlibs/wcm/foundation/grid/grid_base.less";
 @import (once) "variables.less";
 
 /* maximum amount of grid cells to be provided */

@@ -17,203 +17,231 @@
   ~ limitations under the License.
   -->
 
-<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:granite="http://www.adobe.com/jcr/granite/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
-    jcr:primaryType="nt:unstructured"
-    jcr:title="Date Range Filter"
-    sling:resourceType="cq/gui/components/authoring/dialog"
-    extraClientlibs="[core.wcm.components.form.options.v1.editor]">
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:granite="http://www.adobe.com/jcr/granite/1.0"
+          xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+          jcr:primaryType="nt:unstructured"
+          jcr:title="Date Range Filter"
+          sling:resourceType="cq/gui/components/authoring/dialog"
+          extraClientlibs="[core.wcm.components.form.options.v1.editor,asset-share-commons.author.dialog]">
     <content
-        granite:class="cmp-options--editor-v1"
-        jcr:primaryType="nt:unstructured"
-        sling:resourceType="granite/ui/components/coral/foundation/container">
+            granite:class="cmp-options--editor-v1"
+            jcr:primaryType="nt:unstructured"
+            sling:resourceType="granite/ui/components/coral/foundation/container">
         <items jcr:primaryType="nt:unstructured">
             <options
-                jcr:primaryType="nt:unstructured"
-                sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns"
-                margin="{Boolean}true">
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns"
+                    margin="{Boolean}true">
                 <items jcr:primaryType="nt:unstructured">
                     <columns
-                        jcr:primaryType="nt:unstructured"
-                        sling:resourceType="granite/ui/components/coral/foundation/container">
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="granite/ui/components/coral/foundation/container">
                         <items jcr:primaryType="nt:unstructured">
-                            <filter
-                                jcr:primaryType="nt:unstructured"
-                                sling:resourceType="granite/ui/components/coral/foundation/heading"
-                                level="{Long}3"
-                                text="Filter"/>
-                            <title
-                                jcr:primaryType="nt:unstructured"
-                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                fieldDescription="Legend to describe the role of the field."
-                                fieldLabel="Title"
-                                name="./jcr:title"
-                                required="{Boolean}true"/>
-                            <property
-                                jcr:primaryType="nt:unstructured"
-                                sling:orderBefore="name"
-                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                fieldDescription="The name of the field, which is submitted with the form data."
-                                fieldLabel="Property"
-                                name="./property"
-                                required="{Boolean}true"/>
-                            <property
+                            <dialog
+                                    granite:class="foundation-layout-util-vmargin"
                                     jcr:primaryType="nt:unstructured"
-                                    sling:resourceType="granite/ui/components/coral/foundation/form/select"
-                                    sling:orderBefore="name"
-                                    fieldDescription="The name of the field, which is submitted with the form data."
-                                    fieldLabel="Date Property"
-                                    required="{Boolean}true"
-                                    metadataFieldTypes="[datetime]"
-                                    name="./property">
-                                <datasource
-                                        jcr:primaryType="nt:unstructured"
-                                        sling:resourceType="asset-share-commons/data-sources/filterable-properties"/>
-                            </property>
-                            <expanded
-                                jcr:primaryType="nt:unstructured"
-                                sling:orderBefore="name"
-                                sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
-                                fieldDescription="Select if the field set should start in an expanded state (not applicable for drop down)"
-                                name="./expanded"
-                                text="Start expanded"
-                                value="true"/>
-                            <date-types
-                                granite:class="cq-dialog-dropdown-showhide"
-                                jcr:primaryType="nt:unstructured"
-                                sling:resourceType="granite/ui/components/coral/foundation/form/select"
-                                fieldDescription="Set the type of the form field."
-                                fieldLabel="Type"
-                                name="./dateType">
-                                <granite:data
-                                    jcr:primaryType="nt:unstructured"
-                                    cq-dialog-dropdown-showhide-target=".list-option-listfrom-showhide-target"/>
-                                <items
-                                    jcr:primaryType="nt:unstructured"
-                                    sling:hideChildren="checkbox">
-                                    <date-range
-                                        jcr:primaryType="nt:unstructured"
-                                        text="Date Range"
-                                        value="daterange"/>
-                                    <relative
-                                        jcr:primaryType="nt:unstructured"
-                                        text="Relative Date Range"
-                                        value="relativedaterange"/>
-                                </items>
-                            </date-types>
-                            <set-relative-date
-                                granite:class="hide list-option-listfrom-showhide-target foundation-layout-util-vmargin"
-                                jcr:primaryType="nt:unstructured"
-                                sling:resourceType="granite/ui/components/coral/foundation/container">
-                                <granite:data
-                                    jcr:primaryType="nt:unstructured"
-                                    showhidetargetvalue="relativedaterange"/>
+                                    sling:resourceType="granite/ui/components/coral/foundation/container">
                                 <items jcr:primaryType="nt:unstructured">
-                                    <heading
-                                        granite:class="coral-Heading coral-Heading--4"
-                                        jcr:primaryType="nt:unstructured"
-                                        sling:resourceType="granite/ui/components/coral/foundation/heading"
-                                        level="{Long}4"
-                                        text="Relative Date Range"/>
-                                    <well
-                                        jcr:primaryType="nt:unstructured"
-                                        sling:resourceType="granite/ui/components/coral/foundation/well">
+                                    <tabs
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/tabs"
+                                            maxmized="{Boolean}true">
                                         <items jcr:primaryType="nt:unstructured">
-                                            <option-types
-                                                granite:class="cmp-options--editor-type-v1"
-                                                jcr:primaryType="nt:unstructured"
-                                                sling:resourceType="granite/ui/components/coral/foundation/form/select"
-                                                fieldDescription="Set the type of the form field."
-                                                fieldLabel="Type"
-                                                name="./type">
-                                                <items jcr:primaryType="nt:unstructured">
-                                                    <radio
-                                                        jcr:primaryType="nt:unstructured"
-                                                        text="Radio buttons"
-                                                        value="radio"/>
-                                                    <slider
-                                                        jcr:primaryType="nt:unstructured"
-                                                        text="Slider"
-                                                        value="slider"/>
-                                                    <toggle
-                                                        jcr:primaryType="nt:unstructured"
-                                                        text="Toggle"
-                                                        value="toggle"/>
-                                                </items>
-                                            </option-types>
-                                            <options
-                                                jcr:primaryType="nt:unstructured"
-                                                sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
-                                                composite="{Boolean}true"
-                                                fieldDescription="Define the different options"
-                                                fieldLabel="Options"
-                                                renderReadOnly="{Boolean}true">
-                                                <field
-                                                    granite:class="cmp-options--editor-item-multifield-composite-item coral-Well"
+                                            <tab1
                                                     jcr:primaryType="nt:unstructured"
-                                                    sling:resourceType="granite/ui/components/coral/foundation/container"
-                                                    name="./items">
-                                                    <items jcr:primaryType="nt:unstructured">
-                                                        <option
-                                                            granite:class="cmp-options--editor-item-multifield-composite-item-container"
+                                                    jcr:title="Filter"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns"
+                                                    margin="{Boolean}true">
+                                                <items jcr:primaryType="nt:unstructured">
+                                                    <column
                                                             jcr:primaryType="nt:unstructured"
                                                             sling:resourceType="granite/ui/components/coral/foundation/container">
-                                                            <items jcr:primaryType="nt:unstructured">
-                                                                <text
-                                                                        jcr:primaryType="nt:unstructured"
-                                                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                                                        fieldLabel="Label"
-                                                                        sling:orderBefore="value"
-                                                                        name="./text"/>
-                                                                <value
+                                                        <items jcr:primaryType="nt:unstructured">
+                                                            <title
                                                                     jcr:primaryType="nt:unstructured"
                                                                     sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                                                    fieldLabel="Value"
-                                                                    name="./value"/>
-                                                            </items>
-                                                        </option>
-                                                    </items>
-                                                </field>
-                                            </options>
+                                                                    fieldDescription="Legend to describe the role of the field."
+                                                                    fieldLabel="Title"
+                                                                    name="./jcr:title"
+                                                                    required="{Boolean}true"/>
+                                                            <property
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    sling:orderBefore="name"
+                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                                    fieldDescription="The name of the field, which is submitted with the form data."
+                                                                    fieldLabel="Property"
+                                                                    name="./property"
+                                                                    required="{Boolean}true"/>
+                                                            <property
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                                                    sling:orderBefore="name"
+                                                                    fieldDescription="The name of the field, which is submitted with the form data."
+                                                                    fieldLabel="Date Property"
+                                                                    required="{Boolean}true"
+                                                                    metadataFieldTypes="[datetime]"
+                                                                    name="./property">
+                                                                <datasource
+                                                                        jcr:primaryType="nt:unstructured"
+                                                                        sling:resourceType="asset-share-commons/data-sources/filterable-properties"/>
+                                                            </property>
+                                                            <expanded
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    sling:orderBefore="name"
+                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                                    fieldDescription="Select if the field set should start in an expanded state (not applicable for drop down)"
+                                                                    name="./expanded"
+                                                                    text="Start expanded"
+                                                                    value="true"/>
+                                                            <date-types
+                                                                    granite:class="cq-dialog-dropdown-showhide"
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                                                    fieldDescription="Set the type of the form field."
+                                                                    fieldLabel="Type"
+                                                                    name="./dateType">
+                                                                <granite:data
+                                                                        jcr:primaryType="nt:unstructured"
+                                                                        cq-dialog-dropdown-showhide-target=".list-option-listfrom-showhide-target"/>
+                                                                <items
+                                                                        jcr:primaryType="nt:unstructured"
+                                                                        sling:hideChildren="checkbox">
+                                                                    <date-range
+                                                                            jcr:primaryType="nt:unstructured"
+                                                                            text="Date Range"
+                                                                            value="daterange"/>
+                                                                    <relative
+                                                                            jcr:primaryType="nt:unstructured"
+                                                                            text="Relative Date Range"
+                                                                            value="relativedaterange"/>
+                                                                </items>
+                                                            </date-types>
+                                                            <set-relative-date
+                                                                    granite:class="hide list-option-listfrom-showhide-target foundation-layout-util-vmargin"
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    sling:resourceType="granite/ui/components/coral/foundation/container">
+                                                                <granite:data
+                                                                        jcr:primaryType="nt:unstructured"
+                                                                        showhidetargetvalue="relativedaterange"/>
+                                                                <items jcr:primaryType="nt:unstructured">
+                                                                    <heading
+                                                                            granite:class="coral-Heading coral-Heading--4"
+                                                                            jcr:primaryType="nt:unstructured"
+                                                                            sling:resourceType="granite/ui/components/coral/foundation/heading"
+                                                                            level="{Long}4"
+                                                                            text="Relative Date Range"/>
+                                                                    <well
+                                                                            jcr:primaryType="nt:unstructured"
+                                                                            sling:resourceType="granite/ui/components/coral/foundation/well">
+                                                                        <items jcr:primaryType="nt:unstructured">
+                                                                            <option-types
+                                                                                    granite:class="cmp-options--editor-type-v1"
+                                                                                    jcr:primaryType="nt:unstructured"
+                                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                                                                    fieldDescription="Set the type of the form field."
+                                                                                    fieldLabel="Type"
+                                                                                    name="./type">
+                                                                                <items jcr:primaryType="nt:unstructured">
+                                                                                    <radio
+                                                                                            jcr:primaryType="nt:unstructured"
+                                                                                            text="Radio buttons"
+                                                                                            value="radio"/>
+                                                                                    <slider
+                                                                                            jcr:primaryType="nt:unstructured"
+                                                                                            text="Slider"
+                                                                                            value="slider"/>
+                                                                                    <toggle
+                                                                                            jcr:primaryType="nt:unstructured"
+                                                                                            text="Toggle"
+                                                                                            value="toggle"/>
+                                                                                </items>
+                                                                            </option-types>
+                                                                            <options
+                                                                                    jcr:primaryType="nt:unstructured"
+                                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
+                                                                                    composite="{Boolean}true"
+                                                                                    fieldDescription="Define the different options"
+                                                                                    fieldLabel="Options"
+                                                                                    renderReadOnly="{Boolean}true">
+                                                                                <field
+                                                                                        granite:class="cmp-options--editor-item-multifield-composite-item coral-Well"
+                                                                                        jcr:primaryType="nt:unstructured"
+                                                                                        sling:resourceType="granite/ui/components/coral/foundation/container"
+                                                                                        name="./items">
+                                                                                    <items jcr:primaryType="nt:unstructured">
+                                                                                        <option
+                                                                                                granite:class="cmp-options--editor-item-multifield-composite-item-container"
+                                                                                                jcr:primaryType="nt:unstructured"
+                                                                                                sling:resourceType="granite/ui/components/coral/foundation/container">
+                                                                                            <items jcr:primaryType="nt:unstructured">
+                                                                                                <text
+                                                                                                        jcr:primaryType="nt:unstructured"
+                                                                                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                                                                        fieldLabel="Label"
+                                                                                                        sling:orderBefore="value"
+                                                                                                        name="./text"/>
+                                                                                                <value
+                                                                                                        jcr:primaryType="nt:unstructured"
+                                                                                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                                                                        fieldLabel="Value"
+                                                                                                        name="./value"/>
+                                                                                            </items>
+                                                                                        </option>
+                                                                                    </items>
+                                                                                </field>
+                                                                            </options>
+                                                                        </items>
+                                                                    </well>
+                                                                </items>
+                                                            </set-relative-date>
+                                                            <set-date-range
+                                                                    granite:class="hide list-option-listfrom-showhide-target foundation-layout-util-vmargin"
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    sling:resourceType="granite/ui/components/coral/foundation/container">
+                                                                <granite:data
+                                                                        jcr:primaryType="nt:unstructured"
+                                                                        showhidetargetvalue="daterange"/>
+                                                                <items jcr:primaryType="nt:unstructured">
+                                                                    <heading
+                                                                            granite:class="coral-Heading coral-Heading--4"
+                                                                            jcr:primaryType="nt:unstructured"
+                                                                            sling:resourceType="granite/ui/components/coral/foundation/heading"
+                                                                            level="{Long}4"
+                                                                            text="Date Range Options"/>
+                                                                    <well
+                                                                            jcr:primaryType="nt:unstructured"
+                                                                            sling:resourceType="granite/ui/components/coral/foundation/well">
+                                                                        <items jcr:primaryType="nt:unstructured">
+                                                                            <before-label
+                                                                                    jcr:primaryType="nt:unstructured"
+                                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                                                    emptyText="Start Date"
+                                                                                    fieldDescription="Text to put in calendar placeholder"
+                                                                                    fieldLabel="Start Placeholder"
+                                                                                    name="./startPlaceholder"/>
+                                                                            <after-label
+                                                                                    jcr:primaryType="nt:unstructured"
+                                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                                                    emptyText="End Date"
+                                                                                    fieldDescription="Text to put in calendar placeholder"
+                                                                                    fieldLabel="End Placeholder"
+                                                                                    name="./endPlaceholder"/>
+                                                                        </items>
+                                                                    </well>
+                                                                </items>
+                                                            </set-date-range>
+                                                        </items>
+                                                    </column>
+                                                </items>
+                                            </tab1>
+                                            <search-behavior-tab
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/include"
+                                                    path="/apps/asset-share-commons/components/search/common/cq:dialog/tabs/search-behavior"/>
                                         </items>
-                                    </well>
+                                    </tabs>
                                 </items>
-                            </set-relative-date>
-                            <set-date-range
-                                granite:class="hide list-option-listfrom-showhide-target foundation-layout-util-vmargin"
-                                jcr:primaryType="nt:unstructured"
-                                sling:resourceType="granite/ui/components/coral/foundation/container">
-                                <granite:data
-                                    jcr:primaryType="nt:unstructured"
-                                    showhidetargetvalue="daterange"/>
-                                <items jcr:primaryType="nt:unstructured">
-                                    <heading
-                                        granite:class="coral-Heading coral-Heading--4"
-                                        jcr:primaryType="nt:unstructured"
-                                        sling:resourceType="granite/ui/components/coral/foundation/heading"
-                                        level="{Long}4"
-                                        text="Date Range Options"/>
-                                    <well
-                                        jcr:primaryType="nt:unstructured"
-                                        sling:resourceType="granite/ui/components/coral/foundation/well">
-                                        <items jcr:primaryType="nt:unstructured">
-                                            <before-label
-                                                jcr:primaryType="nt:unstructured"
-                                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                                emptyText="Start Date"
-                                                fieldDescription="Text to put in calendar placeholder"
-                                                fieldLabel="Start Placeholder"
-                                                name="./startPlaceholder"/>
-                                            <after-label
-                                                jcr:primaryType="nt:unstructured"
-                                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                                emptyText="End Date"
-                                                fieldDescription="Text to put in calendar placeholder"
-                                                fieldLabel="End Placeholder"
-                                                name="./endPlaceholder"/>
-                                        </items>
-                                    </well>
-                                </items>
-                            </set-date-range>
+                            </dialog>
                         </items>
                     </columns>
                 </items>

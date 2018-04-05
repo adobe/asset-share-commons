@@ -22,11 +22,13 @@ package com.adobe.aem.commons.assetshare.components.predicates.impl;
 import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.PropertyPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.impl.options.SelectedOptionItem;
+import com.adobe.aem.commons.assetshare.components.predicates.impl.options.UnselectedOptionItem;
 import com.adobe.aem.commons.assetshare.search.impl.predicateevaluators.PropertyValuesPredicateEvaluator;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
 import com.adobe.cq.commerce.common.ValueMapDecorator;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
+import com.day.cq.search.eval.PathPredicateEvaluator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestParameter;
@@ -58,7 +60,6 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
 
     protected String valueFromRequest = null;
     protected ValueMap valuesFromRequest = null;
-    protected boolean foundValueFromRequest = false;
 
     @Self
     @Required
@@ -98,15 +99,19 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
     public List<OptionItem> getItems() {
         final ValueMap initialValues = getInitialValues();
         final List<OptionItem> processedOptionItems = new ArrayList<>();
+        final boolean useDefaultSelected = !isParameterizedSearchRequest();
 
-        for (final OptionItem optionItem : coreOptions.getItems()) {
-            if (PredicateUtil.isOptionInInitialValues(optionItem, initialValues)) {
-                processedOptionItems.add(new SelectedOptionItem(optionItem));
-                foundValueFromRequest = true;
-            } else {
-                processedOptionItems.add((optionItem));
-            }
-        }
+        coreOptions.getItems().stream()
+                .forEach(optionItem -> {
+                    if (PredicateUtil.isOptionInInitialValues(optionItem, initialValues)) {
+                        processedOptionItems.add(new SelectedOptionItem(optionItem));
+                    } else if (useDefaultSelected) {
+                        processedOptionItems.add(optionItem);
+                    } else {
+                        processedOptionItems.add(new UnselectedOptionItem(optionItem));
+                    }
+                });
+
         return processedOptionItems;
     }
 
@@ -153,18 +158,13 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
 
     @Override
     public boolean isReady() {
-        return getItems().size() > 0;
+        return coreOptions.getItems().size() > 0;
     }
 
     @Override
     public String getInitialValue() {
         if (valueFromRequest == null) {
-            RequestParameter requestParameter = request.getRequestParameter(getGroup() + "." + getName() + "." + PropertyValuesPredicateEvaluator.VALUES);
-            if (requestParameter != null) {
-                valueFromRequest = requestParameter.getString();
-            } else {
-                valueFromRequest = "";
-            }
+            valueFromRequest = PredicateUtil.getInitialValue(request, this, PropertyValuesPredicateEvaluator.VALUES);
         }
 
         return valueFromRequest;
@@ -173,23 +173,7 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
     @Override
     public ValueMap getInitialValues() {
         if (valuesFromRequest == null) {
-            valuesFromRequest = new ValueMapDecorator(new HashMap<>());
-
-            for (final Map.Entry<String, RequestParameter[]> entry : request.getRequestParameterMap().entrySet()) {
-                final List<String> values = new ArrayList<>();
-
-                if (entry.getKey().matches("^" + getGroup() + "." + getName() + ".\\d*_?" + PropertyValuesPredicateEvaluator.VALUES + "$")) {
-                    for (final RequestParameter tmp : entry.getValue()) {
-                        if (StringUtils.isNotBlank(tmp.getString())) {
-                            values.add(tmp.getString());
-                        }
-                    }
-                }
-
-                if (!values.isEmpty()) {
-                    valuesFromRequest.put(entry.getKey(), values.toArray(new String[values.size()]));
-                }
-            }
+            valuesFromRequest = PredicateUtil.getInitialValues(request, this, PropertyValuesPredicateEvaluator.VALUES);
         }
 
         return valuesFromRequest;

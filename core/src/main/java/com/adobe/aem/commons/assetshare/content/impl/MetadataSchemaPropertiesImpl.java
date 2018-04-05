@@ -27,19 +27,28 @@ import org.apache.sling.api.resource.AbstractResourceVisitor;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 import org.osgi.service.component.annotations.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
 @Component(service = MetadataProperties.class)
 public class MetadataSchemaPropertiesImpl implements MetadataProperties {
+    private static final Logger log = LoggerFactory.getLogger(MetadataSchemaPropertiesImpl.class);
 
+    private static final String PN_FIELD_LABEL = "fieldLabel";
+    private static final String PN_NAME = "name";
+
+    private static final String NN_FIELD = "field";
+
+    private static final String[] RT_FIELDS = { "granite/ui/components/foundation/form/field", "granite/ui/components/coral/foundation/form/field" };
     @Override
     public Map<String, List<String>> getMetadataProperties(final SlingHttpServletRequest request) {
         return getMetadataProperties(request, Collections.EMPTY_LIST);
     }
 
     @Override
-    public Map<String, List<String>> getMetadataProperties(final SlingHttpServletRequest request, final List<String> metadataFieldTypes) {
+    public Map<String, List<String>> getMetadataProperties(final SlingHttpServletRequest request, final List<String> metadataFieldResourceTypes) {
         Map<String, List<String>> collectedMetadata = new HashMap<>();
 
         final Iterator<Resource> resourceIterator = SchemaFormHelper.getSchemaFormsIterator(request.getResourceResolver(),
@@ -49,44 +58,55 @@ public class MetadataSchemaPropertiesImpl implements MetadataProperties {
             final Resource resource = resourceIterator.next();
 
             if (resource.getValueMap().get("allowCustomization", true)) {
-                final MetadataSchemaResourceVisitor visitor = new MetadataSchemaResourceVisitor(collectedMetadata, metadataFieldTypes);
+                final MetadataSchemaResourceVisitor visitor = new MetadataSchemaResourceVisitor(collectedMetadata, metadataFieldResourceTypes);
                 visitor.accept(resource);
                 collectedMetadata = visitor.getMetadata();
             }
         }
 
-        return collectedMetadata;    }
+        return collectedMetadata;
+    }
 
 
 
     private class MetadataSchemaResourceVisitor extends AbstractResourceVisitor {
+        // propertyName : fieldLabels
         private final Map<String, List<String>> metadata;
-        private final List<String> metadataFieldTypes;
+        private final List<String> metadataFieldResourceTypes;
 
-        public MetadataSchemaResourceVisitor(Map<String, List<String>> metadata, List<String> metadataFieldTypes) {
+        private boolean widget = false;
+
+        public MetadataSchemaResourceVisitor(Map<String, List<String>> metadata, List<String> metadataFieldResourceTypes) {
             this.metadata = metadata;
-            this.metadataFieldTypes = metadataFieldTypes;
+            this.metadataFieldResourceTypes = metadataFieldResourceTypes;
         }
 
-        public final  Map<String, List<String>> getMetadata() {
+        public final Map<String, List<String>> getMetadata() {
             return metadata;
         }
 
         @Override
+        public void accept(final Resource resource) {
+            visit(resource);
+
+            if (!widget) {
+                this.traverseChildren(resource.listChildren());
+            }
+
+            widget = false;
+        }
+
+        @Override
         protected void visit(final Resource resource) {
-            final ValueMap properties = resource.getValueMap();
+            widget = isWidget(resource);
 
-            final String type = properties.get("type", String.class);
-            final String metaType = properties.get("metaType", String.class);
-
-            if (metadataFieldTypes.size() > 0 &&
-                    !metadataFieldTypes.contains(type) &&
-                    !metadataFieldTypes.contains(metaType)) {
+            if (!widget) {
                 return;
             }
 
-            final String fieldLabel = properties.get("fieldLabel", String.class);
-            final String propertyName = properties.get("name", String.class);
+            final ValueMap properties = resource.getValueMap();
+            final String fieldLabel = properties.get(PN_FIELD_LABEL, String.class);
+            final String propertyName = properties.get(PN_NAME, properties.get(NN_FIELD + "/" + PN_NAME, String.class));
 
             if (StringUtils.isNotBlank(fieldLabel) && StringUtils.isNotBlank(propertyName)) {
                 if (metadata.containsKey(propertyName)) {
@@ -100,6 +120,21 @@ public class MetadataSchemaPropertiesImpl implements MetadataProperties {
                     tmp.add(fieldLabel);
                     metadata.put(propertyName, tmp);
                 }
+            }
+        }
+
+
+        private boolean isWidget(Resource resource) {
+            if (resource == null) {
+                return false;
+            }
+
+            if (metadataFieldResourceTypes != null && metadataFieldResourceTypes.size() > 0) {
+                // Overriding the allowed field resource types; only match these.
+                return metadataFieldResourceTypes.stream().anyMatch(resourceType -> resource.isResourceType(resourceType));
+            } else {
+                // Default use the Granite UI (foundation and coral) Field resourceTypes
+                return Arrays.stream(RT_FIELDS).anyMatch(resourceType -> resource.isResourceType(resourceType));
             }
         }
     }

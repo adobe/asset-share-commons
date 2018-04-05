@@ -16,64 +16,71 @@
  * limitations under the License.
  */
 
-/*global $: false*/
+/*global $: false, AssetShare: false*/
 
 /* SemanticUI controls */
 $(function () {
     "use strict";
 
-    /** Semantic UI Plugins **/
-    $(".ui.accordion").accordion();
-    $(".ui.dropdown").dropdown();
-
-});
-
-/** Semantic UI Calendar Plugins - Initialize Date Range Predicates **/
-$(function () {
-    "use strict";
-
-    var rangeStart = $('.ui.calendar.rangestart');
-
-    $(rangeStart).each(function (index) {
-        var predicateId = $(this).attr('data-asset-share-calendar-start-id'),
-            rangeEnd = $('[data-asset-share-calendar-end-id="' + predicateId + '"]');
-
-        $(this).calendar({
-            type: 'date',
-            endCalendar: $(rangeEnd),
-            formatter: {
-                date: function (date, settings) {
-                    var day, month, year;
-
-                    if (!date) {
-                        return '';
-                    }
-                    day = date.getDate();
-                    month = date.getMonth() + 1;
-                    year = date.getFullYear();
-
-                    return year + '-' + month + '-' + day;
-                }
-            }
+    function init() {
+        /** Semantic UI Plugins **/
+        $(".ui.accordion").not("[data-asset-share-processed]").each(function() {
+            $(this).attr("data-asset-share-processed", "true").accordion();
         });
 
-        $(rangeEnd).calendar({
-            type: 'date',
-            startCalendar: $(this),
-            formatter: {
-                date: function (date, settings) {
-                    var day, month, year;
-
-                    if (!date) {
-                        return '';
-                    }
-                    day = date.getDate();
-                    month = date.getMonth() + 1;
-                    year = date.getFullYear();
-
-                    return year + '-' + month + '-' + day;
-                }
-            }
+        $(".ui.dropdown").not("[data-asset-share-processed]").each(function() {
+            $(this).attr("data-asset-share-processed", "true").dropdown();
         });
-    });
+
+        /** Semantic UI Calendar Plugins - Initialize Date Range Predicates **/
+        function dateFormatter(date, settings) {
+            var day, month, year;
+
+            if (!date) {
+                return '';
+            }
+
+            day = date.getDate();
+            month = date.getMonth() + 1;
+            year = date.getFullYear();
+
+            return year + '-' + month + '-' + day;
+        }
+
+        $('.ui.calendar.rangestart').not("[data-asset-share-processed]").each(function (index) {
+            var predicateId = $(this).attr('data-asset-share-calendar-start-id'),
+                rangeStart = $(this),
+                rangeEnd = $('[data-asset-share-calendar-end-id="' + predicateId + '"]');
+
+            rangeStart.attr("data-asset-share-processed", "true");
+
+            $(rangeStart).calendar({
+                type: 'date',
+                endCalendar: $(rangeEnd),
+                formatter: {
+                    date: dateFormatter
+                },
+                onChange: function (date, text, mode) {
+                    $(rangeStart).find('input[type="text"]').trigger("change");
+                }
+            });
+
+            $(rangeEnd).calendar({
+                type: 'date',
+                startCalendar: $(this),
+                formatter: {
+                    date: dateFormatter
+                },
+                onChange: function (date, text, mode) {
+                    $(rangeEnd).find('input[type="text"]').trigger("change");
+                }
+            });
+        });
+    }
+
+    /* On initial load */
+    init();
+
+    /** On search end as this updates the DOM significantly */
+    $("body").on(AssetShare.Events.SEARCH_END, init);
 });

@@ -18,9 +18,9 @@
   -->
 
 <jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
-    jcr:primaryType="cq:Component"
-    jcr:title="Date Range Filter"
-    componentGroup="Asset Share Commons - Search"
-    cq:icon="calendar"
-    generatePredicateGroupId="{Boolean}true"
-    jcr:description="Allows a user to filter search results by a date range or relative date range property."/>
+          jcr:primaryType="cq:Component"
+          jcr:title="Date Range Filter"
+          jcr:description="Allows a user to filter search results by a date range or relative date range property."
+          cq:icon="calendar"
+          componentGroup="Asset Share Commons - Search"
+          generatePredicateGroupId="{Boolean}true"/>

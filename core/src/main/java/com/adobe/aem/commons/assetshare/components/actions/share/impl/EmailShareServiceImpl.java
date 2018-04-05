@@ -46,28 +46,32 @@ import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.models.factory.ModelFactory;
+import org.apache.sling.scripting.core.ScriptHelper;
 import org.apache.sling.settings.SlingSettingsService;
 import org.apache.sling.xss.XSSAPI;
+import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.jcr.RepositoryException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Component(service = ShareService.class)
 @Designate(ocd = EmailShareServiceImpl.Cfg.class)
 public class EmailShareServiceImpl implements ShareService {
     private static final Logger log = LoggerFactory.getLogger(EmailShareServiceImpl.class);
+
+    public static final String SHARE_SERVICE_ACCEPTANCE_KEY = "asset-share-commons__share--email";
 
     /**
      * Share Parameters
@@ -78,6 +82,7 @@ public class EmailShareServiceImpl implements ShareService {
     private static final String EMAIL_ASSET_LINK_LIST_HTML = "assetLinksHTML";
 
     private Cfg cfg;
+    private BundleContext bundleContext;
 
     @Reference
     private EmailService emailService;
@@ -95,10 +100,22 @@ public class EmailShareServiceImpl implements ShareService {
     private ModelFactory modelFactory;
 
     @Reference
-    private XSSAPI xssAPi;
+    private XSSAPI xssAPI;
+
+    @Override
+    public boolean accepts(final SlingHttpServletRequest request) {
+        return "true".equals(request.getParameter(SHARE_SERVICE_ACCEPTANCE_KEY));
+    }
 
     @Override
     public final void share(final SlingHttpServletRequest request, final SlingHttpServletResponse response, final ValueMap shareParameters) throws ShareException {
+    	
+    		/** Work around for regression issue introduced in AEM 6.4 **/
+        SlingBindings bindings = new SlingBindings();
+        //intentionally setting the second argument to 'null' since there is no SlingScript to pass in
+        bindings.setSling( new ScriptHelper(bundleContext, null, request, response));
+        request.setAttribute(SlingBindings.class.getName(), bindings);
+        
         final EmailShare emailShare = request.adaptTo(EmailShare.class);
 
         shareParameters.putAll(xssProtectUserData(emailShare.getUserData()));
@@ -214,20 +231,36 @@ public class EmailShareServiceImpl implements ShareService {
      * @param userData the Map of data provided by the end-user (usually derived from the Request) to use in the email.
      * @return the protected Map; all String's are xss protected for HTML.
      */
-    private Map<String, Object> xssProtectUserData(Map<String, Object> userData) {
-        for(final Map.Entry<String, Object> entry : userData.entrySet()) {
-            if (entry.getValue() instanceof String) {
-                userData.put(entry.getKey(), xssAPi.encodeForHTML((String)entry.getValue()));
-            }
+    private Map<String, Object> xssProtectUserData(Map<String, Object> dirtyUserData) {
+        Map<String, Object> cleanUserData = new HashMap<String, Object>();
+        for (final Map.Entry<String, Object> entry : dirtyUserData.entrySet()) {
+
+            if (entry.getValue() instanceof String[]) {
+                cleanUserData.put(entry.getKey(), xssCleanData((String[]) entry.getValue()));
+            } else if (entry.getValue() instanceof String) {
+                cleanUserData.put(entry.getKey(), xssCleanData((String) entry.getValue()));
+            }   
         }
 
-        return userData;
+        return cleanUserData;
     }
 
+    private String[] xssCleanData(String[] dirtyData) {
+        List<String> cleanValues = new ArrayList<String>();
+        for (String val : dirtyData) {
+            cleanValues.add(xssAPI.encodeForHTML(xssAPI.filterHTML(val)));
+        }
+        return cleanValues.toArray(new String[0]);
+    }
+
+    private String xssCleanData(String dirtyData) {
+        return xssAPI.encodeForHTML(xssAPI.filterHTML(dirtyData));
+    }
 
     @Activate
-    protected final void activate(final Cfg config) throws Exception {
+    protected final void activate(final Cfg config, final BundleContext bundleContext) throws Exception {
         this.cfg = config;
+        this.bundleContext = bundleContext;
     }
 
     @ObjectClassDefinition(name = "Asset Share Commons - E-mail Share Service")

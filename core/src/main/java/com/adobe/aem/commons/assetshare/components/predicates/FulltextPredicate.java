@@ -20,6 +20,8 @@
 package com.adobe.aem.commons.assetshare.components.predicates;
 
 import com.adobe.cq.wcm.core.components.models.form.Text;
+import org.osgi.annotation.versioning.ProviderType;
 
+@ProviderType
 public interface FulltextPredicate extends Text {
 }

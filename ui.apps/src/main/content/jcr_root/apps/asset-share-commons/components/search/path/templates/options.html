@@ -1,0 +1,68 @@
+<!--/*
+  ~ Asset Share Commons
+  ~
+  ~ Copyright [2017]  Adobe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+ */-->
+
+<!--/* Checkbox Template also renders Radio, Toggle, and Slide formats */-->
+
+<template data-sly-template.checkbox="${ @ predicate}">
+
+<div class="${predicate.isExpanded ? 'active' : ''} title right">
+	<i class="dropdown icon"></i> ${predicate.title}
+</div>
+
+<div class="${predicate.isExpanded ? 'active' : ''} content field"
+	 data-asset-share-id="${predicate.id}__fields"
+	 data-asset-share-update-method="${predicate.componentUpdateMethod}">
+	<div class="grouped fields"
+		 data-sly-list.option="${predicate.items}">
+		<div class="field">
+			<div class="ui ${predicate.subType} checkbox">
+				<input for="${predicate.id}"
+					   form="${predicate.formId}"
+					   type="${predicate.subType == 'checkbox' ? 'checkbox' : 'radio'}"
+					   name="${predicate.group}.${predicate.subType == 'checkbox' ? optionList.index : '0'}_${predicate.name}"
+					   value="${option.value}"
+					   checked="${option.selected}"
+					   disabled="${option.disabled}"
+					   data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}"/>
+				<label>${option.text}</label>
+			</div>
+		</div>
+	</div>
+</div>
+</template>
+
+<!--/* Dropdown Template - renders a dropdown */-->
+<template data-sly-template.dropdown="${ @ predicate}">
+    <select class="ui fluid dropdown"
+            name="${predicate.group}.${predicate.name}"
+			value="${predicate.intialValue}"
+			form="${predicate.formId}"
+			for="${predicate.id}"
+			data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}"
+			data-asset-share-id="${predicate.id}__fields"
+			data-asset-share-update-method="${predicate.componentUpdateMethod}">
+    	<option value="">${predicate.title}</option>
+    	<sly data-sly-list.optionItem="${predicate.items}">
+    		<option value="${optionItem.value}"
+    		        disabled="${optionItem.disabled}"
+    		        selected="${optionItem.selected ? 'selected' : ''}">
+    		        ${optionItem.text}
+    		</option>
+    	</sly>
+    </select>
+</template>

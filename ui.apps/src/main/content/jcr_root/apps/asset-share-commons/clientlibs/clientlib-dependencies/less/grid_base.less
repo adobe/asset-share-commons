@@ -1,0 +1,114 @@
+/*
+ * ADOBE CONFIDENTIAL
+ *
+ * Copyright 2015 Adobe Systems Incorporated
+ * All Rights Reserved.
+ *
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Adobe Systems Incorporated and its suppliers,
+ * if any.  The intellectual and technical concepts contained
+ * herein are proprietary to Adobe Systems Incorporated and its
+ * suppliers and may be covered by U.S. and Foreign Patents,
+ * patents in process, and are protected by trade secret or copyright law.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Adobe Systems Incorporated.
+ */
+
+/* grid component */
+.aem-Grid {
+  display: block;
+  width: 100%;
+}
+
+.aem-Grid::before,
+.aem-Grid::after {
+  display: table;
+  content: " ";
+}
+
+.aem-Grid::after {
+  clear: both;
+}
+
+/* placeholder for new components */
+.aem-Grid-newComponent {
+  clear: both;
+  margin: 0;
+}
+
+/* column of a grid */
+.aem-GridColumn {
+  box-sizing: border-box;
+  clear: both;
+}
+
+/* force showing hidden */
+.aem-GridShowHidden > .aem-Grid > .aem-GridColumn {
+  display: block !important;
+}
+
+/* Generates all the rules for the grid columns up to the given amount of column */
+.generate-columns(@columnTotal, @column: 1) when (@column =< @columnTotal) {
+
+  > .aem-GridColumn.aem-GridColumn--@{breakPoint}--@{column} {
+    float: left;
+    clear: none;
+    width: (@column * 100% / @columnTotal);
+  }
+
+  .generate-columns(@columnTotal, (@column + 1));
+}
+
+/* Generates all the rules for the grid column offset up to the given amount of column */
+.generate-offsets(@columnTotal, @column: 0) when (@column =< @columnTotal) {
+
+  > .aem-GridColumn.aem-GridColumn--offset--@{breakPoint}--@{column} {
+    margin-left: (@column * 100% / @columnTotal);
+  }
+
+  .generate-offsets(@columnTotal, (@column + 1));
+}
+
+/* Generates all the rules for the grid and columns for the given break point and total of columns */
+.generate-grid-columns(@breakPoint, @columnTotal) when (@columnTotal > 0) {
+
+  &.aem-Grid--@{columnTotal} {
+    .generate-columns(@columnTotal);
+    .generate-offsets(@columnTotal);
+  }
+
+  &.aem-Grid--@{breakPoint}--@{columnTotal} {
+    .generate-columns(@columnTotal);
+    .generate-offsets(@columnTotal);
+  }
+}
+
+/* Generates all the rules for the grids and columns */
+.grid-loop(@breakPoint, @columnTotal, @column: 1) when (@column =< @columnTotal) {
+  .generate-grid-columns(@breakPoint, @column);
+  .grid-loop(@breakPoint, @columnTotal, (@column + 1));
+}
+
+/* API function to be called to generate a grid config */
+.generate-grid(@breakPoint, @columnTotal) {
+  .grid-loop(@breakPoint, @columnTotal);
+
+  >.aem-GridColumn.aem-GridColumn--@{breakPoint}--newline {
+    /* newline behavior */
+    display: block;
+    clear: both !important;
+  }
+
+  >.aem-GridColumn.aem-GridColumn--@{breakPoint}--none {
+    /* none behavior */
+    display: block;
+    clear: none !important; // Prevent the clear:both effect of another breakpoint new line
+    float: left; // Enforce the float positioning to maintain the column height and position relative to previous columns
+  }
+
+  >.aem-GridColumn.aem-GridColumn--@{breakPoint}--hide {
+    /* hide behavior */
+    display: none;
+  }
+}

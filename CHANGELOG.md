@@ -4,7 +4,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [v1.4.2]
+
+### Fixed
+
+- 0126: Updated the include of AEM Responsive Grid's grid_base.less to a singular file copied into the Asset Share Commons codebase to support AEM 6.3.1 and AEM 6.4 in the same package.   
+
+## [v1.4.0]
+
+### Changed
+
+- 0141: Updated Search results to request the main and rail content to allow for more simpler and more robust use of data-asset-share-update-method.
+
+## [v1.3.0]
+
+### Fixed
+- 0131: Fixed ContextHub eventing condition that cause the user menu profile to act as "anonymous" on the first page via by an auth'd user.
+
+### Added
+- 0128: Path Filter search component.
+- 0130: Added auto-search capabilities to search predicate components.
+- 0134: Allow multiple ShareServices to be registered and allow each to accept the request.
+
+## [v1.2.2]
+
+### Fixed
+- 0123: Fixed issued with OOTB ContextHub store type nodes not installing.
+
+## [v1.2.0]
 
 ### Fixed
 - 0114: Removed replication status properties from templates and policies.
@@ -13,6 +40,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0076: Reduced sample video asset file sizes in ui.content project.
 - 0101: User Menu's profile information to be driven via ContextHub rather than uncache-able server-side code; Also added a variety of OOTB context hub stores (profile, surfer info, etc.) 
 - 0108: Updated Download Modal to all for the exclusion of original assets in the download zip.
+- 0113: Align cards to left in search results.
 
 ## [v1.1.2]
 

@@ -22,14 +22,15 @@ package com.adobe.aem.commons.assetshare.components.predicates;
 import com.adobe.aem.commons.assetshare.components.Component;
 import com.adobe.cq.wcm.core.components.models.form.Field;
 import org.apache.sling.api.resource.ValueMap;
+import org.osgi.annotation.versioning.ConsumerType;
 
+@ConsumerType
 public interface Predicate extends Component, Field {
 
     /**
      * In version 1.x.x of this project, this will always be "asset-share-commons__form-id__1".
      *
      * @return the Form id, use to bind inputs to a form via &lt;input form="${predicate.formId}"... &gt;.
-     *
      */
     String getFormId();
 
@@ -44,6 +45,25 @@ public interface Predicate extends Component, Field {
      * @return true is the predicate view should be expanded.
      */
     boolean isExpanded();
+
+    /**
+     * The support and implementation of autoSearch is component-implementation dependent.
+     *
+     * @return true if auto searching should be enabled for this predicate.
+     */
+    default boolean isAutoSearch() {
+        return false;
+    }
+
+    /**
+     * Intended to drive the the data-asset-share-update-method attribute value in a component.
+     * It is up to each component to respect this value.
+     *
+     * @return the update method for this component.
+     */
+    default String getComponentUpdateMethod() {
+        return "never";
+    }
 
     /**
      * GUIDANCE NOTICE
