@@ -2,7 +2,7 @@
 <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
     jcr:primaryType="cq:Page">
     <jcr:content
-        cq:lastModified="{Date}2017-10-17T11:37:33.521-04:00"
+        cq:lastModified="{Date}2018-04-02T01:29:43.221+05:30"
         cq:lastModifiedBy="admin"
         cq:template="/conf/asset-share-commons/settings/wcm/templates/details-template"
         jcr:primaryType="cq:PageContent"
@@ -201,18 +201,19 @@
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="asset-share-commons/components/details/title"
                         returnPath="/content/asset-share-commons/en"/>
-                    <image
-                        jcr:lastModified="{Date}2017-10-17T09:08:57.879-04:00"
+                    <video
+                        jcr:created="{Date}2018-04-02T01:27:51.847+05:30"
+                        jcr:createdBy="admin"
+                        jcr:lastModified="{Date}2018-04-02T01:28:02.275+05:30"
                         jcr:lastModifiedBy="admin"
                         jcr:primaryType="nt:unstructured"
-                        sling:resourceType="asset-share-commons/components/details/image"
-                        computedProperty="thumbnail"
-                        fallbackSrc="/content/dam/asset-share-commons/site/placeholder.jpeg"
-                        maxHeight="{Long}300"/>
+                        sling:resourceType="asset-share-commons/components/details/video"
+                        computedProperty="path"
+                        height="500"/>
                     <renditions
                         jcr:created="{Date}2017-10-05T22:12:25.399-04:00"
                         jcr:createdBy="admin"
-                        jcr:lastModified="{Date}2017-10-17T09:02:28.021-04:00"
+                        jcr:lastModified="{Date}2018-03-18T14:25:52.807+05:30"
                         jcr:lastModifiedBy="admin"
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="asset-share-commons/components/details/renditions"
