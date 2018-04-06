@@ -19,18 +19,14 @@
 
 package com.adobe.aem.commons.assetshare.components.actions.dmdownload;
 
-import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.aem.commons.assetshare.components.actions.download.Download;
 import org.osgi.annotation.versioning.ProviderType;
 
 import java.util.Collection;
 
 @ProviderType
-public interface DMDownload {
-    Collection<AssetModel> getAssets();
-
-    String getZipFileName();
-
+public interface DMDownload extends Download {
     boolean isDynamicMediaEnabled();
 
-    String[] getImagePresets();
+    Collection<String> getImagePresets();
 }

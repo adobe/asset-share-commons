@@ -20,7 +20,7 @@
      data-sly-test.downloadAssets="${properties.excludeOriginalAssets ? false : true}"></sly>
 
 <style data-sly-test="${!wccmode.disabled}">
-    .cmp-modal-download .ui.modal {
+    .cmp-modal-dmdownload .ui.modal {
         position: relative !important;
         display: block !important;;
         top: 0 !important;;
@@ -33,7 +33,7 @@
 
 <form method="post"
       action="${download.assets[0].path}.assetdownload.zip/${download.zipFileName}.zip"
-      data-asset-share-id="dm-download-modal"
+      data-asset-share-id="download-modal"
       class="ui modal cmp-modal-download--wrapper cmp-modal">
 
     <input type="hidden" name="_charset_" value="utf-8"/>
@@ -86,14 +86,14 @@
                 </div>
             </div>
 
-            <div class="ui selection dropdown search" data-asset-share-id="dm-image-presets" data-sly-test="${download.isDynamicMediaEnabled}">
-                <input type="hidden" name="s7exportsettings">
-                <i class="dropdown icon"></i>
-                <div class="default text">${"Select Dynamic Media Preset" @i18n}</div>
-                <div class="menu" data-sly-list.preset="${download.imagePresets}">
-                    <div class="item" data-value="${preset}">${preset}</div>
-                </div>
-            </div>
+            <select class="ui dropdown search" name="s7exportsettings" data-sly-test="${download.isDynamicMediaEnabled}">
+                <option value="">${"Select Dynamic Media Preset" @ i18n}</option>
+                <sly data-sly-list.preset="${download.imagePresets}">
+                    <option value="{imagepreset:${preset}}">${preset}</option>
+                </sly>
+
+            </select>
+
         </div>
     </div>
     <div class="actions cmp-footer__actions">
@@ -108,8 +108,8 @@
 
     <script>
         $(function() {
-            $('[data-asset-share-id="dm-download-modal"] .ui.checkbox').checkbox();
-            $('[data-asset-share-id="dm-download-modal"] .ui.dropdown').dropdown();
+            $('[data-asset-share-id="download-modal"] .ui.checkbox').checkbox();
+            $('[data-asset-share-id="download-modal"] .ui.dropdown').dropdown();
         });
     </script>
 </form>

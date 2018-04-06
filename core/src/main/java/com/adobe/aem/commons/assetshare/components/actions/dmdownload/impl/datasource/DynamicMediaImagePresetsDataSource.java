@@ -59,17 +59,15 @@ public class DynamicMediaImagePresetsDataSource extends SlingSafeMethodsServlet 
     @Override
     protected void doGet(@Nonnull SlingHttpServletRequest request, @Nonnull SlingHttpServletResponse response) throws
             ServletException, IOException {
-
         final Map<String, Object> data = new TreeMap<>();
         ResourceResolver resourceResolver = request.getResourceResolver();
 
         Tenant tenant = resourceResolver.adaptTo(Tenant.class);
-        String tenantId = null;
         String imagePresetPathEtc = IMAGE_SERVER_PATH_ROOT_ETC;
         String imagePresetPathConf = IMAGE_SERVER_PATH_ROOT_CONF;
 
         if (tenant != null && tenant.getId() != null) {
-            tenantId = tenant.getId();
+            String tenantId = tenant.getId();
             imagePresetPathEtc += "/tenants/" + tenantId + IAMGE_PRESET_PATH_DEFAULT;
             imagePresetPathConf += "/tenants/" + tenantId + IAMGE_PRESET_PATH_DEFAULT;
         } else {
@@ -82,25 +80,23 @@ public class DynamicMediaImagePresetsDataSource extends SlingSafeMethodsServlet 
         Resource imgPresetResourceConf = resourceResolver.getResource(imagePresetPathConf);
 
         if (imgPresetResourceEtc != null) {
-            Iterator<Resource> imgPresetIterator = imgPresetResourceEtc.listChildren();
-            while (imgPresetIterator.hasNext()) {
-                Resource imgPreset = imgPresetIterator.next();
-                if (imgPreset != null && !imgPreset.getName().contains(":")){
-                    data.put(imgPreset.getName(), imgPreset.getName());
-                }
-            }
+            getPresets(imgPresetResourceEtc, data);
         }
 
         if (imgPresetResourceConf != null) {
-            Iterator<Resource> imgPresetIterator = imgPresetResourceConf.listChildren();
-            while (imgPresetIterator.hasNext()) {
-                Resource imgPreset = imgPresetIterator.next();
-                if (imgPreset != null && !imgPreset.getName().contains(":")){
-                    data.put(imgPreset.getName(), imgPreset.getName());
-                }
-            }
+            getPresets(imgPresetResourceConf, data);
         }
 
         dataSourceBuilder.build(request, data);
+    }
+
+    private void getPresets(Resource imgPresetResource, Map<String, Object> data) {
+        Iterator<Resource> imgPresetIterator = imgPresetResource.listChildren();
+        while (imgPresetIterator.hasNext()) {
+            Resource imgPreset = imgPresetIterator.next();
+            if (imgPreset != null && !imgPreset.getName().contains(":")){
+                data.put(imgPreset.getName(), imgPreset.getName());
+            }
+        }
     }
 }

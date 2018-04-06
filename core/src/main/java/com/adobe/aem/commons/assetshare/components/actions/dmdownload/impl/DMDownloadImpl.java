@@ -38,6 +38,7 @@ import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 
@@ -100,11 +101,15 @@ public class DMDownloadImpl implements DMDownload {
         }
     }
 
-    public Collection<AssetModel> getAssets() { return assets; }
+    public Collection<AssetModel> getAssets() {
+        return assets;
+    }
 
-    public String getZipFileName() { return StringUtils.removeEndIgnoreCase(zipFileName, ".zip"); }
+    public String getZipFileName() {
+        return StringUtils.removeEndIgnoreCase(zipFileName, ".zip");
+    }
 
     public boolean isDynamicMediaEnabled() { return isDynamicMediaEnabled; }
 
-    public String[] getImagePresets() { return imagePresets; }
+    public Collection<String> getImagePresets() { return Arrays.asList(imagePresets); }
 }
