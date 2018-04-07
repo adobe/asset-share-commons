@@ -16,19 +16,26 @@
   ~ limitations under the License.
  */-->
 
-<sly data-sly-use.download="com.adobe.aem.commons.assetshare.components.actions.dmdownload.DMDownload"
-     data-sly-test.downloadAssets="${properties.excludeOriginalAssets ? false : true}"></sly>
+<sly  data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
+      data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
+      data-sly-use.download="com.adobe.aem.commons.assetshare.components.actions.dmdownload.DynamicMediaDownload"
+      data-sly-test.downloadAssets="${properties.excludeOriginalAssets ? false : true}"></sly>
 
 <style data-sly-test="${!wccmode.disabled}">
-    .cmp-modal-dmdownload .ui.modal {
+    .cmp-modal-download-dynamic-media .ui.modal {
         position: relative !important;
         display: block !important;;
         top: 0 !important;;
     }
 </style>
 
-<sly data-sly-test="${wcmmode.edit && !download.isDynamicMediaEnabled}">
-    <p>Note: Dynamic Media is not enabled. Please enable it before configuring the download modal.</p>
+<sly data-sly-test="${wcmmode.edit && !config.dynamicMediaEnabled}">
+    <div class="ui negative message">
+        <strong>${'Dynamic Media is not enabled' @ i18n}</strong>
+        <p>
+        ${'Please enable it to use this download modal. If you are not using AEM Assets Dynamic Media, use the Asset Share Commons Download Modal.' @ i18n}
+        </p>
+    </div>
 </sly>
 
 <form method="post"
@@ -39,6 +46,8 @@
     <input type="hidden" name="_charset_" value="utf-8"/>
     <input type="hidden" name="licenseCheck" value="true"/>
     <input type="hidden" name="flatStructure" value="false"/>
+    <input class="hidden" name="downloadRenditions" value="false"
+           data-sly-test="${!properties.allowDownloadOfStaticRenditions}"/>
 
     <input type="hidden" name="downloadAssets"
            value="${downloadAssets ? 'true' : 'false'}"/>
@@ -70,12 +79,23 @@
             </sly>
 
             <div class="field">
+                <select class="ui dropdown search" name="s7exportsettings"
+                        data-sly-test="${download.imagePresets.size == 0}">
+                    <option value="">${properties.imagePresetsPlaceholderText}</option>
+                    <sly data-sly-list.imagePreset="${download.imagePresets}">
+                        <option value="{imagepreset:${imagePreset}}">${imagePreset}</option>
+                    </sly>
+                </select>
+            </div>
+
+            <div class="field"
+                 data-sly-test="${properties.allowDownloadOfStaticRenditions}">
                 <div class="ui checkbox">
                     <input type="checkbox" tabindex="3" class="hidden" name="downloadRenditions" value="true"
                            data-sly-attribute.checked="${!downloadAssets}"
                            data-sly-attribute.required="${!downloadAssets}"
                            data-sly-attribute.readonly="${!downloadAssets}">
-                    <label>${"Include Renditions" @ i18n} ${downloadAssets}</label>
+                    <label>${"Include Simple Renditions" @ i18n}</label>
                 </div>
             </div>
 
@@ -85,14 +105,6 @@
                     <label>${"Include Sub-assets" @ i18n}</label>
                 </div>
             </div>
-
-            <select class="ui dropdown search" name="s7exportsettings" data-sly-test="${download.isDynamicMediaEnabled}">
-                <option value="">${"Select Dynamic Media Preset" @ i18n}</option>
-                <sly data-sly-list.preset="${download.imagePresets}">
-                    <option value="{imagepreset:${preset}}">${preset}</option>
-                </sly>
-
-            </select>
 
         </div>
     </div>

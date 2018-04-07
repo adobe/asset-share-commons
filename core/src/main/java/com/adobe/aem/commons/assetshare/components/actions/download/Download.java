@@ -24,9 +24,18 @@ import org.osgi.annotation.versioning.ProviderType;
 
 import java.util.Collection;
 
+/**
+ * The model interface that represents the Download action component.
+ */
 @ProviderType
 public interface Download {
+    /**
+     * @return a collection of assets that are to be downloaded.
+     */
     Collection<AssetModel> getAssets();
 
+    /**
+     * @return the name of the zip file that contains the assets (and their renditions) to download.
+     */
     String getZipFileName();
 }

@@ -2,7 +2,7 @@
 <!--
   ~ Asset Share Commons
   ~
-  ~ Copyright [2017]  Adobe
+  ~ Copyright [2018]  Adobe
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -17,7 +17,10 @@
   ~ limitations under the License.
   -->
 
-<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
-    cq:tagName="div"
-    jcr:primaryType="nt:unstructured"
-    class="cmp cmp-modal-dmdownload"/>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    cq:icon="download"
+    jcr:description="Allows a user to download assets with options for dynamic renditions. Requires AEM Assets Dynamic Media."
+    jcr:primaryType="cq:Component"
+    jcr:title="Download Modal (Dynamic Media)"
+    sling:resourceSuperType="asset-share-commons/components/modals/download"
+    componentGroup="Asset Share Commons - Modals"/>

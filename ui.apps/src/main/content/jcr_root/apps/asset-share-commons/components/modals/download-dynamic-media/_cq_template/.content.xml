@@ -17,10 +17,13 @@
   ~ limitations under the License.
   -->
 
-<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
-    cq:icon="download"
-    jcr:description="Allows a user to download assets with options for dynamic renditions."
-    jcr:primaryType="cq:Component"
-    jcr:title="Dynamic Media Download Modal"
-    sling:resourceSuperType="asset-share-commons/components/modals/download"
-    componentGroup="Asset Share Commons - Modals"/>
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+          jcr:primaryType="nt:unstructured"
+          assetListTitle="Assets"
+          cancelButton="Cancel"
+          downloadButton="Download"
+          downloadOptionsTitle="Download Options"
+          imagePresetsPlaceholderText="Select asset rendition to download"
+          modalTitle="Download"
+          allowDownloadOfStaticRenditions="{Boolean}true"
+          zipFileName="assets"/>

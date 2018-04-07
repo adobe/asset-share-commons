@@ -24,9 +24,13 @@ import org.osgi.annotation.versioning.ProviderType;
 
 import java.util.Collection;
 
+/**
+ * The model interface that represents the Dynamic Media Download action component.
+ */
 @ProviderType
-public interface DMDownload extends Download {
-    boolean isDynamicMediaEnabled();
-
+public interface DynamicMediaDownload extends Download {
+    /**
+     * @return a collection of the image presets that are available for this Dynamic Media download action.
+     */
     Collection<String> getImagePresets();
 }
