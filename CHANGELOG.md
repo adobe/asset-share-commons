@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [v1.5.0]
 
 ### Added
-- 0171: Dynamic Media Download modal and image presets datasource
+- 034,046: Dynamic Media Download modal and image presets datasource
 
 ## [v1.4.2]
 
