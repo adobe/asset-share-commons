@@ -25,6 +25,7 @@ import com.adobe.aem.commons.assetshare.configuration.impl.selectors.AlwaysUseDe
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.util.ForcedInheritanceValueMapWrapper;
 import com.day.cq.commons.inherit.HierarchyNodeInheritanceValueMap;
+import com.day.cq.dam.entitlement.api.EntitlementConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.components.ComponentContext;
@@ -34,6 +35,7 @@ import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.featureflags.Features;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Optional;
 import org.apache.sling.models.annotations.Required;
@@ -61,8 +63,7 @@ public class ConfigImpl implements Config {
     private static final String HTML_EXTENSION = ".html";
     private static final String[] rootResourceTypes = new String[]{"asset-share-commons/components/structure/search-page"};
 
-    // General
-
+    private static final String SCENE7_FEATURE_FLAG = "com.adobe.dam.asset.scene7.feature.flag";
 
     // Actions
     private static final String DEFAULT_VIEW_SELECTOR = "partial";
@@ -101,6 +102,10 @@ public class ConfigImpl implements Config {
     @Required
     private Resource requestResource;
 
+    @OSGiService
+    @Required
+    private Features features;
+
     private Page currentPage;
 
     private ValueMap properties;
@@ -108,6 +113,8 @@ public class ConfigImpl implements Config {
     private String viewSelector;
 
     private String rootPath;
+
+    private Boolean dynamicMediaEnabled;
 
     @PostConstruct
     protected void init() {
@@ -221,6 +228,20 @@ public class ConfigImpl implements Config {
     @Override
     public String getRootPath() {
         return getRootPath(currentPage);
+    }
+
+    @Override
+    public boolean isDynamicMediaEnabled() {
+        if (dynamicMediaEnabled == null) {
+            if (features == null) {
+                dynamicMediaEnabled = Boolean.FALSE;
+            } else {
+                dynamicMediaEnabled = features.isEnabled(SCENE7_FEATURE_FLAG) ||
+                        features.isEnabled(EntitlementConstants.ASSETS_DYNAMICMEDIA_FEATURE_FLAG_PID);
+            }
+        }
+
+        return dynamicMediaEnabled;
     }
 
     /**

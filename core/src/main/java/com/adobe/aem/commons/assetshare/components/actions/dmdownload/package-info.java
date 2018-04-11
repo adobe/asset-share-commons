@@ -17,25 +17,7 @@
  *
  */
 
-package com.adobe.aem.commons.assetshare.components.actions.download;
+@Version("1.0.0")
+package com.adobe.aem.commons.assetshare.components.actions.dmdownload;
 
-import com.adobe.aem.commons.assetshare.content.AssetModel;
-import org.osgi.annotation.versioning.ProviderType;
-
-import java.util.Collection;
-
-/**
- * The model interface that represents the Download action component.
- */
-@ProviderType
-public interface Download {
-    /**
-     * @return a collection of assets that are to be downloaded.
-     */
-    Collection<AssetModel> getAssets();
-
-    /**
-     * @return the name of the zip file that contains the assets (and their renditions) to download.
-     */
-    String getZipFileName();
-}
+import org.osgi.annotation.versioning.Version;
