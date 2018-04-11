@@ -45,6 +45,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.jackrabbit.vault.util.PathUtil;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestParameter;
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.factory.ModelFactory;
@@ -115,16 +116,27 @@ public class QuerySearchProviderImpl implements SearchProvider {
         debugPostQuery(searchResult);
 
         final List<Result> results = new ArrayList<>();
+
+        ResourceResolver resourceResolverLeakingReference = null;
+
         for (final Hit hit : searchResult.getHits()) {
+            if (resourceResolverLeakingReference == null) {
+                resourceResolverLeakingReference = hit.getResource().getResourceResolver();
+            }
+
             try {
-                final AssetResult assetSearchResult = modelFactory.getModelFromWrappedRequest(request,
-                        resourceResolver.getResource(hit.getPath()), AssetResult.class);
+                final Resource hitResource = resourceResolver.getResource(hit.getPath());
+                final AssetResult assetSearchResult = modelFactory.getModelFromWrappedRequest(request, hitResource, AssetResult.class);
                 if (assetSearchResult != null) {
                     results.add(assetSearchResult);
                 }
             } catch (RepositoryException e) {
                 log.error("Could not retrieve search result", e);
             }
+        }
+
+        if (resourceResolverLeakingReference != null) {
+            resourceResolverLeakingReference.close();
         }
 
         debugPostAdaptation(results);

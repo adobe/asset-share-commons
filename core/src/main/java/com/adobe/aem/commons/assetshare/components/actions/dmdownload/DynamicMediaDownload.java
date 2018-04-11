@@ -17,25 +17,20 @@
  *
  */
 
-package com.adobe.aem.commons.assetshare.components.actions.download;
+package com.adobe.aem.commons.assetshare.components.actions.dmdownload;
 
-import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.aem.commons.assetshare.components.actions.download.Download;
 import org.osgi.annotation.versioning.ProviderType;
 
 import java.util.Collection;
 
 /**
- * The model interface that represents the Download action component.
+ * The model interface that represents the Dynamic Media Download action component.
  */
 @ProviderType
-public interface Download {
+public interface DynamicMediaDownload extends Download {
     /**
-     * @return a collection of assets that are to be downloaded.
+     * @return a collection of the image presets that are available for this Dynamic Media download action.
      */
-    Collection<AssetModel> getAssets();
-
-    /**
-     * @return the name of the zip file that contains the assets (and their renditions) to download.
-     */
-    String getZipFileName();
+    Collection<String> getImagePresets();
 }

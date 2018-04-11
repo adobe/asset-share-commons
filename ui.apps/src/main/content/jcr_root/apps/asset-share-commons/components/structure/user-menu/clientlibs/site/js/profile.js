@@ -66,7 +66,7 @@ jQuery((function($, ns, cart) {
     }
 
     function init(event, eventData) {
-        if (eventData.store === "profile") {
+        if (eventData && eventData.store === "profile") {
             // Only perform this check when the profile store is updated
             // For some reason the event handler below triggers for all stores and not just the profile store.
             if (isAnonymous()) {

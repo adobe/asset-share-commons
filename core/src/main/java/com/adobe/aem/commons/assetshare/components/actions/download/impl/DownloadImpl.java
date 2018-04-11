@@ -49,18 +49,18 @@ public class DownloadImpl implements Download {
 
     @Self
     @Required
-    private SlingHttpServletRequest request;
+    protected SlingHttpServletRequest request;
 
     @ValueMapValue
     @Optional
     @Default(values = "Assets")
-    private String zipFileName;
+    protected String zipFileName;
 
     @OSGiService
     @Required
-    private ActionHelper actionHelper;
+    protected ActionHelper actionHelper;
 
-    private Collection<AssetModel> assets = new ArrayList<>();
+    protected Collection<AssetModel> assets = new ArrayList<>();
 
     @PostConstruct
     protected void init() {

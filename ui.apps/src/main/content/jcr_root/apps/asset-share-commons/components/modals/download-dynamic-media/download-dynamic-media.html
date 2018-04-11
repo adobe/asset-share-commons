@@ -16,24 +16,38 @@
   ~ limitations under the License.
  */-->
 
-<sly data-sly-use.download="com.adobe.aem.commons.assetshare.components.actions.download.Download"
-     data-sly-test.downloadAssets="${properties.excludeOriginalAssets ? false : true}"></sly>
+<sly  data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
+      data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
+      data-sly-use.download="com.adobe.aem.commons.assetshare.components.actions.dmdownload.DynamicMediaDownload"
+      data-sly-test.downloadAssets="${properties.excludeOriginalAssets ? false : true}"></sly>
 
 <style data-sly-test="${!wccmode.disabled}">
-    .cmp-modal-download .ui.modal {
+    .cmp-modal-download-dynamic-media .ui.modal {
         position: relative !important;
         display: block !important;;
         top: 0 !important;;
     }
 </style>
 
+<sly data-sly-test="${wcmmode.edit && !config.dynamicMediaEnabled}">
+    <div class="ui negative message">
+        <strong>${'Dynamic Media is not enabled' @ i18n}</strong>
+        <p>
+        ${'Please enable it to use this download modal. If you are not using AEM Assets Dynamic Media, use the Asset Share Commons Download Modal.' @ i18n}
+        </p>
+    </div>
+</sly>
+
 <form method="post"
-      action="/content/dam.assetdownload.zip/${download.zipFileName}.zip"
+      action="${download.assets[0].path}.assetdownload.zip/${download.zipFileName}.zip"
       data-asset-share-id="download-modal"
       class="ui modal cmp-modal-download--wrapper cmp-modal">
 
+    <input type="hidden" name="_charset_" value="utf-8"/>
     <input type="hidden" name="licenseCheck" value="true"/>
     <input type="hidden" name="flatStructure" value="false"/>
+    <input class="hidden" name="downloadRenditions" value="false"
+           data-sly-test="${!properties.allowDownloadOfStaticRenditions}"/>
 
     <input type="hidden" name="downloadAssets"
            value="${downloadAssets ? 'true' : 'false'}"/>
@@ -64,14 +78,24 @@
                 <input type="hidden" name="path"  value="${asset.path}"/>
             </sly>
 
-
             <div class="field">
+                <select class="ui dropdown search" name="s7exportsettings"
+                        data-sly-test="${download.imagePresets.size == 0}">
+                    <option value="">${properties.imagePresetsPlaceholderText}</option>
+                    <sly data-sly-list.imagePreset="${download.imagePresets}">
+                        <option value="{imagepreset:${imagePreset}}">${imagePreset}</option>
+                    </sly>
+                </select>
+            </div>
+
+            <div class="field"
+                 data-sly-test="${properties.allowDownloadOfStaticRenditions}">
                 <div class="ui checkbox">
                     <input type="checkbox" tabindex="3" class="hidden" name="downloadRenditions" value="true"
                            data-sly-attribute.checked="${!downloadAssets}"
                            data-sly-attribute.required="${!downloadAssets}"
                            data-sly-attribute.readonly="${!downloadAssets}">
-                    <label>${"Include Renditions" @ i18n}</label>
+                    <label>${"Include Simple Renditions" @ i18n}</label>
                 </div>
             </div>
 
@@ -81,6 +105,7 @@
                     <label>${"Include Sub-assets" @ i18n}</label>
                 </div>
             </div>
+
         </div>
     </div>
     <div class="actions cmp-footer__actions">
@@ -96,6 +121,7 @@
     <script>
         $(function() {
             $('[data-asset-share-id="download-modal"] .ui.checkbox').checkbox();
+            $('[data-asset-share-id="download-modal"] .ui.dropdown').dropdown();
         });
     </script>
 </form>
