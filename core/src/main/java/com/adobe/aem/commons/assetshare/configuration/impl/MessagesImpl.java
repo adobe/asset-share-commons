@@ -37,8 +37,7 @@ import java.util.List;
 
 @Model(
         adaptables = SlingHttpServletRequest.class,
-        adapters = Messages.class,
-        cache = true
+        adapters = Messages.class
 )
 public class MessagesImpl implements Messages {
     private static final String MESSAGES_REL_PATH = ConfigImpl.NODE_NAME + "/messages";

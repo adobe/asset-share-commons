@@ -41,8 +41,7 @@ import java.util.Collection;
 @Model(
         adaptables = {SlingHttpServletRequest.class},
         adapters = {Download.class},
-        resourceType = {DownloadImpl.RESOURCE_TYPE},
-        cache = true
+        resourceType = {DownloadImpl.RESOURCE_TYPE}
 )
 public class DownloadImpl implements Download {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/modals/download";

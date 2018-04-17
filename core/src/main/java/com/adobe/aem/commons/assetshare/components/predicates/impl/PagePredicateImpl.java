@@ -51,8 +51,7 @@ import java.util.*;
         adaptables = {SlingHttpServletRequest.class},
         adapters = {PagePredicate.class},
         resourceType = {PagePredicateImpl.RESOURCE_TYPE},
-        defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL,
-        cache = true
+        defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
 public class PagePredicateImpl extends AbstractPredicate implements PagePredicate {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/results";
