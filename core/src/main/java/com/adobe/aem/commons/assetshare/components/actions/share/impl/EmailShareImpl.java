@@ -43,8 +43,7 @@ import java.util.Map;
         adaptables = {SlingHttpServletRequest.class},
         adapters = {EmailShare.class},
         resourceType = {EmailShareImpl.RESOURCE_TYPE},
-        defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL,
-        cache = true
+        defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
 public class EmailShareImpl extends ShareImpl implements EmailShare {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/modals/share";

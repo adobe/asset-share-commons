@@ -52,8 +52,7 @@ import java.util.Locale;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {Config.class},
-        cache = true
+        adapters = {Config.class}
 )
 public class ConfigImpl implements Config {
     private static final Logger log = LoggerFactory.getLogger(ConfigImpl.class);
