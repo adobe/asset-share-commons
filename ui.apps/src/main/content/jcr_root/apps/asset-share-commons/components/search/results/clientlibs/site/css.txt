@@ -1,3 +1,4 @@
 #base=less
 
 card.less
+excerpt.less

@@ -62,4 +62,19 @@ public interface AssetModel {
      * @return a ValueMap composed of a look up based on: 1) ComputedProperties, the [dam:Asset]/jcr:content/metadata ValueMap and finally the [dam:Asset] ValueMap.
      */
     public ValueMap getProperties();
+
+    /**
+     * Returns true if the asset is a Content Fragment
+     *
+     * @return true if the asset is a Content Fragment
+     */
+    boolean isContentFragment();
+
+    /**
+     * Returns excerpt from the Content Fragment
+     *
+     * @return excerpt of the Content Fragment
+     */
+    String getDisplayableExcerpt();
+
 }

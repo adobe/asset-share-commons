@@ -18,9 +18,12 @@ package com.adobe.aem.commons.assetshare.content.properties.impl;
 
 import com.adobe.aem.commons.assetshare.content.properties.AbstractComputedProperty;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
+import com.adobe.cq.dam.cfm.ContentFragment;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.jackrabbit.util.Text;
+import org.apache.sling.api.resource.Resource;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
@@ -35,6 +38,7 @@ public class ThumbnailImpl extends AbstractComputedProperty<String> {
     public static final String NAME = "thumbnail";
 
     private static final String THUMBNAIL_RENDITION_NAME = "cq5dam.thumbnail.319.319.png";
+    private static final String THUMBNAIL_CF = "jcr:content/thumbnail.png";
 
     private Cfg cfg;
 
@@ -60,18 +64,31 @@ public class ThumbnailImpl extends AbstractComputedProperty<String> {
 
     @Override
     public String get(final Asset asset) {
-        Rendition rendition = asset.getRendition(THUMBNAIL_RENDITION_NAME);
-
-        if (rendition == null && asset.getImagePreviewRendition() != null) {
-            rendition = asset.getImagePreviewRendition();
+        final Resource assetResource = asset.adaptTo(Resource.class);
+        if (null == assetResource) {
+            return StringUtils.EMPTY;
+        }
+        /* handles content fragments */
+        if (null != assetResource.adaptTo(ContentFragment.class)) {
+            if (assetResource.getChild(THUMBNAIL_CF) != null) {
+                return Text.escapePath(assetResource.getPath() + "/" + THUMBNAIL_CF);
+            }
         }
 
-        // Ensure the rendition is of mime/type image; else the thumbnail will not be able to render
-        if (rendition != null && StringUtils.startsWith(rendition.getMimeType(), "image/")) {
-            return StringUtils.replace(rendition.getPath(), " ", "%20");
+        else {
+            Rendition rendition = asset.getRendition(THUMBNAIL_RENDITION_NAME);
+
+            if (rendition == null && asset.getImagePreviewRendition() != null) {
+                rendition = asset.getImagePreviewRendition();
+            }
+
+            // Ensure the rendition is of mime/type image; else the thumbnail will not be able to render
+            if (rendition != null && StringUtils.startsWith(rendition.getMimeType(), "image/")) {
+                return StringUtils.replace(rendition.getPath(), " ", "%20");
+            }
         }
 
-        return "";
+        return StringUtils.EMPTY;
     }
 
     @Activate

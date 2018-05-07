@@ -21,6 +21,7 @@ package com.adobe.aem.commons.assetshare.content.properties.impl;
 
 import com.adobe.aem.commons.assetshare.content.properties.AbstractComputedProperty;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
+import com.adobe.cq.dam.cfm.ContentFragment;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.commons.util.UIHelper;
 import org.apache.commons.lang3.StringUtils;
@@ -35,8 +36,6 @@ import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
-import javax.activation.MimeType;
-
 @Component(service = ComputedProperty.class)
 @Designate(ocd = AssetTypeImpl.Cfg.class)
 public class AssetTypeImpl extends AbstractComputedProperty<String> {
@@ -47,6 +46,7 @@ public class AssetTypeImpl extends AbstractComputedProperty<String> {
     public static final String DOCUMENT_LABEL = "DOCUMENT";
     public static final String VIDEO_LABEL = "VIDEO";
     public static final String AUDIO_LABEL = "AUDIO";
+    public static final String CONTENT_FRAGMENT_LABEL = "CONTENT-FRAGMENT";
     public static final String UNKNOWN_LABEL = "";
 
     private Cfg cfg;
@@ -70,8 +70,9 @@ public class AssetTypeImpl extends AbstractComputedProperty<String> {
     }
 
     @Override
-    public String get(Asset asset) {
-        final ResourceResolver resourceResolver = asset.adaptTo(Resource.class).getResourceResolver();
+    public String get(final Asset asset) {
+        final Resource assetResource = asset.adaptTo(Resource.class);
+        final ResourceResolver resourceResolver = assetResource.getResourceResolver();
         final String dcFormat = StringUtils.defaultIfBlank(asset.getMimeType(), "");
 
         final String ext = StringUtils.defaultIfBlank(dcFormat.substring(dcFormat.lastIndexOf('/') + 1, dcFormat.length()), "");
@@ -79,7 +80,12 @@ public class AssetTypeImpl extends AbstractComputedProperty<String> {
 
         String displayMimeType = null;
 
-        if (lookedupResource != null && !ResourceUtil.isNonExistingResource(lookedupResource)) {
+        /* handles content fragments */
+        if (null != assetResource.adaptTo(ContentFragment.class)) {
+            displayMimeType = cfg.contentFragmentLabel();
+        }
+
+        else if (lookedupResource != null && !ResourceUtil.isNonExistingResource(lookedupResource)) {
             displayMimeType = UIHelper.lookupMimeType(ext, lookedupResource, true);
         }
 
@@ -93,9 +99,9 @@ public class AssetTypeImpl extends AbstractComputedProperty<String> {
             } else if (dcFormat.startsWith("audio")) {
                 displayMimeType = cfg.audioLabel();
             } else if (dcFormat.startsWith("application")) {
-                int indexOne = ext.lastIndexOf('.');
-                int indexTwo = ext.lastIndexOf('-');
-                int lastWordIdx = (indexOne > indexTwo) ? indexOne : indexTwo;
+                final int indexOne = ext.lastIndexOf('.');
+                final int indexTwo = ext.lastIndexOf('-');
+                final int lastWordIdx = indexOne > indexTwo ? indexOne : indexTwo;
 
                 displayMimeType = ext.substring(lastWordIdx + 1).toUpperCase();
             }
@@ -105,7 +111,7 @@ public class AssetTypeImpl extends AbstractComputedProperty<String> {
     }
 
     @Activate
-    protected void activate(Cfg cfg) {
+    protected void activate(final Cfg cfg) {
         this.cfg = cfg;
     }
 
@@ -142,6 +148,10 @@ public class AssetTypeImpl extends AbstractComputedProperty<String> {
                 name = "Audio Label"
         )
         String audioLabel() default AUDIO_LABEL;
+
+        @AttributeDefinition(
+                name = "Content Fragment Label")
+        String contentFragmentLabel() default CONTENT_FRAGMENT_LABEL;
 
         @AttributeDefinition(
                 name = "Unknown Label",
