@@ -25,7 +25,7 @@ import java.util.Iterator;
         resourceType = {CFVariationsImpl.RESOURCE_TYPE}
 )
 public class CFVariationsImpl implements CFVariations {
-    protected static final String RESOURCE_TYPE = "ccb-asset-share/components/details/cf-variations";
+    protected static final String RESOURCE_TYPE = "asset-share-commons/components/details/content-fragment/cf-variations";
 
     @Self
     @Required
