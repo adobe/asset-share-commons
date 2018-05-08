@@ -39,7 +39,24 @@
 			id="${asset.path}">
 
 		<td class="image">
-			<a href="${assetDetails.url @ suffix = asset.path}"><img src="${asset.properties['thumbnail'] || properties['missingImage'] @ context = 'attribute'}" alt="${asset.properties['title']}"/></a>
+			<a href="${assetDetails.url @ suffix = asset.path}">
+			<sly data-sly-test="${asset.isContentFragment}">
+				<img src="${asset.properties['thumbnail']}"
+				     class="cmp-image--card"
+				     alt="${asset.properties['title']}"
+				     data-sly-test.cf="${asset.properties['thumbnail'] !=''}"/>
+				<img src="${properties['cfThumbnail']}"
+					 alt="${asset.properties['title']}"
+					 style="width:40px;"
+					 data-sly-test.cf="${asset.properties['thumbnail'] == ''}"/>
+			</sly>
+			
+			<sly data-sly-test="${!asset.isContentFragment}">
+	            <img src="${asset.properties['thumbnail'] || properties['missingImage'] @ context = 'attribute'}"
+	                 class="cmp-image--card"
+	                 alt="${asset.properties['title']}"/>
+            </sly>
+			</a>
 		</td>
 		<td class="header">
 			<a href="${assetDetails.url @ suffix = asset.path}">${asset.properties['title']}</a>
