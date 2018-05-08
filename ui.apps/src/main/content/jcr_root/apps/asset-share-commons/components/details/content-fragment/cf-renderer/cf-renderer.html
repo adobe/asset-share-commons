@@ -1,0 +1,18 @@
+<sly data-sly-use.image="com.adobe.aem.commons.assetshare.components.details.Image" data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
+     data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}">
+    <!--/* CF with a max height */-->
+    <div data-fallback-msg="${properties['fallbackMsg']}" class="cf-render cmp-wrapper background" data-sly-test.maxHeight="${properties['maxHeight']}"
+         style="max-height:${maxHeight @ context = 'styleToken'}px;overflow-y:auto;">
+        <img src="${image.src}" class="cf-placeholder" style="display:none;" />
+        <h1 class="ui center aligned header">
+            <div class="ui active inline loader"></div>
+        </h1>
+    </div>
+    <!--/* CF without a max height */-->
+    <div data-fallback-msg="${properties['fallbackMsg']}" class="cf-render cmp-wrapper background" data-sly-test.maxHeight="${!properties['maxHeight']}">
+        <img src="${image.src}" class="cf-placeholder" style="display:none;" />
+        <h1 class="ui center aligned header">
+            <div class="ui active inline loader"></div>
+        </h1>
+    </div>
+</sly>

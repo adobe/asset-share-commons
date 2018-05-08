@@ -1,0 +1,13 @@
+<sly data-sly-use.variations="com.adobe.aem.commons.assetshare.components.details.CFVariations"
+     data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html"
+     data-sly-test.ready="${variations.ready}">
+    <div class="ui basic segment cf-variations">
+        <h4 class="ui header" data-sly-test="${!properties['hideLabel']}">${properties['label']}</h4>
+        <div class="ui labels" >
+			<div class="ui basic large label cf-variation-label original" data-variant="${properties['originalVariation']}" >${properties['originalVariation']}</div>
+            <div data-sly-repeat.variation="${variations.variations}" class="ui basic large label cf-variation-label" data-variant="${variation.name}" >${variation.name}</div>
+        </div>
+    </div>
+</sly>
+<sly data-sly-call="${placeholderTemplate.placeholder @ isEmpty=!ready}"></sly>
+
