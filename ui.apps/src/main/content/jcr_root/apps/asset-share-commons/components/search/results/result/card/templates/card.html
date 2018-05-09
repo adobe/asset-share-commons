@@ -56,11 +56,11 @@
 					${'SIZE' @ i18n}
 					<span class="value">${asset.properties['fileSize']}</span>
 				</div>
-				<div class="property three">
+				<div class="${!asset.isContentFragment ? 'property three':'property two'}">
 					${'TYPE' @ i18n}
 					<span class="value">${asset.properties['type']}</span>
 				</div>
-				<div class="property three">
+				<div class="property three" data-sly-test="${!asset.isContentFragment}">
 					${'RES.' @ i18n}
 					<span class="value">${asset.properties['resolution']}</span>
 				</div>

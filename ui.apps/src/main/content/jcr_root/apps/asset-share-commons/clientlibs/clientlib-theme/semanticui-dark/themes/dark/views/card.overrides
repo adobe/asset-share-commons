@@ -41,7 +41,7 @@
     .property {
     	float:left;
     	&.two {
-    		width:48%;
+    		width:60%;
     	}
     	
     	&.three {

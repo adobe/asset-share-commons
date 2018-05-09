@@ -22,7 +22,7 @@
 		<tr><th class="left aligned">Preview</th>
 			<th>${'Name' @i18n}</th>
 			<th>${'Date' @ i18n}</th>
-			<th>${'Res.' @ i18n}</th>
+			<th>${'Type' @ i18n}</th>
 			<th>${'Size' @ i18n}</th>
 			<th></th>
 		</tr>
@@ -62,11 +62,7 @@
 			<a href="${assetDetails.url @ suffix = asset.path}">${asset.properties['title']}</a>
 		</td>
 		<td>${'yyyy-MM-dd' @ format=asset.properties['jcr:content/jcr:lastModified'], locale=config.locale}</td>
-		<td>
-			<sly data-sly-test="${asset.properties['resolution']}">
-				${asset.properties['resolution']}
-			</sly>
-		</td>
+		<td>${asset.properties['type']}</td>
 		<td>${asset.properties['fileSize']}</td>
 		<td>
 			
