@@ -21,7 +21,11 @@ package com.adobe.aem.commons.assetshare.content.properties.impl;
 
 import com.adobe.aem.commons.assetshare.content.properties.AbstractComputedProperty;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
+import com.adobe.cq.dam.cfm.ContentFragment;
+import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -52,7 +56,16 @@ public class TitleImpl extends AbstractComputedProperty<String> {
     }
 
     @Override
-    public String get(Asset asset) {
+    public String get(final Asset asset) {
+        final Resource assetResource = asset.adaptTo(Resource.class);
+        if (null != assetResource.adaptTo(ContentFragment.class)) {
+            final ValueMap jcrValueMap = getJcrProperties(asset);
+            if(StringUtils.isEmpty(jcrValueMap.get(JcrConstants.JCR_TITLE, String.class))){
+                return asset.getName();
+            }
+            return jcrValueMap.get(JcrConstants.JCR_TITLE, String.class);
+        }
+
         final ValueMap metadata = getMetadataProperties(asset);
         final String[] dcTitles = metadata.get("dc:title", String[].class);
 
@@ -64,7 +77,7 @@ public class TitleImpl extends AbstractComputedProperty<String> {
     }
 
     @Activate
-    protected void activate(Cfg cfg) {
+    protected void activate(final Cfg cfg) {
         this.cfg = cfg;
     }
 

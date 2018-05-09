@@ -19,9 +19,11 @@
 
 package com.adobe.aem.commons.assetshare.content.properties;
 
+import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.wcm.api.components.ComponentContext;
 import com.day.cq.wcm.commons.WCMUtils;
+
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
@@ -32,11 +34,11 @@ import java.util.HashMap;
 public abstract class AbstractComputedProperty<T> implements ComputedProperty<T> {
     private static ValueMap EMPTY_VALUE_MAP = new ValueMapDecorator(new HashMap<String, Object>());
 
-    protected ComponentContext getComponentContext(SlingHttpServletRequest request) {
+    protected ComponentContext getComponentContext(final SlingHttpServletRequest request) {
         return WCMUtils.getComponentContext(request);
     }
 
-    protected ValueMap getAssetProperties(Asset asset) {
+    protected ValueMap getAssetProperties(final Asset asset) {
         final Resource resource = asset.adaptTo(Resource.class);
         if (resource == null) {
             return EMPTY_VALUE_MAP;
@@ -45,7 +47,7 @@ public abstract class AbstractComputedProperty<T> implements ComputedProperty<T>
         return resource.getValueMap();
     }
 
-    protected ValueMap getMetadataProperties(Asset asset) {
+    protected ValueMap getMetadataProperties(final Asset asset) {
         final Resource resource = asset.adaptTo(Resource.class);
         if (resource == null) {
             return EMPTY_VALUE_MAP;
@@ -59,23 +61,40 @@ public abstract class AbstractComputedProperty<T> implements ComputedProperty<T>
         return metadataResource.getValueMap();
     }
 
+    protected ValueMap getJcrProperties(final Asset asset) {
+        final Resource resource = asset.adaptTo(Resource.class);
+        if (null == resource) {
+            return EMPTY_VALUE_MAP;
+        }
+        final Resource jcrResource = resource.getChild(JcrConstants.JCR_CONTENT);
+        if (null == jcrResource) {
+            return EMPTY_VALUE_MAP;
+        }
+       return jcrResource.getValueMap();
+    }
+
+    @Override
     public boolean isCachable() {
         return true;
     }
 
-    public boolean accepts(Asset asset, String propertyName) {
+    @Override
+    public boolean accepts(final Asset asset, final String propertyName) {
         return true;
     }
 
-    public boolean accepts(Asset asset, SlingHttpServletRequest request, String propertyName) {
+    @Override
+    public boolean accepts(final Asset asset, final SlingHttpServletRequest request, final String propertyName) {
         return accepts(asset, propertyName);
     }
 
-    public T get(Asset asset) {
+    @Override
+    public T get(final Asset asset) {
         throw new IllegalArgumentException("This computed property requires a SlingHttpServletRequest object to transform the data");
     }
 
-    public T get(Asset asset, SlingHttpServletRequest request) {
+    @Override
+    public T get(final Asset asset, final SlingHttpServletRequest request) {
         return get(asset);
     }
 }
