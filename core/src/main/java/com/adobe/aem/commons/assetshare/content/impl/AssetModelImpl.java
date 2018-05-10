@@ -125,18 +125,6 @@ public class AssetModelImpl implements AssetModel {
     }
 
     @Override
-    public boolean isContentFragment() {
-        if (null == resource) {
-            return false;
-        }
-        final ContentFragment contentFragment = resource.adaptTo(ContentFragment.class);
-        if (null == contentFragment) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
     public String getDisplayableExcerpt() {
         String excerpt;
         final ContentFragment contentFragment = resource.adaptTo(ContentFragment.class);

@@ -61,7 +61,7 @@ public abstract class AbstractComputedProperty<T> implements ComputedProperty<T>
         return metadataResource.getValueMap();
     }
 
-    protected ValueMap getJcrProperties(final Asset asset) {
+    protected ValueMap getJcrContentProperties(final Asset asset) {
         final Resource resource = asset.adaptTo(Resource.class);
         if (null == resource) {
             return EMPTY_VALUE_MAP;

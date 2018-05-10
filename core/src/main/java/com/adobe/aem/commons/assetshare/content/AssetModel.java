@@ -64,13 +64,6 @@ public interface AssetModel {
     public ValueMap getProperties();
 
     /**
-     * Returns true if the asset is a Content Fragment
-     *
-     * @return true if the asset is a Content Fragment
-     */
-    boolean isContentFragment();
-
-    /**
      * Returns excerpt from the Content Fragment
      *
      * @return excerpt of the Content Fragment

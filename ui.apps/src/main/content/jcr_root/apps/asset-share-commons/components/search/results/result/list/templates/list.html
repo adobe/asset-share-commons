@@ -40,7 +40,7 @@
 
 		<td class="image">
 			<a href="${assetDetails.url @ suffix = asset.path}">
-			<sly data-sly-test="${asset.isContentFragment}">
+			<sly data-sly-test="${asset.properties['type'] == 'CONTENT-FRAGMENT'}">
 				<img src="${asset.properties['thumbnail']}"
 				     class="cmp-image--card"
 				     alt="${asset.properties['title']}"
@@ -51,7 +51,7 @@
 					 data-sly-test.cf="${asset.properties['thumbnail'] == ''}"/>
 			</sly>
 			
-			<sly data-sly-test="${!asset.isContentFragment}">
+			<sly data-sly-test="${asset.properties['type'] != 'CONTENT-FRAGMENT'}">
 	            <img src="${asset.properties['thumbnail'] || properties['missingImage'] @ context = 'attribute'}"
 	                 class="cmp-image--card"
 	                 alt="${asset.properties['title']}"/>

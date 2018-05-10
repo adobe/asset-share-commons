@@ -59,7 +59,7 @@ public class TitleImpl extends AbstractComputedProperty<String> {
     public String get(final Asset asset) {
         final Resource assetResource = asset.adaptTo(Resource.class);
         if (null != assetResource.adaptTo(ContentFragment.class)) {
-            final ValueMap jcrValueMap = getJcrProperties(asset);
+            final ValueMap jcrValueMap = getJcrContentProperties(asset);
             if(StringUtils.isEmpty(jcrValueMap.get(JcrConstants.JCR_TITLE, String.class))){
                 return asset.getName();
             }

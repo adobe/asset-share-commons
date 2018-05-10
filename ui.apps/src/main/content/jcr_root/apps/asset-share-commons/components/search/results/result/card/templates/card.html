@@ -28,7 +28,7 @@
 
         <a class="image cmp-image__wrapper--card" href="${assetDetails.url @ suffix = asset.path}">
         
-        	<sly data-sly-test="${asset.isContentFragment}">
+        	<sly data-sly-test="${asset.properties['type'] == 'CONTENT-FRAGMENT'}">
 				<img src="${asset.properties['thumbnail']}"
 				     class="cmp-image--card"
 				     alt="${asset.properties['title']}"
@@ -38,7 +38,7 @@
 				</sly>
 			</sly>
 			
-			<sly data-sly-test="${!asset.isContentFragment}">
+			<sly data-sly-test="${asset.properties['type'] != 'CONTENT-FRAGMENT'}">
 	            <img src="${asset.properties['thumbnail'] || properties['missingImage'] @ context = 'attribute'}"
 	                 class="cmp-image--card"
 	                 alt="${asset.properties['title']}"/>
@@ -56,11 +56,11 @@
 					${'SIZE' @ i18n}
 					<span class="value">${asset.properties['fileSize']}</span>
 				</div>
-				<div class="${!asset.isContentFragment ? 'property three':'property two'}">
+				<div class="${asset.properties['type'] == 'CONTENT-FRAGMENT' ? 'property two':'property three'}">
 					${'TYPE' @ i18n}
 					<span class="value">${asset.properties['type']}</span>
 				</div>
-				<div class="property three" data-sly-test="${!asset.isContentFragment}">
+				<div class="property three" data-sly-test="${asset.properties['type'] != 'CONTENT-FRAGMENT'}">
 					${'RES.' @ i18n}
 					<span class="value">${asset.properties['resolution']}</span>
 				</div>
