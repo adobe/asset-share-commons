@@ -1,8 +1,8 @@
 jQuery((function($, ns) {
     (function () {
 
-    var fallbackHeader = $(".cf-render h1"),
-        contentFragmentContainer = $(".cf-render"),
+    var fallbackHeader = $(".cmp-details-cf-renderer div h1"),
+        contentFragmentContainer = $(".cmp-details-cf-renderer div"),
         placeholderImgContainer = $(".cf-placeholder"),
         fallbackMsg = contentFragmentContainer.data("fallback-msg"),
         loader = $(".loader"),

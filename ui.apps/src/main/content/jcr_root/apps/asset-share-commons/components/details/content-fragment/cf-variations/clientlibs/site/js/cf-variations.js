@@ -1,9 +1,9 @@
 jQuery((function ($, window, ns) {
     (function () {
 
-        var variationButton = $(".cf-variations .labels .cf-variation-label"),
-            originalVariationLabel = $(".cf-variations .labels .original").data("variant"),
-            contentFragmentContainer = $(".cf-render");
+        var variationButton =$(".cmp-details-cf-variations .cf-variation-label"),
+            originalVariationLabel = $(".cmp-details-cf-variations .original").data("variant"),
+            contentFragmentContainer = $(".cmp-details-cf-renderer div");
 
         function setAllVariationButtonStyle(variant) {
             variationButton.each(function () {

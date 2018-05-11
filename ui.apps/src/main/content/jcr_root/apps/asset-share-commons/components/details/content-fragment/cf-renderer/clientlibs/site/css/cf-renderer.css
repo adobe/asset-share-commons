@@ -1,11 +1,11 @@
-.cf-render.cmp-wrapper {
+.cmp-details-cf-renderer .cmp-wrapper {
 padding: 1em 5em 1em 5em;
 margin: 0 -3em;
 }
-.cf-render.background {
+.cmp-details-cf-renderer .background {
 background-color: #F4F4F4;
 }
-.cf-render p::selection, .cf-render div::selection {
+.cmp-details-cf-renderer p::selection, .cf-render div::selection {
 background-color: #e0e0e0;
 }
 
