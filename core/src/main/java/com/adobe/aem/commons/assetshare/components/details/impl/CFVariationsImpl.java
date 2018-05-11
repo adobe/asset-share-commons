@@ -59,19 +59,23 @@ public class CFVariationsImpl implements CFVariations {
     @Override
     public Collection<VariationDef> getVariations() {
         if (variations.isEmpty()) {
-            final List<VariationDef> collectedVariations = new ArrayList<>();
             Resource cfResource = asset.getResource();
             ContentFragment contentFragment = cfResource.adaptTo(ContentFragment.class);
             if (contentFragment != null) {
-                final Iterator<VariationDef> variationDefIterator = contentFragment.listAllVariations();
-                while (variationDefIterator.hasNext()) {
-                    VariationDef variationDef = variationDefIterator.next();
-                    collectedVariations.add(variationDef);
-                }
-                variations = collectedVariations;
+                variations = getVariations(contentFragment);
             }
         }
         return variations;
+    }
+
+    private List<VariationDef> getVariations(ContentFragment contentFragment) {
+        final List<VariationDef> collectedVariations = new ArrayList<>();
+        final Iterator<VariationDef> variationDefIterator = contentFragment.listAllVariations();
+        while (variationDefIterator.hasNext()) {
+            VariationDef variationDef = variationDefIterator.next();
+            collectedVariations.add(variationDef);
+        }
+        return collectedVariations;
     }
 
     @Override

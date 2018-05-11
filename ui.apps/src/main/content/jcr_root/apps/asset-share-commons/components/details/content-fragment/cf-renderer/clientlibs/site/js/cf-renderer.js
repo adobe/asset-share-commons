@@ -27,12 +27,21 @@ jQuery((function($, ns) {
         placeholderImgContainer = $(".cf-placeholder"),
         fallbackMsg = contentFragmentContainer.data("fallback-msg"),
         loader = $(".loader"),
-        url = "";
+        url = "",
+        rendererObj = {
+            contentFragmentContainer: contentFragmentContainer,
+            fallbackHeader: fallbackHeader,
+            fallbackMsg: fallbackMsg,
+            placeholderImgContainer: placeholderImgContainer,
+            loader: loader
+        };
+
+
 
     if (contentFragmentContainer.length) {
         url = ns.getCFSelectorBasedPath();
         if (url.length > 0) {
-            ns.setCFVariation(url, contentFragmentContainer, fallbackHeader, fallbackMsg, placeholderImgContainer, loader);
+            ns.setCFVariation(url, rendererObj);
         } else {
             loader.hide();
             fallbackHeader.hide();

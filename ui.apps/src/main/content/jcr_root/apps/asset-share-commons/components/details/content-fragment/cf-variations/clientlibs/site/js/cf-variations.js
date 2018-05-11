@@ -40,9 +40,12 @@ jQuery((function ($, window, ns) {
         }
 
         function showVariant() {
-            var url = ns.getCFSelectorBasedPath();
+            var url = ns.getCFSelectorBasedPath(),
+            rendererObj = {
+                contentFragmentContainer: contentFragmentContainer
+            };
             if (url.length > 0) {
-                ns.setCFVariation(url,contentFragmentContainer);
+                ns.setCFVariation(url,rendererObj);
             }
         }
 

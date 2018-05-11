@@ -30,7 +30,13 @@ AssetShare.ContentFragment = (function ($, window, ns) {
         }
     }
 
-    function setCFVariation(url, contentFragmentContainer, fallbackHeader, fallbackMsg, placeholderImgContainer, loader) {
+    function setCFVariation(url, rendererObj) {
+        var fallbackHeader = rendererObj.fallbackHeader,
+        fallbackMsg = rendererObj.fallbackMsg,
+        loader = rendererObj.loader,
+        placeholderImgContainer = rendererObj.placeholderImgContainer,
+        contentFragmentContainer = rendererObj.contentFragmentContainer;
+
         $.get(url, function (result) {
             if (result.length === 0) {
                 setHtml(fallbackHeader, fallbackMsg, loader);
