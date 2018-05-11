@@ -11,11 +11,11 @@ jQuery((function($, ns) {
     if (contentFragmentContainer.length) {
         url = ns.getCFSelectorBasedPath();
         if (url.length > 0) {
-            ns.setCFVariation(url, contentFragmentContainer, fallbackHeader, placeholderImgContainer, loader);
+            ns.setCFVariation(url, contentFragmentContainer, fallbackHeader, fallbackMsg, placeholderImgContainer, loader);
         } else {
             loader.hide();
             fallbackHeader.hide();
-            placeholderImgContainer.css("display", "block");
+            placeholderImgContainer.show();
         }
     }
 

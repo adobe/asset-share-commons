@@ -7,7 +7,7 @@
         	elem.html(htmlStr);
     }
 
-    function setCFVariation(url, contentFragmentContainer, fallbackHeader, placeholderImgContainer, loader) {
+    function setCFVariation(url, contentFragmentContainer, fallbackHeader, fallbackMsg, placeholderImgContainer, loader) {
         $.get(url, function(result) {
             if (result.length === 0) {
                 setHtml(fallbackHeader, fallbackMsg, loader);
@@ -20,7 +20,7 @@
 			if(fallbackHeader)
             	fallbackHeader.hide();
             if(placeholderImgContainer)
-            	placeholderImgContainer.css("display", "block");
+            	placeholderImgContainer.show();
         });
     }
 
