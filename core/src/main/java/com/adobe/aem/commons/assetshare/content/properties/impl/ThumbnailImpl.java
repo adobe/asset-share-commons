@@ -18,7 +18,6 @@ package com.adobe.aem.commons.assetshare.content.properties.impl;
 
 import com.adobe.aem.commons.assetshare.content.properties.AbstractComputedProperty;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
-import com.adobe.cq.dam.cfm.ContentFragment;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
 import org.apache.commons.lang3.StringUtils;
@@ -26,6 +25,7 @@ import org.apache.jackrabbit.util.Text;
 import org.apache.sling.api.resource.Resource;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
@@ -39,6 +39,9 @@ public class ThumbnailImpl extends AbstractComputedProperty<String> {
 
     private static final String THUMBNAIL_RENDITION_NAME = "cq5dam.thumbnail.319.319.png";
     private static final String THUMBNAIL_CF = "jcr:content/thumbnail.png";
+
+    @Reference(target = "(component.name=com.adobe.aem.commons.assetshare.content.properties.impl.AssetTypeImpl)")
+    ComputedProperty<String> assetType;
 
     private Cfg cfg;
 
@@ -68,8 +71,7 @@ public class ThumbnailImpl extends AbstractComputedProperty<String> {
         if (null == assetResource) {
             return StringUtils.EMPTY;
         }
-        /* handles content fragments */
-        if (null != assetResource.adaptTo(ContentFragment.class) && null != assetResource.getChild(THUMBNAIL_CF)) {
+        if ("CONTENT-FRAGMENT".equals(assetType.get(asset)) && null != assetResource.getChild(THUMBNAIL_CF)) {
             return Text.escapePath(assetResource.getPath() + "/" + THUMBNAIL_CF);
         }
         Rendition rendition = asset.getRendition(THUMBNAIL_RENDITION_NAME);
