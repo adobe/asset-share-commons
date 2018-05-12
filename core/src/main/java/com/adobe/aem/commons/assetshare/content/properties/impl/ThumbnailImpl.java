@@ -99,6 +99,6 @@ public class ThumbnailImpl extends AbstractComputedProperty<String> {
         @AttributeDefinition(
                 name = "Types",
                 description = "Defines the type of data this exposes. This classification allows for intelligent exposure of Computed Properties in DataSources, etc.")
-        String[] types() default { Types.RENDITION, Types.VIDEO_RENDITION };
+        String[] types() default { Types.RENDITION, Types.VIDEO_RENDITION, Types.CF_RENDITION };
     }
 }

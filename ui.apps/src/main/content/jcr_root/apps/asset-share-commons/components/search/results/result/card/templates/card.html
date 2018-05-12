@@ -34,7 +34,7 @@
 				     alt="${asset.properties['title']}"
 				     data-sly-test.cf="${asset.properties['thumbnail'] !=''}"/>
 				<sly data-sly-test="${asset.properties['thumbnail'] == ''}">
-					${asset.displayableExcerpt @context='html'}     
+					${asset.properties['contentFragmentExcerpt'] @ context='html'}     
 				</sly>
 			</sly>
 			

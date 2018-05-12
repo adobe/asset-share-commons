@@ -55,5 +55,6 @@ public interface ComputedProperty<T> {
         public static final String RENDITION = "rendition";
         public static final String URL = "url";
         public static final String VIDEO_RENDITION = "video-rendition";
+        public static final String CF_RENDITION = "cf-rendition";
     }
 }

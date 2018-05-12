@@ -21,14 +21,13 @@ package com.adobe.aem.commons.assetshare.content.properties.impl;
 
 import com.adobe.aem.commons.assetshare.content.properties.AbstractComputedProperty;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
-import com.adobe.cq.dam.cfm.ContentFragment;
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
@@ -39,6 +38,9 @@ public class TitleImpl extends AbstractComputedProperty<String> {
     public static final String LABEL = "Title";
     public static final String NAME = "title";
     private Cfg cfg;
+
+    @Reference(target = "(component.name=com.adobe.aem.commons.assetshare.content.properties.impl.AssetTypeImpl)")
+    ComputedProperty<String> assetType;
 
     @Override
     public String getName() {
@@ -57,10 +59,9 @@ public class TitleImpl extends AbstractComputedProperty<String> {
 
     @Override
     public String get(final Asset asset) {
-        final Resource assetResource = asset.adaptTo(Resource.class);
-        if (null != assetResource.adaptTo(ContentFragment.class)) {
+        if ("CONTENT-FRAGMENT".equals(assetType.get(asset))) {
             final ValueMap jcrValueMap = getJcrContentProperties(asset);
-            if(StringUtils.isEmpty(jcrValueMap.get(JcrConstants.JCR_TITLE, String.class))){
+            if (StringUtils.isEmpty(jcrValueMap.get(JcrConstants.JCR_TITLE, String.class))) {
                 return asset.getName();
             }
             return jcrValueMap.get(JcrConstants.JCR_TITLE, String.class);
