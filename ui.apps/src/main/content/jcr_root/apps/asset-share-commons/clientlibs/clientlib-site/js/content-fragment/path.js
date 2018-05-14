@@ -21,6 +21,22 @@
 AssetShare.ContentFragment.Path = (function (window, ns) {
     "use strict";
 
+    function getOriginalVariationPath(pathList){
+    var originalVarSelPath = "";
+    if (pathList.length === 3) {
+                originalVarSelPath = pathList[2] + ".cfm.content.html";
+                if (pathList[2] === "") {
+                    originalVarSelPath = "";
+                }
+            } else if (pathList.length === 2) {
+                originalVarSelPath = pathList[1] + ".cfm.content.html";
+                if (pathList[1] === "") {
+                    originalVarSelPath = "";
+                }
+            }
+            return originalVarSelPath;
+    }
+
     function getCFSelectorBasedPath() {
         var originalVarSelPath = "",
             cfVarSelPath = "",
@@ -30,17 +46,7 @@ AssetShare.ContentFragment.Path = (function (window, ns) {
             queryParams = queryString.split("&"),
             variationParam = queryParams.filter(function (param) { return param.includes("variation="); });
 
-        if (pathList.length === 3) {
-            originalVarSelPath = pathList[2] + ".cfm.content.html";
-            if (pathList[2] === "") {
-                originalVarSelPath = "";
-            }
-        } else if (pathList.length === 2) {
-            originalVarSelPath = pathList[1] + ".cfm.content.html";
-            if (pathList[1] === "") {
-                originalVarSelPath = "";
-            }
-        }
+        originalVarSelPath = getOriginalVariationPath(pathList);
 
         if (variationParam.length === 0) {
             cfVarSelPath = originalVarSelPath;
