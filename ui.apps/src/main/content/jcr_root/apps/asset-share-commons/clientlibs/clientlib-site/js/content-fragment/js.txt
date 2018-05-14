@@ -1,3 +1,4 @@
 #base=.
 
-content-fragment.js
+path.js
+display.js

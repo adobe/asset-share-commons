@@ -18,7 +18,7 @@
 
 /*global jQuery: false, AssetShare: false, window: false */
 
-jQuery((function ($, window, ns) {
+jQuery((function ($, window, pathNs, displayNs) {
     "use strict";
     (function () {
 
@@ -40,12 +40,12 @@ jQuery((function ($, window, ns) {
         }
 
         function showVariant() {
-            var url = ns.getCFSelectorBasedPath(),
+            var url = pathNs.getCFSelectorBasedPath(),
             rendererObj = {
                 contentFragmentContainer: contentFragmentContainer
             };
             if (url.length > 0) {
-                ns.setCFVariation(url,rendererObj);
+                displayNs.setCFVariation(url,rendererObj);
             }
         }
 
@@ -85,5 +85,5 @@ jQuery((function ($, window, ns) {
         }
 
     }());
-}(jQuery, window, AssetShare.ContentFragment)));
+}(jQuery, window, AssetShare.ContentFragment.Path, AssetShare.ContentFragment.Display)));
 

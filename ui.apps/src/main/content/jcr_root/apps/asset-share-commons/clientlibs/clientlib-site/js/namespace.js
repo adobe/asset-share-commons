@@ -28,3 +28,6 @@ AssetShare.ContextHub = AssetShare.ContextHub || {};
 
 AssetShare.SemanticUI = {};
 AssetShare.SemanticUI.Modals = {};
+
+AssetShare.ContentFragment = {};
+
