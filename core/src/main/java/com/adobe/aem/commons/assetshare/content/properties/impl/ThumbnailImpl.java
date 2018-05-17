@@ -71,18 +71,22 @@ public class ThumbnailImpl extends AbstractComputedProperty<String> {
         if (null == assetResource) {
             return StringUtils.EMPTY;
         }
-        if ("CONTENT-FRAGMENT".equals(assetType.get(asset)) && null != assetResource.getChild(THUMBNAIL_CF)) {
-            return Text.escapePath(assetResource.getPath() + "/" + THUMBNAIL_CF);
+        if ("CONTENT-FRAGMENT".equals(assetType.get(asset))) {
+            if( null != assetResource.getChild(THUMBNAIL_CF)){
+                return Text.escapePath(assetResource.getPath() + "/" + THUMBNAIL_CF);
+            }
         }
-        Rendition rendition = asset.getRendition(THUMBNAIL_RENDITION_NAME);
+        else{
+            Rendition rendition = asset.getRendition(THUMBNAIL_RENDITION_NAME);
 
-        if (rendition == null && asset.getImagePreviewRendition() != null) {
-            rendition = asset.getImagePreviewRendition();
-        }
+            if (rendition == null && asset.getImagePreviewRendition() != null) {
+                rendition = asset.getImagePreviewRendition();
+            }
 
-        // Ensure the rendition is of mime/type image; else the thumbnail will not be able to render
-        if (rendition != null && StringUtils.startsWith(rendition.getMimeType(), "image/")) {
-            return StringUtils.replace(rendition.getPath(), " ", "%20");
+            // Ensure the rendition is of mime/type image; else the thumbnail will not be able to render
+            if (rendition != null && StringUtils.startsWith(rendition.getMimeType(), "image/")) {
+                return StringUtils.replace(rendition.getPath(), " ", "%20");
+            }
         }
 
         return StringUtils.EMPTY;
