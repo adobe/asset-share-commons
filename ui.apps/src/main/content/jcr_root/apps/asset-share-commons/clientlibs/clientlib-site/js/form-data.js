@@ -27,6 +27,30 @@ AssetShare.FormData = function (formEl) {
         form = $(formEl).serializeArray();
     }
 
+    /* IE polyfills for findIndex() and find() */
+
+    function findIndex(key) {
+        var i;
+
+        for (i = 0; i < form.length; ++i) {
+            if (form[i].name === key) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    function find(key) {
+       var index = findIndex(key);
+
+       if (index > -1) {
+           return form[index];
+       }
+
+       return null;
+    }
+
     function forEach(fn) {
         form.forEach(function (element) {
             fn(element.name, element.value);
@@ -42,18 +66,16 @@ AssetShare.FormData = function (formEl) {
     }
 
     function get(key) {
-        var element = form.find(function (element) {
-            return element.name === key;
-        });
+        var element = find(key);
+
         if (element) {
             return element.value;
         }
     }
 
     function remove(key) {
-        var index = form.findIndex(function (element) {
-            return element.name === key;
-        });
+        var index = findIndex(key);
+
         if (index > -1) {
             form.splice(index, 1);
         }
