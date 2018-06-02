@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - 0195 - Search does not work in IE11 - Missing findIndex() & find() methods.
 
+## [v1.5.2]
+
+- 0177: Removed cache=true on all Sling Model definitions due to memory leaks.(See https://issues.apache.org/jira/browse/SLING-7586)
+- 0168: Fixed issue with the rail rendering in Authoring mode.
+
 ## [v1.5.0]
 
 ### Added
