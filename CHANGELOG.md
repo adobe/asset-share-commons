@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+- 0191: Support alphabetical or natural ordering of Tags in in the Tags search predicate. Fixed issues with Source options in dialog as well.
+
 ## [v1.5.2]
 
 - 0177: Removed cache=true on all Sling Model definitions due to memory leaks.(See https://issues.apache.org/jira/browse/SLING-7586)
