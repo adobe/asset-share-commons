@@ -174,8 +174,9 @@ public class QuerySearchProviderImpl implements SearchProvider {
         addToPredicateGroupIfNotPresent(root, Predicate.ORDER_BY, pagePredicate.getOrderBy());
         addToPredicateGroupIfNotPresent(root, Predicate.ORDER_BY + "." + Predicate.PARAM_SORT, pagePredicate.getOrderBySort());
 
+        params = PredicateConverter.createMap(root);
         if (queryParametersPostProcessor != null) {
-            params = queryParametersPostProcessor.process(request, PredicateConverter.createMap(root));
+            params = queryParametersPostProcessor.process(request, params);
         }
 
         return params;
