@@ -31,18 +31,14 @@ import com.adobe.aem.commons.assetshare.search.results.Result;
 import com.adobe.aem.commons.assetshare.search.results.Results;
 import com.adobe.aem.commons.assetshare.search.results.impl.results.QueryBuilderResultsImpl;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
-import com.adobe.cq.commerce.common.ValueMapDecorator;
-import com.day.cq.search.Predicate;
-import com.day.cq.search.PredicateGroup;
-import com.day.cq.search.Query;
-import com.day.cq.search.QueryBuilder;
+import com.day.cq.dam.api.DamConstants;
+import com.day.cq.search.*;
 import com.day.cq.search.eval.PathPredicateEvaluator;
 import com.day.cq.search.result.Hit;
 import com.day.cq.search.result.SearchResult;
 import com.day.text.Text;
-import org.apache.commons.lang3.ArrayUtils;
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.jackrabbit.vault.util.PathUtil;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestParameter;
 import org.apache.sling.api.resource.Resource;
@@ -57,11 +53,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import static org.osgi.framework.Constants.SERVICE_RANKING;
 
@@ -96,21 +88,21 @@ public class QuerySearchProviderImpl implements SearchProvider {
 
     public Results getResults(final SlingHttpServletRequest request) throws UnsafeSearchException, RepositoryException {
         final ResourceResolver resourceResolver = request.getResourceResolver();
-        final PredicateGroup predicates;
+        final PredicateGroup root;
 
         if (querySearchPreProcessor != null) {
-            predicates = querySearchPreProcessor.process(request, getParams(request));
+            root = querySearchPreProcessor.process(request, getParams(request));
         } else {
-            predicates = PredicateGroup.create(getParams(request));
+            root = PredicateGroup.create(getParams(request));
         }
 
-        if (!searchSafety.isSafe(request.getResourceResolver(), predicates)) {
+        if (!searchSafety.isSafe(request.getResourceResolver(), root)) {
             throw new UnsafeSearchException("Search query will initiate an traversing query");
         }
 
-        debugPreQuery(predicates.getParameters());
+        debugPreQuery(root);
 
-        final Query query = queryBuilder.createQuery(predicates, resourceResolver.adaptTo(Session.class));
+        final Query query = queryBuilder.createQuery(root, resourceResolver.adaptTo(Session.class));
         final SearchResult searchResult = query.getResult();
 
         debugPostQuery(searchResult);
@@ -159,28 +151,40 @@ public class QuerySearchProviderImpl implements SearchProvider {
     private Map<String, String> getParams(final SlingHttpServletRequest request) {
         Map<String, String> params = new HashMap<>();
 
+        // Copy over query params
+
         for (final Map.Entry<String, RequestParameter[]> entry : request.getRequestParameterMap().entrySet()) {
             params.put(entry.getKey(), entry.getValue()[0].getString());
         }
 
+
+        // Remove common junk params
+        cleanParams(params);
+
         final PagePredicate pagePredicate = request.adaptTo(PagePredicate.class);
+        final PredicateGroup root = PredicateConverter.createPredicates(params);
 
         if (isPathsProvidedByRequestParams(pagePredicate, params)) {
-            params.putAll(pagePredicate.getParams(PagePredicate.ParamTypes.PATH));
+            root.addAll(pagePredicate.getPredicateGroup(PagePredicate.ParamTypes.PATH));
         } else {
-            params.putAll(pagePredicate.getParams());
+            root.addAll(pagePredicate.getPredicateGroup());
         }
 
         // If not provided, use the defaults set on the Search Component resource
-        if (params.get(Predicate.ORDER_BY) == null) {
-            params.put(Predicate.ORDER_BY, pagePredicate.getOrderBy());
+        if (root.getByName(Predicate.ORDER_BY) == null) {
+            root.add(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
+                    put(Predicate.ORDER_BY,  pagePredicate.getOrderBy()).
+                    build()));
         }
 
-        if (params.get(Predicate.ORDER_BY + "." + Predicate.PARAM_SORT) == null) {
-            params.put(Predicate.ORDER_BY + "." + Predicate.PARAM_SORT, pagePredicate.getOrderBySort());
+        if (root.getByName(Predicate.ORDER_BY + "." + Predicate.PARAM_SORT) == null) {
+            root.add(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
+                    put(Predicate.ORDER_BY + "." + Predicate.PARAM_SORT, pagePredicate.getOrderBySort()).
+                    build()));
         }
 
-        cleanParams(params);
+
+        params = PredicateConverter.createMap(root);
 
         if (queryParametersPostProcessor != null) {
             params = queryParametersPostProcessor.process(request, params);
@@ -218,13 +222,16 @@ public class QuerySearchProviderImpl implements SearchProvider {
         params.remove("mode");
         params.remove("layout");
         params.remove("wcmmode");
+        params.remove("forceeditcontext");
+        params.remove("_ck");
     }
 
-    private void debugPreQuery(Map <String, String> params) {
+
+    private void debugPreQuery(PredicateGroup predicateGroup) {
         if (log.isDebugEnabled()) {
 
             final Map<String, String> sortedParams = new TreeMap<>();
-            sortedParams.putAll(params);
+            sortedParams.putAll(PredicateConverter.createMap(predicateGroup));
 
             final StringBuilder sb = new StringBuilder();
             for(final Map.Entry<String, String> parameter : sortedParams.entrySet()) {
