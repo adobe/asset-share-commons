@@ -83,8 +83,8 @@ public class ConfigImpl implements Config {
     // Asset Details
     private static final String PN_DEFAULT_ASSET_DETAILS_PATH = "config/asset-details/defaultPath";
     private static final String PN_ASSET_DETAILS_SELECTOR = "config/asset-details/selector";
-    private static final String PN_PLACEHOLDER_ASSET_PATH = "config/asset-details/placeholderPath";
-    private static final String DEFAULT_PLACEHOLDER_ASSET_PATH = "/apps/asset-share-commons/resources/placeholder.png";
+    public static final String PN_PLACEHOLDER_ASSET_PATH = "config/asset-details/placeholderPath";
+    public static final String DEFAULT_PLACEHOLDER_ASSET_PATH = "/apps/asset-share-commons/resources/placeholder.png";
 
     @Self
     @Required
