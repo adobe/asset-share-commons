@@ -20,6 +20,7 @@
 package com.adobe.aem.commons.assetshare.components.predicates;
 
 import com.adobe.cq.wcm.core.components.models.form.Field;
+import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.day.cq.wcm.commons.WCMUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -33,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 import java.util.Arrays;
+import java.util.Comparator;
 
 public abstract class AbstractPredicate implements Predicate {
     private static final Logger log = LoggerFactory.getLogger(AbstractPredicate.class);
@@ -217,6 +219,12 @@ public abstract class AbstractPredicate implements Predicate {
             request.setAttribute(REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER, group);
         } else {
             group = -1;
+        }
+    }
+
+    public class AlphabeticalOptionItems implements Comparator<OptionItem> {
+        public int compare(OptionItem a, OptionItem b)  {
+            return a.getText().compareTo(b.getText());
         }
     }
 }
