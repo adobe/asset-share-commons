@@ -150,13 +150,11 @@ public class QuerySearchProviderImpl implements SearchProvider {
      */
     private Map<String, String> getParams(final SlingHttpServletRequest request) {
         Map<String, String> params = new HashMap<>();
-
         // Copy over query params
 
         for (final Map.Entry<String, RequestParameter[]> entry : request.getRequestParameterMap().entrySet()) {
             params.put(entry.getKey(), entry.getValue()[0].getString());
         }
-
 
         // Remove common junk params
         cleanParams(params);
@@ -164,33 +162,31 @@ public class QuerySearchProviderImpl implements SearchProvider {
         final PagePredicate pagePredicate = request.adaptTo(PagePredicate.class);
         final PredicateGroup root = PredicateConverter.createPredicates(params);
 
+        PagePredicate.ParamTypes[] excludeParamTypes = new PagePredicate.ParamTypes[]{};
+
         if (isPathsProvidedByRequestParams(pagePredicate, params)) {
-            root.addAll(pagePredicate.getPredicateGroup(PagePredicate.ParamTypes.PATH));
-        } else {
-            root.addAll(pagePredicate.getPredicateGroup());
+            excludeParamTypes = new PagePredicate.ParamTypes[]{ PagePredicate.ParamTypes.PATH };
         }
+
+        root.addAll(pagePredicate.getPredicateGroup(excludeParamTypes));
 
         // If not provided, use the defaults set on the Search Component resource
-        if (root.getByName(Predicate.ORDER_BY) == null) {
-            root.add(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
-                    put(Predicate.ORDER_BY,  pagePredicate.getOrderBy()).
-                    build()));
-        }
-
-        if (root.getByName(Predicate.ORDER_BY + "." + Predicate.PARAM_SORT) == null) {
-            root.add(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
-                    put(Predicate.ORDER_BY + "." + Predicate.PARAM_SORT, pagePredicate.getOrderBySort()).
-                    build()));
-        }
-
-
-        params = PredicateConverter.createMap(root);
+        addToPredicateGroupIfNotPresent(root, Predicate.ORDER_BY, pagePredicate.getOrderBy());
+        addToPredicateGroupIfNotPresent(root, Predicate.ORDER_BY + "." + Predicate.PARAM_SORT, pagePredicate.getOrderBySort());
 
         if (queryParametersPostProcessor != null) {
-            params = queryParametersPostProcessor.process(request, params);
+            params = queryParametersPostProcessor.process(request, PredicateConverter.createMap(root));
         }
 
         return params;
+    }
+
+    private void addToPredicateGroupIfNotPresent(final PredicateGroup root, final String key, final String val) {
+        if (root.getByName(key) == null) {
+            root.add(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
+                    put(key, val).
+                    build()));
+        }
     }
 
     private boolean isPathsProvidedByRequestParams(final PagePredicate pagePredicate, final Map<String, String> requestParams) {
@@ -217,15 +213,12 @@ public class QuerySearchProviderImpl implements SearchProvider {
         return hasAllowed;
     }
 
-
     private void cleanParams(Map<String, String> params) {
         params.remove("mode");
         params.remove("layout");
         params.remove("wcmmode");
         params.remove("forceeditcontext");
-        params.remove("_ck");
     }
-
 
     private void debugPreQuery(PredicateGroup predicateGroup) {
         if (log.isDebugEnabled()) {
