@@ -56,6 +56,9 @@ import java.util.*;
 public class TagsPredicateImpl extends AbstractPredicate implements TagsPredicate {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/tags";
 
+    private static final String SORT_ALPHABETICAL = "alphabetical";
+    private static final String SORT_NATURAL = "natural";
+
     @Self
     @Required
     SlingHttpServletRequest request;
@@ -75,7 +78,12 @@ public class TagsPredicateImpl extends AbstractPredicate implements TagsPredicat
     @Default(booleanValues = false)
     private boolean and;
 
-    @ValueMapValue @Default(values = JcrPropertyPredicateEvaluator.OP_EQUALS)
+    @ValueMapValue
+    @Default(values = SORT_NATURAL)
+    private String displayOrder;
+
+    @ValueMapValue
+    @Default(values = JcrPropertyPredicateEvaluator.OP_EQUALS)
     private String operation;
 
     private String valueFromRequest;
@@ -90,7 +98,7 @@ public class TagsPredicateImpl extends AbstractPredicate implements TagsPredicat
         return coreOptions.getType();
     }
 
-     /* Property Predicate Specific */
+    /* Property Predicate Specific */
 
     public String getSubType() {
         //support variation of Checkboxes
@@ -112,7 +120,9 @@ public class TagsPredicateImpl extends AbstractPredicate implements TagsPredicat
         return PropertyValuesPredicateEvaluator.VALUES;
     }
 
-    public boolean hasOperation() { return StringUtils.isNotBlank(operation); }
+    public boolean hasOperation() {
+        return StringUtils.isNotBlank(operation);
+    }
 
     public String getOperation() {
         return operation;
@@ -139,6 +149,10 @@ public class TagsPredicateImpl extends AbstractPredicate implements TagsPredicat
             for (final Tag tag : tags) {
                 items.add(new TagOptionItem(tag, locale, PredicateUtil.isOptionInInitialValues(tag.getTagID(), initialValues)));
             }
+        }
+
+        if (SORT_ALPHABETICAL.equals(displayOrder)) {
+            Collections.sort(items, new AlphabeticalOptionItems());
         }
 
         return items;
