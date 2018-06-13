@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 
 - 0191: Support alphabetical or natural ordering of Tags in in the Tags search predicate. Fixed issues with Source options in dialog as well.
+- 0195: Search does not work in IE11 - Missing findIndex() & find() methods.
 
 ## [v1.5.2]
 
