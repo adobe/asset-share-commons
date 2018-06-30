@@ -168,14 +168,12 @@ public class EmailShareServiceImpl implements ShareService {
             if (assetResource != null && DamUtil.isAsset(assetResource)) {
                 final AssetModel asset = modelFactory.getModelFromWrappedRequest(config.getRequest(), assetResource, AssetModel.class);
 
-                String url = assetDetailsResolver.getUrl(config, asset);
+                String url = assetDetailsResolver.getFullUrl(config, asset);
 
                 if (StringUtils.isBlank(url)) {
                     log.warn("Could not determine an Asset Details page path for asset at [ {} ]", assetPath);
                     continue;
                 }
-
-                url += asset.getPath();
 
                 if (isAuthor()) {
                     url = externalizer.authorLink(config.getResourceResolver(), url);
