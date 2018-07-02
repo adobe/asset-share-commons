@@ -44,18 +44,11 @@ public class AssetResolverImpl implements AssetResolver {
 
         final String suffix = request.getRequestPathInfo().getSuffix();
         final Resource suffixResource = request.getRequestPathInfo().getSuffixResource();
-        if (suffixResource != null) {
-            asset = suffixResource.adaptTo(Asset.class);
-        } else if (StringUtils.isNotBlank(suffix) && !StringUtils.startsWith(suffix, DamConstants.MOUNTPOINT_ASSETS)) {
-            final String id = StringUtils.substringBefore(StringUtils.removeStart(suffix, "/"), ".");
 
-            if (StringUtils.isNotBlank(id)) {
-                try {
-                    asset = DamUtil.getAssetFromID(request.getResourceResolver(), id);
-                } catch (RepositoryException e) {
-                    log.error("Error attempting to resolve asset via id [ " + id + " ]", e);
-                }
-            }
+        if (suffixResource != null) {
+            asset = getAssetByPath(suffixResource);
+        } else if (StringUtils.isNotBlank(suffix) && !StringUtils.startsWith(suffix, DamConstants.MOUNTPOINT_ASSETS)) {
+            asset = getAssetById(request, suffix);
         }
 
         if (asset == null) {
@@ -74,6 +67,23 @@ public class AssetResolverImpl implements AssetResolver {
         }
 
         return asset;
+    }
+
+    private Asset getAssetByPath(final Resource suffixResource) {
+        return suffixResource.adaptTo(Asset.class);
+    }
+
+    private Asset getAssetById(final SlingHttpServletRequest request, final String suffix) {
+        final String id = StringUtils.substringBefore(StringUtils.removeStart(suffix, "/"), ".");
+
+        if (StringUtils.isNotBlank(id)) {
+            try {
+                return DamUtil.getAssetFromID(request.getResourceResolver(), id);
+            } catch (RepositoryException e) {
+                log.error("Error attempting to resolve asset via ID [ " + id + " ]", e);
+            }
+        }
+        return null;
     }
 
     public Asset resolveAsset(final Resource assetResource) {
