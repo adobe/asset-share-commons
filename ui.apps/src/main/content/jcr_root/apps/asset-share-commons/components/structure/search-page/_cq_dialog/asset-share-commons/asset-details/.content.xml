@@ -55,7 +55,7 @@
                                 rootPath="/content"
                                 required="true"/>
 
-                        <asset-details-asset-reference
+                        <asset-details-asset-reference-by-id
                                 jcr:primaryType="nt:unstructured"
                                 sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
                                 text="Reference assets by ID"
