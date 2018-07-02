@@ -24,4 +24,18 @@
     		width: 100% !important;
     		position: relative;
 	}
+	
+	@media only screen and (max-width: @tablet-max-width) {
+	 	#rail .ui.sidebar {
+	        width: 400px !important;
+	        position: fixed;
+ 		}
+	}
+	
+	@media only screen and (max-width: @mobile-max-width) {
+		 #rail .ui.sidebar {
+        	width: 350px !important;
+        	position: fixed;
+    	}
+	}
 }
