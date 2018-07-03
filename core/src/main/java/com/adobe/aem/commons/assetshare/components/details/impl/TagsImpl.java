@@ -68,7 +68,7 @@ public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
     @ValueMapValue
     @Optional
     @Default(values = "false")
-    private Boolean showFreeTextProperty;
+    private Boolean displayComputedProperty;
 
     @Override
     public List<String> getTagTitles() {
@@ -96,9 +96,7 @@ public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
         	if (tag != null) {
         		overrideTagTitles.add(tag.getTitle(locale));
         	}
-        	// Added the logic for showing the smart tags as part of the tags component. 
-        	// Also removed some unused imports from the class.
-        	else if (StringUtils.isNotBlank(tagId) && showFreeTextProperty) {
+        	else if (StringUtils.isNotBlank(tagId) && displayComputedProperty) {
             	List<String> listOfComputedPropValues = new ArrayList<>();
             	if (asset.getProperties().get(tagPropertyName) instanceof List) {
                 	listOfComputedPropValues = (List<String>) asset.getProperties().get(tagPropertyName);
