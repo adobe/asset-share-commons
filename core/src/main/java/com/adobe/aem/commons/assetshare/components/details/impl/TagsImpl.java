@@ -27,7 +27,6 @@ import com.day.cq.tagging.TagManager;
 import com.day.cq.wcm.api.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
-import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.Default;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
 import org.apache.sling.models.annotations.Model;
@@ -36,10 +35,7 @@ import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.ScriptVariable;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -52,7 +48,6 @@ import java.util.Locale;
 )
 public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/details/tags";
-    protected static final String COMMA = ",";
 
     @Self
     @Required
@@ -104,12 +99,14 @@ public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
         	// Added the logic for showing the smart tags as part of the tags component. 
         	// Also removed some unused imports from the class.
         	else if (StringUtils.isNotBlank(tagId) && showFreeTextProperty) {
-        		String listOfDisplayValues = tagId.substring(1, tagId.length()-1);
-        		String[] listOfDisplayValuesArr = listOfDisplayValues.split(COMMA); 
-        		for (final String dispVal : listOfDisplayValuesArr) {
-        			overrideTagTitles.add(dispVal);
-        		}
-        	}
+            	List<String> listOfComputedPropValues = new ArrayList<>();
+            	if (asset.getProperties().get(tagPropertyName) instanceof List) {
+                	listOfComputedPropValues = (List<String>) asset.getProperties().get(tagPropertyName);
+                }
+            	for (final String dispVal : listOfComputedPropValues) {
+            		overrideTagTitles.add(dispVal);
+            	}
+            }
         }
 
         return overrideTagTitles;
