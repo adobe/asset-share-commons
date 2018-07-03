@@ -43,8 +43,8 @@ import com.day.cq.dam.api.Asset;
  */
 
 @Component(service = ComputedProperty.class)
-@Designate(ocd = SmartTagsImpl.Cfg.class)
-public class SmartTagsImpl extends AbstractComputedProperty<List<String>> {
+@Designate(ocd = SmartTagTitlesImpl.Cfg.class)
+public class SmartTagTitlesImpl extends AbstractComputedProperty<List<String>> {
     public static final String LABEL = "Smart Tags";
     public static final String NAME = "smartTags";
     public static final String SMART_TAG_NAME_PROPERTY = "name";

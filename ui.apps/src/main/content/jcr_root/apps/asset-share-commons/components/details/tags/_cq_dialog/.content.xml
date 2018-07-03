@@ -50,13 +50,6 @@
                                             name="./hideLabel"
                                             text="Hide Label"
                                             value="true"/>
-                                    <displayComputedProperty
-                                        jcr:primaryType="nt:unstructured"
-                                        sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
-                                        fieldDescription="Display the computed property"
-                                        name="./displayComputedProperty"
-                                        text="Display Computed Property"
-                                        value="true"/>        
                                     <label
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/textfield"

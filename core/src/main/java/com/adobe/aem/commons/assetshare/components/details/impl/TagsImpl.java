@@ -27,10 +27,8 @@ import com.day.cq.tagging.TagManager;
 import com.day.cq.wcm.api.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
-import org.apache.sling.models.annotations.Default;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
 import org.apache.sling.models.annotations.Model;
-import org.apache.sling.models.annotations.Optional;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.ScriptVariable;
 import org.apache.sling.models.annotations.injectorspecific.Self;
@@ -64,11 +62,6 @@ public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
     private Page currentPage;
 
     private List<String> tagTitles;
-    
-    @ValueMapValue
-    @Optional
-    @Default(values = "false")
-    private Boolean displayComputedProperty;
 
     @Override
     public List<String> getTagTitles() {
@@ -96,7 +89,7 @@ public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
         	if (tag != null) {
         		overrideTagTitles.add(tag.getTitle(locale));
         	}
-        	else if (StringUtils.isNotBlank(tagId) && displayComputedProperty) {
+        	else if (StringUtils.isNotBlank(tagId)) {
             	List<String> listOfComputedPropValues = new ArrayList<>();
             	if (asset.getProperties().get(tagPropertyName) instanceof List) {
                 	listOfComputedPropValues = (List<String>) asset.getProperties().get(tagPropertyName);
