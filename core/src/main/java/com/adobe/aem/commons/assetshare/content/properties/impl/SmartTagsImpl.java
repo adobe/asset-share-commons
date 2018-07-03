@@ -76,7 +76,6 @@ public class SmartTagsImpl extends AbstractComputedProperty<List<String>> {
         }
         while (smartTagList.hasNext()) {
             Resource smartTag = smartTagList.next();
-            // Adding a Tab as a prefix to style the output nicely in a structured look and feel
             smartTagLabels.add(smartTag.getValueMap().get(SMART_TAG_NAME_PROPERTY).toString());
         }
         return smartTagLabels;
