@@ -50,6 +50,13 @@
                                             name="./hideLabel"
                                             text="Hide Label"
                                             value="true"/>
+                                    <showFreeTextProperty
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                        fieldDescription="Show Free Text Property Label"
+                                        name="./showFreeTextProperty"
+                                        text="Show Free Text Property Label"
+                                        value="true"/>        
                                     <label
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/textfield"

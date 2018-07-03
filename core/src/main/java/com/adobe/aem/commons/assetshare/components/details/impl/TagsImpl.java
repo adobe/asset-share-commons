@@ -28,8 +28,10 @@ import com.day.cq.wcm.api.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.models.annotations.Default;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
 import org.apache.sling.models.annotations.Model;
+import org.apache.sling.models.annotations.Optional;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.ScriptVariable;
 import org.apache.sling.models.annotations.injectorspecific.Self;
@@ -50,6 +52,7 @@ import java.util.Locale;
 )
 public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/details/tags";
+    protected static final String COMMA = ",";
 
     @Self
     @Required
@@ -66,6 +69,11 @@ public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
     private Page currentPage;
 
     private List<String> tagTitles;
+    
+    @ValueMapValue
+    @Optional
+    @Default(values = "false")
+    private Boolean showFreeTextProperty;
 
     @Override
     public List<String> getTagTitles() {
@@ -88,11 +96,20 @@ public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
         final String[] tagIds = asset.getProperties().get(tagPropertyName, new String[]{});
 
         for (final String tagId : tagIds) {
-            final Tag tag = tagManager.resolve(tagId);
+        	final Tag tag = tagManager.resolve(tagId);
 
-            if (tag != null) {
-                overrideTagTitles.add(tag.getTitle(locale));
-            }
+        	if (tag != null) {
+        		overrideTagTitles.add(tag.getTitle(locale));
+        	}
+        	// Added the logic for showing the smart tags as part of the tags component. 
+        	// Also removed some unused imports from the class.
+        	else if (StringUtils.isNotBlank(tagId) && showFreeTextProperty) {
+        		String listOfDisplayValues = tagId.substring(1, tagId.length()-1);
+        		String[] listOfDisplayValuesArr = listOfDisplayValues.split(COMMA); 
+        		for (final String dispVal : listOfDisplayValuesArr) {
+        			overrideTagTitles.add(dispVal);
+        		}
+        	}
         }
 
         return overrideTagTitles;
