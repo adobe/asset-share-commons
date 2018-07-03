@@ -36,20 +36,19 @@ import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
 import com.day.cq.dam.api.Asset;
 
 /**
- * This class would be responsible to generate the computed property list for the samrt tags.
+ * This class would be responsible to generate the computed property list for the smart tags.
  *  
  * @author Tuhin Ghosh on 03/07/2018
  *
  */
 
 @Component(service = ComputedProperty.class)
-@Designate(ocd = SmartTagTitlesImpl.Cfg.class)
-public class SmartTagTitlesImpl extends AbstractComputedProperty<List<String>> {
+@Designate(ocd = SmartTagsImpl.Cfg.class)
+public class SmartTagsImpl extends AbstractComputedProperty<List<String>> {
     public static final String LABEL = "Smart Tags";
     public static final String NAME = "smartTags";
     public static final String SMART_TAG_NAME_PROPERTY = "name";
     public static final String SMART_TAG_NODE_PATH = "jcr:content/metadata/predictedTags";
-    public static final String TAB_CONSTANT = "\t";
     private Cfg cfg;
 
     @Override
