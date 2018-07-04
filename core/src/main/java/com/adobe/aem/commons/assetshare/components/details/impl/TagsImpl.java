@@ -57,7 +57,7 @@ public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
     private AssetModel asset;
 
     @ValueMapValue
-    private String tagPropertyName;
+    private String[] tagPropertyName;
 
     @ScriptVariable
     private Page currentPage;
@@ -67,7 +67,7 @@ public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
     @Override
     public List<String> getTagTitles() {
         if (tagTitles == null) {
-            if (StringUtils.isBlank(tagPropertyName) && asset.getProperties() != null) {
+            if (tagPropertyName == null && asset.getProperties() != null) {
                 tagTitles = asset.getProperties().get(TagTitlesImpl.NAME, tagTitles);
             } else {
                 tagTitles = getOverrideTags();
@@ -80,26 +80,29 @@ public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
     private List<String> getOverrideTags() {
         final List<String> overrideTagTitles = new ArrayList<>();
         final Locale locale = currentPage == null ? request.getLocale() : currentPage.getLanguage(false);
-
         final TagManager tagManager = request.getResourceResolver().adaptTo(TagManager.class);
-        final List<String> listOfTags;
-
-        if (asset.getProperties().get(tagPropertyName) instanceof List) {
-        	listOfTags = (List<String>) asset.getProperties().get(tagPropertyName);
-        } else {
-        	listOfTags = Arrays.asList(asset.getProperties().get(tagPropertyName, new String[]{}));
-        }
-
-        for (final String tagId : listOfTags) {
-        	final Tag tag = tagManager.resolve(tagId);
-
-        	if (tag != null) {
-        		overrideTagTitles.add(tag.getTitle(locale));
+        
+        for (String tagProperty : tagPropertyName) {
+        	final List<String> listOfTags;
+        	if (asset.getProperties().get(tagProperty) instanceof List) {
+        		listOfTags = (List<String>) asset.getProperties().get(tagProperty);
+        	} else {
+        		listOfTags = Arrays.asList(asset.getProperties().get(tagProperty, new String[]{}));
         	}
-        	else {
-        		overrideTagTitles.add(tagId);
+
+        	for (final String tagId : listOfTags) {
+        		final Tag tag = tagManager.resolve(tagId);
+
+        		if (tag != null) {
+        			overrideTagTitles.add(tag.getTitle(locale));
+        		}
+        		else {
+        			overrideTagTitles.add(tagId);
+        		}
         	}
         }
+        
+       
 
         return overrideTagTitles;
     }

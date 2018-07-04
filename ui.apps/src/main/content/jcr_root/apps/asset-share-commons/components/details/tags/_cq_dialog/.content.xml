@@ -58,11 +58,14 @@
                                             name="./label"/>
                                     <property-name
                                             jcr:primaryType="nt:unstructured"
-                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
                                             fieldLabel="Tags Property"
-                                            fieldDescription="Property name which contains the tag data to render. Accepts either normal JCR properties or computed property names. Defaults to the Tags computed property ('tagTitles')."
+                                            fieldDescription="Property names which contains the tag data to render. Accepts either normal JCR properties or computed property names. Defaults to the Tags computed property ('tagTitles')."
                                             emptyText="tagTitles or cq:tags"
-                                            name="./tagPropertyName"/>
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/multifield">
+                                            <field
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                name="./tagPropertyName"/>
                                     <empty-text
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
