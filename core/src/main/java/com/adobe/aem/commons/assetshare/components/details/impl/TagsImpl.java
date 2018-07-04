@@ -36,6 +36,7 @@ import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -101,9 +102,8 @@ public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
         		}
         	}
         }
-        
        
-
+        Collections.sort(overrideTagTitles);
         return overrideTagTitles;
     }
 
