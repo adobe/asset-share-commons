@@ -35,6 +35,7 @@ import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -81,23 +82,23 @@ public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
         final Locale locale = currentPage == null ? request.getLocale() : currentPage.getLanguage(false);
 
         final TagManager tagManager = request.getResourceResolver().adaptTo(TagManager.class);
-        final String[] tagIds = asset.getProperties().get(tagPropertyName, new String[]{});
+        final List<String> listOfTags;
 
-        for (final String tagId : tagIds) {
+        if (asset.getProperties().get(tagPropertyName) instanceof List) {
+        	listOfTags = (List<String>) asset.getProperties().get(tagPropertyName);
+        } else {
+        	listOfTags = Arrays.asList(asset.getProperties().get(tagPropertyName, new String[]{}));
+        }
+
+        for (final String tagId : listOfTags) {
         	final Tag tag = tagManager.resolve(tagId);
 
         	if (tag != null) {
         		overrideTagTitles.add(tag.getTitle(locale));
         	}
-        	else if (StringUtils.isNotBlank(tagId)) {
-            	List<String> listOfComputedPropValues = new ArrayList<>();
-            	if (asset.getProperties().get(tagPropertyName) instanceof List) {
-                	listOfComputedPropValues = (List<String>) asset.getProperties().get(tagPropertyName);
-                }
-            	for (final String dispVal : listOfComputedPropValues) {
-            		overrideTagTitles.add(dispVal);
-            	}
-            }
+        	else {
+        		overrideTagTitles.add(tagId);
+        	}
         }
 
         return overrideTagTitles;
