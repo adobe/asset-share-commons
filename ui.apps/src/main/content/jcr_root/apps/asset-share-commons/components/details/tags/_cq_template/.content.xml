@@ -22,5 +22,5 @@
           xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
           jcr:primaryType="nt:unstructured"
           label="Tags"
-          tagPropertyName="tags">
+          tagPropertyName="tagTitles">
 </jcr:root>

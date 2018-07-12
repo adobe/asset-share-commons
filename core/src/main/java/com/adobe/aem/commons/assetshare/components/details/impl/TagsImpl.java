@@ -25,7 +25,7 @@ import com.adobe.aem.commons.assetshare.content.properties.impl.TagTitlesImpl;
 import com.day.cq.tagging.Tag;
 import com.day.cq.tagging.TagManager;
 import com.day.cq.wcm.api.Page;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
 import org.apache.sling.models.annotations.Model;
@@ -33,12 +33,11 @@ import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.ScriptVariable;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
+import javax.inject.Named;
+import java.util.*;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
@@ -47,6 +46,8 @@ import java.util.Locale;
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
 public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
+    private static final Logger log = LoggerFactory.getLogger(TagsImpl.class);
+
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/details/tags";
 
     @Self
@@ -58,7 +59,8 @@ public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
     private AssetModel asset;
 
     @ValueMapValue
-    private String[] tagPropertyName;
+    @Named("tagPropertyName")
+    private String[] tagPropertyNames;
 
     @ScriptVariable
     private Page currentPage;
@@ -68,43 +70,92 @@ public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
     @Override
     public List<String> getTagTitles() {
         if (tagTitles == null) {
-            if (tagPropertyName == null && asset.getProperties() != null) {
+            if ((tagPropertyNames == null || ArrayUtils.isEmpty(tagPropertyNames))
+                    && asset.getProperties() != null) {
                 tagTitles = asset.getProperties().get(TagTitlesImpl.NAME, tagTitles);
             } else {
-                tagTitles = getOverrideTags();
+                tagTitles = getCombinedTagTitles();
             }
         }
 
         return tagTitles;
     }
 
-    private List<String> getOverrideTags() {
-        final List<String> overrideTagTitles = new ArrayList<>();
-        final Locale locale = currentPage == null ? request.getLocale() : currentPage.getLanguage(false);
-        final TagManager tagManager = request.getResourceResolver().adaptTo(TagManager.class);
-        
-        for (String tagProperty : tagPropertyName) {
-        	final List<String> listOfTags;
-        	if (asset.getProperties().get(tagProperty) instanceof List) {
-        		listOfTags = (List<String>) asset.getProperties().get(tagProperty);
-        	} else {
-        		listOfTags = Arrays.asList(asset.getProperties().get(tagProperty, new String[]{}));
-        	}
+    /**
+     * @return a list of combined (ordered and de-duped) tag titles for all provided tag properties.
+     */
+    private List<String> getCombinedTagTitles() {
+        // De-dupes content.
+        final Set<String> combinedTagTitles = new LinkedHashSet<>();
 
-        	for (final String tagId : listOfTags) {
-        		final Tag tag = tagManager.resolve(tagId);
+        for (final String tagPropertyName : tagPropertyNames) {
+        	final Collection<String> tagValues = getTagValuesAsList(tagPropertyName);
 
-        		if (tag != null) {
-        			overrideTagTitles.add(tag.getTitle(locale));
-        		}
-        		else {
-        			overrideTagTitles.add(tagId);
-        		}
-        	}
+            if (!tagValues.isEmpty()) {
+                combinedTagTitles.addAll(getTagTitles(tagValues));
+            }
         }
        
-        Collections.sort(overrideTagTitles);
-        return overrideTagTitles;
+        return new ArrayList<>(combinedTagTitles);
+    }
+
+    /**
+     * Gets the tag titles from for a single property.
+     *
+     * @param tagValues the tag values from the single property (may be tagIds or may be tag titles (ie. in the case of smart tags).
+     * @return a collection of tag titles.
+     */
+    private Collection<String> getTagTitles(final Collection<String> tagValues) {
+        final Locale locale = getLocale();
+        final TagManager tagManager = request.getResourceResolver().adaptTo(TagManager.class);
+        final Collection<String> combinedTagTitles = new LinkedHashSet<>();
+
+        for (final String tagId: tagValues) {
+            final Tag tag = tagManager.resolve(tagId);
+
+            if (tag != null) {
+                combinedTagTitles.add(tag.getTitle(locale));
+            } else {
+                combinedTagTitles.add(tagId);
+            }
+        }
+
+        return combinedTagTitles;
+    }
+
+
+    /**
+     * This method tries to coerce the property value into a Collection, which is the expected collection type.
+     * This is necessary since computed properties can be passed in as the {@tagPropertyName} and can return various values.
+     * Only List, Set, String[], and String are supported return types. All other returned types will be skipped.
+     *
+     * @param tagPropertyName the property name (may be real or computed) from which to gather the tag values.
+     * @return a collection of tag values, or an empty collection if none can be found.
+     */
+    private Collection<String> getTagValuesAsList(final String tagPropertyName) {
+        final Object value = asset.getProperties().get(tagPropertyName);
+        Collection<String> tagValues = new ArrayList<>();
+
+        if (value instanceof List) {
+            tagValues = (List<String>) value;
+        } else if (value instanceof String[]) {
+            tagValues = Arrays.asList((String[])value);
+        } else if (value instanceof String) {
+            tagValues.add((String) value);
+        } else if (value instanceof Set) {
+            tagValues = new ArrayList<>((Set) value);
+        } else {
+            log.warn("Failed to collect Tags from incompatible Computed Property [ {} ]", tagPropertyName);
+        }
+        return tagValues;
+    }
+
+    private Locale getLocale() {
+        if (currentPage == null) {
+            return request.getLocale();
+        } else {
+            return currentPage.getLanguage(false);
+        }
     }
 
     @Override

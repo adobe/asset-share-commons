@@ -19,10 +19,10 @@
 
 package com.adobe.aem.commons.assetshare.content.properties.impl;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.osgi.service.component.annotations.Activate;
@@ -36,19 +36,17 @@ import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
 import com.day.cq.dam.api.Asset;
 
 /**
- * This class would be responsible to generate the computed property list for the smart tags.
- *  
- * @author Tuhin Ghosh on 03/07/2018
- *
+ * This class generates the computed property list of smart tag titles.
  */
-
 @Component(service = ComputedProperty.class)
 @Designate(ocd = SmartTagTitlesImpl.Cfg.class)
 public class SmartTagTitlesImpl extends AbstractComputedProperty<List<String>> {
     public static final String LABEL = "Smart Tags";
-    public static final String NAME = "smartTags";
-    public static final String SMART_TAG_NAME_PROPERTY = "name";
-    public static final String SMART_TAG_NODE_PATH = "jcr:content/metadata/predictedTags";
+    public static final String NAME = "smartTagTitles";
+    public static final String PN_SMART_TAG_NAME = "name";
+    public static final String PN_SMART_TAG_CONFIDENCE = "confidence";
+    public static final String REL_PATH_SMART_TAGS_RESOURCE = "jcr:content/metadata/predictedTags";
+
     private Cfg cfg;
 
     @Override
@@ -68,17 +66,43 @@ public class SmartTagTitlesImpl extends AbstractComputedProperty<List<String>> {
 
     @Override
     public List<String> get(Asset asset, SlingHttpServletRequest request) {
-        final List<String> smartTagLabels = new ArrayList<>();
-        final Resource smartTagResource = (asset != null && asset.adaptTo(Resource.class) != null) ? asset.adaptTo(Resource.class).getChild(SMART_TAG_NODE_PATH) : null;
-        Iterator<Resource> smartTagList = (smartTagResource != null && smartTagResource.getChildren() != null) ? smartTagResource.getChildren().iterator() : null;
-        if (smartTagList == null) {
-            return smartTagLabels;
+        List<String> smartTagTitles = new ArrayList<>();
+
+        final Resource smartTagsResource = getSmartTagsResource(asset);
+
+        if (smartTagsResource != null) {
+            smartTagTitles = getSmartTagsByConfidence(smartTagsResource).stream()
+                    .map(r -> r.getValueMap().get(PN_SMART_TAG_NAME, String.class))
+                    .filter(StringUtils::isNotBlank)
+                    .collect(Collectors.toList());
         }
-        while (smartTagList.hasNext()) {
-            Resource smartTag = smartTagList.next();
-            smartTagLabels.add(smartTag.getValueMap().get(SMART_TAG_NAME_PROPERTY).toString());
+
+        return smartTagTitles;
+    }
+
+    private Resource getSmartTagsResource(final Asset asset) {
+        if (asset == null) {
+            return null;
         }
-        return smartTagLabels;
+
+        final Resource resource = asset.adaptTo(Resource.class);
+
+        if (resource == null) {
+            return null;
+        }
+
+        return resource.getChild(REL_PATH_SMART_TAGS_RESOURCE);
+    }
+
+    private Collection<Resource> getSmartTagsByConfidence(final Resource smartTagsResource) {
+        final List<Resource> smartTagResources = new ArrayList<>();
+
+        smartTagsResource.listChildren().forEachRemaining(r -> { smartTagResources.add(r); });
+
+        // Sort the smart tag resources by confidence score
+        Collections.sort(smartTagResources, new SmartTagsConfidenceComparator());
+
+        return smartTagResources;
     }
 
     @Activate
@@ -99,5 +123,15 @@ public class SmartTagTitlesImpl extends AbstractComputedProperty<List<String>> {
                 description = "Defines the type of data this exposes. This classification allows for intelligent exposure of Computed Properties in DataSources, etc."
         )
         String[] types() default {Types.METADATA};
+    }
+
+    private class SmartTagsConfidenceComparator implements Comparator<Resource> {
+        @Override
+        public int compare(final Resource o1, final Resource o2) {
+            final Double confidence1 =  o1.getValueMap().get(PN_SMART_TAG_CONFIDENCE, 0d);
+            final Double confidence2 =  o2.getValueMap().get(PN_SMART_TAG_CONFIDENCE, 0d);
+
+            return confidence1.compareTo(confidence2);
+        }
     }
 }
