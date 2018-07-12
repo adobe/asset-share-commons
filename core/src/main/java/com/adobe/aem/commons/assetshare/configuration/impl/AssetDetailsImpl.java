@@ -62,4 +62,17 @@ public class AssetDetailsImpl implements AssetDetails {
 
         return url;
     }
+
+    @Override
+    public String getFullUrl() {
+        String fullUrl = getUrl();
+
+        if (config.getAssetDetailReferenceById()) {
+            fullUrl += "/" + asset.getAssetId() + ".html";
+        } else {
+            fullUrl += asset.getPath();
+        }
+
+        return fullUrl;
+    }
 }

@@ -69,6 +69,20 @@ public class AssetDetailsResolverImpl implements AssetDetailsResolver {
         return url;
     }
 
+    public String getFullUrl(final Config config, final AssetModel asset) {
+        String fullUrl = getUrl(config, asset);
+
+        if (StringUtils.isNotBlank(fullUrl)) {
+            if (config.getAssetDetailReferenceById()) {
+                fullUrl += "/" + asset.getAssetId() + ".html";
+            } else {
+                fullUrl += asset.getPath();
+            }
+        }
+
+        return fullUrl;
+    }
+
     protected final void bindAssetDetailsSelector(final AssetDetailsSelector service, final Map<Object, Object> props) {
         final String type = service.getClass().getName();
         if (type != null) {

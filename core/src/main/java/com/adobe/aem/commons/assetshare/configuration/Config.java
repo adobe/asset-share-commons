@@ -76,6 +76,11 @@ public interface Config {
     String getAssetDetailsUrl();
 
     /**
+     * @return true if the asset details pages should reference assets by path (else ID).
+     */
+    default boolean getAssetDetailReferenceById() { return true; }
+
+    /**
      * @return the path segment of the URL to call to render the Cart.
      */
     String getCartActionUrl();

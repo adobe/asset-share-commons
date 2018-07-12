@@ -26,7 +26,7 @@
             id="${asset.path}"
             class="ui card cmp-card">
 
-        <a class="image cmp-image__wrapper--card" href="${assetDetails.url @ suffix = asset.path}">
+        <a class="image cmp-image__wrapper--card" href="${assetDetails.fullUrl}">
             <img src="${asset.properties['thumbnail'] || properties['missingImage'] @ context = 'attribute'}"
                  class="cmp-image--card"
                  alt="${asset.properties['title']}"/>
@@ -34,7 +34,7 @@
 
         <div class="content">
             <h3 class="header">
-                <a href="${assetDetails.url @ suffix = asset.path}">
+                <a href="${assetDetails.fullUrl}">
                     ${asset.properties['title']}
                 </a>
             </h3>
