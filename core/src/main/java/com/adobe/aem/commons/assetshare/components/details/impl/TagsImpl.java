@@ -27,18 +27,16 @@ import com.day.cq.tagging.TagManager;
 import com.day.cq.wcm.api.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
-import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.ScriptVariable;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -60,7 +58,7 @@ public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
     private AssetModel asset;
 
     @ValueMapValue
-    private String tagPropertyName;
+    private String[] tagPropertyName;
 
     @ScriptVariable
     private Page currentPage;
@@ -70,7 +68,7 @@ public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
     @Override
     public List<String> getTagTitles() {
         if (tagTitles == null) {
-            if (StringUtils.isBlank(tagPropertyName) && asset.getProperties() != null) {
+            if (tagPropertyName == null && asset.getProperties() != null) {
                 tagTitles = asset.getProperties().get(TagTitlesImpl.NAME, tagTitles);
             } else {
                 tagTitles = getOverrideTags();
@@ -83,18 +81,29 @@ public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
     private List<String> getOverrideTags() {
         final List<String> overrideTagTitles = new ArrayList<>();
         final Locale locale = currentPage == null ? request.getLocale() : currentPage.getLanguage(false);
-
         final TagManager tagManager = request.getResourceResolver().adaptTo(TagManager.class);
-        final String[] tagIds = asset.getProperties().get(tagPropertyName, new String[]{});
+        
+        for (String tagProperty : tagPropertyName) {
+        	final List<String> listOfTags;
+        	if (asset.getProperties().get(tagProperty) instanceof List) {
+        		listOfTags = (List<String>) asset.getProperties().get(tagProperty);
+        	} else {
+        		listOfTags = Arrays.asList(asset.getProperties().get(tagProperty, new String[]{}));
+        	}
 
-        for (final String tagId : tagIds) {
-            final Tag tag = tagManager.resolve(tagId);
+        	for (final String tagId : listOfTags) {
+        		final Tag tag = tagManager.resolve(tagId);
 
-            if (tag != null) {
-                overrideTagTitles.add(tag.getTitle(locale));
-            }
+        		if (tag != null) {
+        			overrideTagTitles.add(tag.getTitle(locale));
+        		}
+        		else {
+        			overrideTagTitles.add(tagId);
+        		}
+        	}
         }
-
+       
+        Collections.sort(overrideTagTitles);
         return overrideTagTitles;
     }
 
