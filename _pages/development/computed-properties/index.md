@@ -70,6 +70,12 @@ For example the size of an asset is stored in the metadata property `jcr:content
 * **Name:** tagTitles
 * **Return type:** `List<String>`
 
+**Smart Tag Titles** - Returns the titles of any tags on the current asset. Based on the `jcr:content/metadata/cq:tags`. A localized tag title will be used if it exists. Locale is derived from the Sling request.
+
+* **Label:** Smart Tag Titles
+* **Name:** smartTagTitles
+* **Return type:** `List<String>`
+
 **Thumbnail Rendition** - Returns an escaped path to the thumbnail rendition of `cq5dam.thumbnail.319.319.png` for the current asset.
 
 * **Label:** Thumbnail Rendition
