@@ -23,17 +23,12 @@ import com.adobe.aem.commons.assetshare.configuration.Config;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.AssetResolver;
 import com.day.cq.dam.api.Asset;
-import com.day.cq.dam.api.DamConstants;
-import com.day.cq.dam.commons.util.DamUtil;
 import com.day.cq.wcm.api.WCMMode;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.osgi.service.component.annotations.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.jcr.RepositoryException;
 
 @Component
 public class AssetResolverImpl implements AssetResolver {
@@ -42,13 +37,9 @@ public class AssetResolverImpl implements AssetResolver {
     public Asset resolveAsset(final SlingHttpServletRequest request) {
         Asset asset = null;
 
-        final String suffix = request.getRequestPathInfo().getSuffix();
         final Resource suffixResource = request.getRequestPathInfo().getSuffixResource();
-
         if (suffixResource != null) {
-            asset = getAssetByPath(suffixResource);
-        } else if (StringUtils.isNotBlank(suffix) && !StringUtils.startsWith(suffix, DamConstants.MOUNTPOINT_ASSETS)) {
-            asset = getAssetById(request, suffix);
+            asset = suffixResource.adaptTo(Asset.class);
         }
 
         if (asset == null) {
@@ -67,23 +58,6 @@ public class AssetResolverImpl implements AssetResolver {
         }
 
         return asset;
-    }
-
-    private Asset getAssetByPath(final Resource suffixResource) {
-        return suffixResource.adaptTo(Asset.class);
-    }
-
-    private Asset getAssetById(final SlingHttpServletRequest request, final String suffix) {
-        final String id = StringUtils.substringBefore(StringUtils.removeStart(suffix, "/"), ".");
-
-        if (StringUtils.isNotBlank(id)) {
-            try {
-                return DamUtil.getAssetFromID(request.getResourceResolver(), id);
-            } catch (RepositoryException e) {
-                log.error("Error attempting to resolve asset via ID [ " + id + " ]", e);
-            }
-        }
-        return null;
     }
 
     public Asset resolveAsset(final Resource assetResource) {

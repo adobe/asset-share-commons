@@ -19,7 +19,6 @@
 
 package com.adobe.aem.commons.assetshare.components.predicates;
 
-import com.day.cq.search.PredicateGroup;
 import org.osgi.annotation.versioning.ProviderType;
 
 import java.util.Map;
@@ -27,18 +26,10 @@ import java.util.Map;
 @ProviderType
 public interface HiddenPredicate extends Predicate {
     /**
-     * @return a PredicateGroup that represents the HiddenPredicate configuration.
-     */
-    PredicateGroup getPredicateGroup();
-
-    /**
-     * Deprecated - use PredicateGroup getPredicateGroup() instead.
      *
      * @param groupId the groupId to namespace these QueryBuilder parameters to.
      * @return a map of query builder parameters for this predicate, namespaced by the groupId.
      */
-    @Deprecated
     Map<String, String> getParams(int groupId);
-
 }
 

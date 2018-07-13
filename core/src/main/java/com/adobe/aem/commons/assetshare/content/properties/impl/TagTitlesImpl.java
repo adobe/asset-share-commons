@@ -35,7 +35,6 @@ import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -82,8 +81,6 @@ public class TagTitlesImpl extends AbstractComputedProperty<List<String>> {
                 tagLabels.add(tag.getTitle(locale));
             }
         }
-
-        Collections.sort(tagLabels);
 
         return tagLabels;
     }
