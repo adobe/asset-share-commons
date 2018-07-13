@@ -3,7 +3,6 @@ layout: content-page
 title: v1.2.0
 ---
 
-## v1.2.0 release notes
 
 ### Fixed
 - 0114: Removed replication status properties from templates and policies.

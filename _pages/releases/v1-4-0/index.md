@@ -3,10 +3,6 @@ layout: content-page
 title: v1.4.0
 ---
 
-## v1.4.0 release notes
-
-## [v1.4.0]
-
 ### Changed
 
 - 0141: Updated Search results to request the main and rail content to allow for more simpler and more robust use of data-asset-share-update-method.

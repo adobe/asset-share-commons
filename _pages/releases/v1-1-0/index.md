@@ -3,8 +3,6 @@ layout: content-page
 title: v1.1.0
 ---
 
-## v1.1.0 release notes
-
 ### Fixed
 - 0074: Removed unused configurations (originally added for release purposes) from ui.content pom.xml
 - 0080: Handle the numbering of predicate search components after insert, and made group numbering mode logical.

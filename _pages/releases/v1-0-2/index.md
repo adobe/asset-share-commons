@@ -3,8 +3,6 @@ layout: content-page
 title: v1.0.2
 ---
 
-## v1.0.2 release notes
-
 Bug-fix release.
 
 ### Changed

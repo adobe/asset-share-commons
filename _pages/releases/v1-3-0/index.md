@@ -3,8 +3,6 @@ layout: content-page
 title: v1.3.0
 ---
 
-## v1.3.0 release notes
-
 ### Fixed
 - 0131: Fixed ContextHub eventing condition that cause the user menu profile to act as "anonymous" on the first page via by an authenticated user.
 

@@ -3,8 +3,6 @@ layout: content-page
 title: v1.2.2
 ---
 
-## v1.2.2 release notes
-
 ### Fixed
 - 0123: Fixed issued with OOTB ContextHub store type nodes not installing.
 

@@ -3,11 +3,6 @@ layout: content-page
 title: v1.5.0
 ---
 
-## v1.5.0 release notes
-
-
-## [v1.5.0]
-
 ### Added
 - 0034/0046: Dynamic Media Download modal and image presets datasource
 - 0147: Asset Details Video component added to provide in-page video playback on Asset Details pages.
