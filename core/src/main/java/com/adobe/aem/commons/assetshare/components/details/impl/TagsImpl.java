@@ -70,8 +70,7 @@ public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
     @Override
     public List<String> getTagTitles() {
         if (tagTitles == null) {
-            if ((tagPropertyNames == null || ArrayUtils.isEmpty(tagPropertyNames))
-                    && asset.getProperties() != null) {
+            if (ArrayUtils.isEmpty(tagPropertyNames)) {
                 tagTitles = asset.getProperties().get(TagTitlesImpl.NAME, tagTitles);
             } else {
                 tagTitles = getCombinedTagTitles();
