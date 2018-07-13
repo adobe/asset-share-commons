@@ -24,5 +24,13 @@ import org.osgi.annotation.versioning.ProviderType;
 
 @ProviderType
 public interface AssetDetailsResolver {
+    /**
+     * @return the url to the asset details page, but do NOT include the asset reference in the suffix.
+     */
     String getUrl(final Config config, final AssetModel asset);
+
+    /**
+     * @return the full asset details link including the asset reference as the suffix.
+     */
+    default String getFullUrl(final Config config, final AssetModel asset) { return null; }
 }

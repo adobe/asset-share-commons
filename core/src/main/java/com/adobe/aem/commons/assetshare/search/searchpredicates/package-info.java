@@ -17,8 +17,8 @@
  *
  */
 
-@Version("2.2.0")
-package com.adobe.aem.commons.assetshare.components.predicates;
+@Version("1.0.0")
+package com.adobe.aem.commons.assetshare.search.searchpredicates;
 
 import org.osgi.annotation.versioning.Version;
 

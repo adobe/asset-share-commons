@@ -128,6 +128,33 @@
                                                                     name="./expanded"
                                                                     text="Start Expanded"
                                                                     value="true"/>
+                                                            <source
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    sling:hideResource="{Boolean}true"/>
+                                                            <fromDatasource
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    sling:hideResource="{Boolean}true"/>
+                                                            <fromLocal
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    sling:hideResource="{Boolean}true"/>
+                                                            <displayOrder
+                                                                    granite:class="cmp-options--editor-type-v1"
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                                                    fieldDescription="Set the order the tag options are displayed in."
+                                                                    fieldLabel="Tags Display Order"
+                                                                    name="./displayOrder">
+                                                                <items jcr:primaryType="nt:unstructured">
+                                                                    <natural
+                                                                            jcr:primaryType="nt:unstructured"
+                                                                            text="Natural"
+                                                                            value="natural"/>
+                                                                    <radio
+                                                                            jcr:primaryType="nt:unstructured"
+                                                                            text="Alphabetical"
+                                                                            value="alphabetical"/>
+                                                                </items>
+                                                            </displayOrder>
                                                             <tags
                                                                     jcr:primaryType="nt:unstructured"
                                                                     sling:resourceType="cq/gui/components/common/tagspicker"

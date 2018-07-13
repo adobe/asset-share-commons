@@ -58,11 +58,16 @@
                                             name="./label"/>
                                     <property-name
                                             jcr:primaryType="nt:unstructured"
-                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                            fieldLabel="Tags Property"
-                                            fieldDescription="Property name which contains the tag data to render. Accepts either normal JCR properties or computed property names. Defaults to the Tags computed property ('tagTitles')."
-                                            emptyText="tagTitles or cq:tags"
-                                            name="./tagPropertyName"/>
+                                            fieldLabel="Tags Properties"
+                                            fieldDescription="Property names which contains the tag data to render. Accepts either normal JCR properties or computed property names. Defaults to the Tags computed property ('tagTitles')."
+                                            emptyText="Example: tagTitles, smartTagTitles, or cq:tags"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/multifield">
+                                            <field
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                note="This property is signular for backwards compatibility."
+                                                name="./tagPropertyName"/>
+                                    </property-name>
                                     <empty-text
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/textfield"

@@ -22,11 +22,17 @@ package com.adobe.aem.commons.assetshare.components.predicates.impl;
 import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.HiddenPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.PagePredicate;
+import com.adobe.aem.commons.assetshare.search.searchpredicates.SearchPredicate;
 import com.adobe.aem.commons.assetshare.util.ComponentModelVisitor;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
 import com.day.cq.dam.api.DamConstants;
+import com.day.cq.search.Predicate;
+import com.day.cq.search.PredicateConverter;
+import com.day.cq.search.PredicateGroup;
 import com.day.cq.search.eval.PathPredicateEvaluator;
+import com.day.cq.search.eval.TypePredicateEvaluator;
 import com.day.cq.wcm.api.Page;
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -40,8 +46,6 @@ import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.SlingObject;
 import org.apache.sling.models.factory.ModelFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -68,6 +72,7 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
     private String PN_ORDERBY_SORT = "orderBySort";
     private String PN_LIMIT = "limit";
     private String PN_PATHS = "paths";
+    private String PN_SEARCH_PREDICATES = "searchPredicates";
 
     @Self
     @Required
@@ -84,6 +89,9 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
     @OSGiService
     private ModelFactory modelFactory;
 
+    @OSGiService
+    private List<SearchPredicate> searchPredicates;
+
     private ValueMap properties;
 
     @PostConstruct
@@ -94,7 +102,7 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
 
     @Override
     public String getName() {
-        return "p";
+        return PredicateConverter.GROUP_PARAMETER_PREFIX;
     }
 
     @Override
@@ -137,7 +145,7 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
     }
 
     public String getGuessTotal() {
-        final String guessTotal = properties.get("guessTotal", DEFAULT_GUESS_TOTAL);
+        final String guessTotal = properties.get(Predicate.PARAM_GUESS_TOTAL, DEFAULT_GUESS_TOTAL);
 
         if ("true".equalsIgnoreCase(guessTotal)) {
             return guessTotal;
@@ -174,45 +182,115 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
     }
 
     @Override
-    public Map<String, String> getParams() {
-        return getParams(new ParamTypes[]{});
+    public PredicateGroup getPredicateGroup() {
+        return getPredicateGroup(new ParamTypes[]{});
     }
 
+    @Override
+    public PredicateGroup getPredicateGroup(ParamTypes... excludeParamTypes) {
+        final PredicateGroup root = new PredicateGroup("root");
+        final PredicateGroup parameterGroup = new PredicateGroup(PredicateConverter.GROUP_PARAMETER_PREFIX);
 
-    public Map<String, String> getParams(ParamTypes... excludeParamTypes) {
-        int systemGroupId = Integer.MAX_VALUE;
+        // Type Predicate
+        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.NODE_TYPE)) {
+            addTypeAsPredicateGroup(root);
+        }
+
+        // Path Predicate
+        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.PATH)) {
+            addPathAsPredicateGroup(root);
+        }
+
+        // Hidden Predicates
+        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.HIDDEN_PREDICATES)) {
+            addHiddenPredicatesAsPredicateGroups(root);
+        }
+
+        // Search Predicates
+        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.SEARCH_PREDICATES)) {
+            addSearchPredicateAsPredicateGroups(root);
+        }
+
+        // QueryBuilder Parameters
+
+        // p.limit
+        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.LIMIT)) {
+            addLimitAsParameterPredicate(parameterGroup);
+        }
+
+        // p.guessTotal
+        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.GUESS_TOTAL)) {
+            addGuessTotalAsParameterPredicate(parameterGroup);
+        }
+
+        root.add(parameterGroup);
+
+        return root;
+    }
+
+    private void addGuessTotalAsParameterPredicate(final PredicateGroup parameterGroup) {
+        parameterGroup.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
+                put(Predicate.PARAM_GUESS_TOTAL,  getGuessTotal()).
+                build()));
+    }
+
+    private void addLimitAsParameterPredicate(final PredicateGroup parameterGroup) {
+        parameterGroup.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
+                put(Predicate.PARAM_LIMIT,  String.valueOf(getLimit())).
+                build()));
+    }
+
+    private void addSearchPredicateAsPredicateGroups(final PredicateGroup root) {
+        for (final SearchPredicate searchPredicate : getSearchPredicates()) {
+            final PredicateGroup global = new PredicateGroup();
+
+            global.addAll(searchPredicate.getPredicateGroup(request));
+            root.add(global);
+        }
+    }
+
+    private void addHiddenPredicatesAsPredicateGroups(final PredicateGroup root) {
+        for (final HiddenPredicate hiddenPredicate : getHiddenPredicates(currentPage)) {
+            final PredicateGroup hidden = new PredicateGroup();
+
+            hidden.addAll(hiddenPredicate.getPredicateGroup());
+            root.add(hidden);
+        }
+    }
+
+    private void addPathAsPredicateGroup(final PredicateGroup root) {
+        final PredicateGroup paths = new PredicateGroup();
+        paths.setAllRequired(false);
+
         final Map<String, String> params = new HashMap<>();
 
         int i = 0;
-
-        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.NODE_TYPE)) {
-            params.put("type", DamConstants.NT_DAM_ASSET);
+        for (final String path : getPaths()) {
+            params.put(i++ + "_" + PathPredicateEvaluator.PATH, path);
         }
 
-        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.PATH)) {
-            final String pathGroup = String.valueOf(systemGroupId--) + "_group";
-            params.put(pathGroup + ".p.or", "true");
-            for (final String path : getPaths()) {
-                params.put(pathGroup + "." + i++ + "_path", path);
-            }
+        paths.addAll(PredicateConverter.createPredicates(params));
+        root.add(paths);
+    }
+
+    private void addTypeAsPredicateGroup(final PredicateGroup root) {
+        root.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
+                put(TypePredicateEvaluator.TYPE,  DamConstants.NT_DAM_ASSET).
+                build()));
+    }
+
+    private  List<SearchPredicate> getSearchPredicates() {
+        final List<String> searchPredicateNames = Arrays.asList(properties.get(PN_SEARCH_PREDICATES, new String[]{}));
+        final List<SearchPredicate> matchingSearchPredicates = new ArrayList<>();
+
+        for (String searchPredicateName : searchPredicateNames) {
+            searchPredicates.stream()
+                    .filter(gp -> StringUtils.equals(searchPredicateName, gp.getName()))
+                    .findFirst()
+                    .ifPresent(matchingSearchPredicates::add);
         }
 
-        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.HIDDEN_PREDICATES)) {
-            // Start large to avoid any conflicts w parameterized
-            for (final HiddenPredicate hiddenPredicate : getHiddenPredicates(currentPage)) {
-                params.putAll(hiddenPredicate.getParams(systemGroupId--));
-            }
-        }
-
-        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.LIMIT)) {
-            params.put("p.limit", String.valueOf(getLimit()));
-        }
-
-        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.GUESS_TOTAL)) {
-            params.put("p.guessTotal", getGuessTotal());
-        }
-
-        return params;
+        return matchingSearchPredicates;
     }
 
     private Collection<HiddenPredicate> getHiddenPredicates(final Page page) {
@@ -223,5 +301,19 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
 
         visitor.accept(page.getContentResource());
         return visitor.getModels();
+    }
+
+    /** Deprecated Methods **/
+
+    @Override
+    @Deprecated
+    public Map<String, String> getParams() {
+        return getParams(new ParamTypes[]{});
+    }
+
+    @Override
+    @Deprecated
+    public Map<String, String> getParams(ParamTypes... excludeParamTypes) {
+        return PredicateConverter.createMap(getPredicateGroup(excludeParamTypes));
     }
 }
