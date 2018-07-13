@@ -21,6 +21,8 @@ package com.adobe.aem.commons.assetshare.components.predicates.impl;
 
 import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.HiddenPredicate;
+import com.day.cq.search.PredicateConverter;
+import com.day.cq.search.PredicateGroup;
 import org.apache.commons.lang.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.AbstractResourceVisitor;
@@ -68,6 +70,56 @@ public class HiddenPredicateImpl extends AbstractPredicate implements HiddenPred
     }
 
     @Override
+    public PredicateGroup getPredicateGroup() {
+
+        final PredicateGroup hiddenPredicateGroup = new PredicateGroup("hiddenPredicate");
+
+        final Map<String, String> params = new HashMap<>();
+
+        if (resource == null) {
+            return hiddenPredicateGroup;
+        }
+
+        final Resource predicates = resource.getChild(NN_PREDICATES);
+
+        if (predicates == null) {
+            return hiddenPredicateGroup;
+        }
+
+        final Iterator<Resource> iterator = predicates.listChildren();
+
+        while (iterator.hasNext()) {
+            final Resource predicateResource = iterator.next();
+            final ValueMap predicateProperties = predicateResource.getValueMap();
+
+            final String predicate = predicateProperties.get(PN_PREDICATE, String.class);
+            final String value = predicateProperties.get(PN_VALUE, "");
+
+            if (StringUtils.isNotBlank(predicate)) {
+                params.put(predicate, value);
+            }
+        }
+
+        hiddenPredicateGroup.addAll(PredicateConverter.createPredicates(params));
+
+        return hiddenPredicateGroup;
+    }
+
+    @Override
+    public String getGroup() {
+        throw new UnsupportedOperationException("Hidden predicate groupIds are managed in the PagePredicateImpl automatically");
+    }
+
+    @Override
+    public String getName() {
+        throw new UnsupportedOperationException("Hidden predicates have no name");
+    }
+
+
+    /** Deprecated Methods **/
+
+    @Override
+    @Deprecated
     public Map<String, String> getParams(final int groupId) {
         final Map<String, String> params = new HashMap<>();
 
@@ -96,15 +148,5 @@ public class HiddenPredicateImpl extends AbstractPredicate implements HiddenPred
         }
 
         return params;
-    }
-
-    @Override
-    public String getGroup() {
-        throw new UnsupportedOperationException("Hidden predicate groupIds are managed in the PagePredicateImpl automatically");
-    }
-
-    @Override
-    public String getName() {
-        throw new UnsupportedOperationException("Hidden predicates have no name");
     }
 }

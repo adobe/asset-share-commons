@@ -56,6 +56,23 @@
                                                 name="./paths"/>
                                     </paths>
 
+                                    <search-predicates
+                                            jcr:primaryType="nt:unstructured"
+                                            fieldLabel="Search Restrictions"
+                                            fieldDescription="Select pre-defined search restrictions that will be applied to the query server-side."
+                                            required="{Boolean}false"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/multifield">
+                                        <field
+                                                jcr:primaryType="nt:unstructured"
+                                                name="./searchPredicates"
+                                                emptyText="Choose a global search restriction"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/select">
+                                            <datasource
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="asset-share-commons/data-sources/search-predicates"/>
+                                        </field>
+                                    </search-predicates>
+
                                     <limit
                                         jcr:primaryType="nt:unstructured"
                                         sling:resourceType="granite/ui/components/coral/foundation/form/numberfield"
@@ -132,9 +149,9 @@
                                                 text="Card"
                                                 value="card"/>
                                             <list
-                                                    jcr:primaryType="nt:unstructured"
-                                                    text="List"
-                                                    value="list"/>
+                                                jcr:primaryType="nt:unstructured"
+                                                text="List"
+                                                value="list"/>
                                         </items>
                                     </default>
                                     <card
