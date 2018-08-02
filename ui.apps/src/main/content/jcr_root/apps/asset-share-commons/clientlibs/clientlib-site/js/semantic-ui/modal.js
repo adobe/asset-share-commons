@@ -79,7 +79,7 @@ AssetShare.SemanticUI.Modal = (function ($, ns) {
         }
 
         modals.forEach(function (modal) {
-            $.get(modal.url, modal.data, function (htmlResponse) {
+            $.post(modal.url, modal.data, function (htmlResponse) {
 
                 modal.options = modal.options || {};
                 modal.options.show = modal.options.show || function (modal) {
