@@ -80,7 +80,7 @@
 
             <div class="field">
                 <select class="ui dropdown search" name="s7exportsettings"
-                        data-sly-test="${download.imagePresets.size == 0}">
+                        data-sly-test="${download.imagePresets.size != 0}">
                     <option value="">${properties.imagePresetsPlaceholderText}</option>
                     <sly data-sly-list.imagePreset="${download.imagePresets}">
                         <option value="{imagepreset:${imagePreset}}">${imagePreset}</option>
