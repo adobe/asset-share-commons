@@ -64,6 +64,8 @@ The text for the button that lets users download all assets in the cart.
 * **Component**: `/apps/asset-share-commons/components/modals/cart`
 * **Sling Model**: `N/A`
 
+An ajax POST call is triggered to load the Cart modal. The POST method is used to avoid a lengthy URI request calls with multiple asset path parameters. The [ActionPageServlet](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/blob/master/core/src/main/java/com/adobe/aem/commons/assetshare/components/actions/impl/ActionPageServlet.java) is used to load the Cart modal and all other modals.
+
 #### ContextHub
 
 The Cart in Asset Share Commons runs on a custom ContextHub store (`/apps/asset-share-commons/clientlibs/clientlib-contexthub/cart`).

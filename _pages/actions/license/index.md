@@ -66,3 +66,5 @@ This value must resolve to a resource in AEM if it starts with a `/`, indicating
 If the property value does not start with a `/` then it is assumed to be a valid external URL.
 
 The property value of the `xmpRights:WebStatement` is then requested via an iframe in the License Modal for display to users.
+
+An ajax POST call is triggered to load the License modal. The POST method is used to avoid lengthy URI request calls with multiple asset path parameters. The [ActionPageServlet](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/blob/master/core/src/main/java/com/adobe/aem/commons/assetshare/components/actions/impl/ActionPageServlet.java) is used to load the modal.

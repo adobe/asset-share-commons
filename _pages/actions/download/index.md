@@ -75,3 +75,5 @@ The download functionality leverages AEM Assets `assetdownload.zip` servlet. To 
 available, the following request path must be open (ie. not blocked via AEM Dispatcher filters).
 
     HTTP POST /content/dam.assetdownload.zip/<ZIP File Name>.zip?licenseCheck=true&flatStructure=true&downloadSubassets=<true|false>&downloadRenditions=<true|false>
+
+An ajax POST call is triggered to load the Download modal. The POST method is used to avoid a lengthy URI request calls with multiple asset path parameters. The [ActionPageServlet](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/blob/master/core/src/main/java/com/adobe/aem/commons/assetshare/components/actions/impl/ActionPageServlet.java) is used to load the modal.
