@@ -4,9 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [v1.6.2]
+
+### Changed
+- 0069: Fixes issue with request URI being too long for modals by switching from GET to POST
+
+### Fixed
+- 0218: Fixes issue with Action Buttons' Download not working for Licensed assets when Licensing is disabled.
+- 0221: Fixes logic for Dynamic Media download modal to display a dropdown when image presets are set 
+
 ## [v1.6.0]
 
 ### Added
+- 0208: Addition of Smart Tags Computed Property and support of Smart Tags in the Tags Asset Details Component.
 - 0184: Added Search Predicates framework and provided OOTB implementations for: Exclude Content Fragments, Exclude Expired Assets, Exclude Sub-assets.
 - 0182: Added resource providers for Search and Asset Details pages that warn about mis-configurations of Asset Share Commons in AEM Author.
 - 0191: Support alphabetical or natural ordering of Tags in in the Tags search predicate. Fixed issues with Source options in dialog as well.
