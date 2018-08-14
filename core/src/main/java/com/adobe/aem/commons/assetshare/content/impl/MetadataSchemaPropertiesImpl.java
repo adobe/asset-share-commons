@@ -41,8 +41,7 @@ public class MetadataSchemaPropertiesImpl implements MetadataProperties {
 
     private static final String NN_FIELD = "field";
 
-    private static final String[] RT_FIELDS = { "granite/ui/components/foundation/form/field",
-            "granite/ui/components/coral/foundation/form/field", "dam/gui/components/admin/schemafield" };
+    private static final String[] RT_FIELDS = { "granite/ui/components/foundation/form/field", "granite/ui/components/coral/foundation/form/field" };
     @Override
     public Map<String, List<String>> getMetadataProperties(final SlingHttpServletRequest request) {
         return getMetadataProperties(request, Collections.EMPTY_LIST);
