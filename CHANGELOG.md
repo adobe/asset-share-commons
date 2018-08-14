@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Fixed
-- 0227: Site editor is missing workflow status information
+- 0227: Sites editor is missing workflow status information
 
 ## [v1.6.2]
 
