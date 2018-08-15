@@ -10,6 +10,7 @@ title: Release Process
 3. Ensure all checks pass (CodeClimate and TravisCI)
 2. Keep all commits (do NOT Squash and Merge) when merging `/develop` -> `/master`
 4. Checkout `/master` to your local machine; ensure it is up-to-date with `origin/master`
+5. Ensure that there are no empty directories using `git clean -i`
 5. In the same folder as the reactor pom, execute the command:
 	* `mvn -Pbintray-asset-share-commons release:prepare`
 	* Set the release tag as: `asset-share-commons-X.X.X`
