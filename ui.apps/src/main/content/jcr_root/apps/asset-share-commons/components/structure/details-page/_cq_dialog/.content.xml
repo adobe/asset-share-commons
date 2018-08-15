@@ -23,7 +23,7 @@
           jcr:primaryType="nt:unstructured"
           jcr:title="Page"
           sling:resourceType="cq/gui/components/authoring/dialog"
-          extraClientlibs="[cq.common.wcm,core.wcm.components.page.v1.editor,cq.wcm.msm.properties]"
+          extraClientlibs="[cq.common.wcm,core.wcm.components.page.v2.editor,cq.wcm.msm.properties]"
           helpPath="https://www.adobe.com/go/aem_cmp_page_v1"
           mode="edit">
     <content
