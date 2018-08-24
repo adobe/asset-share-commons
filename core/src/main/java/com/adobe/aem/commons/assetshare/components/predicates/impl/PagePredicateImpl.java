@@ -74,6 +74,8 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
     private String PN_PATHS = "paths";
     private String PN_SEARCH_PREDICATES = "searchPredicates";
 
+    private int currentGroup;
+
     @Self
     @Required
     SlingHttpServletRequest request;
@@ -110,6 +112,11 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
         return true;
     }
 
+    @Override
+    public void addCurrentGroup(int currentGroup) {
+        currentGroup++;
+        this.currentGroup = currentGroup;
+    }
 
     public String getOrderBy() {
         final String value = PredicateUtil.getParamFromQueryParams(request, "orderby");
@@ -251,15 +258,16 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
 
     private void addHiddenPredicatesAsPredicateGroups(final PredicateGroup root) {
         for (final HiddenPredicate hiddenPredicate : getHiddenPredicates(currentPage)) {
-            final PredicateGroup hidden = new PredicateGroup();
+            final PredicateGroup hidden = new PredicateGroup(currentGroup+"_group");
 
             hidden.addAll(hiddenPredicate.getPredicateGroup());
             root.add(hidden);
+            currentGroup++;
         }
     }
 
     private void addPathAsPredicateGroup(final PredicateGroup root) {
-        final PredicateGroup paths = new PredicateGroup();
+        final PredicateGroup paths = new PredicateGroup(currentGroup+"_group");
         paths.setAllRequired(false);
 
         final Map<String, String> params = new HashMap<>();
@@ -271,12 +279,16 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
 
         paths.addAll(PredicateConverter.createPredicates(params));
         root.add(paths);
+        currentGroup++;
     }
 
     private void addTypeAsPredicateGroup(final PredicateGroup root) {
-        root.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
+        final PredicateGroup types = new PredicateGroup(currentGroup+"_group");
+        types.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
                 put(TypePredicateEvaluator.TYPE,  DamConstants.NT_DAM_ASSET).
                 build()));
+        root.add(types);
+        currentGroup++;
     }
 
     private  List<SearchPredicate> getSearchPredicates() {
