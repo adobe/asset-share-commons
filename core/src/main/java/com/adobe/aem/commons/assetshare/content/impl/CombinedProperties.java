@@ -196,7 +196,14 @@ public final class CombinedProperties implements Map<String, Object> {
     }
 
     protected final ValueMap getMetadataProperties() {
-        return asset.adaptTo(Resource.class).getChild("jcr:content/metadata").getValueMap();
+        Resource resourceChild = asset.adaptTo(Resource.class).getChild("jcr:content/metadata");
+        if (resourceChild != null) {
+            return resourceChild.getValueMap();
+        } else {
+            log.debug("Asset {} does not have a metadata node (jcr:content/metadata).",
+                    asset.getPath());
+            return ValueMap.EMPTY;
+        }
     }
 
     protected final Map<String, ComputedProperty> getComputedPropertiesMap(final List<ComputedProperty> computedProperties) {

@@ -19,6 +19,8 @@
 
 package com.adobe.aem.commons.assetshare.search.providers.impl;
 
+import static org.osgi.framework.Constants.SERVICE_RANKING;
+
 import com.adobe.aem.commons.assetshare.components.predicates.PagePredicate;
 import com.adobe.aem.commons.assetshare.search.QueryParameterPostProcessor;
 import com.adobe.aem.commons.assetshare.search.SearchSafety;
@@ -31,13 +33,24 @@ import com.adobe.aem.commons.assetshare.search.results.Result;
 import com.adobe.aem.commons.assetshare.search.results.Results;
 import com.adobe.aem.commons.assetshare.search.results.impl.results.QueryBuilderResultsImpl;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
-import com.day.cq.dam.api.DamConstants;
-import com.day.cq.search.*;
+import com.day.cq.search.Predicate;
+import com.day.cq.search.PredicateConverter;
+import com.day.cq.search.PredicateGroup;
+import com.day.cq.search.Query;
+import com.day.cq.search.QueryBuilder;
 import com.day.cq.search.eval.PathPredicateEvaluator;
 import com.day.cq.search.result.Hit;
 import com.day.cq.search.result.SearchResult;
 import com.day.text.Text;
 import com.google.common.collect.ImmutableMap;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestParameter;
@@ -51,207 +64,227 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.jcr.RepositoryException;
-import javax.jcr.Session;
-import java.util.*;
-
-import static org.osgi.framework.Constants.SERVICE_RANKING;
-
 @Component(property = {
-        SERVICE_RANKING + ":Integer=" + Integer.MIN_VALUE
+    SERVICE_RANKING + ":Integer=" + Integer.MIN_VALUE
 })
 public class QuerySearchProviderImpl implements SearchProvider {
-    private static final Logger log = LoggerFactory.getLogger(QuerySearchProviderImpl.class);
 
-    @Reference
-    private SearchSafety searchSafety;
+  private static final Logger log = LoggerFactory.getLogger(QuerySearchProviderImpl.class);
 
-    @Reference
-    private QueryBuilder queryBuilder;
+  @Reference
+  private SearchSafety searchSafety;
 
-    @Reference
-    private ModelFactory modelFactory;
+  @Reference
+  private QueryBuilder queryBuilder;
 
-    @Reference(cardinality = ReferenceCardinality.OPTIONAL)
-    private QuerySearchPreProcessor querySearchPreProcessor;
+  @Reference
+  private ModelFactory modelFactory;
 
-    @Reference(cardinality = ReferenceCardinality.OPTIONAL)
-    private QuerySearchPostProcessor querySearchPostProcessor;
+  @Reference(cardinality = ReferenceCardinality.OPTIONAL)
+  private QuerySearchPreProcessor querySearchPreProcessor;
 
-    @Reference(cardinality = ReferenceCardinality.OPTIONAL)
-    private QueryParameterPostProcessor queryParametersPostProcessor;
+  @Reference(cardinality = ReferenceCardinality.OPTIONAL)
+  private QuerySearchPostProcessor querySearchPostProcessor;
 
-    public boolean accepts(SlingHttpServletRequest request) {
-        // This is the default with the lowest service ranking
-        return true;
+  @Reference(cardinality = ReferenceCardinality.OPTIONAL)
+  private QueryParameterPostProcessor queryParametersPostProcessor;
+
+  public boolean accepts(SlingHttpServletRequest request) {
+    // This is the default with the lowest service ranking
+    return true;
+  }
+
+  public Results getResults(final SlingHttpServletRequest request)
+      throws UnsafeSearchException, RepositoryException {
+    final ResourceResolver resourceResolver = request.getResourceResolver();
+    final PredicateGroup root;
+
+    if (querySearchPreProcessor != null) {
+      root = querySearchPreProcessor.process(request, getParams(request));
+    } else {
+      root = PredicateGroup.create(getParams(request));
     }
 
-    public Results getResults(final SlingHttpServletRequest request) throws UnsafeSearchException, RepositoryException {
-        final ResourceResolver resourceResolver = request.getResourceResolver();
-        final PredicateGroup root;
-
-        if (querySearchPreProcessor != null) {
-            root = querySearchPreProcessor.process(request, getParams(request));
-        } else {
-            root = PredicateGroup.create(getParams(request));
-        }
-
-        if (!searchSafety.isSafe(request.getResourceResolver(), root)) {
-            throw new UnsafeSearchException("Search query will initiate an traversing query");
-        }
-
-        debugPreQuery(root);
-
-        final Query query = queryBuilder.createQuery(root, resourceResolver.adaptTo(Session.class));
-        final SearchResult searchResult = query.getResult();
-
-        debugPostQuery(searchResult);
-
-        final List<Result> results = new ArrayList<>();
-
-        ResourceResolver resourceResolverLeakingReference = null;
-
-        for (final Hit hit : searchResult.getHits()) {
-            if (resourceResolverLeakingReference == null) {
-                resourceResolverLeakingReference = hit.getResource().getResourceResolver();
-            }
-
-            try {
-                final Resource hitResource = resourceResolver.getResource(hit.getPath());
-                final AssetResult assetSearchResult = modelFactory.getModelFromWrappedRequest(request, hitResource, AssetResult.class);
-                if (assetSearchResult != null) {
-                    results.add(assetSearchResult);
-                }
-            } catch (RepositoryException e) {
-                log.error("Could not retrieve search result", e);
-            }
-        }
-
-        if (resourceResolverLeakingReference != null) {
-            resourceResolverLeakingReference.close();
-        }
-
-        debugPostAdaptation(results);
-
-        final QueryBuilderResultsImpl resultsImpl = new QueryBuilderResultsImpl(results, searchResult);
-
-        if (querySearchPostProcessor != null) {
-            return querySearchPostProcessor.process(request, query, resultsImpl, searchResult);
-        } else {
-            return resultsImpl;
-        }
+    if (!searchSafety.isSafe(request.getResourceResolver(), root)) {
+      throw new UnsafeSearchException("Search query will initiate an traversing query");
     }
 
-    /**
-     * Generates the QueryBuilder query params from the Page Predicate settings and the request attributes.
-     *
-     * @param request
-     * @return the QueryBuilder parameter map.
-     */
-    private Map<String, String> getParams(final SlingHttpServletRequest request) {
-        Map<String, String> params = new HashMap<>();
-        // Copy over query params
+    debugPreQuery(root);
 
-        for (final Map.Entry<String, RequestParameter[]> entry : request.getRequestParameterMap().entrySet()) {
-            params.put(entry.getKey(), entry.getValue()[0].getString());
+    final Query query = queryBuilder.createQuery(root, resourceResolver.adaptTo(Session.class));
+    final SearchResult searchResult = query.getResult();
+
+    debugPostQuery(searchResult);
+
+    final List<Result> results = new ArrayList<>();
+
+    ResourceResolver resourceResolverLeakingReference = null;
+
+    for (final Hit hit : searchResult.getHits()) {
+      if (resourceResolverLeakingReference == null) {
+        resourceResolverLeakingReference = hit.getResource().getResourceResolver();
+      }
+
+      try {
+        final Resource hitResource = resourceResolver.getResource(hit.getPath());
+        final AssetResult assetSearchResult = modelFactory
+            .getModelFromWrappedRequest(request, hitResource, AssetResult.class);
+        if (assetSearchResult != null) {
+          results.add(assetSearchResult);
         }
-
-        // Remove common junk params
-        cleanParams(params);
-
-        final PagePredicate pagePredicate = request.adaptTo(PagePredicate.class);
-        final PredicateGroup root = PredicateConverter.createPredicates(params);
-
-        PagePredicate.ParamTypes[] excludeParamTypes = new PagePredicate.ParamTypes[]{};
-
-        if (isPathsProvidedByRequestParams(pagePredicate, params)) {
-            excludeParamTypes = new PagePredicate.ParamTypes[]{ PagePredicate.ParamTypes.PATH };
-        }
-
-        root.addAll(pagePredicate.getPredicateGroup(excludeParamTypes));
-
-        // If not provided, use the defaults set on the Search Component resource
-        addToPredicateGroupIfNotPresent(root, Predicate.ORDER_BY, pagePredicate.getOrderBy());
-        addToPredicateGroupIfNotPresent(root, Predicate.ORDER_BY + "." + Predicate.PARAM_SORT, pagePredicate.getOrderBySort());
-
-        params = PredicateConverter.createMap(root);
-        if (queryParametersPostProcessor != null) {
-            params = queryParametersPostProcessor.process(request, params);
-        }
-
-        return params;
+      } catch (RepositoryException e) {
+        log.error("Could not retrieve search result", e);
+      }
     }
 
-    private void addToPredicateGroupIfNotPresent(final PredicateGroup root, final String key, final String val) {
-        if (root.getByName(key) == null) {
-            root.add(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
-                    put(key, val).
-                    build()));
-        }
+    if (resourceResolverLeakingReference != null) {
+      resourceResolverLeakingReference.close();
     }
 
-    private boolean isPathsProvidedByRequestParams(final PagePredicate pagePredicate, final Map<String, String> requestParams) {
-        final ValueMap pathPredicates = PredicateUtil.findPredicate(requestParams, PathPredicateEvaluator.PATH, PathPredicateEvaluator.PATH);
+    debugPostAdaptation(results);
 
-        if (pathPredicates.size() == 0) {
-            return false;
-        }
+    final QueryBuilderResultsImpl resultsImpl = new QueryBuilderResultsImpl(results, searchResult);
 
-        final List<String> allowedPaths = pagePredicate.getPaths();
-        final String[] allowedPathPrefixes = pagePredicate.getPaths().stream().map(path ->  StringUtils.removeEnd(path, "/") + "/").toArray(String[]::new);
+    if (querySearchPostProcessor != null) {
+      return querySearchPostProcessor.process(request, query, resultsImpl, searchResult);
+    } else {
+      return resultsImpl;
+    }
+  }
 
-        boolean hasAllowed = false;
-        for (final String key : pathPredicates.keySet()) {
-            final String path = Text.makeCanonicalPath(pathPredicates.get(key, String.class));
+  /**
+   * Generates the QueryBuilder query params from the Page Predicate settings and the request
+   * attributes.
+   *
+   * @return the QueryBuilder parameter map.
+   */
+  private Map<String, String> getParams(final SlingHttpServletRequest request) {
+    Map<String, String> params = new HashMap<>();
+    // Copy over query params
 
-            if (StringUtils.startsWithAny(path, allowedPathPrefixes) || allowedPaths.contains(path)) {
-                hasAllowed = true;
-            } else {
-                requestParams.remove(key);
-            }
-        }
-
-        return hasAllowed;
+    for (final Map.Entry<String, RequestParameter[]> entry : request.getRequestParameterMap()
+        .entrySet()) {
+      params.put(entry.getKey(), entry.getValue()[0].getString());
     }
 
-    private void cleanParams(Map<String, String> params) {
-        params.remove("mode");
-        params.remove("layout");
-        params.remove("wcmmode");
-        params.remove("forceeditcontext");
+    // Remove common junk params
+    cleanParams(params);
+    int checkFreeGroup = calculateFreeGroup(params.keySet());
+
+    final PagePredicate pagePredicate = request.adaptTo(PagePredicate.class);
+    final PredicateGroup root = PredicateConverter.createPredicates(params);
+
+    PagePredicate.ParamTypes[] excludeParamTypes = new PagePredicate.ParamTypes[]{};
+
+    if (isPathsProvidedByRequestParams(pagePredicate, params)) {
+      excludeParamTypes = new PagePredicate.ParamTypes[]{PagePredicate.ParamTypes.PATH};
     }
 
-    private void debugPreQuery(PredicateGroup predicateGroup) {
-        if (log.isDebugEnabled()) {
+    pagePredicate.addCurrentGroup(checkFreeGroup);
+    root.addAll(pagePredicate.getPredicateGroup(excludeParamTypes));
 
-            final Map<String, String> sortedParams = new TreeMap<>();
-            sortedParams.putAll(PredicateConverter.createMap(predicateGroup));
+    // If not provided, use the defaults set on the Search Component resource
+    addToPredicateGroupIfNotPresent(root, Predicate.ORDER_BY, pagePredicate.getOrderBy());
+    addToPredicateGroupIfNotPresent(root, Predicate.ORDER_BY + "." + Predicate.PARAM_SORT,
+        pagePredicate.getOrderBySort());
 
-            final StringBuilder sb = new StringBuilder();
-            for(final Map.Entry<String, String> parameter : sortedParams.entrySet()) {
-                sb.append("\n" + parameter.getKey() + " = " + parameter.getValue());
-            }
-
-            log.debug("Query Builder Parameters: {}", sb.toString());
-        }
+    params = PredicateConverter.createMap(root);
+    if (queryParametersPostProcessor != null) {
+      params = queryParametersPostProcessor.process(request, params);
     }
 
-    private void debugPostQuery(SearchResult searchResult) {
-        if (log.isDebugEnabled()) {
-            log.debug("Executed query statement:\n{}", searchResult.getQueryStatement());
-            log.debug("Search results - Hits size [ {} ]", searchResult.getHits().size());
-            log.debug("Search results - Page count [ {} ]", searchResult.getResultPages().size());
-            log.debug("Search results - Page start index [ {} ]", searchResult.getStartIndex());
-            log.debug("Search results - Running total [ {} ]", searchResult.getStartIndex() + searchResult.getHits().size());
-            log.debug("Search results - Has more results [ {} ]", searchResult.hasMore());
-            log.debug("Search results - Total matches [ {} ]", searchResult.getTotalMatches());
-            log.debug("Search results - Execution time in ms [ {} ]", searchResult.getExecutionTimeMillis());
-        }
+    return params;
+  }
+
+  private int calculateFreeGroup(Set<String> keySet) {
+    int toReturn = 0;
+    for (String key : keySet) {
+      if (StringUtils.contains(key, "_group") && StringUtils
+          .isNumeric(StringUtils.substringBefore(key, "_group"))) {
+        toReturn =
+            Integer.parseInt(StringUtils.substringBefore(key, "_group")) > toReturn ? Integer
+                .parseInt(StringUtils.substringBefore(key, "_group")) : toReturn;
+      }
+    }
+    return toReturn;
+  }
+
+  private void addToPredicateGroupIfNotPresent(final PredicateGroup root, final String key,
+      final String val) {
+    if (root.getByName(key) == null) {
+      root.add(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
+          put(key, val).
+          build()));
+    }
+  }
+
+  private boolean isPathsProvidedByRequestParams(final PagePredicate pagePredicate,
+      final Map<String, String> requestParams) {
+    final ValueMap pathPredicates = PredicateUtil
+        .findPredicate(requestParams, PathPredicateEvaluator.PATH, PathPredicateEvaluator.PATH);
+
+    if (pathPredicates.size() == 0) {
+      return false;
     }
 
-    private void debugPostAdaptation(List<Result> results) {
-        if (log.isDebugEnabled()) {
-            log.debug("Adapted [ {} ] results to Result models", results.size());
-        }
+    final List<String> allowedPaths = pagePredicate.getPaths();
+    final String[] allowedPathPrefixes = pagePredicate.getPaths().stream()
+        .map(path -> StringUtils.removeEnd(path, "/") + "/").toArray(String[]::new);
+
+    boolean hasAllowed = false;
+    for (final String key : pathPredicates.keySet()) {
+      final String path = Text.makeCanonicalPath(pathPredicates.get(key, String.class));
+
+      if (StringUtils.startsWithAny(path, allowedPathPrefixes) || allowedPaths.contains(path)) {
+        hasAllowed = true;
+      } else {
+        requestParams.remove(key);
+      }
     }
+
+    return hasAllowed;
+  }
+
+  private void cleanParams(Map<String, String> params) {
+    params.remove("mode");
+    params.remove("layout");
+    params.remove("wcmmode");
+    params.remove("forceeditcontext");
+  }
+
+  private void debugPreQuery(PredicateGroup predicateGroup) {
+    if (log.isDebugEnabled()) {
+
+      final Map<String, String> sortedParams = new TreeMap<>();
+      sortedParams.putAll(PredicateConverter.createMap(predicateGroup));
+
+      final StringBuilder sb = new StringBuilder();
+      for (final Map.Entry<String, String> parameter : sortedParams.entrySet()) {
+        sb.append("\n" + parameter.getKey() + " = " + parameter.getValue());
+      }
+
+      log.debug("Query Builder Parameters: {}", sb.toString());
+    }
+  }
+
+  private void debugPostQuery(SearchResult searchResult) {
+    if (log.isDebugEnabled()) {
+      log.debug("Executed query statement:\n{}", searchResult.getQueryStatement());
+      log.debug("Search results - Hits size [ {} ]", searchResult.getHits().size());
+      log.debug("Search results - Page count [ {} ]", searchResult.getResultPages().size());
+      log.debug("Search results - Page start index [ {} ]", searchResult.getStartIndex());
+      log.debug("Search results - Running total [ {} ]",
+          searchResult.getStartIndex() + searchResult.getHits().size());
+      log.debug("Search results - Has more results [ {} ]", searchResult.hasMore());
+      log.debug("Search results - Total matches [ {} ]", searchResult.getTotalMatches());
+      log.debug("Search results - Execution time in ms [ {} ]",
+          searchResult.getExecutionTimeMillis());
+    }
+  }
+
+  private void debugPostAdaptation(List<Result> results) {
+    if (log.isDebugEnabled()) {
+      log.debug("Adapted [ {} ] results to Result models", results.size());
+    }
+  }
 }

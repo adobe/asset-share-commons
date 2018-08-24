@@ -50,6 +50,8 @@ public interface PagePredicate extends Predicate {
 
     PredicateGroup getPredicateGroup(ParamTypes... excludeParamTypes);
 
+    void addCurrentGroup(int currentGroup);
+
     /**
      * Deprecated. Use getPredicateGroup() instead.
      */
