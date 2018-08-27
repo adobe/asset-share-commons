@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+- 0227: Sites editor is missing workflow status information
 - 0237: Fixes issue with ContextHub being unloaded after a Form submissions via modals.
 
 ## [v1.6.2]
