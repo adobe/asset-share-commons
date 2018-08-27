@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - 0227: Sites editor is missing workflow status information
+- 0240: Date Range Filter is not sending date automatically
 
 ## [v1.6.2]
 
