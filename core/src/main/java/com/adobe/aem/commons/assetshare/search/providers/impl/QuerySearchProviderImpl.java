@@ -160,7 +160,7 @@ public class QuerySearchProviderImpl implements SearchProvider {
         cleanParams(params);
 
         final PagePredicate pagePredicate = request.adaptTo(PagePredicate.class);
-        final PredicateGroup root = PredicateConverter.createPredicates(params);
+        final PredicateGroup paramsPredicateGroup = PredicateConverter.createPredicates(params);
 
         PagePredicate.ParamTypes[] excludeParamTypes = new PagePredicate.ParamTypes[]{};
 
@@ -168,13 +168,14 @@ public class QuerySearchProviderImpl implements SearchProvider {
             excludeParamTypes = new PagePredicate.ParamTypes[]{ PagePredicate.ParamTypes.PATH };
         }
 
-        root.addAll(pagePredicate.getPredicateGroup(excludeParamTypes));
+        // Combine the use-provided (HTTP Params) and the server-side params in a manner that will not accidentally replace/merge predicates that collide with Group Ids.
+        final PredicateGroup combinedPredicateGroup = safeMerge(paramsPredicateGroup, pagePredicate.getPredicateGroup(excludeParamTypes));
 
         // If not provided, use the defaults set on the Search Component resource
-        addToPredicateGroupIfNotPresent(root, Predicate.ORDER_BY, pagePredicate.getOrderBy());
-        addToPredicateGroupIfNotPresent(root, Predicate.ORDER_BY + "." + Predicate.PARAM_SORT, pagePredicate.getOrderBySort());
+        addToPredicateGroupIfNotPresent(combinedPredicateGroup, Predicate.ORDER_BY, pagePredicate.getOrderBy());
+        addToPredicateGroupIfNotPresent(combinedPredicateGroup, Predicate.ORDER_BY + "." + Predicate.PARAM_SORT, pagePredicate.getOrderBySort());
 
-        params = PredicateConverter.createMap(root);
+        params = PredicateConverter.createMap(combinedPredicateGroup);
         if (queryParametersPostProcessor != null) {
             params = queryParametersPostProcessor.process(request, params);
         }
@@ -215,10 +216,42 @@ public class QuerySearchProviderImpl implements SearchProvider {
     }
 
     private void cleanParams(Map<String, String> params) {
+        // Do not allow users to specify guessTotal
+        //params.remove("p.guessTotal");
+
+        // Common junk params
         params.remove("mode");
         params.remove("layout");
         params.remove("wcmmode");
         params.remove("forceeditcontext");
+    }
+
+    /**
+     * A utility method to safely combine 2 Predicate Groups without Group ID collisions.
+     *
+     * The main difference between the
+     *
+     * @param src the Predicates to merged into dest. These will overwrite what is in dest.
+     * @param dest the Predicates to serve as a base for the merged.
+     * @return A combined PredicateGroup containing the Predicates from the 2 parameter Predicates Groups, such that there is no group collision.
+     */
+    private PredicateGroup safeMerge(final PredicateGroup src, final PredicateGroup dest) {
+        final PredicateGroup merged = dest.clone();
+        final Iterator<Predicate> iterator = src.iterator();
+
+        while(iterator.hasNext()) {
+            final Predicate predicate = iterator.next();
+
+            if (PredicateConverter.GROUP_PARAMETER_PREFIX.equals(predicate.getName()) && PredicateGroup.TYPE.equals(predicate.getType())) {
+                // False = do NOT reset the predicate name (in this case, "p").
+                merged.add(predicate.clone(false));
+            } else {
+                // True = resets the predicate name, ie the group index. Merge all other and remove their name's to allow QB to automatically group them
+                merged.add(predicate.clone(true));
+            }
+        }
+
+        return merged;
     }
 
     private void debugPreQuery(PredicateGroup predicateGroup) {
