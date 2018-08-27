@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - 0227: Sites editor is missing workflow status information
+- 0237: Fixes issue with ContextHub being unloaded after a Form submissions via modals.
 - 0240: Fixed issue with submitted date-range search values lagging behind actual value by one submission.
 
 ## [v1.6.2]
