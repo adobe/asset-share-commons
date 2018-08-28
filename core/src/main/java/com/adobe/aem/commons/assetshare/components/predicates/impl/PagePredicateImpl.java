@@ -188,7 +188,7 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
 
     @Override
     public PredicateGroup getPredicateGroup(ParamTypes... excludeParamTypes) {
-        final PredicateGroup root = new PredicateGroup("root");
+        final PredicateGroup root = new PredicateGroup();
         final PredicateGroup parameterGroup = new PredicateGroup(PredicateConverter.GROUP_PARAMETER_PREFIX);
 
         // Type Predicate
@@ -274,7 +274,7 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
     }
 
     private void addTypeAsPredicateGroup(final PredicateGroup root) {
-        root.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
+        root.add(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
                 put(TypePredicateEvaluator.TYPE,  DamConstants.NT_DAM_ASSET).
                 build()));
     }
