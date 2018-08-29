@@ -34,7 +34,7 @@ public class ThumbnailImpl extends AbstractComputedProperty<String> {
     public static final String LABEL = "Thumbnail Rendition";
     public static final String NAME = "thumbnail";
 
-    private static final String THUMBNAIL_RENDITION_NAME = "cq5dam.thumbnail.319.319.png";
+    private static final String THUMBNAIL_RENDITION_SELECTOR = ".thumb.319.319.png";
 
     private Cfg cfg;
 
@@ -60,18 +60,7 @@ public class ThumbnailImpl extends AbstractComputedProperty<String> {
 
     @Override
     public String get(final Asset asset) {
-        Rendition rendition = asset.getRendition(THUMBNAIL_RENDITION_NAME);
-
-        if (rendition == null && asset.getImagePreviewRendition() != null) {
-            rendition = asset.getImagePreviewRendition();
-        }
-
-        // Ensure the rendition is of mime/type image; else the thumbnail will not be able to render
-        if (rendition != null && StringUtils.startsWith(rendition.getMimeType(), "image/")) {
-            return StringUtils.replace(rendition.getPath(), " ", "%20");
-        }
-
-        return "";
+        return StringUtils.replace(asset.getPath(), " ", "%20") + THUMBNAIL_RENDITION_SELECTOR;
     }
 
     @Activate

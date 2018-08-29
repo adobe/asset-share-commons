@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0227: Sites editor is missing workflow status information
 - 0237: Fixes issue with ContextHub being unloaded after a Form submissions via modals.
 - 0240: Fixed issue with submitted date-range search values lagging behind actual value by one submission.
-
+- 0223: Fixed issue with the Thumbnail Computed Property generating URLs directly to the asset rendition for thumbnails, instead of using the OOTB "thumb" servlet.
 ## [v1.6.2]
 
 ### Changed
