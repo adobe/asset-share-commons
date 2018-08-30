@@ -80,6 +80,12 @@ public class FilterablePropertiesDataSource extends SlingSafeMethodsServlet {
             }
         }
 
+        final List<String> deltaFastProperties = fastPropertiesService.getDeltaProperties(fastProperties, (Collection<String>)(Collection<?>)data.values());
+
+        for (String deltaFastProperty : deltaFastProperties) {
+            data.put(FastProperties.FAST + " " + deltaFastProperty, deltaFastProperty);
+        }
+
         dataSourceBuilder.build(request, data);
     }
 }

@@ -89,6 +89,28 @@ public class FastPropertiesImpl implements FastProperties {
         return fastProperties;
     }
 
+    public List<String> getDeltaProperties(final Collection<String> fastProperties, final Collection<String> otherProperties) {
+        final List<String> delta = new ArrayList<>();
+
+        for (final String fastProperty : fastProperties) {
+            boolean found = false;
+            for (String otherProperty : otherProperties) {
+                if (StringUtils.equals(
+                        StringUtils.removeStart(fastProperty, "./"),
+                        StringUtils.removeStart(otherProperty, "./"))) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                delta.add(fastProperty);
+            }
+        }
+
+        return delta;
+    }
+
     @Override
     public String getFastLabel(final String label) {
         return FAST + "  " + label;

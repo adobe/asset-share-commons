@@ -42,6 +42,13 @@ public interface FastProperties {
     List<String> getFastProperties(String indexConfigFlagPropertyName);
 
     /**
+     * @param fastProperties a list relative property paths that are considered to be fast.
+     * @param otherProperties a list of other relative property paths.
+     * @return the delta between the fastProperties and the otherProperties.
+     */
+    List<String> getDeltaProperties(Collection<String> fastProperties, Collection<String> otherProperties);
+
+    /**
      * @param label the label text
      * @return the FASE icon suffixed with the label.
      */
