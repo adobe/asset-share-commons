@@ -82,8 +82,6 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
     @PostConstruct
     protected void init() {
         initPredicate(request, null);
-        //resource = searchConfig.getSearchResource();
-        //properties = resource.getValueMap();
     }
 
     @Override
