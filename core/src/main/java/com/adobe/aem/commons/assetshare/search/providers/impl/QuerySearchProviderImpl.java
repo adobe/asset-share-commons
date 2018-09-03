@@ -53,6 +53,7 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import java.util.*;
+import java.util.stream.StreamSupport;
 
 import static org.osgi.framework.Constants.SERVICE_RANKING;
 
@@ -239,22 +240,21 @@ public class QuerySearchProviderImpl implements SearchProvider {
      */
     private PredicateGroup safeMerge(final PredicateGroup src, final PredicateGroup dest) {
         final PredicateGroup merged = dest.clone();
-        final Iterator<Predicate> iterator = src.iterator();
 
-        while (iterator.hasNext()) {
-            final Predicate predicate = iterator.next();
+        StreamSupport.stream(
+                Spliterators.spliteratorUnknownSize(src.iterator(), Spliterator.ORDERED),
+                false).forEach(predicate -> {
 
-            if (PredicateConverter.GROUP_PARAMETER_PREFIX.equals(predicate.getName()) && PredicateGroup.TYPE.equals(predicate.getType())) {
-                // False = do NOT reset the predicate name (in this case, "p").
-                merged.add(predicate.clone(false));
-            } else if (PredicateGroup.TYPE.equals(predicate.getType())) {
-                // True = resets the predicate name, ie the group index. Merge all other and remove their name's to allow QB to automatically group them
+            if (!PredicateConverter.GROUP_PARAMETER_PREFIX.equals(predicate.getName()) &&
+                    PredicateGroup.TYPE.equals(predicate.getType())) {
+                // True = resets the predicate name, i.e. the group index.
+                // Merge all other and remove their name's to allow QB to automatically group them
                 merged.add(predicate.clone(true));
             } else {
-                // If NOT a predicate group, leave name alone.
+                // If NOT a predicate group, OR is the 'p' predicate group, leave name alone.
                 merged.add(predicate.clone(false));
             }
-        }
+        });
 
         return merged;
     }
