@@ -193,7 +193,7 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
 
         // Type Predicate
         if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.NODE_TYPE)) {
-            addTypeAsPredicateGroup(root);
+            addTypeAsPredicate(root);
         }
 
         // Path Predicate
@@ -273,8 +273,8 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
         root.add(paths);
     }
 
-    private void addTypeAsPredicateGroup(final PredicateGroup root) {
-        root.add(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
+    private void addTypeAsPredicate(final PredicateGroup root) {
+        root.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
                 put(TypePredicateEvaluator.TYPE,  DamConstants.NT_DAM_ASSET).
                 build()));
     }

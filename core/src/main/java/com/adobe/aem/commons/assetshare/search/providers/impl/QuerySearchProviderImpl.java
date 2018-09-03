@@ -31,7 +31,6 @@ import com.adobe.aem.commons.assetshare.search.results.Result;
 import com.adobe.aem.commons.assetshare.search.results.Results;
 import com.adobe.aem.commons.assetshare.search.results.impl.results.QueryBuilderResultsImpl;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
-import com.day.cq.dam.api.DamConstants;
 import com.day.cq.search.*;
 import com.day.cq.search.eval.PathPredicateEvaluator;
 import com.day.cq.search.result.Hit;
@@ -165,15 +164,15 @@ public class QuerySearchProviderImpl implements SearchProvider {
         PagePredicate.ParamTypes[] excludeParamTypes = new PagePredicate.ParamTypes[]{};
 
         if (isPathsProvidedByRequestParams(pagePredicate, params)) {
-            excludeParamTypes = new PagePredicate.ParamTypes[]{ PagePredicate.ParamTypes.PATH };
+            excludeParamTypes = new PagePredicate.ParamTypes[]{PagePredicate.ParamTypes.PATH};
         }
 
         // Combine the use-provided (HTTP Params) and the server-side params in a manner that will not accidentally replace/merge predicates that collide with Group Ids.
-        final PredicateGroup combinedPredicateGroup = safeMerge(paramsPredicateGroup, pagePredicate.getPredicateGroup(excludeParamTypes));
+        final PredicateGroup combinedPredicateGroup = safeMerge(pagePredicate.getPredicateGroup(excludeParamTypes), paramsPredicateGroup);
 
         // If not provided, use the defaults set on the Search Component resource
-        addToPredicateGroupIfNotPresent(combinedPredicateGroup, Predicate.ORDER_BY, pagePredicate.getOrderBy());
-        addToPredicateGroupIfNotPresent(combinedPredicateGroup, Predicate.ORDER_BY + "." + Predicate.PARAM_SORT, pagePredicate.getOrderBySort());
+        addParameterIfNotPresent(combinedPredicateGroup, Predicate.ORDER_BY, pagePredicate.getOrderBy());
+        addParameterIfNotPresent(combinedPredicateGroup, Predicate.ORDER_BY + "." + Predicate.PARAM_SORT, pagePredicate.getOrderBySort());
 
         params = PredicateConverter.createMap(combinedPredicateGroup);
         if (queryParametersPostProcessor != null) {
@@ -183,10 +182,12 @@ public class QuerySearchProviderImpl implements SearchProvider {
         return params;
     }
 
-    private void addToPredicateGroupIfNotPresent(final PredicateGroup root, final String key, final String val) {
-        if (root.getByName(key) == null) {
-            root.add(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
-                    put(key, val).
+    private void addParameterIfNotPresent(final PredicateGroup root, final String name, final String val) {
+        Predicate predicate = root.getByName(name);
+
+        if (predicate == null) {
+            root.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
+                    put(name, val).
                     build()));
         }
     }
@@ -199,7 +200,7 @@ public class QuerySearchProviderImpl implements SearchProvider {
         }
 
         final List<String> allowedPaths = pagePredicate.getPaths();
-        final String[] allowedPathPrefixes = pagePredicate.getPaths().stream().map(path ->  StringUtils.removeEnd(path, "/") + "/").toArray(String[]::new);
+        final String[] allowedPathPrefixes = pagePredicate.getPaths().stream().map(path -> StringUtils.removeEnd(path, "/") + "/").toArray(String[]::new);
 
         boolean hasAllowed = false;
         for (final String key : pathPredicates.keySet()) {
@@ -217,7 +218,7 @@ public class QuerySearchProviderImpl implements SearchProvider {
 
     private void cleanParams(Map<String, String> params) {
         // Do not allow users to specify guessTotal
-        //params.remove("p.guessTotal");
+        params.remove("p.guessTotal");
 
         // Common junk params
         params.remove("mode");
@@ -228,10 +229,11 @@ public class QuerySearchProviderImpl implements SearchProvider {
 
     /**
      * A utility method to safely combine 2 Predicate Groups without Group ID collisions.
+     * <p>
+     * Note that the parameter order is important. The src MUST NOT have any explicit group_# set and the dest will have any non-"p" group_#'s reset.
+     * If this is not respected, then the merge will be unsafe.
      *
-     * The main difference between the
-     *
-     * @param src the Predicates to merged into dest. These will overwrite what is in dest.
+     * @param src  the Predicates to merged into dest. These will overwrite what is in dest.
      * @param dest the Predicates to serve as a base for the merged.
      * @return A combined PredicateGroup containing the Predicates from the 2 parameter Predicates Groups, such that there is no group collision.
      */
@@ -239,15 +241,18 @@ public class QuerySearchProviderImpl implements SearchProvider {
         final PredicateGroup merged = dest.clone();
         final Iterator<Predicate> iterator = src.iterator();
 
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             final Predicate predicate = iterator.next();
 
             if (PredicateConverter.GROUP_PARAMETER_PREFIX.equals(predicate.getName()) && PredicateGroup.TYPE.equals(predicate.getType())) {
                 // False = do NOT reset the predicate name (in this case, "p").
                 merged.add(predicate.clone(false));
-            } else {
+            } else if (PredicateGroup.TYPE.equals(predicate.getType())) {
                 // True = resets the predicate name, ie the group index. Merge all other and remove their name's to allow QB to automatically group them
                 merged.add(predicate.clone(true));
+            } else {
+                // If NOT a predicate group, leave name alone.
+                merged.add(predicate.clone(false));
             }
         }
 
@@ -261,7 +266,7 @@ public class QuerySearchProviderImpl implements SearchProvider {
             sortedParams.putAll(PredicateConverter.createMap(predicateGroup));
 
             final StringBuilder sb = new StringBuilder();
-            for(final Map.Entry<String, String> parameter : sortedParams.entrySet()) {
+            for (final Map.Entry<String, String> parameter : sortedParams.entrySet()) {
                 sb.append("\n" + parameter.getKey() + " = " + parameter.getValue());
             }
 
