@@ -20,6 +20,7 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
@@ -104,20 +105,15 @@ public class SearchConfigImpl implements SearchConfig {
     public String getGuessTotal() {
         final String guessTotal = properties.get(PN_GUESS_TOTAL, DEFAULT_GUESS_TOTAL);
 
-        if ("true".equalsIgnoreCase(guessTotal)) {
-            return guessTotal;
-        } else {
-            try {
-                int tmp = Integer.parseInt(guessTotal);
+        if (Boolean.TRUE.toString().equalsIgnoreCase(guessTotal)) {
+            return Boolean.TRUE.toString();
+        }
 
-                if (tmp < 1 || tmp > MAX_GUESS_TOTAL) {
-                    return DEFAULT_GUESS_TOTAL;
-                } else {
-                    return String.valueOf(tmp);
-                }
-            } catch (NumberFormatException e) {
-                return DEFAULT_GUESS_TOTAL;
-            }
+        try {
+            int guessTotalAsNumber = Integer.parseInt(guessTotal);
+            return (guessTotalAsNumber < 1 || guessTotalAsNumber > MAX_GUESS_TOTAL) ? DEFAULT_GUESS_TOTAL : String.valueOf(guessTotalAsNumber);
+        } catch (NumberFormatException e) {
+            return DEFAULT_GUESS_TOTAL;
         }
     }
 
@@ -143,20 +139,11 @@ public class SearchConfigImpl implements SearchConfig {
 
     @Override
     public List<String> getPaths() {
-        final String[] uncheckedPaths = properties.get(PN_PATHS, DEFAULT_PATHS);
-        final List<String> paths = new ArrayList<>();
+        final List<String> paths  = Arrays.stream(properties.get(PN_PATHS, DEFAULT_PATHS)).filter(path ->
+          StringUtils.equals(path, DamConstants.MOUNTPOINT_ASSETS) || StringUtils.startsWith(path, DamConstants.MOUNTPOINT_ASSETS)
+        ).collect(Collectors.toList());
 
-        for (final String path : uncheckedPaths) {
-            if (StringUtils.equals(path, DamConstants.MOUNTPOINT_ASSETS) || StringUtils.startsWith(path, DamConstants.MOUNTPOINT_ASSETS)) {
-                paths.add(path);
-            }
-        }
-
-        if (paths.size() < 1) {
-            return Arrays.asList(DEFAULT_PATHS);
-        } else {
-            return paths;
-        }
+        return (paths.size() < 1) ? Arrays.asList(DEFAULT_PATHS) : paths;
     }
 
     @Override
