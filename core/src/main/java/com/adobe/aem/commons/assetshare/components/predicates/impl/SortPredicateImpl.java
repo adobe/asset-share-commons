@@ -22,6 +22,7 @@ package com.adobe.aem.commons.assetshare.components.predicates.impl;
 import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.SortPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.impl.options.SelectedOptionItem;
+import com.adobe.aem.commons.assetshare.components.search.SearchConfig;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
 import com.adobe.cq.commerce.common.ValueMapDecorator;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
@@ -30,9 +31,11 @@ import com.day.cq.search.Predicate;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.models.annotations.Default;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.Self;
+import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -49,6 +52,10 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
 
     protected ValueMap valuesFromRequest = null;
 
+    private static final String UNKNOWN_SORT_BY = "Unknown";
+
+    private List<OptionItem> items = null;
+
     @Self
     @Required
     private SlingHttpServletRequest request;
@@ -57,6 +64,18 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
     @Required
     private Options coreOptions;
 
+    @Self
+    @Required
+    private SearchConfig searchConfig;
+
+    @ValueMapValue
+    @Default(values = "ASC")
+    private String ascendingLabel;
+
+    @ValueMapValue
+    @Default(values = "DESC")
+    private String descendingLabel;
+
     @PostConstruct
     protected void init() {
         initPredicate(request, coreOptions);
@@ -64,18 +83,48 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
 
     @Override
     public List<OptionItem> getItems() {
-        final ValueMap initialValues = getInitialValues();
-        final List<OptionItem> processedOptionItems = new ArrayList<>();
+        if (items == null) {
+            items = new ArrayList<>();
+            final ValueMap initialValues = getInitialValues();
 
-        for (final OptionItem optionItem : coreOptions.getItems()) {
-            if (PredicateUtil.isOptionInInitialValues(optionItem, initialValues)) {
-                processedOptionItems.add(new SelectedOptionItem(optionItem));
-            } else {
-                processedOptionItems.add(optionItem);
+            for (final OptionItem optionItem : coreOptions.getItems()) {
+                if (PredicateUtil.isOptionInInitialValues(optionItem, initialValues)) {
+                    items.add(new SelectedOptionItem(optionItem));
+                } else {
+                    items.add(optionItem);
+                }
             }
         }
 
-        return processedOptionItems;
+        return items;
+    }
+
+    @Override
+    public String getOrderByLabel() {
+        String label = UNKNOWN_SORT_BY;
+        for (final OptionItem optionItem : getItems()) {
+            if (optionItem.isSelected()) {
+                label = optionItem.getText();
+                break;
+            }
+        }
+
+        return label;
+    }
+
+    @Override
+    public String getOrderBySortLabel() {
+        if (isAscending()) {
+            return ascendingLabel;
+        } else {
+            return descendingLabel;
+        }
+    }
+
+    @Override
+    public boolean isAscending() {
+         final String orderBySort = getInitialValues().get(Predicate.PARAM_SORT, String.class);
+         return Predicate.SORT_ASCENDING.equalsIgnoreCase(orderBySort);
     }
 
     @Override
@@ -93,15 +142,17 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
         if (valuesFromRequest == null) {
             valuesFromRequest = new ValueMapDecorator(new HashMap<>());
 
-            final String orderBy = PredicateUtil.getParamFromQueryParams(request, Predicate.ORDER_BY);
-            if (StringUtils.isNotBlank(orderBy)) {
-                valuesFromRequest.put(Predicate.ORDER_BY, orderBy);
+            String orderBy = PredicateUtil.getParamFromQueryParams(request, Predicate.ORDER_BY);
+            if (StringUtils.isBlank(orderBy)) {
+                orderBy = searchConfig.getOrderBy();
             }
+            valuesFromRequest.put(Predicate.ORDER_BY, orderBy);
 
-            final String orderBySort = PredicateUtil.getParamFromQueryParams(request, Predicate.PARAM_SORT);
-            if (StringUtils.isNotBlank(orderBySort)) {
-                valuesFromRequest.put(Predicate.PARAM_SORT, orderBySort);
+            String orderBySort = PredicateUtil.getParamFromQueryParams(request, Predicate.PARAM_SORT);
+            if (StringUtils.isBlank(orderBySort)) {
+                orderBySort = searchConfig.getOrderBySort();
             }
+            valuesFromRequest.put(Predicate.PARAM_SORT, orderBySort);
         }
 
         return valuesFromRequest;
