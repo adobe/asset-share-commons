@@ -169,7 +169,8 @@ public class QuerySearchProviderImpl implements SearchProvider {
         }
 
         // Combine the use-provided (HTTP Params) and the server-side params in a manner that will not accidentally replace/merge predicates that collide with Group Ids.
-        final PredicateGroup combinedPredicateGroup = safeMerge(pagePredicate.getPredicateGroup(excludeParamTypes), paramsPredicateGroup);
+        final PredicateGroup combinedPredicateGroup = safeMerge(paramsPredicateGroup,
+                pagePredicate.getPredicateGroup(excludeParamTypes));
 
         // If not provided, use the defaults set on the Search Component resource
         addParameterIfNotPresent(combinedPredicateGroup, Predicate.ORDER_BY, pagePredicate.getOrderBy());
@@ -234,7 +235,8 @@ public class QuerySearchProviderImpl implements SearchProvider {
      * Note that the parameter order is important. The src MUST NOT have any explicit group_# set and the dest will have any non-"p" group_#'s reset.
      * If this is not respected, then the merge will be unsafe.
      *
-     * @param src  the Predicates to merged into dest. These will overwrite what is in dest.
+     * @param src  the Predicates to merged into dest. These will overwrite what is in dest if there is a collision.
+     *             Typically the src are the HTTP Parameters (which have an "unknown" order).
      * @param dest the Predicates to serve as a base for the merged.
      * @return A combined PredicateGroup containing the Predicates from the 2 parameter Predicates Groups, such that there is no group collision.
      */
