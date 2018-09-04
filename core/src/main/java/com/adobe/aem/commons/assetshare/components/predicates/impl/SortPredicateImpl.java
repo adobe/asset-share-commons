@@ -87,13 +87,13 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
             items = new ArrayList<>();
             final ValueMap initialValues = getInitialValues();
 
-            for (final OptionItem optionItem : coreOptions.getItems()) {
+            coreOptions.getItems().stream().forEach(optionItem -> {
                 if (PredicateUtil.isOptionInInitialValues(optionItem, initialValues)) {
                     items.add(new SelectedOptionItem(optionItem));
                 } else {
                     items.add(optionItem);
                 }
-            }
+            });
         }
 
         return items;
