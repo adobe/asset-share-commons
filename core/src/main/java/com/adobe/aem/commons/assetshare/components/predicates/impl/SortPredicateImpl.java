@@ -148,7 +148,7 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
             }
             valuesFromRequest.put(Predicate.ORDER_BY, orderBy);
 
-            String orderBySort = PredicateUtil.getParamFromQueryParams(request, Predicate.PARAM_SORT);
+            String orderBySort = PredicateUtil.getParamFromQueryParams(request, Predicate.ORDER_BY + "." + Predicate.PARAM_SORT);
             if (StringUtils.isBlank(orderBySort)) {
                 orderBySort = searchConfig.getOrderBySort();
             }
