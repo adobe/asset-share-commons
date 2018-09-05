@@ -30,8 +30,6 @@ import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Reference;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -82,15 +80,18 @@ public class FilterablePropertiesDataSource extends SlingSafeMethodsServlet {
 
 
         if(metadataFieldTypes.isEmpty()) {
-            final List<String> deltaFastProperties = fastPropertiesService
-                .getDeltaProperties(fastProperties,
-                    (Collection<String>) (Collection<?>) data.values());
-
-            for (String deltaFastProperty : deltaFastProperties) {
-                data.put(FastProperties.DELTA + " " + deltaFastProperty, deltaFastProperty);
-            }
-
+            addDeltaFastProperties(data, fastProperties);
         }
         dataSourceBuilder.build(request, data);
+    }
+
+    private void addDeltaFastProperties(Map<String, Object> data, List<String> fastProperties) {
+        final List<String> deltaFastProperties = fastPropertiesService
+            .getDeltaProperties(fastProperties,
+                (Collection<String>) (Collection<?>) data.values());
+
+        for (String deltaFastProperty : deltaFastProperties) {
+            data.put(FastProperties.DELTA + " " + deltaFastProperty, deltaFastProperty);
+        }
     }
 }
