@@ -30,5 +30,20 @@ public interface SortPredicate extends Predicate {
      * @return the option items for this predicate.
      */
     List<OptionItem> getItems();
+
+    /**
+     * @return true if the active sort order is ascending (vs. descending).
+     */
+    default boolean isAscending() { return false; }
+
+    /**
+     * @return the active label for the Order By (Sort By) field.
+     */
+    default String getOrderByLabel() { return "Sort By"; }
+
+    /**
+     * @return the active label for the Order By Sort (Sort Direction) field.
+     */
+    default String getOrderBySortLabel() { return "DESC"; }
 }
 
