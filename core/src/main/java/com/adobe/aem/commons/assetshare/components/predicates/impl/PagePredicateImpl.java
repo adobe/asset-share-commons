@@ -22,6 +22,7 @@ package com.adobe.aem.commons.assetshare.components.predicates.impl;
 import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.HiddenPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.PagePredicate;
+import com.adobe.aem.commons.assetshare.components.search.SearchConfig;
 import com.adobe.aem.commons.assetshare.search.searchpredicates.SearchPredicate;
 import com.adobe.aem.commons.assetshare.util.ComponentModelVisitor;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
@@ -37,14 +38,11 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestParameter;
-import org.apache.sling.api.resource.Resource;
-import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.Self;
-import org.apache.sling.models.annotations.injectorspecific.SlingObject;
 import org.apache.sling.models.factory.ModelFactory;
 
 import javax.annotation.PostConstruct;
@@ -60,19 +58,8 @@ import java.util.*;
 public class PagePredicateImpl extends AbstractPredicate implements PagePredicate {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/results";
 
-    private static final int MAX_GUESS_TOTAL = 2000;
     private static final int MAX_LIMIT = 1000;
     private static final int DEFAULT_LIMIT = 50;
-    private static final String DEFAULT_GUESS_TOTAL = "250";
-    private static final String DEFAULT_ORDER_BY = "@jcr:score";
-    private static final String DEFAULT_ORDER_BY_SORT = "desc";
-    private final String[] DEFAULT_PATHS = {"/content/dam"};
-
-    private String PN_ORDERBY = "orderBy";
-    private String PN_ORDERBY_SORT = "orderBySort";
-    private String PN_LIMIT = "limit";
-    private String PN_PATHS = "paths";
-    private String PN_SEARCH_PREDICATES = "searchPredicates";
 
     @Self
     @Required
@@ -82,9 +69,9 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
     @Required
     private Page currentPage;
 
-    @SlingObject
+    @Self
     @Required
-    private Resource resource;
+    private SearchConfig searchConfig;
 
     @OSGiService
     private ModelFactory modelFactory;
@@ -92,12 +79,9 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
     @OSGiService
     private List<SearchPredicate> searchPredicates;
 
-    private ValueMap properties;
-
     @PostConstruct
     protected void init() {
         initPredicate(request, null);
-        properties = resource.getValueMap();
     }
 
     @Override
@@ -113,12 +97,12 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
 
     public String getOrderBy() {
         final String value = PredicateUtil.getParamFromQueryParams(request, "orderby");
-        return StringUtils.defaultIfBlank(value, properties.get(PN_ORDERBY, DEFAULT_ORDER_BY));
+        return StringUtils.defaultIfBlank(value, searchConfig.getOrderBy());
     }
 
     public String getOrderBySort() {
         final String value = PredicateUtil.getParamFromQueryParams(request, "orderby.sort");
-        return StringUtils.defaultIfBlank(value, properties.get(PN_ORDERBY_SORT, DEFAULT_ORDER_BY_SORT));
+        return StringUtils.defaultIfBlank(value, searchConfig.getOrderBySort());
     }
 
     public int getLimit() {
@@ -129,10 +113,10 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
             try {
                 limit = Integer.parseInt(requestParameter.getString());
             } catch (NumberFormatException e) {
-                limit = properties.get(PN_LIMIT, DEFAULT_LIMIT);
+                limit = searchConfig.getLimit();
             }
         } else {
-            limit = properties.get(PN_LIMIT, DEFAULT_LIMIT);
+            limit = searchConfig.getLimit();
         }
 
         if (limit > MAX_LIMIT) {
@@ -145,40 +129,11 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
     }
 
     public String getGuessTotal() {
-        final String guessTotal = properties.get(Predicate.PARAM_GUESS_TOTAL, DEFAULT_GUESS_TOTAL);
-
-        if ("true".equalsIgnoreCase(guessTotal)) {
-            return guessTotal;
-        } else {
-            try {
-                int tmp = Integer.parseInt(guessTotal);
-
-                if (tmp < 1 || tmp > MAX_GUESS_TOTAL) {
-                    return DEFAULT_GUESS_TOTAL;
-                } else {
-                    return String.valueOf(tmp);
-                }
-            } catch (NumberFormatException e) {
-                return DEFAULT_GUESS_TOTAL;
-            }
-        }
+        return searchConfig.getGuessTotal();
     }
 
     public List<String> getPaths() {
-        final String[] uncheckedPaths = properties.get(PN_PATHS, DEFAULT_PATHS);
-        final List<String> paths = new ArrayList<>();
-
-        for (final String path : uncheckedPaths) {
-            if (StringUtils.equals(path, DamConstants.MOUNTPOINT_ASSETS) || StringUtils.startsWith(path, DamConstants.MOUNTPOINT_ASSETS)) {
-                paths.add(path);
-            }
-        }
-
-        if (paths.size() < 1) {
-            return Arrays.asList(DEFAULT_PATHS);
-        } else {
-            return paths;
-        }
+        return searchConfig.getPaths();
     }
 
     @Override
@@ -235,13 +190,13 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
 
     private void addGuessTotalAsParameterPredicate(final PredicateGroup parameterGroup) {
         parameterGroup.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
-                put(Predicate.PARAM_GUESS_TOTAL,  getGuessTotal()).
+                put(Predicate.PARAM_GUESS_TOTAL, getGuessTotal()).
                 build()));
     }
 
     private void addLimitAsParameterPredicate(final PredicateGroup parameterGroup) {
         parameterGroup.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
-                put(Predicate.PARAM_LIMIT,  String.valueOf(getLimit())).
+                put(Predicate.PARAM_LIMIT, String.valueOf(getLimit())).
                 build()));
     }
 
@@ -280,7 +235,7 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
 
     private void addTypeAsPredicate(final PredicateGroup root) {
         root.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
-                put(TypePredicateEvaluator.TYPE,  DamConstants.NT_DAM_ASSET).
+                put(TypePredicateEvaluator.TYPE, DamConstants.NT_DAM_ASSET).
                 build()));
     }
 
@@ -319,7 +274,9 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
         return visitor.getModels();
     }
 
-    /** Deprecated Methods **/
+    /**
+     * Deprecated Methods
+     **/
 
     @Override
     @Deprecated
