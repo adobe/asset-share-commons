@@ -33,7 +33,8 @@ public interface PagePredicate extends Predicate {
         GUESS_TOTAL,
         LIMIT,
         HIDDEN_PREDICATES,
-        SEARCH_PREDICATES;
+        SEARCH_PREDICATES,
+        ORDERBY;
     }
 
     String getOrderBy();
