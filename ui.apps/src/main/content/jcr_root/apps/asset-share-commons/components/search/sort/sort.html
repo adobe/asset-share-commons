@@ -30,10 +30,10 @@
 				data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}"
 				data-sly-list.item="${predicate.items}"/>
 		<i class="dropdown icon"></i>
-		<div class="text">${properties['orderByLabel']}</div>
+		<div class="text">${predicate.orderByLabel}</div>
 		<div class="menu"
 			 data-sly-list.item="${predicate.items}">
-			<div class="item" data-value="${item.value}">${item.text}</div>
+			<div class="item ${item.selected ? 'selected' : ''}" data-value="${item.value}">${item.text}</div>
 		</div>
 	</div>
 
@@ -44,13 +44,12 @@
 				form="${predicate.formId}"
 				data-asset-share-id="sort"
 				data-asset-share-search-actions="all"
-				data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}"
-				data-sly-list.item="${predicate.items}"/>
+				data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}"/>
 		<i class="dropdown icon"></i>
-		<div class="text">${properties['orderBySortLabel']}</div>
+		<div class="text">${predicate.orderBySortLabel}</div>
 		<div class="menu">
-			<div class="item" data-value="asc">${properties['ascendingLabel']}</div>
-			<div class="item" data-value="desc">${properties['descendingLabel']}</div>
+			<div class="item ${predicate.ascending ? 'selected' : ''}" data-value="asc">${properties['ascendingLabel']}</div>
+			<div class="item ${predicate.ascending ? '' : 'selected'}" data-value="desc">${properties['descendingLabel']}</div>
 		</div>
 	</div>
 
