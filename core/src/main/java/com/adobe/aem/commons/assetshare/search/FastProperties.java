@@ -32,6 +32,7 @@ import java.util.List;
 public interface FastProperties {
     String SLOW = "\uD83D\uDC22"; // Turtle in Unicode
     String FAST = "\u26A1"; // Lightning bolt in Unicode
+    String DELTA = "\uD83D\uDDF2";
 
     /**
      * Checks if the /oak:index/damAssetLucene index (or whatever may be overridden via FastPropertiesImpl OSGi Config) has a indexRule property config with the a property named indexConfigFlagPropertyName set to true.
