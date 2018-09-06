@@ -56,6 +56,11 @@ public interface SearchConfig {
     String getOrderBySort();
 
     /**
+     * @return true if the sort order is case-sensitive, else false;
+     */
+    default boolean isOrderByCase() { return false; }
+
+    /**
      * @return the limit of number of results to return for this search.
      */
     int getLimit();

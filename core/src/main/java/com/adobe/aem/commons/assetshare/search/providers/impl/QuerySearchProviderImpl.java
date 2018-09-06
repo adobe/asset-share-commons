@@ -172,26 +172,12 @@ public class QuerySearchProviderImpl implements SearchProvider {
         final PredicateGroup combinedPredicateGroup = safeMerge(paramsPredicateGroup,
                 pagePredicate.getPredicateGroup(excludeParamTypes));
 
-        // If not provided, use the defaults set on the Search Component resource
-        addParameterIfNotPresent(combinedPredicateGroup, Predicate.ORDER_BY, pagePredicate.getOrderBy());
-        addParameterIfNotPresent(combinedPredicateGroup, Predicate.ORDER_BY + "." + Predicate.PARAM_SORT, pagePredicate.getOrderBySort());
-
         params = PredicateConverter.createMap(combinedPredicateGroup);
         if (queryParametersPostProcessor != null) {
             params = queryParametersPostProcessor.process(request, params);
         }
 
         return params;
-    }
-
-    private void addParameterIfNotPresent(final PredicateGroup root, final String name, final String val) {
-        Predicate predicate = root.getByName(name);
-
-        if (predicate == null) {
-            root.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
-                    put(name, val).
-                    build()));
-        }
     }
 
     private boolean isPathsProvidedByRequestParams(final PagePredicate pagePredicate, final Map<String, String> requestParams) {

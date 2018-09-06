@@ -169,6 +169,11 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
             addPathAsPredicateGroup(root);
         }
 
+        // OrderBy Parameters
+        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.ORDERBY)) {
+            addOrderByAsPredicate(root);
+        }
+
         // Hidden Predicates
         if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.HIDDEN_PREDICATES)) {
             addHiddenPredicatesAsPredicateGroups(root);
@@ -255,6 +260,17 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
     private void addTypeAsPredicate(final PredicateGroup root) {
         root.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
                 put(TypePredicateEvaluator.TYPE, DamConstants.NT_DAM_ASSET).
+                build()));
+    }
+
+
+    private void addOrderByAsPredicate(final PredicateGroup root) {
+        final String orderByCase = searchConfig.isOrderByCase() ? "" : Predicate.IGNORE_CASE;
+
+        root.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
+                put(Predicate.ORDER_BY , searchConfig.getOrderBy()).
+                put(Predicate.ORDER_BY + "." + Predicate.PARAM_SORT, searchConfig.getOrderBySort()).
+                put(Predicate.ORDER_BY + "." + Predicate.PARAM_CASE, orderByCase).
                 build()));
     }
 

@@ -36,6 +36,8 @@ public class SearchConfigImpl implements SearchConfig {
     private static final String DEFAULT_GUESS_TOTAL = "250";
     private static final String DEFAULT_ORDER_BY = "@jcr:score";
     private static final String DEFAULT_ORDER_BY_SORT = Predicate.SORT_DESCENDING;
+    private static final boolean DEFAULT_ORDER_BY_CASE = false;
+
     private static final String DEFAULT_LAYOUT = "card";
     private static final String DEFAULT_SPID = "search";
 
@@ -43,6 +45,7 @@ public class SearchConfigImpl implements SearchConfig {
 
     private String PN_ORDER_BY = "orderBy";
     private String PN_ORDER_BY_SORT = "orderBySort";
+    private String PN_ORDER_BY_CASE = "orderByCase";
     private String PN_LIMIT = Predicate.PARAM_LIMIT;
     private String PN_PATHS = "paths";
     private String PN_LAYOUT = "layout";
@@ -101,6 +104,7 @@ public class SearchConfigImpl implements SearchConfig {
         return properties.get(PN_LAYOUT, DEFAULT_LAYOUT);
 
     }
+
     @Override
     public String getGuessTotal() {
         final String guessTotal = properties.get(PN_GUESS_TOTAL, DEFAULT_GUESS_TOTAL);
@@ -135,6 +139,11 @@ public class SearchConfigImpl implements SearchConfig {
     @Override
     public String getOrderBySort() {
         return properties.get(PN_ORDER_BY_SORT, DEFAULT_ORDER_BY_SORT);
+    }
+
+    @Override
+    public boolean isOrderByCase() {
+        return properties.get(PN_ORDER_BY_CASE, DEFAULT_ORDER_BY_CASE);
     }
 
     @Override

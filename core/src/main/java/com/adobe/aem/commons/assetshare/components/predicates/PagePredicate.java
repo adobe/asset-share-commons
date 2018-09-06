@@ -43,7 +43,8 @@ public interface PagePredicate extends Predicate {
         OFFSET,
         LIMIT,
         HIDDEN_PREDICATES,
-        SEARCH_PREDICATES;
+        SEARCH_PREDICATES,
+        ORDERBY;
     }
 
     /**
