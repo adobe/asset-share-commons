@@ -107,7 +107,7 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
 
     public int getLimit() {
         final RequestParameter requestParameter = request.getRequestParameter("p.limit");
-        int limit = properties.get(PN_LIMIT, DEFAULT_LIMIT);
+        int limit = searchConfig.getLimit();
 
         if (requestParameter != null) {
             try {
