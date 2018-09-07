@@ -37,9 +37,19 @@ public interface SortPredicate extends Predicate {
     default boolean isAscending() { return false; }
 
     /**
+     * @return the active Order By (Sort By) value or null to use configured default.
+     */
+    default String getOrderBy() { return null; }
+
+    /**
      * @return the active label for the Order By (Sort By) field.
      */
     default String getOrderByLabel() { return "Sort By"; }
+
+    /**
+     * @return the active Order By (Sort Direction) value or null to use configured default.
+     */
+    default String getOrderBySort() { return null; }
 
     /**
      * @return the active label for the Order By Sort (Sort Direction) field.
