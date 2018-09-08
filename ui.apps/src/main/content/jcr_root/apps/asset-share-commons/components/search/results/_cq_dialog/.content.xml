@@ -123,15 +123,22 @@
                                         </items>
                                     </default-orderby-sort>
 
+                                    <!--
+                                    Commented per: https://github.com/Adobe-Marketing-Cloud/asset-share-commons/issues/267
+
+                                    This is pending a fix in AEM.
+
                                     <orderby-case
-                                            jcr:primaryType="nt:unstructured"
-                                            sling:orderBefore="name"
-                                            sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
-                                            fieldDescription="Check this for case-sensitive sorting."
-                                            name="./orderByCase"
-                                            text="Case-sensitive Sorting"
-                                            value="{Boolean}true"
-                                            uncheckedValue="{Boolean}false"/>
+                                          jcr:primaryType="nt:unstructured"
+                                          sling:orderBefore="name"
+                                          sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                          fieldDescription="Check this for case-insensitive sorting."
+                                          name="./orderByCase"
+                                          text="Case-insensitive Sorting"
+                                          value="{Boolean}false"
+                                          uncheckedValue="{Boolean}true"/>
+                                    -->
+
                                 </items>
                             </column>
                         </items>
