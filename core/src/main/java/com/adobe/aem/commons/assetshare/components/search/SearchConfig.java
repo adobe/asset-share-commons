@@ -56,9 +56,11 @@ public interface SearchConfig {
     String getOrderBySort();
 
     /**
+     * Note that ordering case-insensitive with QueryBuilder breaks sorting by anything by text data, this it is inadvisable for this to return false unto this is fixed in AEM.
+     *
      * @return true if the sort order is case-sensitive, else false;
      */
-    default boolean isOrderByCase() { return false; }
+    default boolean isOrderByCase() { return true; }
 
     /**
      * @return the limit of number of results to return for this search.

@@ -36,7 +36,7 @@ public class SearchConfigImpl implements SearchConfig {
     private static final String DEFAULT_GUESS_TOTAL = "250";
     private static final String DEFAULT_ORDER_BY = "@jcr:score";
     private static final String DEFAULT_ORDER_BY_SORT = Predicate.SORT_DESCENDING;
-    private static final boolean DEFAULT_ORDER_BY_CASE = false;
+    private static final boolean DEFAULT_ORDER_BY_CASE = true;
 
     private static final String DEFAULT_LAYOUT = "card";
     private static final String DEFAULT_SPID = "search";

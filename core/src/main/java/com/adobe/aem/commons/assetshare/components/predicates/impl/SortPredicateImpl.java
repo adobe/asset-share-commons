@@ -52,6 +52,8 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
 
     protected ValueMap valuesFromRequest = null;
 
+    private static final String INITIAL_VALUES_ORDER_BY = "orderBy";
+    private static final String INITIAL_VALUES_ORDER_BY_SORT = "orderBySort";
     private static final String UNKNOWN_SORT_BY = "Unknown";
 
     private List<OptionItem> items = null;
@@ -100,6 +102,11 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
     }
 
     @Override
+    public String getOrderBy() {
+        return getInitialValues().get(INITIAL_VALUES_ORDER_BY, String.class);
+    }
+
+    @Override
     public String getOrderByLabel() {
         String label = UNKNOWN_SORT_BY;
         for (final OptionItem optionItem : getItems()) {
@@ -110,6 +117,11 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
         }
 
         return label;
+    }
+
+    @Override
+    public String getOrderBySort() {
+        return getInitialValues().get(INITIAL_VALUES_ORDER_BY_SORT, String.class);
     }
 
     @Override
@@ -146,13 +158,13 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
             if (StringUtils.isBlank(orderBy)) {
                 orderBy = searchConfig.getOrderBy();
             }
-            valuesFromRequest.put(Predicate.ORDER_BY, orderBy);
+            valuesFromRequest.put(INITIAL_VALUES_ORDER_BY, orderBy);
 
             String orderBySort = PredicateUtil.getParamFromQueryParams(request, Predicate.ORDER_BY + "." + Predicate.PARAM_SORT);
             if (StringUtils.isBlank(orderBySort)) {
                 orderBySort = searchConfig.getOrderBySort();
             }
-            valuesFromRequest.put(Predicate.PARAM_SORT, orderBySort);
+            valuesFromRequest.put(INITIAL_VALUES_ORDER_BY_SORT, orderBySort);
         }
 
         return valuesFromRequest;
