@@ -35,7 +35,14 @@ Allows the definition of individual Query Builder predicates.
 Query Builder groups are automatically prefixed to each set of predicates defined in a Hidden Filter component; each discrete Hidden Filter component on the search page gets its own Query Builder group.
 
 All Predicates in a Hidden Filter are part of the same group, so in order to achieve desired filtering, several discrete Hidden Filter components may be required (as each set will be OR'd together).        
-        
+
+## Pro-tip
+
+Implementing Hidden Predicate parameters as [SearchPredicate](/asset-share-commons/apidocs/com/adobe/aem/commons/assetshare/search/searchpredicates/SearchPredicate.html) (set on the [Search Results component](/asset-share-commons/pages/search/results/))
+is a nice way to make applying required parameters easy and understandable.
+
+... and fon't forget to contribute them back to the Asset Share Commons project!
+
 ## Technical details
 
 * **Component**: `/apps/asset-share-commons/components/search/hidden`

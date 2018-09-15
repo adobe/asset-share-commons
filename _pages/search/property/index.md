@@ -13,9 +13,9 @@ Filters can either be single select or multi-select; at this time only checkboxe
 
 ## Authoring
 
-### Dialog / Fields
+### Dialog / Filter tab
  
- ![Property filter dialog](./images/dialog.png)
+ ![Property filter dialog](./images/dialog-filter.png)
  
 #### Type
  
@@ -48,10 +48,7 @@ The search operation to perform between the Metadata Property and Option(s).
   * Does not equals
     * Metadata property does not matches value
         
-#### Auto-Search on Change (v1.3.0)
 
-Select to automatically perform a search whenever the end-user selected filter criteria of this component changes.
-        
 #### Start Expanded        
 
 Select to initially display the component filter in an expanded mode, showing the selection options.
@@ -69,7 +66,9 @@ Enumerates available filter options (ie. values)
   * Datasource
     * Sling resource type for the [Granite UI DataSource](https://docs.adobe.com/docs/en/aem/6-3/develop/ref/granite-ui/api/jcr_root/libs/granite/ui/docs/server/datasource.html) to populate the options.
     * This resource type is implemented and provided by the IT delivery team.
-        
+
+{% include dialog/search-behavior.html %}
+
 ## Technical details
 
 * **Component**: `/apps/asset-share-commons/components/search/property`

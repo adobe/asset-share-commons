@@ -69,6 +69,8 @@ orderby.sort=desc
 v1.6.4 introduces ability for the Sort component to inspect the Search Results component to display true initial values (vs generic labels).
 This means the Sort component should have a Sort By entry that matches the Search Result component's default Sort By property.
 
+If the Search Result's Default Sort By property does not have an match in the Sort component, the string "Unknown" will be displayed.
+
 ### Sorting property candidates
 
 The properties available for sorting (and including the psuedo property `@jcr:score`), are determined by inspecting the `/oak:index/damAssetLucene` index and collecting all properties marked with `orderable=true`.

@@ -2,7 +2,7 @@
 layout: component-page
 title: Tags Filter
 component-group: search
-last-updated-version: 1.3.0
+last-updated-version: 1.6.0
 ---
 
 ![Tags filter component](./images/main.png)
@@ -13,9 +13,9 @@ Note this component only matches on exact tags and does NOT match on descendant 
 
 ## Authoring
 
-### Dialog / Filter
+### Dialog / Filter tab
  
- ![Tags filter dialog](./images/dialog.png)
+ ![Tags filter dialog](./images/dialog-filter.png)
  
 #### Type
 
@@ -30,7 +30,7 @@ The form controls to display for this filter.
 
 Label for the filter.
 
-#### Metadata Property
+#### Tags Property
 
 List of Asset metadata properties available for filtering.
 
@@ -47,18 +47,26 @@ The search operation to perform between the Metadata Property and Option(s).
   * **Does not equals**
       * Metadata property does not matches value
 
-#### Auto-Search on Change (v1.3.0)
-
-Select to automatically perform a search whenever the end-user selected filter criteria of this component changes.
-
 #### Start Expanded      
   
 Select to initially render the component filter in an expanded mode, showing the selection options.
 
+#### Tags Display Order (v.
+
+Defines the order the tags are displayed to the end-user
+
+* Natural
+    * Order determined by AEM
+* Alphabetical
+    * Alphabetical by Tag title (Ascending; A-Z)
+
+
 #### Tags
 
 Defines the tags that can be filtered against.
-        
+
+{% include dialog/search-behavior.html %}
+
 ## Technical details
 
 * **Component**: `/apps/asset-share-commons/components/search/tags`

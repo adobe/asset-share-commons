@@ -3,6 +3,7 @@ layout: component-page
 title: Search Results
 component-group: search
 tags: search,component
+last-updated-version: 1.6.0
 ---
 
 ![Results component](./images/main.png)
@@ -23,7 +24,18 @@ This component is responsible for displaying search results, and provides the (h
 Paths to restrict the search to.    
 
   * *When multiple paths are selected,Search Relevancy (`@jcr:score`) sort order may be adversely affected due to how Oak handles score-based sorting across UNION'd queries*
- 
+
+#### Search Restrictions (v1.6.0)
+
+Server-side Search Predicates to include in the search.
+
+* OOTB Search Predicates:
+    * Exclude content fragments
+    * Exclude expired assets
+    * Exclude sub-assets
+
+*Custom Search Predicates can be created by implementing the [SearchPredicate](/asset-share-commons/apidocs/com/adobe/aem/commons/assetshare/search/searchpredicates/SearchPredicate.html) interface.*
+
 #### Limit
 
 The number of results to include on each "load more" page.
@@ -41,7 +53,9 @@ The initial page load's sort property.
 
 #### Default Sort Direction
 
-The initial page load's sort direction. 
+The initial page load's sort direction.
+
+Since v1.6.4, an entry for this property should exist in the Sort component, if the Sort component is used.
                 
 ### Dialog / Results tab
         
@@ -82,7 +96,14 @@ The message to display when no results satisfy the search criteria.
 
 * **Component**: `/apps/asset-share-commons/components/search/results`
 * **Sling Models**: 
-    * `com.adobe.aem.commons.assetshare.search.predicates.impl.PagePredicateImpl`
-    * `com.adobe.aem.commons.assetshare.search.impl.SearchImpl`
+    * `com.adobe.aem.commons.assetshare.search.predicates.PagePredicate`
+        * Implemented by `com.adobe.aem.commons.assetshare.search.predicates.PagePredicateImpl`
+    * `com.adobe.aem.commons.assetshare.search.Search`
+        * Implemented by`com.adobe.aem.commons.assetshare.search.impl.SearchImpl`
+    * `com.adobe.aem.commons.assetshare.search.SearchConfig`
+        * Implemented by`com.adobe.aem.commons.assetshare.search.impl.SearchConfigImpl`
+        * `SearchConfig` model (adaptable from `HttpSlingServletRequest`) can provide Search Results component configuration
+        from other components (it will auto-resolve to the Search Results component assuming the component is or has as a
+        `sling:resourceSuperType` of `asset-share-commons/components/search/results`.
 
 

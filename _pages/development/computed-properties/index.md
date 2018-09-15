@@ -70,7 +70,7 @@ For example the size of an asset is stored in the metadata property `jcr:content
 * **Name:** tagTitles
 * **Return type:** `List<String>`
 
-**Smart Tag Titles** - Returns the titles of any tags on the current asset. Based on the `jcr:content/metadata/cq:tags`. A localized tag title will be used if it exists. Locale is derived from the Sling request.
+**Smart Tag Titles** - Returns the smart tags of the current asset. Smart Tags values are not localized, and the raw value of the predictedTags node value.
 
 * **Label:** Smart Tag Titles
 * **Name:** smartTagTitles

@@ -26,6 +26,8 @@ Lable to be displayed above tag items. Will be hidden if the Hide Label select b
 
 (Optional) By default tags are looked for under `<dam:asset>/jcr:content/metadata/cq:tags`. If an author wants to display tags from a different property they can set that property here. Property should be relative to the dam:asset.
 
+Since v1.6.0, the computed property `smartTagTitles` can be used to display Smart Tags.
+
 #### Empty Text
 
 (Optional) Text to render if no tags are found on the current asset. If the Empty Text field is left empty **AND** no tags are found on the current asset the entire component will be hidden.

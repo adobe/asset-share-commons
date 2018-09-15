@@ -1,6 +1,7 @@
 ---
 title: Search Page
 layout: template-page
+last-updated-version: 1.6.0
 ---
 
 ![Search page component](./images/main.png)
@@ -34,8 +35,6 @@ Search pages can be created under other search pages; for example, a "What's New
                 /specific-search-page-1        
                 /specific-search-page-2  
 ```
-
-
 
 
 ## Authoring
@@ -120,6 +119,12 @@ Each message can have configured attributes:
         * Error      
   * Message Text
     The message to display.
+
+### Page Editor Status Provider (v1.6.0)
+
+A status provider in the Page Editor will notify if required components (the Search Results component) is missing from the page.
+
+![Status provider](./images/status-provider.png)
 
 ## Technical details
 

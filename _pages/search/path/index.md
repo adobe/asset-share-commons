@@ -3,6 +3,7 @@ title: Path Filter
 layout: component-page
 component-group: search
 initial-version: 1.3.0
+last-updated-version: 1.4.0
 ---
 
 ![Path filter component](./images/main.png)
@@ -12,9 +13,9 @@ Path filters can either be single select or multi-select; at this time only chec
 
 ## Authoring
 
-### Dialog / Fields
+### Dialog / Filter tab
  
- ![Property filter dialog](./images/dialog.png)
+ ![Path filter dialog](./images/dialog-filter.png)
  
 #### Type
  
@@ -51,7 +52,9 @@ Enumerates available filter options (ie. values)
   * Datasource
     * Sling resource type for the [Granite UI DataSource](https://docs.adobe.com/docs/en/aem/6-3/develop/ref/granite-ui/api/jcr_root/libs/granite/ui/docs/server/datasource.html) to populate the options.
     * This resource type is implemented and provided by the IT delivery team.
-        
+
+{% include dialog/search-behavior.html %}
+
 ## Technical details
 
 * **Component**: `/apps/asset-share-commons/components/search/path`

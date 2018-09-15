@@ -2,7 +2,7 @@
 layout: component-page
 title: Date Range Filter
 component-group: search
-last-updated-version: 1.3.0
+last-updated-version: 1.6.4
 ---
 
 ![Date range component](./images/main.png)
@@ -22,9 +22,9 @@ The asset's date be within the user-selected relative date range. See Authoring 
 
 ## Authoring
 
-### Dialog / Common fields
+### Dialog / Filter tab / Common fields
 
-![Dialog](./images/dialog.png)
+![Dialog](./images/dialog-filter.png)
 
 #### Title
 
@@ -37,10 +37,6 @@ List of Asset metadata properties available for filtering.
 * Labels/Properties are derived from available Metadata Schemas
 * Lightning (⚡) indicates this property is optimized for search.
 * Turtle (🐢) indicates this property is NOT optimized for search.
-
-#### Auto-Search on Change (v1.3.0)
-
-Select to automatically perform a search whenever the end-user selected filter criteria of this component changes.
 
 #### Start Expanded
 
@@ -56,9 +52,9 @@ Specifies the type of date range filtering to use.
     * User specifies a relative date range evaluated from "today".
     * ie. In the last 7 days, or within 2 weeks from now.
 
-### Dialog / Date Range fields 
+### Dialog / Filter tab / Date Range fields
 
-![Date Range dialog](./images/dialog-date-range.png)
+![Date Range dialog](./images/dialog-filter-date-range.png)
 
 #### Start Placeholder 
 The placeholder text to display in the "start date" input field. 
@@ -66,9 +62,9 @@ The placeholder text to display in the "start date" input field.
 #### End Placeholder
 The placeholder text to display in the "end date" input field. 
 
-### Dialog / Relative Date Range fields
+### Dialog / Filter tab /  Relative Date Range fields
 
-![Relative Date Range dialog](./images/dialog-relative-date-range.png)
+![Relative Date Range dialog](./images/dialog-filter-relative-date-range.png)
 
 #### Type
 
@@ -98,6 +94,8 @@ All values can be positive (future) or negative (past).
 
 * `7d` is days in the future.
 * `-7d` days in the past.
+
+{% include dialog/search-behavior.html %}
 
 ## Technical details
 
