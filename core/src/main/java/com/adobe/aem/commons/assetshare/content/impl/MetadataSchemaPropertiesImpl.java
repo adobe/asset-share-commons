@@ -41,7 +41,11 @@ public class MetadataSchemaPropertiesImpl implements MetadataProperties {
 
     private static final String NN_FIELD = "field";
 
-    private static final String[] RT_FIELDS = { "granite/ui/components/foundation/form/field", "granite/ui/components/coral/foundation/form/field" };
+    private static final String[] RT_FIELDS = { "granite/ui/components/foundation/form/field",
+        "granite/ui/components/coral/foundation/form/field", "dam/gui/components/admin/schemafield" };
+
+    private static final String[] METADATA_TYPES_PROPERTIES = {"metaType", "type"};
+
     @Override
     public Map<String, List<String>> getMetadataProperties(final SlingHttpServletRequest request) {
         return getMetadataProperties(request, Collections.EMPTY_LIST);
@@ -52,7 +56,7 @@ public class MetadataSchemaPropertiesImpl implements MetadataProperties {
         Map<String, List<String>> collectedMetadata = new HashMap<>();
 
         final Iterator<Resource> resourceIterator = SchemaFormHelper.getSchemaFormsIterator(request.getResourceResolver(),
-                "/conf/global/settings/dam/adminui-extension/metadataschema", 0, 0);
+            "/conf/global/settings/dam/adminui-extension/metadataschema", 0, 0);
 
         while (resourceIterator.hasNext()){
             final Resource resource = resourceIterator.next();
@@ -131,11 +135,16 @@ public class MetadataSchemaPropertiesImpl implements MetadataProperties {
 
             if (metadataFieldResourceTypes != null && metadataFieldResourceTypes.size() > 0) {
                 // Overriding the allowed field resource types; only match these.
-                return metadataFieldResourceTypes.stream().anyMatch(resourceType -> resource.isResourceType(resourceType));
+                return metadataFieldResourceTypes.stream().anyMatch(metaType -> checkMetaDataType(resource, metaType));
             } else {
                 // Default use the Granite UI (foundation and coral) Field resourceTypes
                 return Arrays.stream(RT_FIELDS).anyMatch(resourceType -> resource.isResourceType(resourceType));
             }
+        }
+
+        private boolean checkMetaDataType(Resource resource, String metaType) {
+            return Arrays.stream(METADATA_TYPES_PROPERTIES).anyMatch(metaTypeProperty-> resource.getValueMap().containsKey(metaTypeProperty)
+                && resource.getValueMap().get(metaTypeProperty).equals(metaType));
         }
     }
 }

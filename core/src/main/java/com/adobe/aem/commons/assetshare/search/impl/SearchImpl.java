@@ -19,6 +19,7 @@
 
 package com.adobe.aem.commons.assetshare.search.impl;
 
+import com.adobe.aem.commons.assetshare.components.search.SearchConfig;
 import com.adobe.aem.commons.assetshare.search.Constants;
 import com.adobe.aem.commons.assetshare.search.Search;
 import com.adobe.aem.commons.assetshare.search.UnsafeSearchException;
@@ -29,6 +30,7 @@ import com.adobe.aem.commons.assetshare.util.PredicateUtil;
 import com.day.cq.wcm.api.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
@@ -62,6 +64,10 @@ public class SearchImpl implements Search {
     @Required
     private SlingHttpServletRequest request;
 
+    @Self
+    @Required
+    private SearchConfig searchConfig;
+
     @ScriptVariable
     private Page currentPage;
 
@@ -70,8 +76,11 @@ public class SearchImpl implements Search {
     // Results component properties
     private ValueMap properties;
 
+    private Resource resource;
+
     @PostConstruct
     protected void init() {
+        resource = searchConfig.getSearchResource();
         properties = request.getResource().getValueMap();
     }
 
