@@ -2,7 +2,7 @@
 title: Sort
 layout: component-page
 tags: search,component
-last-updated-version: 1.3.0
+last-updated-version: 1.6.4
 --- 
 
 ![Sort component](./images/main.png)
@@ -16,21 +16,9 @@ Only one sort may be applied at a time. For example, this component does NOT sup
 
 Authors may specify all ordering options.
 
-### Dialog / Sort tab 
-
- ![Sort dialog](./images/dialog-sort.png)
-
-#### Auto-Search on Change (v1.3.0)
-
-Select to automatically perform a search whenever the end-user selected filter criteria of this component changes.
-
 ### Dialog / Sort By tab 
  
  ![Sort By dialog](./images/dialog-sort-by.png)
- 
-#### Sort By Label
-
-The initial label to display.
 
 #### Sort By Options
 
@@ -43,10 +31,6 @@ An order-able list of properties that can be sorted by.
 ### Dialog / Sort Directions tab             
 
 ![Sort Direction dialog](./images/dialog-sort-directions.png)
- 
-#### Sort Direction Label
-
-The initial label to display.
 
 #### Ascending Label
 
@@ -55,7 +39,17 @@ The text to display for the "Ascending" sort option.
 #### Descending Label
 
 The text to display for the "Descending" sort option.
-                    
+
+
+### Dialog / Sort Mechanics tab
+
+ ![Sort dialog](./images/dialog-search-mechanics.png)
+
+#### Auto-Search on Change (v1.3.0)
+
+Select to automatically perform a search whenever the end-user selected filter criteria of this component changes.
+
+
 ## Technical details
 
 * **Component**: `/apps/asset-share-commons/components/search/sort`
@@ -69,6 +63,11 @@ Example generated Query Builder orderby predicate output:
 orderby=@jcr:content/jcr:lastModified
 orderby.sort=desc
 ```
+
+### Initial values
+
+v1.6.4 introduces ability for the Sort component to inspect the Search Results component to display true initial values (vs generic labels).
+This means the Sort component should have a Sort By entry that matches the Search Result component's default Sort By property.
 
 ### Sorting property candidates
 
