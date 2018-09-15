@@ -21,7 +21,7 @@ title: Release Process
 8. In the same folder as the reactor pom, execute the command:
 	* `mvn -Pbintray-asset-share-commons release:perform`
 9. [Publish the 16 artifacts on bintray.com](https://bintray.com/asc/releases/asset-share-commons)
-10. Context the Adobe context, and request an artifact deployment to repo.adobe.com (with key INFRA-5605)
+10. Contact the Adobe release contact (Simo!), and request an artifact deployment to repo.adobe.com (with key INFRA-5605)
 11. [Create a release on GitHub](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/releases) for `asset-share-commons-X.X.X`
 	* Upload the 2 artifacts from step 6 to the release.
 	* Link to the changelog in the description for the matching release tag commit.
