@@ -211,6 +211,16 @@
                                             fieldDescription="Text to display on the Load More control."
                                             name="./loadMoreLabel"/>
 
+                                    <custom-missing-image
+                                            granite:class="cmp-editor-custom-missing-image"
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                            fieldDescription="Check to select a custom missing image."
+                                            name="./useCustomMissingImage"
+                                            text="Use Custom Missing Image?"
+                                            uncheckedValue="{Boolean}false"
+                                            value="{Boolean}true"/>
+
                                     <missing-image
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
@@ -218,6 +228,8 @@
                                             fieldDescription="Image to use if no asset thumbnail can be found."
                                             filter="hierarchy"
                                             rootPath="/"
+                                            renderHidden="true"
+                                            wrapperClass="cmp-editor-missing-image-wrapper"
                                             name="./missingImage"/>
 
                                     <no-results
