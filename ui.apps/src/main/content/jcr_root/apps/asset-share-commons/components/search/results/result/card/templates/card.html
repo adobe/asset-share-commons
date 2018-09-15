@@ -27,9 +27,18 @@
             class="ui card cmp-card">
 
         <a class="image cmp-image__wrapper--card" href="${assetDetails.fullUrl}">
-            <img src="${asset.properties['thumbnail'] || properties['missingImage'] @ context = 'attribute'}"
-                 class="cmp-image--card"
-                 alt="${asset.properties['title']}"/>
+            <sly data-sly-test="${properties['useThumbnailServlet'] == 'false'}">
+                <img src="${asset.properties['thumbnail'] || properties['missingImage'] @ context = 'attribute'}"
+                     class="cmp-image--card"
+                     alt="${asset.properties['title']}"/>
+            </sly>
+
+            <sly data-sly-test="${properties['useThumbnailServlet'] == 'true'}">
+                <img src="${asset.properties['thumbnailUrl'] @ context = 'attribute'}"
+                     class="cmp-image--card"
+                     alt="${asset.properties['title']}"/>
+            </sly>
+
         </a>
 
         <div class="content">
