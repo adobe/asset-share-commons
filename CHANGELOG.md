@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [v1.6.6]
+- 0275: Revert inclusion of Core Components 2.1.0 as it breaks compatability with AEM 6.3 SP1
+- 0276: Corrected resource injection strategy in SearchConfigImpl that resulted in the model being instantiatable on 6.3.x
+
+### Fixed
+- 0275: Resolves issue with offset not being set.
+- 0255: Removed need for "generic" Sort By and Sort Direction labels; added intelligence to get default values from Search Results 
 ## [v1.6.4]
 
 ### Fixed
@@ -16,7 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0237: Fixes issue with ContextHub being unloaded after a Form submissions via modals.
 - 0240: Fixed issue with submitted date-range search values lagging behind actual value by one submission.
 - 0231: metadataFieldTypes does not filter data source for Date Range and Tag Filters
-- ????: Updated included Core Components to v2.1.0
+- 0192: Updated included Core Components to v2.1.0
 
 ## [v1.6.2]
 
