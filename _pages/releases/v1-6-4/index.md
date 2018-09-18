@@ -3,6 +3,9 @@ layout: content-page
 title: v1.6.4
 ---
 
+**Please use  Asset Share Commons 1.6.,6 instead of this version, as this version broke backwards compatibility and may cause issues upgrading Asset Share Commons moving forward**
+
+
 ### Fixed
 - 0260: Resolves issue with offset not being set.
 - 0255: Removed need for "generic" Sort By and Sort Direction labels; added intelligence to get default values from Search Results component.

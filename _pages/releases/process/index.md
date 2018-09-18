@@ -9,7 +9,7 @@ title: Release Process
 2. Create a Pull Request from `/develop` -> `/master` with title `vX.X.X Release`
 3. Ensure all checks pass (CodeClimate and TravisCI)
 2. Keep all commits (do NOT Squash and Merge) when merging `/develop` -> `/master`
-4. Checkout `/master` to your local machine; ensure it is up-to-date with `origin/master`
+4. Checkout `/master` to your local machine; ensure it is up-to-date with `origin/master` via `git pull` and `git status`
 5. Ensure that there are no empty directories using `git clean -i`
 5. In the same folder as the reactor pom, execute the command:
 	* `mvn -Pbintray-asset-share-commons release:prepare`
