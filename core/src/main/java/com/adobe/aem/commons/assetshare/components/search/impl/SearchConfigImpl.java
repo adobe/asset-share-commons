@@ -14,6 +14,7 @@ import org.apache.sling.models.annotations.Optional;
 import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.ScriptVariable;
 import org.apache.sling.models.annotations.injectorspecific.Self;
+import org.apache.sling.models.annotations.injectorspecific.SlingObject;
 import org.apache.sling.models.factory.ModelFactory;
 
 import javax.annotation.PostConstruct;
@@ -62,7 +63,7 @@ public class SearchConfigImpl implements SearchConfig {
     @OSGiService
     private ModelFactory modelFactory;
 
-    @Self
+    @SlingObject
     @Optional
     private Resource resource;
 
