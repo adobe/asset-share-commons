@@ -18,7 +18,6 @@
 
 package com.adobe.aem.commons.assetshare.configuration.impl;
 
-import com.adobe.acs.commons.errorpagehandler.ErrorPageHandlerService;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.wcm.api.WCMMode;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -30,7 +29,6 @@ import org.apache.sling.api.servlets.OptingServlet;
 import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
-import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,24 +48,19 @@ import java.io.IOException;
 )
 public class AssetDetails404Servlet extends SlingSafeMethodsServlet implements OptingServlet {
 
-    @Reference
-    ErrorPageHandlerService errorPageHandlerService;
+    private static final Logger log = LoggerFactory.getLogger(AssetDetails404Servlet.class);
 
     @Override
     protected final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response)
             throws ServletException, IOException {
         // Control which requests enter this method via accepts(..) below.
-        response.setStatus(SlingHttpServletResponse.SC_NOT_FOUND);
-        response.getWriter().print("The path to a valid and accessible asset must be provided to the Asset Details page for it to display.");
-        response.getWriter().flush();    }
+        log.trace( "Asset for {} not found", request.getRequestPathInfo().getSuffix() );
+        response.sendError(SlingHttpServletResponse.SC_NOT_FOUND);
+    }
 
     @Override
     public boolean accepts(@Nonnull final SlingHttpServletRequest request) {
         final WCMMode wcmMode = WCMMode.fromRequest(request);
-
-        if( errorPageHandlerService.isEnabled() ){
-            return false;
-        }
 
         // ONLY perform this on WCMModes disabled in case someone runs this on AEM Author as disabled.
         if(WCMMode.DISABLED.equals(wcmMode)) {
