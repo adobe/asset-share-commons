@@ -14,6 +14,9 @@ MANIFEST.MF
 .idea/
 *.iml
 
+#VS Code
+.vscode
+
 #gh-pages
 .sass-cache/
 _site
