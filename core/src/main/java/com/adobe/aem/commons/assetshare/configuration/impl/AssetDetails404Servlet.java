@@ -18,19 +18,17 @@
 
 package com.adobe.aem.commons.assetshare.configuration.impl;
 
+import com.adobe.aem.commons.assetshare.util.AssetUtil;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.wcm.api.WCMMode;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.request.RequestPathInfo;
 import org.apache.sling.api.resource.Resource;
-import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.servlets.OptingServlet;
 import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.servlet.Servlet;
@@ -58,24 +56,24 @@ public class AssetDetails404Servlet extends SlingSafeMethodsServlet implements O
         response.getWriter().flush();
     }
 
-    @Override
-    public boolean accepts(@Nonnull final SlingHttpServletRequest request) {
+    @Override public boolean accepts(@Nonnull final SlingHttpServletRequest request) {
         final WCMMode wcmMode = WCMMode.fromRequest(request);
 
         // ONLY perform this on WCMModes disabled in case someone runs this on AEM Author as disabled.
-        if(WCMMode.DISABLED.equals(wcmMode)) {
+        if (WCMMode.DISABLED.equals(wcmMode)) {
             final RequestPathInfo requestPathInfo = request.getRequestPathInfo();
             final Resource suffixResource = requestPathInfo.getSuffixResource();
-
-            // If the suffixResource cannot be resolved, then return a 404
-            if (suffixResource == null || ResourceUtil.isNonExistingResource(suffixResource)) {
-                // If the suffix resource is null (blank, invalid resource, etc.)
-                return true;
+            Asset asset = null;
+            //Get an asset by suffixPath or suffix ID
+            if (null == suffixResource) {
+                asset = AssetUtil.getAssetById(request, requestPathInfo.getSuffix());
             } else {
-                if (suffixResource.adaptTo(Asset.class) == null ) {
-                    // If suffix resource is NOT an asset, then this is also not a valid page to request.
-                    return true;
-                }
+                asset = suffixResource.adaptTo(Asset.class);
+            }
+
+            //if asset is null then return 404
+            if (null == asset) {
+                return true;
             }
         }
 
