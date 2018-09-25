@@ -18,6 +18,7 @@
 
 package com.adobe.aem.commons.assetshare.configuration.impl;
 
+import com.adobe.aem.commons.assetshare.content.AssetResolver;
 import com.adobe.aem.commons.assetshare.util.AssetUtil;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.wcm.api.WCMMode;
@@ -29,6 +30,7 @@ import org.apache.sling.api.servlets.OptingServlet;
 import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
+import org.osgi.service.component.annotations.Reference;
 
 import javax.annotation.Nonnull;
 import javax.servlet.Servlet;
@@ -46,6 +48,9 @@ import java.io.IOException;
 )
 public class AssetDetails404Servlet extends SlingSafeMethodsServlet implements OptingServlet {
 
+    @Reference 
+    private AssetResolver assetResolver;
+    
     @Override
     protected final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response)
             throws ServletException, IOException {
@@ -61,22 +66,12 @@ public class AssetDetails404Servlet extends SlingSafeMethodsServlet implements O
 
         // ONLY perform this on WCMModes disabled in case someone runs this on AEM Author as disabled.
         if (WCMMode.DISABLED.equals(wcmMode)) {
-            final RequestPathInfo requestPathInfo = request.getRequestPathInfo();
-            final Resource suffixResource = requestPathInfo.getSuffixResource();
-            Asset asset = null;
-            //Get an asset by suffixPath or suffix ID
-            if (null == suffixResource) {
-                asset = AssetUtil.getAssetById(request, requestPathInfo.getSuffix());
-            } else {
-                asset = suffixResource.adaptTo(Asset.class);
-            }
-
-            //if asset is null then return 404
-            if (null == asset) {
+            try {
+                return assetResolver.resolveAsset(request) == null;
+            } catch (IllegalArgumentException illegalArgumentException) {
                 return true;
             }
         }
-
         return false;
     }
 }
