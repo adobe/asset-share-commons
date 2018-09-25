@@ -41,6 +41,13 @@ AssetShare.Elements = (function (document, $, ns) {
         return $(getAssetShareIdSelector(id), doc);
     }
 
+    function removeElementsByAssetShareId(id, doc) {
+        var element = $(getAssetShareIdSelector(id), doc);
+        if(element) {
+            $(element).remove();
+        }
+    }
+
     /*
     <div data-asset-share-id="foo"
          data-asset-share-update-method="append|replace|attribute"
@@ -97,7 +104,8 @@ AssetShare.Elements = (function (document, $, ns) {
     return {
         selector: getAssetShareIdSelector,
         element: getElementsByAssetShareId,
-        update: update
+        update: update,
+        remove: removeElementsByAssetShareId
     };
 }(document,
     jQuery,
