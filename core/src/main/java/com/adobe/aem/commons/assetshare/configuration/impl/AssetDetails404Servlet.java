@@ -19,13 +19,9 @@
 package com.adobe.aem.commons.assetshare.configuration.impl;
 
 import com.adobe.aem.commons.assetshare.content.AssetResolver;
-import com.adobe.aem.commons.assetshare.util.AssetUtil;
-import com.day.cq.dam.api.Asset;
 import com.day.cq.wcm.api.WCMMode;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
-import org.apache.sling.api.request.RequestPathInfo;
-import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.servlets.OptingServlet;
 import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
 import org.osgi.service.component.annotations.Component;
