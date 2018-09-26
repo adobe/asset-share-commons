@@ -66,6 +66,7 @@ AssetShare.SemanticUI.Modal = (function ($, ns) {
         var index = tracker.indexOf(id);
         if (index !== -1) {
             tracker.splice(index, 1);
+            ns.Elements.remove(id);
         }
     }
 
@@ -95,6 +96,7 @@ AssetShare.SemanticUI.Modal = (function ($, ns) {
                             if (isPreviewMode()) {
                                 onShowModalInPreviewMode(this);
                             }
+                            $("body").trigger(ns.Events.MODAL_SHOWN);
                         },
                         onHidden: function() {
                             removeFromOpenModals(modal.id);

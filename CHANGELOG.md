@@ -4,7 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+
+## [v1.6.8]
+
+### Fixed
+- 0283: AssetDetails404Servlet uses sendError(..) to set 404 status, allowing it to work with Sling Error Handlers.
+- 0285: Modal DOM elements are now removed when then modal is hidden.
+- 0288: AssetDetails404Servlet handles UUID based asset details pages.
+
+### Changed
+- 0290: Modals emit JS event when they are shown.
+
+
 ## [v1.6.6]
+
+### Fixed
 - 0275: Revert inclusion of Core Components 2.1.0 as it breaks compatability with AEM 6.3 SP1
 - 0276: Corrected resource injection strategy in SearchConfigImpl that resulted in the model being instantiatable on 6.3.x
 
