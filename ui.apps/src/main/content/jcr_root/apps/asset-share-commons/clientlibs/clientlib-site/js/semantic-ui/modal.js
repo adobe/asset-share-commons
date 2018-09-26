@@ -96,6 +96,7 @@ AssetShare.SemanticUI.Modal = (function ($, ns) {
                             if (isPreviewMode()) {
                                 onShowModalInPreviewMode(this);
                             }
+                            $("body").trigger(ns.Events.MODAL_SHOWN);
                         },
                         onHidden: function() {
                             removeFromOpenModals(modal.id);
