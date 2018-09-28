@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [Unreleased]
+
+## Changes
+- 0294: Changes (JS) AssetShare.Navigation.goToTop(..) to avoid using window.location.hash which pushes state to browser's history and prevents use of the browser's back button.
+
 ## [v1.6.8]
 
 ### Fixed
