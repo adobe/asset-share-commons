@@ -41,7 +41,7 @@ AssetShare.Navigation = (function ($, window, ns) {
     }
 
     function gotoTop() {
-        window.location.hash = "top";
+        window.scrollTo(0, 0);
     }
 
     return {
