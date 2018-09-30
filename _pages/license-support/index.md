@@ -43,4 +43,10 @@ The Asset Share Commons team would like to thank the following open source proje
 * [Jekyll](https://jekyllrb.com/)
 * [Github](https://github.com)
 
+### Extra special thanks...
+
+To **Lorenzo Buosi**, artist-extraordinaire, for designing the visual language of Asset Share Commons.
+
+* [Asset Share Commons on Behance](https://www.behance.net/gallery/60256869/Asset-Share-Commons)
+* [Asset Share Commons on Dribbble](https://dribbble.com/shots/4049359-Asset-Share-Commons)
 
