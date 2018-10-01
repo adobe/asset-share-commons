@@ -22,6 +22,7 @@ package com.adobe.aem.commons.assetshare.components.actions.impl;
 import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
 import com.adobe.aem.commons.assetshare.configuration.Config;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.granite.asset.api.AssetException;
 import com.day.cq.wcm.api.WCMMode;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestParameter;
@@ -30,6 +31,8 @@ import org.apache.sling.models.factory.ModelFactory;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -45,14 +48,18 @@ public final class ActionHelperImpl implements ActionHelper {
 
         if (requestParameters != null) {
             for (final RequestParameter requestParameter : requestParameters) {
-                final Resource resource = request.getResourceResolver().getResource(requestParameter.getString());
+                Resource resource;
+				try {
+					resource = request.getResourceResolver().getResource(URLDecoder.decode(requestParameter.getString(), "UTF-8"));				
                 if (resource != null) {
                     final AssetModel asset = modelFactory.getModelFromWrappedRequest(request, resource, AssetModel.class);
-
                     if (asset != null) {
                         assets.add(asset);
                     }
                 }
+				} catch (UnsupportedEncodingException e) {
+					throw new AssetException("Could not Decode the path", requestParameter.getString());
+				}
             }
         }
 

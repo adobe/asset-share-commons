@@ -62,7 +62,8 @@
             <div class="ui header">${properties['downloadOptionsTitle']}</div>
 
             <sly data-sly-list.asset="${download.assets}">
-                <input type="hidden" name="path"  value="${asset.path}"/>
+            <sly data-sly-use.encodedPath="${'../encodePath.js' @ url=asset.path}"></sly>
+                <input type="hidden" name="path"  value="${encodedPath}"/>
             </sly>
 
 
