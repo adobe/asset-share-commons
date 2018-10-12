@@ -62,7 +62,9 @@
             <div class="ui header">${properties['downloadOptionsTitle']}</div>
 
             <sly data-sly-list.asset="${download.assets}">
-                <input type="hidden" name="path"  value="${asset.path}"/>
+            <sly data-sly-use.compUtil="${'com.adobe.aem.commons.assetshare.util.CompUtil' @ request = slingRequest, asset = asset }"></sly>
+                <input type="hidden" name="path"  value="${compUtil.encodedPath}"/>
+             
             </sly>
 
 

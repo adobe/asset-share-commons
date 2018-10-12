@@ -61,10 +61,14 @@ import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.jcr.RepositoryException;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 @Component(service = ShareService.class)
 @Designate(ocd = EmailShareServiceImpl.Cfg.class)
@@ -135,15 +139,23 @@ public class EmailShareServiceImpl implements ShareService {
 
     private final void share(final Config config, final ValueMap shareParameters, final String emailTemplatePath) throws ShareException {
         final String[] emailAddresses = StringUtils.split(shareParameters.get(EMAIL_ADDRESSES, ""), ",");
-        final String[] assetPaths = shareParameters.get(ASSET_PATHS, String[].class);
+        final String[] assetEncodedPaths = shareParameters.get(ASSET_PATHS, String[].class);
 
         // Check to ensure the minimum set of e-mail parameters are provided; Throw exception if not.
         if (emailAddresses == null || emailAddresses.length == 0) {
             throw new ShareException("At least one e-mail address is required to share");
-        } else if (assetPaths == null || assetPaths.length == 0) {
+        } else if (assetEncodedPaths == null || assetEncodedPaths.length == 0) {
             throw new ShareException("At least one asset is required to share");
-        }
-
+        }        
+        final String[] assetPaths = Stream.of(shareParameters.get(ASSET_PATHS, String[].class)).map(p -> {
+        	try { 
+        	return URLDecoder.decode(p, "UTF-8"); 
+        	}catch (UnsupportedEncodingException e){
+        		log.warn("Could not decode path [ {} ], using as is", p);
+        		return StringUtils.EMPTY;
+        		}			
+        }).filter(StringUtils::isNotEmpty).toArray(String[]::new);
+       
         // Convert provided params to <String, String>; anything that needs to be accessed in its native type should be accessed and manipulated via shareParameters.get(..)
         final Map<String, String> emailParameters = new HashMap<String, String>();
         for (final String key : shareParameters.keySet()) {

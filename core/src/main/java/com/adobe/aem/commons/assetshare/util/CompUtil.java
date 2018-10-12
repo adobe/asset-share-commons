@@ -17,8 +17,15 @@
  *
  */
 
-@Version("1.5.0")
 package com.adobe.aem.commons.assetshare.util;
 
-import org.osgi.annotation.versioning.Version;
+import org.osgi.annotation.versioning.ProviderType;
+
+@ProviderType
+public interface CompUtil {
+    /**
+     * @return the encoded path of the Asset.
+     */
+    String getEncodedPath();    
+}
 
