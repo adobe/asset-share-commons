@@ -24,6 +24,25 @@ Ensure AEM Dispatcher allows the following URL paths/patterns:
 * `HTTP GET /libs/granite/security/currentuser.json?nocache=<time-in-ms>` on page loads to retrieve the current user. This URI must be allowed via AEM Dispatcher.  
 * `HTTP GET /home/users/.../<user>.infinity.json` on page loads to retrieve the current user. This URI must be allowed via AEM Dispatcher. This is a standard request made by the OOTB ContextHub Profile store.
 
+Sample dispatcher.any rules
+
+```diff
+ /filter
+      {
+        ...
+        
+        # ContextHub Calls:
++        /0101 { /type "allow" /url "/home/users/*.infinity.json" }
+
+        # Current User:
++       /0102 { /type "allow" /url "/libs/granite/security/currentuser.json" }
+
+    }
+
+```
+
+
+
 
 ## Set Up Video
 
