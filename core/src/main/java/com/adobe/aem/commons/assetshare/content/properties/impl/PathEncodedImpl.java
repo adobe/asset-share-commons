@@ -32,10 +32,15 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * This Computed Property returns a UTF-8 encoded path to the asset.
+ *
+ * The asset path is collected via the PathImpl Computed Property.
+ */
 @Component(service = ComputedProperty.class)
 @Designate(ocd = PathEncodedImpl.Cfg.class)
 public class PathEncodedImpl extends AbstractComputedProperty<String> {
-    public static final String LABEL = "Asset Path (Encoded)";
+    public static final String LABEL = "Asset Path (UTF-8 Encoded)";
     public static final String NAME = "path/encoded";
     private Cfg cfg;
 
