@@ -31,8 +31,10 @@ import org.apache.sling.models.factory.ModelFactory;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
+import javax.net.ssl.StandardConstants;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -48,18 +50,22 @@ public final class ActionHelperImpl implements ActionHelper {
 
         if (requestParameters != null) {
             for (final RequestParameter requestParameter : requestParameters) {
-                Resource resource;
-				try {
-					resource = request.getResourceResolver().getResource(URLDecoder.decode(requestParameter.getString(), "UTF-8"));				
+                String path = requestParameter.getString();
+
+                try {
+                    path = URLDecoder.decode(path, StandardCharsets.UTF_8.name());
+                } catch (UnsupportedEncodingException ex) {
+                    throw new AssetException("Could not UTF-8 encode the asset path.", requestParameter.getString());
+                }
+
+                final Resource resource = request.getResourceResolver().getResource(path);
                 if (resource != null) {
                     final AssetModel asset = modelFactory.getModelFromWrappedRequest(request, resource, AssetModel.class);
                     if (asset != null) {
                         assets.add(asset);
                     }
                 }
-				} catch (UnsupportedEncodingException e) {
-					throw new AssetException("Could not Decode the path", requestParameter.getString());
-				}
+
             }
         }
 

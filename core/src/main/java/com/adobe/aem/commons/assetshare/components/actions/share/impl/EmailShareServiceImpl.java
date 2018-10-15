@@ -40,6 +40,7 @@ import com.adobe.granite.security.user.UserProperties;
 import com.adobe.granite.security.user.UserPropertiesManager;
 import com.day.cq.commons.Externalizer;
 import com.day.cq.dam.commons.util.DamUtil;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jackrabbit.api.security.user.Authorizable;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -64,11 +65,8 @@ import javax.jcr.RepositoryException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 @Component(service = ShareService.class)
 @Designate(ocd = EmailShareServiceImpl.Cfg.class)
@@ -114,7 +112,7 @@ public class EmailShareServiceImpl implements ShareService {
     @Override
     public final void share(final SlingHttpServletRequest request, final SlingHttpServletResponse response, final ValueMap shareParameters) throws ShareException {
     	
-    		/** Work around for regression issue introduced in AEM 6.4 **/
+        /** Work around for regression issue introduced in AEM 6.4 **/
         SlingBindings bindings = new SlingBindings();
         //intentionally setting the second argument to 'null' since there is no SlingScript to pass in
         bindings.setSling( new ScriptHelper(bundleContext, null, request, response));
@@ -124,7 +122,7 @@ public class EmailShareServiceImpl implements ShareService {
 
         shareParameters.putAll(xssProtectUserData(emailShare.getUserData()));
 
-        // Configured data supercedes user data
+        // Configured data supersedes user data
         shareParameters.putAll(emailShare.getConfiguredData());
 
         // Except for signature which we may or may  not want to use from configured data, depending on flags in configured data
@@ -139,22 +137,23 @@ public class EmailShareServiceImpl implements ShareService {
 
     private final void share(final Config config, final ValueMap shareParameters, final String emailTemplatePath) throws ShareException {
         final String[] emailAddresses = StringUtils.split(shareParameters.get(EMAIL_ADDRESSES, ""), ",");
-        final String[] assetEncodedPaths = shareParameters.get(ASSET_PATHS, String[].class);
+        final String[] assetPaths = Arrays.stream(shareParameters.get(ASSET_PATHS, ArrayUtils.EMPTY_STRING_ARRAY))
+                .map(path -> {
+                    try {
+                        return URLDecoder.decode(path, StandardCharsets.UTF_8.name());
+                    } catch (UnsupportedEncodingException e) {
+                        log.warn("Could not decode path [ {} ] as UTF-8; Using path as is,.", path);
+                        return path;
+                    }
+                }).filter(StringUtils::isNotBlank)
+                .toArray(String[]::new);
 
         // Check to ensure the minimum set of e-mail parameters are provided; Throw exception if not.
         if (emailAddresses == null || emailAddresses.length == 0) {
             throw new ShareException("At least one e-mail address is required to share");
-        } else if (assetEncodedPaths == null || assetEncodedPaths.length == 0) {
+        } else if (ArrayUtils.isNotEmpty(assetPaths)) {
             throw new ShareException("At least one asset is required to share");
-        }        
-        final String[] assetPaths = Stream.of(shareParameters.get(ASSET_PATHS, String[].class)).map(p -> {
-        	try { 
-        	return URLDecoder.decode(p, "UTF-8"); 
-        	}catch (UnsupportedEncodingException e){
-        		log.warn("Could not decode path [ {} ], using as is", p);
-        		return StringUtils.EMPTY;
-        		}			
-        }).filter(StringUtils::isNotEmpty).toArray(String[]::new);
+        }
        
         // Convert provided params to <String, String>; anything that needs to be accessed in its native type should be accessed and manipulated via shareParameters.get(..)
         final Map<String, String> emailParameters = new HashMap<String, String>();
@@ -238,7 +237,7 @@ public class EmailShareServiceImpl implements ShareService {
     /**
      * Since all emails are expected to be HTML emails in this implementation, we must XSS Protect all values that may end up in the HTML email.
      *
-     * @param userData the Map of data provided by the end-user (usually derived from the Request) to use in the email.
+     * @param dirtyUserData the Map of data provided by the end-user (usually derived from the Request) to use in the email.
      * @return the protected Map; all String's are xss protected for HTML.
      */
     private Map<String, Object> xssProtectUserData(Map<String, Object> dirtyUserData) {
