@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Asset Share Commons
+  ~
+  ~ Copyright [2017]  Adobe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:granite="http://www.adobe.com/jcr/granite/1.0"
+          xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+          jcr:primaryType="nt:unstructured"
+          jcr:title="Property Filter"
+          sling:resourceType="cq/gui/components/authoring/dialog"
+          extraClientlibs="[core.wcm.components.form.options.v1.editor,asset-share-commons.author.dialog]"
+          helpPath="https://www.adobe.com/go/aem_cmp_form_options_v1">
+    <content
+            granite:class="cmp-options--editor-v1"
+            jcr:primaryType="nt:unstructured"
+            sling:resourceType="granite/ui/components/coral/foundation/container">
+        <items jcr:primaryType="nt:unstructured">
+            <options
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns"
+                    margin="{Boolean}true">
+                <items jcr:primaryType="nt:unstructured">
+                    <columns
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="granite/ui/components/coral/foundation/container">
+                        <items jcr:primaryType="nt:unstructured">
+                            <dialog
+                                    granite:class="foundation-layout-util-vmargin"
+                                    jcr:primaryType="nt:unstructured"
+                                    sling:resourceType="granite/ui/components/coral/foundation/container">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <tabs
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/tabs"
+                                            maxmized="{Boolean}true">
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <tab1
+                                                    jcr:primaryType="nt:unstructured"
+                                                    jcr:title="Filter"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns"
+                                                    margin="{Boolean}true">
+                                                <items jcr:primaryType="nt:unstructured">
+                                                    <column
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/coral/foundation/container">
+                                                        <items jcr:primaryType="nt:unstructured">
+
+                                                            <title
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                                    fieldDescription="Legend to describe the role of the field."
+                                                                    fieldLabel="Title"
+                                                                    name="./jcr:title"
+                                                                    required="{Boolean}true"/>
+
+                                                            <placeholder
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                                    fieldDescription="Placeholder text."
+                                                                    fieldLabel="Placeholder text"
+                                                                    name="./placeholder"
+                                                                    required="{Boolean}false"/>
+
+                                                            <rows
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/numberfield"
+                                                                    fieldDescription="Number of rows this field should have."
+                                                                    fieldLabel="Rows"
+                                                                    name="./rows"
+                                                                    required="{Boolean}true"/>
+
+                                                            <property
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                                                    emptyText="Select an Asset Metadata Property"
+                                                                    fieldDescription="A list of available computed properties. The lightning bolt denotes fast search restrictions."
+                                                                    fieldLabel="Metadata Property"
+                                                                    sling:orderBefore="name"
+                                                                    name="./property">
+                                                                <datasource
+                                                                        jcr:primaryType="nt:unstructured"
+                                                                        sling:resourceType="asset-share-commons/data-sources/filterable-properties"/>
+                                                            </property>
+                                                            <operation
+                                                                    granite:class="cmp-form-textfield-types"
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    sling:orderBefore="name"
+                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                                                    fieldLabel="Operation"
+                                                                    name="./operation">
+                                                                <items jcr:primaryType="nt:unstructured">
+                                                                    <equals
+                                                                            jcr:primaryType="nt:unstructured"
+                                                                            text="Equals"
+                                                                            value="equals"/>
+                                                                    <equals
+                                                                            jcr:primaryType="nt:unstructured"
+                                                                            text="Contains"
+                                                                            value="contains"/>
+                                                                </items>
+                                                            </operation>
+                                                            <expanded
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    sling:orderBefore="name"
+                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                                    fieldDescription="Select if the field set should start in an expanded state (not applicable for drop down)"
+                                                                    name="./expanded"
+                                                                    text="Start Expanded"
+                                                                    value="true"/>
+
+                                                            <delimiters
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
+                                                                    composite="{Boolean}true"
+                                                                    fieldDescription="Strings or characters used to delimit input values."
+                                                                    fieldLabel="Delimiters"
+                                                                    renderReadOnly="{Boolean}true">
+                                                                <field
+                                                                        granite:class="cmp-options--editor-item-multifield-composite-item coral-Well"
+                                                                        jcr:primaryType="nt:unstructured"
+                                                                        sling:resourceType="granite/ui/components/coral/foundation/container"
+                                                                        name="./delimiters">
+                                                                    <items jcr:primaryType="nt:unstructured">
+                                                                        <option
+                                                                                granite:class="cmp-options--editor-item-multifield-composite-item-container"
+                                                                                jcr:primaryType="nt:unstructured"
+                                                                                sling:resourceType="granite/ui/components/coral/foundation/container">
+                                                                            <items jcr:primaryType="nt:unstructured">
+                                                                                <delimiter
+                                                                                        jcr:primaryType="nt:unstructured"
+                                                                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                                                        fieldLabel="Value"
+                                                                                        name="./delimiter"/>
+                                                                            </items>
+                                                                        </option>
+                                                                    </items>
+                                                                </field>
+                                                            </delimiters>
+
+                                                        </items>
+                                                    </column>
+                                                </items>
+                                            </tab1>
+                                            <search-behavior-tab
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/include"
+                                                    path="/apps/asset-share-commons/components/search/common/cq:dialog/tabs/search-behavior"/>
+                                        </items>
+                                    </tabs>
+                                </items>
+                            </dialog>
+                        </items>
+                    </columns>
+                </items>
+            </options>
+        </items>
+    </content>
+</jcr:root>

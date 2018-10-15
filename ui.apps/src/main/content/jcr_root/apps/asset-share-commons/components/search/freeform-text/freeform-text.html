@@ -1,0 +1,79 @@
+<!--/*
+  ~ Asset Share Commons
+  ~
+  ~ Copyright [2017]  Adobe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+ */-->
+
+<sly data-sly-use.predicate="com.adobe.aem.commons.assetshare.components.predicates.FreeformTextPredicate"
+     data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html"
+	 data-sly-test.ready="${predicate.ready}">
+
+	<!--/* Property */-->
+	<input type="hidden"
+		   form="${predicate.formId}"
+		   name="${predicate.group}.${predicate.name}.property"
+		   value="${predicate.property}"
+		   data-asset-share-predicate-id="${predicate.id}"/>
+
+	<!--/* Delimiters */-->
+	<sly data-sly-list.delimiter="${predicate.delimiters}">
+		<input type="text"
+			   form="${predicate.formId}"
+			   name="${predicate.group}.${predicate.name}.${delimiter.index}_delimiters"
+			   value="${predicate.property}"
+			   data-asset-share-predicate-id="${predicate.id}"/>
+	</sly>
+
+	<div class="ui form">
+		<div class="ui fluid styled accordion field">
+
+			<div class="${predicate.expanded ? 'active' : ''} title right">
+				<i class="dropdown icon"></i>
+				${predicate.title}
+			</div>
+
+			<div    class="${predicate.expanded ? 'active' : ''} content field"
+					data-asset-share-id="${predicate.id}__fields"
+					data-asset-share-update-method="${predicate.componentUpdateMethod}">
+
+				<div class="field">
+					<div class="ui" >
+						<div class="ui input left icon">
+							<textarea type="text"
+									  placeholder="${properties['placeholder']}"
+									  name="${predicate.group}.${predicate.name}.values"
+									  form="${predicate.formId}"
+									  for="${predicate.id}"
+									  rows="${predicate.rows}"
+									  data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}"
+									  data-sly-test.isTextArea="${predicate.rows > 1}">${predicate.initialValue}</textarea>
+
+							<input type="text"
+								   placeholder="${properties['placeholder']}"
+								   name="${predicate.group}.${predicate.name}.values"
+								   value="${predicate.initialValue}"
+								   form="${predicate.formId}"
+								   for="${predicate.id}"
+								   data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}"
+								   data-sly-test="${!isTextArea}"/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</sly>
+<sly data-sly-call="${placeholderTemplate.placeholder @ isEmpty=!ready}"></sly>

@@ -50,19 +50,24 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
     public static final String PREDICATE_NAME = "propertyvalues";
     public static final String VALUES = "values";
     private static final String DELIMITER = "delimiter";
-    private static final String DEFAULT_DELIMITER = ",";
+    private static final String DELIMITERS = "delimiters";
+    private static final String[] DEFAULT_DELIMITERS = new String[] { "," };
 
     private PredicateEvaluator propertyEvaluator = new com.day.cq.search.eval.JcrPropertyPredicateEvaluator();
 
-    private Predicate buildPredicate(Predicate predicate) {
-        final String delimiter = StringUtils.defaultIfEmpty(predicate.get(DELIMITER), DEFAULT_DELIMITER);
+    public Predicate buildPredicate(Predicate predicate) {
+        final String[] delimiters = StringUtils.defaultIfEmpty(StringUtils.defaultIfEmpty(predicate.get(DELIMITERS), predicate.get(DELIMITER)), DEFAULT_DELIMITERS);
         final List<String> properties = new ArrayList<>();
 
         for (final Map.Entry<String, String> entry : predicate.getParameters().entrySet()) {
             if (entry.getValue() != null &&
                     entry.getKey() != null &&
                     (VALUES.equals(entry.getKey()) || StringUtils.endsWith(entry.getKey(), "_" + VALUES))) {
-                properties.addAll(Arrays.asList(StringUtils.split(entry.getValue(), delimiter)));
+
+
+                properties.addAll(Arrays.asList(StringUtils.split(entry.getValue(), delimiters[0])));
+
+
                 predicate.set(entry.getKey(), null);
             }
         }
