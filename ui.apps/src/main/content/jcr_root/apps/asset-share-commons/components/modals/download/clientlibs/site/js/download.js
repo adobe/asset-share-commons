@@ -63,7 +63,7 @@ jQuery((function(ns, semanticModal, licenseModal) {
         }
 
         function download(e) {
-            var path = ns.Data.attr(this, "asset"),
+            var path = encodeURIComponent(ns.Data.attr(this, "asset")),
                 license = ns.Data.attr(this, "license"),
                 downloadModal = getModal(path, license);
 
