@@ -57,6 +57,9 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
 
     public Predicate buildPredicate(Predicate predicate) {
         final String[] delimiters = StringUtils.defaultIfEmpty(StringUtils.defaultIfEmpty(predicate.get(DELIMITERS), predicate.get(DELIMITER)), DEFAULT_DELIMITERS);
+
+
+
         final List<String> properties = new ArrayList<>();
 
         for (final Map.Entry<String, String> entry : predicate.getParameters().entrySet()) {
@@ -120,4 +123,6 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
     public FacetExtractor getFacetExtractor(Predicate predicate, EvaluationContext evaluationContext) {
         return propertyEvaluator.getFacetExtractor(buildPredicate(predicate), evaluationContext);
     }
+
+
 }

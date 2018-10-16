@@ -21,7 +21,6 @@ public class PropertyValuesPredicateEvaluatorTest {
 
     PropertyValuesPredicateEvaluator propertyValuesPredicateEvaluator = new PropertyValuesPredicateEvaluator();
 
-
     @Before
     public void setUp() throws Exception {
         // Base predicate set up
