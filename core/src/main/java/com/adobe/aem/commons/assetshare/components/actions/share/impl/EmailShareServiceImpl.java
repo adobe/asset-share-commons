@@ -151,7 +151,7 @@ public class EmailShareServiceImpl implements ShareService {
         // Check to ensure the minimum set of e-mail parameters are provided; Throw exception if not.
         if (emailAddresses == null || emailAddresses.length == 0) {
             throw new ShareException("At least one e-mail address is required to share");
-        } else if (ArrayUtils.isNotEmpty(assetPaths)) {
+        } else if (ArrayUtils.isEmpty(assetPaths)) {
             throw new ShareException("At least one asset is required to share");
         }
        
