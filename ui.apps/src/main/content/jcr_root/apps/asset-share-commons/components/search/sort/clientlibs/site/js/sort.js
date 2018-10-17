@@ -25,7 +25,7 @@ $(function () {
 
     $('.cmp-search-sort input[name="orderby"]').on('change', function() {
         var propertyName = $(this).val(),
-            isCaseSensitive = $(`[data-value="${propertyName}"]`).data('casesensitive');
+            isCaseSensitive = $('.cmp-search-sort [data-value="' + propertyName + '"]').is('[data-casesensitive]');
 
         $('.cmp-search-sort input[name="orderby.case"]').val(isCaseSensitive);
     });
