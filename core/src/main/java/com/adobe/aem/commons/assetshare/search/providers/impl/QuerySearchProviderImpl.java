@@ -91,7 +91,6 @@ public class QuerySearchProviderImpl implements SearchProvider {
         final ResourceResolver resourceResolver = request.getResourceResolver();
 
         final PredicateGroup root;
-        SortPredicate sortPredicate = request.adaptTo(SortPredicate.class);
         if (querySearchPreProcessor != null) {
             root = querySearchPreProcessor.process(request, getParams(request));
         } else {
@@ -178,8 +177,16 @@ public class QuerySearchProviderImpl implements SearchProvider {
         if (queryParametersPostProcessor != null) {
             params = queryParametersPostProcessor.process(request, params);
         }
+        //remove unnecessary parameter if we don't want to switch orderby.case
+        cleanOrderBy(params);
 
         return params;
+    }
+
+    private void cleanOrderBy(Map<String, String> params) {
+        if ("true".equals(params.get("orderby.case"))) {
+            params.remove("orderby.case");
+        }
     }
 
     private boolean isPathsProvidedByRequestParams(final PagePredicate pagePredicate, final Map<String, String> requestParams) {
