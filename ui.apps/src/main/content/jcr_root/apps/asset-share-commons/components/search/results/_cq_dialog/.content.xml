@@ -129,7 +129,7 @@
                                           sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
                                           fieldDescription="Check this for case-insensitive sorting. Warning: It should be used only for text values"
                                           name="./orderByCase"
-                                          text="Case-insensitive Sorting"
+                                          text="Case-Insensitive Sorting"
                                           value="{Boolean}false"
                                           uncheckedValue="{Boolean}true"/>
 
