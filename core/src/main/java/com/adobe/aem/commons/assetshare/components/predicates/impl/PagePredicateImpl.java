@@ -34,6 +34,7 @@ import com.day.cq.search.eval.PathPredicateEvaluator;
 import com.day.cq.search.eval.TypePredicateEvaluator;
 import com.day.cq.wcm.api.Page;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMap.Builder;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -267,11 +268,13 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
     private void addOrderByAsPredicate(final PredicateGroup root) {
         final String orderByCase = searchConfig.isOrderByCase() ? "" : Predicate.IGNORE_CASE;
 
-        root.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
-                put(Predicate.ORDER_BY , searchConfig.getOrderBy()).
-                put(Predicate.ORDER_BY + "." + Predicate.PARAM_SORT, searchConfig.getOrderBySort()).
-                put(Predicate.ORDER_BY + "." + Predicate.PARAM_CASE, orderByCase).
-                build()));
+        Builder<String, String> orderPredicateBuilder = ImmutableMap.<String, String>builder().
+            put(Predicate.ORDER_BY, searchConfig.getOrderBy()).
+            put(Predicate.ORDER_BY + "." + Predicate.PARAM_SORT, searchConfig.getOrderBySort());
+        if(!orderByCase.isEmpty()) {
+          orderPredicateBuilder.put(Predicate.ORDER_BY + "." + Predicate.PARAM_CASE, orderByCase);
+        }
+        root.addAll(PredicateConverter.createPredicates(orderPredicateBuilder.build()));
     }
 
     private List<SearchPredicate> getSearchPredicates() {
