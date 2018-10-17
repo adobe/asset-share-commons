@@ -25,8 +25,15 @@ $(function () {
 
     $('.cmp-search-sort input[name="orderby"]').on('change', function() {
         var propertyName = $(this).val(),
-            isCaseSensitive = $('.cmp-search-sort [data-value="' + propertyName + '"]').is('[data-casesensitive]');
+            isCaseSensitive = $('.cmp-search-sort [data-value="' + propertyName + '"]').is('[data-casesensitive]'),
+            isCaseSensitiveValue;
 
-        $('.cmp-search-sort input[name="orderby.case"]').val(isCaseSensitive);
+        if (isCaseSensitive) {
+            isCaseSensitiveValue = "true";
+        } else {
+            isCaseSensitiveValue = "ignore";
+        }
+
+        $('.cmp-search-sort input[name="orderby.case"]').val(isCaseSensitiveValue);
     });
 });
