@@ -42,141 +42,135 @@ import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
 @Model(
-    adaptables = {SlingHttpServletRequest.class},
-    adapters = {SortPredicate.class},
-    resourceType = {SortPredicateImpl.RESOURCE_TYPE}
+        adaptables = {SlingHttpServletRequest.class},
+        adapters = {SortPredicate.class},
+        resourceType = {SortPredicateImpl.RESOURCE_TYPE}
 )
 public class SortPredicateImpl extends AbstractPredicate implements SortPredicate {
+    protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/sort";
 
-  protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/sort";
+    protected ValueMap valuesFromRequest = null;
 
-  protected ValueMap valuesFromRequest = null;
+    private static final String UNKNOWN_SORT_BY = "Unknown";
 
-  private static final String UNKNOWN_SORT_BY = "Unknown";
+    private List<SortOptionItem> items = null;
 
-  private List<SortOptionItem> items = null;
+    @Self
+    @Required
+    private SlingHttpServletRequest request;
 
-  @Self
-  @Required
-  private SlingHttpServletRequest request;
+    @Self
+    @Required
+    private Options coreOptions;
 
-  @Self
-  @Required
-  private Options coreOptions;
+    @Self
+    @Required
+    private SearchConfig searchConfig;
 
-  @Self
-  @Required
-  private SearchConfig searchConfig;
+    @ValueMapValue
+    @Default(values = "ASC")
+    private String ascendingLabel;
 
-  @ValueMapValue
-  @Default(values = "ASC")
-  private String ascendingLabel;
+    @ValueMapValue
+    @Default(values = "DESC")
+    private String descendingLabel;
 
-  @ValueMapValue
-  @Default(values = "DESC")
-  private String descendingLabel;
+    @PostConstruct
+    protected void init() {
+        initPredicate(request, coreOptions);
+        items = new ArrayList<>();
+        this.populateOptionItems();
+    }
 
-  private List<SortOptionItem> sortOptions;
-
-  @PostConstruct
-  protected void init() {
-    initPredicate(request, coreOptions);
-    sortOptions = new ArrayList<>();
-    this.populateOptionItems();
-  }
-
-  public List<SortOptionItem> getItems() {
-    if (items == null) {
-      items = new ArrayList<>();
+    @Override
+    public List<SortOptionItem> getItems() {
+      List<SortOptionItem> toReturn = new ArrayList<>();
       final ValueMap initialValues = getInitialValues();
 
-      sortOptions.stream().forEach(optionItem -> {
+      items.stream().forEach(optionItem -> {
         if (PredicateUtil.isOptionInInitialValues(optionItem.getValue(), initialValues)) {
           optionItem.setSelected(true);
-          items.add(optionItem);
+          toReturn.add(optionItem);
         } else {
           optionItem.setSelected(false);
-          items.add(optionItem);
+          toReturn.add(optionItem);
         }
 
       });
+
+      return toReturn;
     }
 
-    return items;
-  }
+    @Override
+    public String getOrderByLabel() {
+        String label = UNKNOWN_SORT_BY;
+        for (final SortOptionItem optionItem : getItems()) {
+            if (optionItem.isSelected()) {
+                label = optionItem.getText();
+                break;
+            }
+        }
 
-  @Override
-  public String getOrderByLabel() {
-    String label = UNKNOWN_SORT_BY;
-    for (final SortOptionItem optionItem : getItems()) {
-      if (optionItem.isSelected()) {
-        label = optionItem.getText();
-        break;
-      }
+        return label;
     }
 
-    return label;
-  }
-
-  @Override
-  public String getOrderBySortLabel() {
-    if (isAscending()) {
-      return ascendingLabel;
-    } else {
-      return descendingLabel;
-    }
-  }
-
-  @Override
-  public boolean isAscending() {
-    final String orderBySort = getInitialValues().get(Predicate.PARAM_SORT, String.class);
-    return Predicate.SORT_ASCENDING.equalsIgnoreCase(orderBySort);
-  }
-
-  @Override
-  public String getName() {
-    return "orderby";
-  }
-
-  @Override
-  public boolean isReady() {
-    return !getItems().isEmpty();
-  }
-
-  @Override
-  public ValueMap getInitialValues() {
-    if (valuesFromRequest == null) {
-      valuesFromRequest = new ValueMapDecorator(new HashMap<>());
-
-      String orderBy = PredicateUtil.getParamFromQueryParams(request, Predicate.ORDER_BY);
-      if (StringUtils.isBlank(orderBy)) {
-        orderBy = searchConfig.getOrderBy();
-      }
-      valuesFromRequest.put(Predicate.ORDER_BY, orderBy);
-
-      String orderBySort = PredicateUtil
-          .getParamFromQueryParams(request, Predicate.ORDER_BY + "." + Predicate.PARAM_SORT);
-      if (StringUtils.isBlank(orderBySort)) {
-        orderBySort = searchConfig.getOrderBySort();
-      }
-      valuesFromRequest.put(Predicate.PARAM_SORT, orderBySort);
+    @Override
+    public String getOrderBySortLabel() {
+        if (isAscending()) {
+            return ascendingLabel;
+        } else {
+            return descendingLabel;
+        }
     }
 
-    return valuesFromRequest;
-  }
-
-  private void populateOptionItems() {
-    Resource childItem = request.getResource().getChild("items");
-    if (childItem != null) {
-      childItem.getChildren().forEach(this::addOption);
+    @Override
+    public boolean isAscending() {
+         final String orderBySort = getInitialValues().get(Predicate.PARAM_SORT, String.class);
+         return Predicate.SORT_ASCENDING.equalsIgnoreCase(orderBySort);
     }
 
-  }
+    @Override
+    public String getName() {
+        return "orderby";
+    }
 
-  private void addOption(Resource resource) {
-    ValueMap properties = resource.getValueMap();
-    SortOptionItem sortOptionItem = new SortOptionItem(properties.get("text", String.class),
-        properties.get("value", String.class), properties.get("orderByCase", true));
-    sortOptions.add(sortOptionItem);
-  }
+    @Override
+    public boolean isReady() {
+        return !getItems().isEmpty();
+    }
+
+    @Override
+    public ValueMap getInitialValues() {
+        if (valuesFromRequest == null) {
+            valuesFromRequest = new ValueMapDecorator(new HashMap<>());
+
+            String orderBy = PredicateUtil.getParamFromQueryParams(request, Predicate.ORDER_BY);
+            if (StringUtils.isBlank(orderBy)) {
+                orderBy = searchConfig.getOrderBy();
+            }
+            valuesFromRequest.put(Predicate.ORDER_BY, orderBy);
+
+            String orderBySort = PredicateUtil.getParamFromQueryParams(request, Predicate.ORDER_BY + "." + Predicate.PARAM_SORT);
+            if (StringUtils.isBlank(orderBySort)) {
+                orderBySort = searchConfig.getOrderBySort();
+            }
+            valuesFromRequest.put(Predicate.PARAM_SORT, orderBySort);
+        }
+
+        return valuesFromRequest;
+    }
+
+    private void populateOptionItems() {
+       Resource childItem = request.getResource().getChild("items");
+       if (childItem != null) {
+         childItem.getChildren().forEach(this::addOption);
+       }
+    }
+
+    private void addOption(Resource resource) {
+      ValueMap properties = resource.getValueMap();
+      SortOptionItem sortOptionItem = new SortOptionItem(properties.get("text", String.class),
+          properties.get("value", String.class), properties.get("orderByCase", true));
+      items.add(sortOptionItem);
+    }
 }
