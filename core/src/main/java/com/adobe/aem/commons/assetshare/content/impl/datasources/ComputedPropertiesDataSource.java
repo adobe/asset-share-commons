@@ -30,6 +30,7 @@ import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,7 +57,7 @@ public class ComputedPropertiesDataSource extends SlingSafeMethodsServlet {
     @Reference
     private DataSourceBuilder dataSourceBuilder;
 
-    @Reference
+    @Reference(policyOption = ReferencePolicyOption.GREEDY)
     private transient Collection<ComputedProperty> computedProperties;
 
     @Override

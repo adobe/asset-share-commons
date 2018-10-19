@@ -21,17 +21,21 @@ package com.adobe.aem.commons.assetshare.components.details.impl;
 
 import com.adobe.aem.commons.assetshare.components.details.Image;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.aem.commons.assetshare.util.MimeTypeHelper;
 import com.day.cq.dam.api.Rendition;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
+import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
 import javax.annotation.PostConstruct;
+import java.net.URLDecoder;
 import java.util.regex.Pattern;
 
 @Model(
@@ -50,6 +54,10 @@ public class ImageImpl extends AbstractEmptyTextComponent implements Image {
     @Self
     @Required
     private AssetModel asset;
+
+    @OSGiService
+    @Required
+    private MimeTypeHelper mimeTypeHelper;
 
     @ValueMapValue
     private String computedProperty;
@@ -81,8 +89,10 @@ public class ImageImpl extends AbstractEmptyTextComponent implements Image {
 
                 for (final Rendition rendition : asset.getRenditions()) {
                     if (pattern.matcher(rendition.getName()).matches()) {
-                        src = rendition.getPath();
-                        break;
+                        if (mimeTypeHelper.isBrowserSupportedImage(rendition.getMimeType())) {
+                            src = rendition.getPath();
+                            break;
+                        }
                     }
                 }
             }
@@ -99,6 +109,9 @@ public class ImageImpl extends AbstractEmptyTextComponent implements Image {
     public String getAlt() {
         return asset.getTitle();
     }
+
+    @Override
+    public String getFallback() { return fallbackSrc; }
 
     @Override
     public boolean isEmpty() {
