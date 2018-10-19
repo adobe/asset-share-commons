@@ -51,14 +51,14 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
   protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/sort";
 
     private static final String NN_ITEMS = "items" ;
-  public static final String PN_TEXT = "text";
-  public static final String PN_ORDER_BY_CASE = "orderByCase";
+    private static final String PN_TEXT = "text";
+    private static final String PN_ORDER_BY_CASE = "orderByCase";
 
   protected ValueMap valuesFromRequest = null;
 
     private static final String UNKNOWN_SORT_BY = "Unknown";
 
-    private List<SortOptionItem> items = null;
+    private List<SortOptionItem> items = new ArrayList<>();
 
     @Self
     @Required
@@ -83,7 +83,6 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
     @PostConstruct
     protected void init() {
         initPredicate(request, coreOptions);
-        items = new ArrayList<>();
         this.populateOptionItems();
     }
 
