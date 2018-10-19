@@ -60,7 +60,7 @@ public interface SearchConfig {
      *
      * @return true if the sort order is case-sensitive, else false;
      */
-    boolean isOrderByCase();
+    default boolean isOrderByCase() { return true; }
 
     /**
      * @return the limit of number of results to return for this search.

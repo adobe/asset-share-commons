@@ -24,7 +24,6 @@ import com.adobe.aem.commons.assetshare.components.predicates.SortPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.impl.options.SortOptionItem;
 import com.adobe.aem.commons.assetshare.components.search.SearchConfig;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
-import com.adobe.cq.commerce.common.ValueMapDecorator;
 import com.adobe.cq.wcm.core.components.models.form.Options;
 import com.day.cq.search.Predicate;
 import java.util.ArrayList;
@@ -35,6 +34,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.api.wrappers.ValueMapDecorator;
 import org.apache.sling.models.annotations.Default;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
@@ -47,9 +47,14 @@ import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
         resourceType = {SortPredicateImpl.RESOURCE_TYPE}
 )
 public class SortPredicateImpl extends AbstractPredicate implements SortPredicate {
-    protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/sort";
 
-    protected ValueMap valuesFromRequest = null;
+  protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/sort";
+
+    private static final String NN_ITEMS = "items" ;
+  public static final String PN_TEXT = "text";
+  public static final String PN_ORDER_BY_CASE = "orderByCase";
+
+  protected ValueMap valuesFromRequest = null;
 
     private static final String UNKNOWN_SORT_BY = "Unknown";
 
@@ -84,21 +89,21 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
 
     @Override
     public List<SortOptionItem> getItems() {
-      List<SortOptionItem> toReturn = new ArrayList<>();
+      List<SortOptionItem> sortOptionItems = new ArrayList<>();
       final ValueMap initialValues = getInitialValues();
 
       items.stream().forEach(optionItem -> {
         if (PredicateUtil.isOptionInInitialValues(optionItem.getValue(), initialValues)) {
           optionItem.setSelected(true);
-          toReturn.add(optionItem);
+          sortOptionItems.add(optionItem);
         } else {
           optionItem.setSelected(false);
-          toReturn.add(optionItem);
+          sortOptionItems.add(optionItem);
         }
 
       });
 
-      return toReturn;
+      return sortOptionItems;
     }
 
     @Override
@@ -161,7 +166,7 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
     }
 
     private void populateOptionItems() {
-       Resource childItem = request.getResource().getChild("items");
+       Resource childItem = request.getResource().getChild(NN_ITEMS);
        if (childItem != null) {
          childItem.getChildren().forEach(this::addOption);
        }
@@ -169,8 +174,8 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
 
     private void addOption(Resource resource) {
       ValueMap properties = resource.getValueMap();
-      SortOptionItem sortOptionItem = new SortOptionItem(properties.get("text", String.class),
-          properties.get("value", String.class), properties.get("orderByCase", true));
+      SortOptionItem sortOptionItem = new SortOptionItem(properties.get(PN_TEXT, String.class),
+          properties.get("value", String.class), properties.get(PN_ORDER_BY_CASE, true));
       items.add(sortOptionItem);
     }
 }

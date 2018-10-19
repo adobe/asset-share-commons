@@ -18,7 +18,9 @@
  */
 package com.adobe.aem.commons.assetshare.components.predicates.impl.options;
 
-public class SortOptionItem {
+import com.adobe.cq.wcm.core.components.models.form.OptionItem;
+
+public class SortOptionItem implements OptionItem {
 
   private boolean selected;
 
