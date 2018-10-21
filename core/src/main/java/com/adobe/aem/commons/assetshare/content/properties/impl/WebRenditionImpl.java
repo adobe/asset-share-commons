@@ -68,18 +68,20 @@ public class WebRenditionImpl extends AbstractComputedProperty<String> {
         final Rendition rendition = DamUtil.getBestFitRendition(1280, asset.getRenditions());
         String path = "";
 
-        if (rendition != null && mimeTypeHelper.isBrowserSupportedImage(rendition.getMimeType())) {
+        if (rendition != null &&
+                mimeTypeHelper.isBrowserSupportedImage(rendition.getMimeType())) {
             path = rendition.getPath();
-        } else {
-            if (asset.getOriginal() != null && mimeTypeHelper.isBrowserSupportedImage(asset.getOriginal().getMimeType())) {
-                path = asset.getOriginal().getPath();
-            }
+        } else if (asset.getOriginal() != null &&
+                mimeTypeHelper.isBrowserSupportedImage(asset.getOriginal().getMimeType())) {
+            path = asset.getOriginal().getPath();
         }
 
-        path = StringUtils.replace(path, " ", "%20");
-        path = StringUtils.replace(path, "/jcr:content", "/_jcr_content");
+        return escapeString(path);
+    }
 
-        return path;
+    private String escapeString(String str) {
+        str = StringUtils.replace(str, " ", "%20");
+        return StringUtils.replace(str, "/jcr:content", "/_jcr_content");
     }
 
     @Activate

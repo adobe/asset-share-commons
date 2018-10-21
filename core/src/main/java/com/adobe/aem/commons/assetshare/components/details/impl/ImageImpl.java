@@ -88,11 +88,10 @@ public class ImageImpl extends AbstractEmptyTextComponent implements Image {
                 final Pattern pattern = Pattern.compile(renditionRegex);
 
                 for (final Rendition rendition : asset.getRenditions()) {
-                    if (pattern.matcher(rendition.getName()).matches()) {
-                        if (mimeTypeHelper.isBrowserSupportedImage(rendition.getMimeType())) {
-                            src = rendition.getPath();
-                            break;
-                        }
+                    if (pattern.matcher(rendition.getName()).matches() &&
+                        mimeTypeHelper.isBrowserSupportedImage(rendition.getMimeType())) {
+                        src = rendition.getPath();
+                        break;
                     }
                 }
             }
