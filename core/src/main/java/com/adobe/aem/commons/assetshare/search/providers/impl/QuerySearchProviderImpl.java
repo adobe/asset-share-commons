@@ -177,16 +177,8 @@ public class QuerySearchProviderImpl implements SearchProvider {
         if (queryParametersPostProcessor != null) {
             params = queryParametersPostProcessor.process(request, params);
         }
-        //remove unnecessary parameter if we don't want to switch orderby.case
-        cleanOrderBy(params);
 
         return params;
-    }
-
-    private void cleanOrderBy(Map<String, String> params) {
-        if ("true".equals(params.get("orderby.case"))) {
-            params.remove("orderby.case");
-        }
     }
 
     private boolean isPathsProvidedByRequestParams(final PagePredicate pagePredicate, final Map<String, String> requestParams) {

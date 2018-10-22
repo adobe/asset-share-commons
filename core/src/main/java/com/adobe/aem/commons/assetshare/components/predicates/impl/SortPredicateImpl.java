@@ -29,6 +29,7 @@ import com.day.cq.search.Predicate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -88,21 +89,15 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
 
     @Override
     public List<SortOptionItem> getItems() {
-      List<SortOptionItem> sortOptionItems = new ArrayList<>();
       final ValueMap initialValues = getInitialValues();
 
-      items.stream().forEach(optionItem -> {
-        if (PredicateUtil.isOptionInInitialValues(optionItem.getValue(), initialValues)) {
-          optionItem.setSelected(true);
-          sortOptionItems.add(optionItem);
-        } else {
-          optionItem.setSelected(false);
-          sortOptionItems.add(optionItem);
-        }
+      return items.stream().map(optionItem -> {
+          final boolean selected = PredicateUtil.isOptionInInitialValues(optionItem.getValue(), initialValues);
 
-      });
+          optionItem.setSelected(selected);
 
-      return sortOptionItems;
+          return optionItem;
+      }).collect(Collectors.toList());
     }
 
     @Override
@@ -159,6 +154,12 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
                 orderBySort = searchConfig.getOrderBySort();
             }
             valuesFromRequest.put(Predicate.PARAM_SORT, orderBySort);
+
+            String orderByCase = PredicateUtil.getParamFromQueryParams(request, Predicate.ORDER_BY + "." + Predicate.PARAM_CASE);
+            if (StringUtils.isBlank(orderByCase)) {
+                orderByCase = searchConfig.isOrderByCase() ? "" : Predicate.IGNORE_CASE;
+            }
+            valuesFromRequest.put(Predicate.PARAM_CASE, orderByCase);
         }
 
         return valuesFromRequest;

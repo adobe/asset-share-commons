@@ -91,7 +91,7 @@
                                                                                   jcr:primaryType="nt:unstructured"
                                                                                   sling:orderBefore="name"
                                                                                   sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
-                                                                                  fieldDescription="Check this for case-insensitive sorting. Warning: It should be used only for text values"
+                                                                                  fieldDescription="Check for case-insensitive sorting. Only use for text (String) properties."
                                                                                   name="./orderByCase"
                                                                                   text="Case-Insensitive Sorting"
                                                                                   value="{Boolean}false"

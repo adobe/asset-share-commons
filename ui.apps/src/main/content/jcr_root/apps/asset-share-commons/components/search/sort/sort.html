@@ -19,10 +19,12 @@
 <sly data-sly-use.predicate="com.adobe.aem.commons.assetshare.components.predicates.SortPredicate"
 	 data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html"
 	 data-sly-test.ready="${predicate.ready}">
+
 	<input
 			type="hidden"
 			name="orderby.case"
 			form="${predicate.formId}"
+			value="${predicate.initialValues['case']}"
 			data-asset-share-id="sort"
 			data-asset-share-search-actions="all"/>
 
@@ -39,7 +41,9 @@
 		<div class="text">${predicate.orderByLabel}</div>
 		<div class="menu"
 			 data-sly-list.item="${predicate.items}">
-			<div class="item ${item.selected ? 'selected' : ''}" data-value="${item.value}" data-asset-share-sort-case-sensitive="${item.caseSensitive}">${item.text}</div>
+			<div class="item ${item.selected ? 'selected' : ''}"
+				 data-value="${item.value}"
+				 data-asset-share-sort-case-sensitive="${item.caseSensitive}">${item.text}</div>
 		</div>
 	</div>
 
