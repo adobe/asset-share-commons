@@ -97,13 +97,25 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
 
 
     public String getOrderBy() {
-        final String value = PredicateUtil.getParamFromQueryParams(request, "orderby");
+        final String value = PredicateUtil.getParamFromQueryParams(request, Predicate.ORDER_BY);
         return StringUtils.defaultIfBlank(value, searchConfig.getOrderBy());
     }
 
     public String getOrderBySort() {
-        final String value = PredicateUtil.getParamFromQueryParams(request, "orderby.sort");
+        final String value = PredicateUtil.getParamFromQueryParams(request, Predicate.ORDER_BY + "." + Predicate.PARAM_SORT);
         return StringUtils.defaultIfBlank(value, searchConfig.getOrderBySort());
+    }
+
+    private boolean isOrderByCase() {
+        if (StringUtils.isBlank(PredicateUtil.getParamFromQueryParams(request, Predicate.ORDER_BY))) {
+            // If orderby is NOT passed via HTTP params, then assume the default Results component config should be used.
+            return searchConfig.isOrderByCase();
+        } else {
+            // Else, look for order.case on the request.
+            final String value = PredicateUtil.getParamFromQueryParams(request, Predicate.ORDER_BY + "." + Predicate.PARAM_CASE);
+            // Remember, this method is orderByCase, so if its case INSENSITIVE (ie. ignore) then we return false.
+            return !Predicate.IGNORE_CASE.equals(value);
+        }
     }
 
     public int getLimit() {
@@ -266,14 +278,14 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
 
 
     private void addOrderByAsPredicate(final PredicateGroup root) {
-        final String orderByCase = searchConfig.isOrderByCase() ? "" : Predicate.IGNORE_CASE;
-
         Builder<String, String> orderPredicateBuilder = ImmutableMap.<String, String>builder().
             put(Predicate.ORDER_BY, searchConfig.getOrderBy()).
             put(Predicate.ORDER_BY + "." + Predicate.PARAM_SORT, searchConfig.getOrderBySort());
-        if(!orderByCase.isEmpty()) {
-          orderPredicateBuilder.put(Predicate.ORDER_BY + "." + Predicate.PARAM_CASE, orderByCase);
+
+        if (!isOrderByCase()) {
+            orderPredicateBuilder.put(Predicate.ORDER_BY + "." + Predicate.PARAM_CASE, Predicate.IGNORE_CASE);
         }
+
         root.addAll(PredicateConverter.createPredicates(orderPredicateBuilder.build()));
     }
 
