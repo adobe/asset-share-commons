@@ -61,7 +61,7 @@ public interface Results {
     }
 
     /**
-     * @return true if there are more results. false if there are no more results. Should be use if we want to create pagination or lazy loading
+     * @return true if there are more results. false if there are no more results. Should be use if we want to create pagination or lazy loading (calculates has more when all results are smaller the guessTotal in query).
      */
     boolean isMore();
 
