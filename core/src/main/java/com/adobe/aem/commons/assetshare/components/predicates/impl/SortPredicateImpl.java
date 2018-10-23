@@ -149,23 +149,25 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
             }
             valuesFromRequest.put(Predicate.ORDER_BY, orderBy);
 
-            String orderBySort = PredicateUtil.getParamFromQueryParams(request, Predicate.ORDER_BY + "." + Predicate.PARAM_SORT);
-            if (StringUtils.isBlank(orderBySort)) {
-                orderBySort = searchConfig.getOrderBySort();
-            }
-            valuesFromRequest.put(Predicate.PARAM_SORT, orderBySort);
+            calculateOrderParameter(Predicate.PARAM_SORT, searchConfig.getOrderBySort());
 
-            String orderByCase = PredicateUtil.getParamFromQueryParams(request, Predicate.ORDER_BY + "." + Predicate.PARAM_CASE);
-            if (StringUtils.isBlank(orderByCase)) {
-                orderByCase = searchConfig.isOrderByCase() ? "" : Predicate.IGNORE_CASE;
-            }
-            valuesFromRequest.put(Predicate.PARAM_CASE, orderByCase);
+            calculateOrderParameter(Predicate.PARAM_CASE,
+              searchConfig.isOrderByCase() ? "" : Predicate.IGNORE_CASE);
         }
 
         return valuesFromRequest;
     }
 
-    private void populateOptionItems() {
+    private void calculateOrderParameter(String paramCase, String paramValue) {
+        String orderParam = PredicateUtil
+            .getParamFromQueryParams(request, Predicate.ORDER_BY + "." + paramCase);
+        if (StringUtils.isBlank(orderParam)) {
+          orderParam = paramValue;
+        }
+        valuesFromRequest.put(paramCase, orderParam);
+    }
+
+  private void populateOptionItems() {
        Resource childItem = request.getResource().getChild(NN_ITEMS);
        if (childItem != null) {
          childItem.getChildren().forEach(this::addOption);
