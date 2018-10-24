@@ -4,14 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [v1.6.9]
-
-### Fixed
--0301: Files having special character in the filename. Download,Share and Add to Cart do not work.
-
 ## [Unreleased]
 
-## Changes
+### Fixed
+- 0301: Files having special character in the filename. Download,Share and Add to Cart do not work.
+- 0311: Empty metadata fields fail to hide or display emptyText
+
+### Changes
 - 0294: Changes (JS) AssetShare.Navigation.goToTop(..) to avoid using window.location.hash which pushes state to browser's history and prevents use of the browser's back button.
 
 ## [v1.6.8]
