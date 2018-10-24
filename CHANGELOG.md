@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Fixed
+- 0259: Fixed issue with the Statistics component misreporting how many more results are available.
 - 0301: Files having special character in the filename. Download,Share and Add to Cart do not work.
 - 0311: Empty metadata fields fail to hide or display emptyText
 

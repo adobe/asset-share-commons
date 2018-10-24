@@ -28,6 +28,7 @@ import java.util.*;
 
 public abstract class AbstractResultsImpl implements Results {
     protected List<Result> results;
+    protected boolean moreThanTotal = false;
     protected boolean more = false;
     protected long total = 0;
     protected long size = 0;
@@ -55,6 +56,11 @@ public abstract class AbstractResultsImpl implements Results {
     @Override
     public long getTotal() {
         return total;
+    }
+
+    @Override
+    public boolean isMoreThanTotal() {
+        return moreThanTotal;
     }
 
     @Override
