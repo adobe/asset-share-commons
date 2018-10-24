@@ -56,7 +56,7 @@ public interface Results {
     /**
      * @return value of has more from search results. This method that not takes into account that guessTotal is bigger then all results
      */
-    default boolean isHasMoreSearchResult(){
+    default boolean isMoreThanTotal(){
         return false;
     }
 
