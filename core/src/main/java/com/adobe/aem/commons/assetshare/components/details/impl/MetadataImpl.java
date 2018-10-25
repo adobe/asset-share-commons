@@ -37,6 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Locale;
 
@@ -159,6 +160,9 @@ public class MetadataImpl extends AbstractEmptyTextComponent implements Metadata
                 return true;
             } else if (val instanceof String) {
                 return StringUtils.isBlank((String) val);
+            } else if (val instanceof String[]) {
+                return ArrayUtils.isEmpty((String[]) val) ||
+                        !Arrays.stream((String[]) val).filter(StringUtils::isNotBlank).findFirst().isPresent();
             } else if (val instanceof Object[]) {
                 return ArrayUtils.isEmpty((Object[]) val);
             } else if (val instanceof Collection) {

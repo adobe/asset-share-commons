@@ -93,6 +93,16 @@ public class MetadataImplTest {
     }
 
     @Test
+    public void isEmpty_StringArrayWithEmptyValuesPropertyValue() {
+        metadataImpl = spy(metadataImpl);
+
+        doReturn(COMBINED_PROPERTY_NAME).when(metadataImpl).getPropertyName();
+        when(combinedProperties.get(COMBINED_PROPERTY_NAME)).thenReturn(new String[]{ "", "  ", "      "});
+
+        assertTrue(metadataImpl.isEmpty());
+    }
+
+    @Test
     public void isEmpty_EmptyCollectionPropertyValue() {
         metadataImpl = spy(metadataImpl);
 
@@ -130,6 +140,16 @@ public class MetadataImplTest {
 
         doReturn(COMBINED_PROPERTY_NAME).when(metadataImpl).getPropertyName();
         when(combinedProperties.get(COMBINED_PROPERTY_NAME)).thenReturn(new String[]{ "Hello", "world"});
+
+        assertFalse(metadataImpl.isEmpty());
+    }
+    
+    @Test
+    public void isEmpty_StringArrayWithMixedEmptyValuesPropertyValue() {
+        metadataImpl = spy(metadataImpl);
+
+        doReturn(COMBINED_PROPERTY_NAME).when(metadataImpl).getPropertyName();
+        when(combinedProperties.get(COMBINED_PROPERTY_NAME)).thenReturn(new String[]{ "", "  ", "      ", "hello world", " "});
 
         assertFalse(metadataImpl.isEmpty());
     }
