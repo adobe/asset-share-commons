@@ -20,7 +20,7 @@
 <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:granite="http://www.adobe.com/jcr/granite/1.0"
           xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
           jcr:primaryType="nt:unstructured"
-          jcr:title="Property Filter"
+          jcr:title="Free-form Filter"
           sling:resourceType="cq/gui/components/authoring/dialog"
           extraClientlibs="[core.wcm.components.form.options.v1.editor,asset-share-commons.author.dialog]"
           helpPath="https://www.adobe.com/go/aem_cmp_form_options_v1">

@@ -23,13 +23,14 @@ import com.day.cq.search.Predicate;
 import com.day.cq.search.eval.EvaluationContext;
 import com.day.cq.search.eval.PredicateEvaluator;
 import com.day.cq.search.facets.FacetExtractor;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.osgi.service.component.annotations.Component;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.jcr.query.Row;
 import java.util.*;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * The QueryBuilder predicate for this Sample would be structured like so...
@@ -49,36 +50,23 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
 
     public static final String PREDICATE_NAME = "propertyvalues";
     public static final String VALUES = "values";
-    private static final String DELIMITER = "delimiter";
-    private static final String DELIMITERS = "delimiters";
+    public static final String DELIMITER = "delimiter";
     private static final String[] DEFAULT_DELIMITERS = new String[] { "," };
+    private static final String[] SEPCIAL_DELIMITERS = new String[] { "\\s", "\n" };
+
 
     private PredicateEvaluator propertyEvaluator = new com.day.cq.search.eval.JcrPropertyPredicateEvaluator();
 
     public Predicate buildPredicate(Predicate predicate) {
-        final String[] delimiters = StringUtils.defaultIfEmpty(StringUtils.defaultIfEmpty(predicate.get(DELIMITERS), predicate.get(DELIMITER)), DEFAULT_DELIMITERS);
+        final List<String> delimiters = getDelimiters(predicate);
+        final List<String> values = new ArrayList<>();
 
+        PredicateEvaluatorUtil.getValues(predicate, VALUES, true).stream().forEach(value -> {
+            values.addAll(getValues(value, delimiters));
+        });
 
-
-        final List<String> properties = new ArrayList<>();
-
-        for (final Map.Entry<String, String> entry : predicate.getParameters().entrySet()) {
-            if (entry.getValue() != null &&
-                    entry.getKey() != null &&
-                    (VALUES.equals(entry.getKey()) || StringUtils.endsWith(entry.getKey(), "_" + VALUES))) {
-
-
-                properties.addAll(Arrays.asList(StringUtils.split(entry.getValue(), delimiters[0])));
-
-
-                predicate.set(entry.getKey(), null);
-            }
-        }
-
-        predicate.set(DELIMITER, null);
-
-        for (int i = 0; i < properties.size(); i++) {
-            predicate.set(i + "_value", properties.get(i));
+        for (int i = 0; i < values.size(); i++) {
+            predicate.set(i + "_value", values.get(i));
         }
 
         return predicate;
@@ -124,5 +112,32 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
         return propertyEvaluator.getFacetExtractor(buildPredicate(predicate), evaluationContext);
     }
 
+    protected List<String> getValues(final String data, final List<String> delimiters) {
+        final String regex = delimiters.stream()
+                .map(d -> {
+                    if (ArrayUtils.contains(SEPCIAL_DELIMITERS, d)) {
+                        return d;
+                    } else {
+                        return Pattern.quote(d);
+                    }
+                })
+                .collect(Collectors.joining("|"));
 
+        final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+
+        return Arrays.stream(pattern.split(data))
+                .map(StringUtils::trimToNull)
+                .filter(StringUtils::isNotBlank)
+                .collect(Collectors.toList());
+    }
+
+    protected List<String> getDelimiters(final Predicate predicate) {
+        final List<String> delimiters = PredicateEvaluatorUtil.getValues(predicate, DELIMITER, true);
+
+        if (delimiters.isEmpty()) {
+            return Arrays.asList(DEFAULT_DELIMITERS);
+        } else {
+            return delimiters;
+        }
+    }
 }

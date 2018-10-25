@@ -2,6 +2,7 @@ package com.adobe.aem.commons.assetshare.search.impl.predicateevaluators;
 
 import com.day.cq.search.Predicate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,11 +11,25 @@ import java.util.stream.Collectors;
 public class PredicateEvaluatorUtil {
 
     public static List<String> getValues(final Predicate predicate, final String parameterName) {
-        return predicate.getParameters().entrySet().stream().filter(entry -> {
-            final Pattern pattern = Pattern.compile("(\\d+_)?" + parameterName);
+        return getValues(predicate, parameterName, false);
+    }
+
+    public static List<String> getValues(final Predicate predicate, final String parameterName, final boolean nullify) {
+        final List<String> values = new ArrayList<>();
+
+        predicate.getParameters().entrySet().stream().forEach(entry -> {
+            final Pattern pattern = Pattern.compile("^(\\d+_)?" + parameterName + "$");
             final Matcher matcher = pattern.matcher(entry.getKey());
 
-            return matcher.matches();
-        }).map(entry -> entry.getValue()).collect(Collectors.toList());x
+            if (matcher.matches()) {
+                values.add(entry.getValue());
+
+                if (nullify) {
+                    predicate.set(entry.getKey(), null);
+                }
+            }
+        });
+
+        return values;
     }
 }
