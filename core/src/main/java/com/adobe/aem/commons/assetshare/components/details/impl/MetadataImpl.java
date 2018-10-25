@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.components.details.Metadata;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.cq.sightly.SightlyWCMMode;
 import com.day.cq.wcm.api.Page;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.ValueMap;
@@ -157,9 +158,8 @@ public class MetadataImpl extends AbstractEmptyTextComponent implements Metadata
                 return true;
             } else if (val instanceof String) {
                 return StringUtils.isBlank((String) val);
-            } else if (val instanceof String[]) {
-                String[] vals = (String[]) val;
-                return vals.length == 1 && StringUtils.isBlank(vals[0]);
+            } else if (val instanceof Object[]) {
+                return ArrayUtils.isEmpty((Object[]) val);
             } else {
                 return false;
             }
