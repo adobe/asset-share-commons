@@ -155,25 +155,30 @@ public class SearchConfigImpl implements SearchConfig {
     }
 
     private Resource resolveSearchConfigResource(final PageManager pageManager, final Resource currentResource) {
-        if (currentResource == null || !StringUtils.startsWith(currentResource.getPath(), "/content/")) {
+        if (!isValidResource(currentResource)) {
             // Hit the sites tree root; stop looking!
             return null;
         } else if (currentResource.isResourceType(RESOURCE_TYPE)) {
             // We won the powerball! this passed in resource is the right resource!
             // Ok, not really the powerball, this happens when the Search Results component uses this model.
             return currentResource;
-        } else {
-            // Go look under each page, up the tree for the component.
-            final ResourceTypeVisitor visitor = new ResourceTypeVisitor(new String[]{RESOURCE_TYPE});
-            final Page page = pageManager.getContainingPage(currentResource);
-
-            visitor.accept(page.getContentResource());
-
-            if (visitor.getResources().size() > 0) {
-                return visitor.getResources().iterator().next();
-            } else {
-                return resolveSearchConfigResource(pageManager, page.getParent().getContentResource());
-            }
         }
+
+        // Go look under each page, up the tree for the component.
+        final ResourceTypeVisitor visitor = new ResourceTypeVisitor(new String[]{RESOURCE_TYPE});
+        final Page page = pageManager.getContainingPage(currentResource);
+
+        visitor.accept(page.getContentResource());
+
+        if (visitor.getResources().size() > 0) {
+            return visitor.getResources().iterator().next();
+        } else {
+            return resolveSearchConfigResource(pageManager, page.getParent().getContentResource());
+        }
+    }
+
+
+    private boolean isValidResource(Resource resource) {
+        return resource != null && StringUtils.startsWith(resource.getPath(), "/content/");
     }
 }
