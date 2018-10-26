@@ -23,17 +23,22 @@
     <div class="cmp-wrapper image background">
 
         <!--/* Img element with a max height */-->
-        <img class="ui centered image cmp-image"
+        <img class="ui centered image cmp-image
+                    cmp-image--max-height
+                    cmp-details-image__image
+                    cmp-details-image__image--max-height"
              alt="${image.alt}"
              src="${image.src}"
-             class="cmp-image--max-height"
              style="max-height:${maxHeight @ context = 'styleToken'}px;"
+             data-asset-share-fallback="${image.fallback}"
              data-sly-test.maxHeight="${properties['maxHeight']}"/>
 
         <!--/* Img element without a max height */-->
-        <img class="ui centered image cmp-image"
+        <img class="ui centered image cmp-image
+                    cmp-details-image__image"
              alt="${image.alt}"
              src="${image.src}"
+             data-asset-share-fallback="${image.fallback}"
              data-sly-test="${!maxHeight}"/>
     </div>
 

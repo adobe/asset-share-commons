@@ -18,11 +18,13 @@ package com.adobe.aem.commons.assetshare.content.properties.impl;
 
 import com.adobe.aem.commons.assetshare.content.properties.AbstractComputedProperty;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
+import com.adobe.aem.commons.assetshare.util.MimeTypeHelper;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
 import org.apache.commons.lang3.StringUtils;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
@@ -37,6 +39,9 @@ public class ThumbnailImpl extends AbstractComputedProperty<String> {
     private static final String THUMBNAIL_RENDITION_NAME = "cq5dam.thumbnail.319.319.png";
 
     private Cfg cfg;
+
+    @Reference
+    private MimeTypeHelper mimeTypeHelper;
 
     @Override
     public String getName() {
@@ -67,8 +72,10 @@ public class ThumbnailImpl extends AbstractComputedProperty<String> {
         }
 
         // Ensure the rendition is of mime/type image; else the thumbnail will not be able to render
-        if (rendition != null && StringUtils.startsWith(rendition.getMimeType(), "image/")) {
-            return StringUtils.replace(rendition.getPath(), " ", "%20");
+        if (rendition != null && mimeTypeHelper.isBrowserSupportedImage(rendition.getMimeType())) {
+            String path = StringUtils.replace(rendition.getPath(), " ", "%20");
+            path = StringUtils.replace(path, "/jcr:content", "/_jcr_content");
+            return path;
         }
 
         return "";

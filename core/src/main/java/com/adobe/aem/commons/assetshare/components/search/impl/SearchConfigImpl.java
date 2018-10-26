@@ -5,6 +5,7 @@ import com.adobe.aem.commons.assetshare.util.ResourceTypeVisitor;
 import com.day.cq.dam.api.DamConstants;
 import com.day.cq.search.Predicate;
 import com.day.cq.wcm.api.Page;
+import com.day.cq.wcm.api.PageManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
@@ -73,15 +74,8 @@ public class SearchConfigImpl implements SearchConfig {
 
     @PostConstruct
     protected void init() {
-        if (resource == null || !resource.isResourceType(RESOURCE_TYPE)) {
-
-            final ResourceTypeVisitor visitor = new ResourceTypeVisitor(new String[]{RESOURCE_TYPE});
-            visitor.accept(currentPage.getContentResource());
-
-            if (visitor.getResources().size() > 0) {
-                resource = visitor.getResources().iterator().next();
-            }
-        }
+        resource = resolveSearchConfigResource(request.getResourceResolver().adaptTo(PageManager.class),
+                request.getResource());
 
         if (resource == null) {
             throw new IllegalArgumentException("Adaptable must resolve a search results component.");
@@ -103,7 +97,6 @@ public class SearchConfigImpl implements SearchConfig {
     @Override
     public String getLayout() {
         return properties.get(PN_LAYOUT, DEFAULT_LAYOUT);
-
     }
 
     @Override
@@ -159,5 +152,33 @@ public class SearchConfigImpl implements SearchConfig {
     @Override
     public List<String> getSearchPredicatesNames() {
         return Arrays.asList(properties.get(PN_SEARCH_PREDICATES, new String[]{}));
+    }
+
+    private Resource resolveSearchConfigResource(final PageManager pageManager, final Resource currentResource) {
+        if (!isValidResource(currentResource)) {
+            // Hit the sites tree root; stop looking!
+            return null;
+        } else if (currentResource.isResourceType(RESOURCE_TYPE)) {
+            // We won the powerball! this passed in resource is the right resource!
+            // Ok, not really the powerball, this happens when the Search Results component uses this model.
+            return currentResource;
+        }
+
+        // Go look under each page, up the tree for the component.
+        final ResourceTypeVisitor visitor = new ResourceTypeVisitor(new String[]{RESOURCE_TYPE});
+        final Page page = pageManager.getContainingPage(currentResource);
+
+        visitor.accept(page.getContentResource());
+
+        if (visitor.getResources().size() > 0) {
+            return visitor.getResources().iterator().next();
+        } else {
+            return resolveSearchConfigResource(pageManager, page.getParent().getContentResource());
+        }
+    }
+
+
+    private boolean isValidResource(Resource resource) {
+        return resource != null && StringUtils.startsWith(resource.getPath(), "/content/");
     }
 }
