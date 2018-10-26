@@ -55,7 +55,7 @@ public class StatisticsImpl implements Statistics {
 
     @Override
     public boolean hasMore() {
-        return search.getResults().isMore();
+        return search.getResults().isMoreThanTotal();
     }
 
     @Override
