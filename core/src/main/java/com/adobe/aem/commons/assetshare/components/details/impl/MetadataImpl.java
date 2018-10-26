@@ -1,7 +1,7 @@
 /*
  * Asset Share Commons
  *
- * Copyright (C) 2017 Adobe
+ * Copyright (C) 2018 Adobe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.components.details.Metadata;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.cq.sightly.SightlyWCMMode;
 import com.day.cq.wcm.api.Page;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.ValueMap;
@@ -36,6 +37,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Locale;
 
 @Model(
@@ -158,8 +161,13 @@ public class MetadataImpl extends AbstractEmptyTextComponent implements Metadata
             } else if (val instanceof String) {
                 return StringUtils.isBlank((String) val);
             } else if (val instanceof String[]) {
-                String[] vals = (String[]) val;
-                return vals.length == 1 && StringUtils.isBlank(vals[0]);
+                return ArrayUtils.isEmpty((String[]) val) ||
+                        !Arrays.stream((String[]) val).filter(StringUtils::isNotBlank).findFirst().isPresent();
+            } else if (val instanceof Object[]) {
+                return ArrayUtils.isEmpty((Object[]) val);
+            } else if (val instanceof Collection) {
+                // This is never null due to the first check
+                return ((Collection) val).isEmpty();
             } else {
                 return false;
             }
