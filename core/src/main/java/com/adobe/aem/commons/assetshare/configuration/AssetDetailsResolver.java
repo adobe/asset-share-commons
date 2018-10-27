@@ -22,14 +22,37 @@ package com.adobe.aem.commons.assetshare.configuration;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import org.osgi.annotation.versioning.ProviderType;
 
+/**
+ * This interface binds OSGi Services that in turn resolve the appropriate AssetDetails page for the provided assets.
+ */
 @ProviderType
 public interface AssetDetailsResolver {
     /**
+     * Returns the URL to the asset details page used to render the provided asset.
+     * It does NOT include the suffix path which points to the asset to load (path or UUID).
+     * If the suffix is desired, use the getFullUrl(..) method.
+     *
+     * Example return values:
+     * - /content/my-asset-share/details/image.html
+     * - /content/my-asset-share/details/video.html
+     *
+     * @param config the asset share Config object
+     * @param asset the asset (AssetModel) to resolve
      * @return the url to the asset details page, but do NOT include the asset reference in the suffix.
      */
     String getUrl(final Config config, final AssetModel asset);
 
     /**
+     * Returns the URL to the asset details page used to render the provided asset.
+     * It does NOT include the suffix path which points to the asset to load (path or UUID).
+     * If the suffix is desired, use the getFullUrl(..) method.
+     *
+     * Example return values:
+     * - /content/my-asset-share/details/image.html/content/dam/pictures/cat.png
+     * - /content/my-asset-share/details/video.html/content/dam/videos/puppies.mp4
+     *
+     * @param config the asset share Config object
+     * @param asset the asset (AssetModel) to resolve
      * @return the full asset details link including the asset reference as the suffix.
      */
     default String getFullUrl(final Config config, final AssetModel asset) { return null; }

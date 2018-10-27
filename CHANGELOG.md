@@ -4,8 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unrelease]
 
-## [Unreleased]
+### Fixed
+- 0259: Fixed issue with the Statistics component misreporting how many more results are available.
+- 0301: Files having special character in the filename. Download, Share and Add to Cart do not work.
+- 0307: Fixed issue with Details page Image component's fallback is not used for non-image assets. 
+- 0308: Fixed issue where unsupported (by the browser) image asset types (ex. DFX) are used for image display in browser (thumbs/preview) instead of placeholder.
 
 ## Changes
 - 0294: Changes (JS) AssetShare.Navigation.goToTop(..) to avoid using window.location.hash which pushes state to browser's history and prevents use of the browser's back button.
@@ -19,7 +24,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - 0290: Modals emit JS event when they are shown.
-
 
 ## [v1.6.6]
 

@@ -18,10 +18,9 @@ package com.adobe.aem.commons.assetshare.content.properties.impl;
 
 import com.adobe.aem.commons.assetshare.content.properties.AbstractComputedProperty;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
-import com.adobe.aem.commons.assetshare.util.MimeTypeHelper;
+import com.adobe.granite.asset.api.AssetException;
 import com.day.cq.dam.api.Asset;
-import com.day.cq.dam.api.Rendition;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.sling.api.SlingHttpServletRequest;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -29,19 +28,24 @@ import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
+/**
+ * This Computed Property returns a UTF-8 encoded path to the asset.
+ *
+ * The asset path is collected via the PathImpl Computed Property.
+ */
 @Component(service = ComputedProperty.class)
-@Designate(ocd = ThumbnailImpl.Cfg.class)
-public class ThumbnailImpl extends AbstractComputedProperty<String> {
-
-    public static final String LABEL = "Thumbnail Rendition";
-    public static final String NAME = "thumbnail";
-
-    private static final String THUMBNAIL_RENDITION_NAME = "cq5dam.thumbnail.319.319.png";
-
+@Designate(ocd = PathEncodedImpl.Cfg.class)
+public class PathEncodedImpl extends AbstractComputedProperty<String> {
+    public static final String LABEL = "Asset Path (UTF-8 Encoded)";
+    public static final String NAME = "path/encoded";
     private Cfg cfg;
 
-    @Reference
-    private MimeTypeHelper mimeTypeHelper;
+    @Reference(target = "(component.name=com.adobe.aem.commons.assetshare.content.properties.impl.PathImpl)")
+    ComputedProperty<String> pathComputedProperty;
 
     @Override
     public String getName() {
@@ -59,26 +63,13 @@ public class ThumbnailImpl extends AbstractComputedProperty<String> {
     }
 
     @Override
-    public boolean accepts(final Asset asset, final String propertyName) {
-        return true;
-    }
-
-    @Override
-    public String get(final Asset asset) {
-        Rendition rendition = asset.getRendition(THUMBNAIL_RENDITION_NAME);
-
-        if (rendition == null && asset.getImagePreviewRendition() != null) {
-            rendition = asset.getImagePreviewRendition();
+    public String get(final Asset asset, final SlingHttpServletRequest request) {
+        try {
+            return URLEncoder.encode(pathComputedProperty.get(asset, request),
+                    StandardCharsets.UTF_8.name());
+        } catch (UnsupportedEncodingException e) {
+            throw new AssetException("Could not UTF-8 encode the asset path.", asset.getPath());
         }
-
-        // Ensure the rendition is of mime/type image; else the thumbnail will not be able to render
-        if (rendition != null && mimeTypeHelper.isBrowserSupportedImage(rendition.getMimeType())) {
-            String path = StringUtils.replace(rendition.getPath(), " ", "%20");
-            path = StringUtils.replace(path, "/jcr:content", "/_jcr_content");
-            return path;
-        }
-
-        return "";
     }
 
     @Activate
@@ -86,14 +77,14 @@ public class ThumbnailImpl extends AbstractComputedProperty<String> {
         this.cfg = cfg;
     }
 
-    @ObjectClassDefinition(name = "Asset Share Commons - Computed Property - Thumbnail Rendition")
+    @ObjectClassDefinition(name = "Asset Share Commons - Computed Property - Asset Path (Encoded)")
     public @interface Cfg {
-        @AttributeDefinition(name = "Label", description = "Human read-able label.")
+        @AttributeDefinition(name = "Label", description = "Human readable label.")
         String label() default LABEL;
 
         @AttributeDefinition(
                 name = "Types",
                 description = "Defines the type of data this exposes. This classification allows for intelligent exposure of Computed Properties in DataSources, etc.")
-        String[] types() default { Types.RENDITION, Types.VIDEO_RENDITION };
+        String[] types() default { Types.URL, Types.RENDITION, Types.VIDEO_RENDITION };
     }
 }

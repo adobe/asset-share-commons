@@ -54,7 +54,14 @@ public interface Results {
     long getTotal();
 
     /**
-     * @return true if there are more results. false if there are no more results.
+     * @return value of has more from search results. This method that not takes into account that guessTotal is bigger then all results
+     */
+    default boolean isMoreThanTotal(){
+        return false;
+    }
+
+    /**
+     * @return true if there are more results. false if there are no more results. Should be use if we want to create pagination or lazy loading (calculates has more when all results are smaller the guessTotal in query).
      */
     boolean isMore();
 

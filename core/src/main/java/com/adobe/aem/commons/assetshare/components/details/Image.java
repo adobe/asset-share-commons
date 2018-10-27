@@ -23,4 +23,6 @@ public interface Image extends EmptyTextComponent {
     String getSrc();
 
     String getAlt();
+
+    default String getFallback() { return null; }
 }
