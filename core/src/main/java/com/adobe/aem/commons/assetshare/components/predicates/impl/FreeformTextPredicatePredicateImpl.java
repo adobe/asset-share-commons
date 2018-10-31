@@ -2,19 +2,31 @@ package com.adobe.aem.commons.assetshare.components.predicates.impl;
 
 import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.FreeformTextPredicate;
+import com.adobe.aem.commons.assetshare.components.predicates.impl.options.CustomOptionItem;
+import com.adobe.aem.commons.assetshare.components.predicates.impl.options.SelectedOptionItem;
+import com.adobe.aem.commons.assetshare.components.predicates.impl.options.UnselectedOptionItem;
 import com.adobe.aem.commons.assetshare.search.impl.predicateevaluators.PropertyValuesPredicateEvaluator;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
+import com.adobe.cq.wcm.core.components.models.form.Options;
+import org.apache.commons.lang.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
-import org.apache.sling.models.annotations.Default;
-import org.apache.sling.models.annotations.DefaultInjectionStrategy;
-import org.apache.sling.models.annotations.Model;
-import org.apache.sling.models.annotations.Required;
+import org.apache.sling.models.annotations.*;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static java.util.Collections.EMPTY_LIST;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
@@ -24,6 +36,13 @@ import javax.inject.Named;
 )
 public class FreeformTextPredicatePredicateImpl extends AbstractPredicate implements FreeformTextPredicate {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/freeform-text";
+    private static final String CUSTOM_DELIMITER = "__CUSTOM_DELIMITER";
+
+    private static final String PN_DELIMITER_VALUE = "value";
+    private static final String PN_DELIMITER_CUSTOM_VALUE = "customValue";
+    private static final String NN_DELIMITERS = "delimiters";
+
+    private static final String OP_STARTS_WITH = "startsWith";
 
     @Self
     @Required
@@ -37,10 +56,22 @@ public class FreeformTextPredicatePredicateImpl extends AbstractPredicate implem
     private String property;
 
     @ValueMapValue
+    private String operation;
+
+    @ValueMapValue
     private String placeholder;
 
     @ValueMapValue
-    private String[] delimiters;
+    private Integer inputValidationMinLength;
+
+    @ValueMapValue
+    private Integer inputValidationMaxLength;
+
+    @ValueMapValue
+    private String inputValidationPattern;
+
+    @ValueMapValue
+    private String inputValidationMessage;
 
     @ValueMapValue
     @Default(intValues = 1)
@@ -48,12 +79,14 @@ public class FreeformTextPredicatePredicateImpl extends AbstractPredicate implem
 
     @ValueMapValue(name = PropertyPredicateImpl.PN_TYPE)
     private String typeString;
-
+    
+    protected List<String> delimiters = null;
     protected String valueFromRequest = null;
     protected ValueMap valuesFromRequest = null;
 
     @PostConstruct
     protected void init() {
+        super.initGroup(request);
     }
 
     @Override
@@ -72,18 +105,80 @@ public class FreeformTextPredicatePredicateImpl extends AbstractPredicate implem
     }
 
     @Override
-    public String[] getDelimiters() {
-        return this.delimiters;
+    public int getRows() {
+        return this.rows;
+    }
+
+    @Override
+    public String getOperation() {
+        return operation;
+    }
+
+    @Override
+    public boolean hasOperation() {
+        return StringUtils.isNotBlank(getOperation());
+    }
+
+    @Override
+    public String getProperty() {
+        return property;
+    }
+
+    @Override
+    public Integer getInputValidationMinLength() {
+        if (StringUtils.equals(OP_STARTS_WITH, getOperation()) && (inputValidationMinLength == null || inputValidationMaxLength < 3)) {
+            // Magic minimum number for like operations
+            return 3;
+        } else {
+            return inputValidationMinLength;
+        }
+    }
+
+    @Override
+    public Integer getInputValidationMaxLength() {
+        return inputValidationMaxLength;
+    }
+
+    @Override
+    public String getInputValidationPattern() {
+        return StringUtils.stripToNull(inputValidationPattern);
+    }
+
+    @Override
+    public String getInputValidationMessage() {
+        return StringUtils.stripToNull(inputValidationMessage);
+    }
+
+    @Override
+    public List<String> getDelimiters() {
+
+        if (delimiters == null) {
+            Resource delimitersResource = request.getResource().getChild(NN_DELIMITERS);
+
+            if (delimitersResource == null) {
+                return EMPTY_LIST;
+            }
+
+            delimiters = StreamSupport.stream(delimitersResource.getChildren().spliterator(), false).map(option -> {
+                final ValueMap properties = option.getValueMap();
+                final String value = properties.get(PN_DELIMITER_VALUE, String.class);
+                final String customValue = properties.get(PN_DELIMITER_CUSTOM_VALUE, String.class);
+
+                if (CUSTOM_DELIMITER.equals(value)) {
+                    return customValue;
+                } else {
+                    return value;
+                }
+
+            }).collect(Collectors.toList());
+        }
+
+        return delimiters;
     }
 
     @Override
     public boolean isReady() {
         return true;
-    }
-
-    @Override
-    public int getRows() {
-        return this.rows;
     }
 
     @Override

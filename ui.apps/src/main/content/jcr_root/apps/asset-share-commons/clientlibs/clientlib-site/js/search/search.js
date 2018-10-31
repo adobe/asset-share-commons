@@ -72,8 +72,12 @@ AssetShare.Search = (function (window, $, ns, ajax) {
         }
         if (!running) {
             running = true;
-            trigger(ns.Events.SEARCH_BEGIN, [EVENT_SEARCH_TYPE_FULL]);
-            $.when($.get(form.url(), form.serializeFor(ACTION_SEARCH, true))).then(processSearch);
+            if (form.submit(ACTION_SEARCH, true, processSearch)) {
+                trigger(ns.Events.SEARCH_BEGIN, [EVENT_SEARCH_TYPE_FULL]);
+            } else {
+                trigger(ns.Events.SEARCH_INVALID, [EVENT_SEARCH_TYPE_FULL]);
+                running = false;
+            }
         }
     }
 
@@ -83,8 +87,12 @@ AssetShare.Search = (function (window, $, ns, ajax) {
         }
         if (!running) {
             running = true;
-            trigger(ns.Events.SEARCH_BEGIN, [EVENT_SEARCH_TYPE_LOAD_MORE]);
-            $.when($.get(form.url(), form.serializeFor(ACTION_LOAD_MORE))).then(processLoadMore);
+            if (form.submit(ACTION_LOAD_MORE, false, processLoadMore)) {
+                trigger(ns.Events.SEARCH_BEGIN, [EVENT_SEARCH_TYPE_LOAD_MORE]);
+            } else {
+                trigger(ns.Events.SEARCH_INVALID, [EVENT_SEARCH_TYPE_LOAD_MORE]);
+                running = false;
+            }
         }
     }
 
@@ -94,8 +102,12 @@ AssetShare.Search = (function (window, $, ns, ajax) {
         }
         if (!running) {
             running = true;
-            trigger(ns.Events.SEARCH_BEGIN, [EVENT_SEARCH_TYPE_FULL]);
-            $.when($.get(form.url(), form.serializeFor(ACTION_SORT))).then(processSearch);
+            if (form.submit(ACTION_SORT, false, processSearch)) {
+                trigger(ns.Events.SEARCH_BEGIN, [EVENT_SEARCH_TYPE_FULL]);
+            } else {
+                trigger(ns.Events.SEARCH_INVALID, [EVENT_SEARCH_TYPE_FULL]);
+                running = false;
+            }
         }
     }
 
@@ -103,9 +115,14 @@ AssetShare.Search = (function (window, $, ns, ajax) {
         e.preventDefault();
         if (!running) {
             running = true;
-            trigger(ns.Events.SEARCH_BEGIN, [EVENT_SEARCH_TYPE_FULL]);
+
             ns.Data.val("layout", $(this).val());
-            $.when($.get(form.url(), form.serializeFor(ACTION_SWITCH_LAYOUT))).then(processSearch);
+            if (form.submit(ACTION_SWITCH_LAYOUT, false, processSearch)) {
+                trigger(ns.Events.SEARCH_BEGIN, [EVENT_SEARCH_TYPE_FULL]);
+            } else {
+                trigger(ns.Events.SEARCH_INVALID, [EVENT_SEARCH_TYPE_FULL]);
+                running = false;
+            }
         }
     }
 

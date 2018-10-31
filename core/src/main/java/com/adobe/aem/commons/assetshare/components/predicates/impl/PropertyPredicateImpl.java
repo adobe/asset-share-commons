@@ -126,6 +126,7 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
         return typeString;
     }
 
+    @Override
     public String getProperty() {
         return property;
     }
@@ -135,10 +136,12 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
         return PropertyValuesPredicateEvaluator.VALUES;
     }
 
+    @Override
     public boolean hasOperation() {
         return StringUtils.isNotBlank(getOperation());
     }
 
+    @Override
     public String getOperation() {
         return operation;
     }

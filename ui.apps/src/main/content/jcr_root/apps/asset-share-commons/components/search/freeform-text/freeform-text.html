@@ -29,12 +29,23 @@
 
 	<!--/* Delimiters */-->
 	<sly data-sly-list.delimiter="${predicate.delimiters}">
-		<input type="text"
+		<input type="hidden"
 			   form="${predicate.formId}"
-			   name="${predicate.group}.${predicate.name}.${delimiter.index}_delimiter"
-			   value="${predicate.property}"
+			   name="${predicate.group}.${predicate.name}.${delimiterList.index}_delimiter"
+			   value="${delimiter}"
 			   data-asset-share-predicate-id="${predicate.id}"/>
 	</sly>
+
+	<!--/* Operations */-->
+
+	<input data-sly-test="${predicate.hasOperation}"
+		   type="hidden"
+		   name="${predicate.group}.${predicate.name}.operation"
+		   value="${predicate.operation}"
+		   form="${predicate.formId}"
+		   data-asset-share-predicate-id="${predicate.id}"/>
+
+
 
 	<div class="ui form">
 		<div class="ui fluid styled accordion field">
@@ -49,27 +60,33 @@
 					data-asset-share-update-method="${predicate.componentUpdateMethod}">
 
 				<div class="field">
-					<div class="ui" >
-						<div class="ui input left icon">
-							<textarea type="text"
-									  placeholder="${properties['placeholder']}"
-									  name="${predicate.group}.${predicate.name}.values"
-									  form="${predicate.formId}"
-									  for="${predicate.id}"
-									  rows="${predicate.rows}"
-									  data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}"
-									  data-sly-test.isTextArea="${predicate.rows > 1}">${predicate.initialValue}</textarea>
+                        <textarea type="text"
+                                  placeholder="${properties['placeholder']}"
+                                  minlength="${predicate.inputValidationMinLength}"
+                                  maxlength="${predicate.inputValidationMaxLength}"
+                                  pattern="${predicate.inputValidationPattern}"
+                                  name="${predicate.group}.${predicate.name}.values"
+                                  form="${predicate.formId}"
+                                  for="${predicate.id}"
+                                  rows="${predicate.rows}"
+                                  class="cmp-freeform-text__input cmp-freeform-text__input--textarea"
+                                  data-asset-share-input-validation-message="${predicate.inputValidationMessage}"
+                                  data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}"
+                                  data-sly-test.isTextArea="${predicate.rows > 1}">${predicate.initialValue}</textarea>
 
-							<input type="text"
-								   placeholder="${properties['placeholder']}"
-								   name="${predicate.group}.${predicate.name}.values"
-								   value="${predicate.initialValue}"
-								   form="${predicate.formId}"
-								   for="${predicate.id}"
-								   data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}"
-								   data-sly-test="${!isTextArea}"/>
-						</div>
-					</div>
+                        <input type="text"
+                               placeholder="${properties['placeholder']}"
+                               minlength="${predicate.inputValidationMinLength}"
+                               maxlength="${predicate.inputValidationMaxLength}"
+                               pattern="${predicate.inputValidationPattern}"
+                               name="${predicate.group}.${predicate.name}.values"
+                               value="${predicate.initialValue}"
+                               form="${predicate.formId}"
+                               for="${predicate.id}"
+                               class="cmp-freeform-text__input"
+                               data-asset-share-input-validation-message="${predicate.inputValidationMessage}"
+                               data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}"
+                               data-sly-test="${!isTextArea}"/>
 				</div>
 			</div>
 		</div>
