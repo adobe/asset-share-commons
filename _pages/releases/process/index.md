@@ -26,8 +26,8 @@ title: Release Process
 	* Upload the 2 artifacts from step 6 to the release.
 	* Link to the changelog in the description for the matching release tag commit.
 		* https://github.com/Adobe-Marketing-Cloud/asset-share-commons/blob/asset-share-commons-X.X.X/CHANGELOG.md
-12. Merge (do NOT squash and merge) `/master` back into `/develop` to update the the pom versions.
-13. [Close the GitHub milestone](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/milestones) `X.X.X` and create the next Milestone.
+12. Merge (do NOT squash and merge) `/master` back into `/develop` to update the the pom versions w/ commit message: `vX.X.X-SNAPSHOT`.
+13. [Close the GitHub milestone](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/milestones) `X.X.X` and create the next Milestone. Ensure all issues associated with the completed milestone are closed.
 14. Copy the `apidocs` from step 7 into the Asset Share Commons GitHub pages site (asset-share-commons/gh-pages branch) at `/apidocs`.
 
 > It may take several days for the artifacts to be promoted to [repo.adobe.com](https://repo.adobe.com/nexus/content/groups/public/com/adobe/aem/commons/assetshare/), however the artifacts are immediately available on [bintray.com > Set Up](https://bintray.com/asc/releases/asset-share-commons).
