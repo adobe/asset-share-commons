@@ -8,11 +8,10 @@ import java.util.Map;
 
 import static org.junit.Assert.assertTrue;
 
-
-class PredicateUtilTest {
+public class PredicateUtilTest {
 
     @Test
-    void findPredicate() {
+    public void findPredicate() {
         final String PATH = "/content/dam/a";
 
         final Map<String, String> input = new HashMap<>();
