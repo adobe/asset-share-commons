@@ -20,6 +20,7 @@
 package com.adobe.aem.commons.assetshare.search.providers.impl;
 
 import com.adobe.aem.commons.assetshare.components.predicates.PagePredicate;
+import com.adobe.aem.commons.assetshare.components.predicates.SortPredicate;
 import com.adobe.aem.commons.assetshare.search.QueryParameterPostProcessor;
 import com.adobe.aem.commons.assetshare.search.SearchSafety;
 import com.adobe.aem.commons.assetshare.search.UnsafeSearchException;
@@ -88,8 +89,8 @@ public class QuerySearchProviderImpl implements SearchProvider {
 
     public Results getResults(final SlingHttpServletRequest request) throws UnsafeSearchException, RepositoryException {
         final ResourceResolver resourceResolver = request.getResourceResolver();
-        final PredicateGroup root;
 
+        final PredicateGroup root;
         if (querySearchPreProcessor != null) {
             root = querySearchPreProcessor.process(request, getParams(request));
         } else {

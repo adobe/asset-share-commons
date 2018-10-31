@@ -89,14 +89,20 @@ public interface PagePredicate extends Predicate {
      */
     PredicateGroup getPredicateGroup(ParamTypes... excludeParamTypes);
 
+
     /**
      * Deprecated. Use getPredicateGroup() instead.
+     *
+     * @return a map of representation of the QueryBuilder predicate params.
      */
     @Deprecated
     Map<String, String> getParams();
 
     /**
      * Deprecated. Use getPredicateGroup(ParamTypes... excludeParamTypes) instead.
+     *
+     * @param excludeParamTypes the query parameter types to exclude when building this.
+     * @return the predicate group that contains the query predicates.
      */
     @Deprecated
     Map<String, String> getParams(ParamTypes... excludeParamTypes);
