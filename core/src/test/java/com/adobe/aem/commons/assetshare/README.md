@@ -10,7 +10,7 @@
 
 ## Test Cases
 
-Each class being test has a corresponding test case class, sharing the package and filename of the class being test, however the filename is post-fixed with "Test".
+Each class being tested has a corresponding test case class, sharing the package and filename of the class being tested, however the filename is post-fixed with "Test".
 
 For example, to test:
 
