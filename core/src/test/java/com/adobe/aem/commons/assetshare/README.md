@@ -53,7 +53,7 @@ The following convention for defining JSON resource files should be followed:
 
 provides the JSON required by the test case `core/src/test/java/com.adobe.aem.commons.assetshare.components.impl.HelloWorldImplTest.java`.
 
-Each test case's JSON file can define multiple well-named root in the JSON definition that represent different states, which in tern can be used across 1 or many test methods in the corresponding test case.
+Each test case's JSON file can define multiple well-named root in the JSON definition that represent different states, which in turn can be used across 1 or many test methods in the corresponding test case.
 
 For example, the HelloWorldImplTest.java may need to test for: a fully configured ("default")  component, an wholly un-configured component ("empty") and a component with ONLY the title populated ("title") using the JSON file defined below:
 
@@ -98,7 +98,7 @@ public void testGetTitle__EmptyTitle()  {
 
 ### Sample test case
 
-`core/src/test/java/com.adobe.aem.commons.assetshare.components.impl.HelloWorldImplTest.java`
+`core/src/test/java/com/adobe/aem/commons/assetshare/components/impl/HelloWorldImplTest.java`
 
 ```
 public class HelloWorldImplTest {
