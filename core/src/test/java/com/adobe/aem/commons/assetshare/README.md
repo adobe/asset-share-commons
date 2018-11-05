@@ -22,7 +22,7 @@ this test is created:
 
 ### Test Methods
 
-Each public method on the class being test should have at least one corresponding test method. If multiple conditions (working/not-working) required testing, multiple test methods should be defined.
+Each public method on the class being tested should have at least one corresponding test method. If multiple conditions (working/not-working) required testing, multiple test methods should be defined.
 
 Test method naming:
 * Shares the name of method being tested, ex: `getTitle()`
