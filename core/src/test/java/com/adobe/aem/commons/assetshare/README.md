@@ -43,7 +43,7 @@ these test methods created in `HelloWorldImplTest.java`:
 
 ### Resource files (JSON)
 
-AEM Mocks provide support to load JSON into mock AEM context and write tests against that, avoiding manual mocking of resources, OSGi services, etc. using AEM-agnostic tools like mockito.
+AEM Mocks provide support to load JSON into mock AEM context and write tests against that, avoiding manual mocking of resources, OSGi services, etc. using AEM-agnostic tools like Mockito.
 
 The following convention for defining JSON resource files should be followed:
 
