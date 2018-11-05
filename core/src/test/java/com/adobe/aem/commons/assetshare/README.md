@@ -3,7 +3,7 @@
 ## Testing Tools
 
 * Unit tests are broken up by the class being tested under `core/src/test/java`.
-* Unit tests are written using the dependency provides in the core/pom.xml:
+* Unit tests are written using the dependency provided in the core/pom.xml:
     * [JUnit 4.12](https://junit.org/junit4/)
     * [Mockito 2](https://site.mockito.org/)
     * [AEM Mocks](http://wcm.io/testing/aem-mock/usage.html)
