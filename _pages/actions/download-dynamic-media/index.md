@@ -3,10 +3,11 @@ layout: component-page
 title: Download Modal (Dynamic Media)
 component-group: modals
 initial-version: 1.5.0
-
 ---
 
-> For this component to work, AEM **must** be started with Dynamic Media enabled. All Image Presets used via this action must be published to AEM Publish.
+> For this component to work, AEM **must** be started with Dynamic Media (dynamicmedia runmode) enabled. All Image Presets used via this action must be published to AEM Publish.
+
+> Note that this functionality ONLY works with Dynamic Media (Hybrid) and NOT the newer Dynamic Media (Scene 7) due to the shift of dynamic image processing from AEM Publish (in DM Hybrid) to the more robust cloud processing in Dynamic Media (Scene 7).
 
 Displays the modal used to download one or more assets for use when AEM Assets Dynamic Media is enabled.
 
