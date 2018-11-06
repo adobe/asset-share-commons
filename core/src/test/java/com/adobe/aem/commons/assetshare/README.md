@@ -14,11 +14,11 @@ Each class being tested has a corresponding test case class, sharing the package
 
 For example, to test:
 
-   `core/src/main/java/com.adobe.aem.commons.assetshare.components.impl.HelloWorldImpl.java`
+   `core/src/main/java/com/adobe/aem.commons/assetshare/components/impl/HelloWorldImpl.java`
 
 this test is created:
 
-    `core/src/test/java/com.adobe.aem.commons.assetshare.components.impl.HelloWorldImplTest.java`
+    `core/src/test/java/com/adobe/aem.commons/assetshare/components/impl/HelloWorldImplTest.java`
 
 ### Test Methods
 
@@ -51,9 +51,11 @@ The following convention for defining JSON resource files should be followed:
 
     `core/src/test/resources/com/adobe/aem/commons/assetshare/components/impl/HelloWorldImplTest.json`
 
-provides the JSON required by the test case `core/src/test/java/com.adobe.aem.commons.assetshare.components.impl.HelloWorldImplTest.java`.
+provides the JSON required by the test case `core/src/test/java/com/adobe/aem.commons/assetshare/components/impl/HelloWorldImplTest.java`.
 
 Each test case's JSON file can define multiple, well-named JSON definition roots that represent different states and can in turn be used across one or many test methods in the corresponding test case.
+
+JSON definitions should contain the MINIMUM definition to satisfy the test-cases. This means NO unnecessary junk data from JCR exports, for example: jcr:lastModifiedBy, cq:lastReplicated, cq:responsive, etc. nodes/properties unless they are required by a test.
 
 For example, the HelloWorldImplTest.java may need to test for: a fully configured ("default")  component, an wholly un-configured component ("empty") and a component with ONLY the title populated ("title") using the JSON file defined below:
 
