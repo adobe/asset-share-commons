@@ -8,6 +8,22 @@
     * [Mockito 2](https://site.mockito.org/)
     * [AEM Mocks](http://wcm.io/testing/aem-mock/usage.html)
 
+## Picking the right tool for the job
+
+* Prefer not depending on any mocks (AEM Mocks or Mockito) when possible (however, this is rarely possible unless classes are specifically written with this in mind and/or are utility classes).
+* Prefer existing AEM Mocks over Mockito mocks.
+    * The exception to this rule is if using AEM Mocks requires creating/registering many mocks, where Mockito's mocks (or spies) allow you to do it in fewer.
+* TBD if Sling Mocks dependencies will have to be introduced so supplement Sling Mocks.
+
+## General test writing style
+
+* Use @Setup for initializations common to MOST tests (ideally all).
+* It's ok to repeat small, simple sets of test "setup" code in each test method vs. breaking it out into a "helper" method, since the repetition can add clarity and ease-of-reading.
+    * This also avoids having to write tests FOR your test code.
+    * TBD: Suppress rule for CodeClimate which will complain about this.
+* For explicit values (ex. paths, property values, expected values, etc.), prefer enumerating the value as a constant in the test rather than abstracting their value into shared class variables. Use your best judgement! The tests should be easy to read and understand!
+
+
 ## Test Cases
 
 Each class being tested has a corresponding test case class, sharing the package and filename of the class being tested, however the filename is post-fixed with "Test".
@@ -29,14 +45,11 @@ Test method naming:
 * Prefixed with `test`, ex: the test method is `testGetTitle()`
 * Optionally post-fixed with an underscore-prefixed, capitalized condition name, ex: `testGetTitle__EmptyTitle()`
 
-
-post-fixed with a clear identifier `_ConditionToTest`
-
-For example, to test in `HelloWorld.java`:
+For example, to test the method `getTitle()` in `HelloWorld.java`:
 
    `String getTitle()`
 
-these test methods created in `HelloWorldImplTest.java`:
+The following test methods are created in `HelloWorldImplTest.java`:
 
     `@Test void testGetTitle()` which tests for the normal, populated title condition
     `@Test void testGetTitle_EmptyTitle()`, which tests for the condition where the title is missing
