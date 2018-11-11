@@ -2,13 +2,6 @@
 	"jcr:primaryType" : "cq:Page",
 	"jcr:content" : {
 	  "jcr:primaryType": "cq:PageContent",
-	  "jcr:createdBy": "admin",
-	  "jcr:title": "Home",
-	  "cq:template": "/conf/asset-share-commons/settings/wcm/templates/search-template",
-	  "jcr:created": "Sat Nov 03 2018 18:02:10 GMT+0100",
-	  "cq:lastModified": "Tue Oct 17 2017 12:34:50 GMT-0400",
-	  "sling:resourceType": "asset-share-commons/components/structure/search-page",
-	  "cq:lastModifiedBy": "admin",
 	  "root": {
 	    "jcr:primaryType": "nt:unstructured",
 	    "sling:resourceType": "asset-share-commons/components/structure/root",
@@ -18,142 +11,8 @@
 	    "main": {
 	      "jcr:primaryType": "nt:unstructured",
 	      "sling:resourceType": "wcm/foundation/components/responsivegrid",
-	      "cq:responsive": {"jcr:primaryType": "nt:unstructured"},
-	      "responsivegrid": {
-	        "jcr:primaryType": "nt:unstructured",
-	        "jcr:createdBy": "admin",
-	        "jcr:lastModifiedBy": "admin",
-	        "jcr:created": "Mon Sep 18 2017 14:59:20 GMT-0400",
-	        "jcr:lastModified": "Mon Sep 18 2017 14:59:37 GMT-0400",
-	        "sling:resourceType": "wcm/foundation/components/responsivegrid",
-	        "search_bar": {
-	          "jcr:primaryType": "nt:unstructured",
-	          "jcr:createdBy": "admin",
-	          "buttonLabel": "Search",
-	          "jcr:lastModifiedBy": "admin",
-	          "jcr:created": "Thu Oct 05 2017 21:01:52 GMT-0400",
-	          "type": "text",
-	          "placeholder": "What are you looking for?",
-	          "jcr:lastModified": "Thu Oct 05 2017 21:01:52 GMT-0400",
-	          "sling:resourceType": "asset-share-commons/components/search/search-bar",
-	          "cq:responsive": {
-	            "jcr:primaryType": "nt:unstructured",
-	            "default": {
-	              "jcr:primaryType": "nt:unstructured",
-	              "width": "10"
-	              },
-	            "tablet": {
-	              "jcr:primaryType": "nt:unstructured",
-	              "width": "12"
-	              },
-	            "phone": {
-	              "jcr:primaryType": "nt:unstructured",
-	              "width": "12"
-	              }
-	            }
-	          },
-	        "layout_toggle": {
-	          "jcr:primaryType": "nt:unstructured",
-	          "jcr:createdBy": "admin",
-	          "listLabel": "List Toggle",
-	          "jcr:lastModifiedBy": "admin",
-	          "jcr:created": "Thu Oct 05 2017 21:02:11 GMT-0400",
-	          "cardLabel": "Card Toggle",
-	          "jcr:lastModified": "Thu Oct 05 2017 21:02:11 GMT-0400",
-	          "sling:resourceType": "asset-share-commons/components/search/layout-toggle",
-	          "cq:responsive": {
-	            "jcr:primaryType": "nt:unstructured",
-	            "default": {
-	              "jcr:primaryType": "nt:unstructured",
-	              "width": "2"
-	              },
-	            "tablet": {
-	              "jcr:primaryType": "nt:unstructured",
-	              "width": "8"
-	              },
-	            "phone": {
-	              "jcr:primaryType": "nt:unstructured",
-	              "width": "5"
-	              }
-	            }
-	          },
-	        "sort": {
-	          "jcr:primaryType": "nt:unstructured",
-	          "jcr:createdBy": "admin",
-	          "jcr:lastModifiedBy": "admin",
-	          "orderBySortLabel": "Direction",
-	          "jcr:created": "Thu Oct 05 2017 21:03:36 GMT-0400",
-	          "descendingLabel": "DESC",
-	          "jcr:lastModified": "Fri Oct 06 2017 09:51:41 GMT-0400",
-	          "orderByLabel": "Sort By",
-	          "sling:resourceType": "asset-share-commons/components/search/sort",
-	          "ascendingLabel": "ASC",
-	          "cq:responsive": {
-	            "jcr:primaryType": "nt:unstructured",
-	            "tablet": {
-	              "jcr:primaryType": "nt:unstructured",
-	              "width": "4"
-	              },
-	            "phone": {
-	              "jcr:primaryType": "nt:unstructured",
-	              "width": "7"
-	              }
-	            },
-	          "items": {
-	            "jcr:primaryType": "nt:unstructured",
-	            "item0": {
-	              "jcr:primaryType": "nt:unstructured",
-	              "text": "Last Modified",
-	              "value": "@jcr:content/jcr:lastModified"
-	              },
-	            "item1": {
-	              "jcr:primaryType": "nt:unstructured",
-	              "text": "Size",
-	              "value": "@jcr:content/metadata/dam:size"
-	              },
-	            "item2": {
-	              "jcr:primaryType": "nt:unstructured",
-	              "text": "Width",
-	              "value": "@jcr:content/metadata/tiff:ImageWidth"
-	              },
-	            "item3": {
-	              "jcr:primaryType": "nt:unstructured",
-	              "text": "Length",
-	              "value": "@jcr:content/metadata/tiff:ImageLength"
-	              }
-	            }
-	          },
-	        "results": {
-	          "jcr:primaryType": "nt:unstructured",
-	          "jcr:createdBy": "admin",
-	          "guessTotal": "100",
-	          "listResultResourceType": "/apps/asset-share-commons/components/search/results/result/list",
-	          "loadMoreLabel": "Load more",
-	          "orderBy": "@jcr:content/jcr:lastModified",
-	          "jcr:lastModifiedBy": "admin",
-	          "missingImage": "/content/dam/asset-share-commons/en/site/missing-thumbnail.jpg",
-	          "layout": "card",
-	          "cardResultResourceType": "/apps/asset-share-commons/components/search/results/result/card",
-	          "jcr:created": "Thu Oct 05 2017 21:02:28 GMT-0400",
-	          "limit": "24",
-	          "paths": [
-	            "/content/dam/asset-share-commons/en/public",
-	            "/content/dam/we-retail/en"
-	          ],
-	          "noResultsText": "Your search did not match any assets.",
-	          "jcr:lastModified": "Tue Oct 17 2017 12:34:50 GMT-0400",
-	          "orderBySort": "desc",
-	          "sling:resourceType": "asset-share-commons/components/search/results"
-	          }
-	        },
 	      "header": {
 	        "jcr:primaryType": "nt:unstructured",
-	        "jcr:createdBy": "admin",
-	        "jcr:lastModifiedBy": "admin",
-	        "jcr:created": "Mon Sep 18 2017 14:59:16 GMT-0400",
-	        "mobileMenuLabel": "Menu",
-	        "rootPath": "/content/asset-share-commons/en/light",
-	        "jcr:lastModified": "Tue Oct 17 2017 11:47:24 GMT-0400",
 	        "sling:resourceType": "asset-share-commons/components/structure/header",
 	        "logoPath": "/content/dam/asset-share-commons/en/site/Logo-light.png",
 	        "pages": {
