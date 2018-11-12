@@ -16,6 +16,12 @@ For example the size of an asset is stored in the metadata property `jcr:content
 * **Name:** path
 * **Return type:** `String`
 
+**Asset Path (UTF-8 Encoded)** - Returns the UTF-8 encoded path of the asset for use in URLs. Leverages the `assets` Computed Property to retrieve the path to encode.
+
+* **Label:** Asset Path (UTF-8 Encoded)
+* **Name:** path/encoded
+* **Return type:** `String`
+
 **Asset Type** - Displays a short string based on the `jcr:content/metadata/dam:MIMEtype`.
 
 * **Label:** Asset Type
@@ -60,8 +66,8 @@ For example the size of an asset is stored in the metadata property `jcr:content
 
 **Resolution** - Returns the dimensions of an asset based on the computed properties of Height and Width. The return format is `<width> x <height>`.
 
-* **Label:** Asset Path
-* **Name:** path
+* **Label:** Resolution
+* **Name:** resolution
 * **Return type:** `String`
 
 **Tag Titles** - Returns the titles of any tags on the current asset. Based on the `jcr:content/metadata/cq:tags`. A localized tag title will be used if it exists. Locale is derived from the Sling request.
