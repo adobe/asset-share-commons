@@ -38,7 +38,7 @@ Specifies the type of metadata that is intended to be displayed. Several types a
 
 ![Computed Property Metadata Type - Dialog](./images/dialog-computed-properties.png)
 
-A computed property can be selected from the Computed Metadata Properties dropdown. If a computed property is used the Property Name selection is ignored. More information about available computed properties can be found [here](../computed-properties.html).
+A computed property can be selected from the Computed Metadata Properties dropdown. If a computed property is used the Property Name selection is ignored. More information about available computed properties can be found [here](asset-share-commons/pages/development/computed-properties/).
 
 ### Dialog / Configuration / Metadata Type: Text
 
@@ -88,4 +88,4 @@ Displays a boolean metadata property. Author can specify the labels displayed if
 
 This component allows authors to insert [HTL formatting](https://github.com/Adobe-Marketing-Cloud/htl-spec/blob/master/SPECIFICATION.md#122-format) patterns directly. A malformed format can cause an exception and cause the component not to render properly. 
 
-This component allows authors to use [Computed Properties](../computed-properties/).
+This component allows authors to use [Computed Properties](/asset-share-commons/pages/development/computed-properties/).
