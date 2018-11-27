@@ -18,15 +18,15 @@
 ## General test writing style
 
 * Use @Setup for initializations common to MOST tests (ideally all).
-* It's ok to repeat small, simple sets of test "setup" code in each test method vs. breaking it out into a "helper" method, since the repetition can add clarity and ease-of-reading.
+* It's ok to repeat small, simple sets of test "setup" code in each test method vs. breaking it out into a "helper" method since the repetition can add clarity and ease-of-reading.
     * This also avoids having to write tests FOR your test code.
     * TBD: Suppress rule for CodeClimate which will complain about this.
-* For explicit values (ex. paths, property values, expected values, etc.), prefer enumerating the value as a constant in the test rather than abstracting their value into shared class variables. Use your best judgement! The tests should be easy to read and understand!
+* For explicit values (ex. paths, property values, expected values, etc.), prefer enumerating the value as a constant in the test rather than abstracting their value into shared class variables. Use your best judgment! The tests should be easy to read and understand!
 
 
 ## Test Cases
 
-Each class being tested has a corresponding test case class, sharing the package and filename of the class being tested, however the filename is post-fixed with "Test".
+Each class being tested has a corresponding test case class, sharing the package and filename of the class being tested, however, the filename is post-fixed with "Test".
 
 For example, to test:
 
@@ -66,11 +66,11 @@ The following convention for defining JSON resource files should be followed:
 
 provides the JSON required by the test case `core/src/test/java/com/adobe/aem.commons/assetshare/components/impl/HelloWorldImplTest.java`.
 
-Each test case's JSON file can define multiple, well-named JSON definition roots that represent different states and can in turn be used across one or many test methods in the corresponding test case.
+Each test case's JSON file can define multiple, well-named JSON definition roots that represent different states and can, in turn, be used across one or many test methods in the corresponding test case.
 
-JSON definitions should contain the MINIMUM definition to satisfy the test-cases. This means NO unnecessary junk data from JCR exports, for example: jcr:lastModifiedBy, cq:lastReplicated, cq:responsive, etc. nodes/properties unless they are required by a test.
+JSON definitions should contain the MINIMUM definition to satisfy the test-cases. This means NO unnecessary junk data from JCR exports, for example, jcr:lastModifiedBy, cq:lastReplicated, cq:responsive, etc. nodes/properties unless they are required by a test.
 
-For example, the HelloWorldImplTest.java may need to test for: a fully configured ("default")  component, an wholly un-configured component ("empty") and a component with ONLY the title populated ("title") using the JSON file defined below:
+For example, the HelloWorldImplTest.java may need to test for: a fully configured ("default")  component, a wholly un-configured component ("empty") and a component with ONLY the title populated ("title") using the JSON file defined below:
 
 ```
 {
@@ -119,46 +119,38 @@ public void testGetTitle__EmptyTitle()  {
 public class HelloWorldImplTest {
 
 @Rule
-	public AemContext ctx = new AemContext();
+    public AemContext ctx = new AemContext();
 
-	@Before
-	public void setUp() throws Exception {
-	    // If using Sling Models, register them into the test context
-		ctx.addModelsForClasses(HelloWorldImpl.class);
+    @Before
+    public void setUp() throws Exception {
+        // If using Sling Models, register them into the test context
+        ctx.addModelsForClasses(HelloWorldImpl.class);
 
         // Load the test JSON as mock resources
-		ctx.load().json("HelloWorldImplTest.json", "/");
-	}
+        ctx.load().json("/com/adobe/aem/commons/assetshare/components/impl/HelloWorldImplTest.json", "/");
+    }
 
-	@Test
-	public void testGetTitle() {
-		final String expected = "hello world!";
+    @Test
+    public void testGetTitle() {
+        final String expected = "hello world!";
 
-		ctx.currentResource("/default");
-		HelloWorld helloWorld = ctx.request().adaptTo(HelloWorld.class);
+        ctx.currentResource("/default");
+        HelloWorld helloWorld = ctx.request().adaptTo(HelloWorld.class);
 
-		String actual = helloWorld.getTitle();
+        String actual = helloWorld.getTitle();
 
-		assertEquals(expected, actual);
-	}
+        assertEquals(expected, actual);
+    }
 
-	@Test
-	public void testGetTitle_EmptyTitle() {
-		ctx.currentResource("/empty");
-		HelloWorld helloWorld = ctx.request().adaptTo(HelloWorld.class);
+    @Test
+    public void testGetTitle_EmptyTitle() {
+        ctx.currentResource("/empty");
+        HelloWorld helloWorld = ctx.request().adaptTo(HelloWorld.class);
 
-		String actual = helloWorld.getTitle();
+        String actual = helloWorld.getTitle();
 
-		assertNull(actual);
-	}
+        assertNull(actual);
+    }
 }
 
 ```
-
-
-
-
-
-
-
-
