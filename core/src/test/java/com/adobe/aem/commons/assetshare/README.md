@@ -17,7 +17,7 @@
 
 ## General test writing style
 
-* Use @Setup for initializations common to MOST tests (ideally all).
+* Use @Before for initializations common to MOST tests (ideally all).
 * It's ok to repeat small, simple sets of test "setup" code in each test method vs. breaking it out into a "helper" method since the repetition can add clarity and ease-of-reading.
     * This also avoids having to write tests FOR your test code.
     * TBD: Suppress rule for CodeClimate which will complain about this.
@@ -116,9 +116,19 @@ public void testGetTitle__EmptyTitle()  {
 `core/src/test/java/com/adobe/aem/commons/assetshare/components/impl/HelloWorldImplTest.java`
 
 ```
+import org.mockito.junit.MockitoJUnitRunner;
+import static org.mockito.Mockito.*;
+import static org.junit.Assert.*;
+import org.junit.runner.RunWith;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
+import io.wcm.testing.mock.aem.junit.AemContext;
+
 public class HelloWorldImplTest {
 
-@Rule
+    @Rule
     public AemContext ctx = new AemContext();
 
     @Before
