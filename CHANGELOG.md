@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+- 0326: Removed the sample (non-working) FolderSearchProvider and FolderResult/sImpl from the code base.
+
 ### Changed
 - 0322: Email Sharing Externalizer extension to allow custom externalizer domain to be used for publish links.
 
