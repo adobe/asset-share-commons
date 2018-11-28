@@ -18,25 +18,21 @@
 
 <sly data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
      data-sly-test.pagePredicate="${modelCache['com.adobe.aem.commons.assetshare.components.predicates.PagePredicate']}"
+     data-sly-use.togglesTemplate="templates/toggles.html"
      data-sly-test.hideLabels="${properties['hideLabels']}"></sly>
 
 <div class="ui basic segment">
-    <div class="ui column grid">
-        <div class="eight wide column">
-            <button type="submit"
-                    form="${pagePredicate.formId}"
-                    class="ui icon fluid button ${hideLabels ? '' : 'labeled'}">
-                <i class=" filter icon"></i>
-                <span data-sly-test="${!hideLabels}">${properties['applyFilterLabel']}</span>
-            </button>
+    <div class="ui column grid"
+         data-sly-test.showApplyFilterToggle="${!properties['hideApplyFilterToggle']}">
+        <div class="eight wide column"
+             data-sly-call="${togglesTemplate.apply @ label = properties['applyFilterLabel'], hideLabels = hideLabels, pagePredicate = pagePredicate}">
         </div>
 
-        <div class="eight wide column">
-            <a class="ui icon fluid button ${hideLabels ? '' : 'labeled'}"
-               href="${currentPage.path @ extension = 'html'}">
-                <i class="undo icon"></i>
-                <span data-sly-test="${!hideLabels}">${properties['resetFilterLabel']}</span>
-            </a>
+        <div class="eight wide column"
+            data-sly-call="${togglesTemplate.reset @ label = properties['resetFilterLabel'], hideLabels = hideLabels, currentPage = currentPage}">
         </div>
+    </div>
+    <div data-sly-test="${!showApplyFilterToggle}"
+         data-sly-call="${togglesTemplate.reset @ label = properties['resetFilterLabel'], hideLabels = hideLabels, currentPage = currentPage}">
     </div>
 </div>
