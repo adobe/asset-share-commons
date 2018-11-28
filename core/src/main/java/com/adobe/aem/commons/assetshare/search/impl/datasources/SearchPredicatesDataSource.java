@@ -28,6 +28,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 import javax.servlet.Servlet;
 import java.util.Collection;
@@ -47,16 +48,17 @@ public class SearchPredicatesDataSource extends SlingSafeMethodsServlet {
     @Reference
     private DataSourceBuilder dataSourceBuilder;
 
-    @Reference(cardinality = ReferenceCardinality.MULTIPLE)
+    @Reference(
+            cardinality = ReferenceCardinality.MULTIPLE,
+            policyOption = ReferencePolicyOption.GREEDY
+    )
     private transient Collection<SearchPredicate> searchPredicates;
 
     @Override
     protected final void doGet(final SlingHttpServletRequest request, final SlingHttpServletResponse response) {
         final Map<String, Object> data = new TreeMap<>();
 
-        searchPredicates.stream().forEach(gp -> {
-            data.put(gp.getLabel(), gp.getName());
-        });
+        searchPredicates.stream().forEach(searchPredicate -> data.put(searchPredicate.getLabel(), searchPredicate.getName()));
 
         dataSourceBuilder.build(request, data);
     }
