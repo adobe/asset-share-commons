@@ -6,7 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+<<<<<<< HEAD
 - 0327: Updated SearchPredicateDataSource and AssetDetailsResolver to GREEDY'ily acquire @References to allow 3rd party service impls to register properly.
+=======
+### Changed
+- 0322: Email Sharing Externalizer extension to allow custom externalizer domain to be used for publish links.
+>>>>>>> 8a29f8f123045baa44290c06e345b7441575a2b5
 
 ## [v1.6.10]
 
@@ -17,7 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0308: Fixed issue where unsupported (by the browser) image asset types (ex. DFX) are used for image display in browser (thumbs/preview) instead of placeholder.
 - 0311: Empty metadata fields fail to hide or display emptyText
 
-### Changes
+### Changed
 - 0294: Changes (JS) AssetShare.Navigation.goToTop(..) to avoid using window.location.hash which pushes state to browser's history and prevents use of the browser's back button.
 
 ## [v1.6.8]

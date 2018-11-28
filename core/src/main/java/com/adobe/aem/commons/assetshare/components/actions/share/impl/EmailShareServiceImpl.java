@@ -189,7 +189,7 @@ public class EmailShareServiceImpl implements ShareService {
                 if (isAuthor()) {
                     url = externalizer.authorLink(config.getResourceResolver(), url);
                 } else {
-                    url = externalizer.publishLink(config.getResourceResolver(), url);
+                    url = externalizer.externalLink(config.getResourceResolver(), cfg.externalizerDomain(), url);
                 }
 
                 sb.append("<li><a href=\"");
@@ -286,5 +286,11 @@ public class EmailShareServiceImpl implements ShareService {
                 description = "The default value to use is no signature can be derived."
         )
         String signature() default "Your Assets Team";
+
+        @AttributeDefinition(
+                name = "Externalizer Domain",
+                description = "The externalizer domain used for creating asset links."
+        )
+        String externalizerDomain() default "publish";
     }
 }
