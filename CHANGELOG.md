@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+- 0335: Fixed a content issue that could result in "Remove From Cart" notification no longer working after saving page properties.
+
 ### Changed
 - 0322: Email Sharing Externalizer extension to allow custom externalizer domain to be used for publish links.
 
