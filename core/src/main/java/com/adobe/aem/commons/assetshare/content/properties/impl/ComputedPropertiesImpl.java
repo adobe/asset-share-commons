@@ -56,11 +56,23 @@ public final class ComputedPropertiesImpl implements ComputedProperties {
     private transient List<ComputedProperty> rankedComputedProperties = Collections.synchronizedList(new ArrayList<>());
 
     public List<ComputedProperty> getComputedProperties() {
+        if (log.isDebugEnabled()) {
+            log.debug("Returning this list of highest ranking Computed Prooerties by label");
+            rankedComputedProperties.stream().forEach(computedProperty -> {
+                log.debug("Computed property: [ name: {} ] - [ label: {} ]", computedProperty.getName(), computedProperty.getLabel());
+            });
+        }
+
         return rankedComputedProperties;
     }
 
     void bindComputedProperty(ComputedProperty computedProperty, Map<String, Object> props) {
-        allComputedProperties.put(computedProperty, new RankedComputedProperty(computedProperty, props));
+        final RankedComputedProperty rankedComputedProperty = new RankedComputedProperty(computedProperty, props);
+
+        log.debug("Binding Computed Property: [ name: {} ] - [ rank: {} ] - [ label: {} ]",
+                new String[]{ rankedComputedProperty.getName(), String.valueOf(rankedComputedProperty.getRank()), rankedComputedProperty.getComputedProperty().getLabel()});
+
+        allComputedProperties.put(computedProperty, rankedComputedProperty);
 
         synchronized (rankedComputedProperties) {
             rankedComputedProperties = getHighestRankingByLabel();
@@ -68,6 +80,11 @@ public final class ComputedPropertiesImpl implements ComputedProperties {
     }
 
     void unbindComputedProperty(ComputedProperty computedProperty, Map<String, Object> props) {
+        final RankedComputedProperty rankedComputedProperty = new RankedComputedProperty(computedProperty, props);
+
+        log.debug("Unbinding Computed Property: [ name: {} ] - [ rank: {} ] - [ label: {} ]",
+                new String[]{ rankedComputedProperty.getName(), String.valueOf(rankedComputedProperty.getRank()), rankedComputedProperty.getComputedProperty().getLabel()});
+
         allComputedProperties.remove(computedProperty);
 
         synchronized (rankedComputedProperties) {
@@ -78,7 +95,11 @@ public final class ComputedPropertiesImpl implements ComputedProperties {
     private List<ComputedProperty> getHighestRankingByLabel() {
         return Collections.synchronizedList(allComputedProperties.values().stream()
                 .sorted(Comparator.comparing(RankedComputedProperty::getRank).reversed())
+                .peek(rankedComputedProperty -> log.debug("Computed Property by Rank: [ name: {} ] - [ rank: {} ] - [ label: {} ]",
+                        new String[]{ rankedComputedProperty.getName(), String.valueOf(rankedComputedProperty.getRank()), rankedComputedProperty.getComputedProperty().getLabel()}))
                 .filter(distinctByKey(RankedComputedProperty::getName))
+                .peek(rankedComputedProperty -> log.debug("Highest ranking Computed Property: [ name: {} ] - [ rank: {} ] - [ label: {} ]",
+                        new String[]{ rankedComputedProperty.getName(), String.valueOf(rankedComputedProperty.getRank()), rankedComputedProperty.getComputedProperty().getLabel()}))
                 .map(RankedComputedProperty::getComputedProperty)
                 .sorted(Comparator.comparing(ComputedProperty::getLabel))
                 .collect(Collectors.toList()));
