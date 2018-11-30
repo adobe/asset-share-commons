@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - 0322: Email Sharing Externalizer extension to allow custom externalizer domain to be used for publish links.
+- 0327: Updated SearchPredicateDataSource and AssetDetailsResolver to GREEDY'ily acquire @References to allow 3rd party service impls to register properly.
 
 ## [v1.6.10]
 
