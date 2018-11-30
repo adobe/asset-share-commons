@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - 0335: Fixed a content issue that could result in "Remove From Cart" notification no longer working after saving page properties.
 
+- 0326: Removed the sample (non-working) FolderSearchProvider and FolderResult/sImpl from the code base.
+
 ### Changed
 - 0322: Email Sharing Externalizer extension to allow custom externalizer domain to be used for publish links.
 - 0327: Updated SearchPredicateDataSource and AssetDetailsResolver to GREEDY'ily acquire @References to allow 3rd party service impls to register properly.
