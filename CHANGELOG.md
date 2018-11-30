@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- 0337: Fixed intermittent race condition when multiple modals are loaded (License > Download)
 
 ### Fixed
 - 0335: Fixed a content issue that could result in "Remove From Cart" notification no longer working after saving page properties.
