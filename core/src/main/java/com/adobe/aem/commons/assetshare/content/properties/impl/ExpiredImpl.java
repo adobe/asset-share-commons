@@ -25,13 +25,19 @@ import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.commons.util.DamUtil;
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
-@Component(service = ComputedProperty.class)
+@Component(
+        service = ComputedProperty.class,
+        property = {
+                Constants.SERVICE_RANKING + "=" + ComputedProperty.DEFAULT_ASC_COMPUTED_PROPERTY_SERVICE_RANKING
+        }
+)
 @Designate(ocd = ExpiredImpl.Cfg.class)
 public class ExpiredImpl extends AbstractComputedProperty<Boolean> {
     public static final String LABEL = "Is Expired";

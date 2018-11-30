@@ -23,13 +23,19 @@ import com.adobe.aem.commons.assetshare.content.properties.AbstractComputedPrope
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
 import com.day.cq.dam.api.Asset;
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
-@Component(service = ComputedProperty.class)
+@Component(
+        service = ComputedProperty.class,
+        property = {
+                Constants.SERVICE_RANKING + "=" + ComputedProperty.DEFAULT_ASC_COMPUTED_PROPERTY_SERVICE_RANKING
+        }
+)
 @Designate(ocd = FileNameImpl.Cfg.class)
 public class FileNameImpl extends AbstractComputedProperty<String> {
     public static final String LABEL = "File Name";

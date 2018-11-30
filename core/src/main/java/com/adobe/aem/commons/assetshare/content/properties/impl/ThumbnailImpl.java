@@ -22,6 +22,7 @@ import com.adobe.aem.commons.assetshare.util.MimeTypeHelper;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
 import org.apache.commons.lang3.StringUtils;
+import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -29,7 +30,12 @@ import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
-@Component(service = ComputedProperty.class)
+@Component(
+        service = ComputedProperty.class,
+        property = {
+                Constants.SERVICE_RANKING + "=" + ComputedProperty.DEFAULT_ASC_COMPUTED_PROPERTY_SERVICE_RANKING
+        }
+)
 @Designate(ocd = ThumbnailImpl.Cfg.class)
 public class ThumbnailImpl extends AbstractComputedProperty<String> {
 

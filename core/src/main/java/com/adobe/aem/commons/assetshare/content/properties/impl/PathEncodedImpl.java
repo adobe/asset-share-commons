@@ -21,6 +21,7 @@ import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
 import com.adobe.granite.asset.api.AssetException;
 import com.day.cq.dam.api.Asset;
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -37,7 +38,12 @@ import java.nio.charset.StandardCharsets;
  *
  * The asset path is collected via the PathImpl Computed Property.
  */
-@Component(service = ComputedProperty.class)
+@Component(
+        service = ComputedProperty.class,
+        property = {
+                Constants.SERVICE_RANKING + "=" + ComputedProperty.DEFAULT_ASC_COMPUTED_PROPERTY_SERVICE_RANKING
+        }
+)
 @Designate(ocd = PathEncodedImpl.Cfg.class)
 public class PathEncodedImpl extends AbstractComputedProperty<String> {
     public static final String LABEL = "Asset Path (UTF-8 Encoded)";

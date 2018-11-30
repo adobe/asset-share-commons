@@ -28,6 +28,7 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.commons.mime.MimeTypeService;
+import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -35,9 +36,12 @@ import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
-import javax.activation.MimeType;
-
-@Component(service = ComputedProperty.class)
+@Component(
+        service = ComputedProperty.class,
+        property = {
+                Constants.SERVICE_RANKING + "=" + ComputedProperty.DEFAULT_ASC_COMPUTED_PROPERTY_SERVICE_RANKING
+        }
+)
 @Designate(ocd = AssetTypeImpl.Cfg.class)
 public class AssetTypeImpl extends AbstractComputedProperty<String> {
     public static final String LABEL = "Asset Type";
