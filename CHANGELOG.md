@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0313: Reformatted core/pom.xml
 
 ### Fixed
+- 0336: Fixed the ASC computed properties to have a default service ranking lower zero (set all to -1).
+
 - 0335: Fixed a content issue that could result in "Remove From Cart" notification no longer working after saving page properties.
 
 - 0326: Removed the sample (non-working) FolderSearchProvider and FolderResult/sImpl from the code base.
