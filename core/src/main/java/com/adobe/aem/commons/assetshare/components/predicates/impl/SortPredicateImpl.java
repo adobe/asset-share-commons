@@ -57,7 +57,7 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
 
   protected ValueMap valuesFromRequest = null;
 
-    private static final String UNKNOWN_SORT_BY = "Unknown";
+    private static final String UNKNOWN_SORT_BY = "Default";
 
     private List<SortOptionItem> items = new ArrayList<>();
 
@@ -72,6 +72,10 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
     @Self
     @Required
     private SearchConfig searchConfig;
+
+    @ValueMapValue
+    @Default(values = UNKNOWN_SORT_BY)
+    private String unknownSortBy;
 
     @ValueMapValue
     @Default(values = "ASC")
@@ -102,7 +106,7 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
 
     @Override
     public String getOrderByLabel() {
-        String label = UNKNOWN_SORT_BY;
+        String label = unknownSortBy;
         for (final SortOptionItem optionItem : getItems()) {
             if (optionItem.isSelected()) {
                 label = optionItem.getText();
