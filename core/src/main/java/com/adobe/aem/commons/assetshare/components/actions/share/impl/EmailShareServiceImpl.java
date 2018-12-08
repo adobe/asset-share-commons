@@ -39,6 +39,7 @@ import com.adobe.aem.commons.assetshare.util.EmailService;
 import com.adobe.granite.security.user.UserProperties;
 import com.adobe.granite.security.user.UserPropertiesManager;
 import com.day.cq.commons.Externalizer;
+import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.commons.util.DamUtil;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -138,14 +139,12 @@ public class EmailShareServiceImpl implements ShareService {
     private final void share(final Config config, final ValueMap shareParameters, final String emailTemplatePath) throws ShareException {
         final String[] emailAddresses = StringUtils.split(shareParameters.get(EMAIL_ADDRESSES, ""), ",");
         final String[] assetPaths = Arrays.stream(shareParameters.get(ASSET_PATHS, ArrayUtils.EMPTY_STRING_ARRAY))
-                .map(path -> {
-                    try {
-                        return URLDecoder.decode(path, StandardCharsets.UTF_8.name());
-                    } catch (UnsupportedEncodingException e) {
-                        log.warn("Could not decode path [ {} ] as UTF-8; Using path as is,.", path);
-                        return path;
-                    }
-                }).filter(StringUtils::isNotBlank)
+                .filter(StringUtils::isNotBlank)
+                .map(path -> config.getResourceResolver().getResource(path))
+                .filter(Objects::nonNull)
+                .map(DamUtil::resolveToAsset)
+                .filter(Objects::nonNull)
+                .map(Asset::getPath)
                 .toArray(String[]::new);
 
         // Check to ensure the minimum set of e-mail parameters are provided; Throw exception if not.

@@ -26,6 +26,8 @@
             id="${asset.path}"
             class="ui card cmp-card">
 
+        ${assetDetails.fullUrl}
+
         <a class="image cmp-image__wrapper--card" href="${assetDetails.fullUrl}">
             <img src="${asset.properties['thumbnail'] || properties['missingImage'] @ context = 'attribute'}"
                  class="cmp-image--card"
