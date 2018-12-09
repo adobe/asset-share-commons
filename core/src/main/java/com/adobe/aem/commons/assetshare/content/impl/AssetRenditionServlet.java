@@ -30,7 +30,6 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
@@ -62,7 +61,8 @@ import java.util.regex.Pattern;
 @Designate(ocd = AssetRenditionServlet.Cfg.class)
 public class AssetRenditionServlet extends SlingSafeMethodsServlet {
     private static final Logger log = LoggerFactory.getLogger(AssetRenditionServlet.class);
-    private transient Map<String, Pattern> renditionMappings = new ConcurrentHashMap();
+
+    private transient Map<String, Pattern> staticRenditionMappings;
 
     private Cfg cfg;
 
@@ -88,7 +88,7 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
     }
 
     private Pattern getPattern(final String renditionPatternParam) {
-        Pattern pattern = renditionMappings.get(renditionPatternParam);
+        Pattern pattern = staticRenditionMappings.get(renditionPatternParam);
 
         if (pattern != null) {
             log.debug("Found rendition pattern via suffix lookup [ {} ] -> [ {} ]", renditionPatternParam, pattern.pattern());
@@ -145,18 +145,15 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
     protected void activate(Cfg cfg) {
         this.cfg = cfg;
 
-        for (String mapping : this.cfg.rendition_mappings()) {
+        this.staticRenditionMappings = new ConcurrentHashMap<>();
+
+        for (String mapping : this.cfg.static_rendition_mappings()) {
             String[] segments = StringUtils.split(mapping, "=");
             if (segments.length == 2) {
-                renditionMappings.put(StringUtils.strip(segments[0]),
+                staticRenditionMappings.put(StringUtils.strip(segments[0]),
                         Pattern.compile(StringUtils.strip(segments[1])));
             }
         }
-    }
-
-    @Deactivate
-    protected void deactivate() {
-        this.renditionMappings = new ConcurrentHashMap<>();
     }
 
     @ObjectClassDefinition(name = "Asset Share Commons - Action Page Servlet")
@@ -165,16 +162,16 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
                 name = "Allow ad-hoc rendition selection",
                 description = "Allow ad-hoc rendition select via rendition name patterns via URL suffix. If this is false, then only suffixes that map the rendition_mappings() are used.]"
         )
-        boolean allow_adhoc() default true;
+        boolean allow_adhoc() default false;
 
         @AttributeDefinition(
-                name = "Rendition suffix mappings",
+                name = "Static rendition suffix mappings",
                 description = "In the form: <renditionParam>=<renditionPickerPattern>]"
         )
-        String[] rendition_mappings() default {
-                "web=cq5dam\\.web\\.\\d+\\.\\d+\\.[a-z]+",
-                "thumbnail=cq5dam\\.thumbnail\\.140\\.100\\.[a-z]+",
-                "origin=original"
+        String[] static_rendition_mappings() default {
+                "web=^cq5dam\\.web\\.\\d+\\.\\d+\\.[a-z]+$",
+                "thumbnail=^cq5dam\\.thumbnail\\.140\\.100\\.[a-z]+$",
+                "origin=^original$"
         };
     }
 
