@@ -48,10 +48,8 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
-import java.util.stream.StreamSupport;
 
 @Component(
         service = Servlet.class,
@@ -70,22 +68,12 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
 
     public final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
         final Resource assetResource = request.getResource();
-        final Asset asset = DamUtil.resolveToAsset(assetResource);
-        final String renditionParam = getRenditionParam(request.getRequestPathInfo().getSuffix());
+        final Pattern pattern = getPattern(getRenditionPatternParam(request.getRequestPathInfo().getSuffix()));
 
         Rendition rendition = null;
-        Pattern pattern = renditionMappings.get(renditionParam);
 
         if (pattern != null) {
-            log.debug("Found rendition pattern via suffix lookup [ {} ] -> [ {} ]", renditionParam, pattern.pattern());
-        }
-
-        if (pattern == null && cfg.allow_adhoc()) {
-            pattern = Pattern.compile(getExactRegex(renditionParam));
-            log.debug("Ad-hoc rendition patterns allowed; Using suffix pattern [ {} ]", pattern.pattern());
-        }
-
-        if (pattern != null) {
+            final Asset asset = DamUtil.resolveToAsset(assetResource);
             rendition = asset.getRendition(new PatternRenditionPicker(pattern));
         }
 
@@ -97,6 +85,20 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
             response.sendError(HttpServletResponse.SC_NOT_FOUND,
                     "Could not find an appropriate rendition");
         }
+    }
+
+    private Pattern getPattern(final String renditionPatternParam) {
+        Pattern pattern = renditionMappings.get(renditionPatternParam);
+
+        if (pattern != null) {
+            log.debug("Found rendition pattern via suffix lookup [ {} ] -> [ {} ]", renditionPatternParam, pattern.pattern());
+        }
+
+        if (pattern == null && cfg.allow_adhoc()) {
+            pattern = Pattern.compile(getExactRegex(renditionPatternParam));
+            log.debug("Ad-hoc rendition patterns allowed; Using suffix pattern [ {} ]", pattern.pattern());
+        }
+        return pattern;
     }
 
     protected String getExactRegex(String regex) {
@@ -111,7 +113,7 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
         return regex;
     }
 
-    protected String getRenditionParam(final String suffix) {
+    protected String getRenditionPatternParam(final String suffix) {
         String tmp = StringUtils.substringBeforeLast(suffix, ".");
         tmp = StringUtils.stripToEmpty(tmp);
         return StringUtils.stripStart(tmp, "/");
@@ -176,6 +178,11 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
         };
     }
 
+    /**
+     * RenditionPicker that pics the first rendition that matches the provided pattern.
+     *
+     * If no matching rendition is found, then null is returned.
+     */
     protected class PatternRenditionPicker implements RenditionPicker {
         private final Pattern pattern;
 
@@ -183,17 +190,16 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
             this.pattern = pattern;
         }
 
+        /**
+         * @param asset the asset whose renditions should be searched.
+         * @return the rendition whose name matches the provided pattern, or null if non match.
+         */
         @Override
         public Rendition getRendition(Asset asset) {
-            final Optional<Rendition> rendition = asset.getRenditions().stream()
+            return asset.getRenditions().stream()
                     .filter(r -> pattern.matcher(r.getName()).matches())
-                    .findFirst();
-
-            if (rendition.isPresent()) {
-                return rendition.get();
-            } else {
-                return null;
-            }
+                    .findFirst()
+                    .orElse(null);
         }
     }
 }
