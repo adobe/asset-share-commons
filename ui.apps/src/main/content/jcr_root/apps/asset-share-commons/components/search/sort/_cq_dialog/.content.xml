@@ -101,6 +101,14 @@
                                                                     </items>
                                                                 </field>
                                                             </properties>
+                                                            <unknown-sort-by-label
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                                    fieldLabel="Unknown Sort By Label"
+                                                                    fieldDescription="Sort By label to display if the Sort By value (property) is not defined in the above list. This is most-often used if the default sort order is not defined in the Sort component's Sort By Options. Defaults to 'Default'."
+                                                                    emptyText="Default"
+                                                                    name="./unknownSortBy"/>
+
                                                         </items>
                                                     </column>
                                                 </items>
