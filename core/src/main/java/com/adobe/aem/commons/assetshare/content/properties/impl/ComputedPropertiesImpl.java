@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -52,8 +53,9 @@ import java.util.stream.Collectors;
 public final class ComputedPropertiesImpl implements ComputedProperties {
     private static final Logger log = LoggerFactory.getLogger(ComputedPropertiesImpl.class);
 
+    private final Object lock = new Object();
     private transient Map<ComputedProperty, RankedComputedProperty> allComputedProperties = new ConcurrentHashMap<>();
-    private transient List<ComputedProperty> rankedComputedProperties = Collections.synchronizedList(new ArrayList<>());
+    private transient List<ComputedProperty> rankedComputedProperties = new CopyOnWriteArrayList();
 
     public List<ComputedProperty> getComputedProperties() {
         if (log.isDebugEnabled()) {
@@ -74,7 +76,7 @@ public final class ComputedPropertiesImpl implements ComputedProperties {
 
         allComputedProperties.put(computedProperty, rankedComputedProperty);
 
-        synchronized (rankedComputedProperties) {
+        synchronized (lock) {
             rankedComputedProperties = getHighestRankingByLabel();
         }
     }
@@ -87,13 +89,13 @@ public final class ComputedPropertiesImpl implements ComputedProperties {
 
         allComputedProperties.remove(computedProperty);
 
-        synchronized (rankedComputedProperties) {
+        synchronized (lock) {
             rankedComputedProperties = getHighestRankingByLabel();
         }
     }
 
-    private List<ComputedProperty> getHighestRankingByLabel() {
-        return Collections.synchronizedList(allComputedProperties.values().stream()
+    private CopyOnWriteArrayList<ComputedProperty> getHighestRankingByLabel() {
+        return new CopyOnWriteArrayList<>(allComputedProperties.values().stream()
                 .sorted(Comparator.comparing(RankedComputedProperty::getRank).reversed())
                 .peek(rankedComputedProperty -> log.debug("Computed Property by Rank: [ name: {} ] - [ rank: {} ] - [ label: {} ]",
                         new String[]{ rankedComputedProperty.getName(), String.valueOf(rankedComputedProperty.getRank()), rankedComputedProperty.getComputedProperty().getLabel()}))
@@ -130,7 +132,7 @@ public final class ComputedPropertiesImpl implements ComputedProperties {
     }
 
     private <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
-        Set<Object> seen = ConcurrentHashMap.newKeySet();
+        final Set<Object> seen = ConcurrentHashMap.newKeySet();
         return t -> seen.add(keyExtractor.apply(t));
     }
 }
