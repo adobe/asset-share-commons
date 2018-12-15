@@ -74,44 +74,59 @@ AssetShare.SemanticUI.Modal = (function ($, ns) {
         return tracker.indexOf(id) !== -1;
     }
 
+    function showModal(modals, index) {
+        var modal = null;
+
+        if (index < modals.length) {
+            // move to the next modal
+            modal = modals[index];
+        } else {
+            // No more modals left to load!
+            return;
+        }
+        
+        $.post(modal.url, modal.data, function (htmlResponse) {
+            modal.options = modal.options || {};
+            modal.options.show = modal.options.show || function (modal) {
+                modal.modal("show");
+            };
+
+            if (!isOpenModal(modal.id)) {
+                modal.options.show($('<div>' + htmlResponse + "</div>").find(ns.Elements.selector(modal.id)).modal({
+                    allowMultiple: false,
+                    closable: true,
+                    onShow: function () {
+                        addToOpenModals(modal.id);
+                        if (isPreviewMode()) {
+                            onShowModalInPreviewMode(this);
+                        }
+                        $("body").trigger(ns.Events.MODAL_SHOWN);
+                    },
+                    onHidden: function () {
+                        removeFromOpenModals(modal.id);
+                    },
+                    onDeny: function () {
+                        return modal.options.onDeny ? modal.options.onDeny() : true;
+                    },
+                    onApprove: function () {
+                        return modal.options.onApprove ? modal.options.onApprove() : true;
+                    }
+                }));
+            }
+
+            // Wait for first ajax to finish before making subsequent calls
+            showModal(modals, index + 1);
+        });
+    }
+
     function show(modals) {
         if (!Array.isArray(modals)) {
             modals = [modals];
         }
 
-        modals.forEach(function (modal) {
-            $.post(modal.url, modal.data, function (htmlResponse) {
-
-                modal.options = modal.options || {};
-                modal.options.show = modal.options.show || function (modal) {
-                    modal.modal("show");
-                };
-
-                if (!isOpenModal(modal.id)) {
-                    modal.options.show($('<div>' + htmlResponse + "</div>").find(ns.Elements.selector(modal.id)).modal({
-                        allowMultiple: false,
-                        closable: true,
-                        onShow: function() {
-                            addToOpenModals(modal.id);
-                            if (isPreviewMode()) {
-                                onShowModalInPreviewMode(this);
-                            }
-                            $("body").trigger(ns.Events.MODAL_SHOWN);
-                        },
-                        onHidden: function() {
-                            removeFromOpenModals(modal.id);
-                        },
-                        onDeny: function () {
-                            return modal.options.onDeny ? modal.options.onDeny() : true;
-                        },
-                        onApprove: function () {
-                            return modal.options.onApprove ? modal.options.onApprove() : true;
-                        }
-                    }));
-                }
-            });
-        });
+        showModal(modals, 0);
     }
+
 
     return {
         show: show
