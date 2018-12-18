@@ -11,6 +11,13 @@ last-updated-version: 1.4.0
 The Path Filter component displays controls that allow an end-user to refine search's based on pre-defined Asset folder path restrictions.
 Path filters can either be single select or multi-select; at this time only checkboxes support multi-select.
 
+### AEM 6.3.2.2 bug warning
+
+The Granite UI pathfield (which this component relies on) does function properly in AEM 6.3.2.2 (AEM 6.3 SP2 + Cumulative Fix Pack 2) causing the component dialog to improperly save path values during dialog authoring.
+
+**Please upgrade AEM to 6.3.3 (AEM 6.3 SP3) or later.** See [Github Issue #346](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/issues/346#issuecomment-448296786) for details.
+
+
 ## Authoring
 
 ### Dialog / Filter tab
