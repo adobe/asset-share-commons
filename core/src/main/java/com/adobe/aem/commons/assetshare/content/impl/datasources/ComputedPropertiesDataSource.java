@@ -19,6 +19,7 @@
 
 package com.adobe.aem.commons.assetshare.content.impl.datasources;
 
+import com.adobe.aem.commons.assetshare.content.properties.ComputedProperties;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
 import com.adobe.aem.commons.assetshare.util.DataSourceBuilder;
 import org.apache.commons.lang3.ArrayUtils;
@@ -57,18 +58,17 @@ public class ComputedPropertiesDataSource extends SlingSafeMethodsServlet {
     @Reference
     private DataSourceBuilder dataSourceBuilder;
 
-    @Reference(policyOption = ReferencePolicyOption.GREEDY)
-    private transient Collection<ComputedProperty> computedProperties;
+    @Reference
+    private ComputedProperties computedProperties;
 
     @Override
-    protected final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response)
-            throws ServletException, IOException {
+    protected final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) {
         final Map<String, Object> data = new TreeMap<>();
 
         final ValueMap properties = request.getResource().getValueMap();
         final String[] computedPropertyTypes = properties.get(PN_COMPUTED_PROPERTY_TYPES, new String[]{});
 
-        for (final ComputedProperty computedProperty : computedProperties) {
+        for (final ComputedProperty computedProperty : computedProperties.getComputedProperties()) {
 
             if (ArrayUtils.isEmpty(computedPropertyTypes) ||
                     containsAny(computedPropertyTypes, computedProperty.getTypes())) {
