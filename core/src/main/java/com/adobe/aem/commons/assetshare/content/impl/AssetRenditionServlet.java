@@ -19,20 +19,17 @@
 
 package com.adobe.aem.commons.assetshare.content.impl;
 
+import com.adobe.aem.commons.assetshare.content.RenditionResolver;
 import com.day.cq.dam.api.Asset;
-import com.day.cq.dam.api.Rendition;
-import com.day.cq.dam.api.RenditionPicker;
 import com.day.cq.dam.commons.util.DamUtil;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
-import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.metatype.annotations.AttributeDefinition;
-import org.osgi.service.metatype.annotations.Designate;
-import org.osgi.service.metatype.annotations.ObjectClassDefinition;
+import org.apache.sling.commons.osgi.Order;
+import org.apache.sling.commons.osgi.RankedServices;
+import org.osgi.service.component.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,163 +37,130 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
-import java.nio.channels.WritableByteChannel;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Pattern;
 
 @Component(
         service = Servlet.class,
         property = {
                 "sling.servlet.methods=GET",
                 "sling.servlet.resourceTypes=dam:Asset",
-                "sling.servlet.extensions=rendition"
+                "sling.servlet.extensions=" + AssetRenditionServlet.SERVLET_EXTENSION
+        },
+        reference = {
+                @Reference(
+                        name = "renditionResolver",
+                        bind = "bindRenditionResolver",
+                        unbind = "unbindRenditionResolver",
+                        service = RenditionResolver.class,
+                        policy = ReferencePolicy.DYNAMIC,
+                        policyOption = ReferencePolicyOption.GREEDY,
+                        cardinality = ReferenceCardinality.MULTIPLE
+                )
         }
 )
-@Designate(ocd = AssetRenditionServlet.Cfg.class)
 public class AssetRenditionServlet extends SlingSafeMethodsServlet {
+    public static final String SERVLET_EXTENSION = "rendition";
+    public static final String DOWNLOAD_AS_ATTACHMENT_SUFFIX_SEGMENT = "download";
+
     private static final Logger log = LoggerFactory.getLogger(AssetRenditionServlet.class);
+    private static final String[] CACHEABLE_SUFFIX_FILENAMES = {"asset.rendition"};
 
-    private transient Map<String, Pattern> staticRenditionMappings;
+    private final RankedServices<RenditionResolver> renditionResolvers = new RankedServices<>(Order.DESCENDING);
 
-    private Cfg cfg;
+    protected void bindRenditionResolver(RenditionResolver service, Map<String, Object> props) {
+        log.debug("Binding RenditionResolver [ {} ]", service.getClass().getName());
+        renditionResolvers.bind(service, props);
+    }
 
-    public final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
-        final Resource assetResource = request.getResource();
-        final Pattern pattern = getPattern(getRenditionPatternParam(request.getRequestPathInfo().getSuffix()));
+    protected void unbindRenditionResolver(RenditionResolver service, Map<String, Object> props) {
+        log.debug("Unbinding RenditionResolver [ {} ]", service.getClass().getName());
+        renditionResolvers.unbind(service, props);
+    }
 
-        Rendition rendition = null;
+    public final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) throws IOException, ServletException {
+        final RenditionResolver.Params params = new ParamsImpl(request);
 
-        if (pattern != null) {
-            final Asset asset = DamUtil.resolveToAsset(assetResource);
-            rendition = asset.getRendition(new PatternRenditionPicker(pattern));
-        }
+        if (params.isValid()) {
+            for (final RenditionResolver renditionResolver : renditionResolvers) {
+                if (renditionResolver.accepts(request, params.getRenditionName())) {
 
-        if (rendition != null) {
-            log.debug("Streaming rendition [ {} ] using pattern [ {} ]", rendition.getPath(), pattern.pattern());
+                    setResponseHeaders(response, params);
 
-            streamRenditionToResponse(rendition, response);
+                    renditionResolver.dispatch(request, response);
+                    return;
+                }
+            }
         } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND,
-                    "Could not find an appropriate rendition");
+            log.debug("Request suffix [ {} ] has invalid 'suffix extension'", request.getRequestPathInfo().getSuffix());
         }
+
+        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Unable to locate to handle serving rendition.");
     }
 
-    private Pattern getPattern(final String renditionPatternParam) {
-        Pattern pattern = staticRenditionMappings.get(renditionPatternParam);
-
-        if (pattern != null) {
-            log.debug("Found rendition pattern via suffix lookup [ {} ] -> [ {} ]", renditionPatternParam, pattern.pattern());
+    protected void setResponseHeaders(final SlingHttpServletResponse response, final RenditionResolver.Params params) {
+        if (params.isAttachment()) {
+            response.setHeader("Content-Disposition", String.format("attachment; filename=%s", params.getFileName()));
+        } else {
+            response.setHeader("Content-Disposition", String.format("filename=%s", params.getFileName()));
         }
-
-        if (pattern == null && cfg.allow_adhoc()) {
-            pattern = Pattern.compile(getExactRegex(renditionPatternParam));
-            log.debug("Ad-hoc rendition patterns allowed; Using suffix pattern [ {} ]", pattern.pattern());
-        }
-        return pattern;
-    }
-
-    protected String getExactRegex(String regex) {
-        if (!StringUtils.startsWith(regex, "^")) {
-            regex = "^" + regex;
-        }
-
-        if (!StringUtils.endsWith(regex, "$")) {
-            regex = regex + "$";
-        }
-
-        return regex;
-    }
-
-    protected String getRenditionPatternParam(final String suffix) {
-        String tmp = StringUtils.substringBeforeLast(suffix, ".");
-        tmp = StringUtils.stripToEmpty(tmp);
-        return StringUtils.stripStart(tmp, "/");
-    }
-
-    protected void streamRenditionToResponse(final Rendition rendition,
-                                             final SlingHttpServletResponse response) throws IOException {
-        final InputStream input = rendition.getStream();
-        final OutputStream output = response.getOutputStream();
-
-        response.setContentType(rendition.getMimeType());
-        response.setContentLength(Math.toIntExact(rendition.getSize()));
-
-        try (
-                final ReadableByteChannel inputChannel = Channels.newChannel(input);
-                final WritableByteChannel outputChannel = Channels.newChannel(output);
-        ) {
-            final ByteBuffer buffer = ByteBuffer.allocateDirect(10240);
-
-            while (inputChannel.read(buffer) != -1) {
-                buffer.flip();
-                outputChannel.write(buffer);
-                buffer.clear();
-            }
-        }
-    }
-
-    @Activate
-    protected void activate(Cfg cfg) {
-        this.cfg = cfg;
-
-        this.staticRenditionMappings = new ConcurrentHashMap<>();
-
-        for (String mapping : this.cfg.static_rendition_mappings()) {
-            String[] segments = StringUtils.split(mapping, "=");
-            if (segments.length == 2) {
-                staticRenditionMappings.put(StringUtils.strip(segments[0]),
-                        Pattern.compile(StringUtils.strip(segments[1])));
-            }
-        }
-    }
-
-    @ObjectClassDefinition(name = "Asset Share Commons - Action Page Servlet")
-    public @interface Cfg {
-        @AttributeDefinition(
-                name = "Allow ad-hoc rendition selection",
-                description = "Allow ad-hoc rendition select via rendition name patterns via URL suffix. If this is false, then only suffixes that map the rendition_mappings() are used.]"
-        )
-        boolean allow_adhoc() default false;
-
-        @AttributeDefinition(
-                name = "Static rendition suffix mappings",
-                description = "In the form: <renditionParam>=<renditionPickerPattern>]"
-        )
-        String[] static_rendition_mappings() default {
-                "web=^cq5dam\\.web\\.\\d+\\.\\d+\\.[a-z]+$",
-                "thumbnail=^cq5dam\\.thumbnail\\.140\\.100\\.[a-z]+$",
-                "origin=^original$"
-        };
     }
 
     /**
-     * RenditionPicker that pics the first rendition that matches the provided pattern.
-     *
-     * If no matching rendition is found, then null is returned.
+     * Represents the parameters provided in the RequestPathInfo's suffix to determine how the rendition is selected and returned.
      */
-    protected class PatternRenditionPicker implements RenditionPicker {
-        private final Pattern pattern;
+    protected class ParamsImpl implements RenditionResolver.Params {
+        private final SlingHttpServletRequest request;
 
-        public PatternRenditionPicker(Pattern pattern) {
-            this.pattern = pattern;
+        private String renditionName = null;
+        private String fileName = null;
+        private boolean attachment = false;
+        private boolean valid = true;
+
+        public ParamsImpl(SlingHttpServletRequest request) {
+            this.request = request;
+
+            final Asset asset = DamUtil.resolveToAsset(request.getResource());
+            final String[] segments = StringUtils.split(request.getRequestPathInfo().getSuffix(), "/");
+
+            if (asset == null ||
+                    segments.length < 2 ||
+                    !ArrayUtils.contains(CACHEABLE_SUFFIX_FILENAMES, segments[segments.length -1])) {
+                valid = false;
+            } else {
+                if (segments.length > 0) {
+                    renditionName = StringUtils.stripToNull(StringUtils.substringBefore(segments[0], "."));
+                }
+
+                attachment = ArrayUtils.indexOf(segments, DOWNLOAD_AS_ATTACHMENT_SUFFIX_SEGMENT) > 0;
+
+                final int dotIndex = StringUtils.lastIndexOf(asset.getName(), ".");
+
+                if (dotIndex < 0) {
+                    fileName = asset.getName() + "." + renditionName;
+                } else {
+                    fileName = asset.getName().substring(0, dotIndex) + "." + renditionName + asset.getName().substring(dotIndex);
+                }
+            }
         }
 
-        /**
-         * @param asset the asset whose renditions should be searched.
-         * @return the rendition whose name matches the provided pattern, or null if non match.
-         */
         @Override
-        public Rendition getRendition(Asset asset) {
-            return asset.getRenditions().stream()
-                    .filter(r -> pattern.matcher(r.getName()).matches())
-                    .findFirst()
-                    .orElse(null);
+        public String getRenditionName() {
+            return renditionName;
+        }
+
+        @Override
+        public String getFileName() {
+            return fileName;
+        }
+
+        @Override
+        public boolean isAttachment() {
+            return attachment;
+        }
+
+        @Override
+        public boolean isValid() {
+            return valid;
         }
     }
 }
