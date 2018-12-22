@@ -152,7 +152,7 @@
                                             sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
                                             emptyText="Error"
                                             fieldLabel="Error Title"
-                                            name="./errorText"
+                                            name="./errorTitle"
                                             required="{Boolean}true"/>
                                     <error-message
                                             jcr:primaryType="nt:unstructured"

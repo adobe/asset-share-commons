@@ -21,7 +21,7 @@ package com.adobe.aem.commons.assetshare.content.impl;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.AssetResolver;
-import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
+import com.adobe.aem.commons.assetshare.content.properties.ComputedProperties;
 import com.adobe.aem.commons.assetshare.content.properties.impl.TitleImpl;
 import com.adobe.cq.commerce.common.ValueMapDecorator;
 import com.day.cq.dam.api.Asset;
@@ -33,8 +33,6 @@ import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.Self;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -54,7 +52,7 @@ public class AssetModelImpl implements AssetModel {
 
     @OSGiService
     @Required
-    private List<ComputedProperty> computedProperties;
+    private ComputedProperties computedProperties;
 
     @OSGiService
     @Required
@@ -115,7 +113,7 @@ public class AssetModelImpl implements AssetModel {
     public ValueMap getProperties() {
         if (properties == null) {
             if (asset != null) {
-                properties = new ValueMapDecorator(new CombinedProperties(computedProperties, request, asset));
+                properties = new ValueMapDecorator(new CombinedProperties(computedProperties.getComputedProperties(), request, asset));
             } else {
                 properties = new ValueMapDecorator(new HashMap<>());
             }
