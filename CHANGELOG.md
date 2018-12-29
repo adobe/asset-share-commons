@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 - 0303: Added ability to hide the Apply Filter Toggle control completely (useful for when auto-search on change is enabled everywhere)
+- 0265: Added Freeform-text search component
 
 ## [v1.6.10]
 
