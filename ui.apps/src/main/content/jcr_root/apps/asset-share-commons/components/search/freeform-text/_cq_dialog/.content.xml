@@ -76,32 +76,22 @@
                                                                     required="{Boolean}false"/>
 
                                                             <rows
+                                                                    granite:class="cq-dialog-rows__field-set"
                                                                     jcr:primaryType="nt:unstructured"
                                                                     sling:resourceType="granite/ui/components/coral/foundation/form/numberfield"
-                                                                    fieldDescription="Number of rows this field should have."
-                                                                    fieldLabel="Rows"
+                                                                    fieldDescription="Number of rows this field should have. Note that > 1 rows uses a HTML textarea which does not support input validation."
+                                                                    fieldLabel="Input Field Rows"
                                                                     name="./rows"
+                                                                    min="1"
                                                                     required="{Boolean}true"/>
 
-                                                            <property
-                                                                    jcr:primaryType="nt:unstructured"
-                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/select"
-                                                                    emptyText="Select an Asset Metadata Property"
-                                                                    fieldDescription="A list of available computed properties. The lightning bolt denotes fast search restrictions."
-                                                                    fieldLabel="Metadata Property"
-                                                                    sling:orderBefore="name"
-                                                                    name="./property">
-                                                                <datasource
-                                                                        jcr:primaryType="nt:unstructured"
-                                                                        sling:resourceType="asset-share-commons/data-sources/filterable-properties"/>
-                                                            </property>
-
                                                             <operation
-                                                                    granite:class="cmp-form-textfield-types"
+                                                                    granite:class="cmp-form-textfield-types cq-dialog-operation__value"
                                                                     jcr:primaryType="nt:unstructured"
                                                                     sling:orderBefore="name"
                                                                     sling:resourceType="granite/ui/components/coral/foundation/form/select"
                                                                     fieldLabel="Operation"
+                                                                    fieldDescription="Operation to use for searching. Note that different operations have different fast metadata properties. Please see the documentation on how to make other metadata properties fast for the selected operations."
                                                                     name="./operation">
                                                                 <items jcr:primaryType="nt:unstructured">
                                                                     <equals
@@ -112,14 +102,49 @@
                                                                             jcr:primaryType="nt:unstructured"
                                                                             text="Starts with"
                                                                             value="startsWith"/>
+                                                                    <contains
+                                                                            jcr:primaryType="nt:unstructured"
+                                                                            text="Contains"
+                                                                            value="contains"/>
                                                                 </items>
                                                             </operation>
+
+                                                            <property
+                                                                    granite:class="cq-dialog-property__field-set"
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                                                    emptyText="Select an Asset Metadata Property"
+                                                                    fieldDescription="A list of available properties. The lightning bolt denotes fast search restrictions for the selected operation."
+                                                                    fieldLabel="Metadata Property"
+                                                                    sling:orderBefore="name"
+                                                                    indexRuleCapabilities="[propertyIndex]"
+                                                                    name="./property">
+                                                                <datasource
+                                                                        jcr:primaryType="nt:unstructured"
+                                                                        sling:resourceType="asset-share-commons/data-sources/filterable-properties"/>
+                                                            </property>
+
+                                                            <analzyed-property
+                                                                    granite:class="cq-dialog-analyzed-property__field-set"
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                                                    emptyText="Select an Asset Metadata Property"
+                                                                    fieldDescription="A list of available properties. The lightning bolt denotes fast search restrictions for the selected operation."
+                                                                    fieldLabel="Metadata Property"
+                                                                    sling:orderBefore="name"
+                                                                    indexRuleCapabilities="[analyzed]"
+                                                                    name="./property">
+                                                                <datasource
+                                                                        jcr:primaryType="nt:unstructured"
+                                                                        sling:resourceType="asset-share-commons/data-sources/filterable-properties"/>
+                                                            </analzyed-property>
+
 
                                                             <input-validation-min-length
                                                                     jcr:primaryType="nt:unstructured"
                                                                     sling:resourceType="granite/ui/components/coral/foundation/form/numberfield"
                                                                     fieldDescription="Minimum number of characters allowed. If the operation `Starts with` is selected, a minimum of 3 is enforced for this field for performance reasons"
-                                                                    fieldLabel="Minimum Length"
+                                                                    fieldLabel="Minimum Input Length"
                                                                     name="./inputValidationMinLength"
                                                                     min="0"/>
 
@@ -127,14 +152,15 @@
                                                                     jcr:primaryType="nt:unstructured"
                                                                     sling:resourceType="granite/ui/components/coral/foundation/form/numberfield"
                                                                     fieldDescription="Maximum number of characters allowed. Leave blank for no maximum,."
-                                                                    fieldLabel="Maximum Length"
+                                                                    fieldLabel="Maximum Input Length"
                                                                     min="1"
                                                                     name="./inputValidationMaxLength"/>
 
                                                             <input-validation-pattern
+                                                                    granite:class="cq-dialog-pattern__field-set"
                                                                     jcr:primaryType="nt:unstructured"
                                                                     sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                                                    fieldDescription="Input validation pattern (Uses HTML5 input validation pattern syntax)."
+                                                                    fieldDescription="Input validation pattern (Uses HTML5 input validation pattern syntax). Allowed delimiters must be explicitly added to the validation pattern."
                                                                     fieldLabel="Input Validation Pattern"
                                                                     name="./inputValidationPattern"/>
 
@@ -158,7 +184,7 @@
                                                                     jcr:primaryType="nt:unstructured"
                                                                     sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
                                                                     composite="{Boolean}true"
-                                                                    fieldDescription="Strings or characters used to delimit input values."
+                                                                    fieldDescription="Strings or characters used to delimit input values. Note that 'Whitespace' matches all whitespace, including spaces, tabs and line breaks."
                                                                     fieldLabel="Delimiters"
                                                                     renderReadOnly="{Boolean}true">
                                                                 <field
@@ -186,30 +212,17 @@
                                                                                             jcr:primaryType="nt:unstructured"/>
 
                                                                                     <items jcr:primaryType="nt:unstructured">
-                                                                                        <none
-                                                                                                jcr:primaryType="nt:unstructured"
-                                                                                                text="None"
-                                                                                                value="_D0"/>
-
-                                                                                        <whitespace
-                                                                                                jcr:primaryType="nt:unstructured"
-                                                                                                text="Whitespace"
-                                                                                                value="_D1"/>
-
-                                                                                        <tab
-                                                                                                jcr:primaryType="nt:unstructured"
-                                                                                                text="Tabs"
-                                                                                                value="_D2"/>
 
                                                                                         <comma
                                                                                                 jcr:primaryType="nt:unstructured"
-                                                                                                text="Comma"
+                                                                                                text="Comma (,)"
                                                                                                 value=","/>
 
-                                                                                        <line-separator
+                                                                                        <whitespace
                                                                                                 jcr:primaryType="nt:unstructured"
-                                                                                                text="Line separator"
-                                                                                                value="_D3"/>
+                                                                                                text="Whitespace (Spaces, tabs or line breaks)"
+                                                                                                value="__WS"/>
+
 
                                                                                         <dash
                                                                                                 jcr:primaryType="nt:unstructured"
@@ -246,6 +259,11 @@
                                                                                                 jcr:primaryType="nt:unstructured"
                                                                                                 text="Custom"
                                                                                                 value="_CUSTOM"/>
+
+                                                                                        <none
+                                                                                                jcr:primaryType="nt:unstructured"
+                                                                                                text="None (Supersedes any other selected delimiter)"
+                                                                                                value="__NONE"/>
                                                                                     </items>
                                                                                 </delimiter>
 

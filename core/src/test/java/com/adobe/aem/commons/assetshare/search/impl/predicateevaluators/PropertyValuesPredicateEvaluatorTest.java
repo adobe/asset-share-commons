@@ -1,23 +1,163 @@
+/*
+ * Asset Share Commons
+ *
+ * Copyright (C) 2018 Adobe
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.adobe.aem.commons.assetshare.search.impl.predicateevaluators;
 
 import com.day.cq.search.Predicate;
+import com.day.cq.search.eval.FulltextPredicateEvaluator;
+import com.day.cq.search.eval.JcrPropertyPredicateEvaluator;
+import com.day.cq.search.eval.PredicateEvaluator;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import io.wcm.testing.mock.aem.junit.AemContext;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 import static org.junit.Assert.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class PropertyValuesPredicateEvaluatorTest {
-    final PropertyValuesPredicateEvaluator propertyValuesPredicateEvaluator = new PropertyValuesPredicateEvaluator();
+
+    private PropertyValuesPredicateEvaluator propertyValuesPredicateEvaluator;
 
     private Predicate predicate;
 
+    @Rule
+    public AemContext ctx = new AemContext();
+
     @Before
-    public void setUp() throws Exception {
-        predicate = new Predicate("testing");
+    public void setUp() {
+        predicate = new Predicate("test", "propertyvalues");
+
+        ctx.registerInjectActivateService(new PropertyValuesPredicateEvaluator());
+
+        propertyValuesPredicateEvaluator = (PropertyValuesPredicateEvaluator) ctx.getService(PredicateEvaluator.class);
     }
+
+
+    @Test
+    public void buildPredicate_WithAlreadyBuiltPredicate() {
+        predicate.set("__asset-share-commons--predicate-built", "true");
+
+        final Predicate actual = propertyValuesPredicateEvaluator.buildPredicate(predicate);
+
+        assertSame(predicate, actual);
+        assertEquals(predicate, actual);
+    }
+
+    @Test
+    public void buildPredicate_WithNoneDelimiter() {
+        final Map<String, String> expectedParams = ImmutableMap.<String, String>builder()
+                .put(JcrPropertyPredicateEvaluator.OPERATION, JcrPropertyPredicateEvaluator.OP_EQUALS)
+                .put(JcrPropertyPredicateEvaluator.PROPERTY, "jcr:content/metadata/property")
+                .put("0_" + JcrPropertyPredicateEvaluator.VALUE, "foo bar")
+                .put("1_" + JcrPropertyPredicateEvaluator.VALUE, "zip zap")
+                .put("__asset-share-commons--predicate-built", "true")
+                .build();
+
+        predicate.set("operation", "equals");
+        predicate.set("property", "jcr:content/metadata/property");
+        predicate.set("values", "foo bar");
+        predicate.set("1_values", "zip zap");
+        predicate.set("delimiter", "_NONE");
+
+        final Predicate actual = propertyValuesPredicateEvaluator.buildPredicate(predicate);
+
+        assertEquals("property", actual.getType());
+        assertEquals(expectedParams, actual.getParameters());
+        assertEquals("test", actual.getName());
+    }
+
+    @Test
+    public void buildPredicate_AsPropertyOperation() {
+        final Map<String, String> expectedParams = ImmutableMap.<String, String>builder()
+                .put(JcrPropertyPredicateEvaluator.OPERATION, JcrPropertyPredicateEvaluator.OP_EQUALS)
+                .put(JcrPropertyPredicateEvaluator.PROPERTY, "jcr:content/metadata/property")
+                .put("0_" + JcrPropertyPredicateEvaluator.VALUE, "foo")
+                .put("1_" + JcrPropertyPredicateEvaluator.VALUE, "bar")
+                .put("2_" + JcrPropertyPredicateEvaluator.VALUE, "zip")
+                .put("3_" + JcrPropertyPredicateEvaluator.VALUE, "zap")
+                .put("__asset-share-commons--predicate-built", "true")
+                .build();
+
+        predicate.set("operation", "equals");
+        predicate.set("property", "jcr:content/metadata/property");
+        predicate.set("values", "foo bar");
+        predicate.set("1_values", "zip zap");
+        predicate.set("99_delimiter", "__WS");
+
+        final Predicate actual = propertyValuesPredicateEvaluator.buildPredicate(predicate);
+
+        assertEquals("property", actual.getType());
+        assertEquals(expectedParams, actual.getParameters());
+        assertEquals("test", actual.getName());
+    }
+
+    @Test
+    public void buildPredicate_AsContainsOperation() {
+        final Map<String, String> expectedParams = ImmutableMap
+                .of(
+                        FulltextPredicateEvaluator.FULLTEXT, "*foo* OR *bar*",
+                        FulltextPredicateEvaluator.REL_PATH, "jcr:content/metadata/@property",
+                        "__asset-share-commons--predicate-built", "true"
+                );
+
+        predicate.set("operation", "contains");
+        predicate.set("property", "jcr:content/metadata/property");
+        predicate.set("values", "foo, bar");
+
+        final Predicate actual = propertyValuesPredicateEvaluator.buildPredicate(predicate);
+
+        assertEquals("fulltext", actual.getType());
+        assertEquals(expectedParams, actual.getParameters());
+        assertEquals("test", actual.getName());
+    }
+
+    @Test
+    public void buildPredicate_AsStartsWithOperation() {
+        final Map<String, String> expectedParams = ImmutableMap
+                .of(
+                        FulltextPredicateEvaluator.FULLTEXT, "foo* OR bar* OR zip* OR zap*",
+                        FulltextPredicateEvaluator.REL_PATH, "jcr:content/metadata/@property",
+                        "__asset-share-commons--predicate-built", "true"
+                );
+
+        predicate.set("operation", "startsWith");
+        predicate.set("property", "jcr:content/metadata/property");
+        predicate.set("values", "foo, bar");
+        predicate.set("1_values", "zip, zap");
+
+        final Predicate actual = propertyValuesPredicateEvaluator.buildPredicate(predicate);
+
+        assertEquals("fulltext", actual.getType());
+        assertEquals(expectedParams, actual.getParameters());
+        assertEquals("test", actual.getName());
+    }
+
 
     @Test
     public void buildPredicate_DefaultDelimiter() {
@@ -31,7 +171,6 @@ public class PropertyValuesPredicateEvaluatorTest {
         assertEquals("zip", actual.get("2_value"));
         assertEquals("zap", actual.get("3_value"));
     }
-
 
     @Test
     public void buildPredicate_CustomDelimiter() {
@@ -51,7 +190,7 @@ public class PropertyValuesPredicateEvaluatorTest {
         predicate.set("1_values", "cat,dog,bird?turtle horse,cow      chicken");
         predicate.set("delimiter", "?");
         predicate.set("1_delimiter", ",");
-        predicate.set("2_delimiter", "\\s");
+        predicate.set("2_delimiter", " ");
 
         Predicate actual = propertyValuesPredicateEvaluator.buildPredicate(predicate);
 
@@ -94,7 +233,7 @@ public class PropertyValuesPredicateEvaluatorTest {
 
         List<String> delimiters = new ArrayList<>();
         delimiters.add(",");
-        delimiters.add("?");
+        delimiters.add("\\?");
 
         List<String> actual = propertyValuesPredicateEvaluator.getValues("one?two,three?four?,five", delimiters);
 
@@ -103,17 +242,12 @@ public class PropertyValuesPredicateEvaluatorTest {
 
     @Test
     public void getValues_WhitespaceDelimiters() {
-        List<String> expected = new ArrayList<>();
-        expected.add("one");
-        expected.add("two");
-        expected.add("three");
-        expected.add("four");
-        expected.add("five");
+        List<String> expected = ImmutableList.of("one", "two", "three", "four", "five");
 
         List<String> delimiters = new ArrayList<>();
         delimiters.add("\\s");
 
-        List<String> actual = propertyValuesPredicateEvaluator.getValues("one    two    three four      five", delimiters);
+        List<String> actual = propertyValuesPredicateEvaluator.getValues("one    two  " + System.lineSeparator()  + "  three four      five", delimiters);
 
         assertEquals(expected, actual);
     }
@@ -132,10 +266,10 @@ public class PropertyValuesPredicateEvaluatorTest {
         List<String> actual = propertyValuesPredicateEvaluator.getDelimiters(predicate);
         assertEquals(4, actual.size());
 
-        assertTrue(actual.contains(","));
-        assertTrue(actual.contains("?"));
-        assertTrue(actual.contains("/"));
-        assertTrue(actual.contains("\\"));
+        assertTrue(actual.contains(Pattern.quote(",")));
+        assertTrue(actual.contains(Pattern.quote("?")));
+        assertTrue(actual.contains(Pattern.quote("/")));
+        assertTrue(actual.contains(Pattern.quote("\\")));
 
         assertFalse(actual.contains("no"));
     }
@@ -145,6 +279,27 @@ public class PropertyValuesPredicateEvaluatorTest {
         List<String> actual = propertyValuesPredicateEvaluator.getDelimiters(predicate);
         assertEquals(1, actual.size());
 
-        assertTrue(actual.contains(","));
+        assertTrue(actual.contains(Pattern.quote(",")));
+    }
+
+    @Test
+    public void getPredicateEvaluator_AsPropertyPredicate() {
+        predicate.set("operation", "equals");
+        PredicateEvaluator actual = propertyValuesPredicateEvaluator.getPredicateEvaluator(predicate);
+
+        assertTrue(actual instanceof JcrPropertyPredicateEvaluator);
+    }
+
+    @Test
+    public void getPredicateEvaluator_AsFulltextPredicate() {
+        predicate.set("operation", "startsWith");
+        PredicateEvaluator actual = propertyValuesPredicateEvaluator.getPredicateEvaluator(predicate);
+
+        assertTrue(actual instanceof FulltextPredicateEvaluator);
+
+        predicate.set("operation", "contains");
+        actual = propertyValuesPredicateEvaluator.getPredicateEvaluator(predicate);
+
+        assertTrue(actual instanceof FulltextPredicateEvaluator);
     }
 }

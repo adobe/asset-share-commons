@@ -1,7 +1,7 @@
 /*
  * Asset Share Commons
  *
- * Copyright (C) 2017 Adobe
+ * Copyright (C) 2018 Adobe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,12 @@ package com.adobe.aem.commons.assetshare.search.impl.predicateevaluators;
 
 import com.day.cq.search.Predicate;
 import com.day.cq.search.eval.EvaluationContext;
+import com.day.cq.search.eval.FulltextPredicateEvaluator;
+import com.day.cq.search.eval.JcrPropertyPredicateEvaluator;
 import com.day.cq.search.eval.PredicateEvaluator;
 import com.day.cq.search.facets.FacetExtractor;
+import com.google.common.collect.ImmutableList;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -36,8 +40,9 @@ import javax.jcr.query.Row;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static java.util.Collections.EMPTY_LIST;
+import static java.util.Collections.emptyList;
 
 /**
  * The QueryBuilder predicate for this Sample would be structured like so...
@@ -57,21 +62,26 @@ import static java.util.Collections.EMPTY_LIST;
 public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
     private static final Logger log = LoggerFactory.getLogger(PropertyValuesPredicateEvaluator.class);
 
-    private PredicateEvaluator propertyEvaluator = new com.day.cq.search.eval.JcrPropertyPredicateEvaluator();
+    private PredicateEvaluator propertyEvaluator = new JcrPropertyPredicateEvaluator();
+    private PredicateEvaluator fulltextEvaluator = new FulltextPredicateEvaluator();
 
-    private static final String PREDICATE_BUILT_KEY = "__asset-share-commons--predicate-built";
-    private static final String PREDICATE_BUILT_VALUE = "true";
-    private static final String DELIMITER_CODE_NONE = "_D0";
+    private static final String OP_STARTS_WITH = "startsWith";
+    private static final String OP_CONTAINS = "contains";
 
-    private static Map<String, String> delimiterMapping;
+    protected static final String PREDICATE_BUILT_KEY = "__asset-share-commons--predicate-built";
+    protected static final String PREDICATE_BUILT_VALUE = "true";
+    protected static final String DELIMITER_CODE_NONE = "__NONE";
+    protected static final String DELIMITER_CODE_WHITESPACE = "__WS";
 
-    private Cfg cfg;
+    private static Map<String, String> delimiterMapping = new HashMap<>();
+
+    protected Cfg cfg;
 
     public static final String PREDICATE_NAME = "propertyvalues";
     public static final String VALUES = "values";
-    public static final String DELIMITER = "delimiter";
+    private static final String DELIMITER = "delimiter";
 
-    public Predicate buildPredicate(Predicate predicate) {
+    protected Predicate buildPredicate(Predicate predicate) {
         if (PREDICATE_BUILT_VALUE.equals(predicate.get(PREDICATE_BUILT_KEY))) {
             return predicate;
         }
@@ -79,12 +89,13 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
         final List<String> delimiters = getDelimiters(predicate);
         final List<String> values = new ArrayList<>();
 
-        PredicateEvaluatorUtil.getValues(predicate, VALUES, true).stream().forEach(value -> {
-            values.addAll(getValues(value, delimiters));
-        });
+        PredicateEvaluatorUtil.getValues(predicate, VALUES, true)
+                .forEach(value -> values.addAll(getValues(value, delimiters)));
 
-        for (int i = 0; i < values.size(); i++) {
-            predicate.set(i + "_value", values.get(i));
+        if (isFulltextOperation(predicate)) {
+            predicate = buildFulltextPredicate(predicate, values, predicate.get(JcrPropertyPredicateEvaluator.PROPERTY));
+        } else {
+            predicate = buildPropertyPredicate(predicate, values);
         }
 
         predicate.set(PREDICATE_BUILT_KEY, PREDICATE_BUILT_VALUE);
@@ -92,93 +103,162 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
         return predicate;
     }
 
+
+    private Predicate buildPropertyPredicate(Predicate predicate, List<String> values) {
+        final Predicate propertyPredicate = new Predicate(predicate.getName(), JcrPropertyPredicateEvaluator.PROPERTY);
+
+        for (int i = 0; i < values.size(); i++) {
+            propertyPredicate.set(i + "_"  + JcrPropertyPredicateEvaluator.VALUE, values.get(i));
+        }
+
+        predicate.getParameters().entrySet().stream()
+                .filter(entry -> !entry.getKey().matches("^(\\d+_)?values$"))
+                .filter(entry -> !entry.getKey().matches("^(\\d+_)?delimiter$"))
+                .forEach(entry -> propertyPredicate.set(entry.getKey(), entry.getValue()));
+
+        return propertyPredicate;
+    }
+
+    private Predicate buildFulltextPredicate(Predicate predicate, List<String> values, String property) {
+        final String operation = predicate.get(JcrPropertyPredicateEvaluator.OPERATION);
+
+        final String queryParam = values.stream()
+                .map(StringUtils::trimToNull)
+                .filter(Objects::nonNull)
+                .filter(value -> value.length() >= 3)
+                .map(value -> buildFulltextValue(operation, value))
+                .collect(Collectors.joining(" OR "));
+
+        final Predicate fulltextPredicate = new Predicate(predicate.getName(), FulltextPredicateEvaluator.FULLTEXT);
+
+        fulltextPredicate.set(FulltextPredicateEvaluator.FULLTEXT, queryParam);
+
+        property = StringUtils.removeStart(property, "./");
+        final String[] propertySegments = StringUtils.split(property, "/");
+        final int lastIndex = propertySegments.length - 1;
+        propertySegments[lastIndex] = "@" + propertySegments[lastIndex];
+        property = StringUtils.join(propertySegments, "/");
+
+        fulltextPredicate.set(FulltextPredicateEvaluator.REL_PATH, property);
+
+        return fulltextPredicate;
+    }
+
+    private String buildFulltextValue(String operation, String value) {
+        value = StringUtils.strip(value, "*") + "*";
+
+        if (!OP_STARTS_WITH.equals(operation)) {
+            value = "*" + value;
+        }
+
+        return value;
+    }
+
+    private boolean isFulltextOperation(Predicate predicate) {
+        return ArrayUtils.contains(new String[] {OP_STARTS_WITH, OP_CONTAINS},
+                predicate.get(JcrPropertyPredicateEvaluator.OPERATION));
+    }
+
+    protected PredicateEvaluator getPredicateEvaluator(Predicate predicate) {
+        if(isFulltextOperation(predicate)) {
+            return fulltextEvaluator;
+        } else {
+            return propertyEvaluator;
+        }
+    }
+
     @Override
     public String getXPathExpression(Predicate predicate, EvaluationContext evaluationContext) {
-        return propertyEvaluator.getXPathExpression(buildPredicate(predicate), evaluationContext);
+        return getPredicateEvaluator(predicate).getXPathExpression(buildPredicate(predicate), evaluationContext);
     }
 
     @Override
     public boolean includes(final Predicate predicate, final Row row, final EvaluationContext evaluationContext) {
-        return propertyEvaluator.includes(buildPredicate(predicate), row, evaluationContext);
+        return getPredicateEvaluator(predicate).includes(buildPredicate(predicate), row, evaluationContext);
     }
 
     @Override
     public boolean canXpath(final Predicate predicate, final EvaluationContext evaluationContext) {
-        return propertyEvaluator.canXpath(buildPredicate(predicate), evaluationContext);
+        return getPredicateEvaluator(predicate).canXpath(buildPredicate(predicate), evaluationContext);
     }
 
     @Override
     public boolean canFilter(final Predicate predicate, final EvaluationContext evaluationContext) {
-        return propertyEvaluator.canFilter(buildPredicate(predicate), evaluationContext);
+        return getPredicateEvaluator(predicate).canFilter(buildPredicate(predicate), evaluationContext);
     }
 
     @Override
     public boolean isFiltering(final Predicate predicate, final EvaluationContext evaluationContext) {
-        return propertyEvaluator.isFiltering(buildPredicate(predicate), evaluationContext);
+        return getPredicateEvaluator(predicate).isFiltering(buildPredicate(predicate), evaluationContext);
     }
 
     @Override
     public String[] getOrderByProperties(Predicate predicate, EvaluationContext evaluationContext) {
-        return propertyEvaluator.getOrderByProperties(buildPredicate(predicate), evaluationContext);
+        return getPredicateEvaluator(predicate).getOrderByProperties(buildPredicate(predicate), evaluationContext);
     }
 
     @Override
     public Comparator<Row> getOrderByComparator(Predicate predicate, EvaluationContext evaluationContext) {
-        return propertyEvaluator.getOrderByComparator(buildPredicate(predicate), evaluationContext);
+        return getPredicateEvaluator(predicate).getOrderByComparator(buildPredicate(predicate), evaluationContext);
     }
 
     @Override
     public FacetExtractor getFacetExtractor(Predicate predicate, EvaluationContext evaluationContext) {
-        return propertyEvaluator.getFacetExtractor(buildPredicate(predicate), evaluationContext);
+        return getPredicateEvaluator(predicate).getFacetExtractor(buildPredicate(predicate), evaluationContext);
     }
 
     protected List<String> getValues(final String data, final List<String> delimiters) {
+        if (delimiters.size() == 0) {
+            return ImmutableList.<String>builder().add(data).build();
+        }
+
         final String regex = delimiters.stream()
                 .filter(StringUtils::isNotBlank)
                 .collect(Collectors.joining("|"));
 
         final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
 
-        if (pattern == null) {
-            log.warn("Could not compile pattern for delimited using regex [ {} ]. Returning data as is [ {} ].", regex, data);
-            return Arrays.asList(new String[]{data});
+        if (data == null) {
+            return Collections.emptyList();
         }
 
         return Arrays.stream(pattern.split(data))
                 .map(StringUtils::trimToNull)
-                .filter(StringUtils::isNotBlank)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 
     protected List<String> getDelimiters(final Predicate predicate) {
-        final List<String> delimiters;
         final List<String> delimiterValues = PredicateEvaluatorUtil.getValues(predicate, DELIMITER, true);
 
-        if (delimiterValues.stream()
-                .filter(code -> DELIMITER_CODE_NONE.equals(code))
-                .findFirst().isPresent()) {
-            // "None" is the in the list so do process ANY of the delimiters
-            return EMPTY_LIST;
+        if (delimiterValues.stream().anyMatch(DELIMITER_CODE_NONE::equals)) {
+            // "None" is the in the list so do not process ANY of the delimiters
+            return emptyList();
         }
 
-        delimiters = delimiterValues.stream()
-                .map(delimiter -> resolveDelimiter(delimiter))
-                .filter(delimiter -> delimiter != null)
+        final List<String> delimiters = delimiterValues.stream()
+                .map(this::resolveDelimiter)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
         if (delimiters.isEmpty()) {
             // If the delimiters is completely empty, then use the default list
-            return Arrays.asList(cfg.delimiters_default());
+            return Stream.of(cfg.delimiters_default()).map(Pattern::quote).collect(Collectors.toList());
         } else {
             // Else return the passed in delimiters
             return delimiters;
         }
     }
 
-    private String resolveDelimiter(final String delimiter) {
-        final String resolvedDelimiter = delimiterMapping.get(delimiter);
+    private String resolveDelimiter(String delimiter) {
+        String resolvedDelimiter = delimiterMapping.get(delimiter);
 
         if (resolvedDelimiter != null) {
+            if (DELIMITER_CODE_NONE.equals(resolvedDelimiter)) {
+                return null;
+            } else if (DELIMITER_CODE_WHITESPACE.equals(resolvedDelimiter)) {
+                resolvedDelimiter = " ";
+            }
             return Pattern.quote(resolvedDelimiter);
         } else if (delimiter != null) {
             return Pattern.quote(delimiter);
@@ -193,14 +273,19 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
 
         delimiterMapping = new HashMap<>();
 
-        Arrays.stream(cfg.delimiters_mapping()).forEach(mapping -> {
-            final String key = StringUtils.substringBefore(mapping, "=");
-            final String value = StringUtils.substringAfter(mapping, "=");
+        // Always add default whitespace delimiter
+        delimiterMapping.put(DELIMITER_CODE_WHITESPACE, " ");
 
-            if (StringUtils.isNotBlank(key)) {
-                delimiterMapping.put(key, value);
-            }
-        });
+        if (cfg.delimiters_mapping() != null) {
+            Arrays.stream(cfg.delimiters_mapping()).forEach(mapping -> {
+                final String key = StringUtils.substringBefore(mapping, "=");
+                final String value = StringUtils.substringAfter(mapping, "=");
+
+                if (key != null) {
+                    delimiterMapping.put(key, value);
+                }
+            });
+        }
     }
 
     @ObjectClassDefinition(name = "Asset Share Commons - Properties Values Predicate Evaluator")
@@ -213,8 +298,8 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
 
         @AttributeDefinition(
                 name = "Delimiters mapping",
-                description = "Defines the type of data this exposes. This classification allows for intelligent exposure of Computed Properties in DataSources, etc."
+                description = "Defines custom mappings for delimiter codes to actual delimiters."
         )
-        String[] delimiters_mapping() default { "_D0=NONE", "_D1=\\s", "_D2=\\t", "_D3=\\n\\r"};
+        String[] delimiters_mapping() default {};
     }
 }
