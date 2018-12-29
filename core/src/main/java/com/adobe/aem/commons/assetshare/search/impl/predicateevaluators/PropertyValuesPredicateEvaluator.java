@@ -73,7 +73,7 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
     protected static final String DELIMITER_CODE_NONE = "__NONE";
     protected static final String DELIMITER_CODE_WHITESPACE = "__WS";
 
-    private static Map<String, String> delimiterMapping = new HashMap<>();
+    private Map<String, String> delimiterMapping = new HashMap<>();
 
     protected Cfg cfg;
 
