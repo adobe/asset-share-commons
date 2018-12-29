@@ -190,7 +190,7 @@ public class PropertyValuesPredicateEvaluatorTest {
         predicate.set("1_values", "cat,dog,bird?turtle horse,cow      chicken");
         predicate.set("delimiter", "?");
         predicate.set("1_delimiter", ",");
-        predicate.set("2_delimiter", " ");
+        predicate.set("2_delimiter", "__WS");
 
         Predicate actual = propertyValuesPredicateEvaluator.buildPredicate(predicate);
 
@@ -205,6 +205,19 @@ public class PropertyValuesPredicateEvaluatorTest {
         assertEquals("horse", actual.get("8_value"));
         assertEquals("cow", actual.get("9_value"));
         assertEquals("chicken", actual.get("10_value"));
+    }
+
+    @Test
+    public void buildPredicate_WhitespaceDelimiters() {
+        predicate.set("values", "foo" + System.lineSeparator() + "bar zip   zap");
+        predicate.set("delimiter", "__WS");
+
+        Predicate actual = propertyValuesPredicateEvaluator.buildPredicate(predicate);
+
+        assertEquals("foo", actual.get("0_value"));
+        assertEquals("bar", actual.get("1_value"));
+        assertEquals("zip", actual.get("2_value"));
+        assertEquals("zap", actual.get("3_value"));
     }
 
     @Test

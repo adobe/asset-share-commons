@@ -157,7 +157,7 @@
                                                                     name="./inputValidationMaxLength"/>
 
                                                             <input-validation-pattern
-                                                                    granite:class="cq-dialog-pattern__field-set"
+                                                                    granite:class="cq-dialog-validation-pattern__field-set"
                                                                     jcr:primaryType="nt:unstructured"
                                                                     sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
                                                                     fieldDescription="Input validation pattern (Uses HTML5 input validation pattern syntax). Allowed delimiters must be explicitly added to the validation pattern."
@@ -165,6 +165,7 @@
                                                                     name="./inputValidationPattern"/>
 
                                                             <input-validation-message
+                                                                    granite:class="cq-dialog-validation-message__field-set"
                                                                     jcr:primaryType="nt:unstructured"
                                                                     sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
                                                                     fieldDescription="Input validation message to show if input validation fails. Leave blank to use browser default messages."

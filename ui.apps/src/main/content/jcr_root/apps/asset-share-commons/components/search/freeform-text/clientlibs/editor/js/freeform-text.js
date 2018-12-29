@@ -98,21 +98,31 @@
          * Textareas do NOT support pattern validation; when rows > 1
          */
 
-        function showHidePattern(component, target) {
+        function showHideValidation(component, target) {
             target.toggleClass('hide', component.value > 1);
         }
 
         $('.cmp-search-freeform-text--editor .cq-dialog-rows__field-set', e.target).each(function (i, element) {
             var rowsInputElement = $(element).find('input[type="number"]'),
-                patternFieldSet = rowsInputElement
+                validationPatternFieldSet = rowsInputElement
                     .closest('.cmp-search-freeform-text--editor')
-                    .find('.cq-dialog-pattern__field-set')
+                    .find('.cq-dialog-validation-pattern__field-set')
+                    .closest('.coral-Form-fieldwrapper'),
+                validationMessageFieldSet = rowsInputElement
+                    .closest('.cmp-search-freeform-text--editor')
+                    .find('.cq-dialog-validation-message__field-set')
                     .closest('.coral-Form-fieldwrapper');
 
-            if (rowsInputElement && patternFieldSet) {
+
+            if (rowsInputElement && validationPatternFieldSet && validationMessageFieldSet) {
                 Coral.commons.ready(element, function (component) {
-                    showHidePattern(component, patternFieldSet);
-                    component.on("change", function () { showHidePattern(component, patternFieldSet); });
+                    showHideValidation(component, validationPatternFieldSet);
+                    showHideValidation(component, validationMessageFieldSet);
+
+                    component.on("change", function () {
+                        showHideValidation(component, validationPatternFieldSet);
+                        showHideValidation(component, validationMessageFieldSet);
+                    });
                 });
             }
         });

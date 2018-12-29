@@ -241,7 +241,7 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
-        if (delimiters.isEmpty()) {
+        if (delimiters.isEmpty() && cfg.delimiters_default() != null) {
             // If the delimiters is completely empty, then use the default list
             return Stream.of(cfg.delimiters_default()).map(Pattern::quote).collect(Collectors.toList());
         } else {
@@ -251,14 +251,13 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
     }
 
     private String resolveDelimiter(String delimiter) {
-        String resolvedDelimiter = delimiterMapping.get(delimiter);
+        final String resolvedDelimiter = delimiterMapping.get(delimiter);
 
-        if (resolvedDelimiter != null) {
-            if (DELIMITER_CODE_NONE.equals(resolvedDelimiter)) {
-                return null;
-            } else if (DELIMITER_CODE_WHITESPACE.equals(resolvedDelimiter)) {
-                resolvedDelimiter = " ";
-            }
+        if (DELIMITER_CODE_NONE.equals(delimiter)) {
+            return null;
+        } else if (DELIMITER_CODE_WHITESPACE.equals(delimiter)) {
+            return "\\s";
+        } else if (resolvedDelimiter != null) {
             return Pattern.quote(resolvedDelimiter);
         } else if (delimiter != null) {
             return Pattern.quote(delimiter);
@@ -272,9 +271,6 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
         this.cfg = cfg;
 
         delimiterMapping = new HashMap<>();
-
-        // Always add default whitespace delimiter
-        delimiterMapping.put(DELIMITER_CODE_WHITESPACE, " ");
 
         if (cfg.delimiters_mapping() != null) {
             Arrays.stream(cfg.delimiters_mapping()).forEach(mapping -> {
