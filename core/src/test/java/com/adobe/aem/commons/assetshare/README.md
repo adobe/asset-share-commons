@@ -41,9 +41,8 @@ this test is created:
 Each public method on the class being tested should have at least one corresponding test method. If multiple conditions (working/not-working) required testing, multiple test methods should be defined.
 
 Test method naming:
-* Shares the name of method being tested, ex: `getTitle()`
-* Prefixed with `test`, ex: the test method is `testGetTitle()`
-* Optionally post-fixed with an underscore-prefixed, capitalized condition name, ex: `testGetTitle__EmptyTitle()`
+* Starts w/ the name of method being tested, ex: `getTitle()`
+* Optionally post-fixed with an underscore-prefixed, capitalized condition name, ex: `testGetTitle__WithEmptyTitle()`
 
 For example, to test the method `getTitle()` in `HelloWorld.java`:
 
@@ -51,8 +50,8 @@ For example, to test the method `getTitle()` in `HelloWorld.java`:
 
 The following test methods are created in `HelloWorldImplTest.java`:
 
-    `@Test void testGetTitle()` which tests for the normal, populated title condition
-    `@Test void testGetTitle_EmptyTitle()`, which tests for the condition where the title is missing
+    `@Test void getTitle()` which tests for the normal, populated title condition
+    `@Test void getTitle_WithEmptyTitle()`, which tests for the condition where the title is missing
 
 ### Resource files (JSON)
 
@@ -95,14 +94,14 @@ For example, the HelloWorldImplTest.java may need to test for: a fully configure
 
 ```
 @Before
-public void setup() {
+public void setUp() {
    ctx.load().json("HelloWorldImplTest.json");
 }
 
 ...
 
 @Test
-public void testGetTitle__EmptyTitle()  {
+public void getTitle__WithEmptyTitle()  {
     context.currentResource("/empty");
     ...
 }
@@ -141,7 +140,7 @@ public class HelloWorldImplTest {
     }
 
     @Test
-    public void testGetTitle() {
+    public void getTitle() {
         final String expected = "hello world!";
 
         ctx.currentResource("/default");
@@ -153,7 +152,7 @@ public class HelloWorldImplTest {
     }
 
     @Test
-    public void testGetTitle_EmptyTitle() {
+    public void getTitle_WithEmptyTitle() {
         ctx.currentResource("/empty");
         HelloWorld helloWorld = ctx.request().adaptTo(HelloWorld.class);
 
