@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [v1.6.12]
 - 0337: Fixed intermittent race condition when multiple modals are loaded (License > Download)
 - 0303: Added ability to hide the Apply Filter Toggle control completely (useful for when auto-search on change is enabled everywhere)
 
