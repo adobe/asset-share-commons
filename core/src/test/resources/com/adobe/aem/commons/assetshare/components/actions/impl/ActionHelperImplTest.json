@@ -1,0 +1,1475 @@
+{
+  "jcr:primaryType": "sling:Folder",
+  "jcr:createdBy": "admin",
+  "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+  "missing-thumbnail--dark.jpg": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:mixinTypes": [
+      "mix:referenceable",
+      "mix:versionable"
+    ],
+    "jcr:createdBy": "admin",
+    "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+    "jcr:isCheckedOut": "true",
+    "jcr:content": {
+      "jcr:primaryType": "dam:AssetContent",
+      "jcr:lastModifiedBy": "admin",
+      "dam:assetState": "processed",
+      "cq:name": "missing-thumbnail--dark.jpg",
+      "jcr:lastModified": "Sun Jan 13 2019 12:46:01 GMT+0100",
+      "cq:parentPath": "/content/dam/asset-share-commons/en/site",
+      "dam:relativePath": "asset-share-commons/en/site/missing-thumbnail--dark.jpg",
+      "renditions": {
+        "jcr:primaryType": "nt:folder",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+        "cq5dam.thumbnail.48.48.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:01 GMT+0100",
+            ":jcr:data": "273"
+            }
+          },
+        "cq5dam.thumbnail.140.100.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:01 GMT+0100",
+            ":jcr:data": "854"
+            }
+          },
+        "cq5dam.web.1280.1280.jpeg": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "image/jpeg",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:01 GMT+0100",
+            ":jcr:data": "2297"
+            }
+          },
+        "original": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "oak:Resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/jpeg",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:01 GMT+0100",
+            ":jcr:data": "5126"
+            }
+          },
+        "cq5dam.thumbnail.319.319.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:01 GMT+0100",
+            ":jcr:data": "2745"
+            }
+          }
+        },
+      "related": {"jcr:primaryType": "nt:unstructured"},
+      "metadata": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:mixinTypes": ["cq:Taggable"],
+        "dam:Physicalheightininches": "-1.0",
+        "dam:Physicalwidthininches": "-1.0",
+        "dam:Fileformat": "JPEG",
+        "dam:Progressive": "no",
+        "tiff:ImageLength": "175",
+        "jcr:lastModifiedBy": "admin",
+        "dam:extracted": "Tue Oct 17 2017 11:40:39 GMT-0400",
+        "dc:format": "image/jpeg",
+        "dam:Bitsperpixel": "24",
+        "dam:MIMEtype": "image/jpeg",
+        "dam:Physicalwidthindpi": "-1",
+        "dam:Physicalheightindpi": "-1",
+        "dc:modified": "Sun Jan 13 2019 12:46:00 GMT+0100",
+        "dam:Numberofimages": "1",
+        "jcr:lastModified": "Sun Jan 13 2019 12:46:00 GMT+0100",
+        "dam:Numberoftextualcomments": "0",
+        "tiff:ImageWidth": "290",
+        "dam:sha1": "a1430c919ee4a9aea1c16f144990236011f44363",
+        "dam:size": "5126"
+        }
+      }
+    },
+  "missing-thumbnail.jpg": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:mixinTypes": [
+      "mix:referenceable",
+      "mix:versionable"
+    ],
+    "jcr:createdBy": "admin",
+    "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+    "jcr:isCheckedOut": "true",
+    "jcr:content": {
+      "jcr:primaryType": "dam:AssetContent",
+      "jcr:lastModifiedBy": "admin",
+      "dam:assetState": "processed",
+      "cq:name": "missing-thumbnail.jpg",
+      "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+      "cq:parentPath": "/content/dam/asset-share-commons/en/site",
+      "dam:relativePath": "asset-share-commons/en/site/missing-thumbnail.jpg",
+      "renditions": {
+        "jcr:primaryType": "nt:folder",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+        "cq5dam.thumbnail.48.48.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+            ":jcr:data": "184"
+            }
+          },
+        "cq5dam.thumbnail.140.100.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+            ":jcr:data": "1026"
+            }
+          },
+        "cq5dam.web.1280.1280.jpeg": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/jpeg",
+            "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+            ":jcr:data": "1335"
+            }
+          },
+        "original": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "oak:Resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/jpeg",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+            ":jcr:data": "5649"
+            }
+          },
+        "cq5dam.thumbnail.319.319.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+            ":jcr:data": "1610"
+            }
+          }
+        },
+      "related": {"jcr:primaryType": "nt:unstructured"},
+      "metadata": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:mixinTypes": ["cq:Taggable"],
+        "dam:Physicalheightininches": "-1.0",
+        "dam:Physicalwidthininches": "-1.0",
+        "dam:Fileformat": "JPEG",
+        "dam:Progressive": "no",
+        "tiff:ImageLength": "175",
+        "jcr:lastModifiedBy": "admin",
+        "dam:extracted": "Tue Oct 17 2017 11:40:10 GMT-0400",
+        "dc:format": "image/jpeg",
+        "dam:Bitsperpixel": "24",
+        "dam:MIMEtype": "image/jpeg",
+        "dam:Physicalwidthindpi": "-1",
+        "dam:Physicalheightindpi": "-1",
+        "dc:modified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+        "dam:Numberofimages": "1",
+        "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+        "dam:Numberoftextualcomments": "0",
+        "tiff:ImageWidth": "290",
+        "dam:sha1": "a8aeadcecd3f0a9c7084688442ad424d2979dd67",
+        "dam:size": "5649"
+        }
+      }
+    },
+  "placeholder.jpeg": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:mixinTypes": [
+      "mix:referenceable",
+      "mix:versionable"
+    ],
+    "jcr:createdBy": "admin",
+    "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+    "jcr:isCheckedOut": "true",
+    "jcr:content": {
+      "jcr:primaryType": "dam:AssetContent",
+      "jcr:lastModifiedBy": "admin",
+      "dam:copiedAt": "Tue Oct 17 2017 11:29:34 GMT-0400",
+      "dam:assetState": "processed",
+      "cq:name": "placeholder.jpeg",
+      "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+      "cq:parentPath": "/content/dam/asset-share-commons/en/site",
+      "dam:relativePath": "asset-share-commons/en/site/placeholder.jpeg",
+      "dam:parentAssetID": "176f95e4-29d1-4152-bbb0-c8030783ac5f",
+      "renditions": {
+        "jcr:primaryType": "nt:folder",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+        "cq5dam.thumbnail.48.48.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+            ":jcr:data": "1599"
+            }
+          },
+        "cq5dam.thumbnail.140.100.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+            ":jcr:data": "4996"
+            }
+          },
+        "cq5dam.web.1280.1280.jpeg": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/jpeg",
+            "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+            ":jcr:data": "16554"
+            }
+          },
+        "original": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "oak:Resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/jpeg",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+            ":jcr:data": "41514"
+            }
+          },
+        "cq5dam.thumbnail.319.319.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+            ":jcr:data": "18043"
+            }
+          }
+        },
+      "related": {"jcr:primaryType": "nt:unstructured"},
+      "metadata": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:mixinTypes": ["cq:Taggable"],
+        "jcr:title": "Placeholder Image",
+        "dam:Physicalheightininches": "-1.0",
+        "dam:Physicalwidthininches": "-1.0",
+        "dam:Fileformat": "JPEG",
+        "dam:Progressive": "yes",
+        "tiff:ImageLength": "720",
+        "jcr:lastModifiedBy": "admin",
+        "xmpRights:UsageTerms": ["Can be used for commerical or free use."],
+        "dam:extracted": "Tue Oct 17 2017 11:29:34 GMT-0400",
+        "dc:format": "image/jpeg",
+        "dc:description": "This is a description of the placeholder image.",
+        "dam:Bitsperpixel": "24",
+        "dam:MIMEtype": "image/jpeg",
+        "dam:Physicalwidthindpi": "-1",
+        "dam:Physicalheightindpi": "-1",
+        "xmpRights:UsageTerms_xmpArrayType": "rdf:Alt",
+        "cq:tags_xmpArrayType": "rdf:Bag",
+        "dc:modified": "Tue Oct 17 2017 08:39:57 GMT-0400",
+        "dam:Numberofimages": "1",
+        "cq:tags": [
+          "properties:orientation/landscape",
+          "properties:style/color"
+        ],
+        "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+        "dam:Numberoftextualcomments": "0",
+        "tiff:ImageWidth": "1280",
+        "dam:sha1": "13e5fc59ddc245bc8a3830f0cdf20d0139c62273",
+        "dam:size": "41325",
+        "xmpRights:WebStatement": "/content/asset-share-commons/en/light/actions/license/terms-conditions.html",
+        "dc:title": "Placeholder Image",
+        "Iptc4xmpCore:CreatorContactInfo": {"jcr:primaryType": "nt:unstructured"}
+        }
+      }
+    },
+  "placeholder.pptx": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:mixinTypes": ["mix:referenceable"],
+    "jcr:createdBy": "admin",
+    "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+
+    "jcr:content": {
+      "jcr:primaryType": "dam:AssetContent",
+      "jcr:lastModifiedBy": "admin",
+      "dam:copiedAt": "Tue Oct 17 2017 11:32:34 GMT-0400",
+      "dam:assetState": "processed",
+      "jcr:lastModified": "Sun Jan 13 2019 12:46:01 GMT+0100",
+      "dam:relativePath": "asset-share-commons/en/site/placeholder.pptx",
+      "dam:parentAssetID": "a7d4625c-6734-4658-b839-c0356730a6f8",
+      "renditions": {
+        "jcr:primaryType": "nt:folder",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+        "cq5dam.thumbnail.48.48.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+            ":jcr:data": "1476"
+            }
+          },
+        "cq5dam.thumbnail.140.100.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+            ":jcr:data": "4537"
+            }
+          },
+        "cq5dam.web.1280.1280.jpeg": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/jpeg",
+            "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+            ":jcr:data": "13462"
+            }
+          },
+        "original": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "oak:Resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+            "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+            ":jcr:data": "328653"
+            }
+          },
+        "cq5dam.thumbnail.319.319.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+            ":jcr:data": "15561"
+            }
+          }
+        },
+      "related": {"jcr:primaryType": "nt:unstructured"},
+      "metadata": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:mixinTypes": ["cq:Taggable"],
+        "dam:PresentationFormat": "Widescreen",
+        "photoshop:Country": "United States",
+        "jcr:title": "PowerPoint Presentation",
+        "dc:creator": [
+          "David Gonzalez",
+          "Asset Share Commons Team"
+        ],
+        "dam:TitlesOfParts": "CalibriCalibri LightArialOffice ThemePowerPoint Presentation",
+        "photoshop:DateCreated": "Mon Oct 09 2017 21:24:00 GMT-0400",
+        "dam:created": "Tue Oct 10 2017 01:17:46 GMT+0000",
+        "dam:vector": "CalibriCalibri LightArialOffice ThemePowerPoint Presentation",
+        "Iptc4xmpExt:OrganisationInImageCode": "ASC",
+        "Iptc4xmpExt:OrganisationInImageName": "Asset Share Commons",
+        "dam:i4": "1",
+        "Iptc4xmpExt:DigitalSourceType": "http://cv.iptc.org/newscodes/digitalsourcetype/softwareImage",
+        "jcr:lastModifiedBy": "admin",
+        "xmp:CreatorTool": "Microsoft Powerpoint",
+        "dam:Application": "Microsoft Macintosh PowerPoint",
+        "xmpRights:UsageTerms": "NOne",
+        "photoshop:Instructions": "Open in Microsoft Powerpoint",
+        "dam:extracted": "Tue Oct 17 2017 11:32:36 GMT-0400",
+        "dc:contributor": "Asset Share Commons Team",
+        "dc:format": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "dam:HeadingPairs": "Fonts Used3Theme1Slide Titles1",
+        "dc:description": "A placeholder presentation to help AEM Authors configure Asset Share Commons asset details pages.",
+        "dam:MMClips": "0",
+        "Iptc4xmpCore:Location": "East Tower",
+        "dc:language": "en",
+        "dam:ScaleCrop": "false",
+        "photoshop:Credit": "Asset Share Commons",
+        "dc:rights": "None",
+        "dc:subject": [
+          "Placeholder",
+          "Presentation",
+          "Asset Share Commons"
+        ],
+        "dam:modified": "Tue Oct 10 2017 02:35:34 GMT+0000",
+        "dam:SharedDoc": "false",
+        "xmpRights:Owner": "Asset Share Commons",
+        "photoshop:City": "San Jose",
+        "dam:revision": "3",
+        "Iptc4xmpCore:CountryCode": "us",
+        "dam:lastModifiedBy": "David Gonzalez",
+        "dc:modified": "Mon Oct 09 2017 21:27:14 GMT-0400",
+        "photoshop:State": "CA",
+        "dam:Paragraphs": "1",
+        "dam:TotalTime": "77",
+        "dam:Notes": "0",
+        "dam:Words": "1",
+        "dam:HyperlinksChanged": "false",
+        "dam:lpstr": "PowerPoint Presentation",
+        "cq:tags": [
+          "properties:orientation/landscape",
+          "properties:style/color"
+        ],
+        "jcr:lastModified": "Sun Jan 13 2019 12:46:01 GMT+0100",
+        "dam:HiddenSlides": "0",
+        "photoshop:Headline": "Placeholder Presentation",
+        "dam:LinksUpToDate": "false",
+        "dam:sha1": "39437b00f03f5221fdf58e365d39ce55a6d51f74",
+        "dam:size": "328653",
+        "dam:Slides": "1",
+        "photoshop:AuthorsPosition": "Adobe Systems Incorporated",
+        "dc:creator_xmpArrayType": "rdf:Bag",
+        "Iptc4xmpCore:IntellectualGenre": "Presention",
+        "dam:AppVersion": "15.0038",
+        "photoshop:CaptionWriter": "Asset Share Commons Team",
+        "dam:variant": "1",
+        "dc:title": "PowerPoint Presentation",
+        "plus:PropertyReleaseStatus": "http://ns.useplus.org/ldf/vocab/PR-NAP",
+        "plus:ModelReleaseStatus": "http://ns.useplus.org/ldf/vocab/MR-NON",
+        "Iptc4xmpCore:CreatorContactInfo": {
+          "jcr:primaryType": "nt:unstructured",
+          "Iptc4xmpCore:CiAdrRegion": "CA",
+          "Iptc4xmpCore:CiTelWork": "408-536-6000",
+          "Iptc4xmpCore:CiAdrCity": "San Jose",
+          "Iptc4xmpCore:CiAdrCtry": "United States",
+          "Iptc4xmpCore:CiAdrPcode": "95110-2704",
+          "Iptc4xmpCore:CiUrlWork": "www.adobe.com",
+          "Iptc4xmpCore:CiAdrExtadr": "345 Park Avenue"
+          }
+        }
+      }
+    },
+  "jcr:content": {
+    "jcr:primaryType": "nt:unstructured",
+    "jcr:title": "Site",
+    "folderThumbnail": {
+      "jcr:primaryType": "nt:file",
+      "jcr:createdBy": "admin",
+      "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+      "jcr:content": {
+        "jcr:primaryType": "nt:resource",
+        "jcr:lastModifiedBy": "admin",
+        "jcr:mimeType": "application/octet-stream",
+        "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+        ":jcr:data": "14644"
+        }
+      }
+    },
+  "placeholder.mov": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:mixinTypes": ["mix:referenceable"],
+    "jcr:createdBy": "admin",
+    "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+
+    "jcr:content": {
+      "jcr:primaryType": "dam:AssetContent",
+      "jcr:lastModifiedBy": "admin",
+      "dam:copiedAt": "Tue Oct 17 2017 11:32:15 GMT-0400",
+      "dam:assetState": "processed",
+      "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+      "dam:relativePath": "asset-share-commons/en/site/placeholder.mov",
+      "dam:parentAssetID": "78ee5da3-cc76-4e78-bf52-45d450bdad1b",
+      "renditions": {
+        "jcr:primaryType": "nt:folder",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+        "cq5dam.video.hq.m4v": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "oak:Resource",
+            "jcr:mixinTypes": ["dam:Metadata"],
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "video/x-m4v",
+            "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+            ":jcr:data": "875472",
+            "metadata": {
+              "jcr:primaryType": "nt:unstructured",
+              "audioBitrate": "128",
+              "videoCodec": "libx264",
+              "customArgs": "-flags +loop -me_method umh -g 250 -qcomp 0.6 -qmin 10 -qmax 51 -qdiff 4 -bf 16 -b_strategy 1 -i_qfactor 0.71 -cmp chroma -subq 8 -me_range 16 -coder 1 -sc_threshold 40 -b-pyramid normal -wpredp 2 -mixed-refs 1 -8x8dct 1 -fast-pskip 1 -keyint_min 25 -refs 4 -trellis 1 -direct-pred 3 -partitions i8x8,i4x4,p8x8,b8x8",
+              "mimeType": "video/x-m4v",
+              "videoBitrateTolerance": "8192",
+              "twoPass": "true",
+              "extension": "m4v",
+              "audioSamplingRate": "44100",
+              "audioChannels": "2",
+              "htmlType": "video/mp4; codecs=\"avc1.42E01E, mp4a.40.2\"",
+              "videoBitrate": "6144",
+              "videoFrameRate": "24000/1001",
+              "audioCodec": "aac"
+              }
+            }
+          },
+        "cq5dam.thumbnail.48.48.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+            ":jcr:data": "1656"
+            }
+          },
+        "cq5dam.video.iehq.mp4": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "oak:Resource",
+            "jcr:mixinTypes": ["dam:Metadata"],
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "video/mp4",
+            "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+            ":jcr:data": "2323635",
+            "metadata": {
+              "jcr:primaryType": "nt:unstructured",
+              "audioBitrate": "128",
+              "videoCodec": "libx264",
+              "customArgs": "-pix_fmt yuv420p",
+              "mimeType": "video/mp4",
+              "videoBitrateTolerance": "8192",
+              "extension": "mp4",
+              "audioSamplingRate": "44100",
+              "audioChannels": "2",
+              "htmlType": "video/mp4; codecs=\"avc1.42E01E, mp4a.40.2\"",
+              "videoBitrate": "6144",
+              "videoFrameRate": "24000/1001",
+              "audioCodec": "aac"
+              }
+            }
+          },
+        "cq5dam.thumbnail.140.100.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+            ":jcr:data": "5393"
+            }
+          },
+        "cq5dam.video.flv.320.240.flv": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "oak:Resource",
+            "jcr:mixinTypes": ["dam:Metadata"],
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "video/x-flv",
+            "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+            ":jcr:data": "230878",
+            "metadata": {
+              "jcr:primaryType": "nt:unstructured",
+              "audioBitrate": "56",
+              "mimeType": "video/x-flv",
+              "height": "240",
+              "extension": "flv",
+              "audioSamplingRate": "22050",
+              "audioChannels": "1",
+              "videoBitrate": "200",
+              "width": "320",
+              "videoFrameRate": "12",
+              "audioCodec": "libmp3lame"
+              }
+            }
+          },
+        "original": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "oak:Resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "video/quicktime",
+            "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+            ":jcr:data": "2168930"
+            }
+          },
+        "cq5dam.thumbnail.319.319.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+            ":jcr:data": "18742"
+            }
+          }
+        },
+      "related": {"jcr:primaryType": "nt:unstructured"},
+      "metadata": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:mixinTypes": ["cq:Taggable"],
+        "tiff:ImageLength": "360",
+        "dam:youtube_privacy": "public",
+        "jcr:lastModifiedBy": "admin",
+        "xmpRights:UsageTerms": "Unrestricted.",
+        "dam:extracted": "Tue Oct 17 2017 11:32:15 GMT-0400",
+        "dc:extent": "17052",
+        "dc:format": "video/quicktime",
+        "dc:description": "This is a placeholder video",
+        "dc:modified": "Tue Oct 17 2017 08:57:43 GMT-0400",
+        "dam:youtube_category": "Film & Animation",
+        "cq:tags": [
+          "properties:style/color",
+          "properties:orientation/landscape"
+        ],
+        "jcr:lastModified": "Sun Jan 13 2019 12:46:01 GMT+0100",
+        "xmp:ModifyDate": "Tue Oct 17 2017 12:53:46 GMT+0000",
+        "xmp:CreateDate": "Tue Oct 17 2017 12:53:43 GMT+0000",
+        "tiff:ImageWidth": "640",
+        "dam:sha1": "4e998f9fdaf4b6d36493bd2d2a79db950ea4f524",
+        "dam:size": "2168930",
+        "dc:title": "Placeholder Video",
+        "xmpDM:duration": {
+          "jcr:primaryType": "nt:unstructured",
+          "xmpDM:scale": "1/6000",
+          "xmpDM:value": "105100",
+          "xmpNodeType": "xmpStruct"
+          },
+        "Iptc4xmpCore:CreatorContactInfo": {"jcr:primaryType": "nt:unstructured"}
+        }
+      }
+    },
+  "Logo-light.png": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:mixinTypes": [
+      "mix:referenceable",
+      "mix:versionable"
+    ],
+    "jcr:createdBy": "admin",
+    "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+    "jcr:isCheckedOut": "true",
+    "jcr:content": {
+      "jcr:primaryType": "dam:AssetContent",
+      "jcr:lastModifiedBy": "admin",
+      "dam:assetState": "processed",
+      "cq:name": "Logo-light.png",
+      "jcr:lastModified": "Sun Jan 13 2019 12:46:03 GMT+0100",
+      "cq:parentPath": "/content/dam/asset-share-commons/en/site",
+      "dam:relativePath": "asset-share-commons/en/site/Logo-light.png",
+      "renditions": {
+        "jcr:primaryType": "nt:folder",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+        "cq5dam.web.1280.1280.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:03 GMT+0100",
+            ":jcr:data": "889"
+            }
+          },
+        "cq5dam.thumbnail.48.48.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:03 GMT+0100",
+            ":jcr:data": "889"
+            }
+          },
+        "cq5dam.thumbnail.140.100.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:03 GMT+0100",
+            ":jcr:data": "7590"
+            }
+          },
+        "original": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "oak:Resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+            ":jcr:data": "2853"
+            }
+          },
+        "cq5dam.thumbnail.319.319.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:03 GMT+0100",
+            ":jcr:data": "56640"
+            }
+          }
+        },
+      "related": {"jcr:primaryType": "nt:unstructured"},
+      "metadata": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:mixinTypes": ["cq:Taggable"],
+        "dam:Physicalheightininches": "-1.0",
+        "dam:Physicalwidthininches": "-1.0",
+        "dam:Fileformat": "PNG",
+        "dam:Progressive": "no",
+        "tiff:ImageLength": "46",
+        "jcr:lastModifiedBy": "admin",
+        "dam:extracted": "Tue Oct 17 2017 11:46:33 GMT-0400",
+        "dc:format": "image/png",
+        "dam:Bitsperpixel": "32",
+        "dam:MIMEtype": "image/png",
+        "dam:Comments": "XML:com.adobe.xmp: <?xpacket begin=\"﻿\" id=\"W5M0MpCehiHzreSzNTczkc9d\"?>\n<x:xmpmeta xmlns:x=\"adobe:ns:meta/\" x:xmptk=\"Adobe XMP Core 5.6-c137 1.000000, 0000/00/00-00:00:00        \">\n <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n  <rdf:Description rdf:about=\"\"\n    xmlns:ns1=\"http://www.day.com/dam/1.0\"\n    xmlns:tiff=\"http://ns.adobe.com/tiff/1.0/\"\n    xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n   ns1:Physicalheightininches=\"-1.0\"\n   ns1:Physicalwidthininches=\"-1.0\"\n   ns1:Fileformat=\"PNG\"\n   ns1:Progressive=\"no\"\n   ns1:extracted=\"2017-10-17T11:46:33.994-04:00\"\n   ns1:Bitsperpixel=\"32\"\n   ns1:MIMEtype=\"image/png\"\n   ns1:Physicalwidthindpi=\"-1\"\n   ns1:Physicalheightindpi=\"-1\"\n   ns1:Numberofimages=\"1\"\n   ns1:Numberoftextualcomments=\"0\"\n   ns1:sha1=\"f8a655082cf08c47e7e6f116129ff3661df9e1ce\"\n   ns1:size=\"1831\"\n   tiff:ImageLength=\"46\"\n   tiff:ImageWidth=\"48\"\n   dc:format=\"image/png\"\n   dc:modified=\"2019-01-13T12:46:02.494+01:00\"/>\n <\/rdf:RDF>\n<\/x:xmpmeta>\n<?xpacket end=\"r\"?>\n",
+        "dam:Physicalwidthindpi": "-1",
+        "dam:Physicalheightindpi": "-1",
+        "dc:modified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+        "dam:Numberofimages": "1",
+        "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+        "dam:Numberoftextualcomments": "1",
+        "tiff:ImageWidth": "48",
+        "dam:sha1": "f8a655082cf08c47e7e6f116129ff3661df9e1ce",
+        "dam:size": "1831"
+        }
+      }
+    },
+  "placeholder.pdf": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:mixinTypes": [
+      "mix:referenceable",
+      "mix:versionable"
+    ],
+    "jcr:createdBy": "admin",
+    "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+    "jcr:isCheckedOut": "true",
+    "jcr:content": {
+      "jcr:primaryType": "dam:AssetContent",
+      "jcr:lastModifiedBy": "admin",
+      "averageRating": "5.0",
+      "dam:copiedAt": "Tue Oct 17 2017 11:32:37 GMT-0400",
+      "dam:assetState": "processed",
+      "cq:name": "placeholder.pdf",
+      "jcr:lastModified": "Sun Jan 13 2019 12:46:03 GMT+0100",
+      "cq:parentPath": "/content/dam/asset-share-commons/en/site",
+      "dam:relativePath": "asset-share-commons/en/site/placeholder.pdf",
+      "dam:parentAssetID": "6a43ab75-b980-4da8-868d-7456b7d49c58",
+      "renditions": {
+        "jcr:primaryType": "nt:folder",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+        "cq5dam.thumbnail.48.48.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+            ":jcr:data": "894"
+            }
+          },
+        "cq5dam.thumbnail.140.100.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+            ":jcr:data": "1946"
+            }
+          },
+        "cq5dam.web.1280.1280.jpeg": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/jpeg",
+            "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+            ":jcr:data": "15245"
+            }
+          },
+        "original": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "oak:Resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "application/pdf",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:03 GMT+0100",
+            ":jcr:data": "605788"
+            }
+          },
+        "cq5dam.thumbnail.319.319.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:45:50 GMT+0100",
+            ":jcr:data": "7686"
+            }
+          }
+        },
+      "related": {"jcr:primaryType": "nt:unstructured"},
+      "metadata": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:mixinTypes": ["cq:Taggable"],
+        "photoshop:Country": "United States",
+        "jcr:title": "Placeholder Document",
+        "dc:creator": ["Asset Share Commons Team"],
+        "dam:Physicalheightininches": "19.38888888888889",
+        "dam:Physicalwidthininches": "15.0",
+        "dam:numPages": "1",
+        "photoshop:DateCreated": "Mon Oct 09 2017 21:13:00 GMT-0400",
+        "Iptc4xmpExt:OrganisationInImageCode": "Asset Share Commons",
+        "Iptc4xmpExt:OrganisationInImageName": "Asset Share Commons",
+        "Iptc4xmpExt:DigitalSourceType": "http://cv.iptc.org/newscodes/digitalsourcetype/softwareImage",
+        "jcr:lastModifiedBy": "admin",
+        "xmp:CreatorTool": "Adobe Photoshop CC 2017 (Macintosh)",
+        "xmpRights:UsageTerms": ["Not Applicable"],
+        "dam:extracted": "Tue Oct 17 2017 08:48:19 GMT-0400",
+        "dc:contributor": ["Asset Share Commons Team"],
+        "dc:format": "application/pdf",
+        "dc:description": "A placeholder document to help AEM Authors configure Asset Share Commons asset details pages.",
+        "dam:Producer": "Adobe Photoshop for Macintosh -- Image Conversion Plug-in",
+        "Iptc4xmpCore:Location": "East Tower",
+        "dc:language": ["en"],
+        "dc:rights": "None",
+        "dc:subject": [
+          "A placeholder document to help AEM Authors configure Asset Share Commons asset details pages.",
+          "Placeholder Document",
+          "Placeholder",
+          "Asset Share Commons"
+        ],
+        "xmpMM:DocumentID": "adobe:docid:photoshop:caa6abd3-eda3-117a-b7e3-a80d23e72419",
+        "photoshop:DocumentAncestors": ["xmp.did:4bb91241-1a1b-4edb-8cef-105e5432c737"],
+        "pdf:Title": "Placeholder Document",
+        "xmpRights:Owner": "Asset Share Commons Team",
+        "photoshop:City": "San Jose",
+        "photoshop:Source": "Imagination",
+        "xmpRights:UsageTerms_xmpArrayType": "rdf:Alt",
+        "xmpMM:OriginalDocumentID": "xmp.did:4bb91241-1a1b-4edb-8cef-105e5432c737",
+        "cq:tags_xmpArrayType": "rdf:Bag",
+        "Iptc4xmpCore:CountryCode": "us",
+        "dc:modified": "Mon Oct 09 2017 21:14:03 GMT-0400",
+        "dc:contributor_xmpArrayType": "rdf:Bag",
+        "photoshop:ColorMode": "3",
+        "photoshop:State": "CA",
+        "dc:subject_xmpArrayType": "rdf:Bag",
+        "xmp:MetadataDate": "Tue Oct 17 2017 11:32:44 GMT-0400",
+        "cq:tags": [
+          "properties:orientation/portrait",
+          "properties:style/color"
+        ],
+        "jcr:lastModified": "Sun Jan 13 2019 12:46:03 GMT+0100",
+        "pdf:Producer": "Adobe Photoshop for Macintosh -- Image Conversion Plug-in",
+        "Iptc4xmpCore:SubjectCode": "Placeholder",
+        "Iptc4xmpExt:MaxAvailWidth": "1080",
+        "xmpMM:InstanceID": "uuid:dbde1f6f-8d05-1f45-b353-ad10aa20143a",
+        "xmp:ModifyDate": "Tue Oct 17 2017 17:32:44 GMT+0200",
+        "dc:language_xmpArrayType": "rdf:Bag",
+        "photoshop:Headline": "Placeholder Document",
+        "dam:Author": "Asset Share Commons Team",
+        "xmp:CreateDate": "Fri Oct 06 2017 15:31:06 GMT+0200",
+        "dam:sha1": "c52aab7c14f4eced1b1345486ab30805f9863802",
+        "dam:size": "605426",
+        "Iptc4xmpExt:MaxAvailHeight": "1040",
+        "photoshop:DocumentAncestors_xmpArrayType": "rdf:Bag",
+        "photoshop:AuthorsPosition": "Asset Share Commons Contributor",
+        "dc:creator_xmpArrayType": "rdf:Seq",
+        "Iptc4xmpCore:IntellectualGenre": "Abstract",
+        "dc:title": "Placeholder Document",
+        "plus:PropertyReleaseStatus": "http://ns.useplus.org/ldf/vocab/PR-NAP",
+        "plus:ModelReleaseStatus": "http://ns.useplus.org/ldf/vocab/MR-NAP ",
+        "xmpMM:DerivedFrom": {
+          "jcr:primaryType": "nt:unstructured",
+          "stRef:instanceID": "xmp.iid:a33b9da9-a15f-4fef-998c-fe5388117d04",
+          "stRef:originalDocumentID": "xmp.did:4bb91241-1a1b-4edb-8cef-105e5432c737",
+          "xmpNodeType": "xmpStruct",
+          "stRef:documentID": "adobe:docid:photoshop:d57e1d9e-eb71-117a-b7e3-a80d23e72419"
+          },
+        "Iptc4xmpCore:CreatorContactInfo": {
+          "jcr:primaryType": "nt:unstructured",
+          "Iptc4xmpCore:CiAdrRegion": "CA",
+          "xmpNodeType": "xmpStruct",
+          "Iptc4xmpCore:CiTelWork": "408-536-6000",
+          "Iptc4xmpCore:CiAdrCity": "San Jose",
+          "Iptc4xmpCore:CiAdrCtry": "USA",
+          "Iptc4xmpCore:CiAdrPcode": "95110",
+          "Iptc4xmpCore:CiUrlWork": "www.adobe.com",
+          "Iptc4xmpCore:CiAdrExtadr": "345 Park Avenue"
+          },
+        "photoshop:TextLayers": {
+          "jcr:primaryType": "nt:unstructured",
+          "xmpNodeType": "xmpArray",
+          "xmpArraySize": "1",
+          "xmpArrayType": "rdf:Bag",
+          "1": {
+            "jcr:primaryType": "nt:unstructured",
+            "xmpNodeType": "xmpStruct",
+            "photoshop:LayerName": "Document",
+            "photoshop:LayerText": "Document"
+            }
+          },
+        "xmp:Thumbnails": {
+          "jcr:primaryType": "nt:unstructured",
+          "xmpNodeType": "xmpArray",
+          "xmpArraySize": "1",
+          "xmpArrayType": "rdf:Alt",
+          "1": {
+            "jcr:primaryType": "nt:unstructured",
+            "xmpNodeType": "xmpStruct",
+            "xmpGImg:image": "/9j/7QAMQWRvYmVfQ00AAv/uAA5BZG9iZQBkgAAAAAH/2wCEAAwICAgJCAwJCQwRCwoLERUPDAwP\nFRgTExUTExgRDAwMDAwMEQwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwBDQsLDQ4NEA4OEBQO\nDg4UFA4ODg4UEQwMDAwMEREMDAwMDAwRDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDP/AABEI\nAgABjAMBIgACEQEDEQH/3QAEABn/xAE/AAABBQEBAQEBAQAAAAAAAAADAAECBAUGBwgJCgsBAAEF\nAQEBAQEBAAAAAAAAAAEAAgMEBQYHCAkKCxAAAQQBAwIEAgUHBggFAwwzAQACEQMEIRIxBUFRYRMi\ncYEyBhSRobFCIyQVUsFiMzRygtFDByWSU/Dh8WNzNRaisoMmRJNUZEXCo3Q2F9JV4mXys4TD03Xj\n80YnlKSFtJXE1OT0pbXF1eX1VmZ2hpamtsbW5vY3R1dnd4eXp7fH1+f3EQACAgECBAQDBAUGBwcG\nBTUBAAIRAyExEgRBUWFxIhMFMoGRFKGxQiPBUtHwMyRi4XKCkkNTFWNzNPElBhaisoMHJjXC0kST\nVKMXZEVVNnRl4vKzhMPTdePzRpSkhbSVxNTk9KW1xdXl9VZmdoaWprbG1ub2JzdHV2d3h5ent8f/\n2gAMAwEAAhEDEQA/AOtTgqEqQKkpgZgotY7oTdSjt0EJtKJZhOogpwhSGSdRUghSVwpBRThCksgn\nCiE6alknTBOgldOEwUwEqUu0KaYJ00rgpOmTppCVJJJJtJUnCZOmSXBSSSSjpKxTKRUUCEhYpk5T\nFMIXBYqJKcqJQpcFEpkkyVLlJJJIqtYoVh7IrjAlAOplAr4d2KSdJKmS2KZSTIJWUXHaJ79lJCsM\nmOwSpcNSwTJ0kWRYqJUimSUxKZOUySX/0OrThMptCmpr2krHdEBUApBCkMwnCiE4TSEs04UQnCFK\nZJwohSCbSWQThRThCkslIKIUwEKSuApgKIUkqSunTJ00hK6SZOgQldJMnTSEqCdJJQndcFJJJJtJ\ntSZOmQISGJUXFSKgSmkLgsVFOkhS9ZMnSSpVrJJ1B7oCVJGrCx0mFBOUyFMo0UmSSKFLlkydMlSW\nLjA80IqbjJUSjS+LApJymSpepRKkmKSmJTJymQS//9HrAERqg0KYVimrbIKQKgFIIEKZhOFEJwmk\nJZhSCgFIIEKZBOFEJwm0lkpBRCk3UoUlm0KYTNCklSV0kydKkrp1FOmkJXTqKdNISyThRThRz2SG\nSSZJRUvXSTJJUpSSSYmEiFBi89lBOUyZTIFkk6SFJtZMnTIUlYoTjJU3nshlAhfDuxSSTJUyKTFO\nmQpKlF3CkoFKkhiVEqRTFJeCxKiVIqJSXhSYp0ySVkycqG7VKlP/0uvSSSVlqLhSCinCSmYThRCc\nJqWYKcKIThAhTMFSCgFIFNISyCI0IbRJRQhSWYTpgnSpK6SZJKkrp1FOgQpdOmSTSE2yCkFAKahm\nvC6SZJMpcukkkhSlKLipE6IZQK6KySSSYuWTJ0yVJWTEp1BxQpIYlRKcqJQplDEpJFMlS8KSSTIK\nUmKkmKSQWBUSplRKS8FiVEqRTFBcCxSSKi50BKlzF7lBIukppTq0S//T65JJJWmovKcFRSSUzBUg\nVAFSBTVMwnBUAVIFBLMKQUAVJupQpSZvCmFAKYSSGYSTBOguUnTJIUpdJMklSmSSZOE0pDMJ0wSU\nBGq8Lp0ySFJXSSSlNISs4qEpEpiVGWQKlJNKaUErymSlMkpRUCpFMUqXBgVEqZUSgvBYlRUimKC8\nLJJJILlkinSSUxKiVIpikuBYFRKmVAlBeGLjCA9ynY5BKcAvCkkkkVz/AP/U61JKUpVpprpJkklL\ngqQKgpApKZgpwVAFSCalmEVogIbAiBBSVqmENqIECuDIJ0wToJUkkkkpSSSSSlKQUQphNnsuiyST\nJ1CQvUnTSkmlS6ZxSlQJTSuCiokpEpioyF4XlNKZJBcukmSSUuolOkUkhiVEqRUSgvDEqJUyolBe\nCxSSKSC5SSSaUlKKgSpEqBKC4MSVBxgKRKC8zoiAyBG4yVBTKinLwskkkkl//9Xq5SBUJTgq3TSZ\npJgU6SlJwUycBJTIaojQoNCI1NKWY4UwoAqQKCkjUQITUQFNK4JJSlRlPKC5eUk0pSkpkkoynlJT\nIKQUQpqOZXhSSZJMSulKZMgVLkqJKRKYphXBYlMnTJhXhSSSZNXLpJk6SlJJJJJYlMVIqJQXAsSo\nlSKiUF4KxTSkSokoLwuSokpiUxKS4LkqBKclQJSXBi4oRU3aqJSXhgVEqRUSivCySSSSX//W6WVI\nFDBUgVdaTMFSBQwVIaoKSDVSAUQiBBC4UwopwUEsgVIFQBUmoKTNU5Q2qQKaVwZgp5UQU8oLmUpS\nopSkplKcKMpwgUhIE8qIKeVEV4XlKUySapdJMkgpSZOmKaVwWTJymTCvCkySSauUkkkglSdMkkpR\nUSnJUCUlwUSoEpyVAlNXhYlQJTkqBKTIFyUxKiSmJSXLymKSZJLEqJUyoFJcCwKiVMoZKS8LJJJJ\nLn//1+hBTgqQxM3/ALjXf9tu/wDIqQxMz/uPd/227/yKu2O7So9mIKKwafFJmJlk649oH9R39yMM\nbK/0Fn+Y7+5Akd1UexYhTCcY+T/obP8AMd/cn+z5P+hs/wAx39ybY7oo9lpSUvs+T/obP8x39yXo\nZP8AobP8x39yVjumj2KgVNqYUZH+hs/zHf3KbaL/APRP/wA0/wByBIVR7MgVIFMKb/8ARP8A80/3\nKQqu/wBG/wDzSmrgD2XBSlOKrv8ARv8A80pelb/o3/5pSTR7KSlP6V3+jd/mlL0rf9G7/NKCaPZa\nVMJhVb+47/NKl6dv7jvuKEikAqlPKXp2/uO+4penZ+477ioiuXlJL07P3HfcU/p2fuO+4ptJWST+\nnZ+677ilss/cd9xSUsmUtln7jvuKXp2fuO+4ppC4MElL07P3HfcU3p2fuO+4phBXBikpenZ+477i\nl6dn7jvuKFFcwSUjXb+47/NKj6dv+jd/mlCj2SqU0p/Tt/0bv80pvTu/0b/80oUeyViVAlT9O7/R\nv/zSomq7/Rv/AM0pUeyQwJUCUQ03/wCif/mn+5QNOR/on/5p/uQo9mQEIyVAlFOPkf6Kz/Nd/con\nHyP9DZ/mO/uQo9mQEd0aSn9nyf8AQ2f5jv7kvs+R/obP8x39yVHsmx3YJKf2fJ/0Nn+Y7+5L7Pk/\n6Gz/ADHf3JUeybHcIiolGOPk/wChs/zHf3KDsfK/0Fv+Y7+5Kj2SJDuEDihlHOLl/wCgt/zHf3KJ\nxMv/ALj2/wCY7/yKVHsvEh3CFJF+yZn/AHHt/wC23f8AkUvsmZ/3Ht/7bd/5FKj2XcQ7h//Q9VSS\nSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJ\nSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSU//9H1VJJJJSkk\nkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSS\nUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJT//0vVUkkklKSSSSUpJ\nJJJSxIGp0Tb2+I+9QyP5l3y/KFUgJKb29viPvS3t8R96owEoCSm9vb4j70t7fEfeqMBKAkpvb2+I\n+9Le3xH3qjASgJKb29viPvS3t8R96owEoCSm9vb4j70t7fEfeqMBKAkpvb2+I+9Le3xH3qjASgJK\nb29viPvS3t8R96owEoCSm9vb4j70t7fEfeqMBKAkpvb2+I+9Le3xH3qjASgJKb29viPvS3t8R96o\nwEoCSm9vb4j70t7fEfeqMBKAkpvb2+I+9Le3xH3qjASgJKb29viPvS3t8R96owEoCSm9vb4j70t7\nfEfeqMBKAkpvb2+I+9Le3xH3qjASgJKb29viPvS3t8R96owEoCSm9vb4j70t7fEfeqMBKAkpvb2+\nI+9SVAASPiFfSUpJJJJSkkkklKSSSSU//9P1VJJJJSkkkklKSSSSUxsYHtLSYlC+yt/eP4I6SSkH\n2Vv7x/BL7K394/gjpJKQfZW/vH8Evsrf3j+COkkpB9lb+8fwS+yt/eP4I6SSkH2Vv7x/BL7K394/\ngjpJKQfZW/vH8Evsrf3j+COkkpB9lb+8fwS+yt/eP4I6SSkH2Vv7x/BL7K394/gjpJKQfZW/vH8E\nvsrf3j+COkkpB9lb+8fwS+yt/eP4I6SSkH2Vv7x/BL7K394/gjpJKQfZW/vH8Evsrf3j+COkkpB9\nlb+8fwS+yt/eP4I6SSkH2Vv7x/BL7K394/gjpJKQfZW/vH8Evsrf3j+COkkpB9lb+8fwS+yt/eP4\nI6SSkH2Vv7x/BL7K394/gjpJKQfZW/vH8Evsrf3j+COkkpAMVszuOnwR0kklKSSSSUpJJJJSkkkk\nlP8A/9T1VJJJJSkkkklKSSSSUpJRc5rG7naAKH2in978D/ckpKkhfaKf3vwP9yX2in978D/ckpKk\nhfaKf3vwP9yX2in978D/AHJKSpIX2in978D/AHJfaKf3vwP9ySkqSF9op/e/A/3JfaKf3vwP9ySk\nqSF9op/e/A/3JfaKf3vwP9ySkqSF9op/e/A/3JfaKf3vwP8AckpKkhfaKf3vwP8Acl9op/e/A/3J\nKSpIX2in978D/cl9op/e/A/3JKSpIX2in978D/cl9op/e/A/3JKSpIX2in978D/cl9op/e/A/wBy\nSkqSF9op/e/A/wByX2in978D/ckpKkhfaKf3vwP9yX2in978D/ckpKkhfaKf3vwP9yX2in978D/c\nkpKkhfaKf3vwP9yX2in978D/AHJKSpIX2in978D/AHJfaKf3vwP9ySkqSF9op/e/A/3JfaKf3vwP\n9ySkqSF9op/e/A/3JfaKf3vwP9ySkqSH9oq/e/AoiSlJJJJKUkkkkpSSSSSn/9X1VJJJJSkkkklK\nSSSSUiyP5l3y/KFUV9zWuG1wkHsoehT+6kpppK56FP7qXoU/upKaaSuehT+6l6FP7qSmmkrnoU/u\npehT+6kpppK56FP7qXoU/upKaaSuehT+6l6FP7qSmmkrnoU/upehT+6kpppK56FP7qXoU/upKaaS\nuehT+6l6FP7qSmmkrnoU/upehT+6kpppK56FP7qXoU/upKaaSuehT+6l6FP7qSmmkrnoU/upehT+\n6kpppK56FP7qXoU/upKaaSuehT+6l6FP7qSmmkrnoU/upehT+6kpppK56FP7qXoU/upKaaSuehT+\n6l6FP7qSmoOR8Qr6H6FX7qIkpSSSSSlJJJJKUkkkkp//1vVUkkklKSSSSUpJJJJSkkkklKSSSSUp\nJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkk\nklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklP//X9VSSSSUpJJJJSkkkklMLXllZcORHPxQPtVng\nPx/vRrwTUQBJ00HxVX07P3HfckpJ9qs8B+P96X2qzwH4/wB6H6dn7jvuS9Oz9x33JKSfarPAfj/e\nl9qs8B+P96H6dn7jvuS9Oz9x33JKSfarPAfj/el9qs8B+P8Aeh+nZ+477kvTs/cd9ySkn2qzwH4/\n3pfarPAfj/eh+nZ+477kvTs/cd9ySkn2qzwH4/3pfarPAfj/AHofp2fuO+5L07P3HfckpJ9qs8B+\nP96X2qzwH4/3ofp2fuO+5L07P3HfckpJ9qs8B+P96X2qzwH4/wB6H6dn7jvuS9Oz9x33JKSfarPA\nfj/el9qs8B+P96H6dn7jvuS9Oz9x33JKSfarPAfj/el9qs8B+P8Aeh+nZ+477kvTs/cd9ySkn2qz\nwH4/3pfarPAfj/eh+nZ+477kvTs/cd9ySkn2qzwH4/3pfarPAfj/AHofp2fuO+5L07P3HfckpJ9q\ns8B+P96X2qzwH4/3ofp2fuO+5L07P3HfckpJ9qs8B+P96X2qzwH4/wB6H6dn7jvuS9Oz9x33JKSf\narPAfj/el9qs8B+P96H6dn7jvuS9Oz9x33JKSfarPAfj/el9qs8B+P8Aeh+nZ+477kvTs/cd9ySk\nn2qzwH4/3pfarPAfj/eh+nZ+477kvTs/cd9ySkn2qzwH4/3pfarPAfj/AHofp2fuO+5L07P3Hfck\npIMmyQIHPn/erSoiuyR7TyOyvJKUkkkkpSSSSSlJJJJKf//Q9VSSSSUpJJJJSkkkklKSSSSUpJJJ\nJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklK\nSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSU//9H1VJJJJSkkkklKSSSSUpJDvJbUSDB01+ar\nerb+8UlN1JUvVt/eKXq2/vFJTdSVL1bf3il6tv7xSU3UlS9W394perb+8UlN1JUvVt/eKXq2/vFJ\nTdSVL1bf3il6tv7xSU3UlS9W394perb+8UlN1JUvVt/eKXq2/vFJTdSVL1bf3il6tv7xSU3UlS9W\n394perb+8UlN1JUvVt/eKXq2/vFJTdSVL1bf3il6tv7xSU3UlS9W394perb+8UlN1JUvVt/eKXq2\n/vFJTdSVL1bf3il6tv7xSU3UlS9W394perb+8UlN1JUvVt/eKXq2/vFJTdSVL1bf3il6tv7xSU3U\nlSFtsj3HkK6kpSSSSSlJJJJKUkkkkp//0vVUkkklKSSSSUpJJJJTC5pfWWt5MflVf7Nb5feraSSm\np9mt8vvS+zW+X3q2kkpqfZrfL70vs1vl96tpJKan2a3y+9L7Nb5feraSSmp9mt8vvS+zW+X3q2kk\npqfZrfL70vs1vl96tpJKan2a3y+9L7Nb5feraSSmp9mt8vvS+zW+X3q2kkpqfZrfL70vs1vl96tp\nJKan2a3y+9L7Nb5feraSSmp9mt8vvS+zW+X3q2kkpqfZrfL70vs1vl96tpJKan2a3y+9L7Nb5fer\naSSmp9mt8vvS+zW+X3q2kkpqfZrfL70vs1vl96tpJKan2a3y+9L7Nb5feraSSmp9mt8vvS+zW+X3\nq2kkpqfZrfL70vs1vl96tpJKagx7ZHHPiraSSSlJJJJKUkkkkpSSSSSn/9P1VJJJJSkkkklKSSSS\nUpJM5zWjc4wB3UPXp/eSUkSQ/Xp/eS9en95JSRJD9en95L16f3klJEkP16f3kvXp/eSUkSQ/Xp/e\nS9en95JSRJD9en95L16f3klJEkP16f3kvXp/eSUkSQ/Xp/eS9en95JSRJD9en95L16f3klJEkP16\nf3kvXp/eSUkSQ/Xp/eS9en95JSRJD9en95L16f3klJEkP16f3kvXp/eSUkSQ/Xp/eS9en95JSRJD\n9en95L16f3klJEkP16f3kvXp/eSUkSQ/Xp/eS9en95JSRJD9en95L16f3klJEkP16v3kRJSkkkkl\nKSSSSUpJJJJT/9T1VJJJJSkkkklKSSSSUiyP5l3y/KFUV5zWvbtdqCofZ6fD8T/ekpqJK39np8Px\nP96X2enw/E/3pKaiSt/Z6fD8T/el9np8PxP96Smokrf2enw/E/3pfZ6fD8T/AHpKaiSt/Z6fD8T/\nAHpfZ6fD8T/ekpqJK39np8PxP96X2enw/E/3pKaiSt/Z6fD8T/el9np8PxP96Smokrf2enw/E/3p\nfZ6fD8T/AHpKaiSt/Z6fD8T/AHpfZ6fD8T/ekpqJK39np8PxP96X2enw/E/3pKaiSt/Z6fD8T/el\n9np8PxP96Smokrf2enw/E/3pfZ6fD8T/AHpKaiSt/Z6fD8T/AHpfZ6fD8T/ekpqJK39np8PxP96X\n2enw/E/3pKaiSt/Z6fD8T/el9np8PxP96Smokrf2enw/E/3pfZ6fD8T/AHpKaiSt/Z6fD8T/AHpf\nZ6fD8T/ekpqJK39np8PxP96X2enw/E/3pKao5HxCvoX2erw/EoqSlJJJJKUkkkkpSSSSSn//1fVU\nkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSS\nSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklP//W9VSSSSUp\nJJJJSkkkklMXvDGlx1A8EL7Uz90/h/epZH8y75flCqSkps/amfun8P70vtTP3T+H96rSlKSmz9qZ\n+6fw/vS+1M/dP4f3qtKUpKbP2pn7p/D+9L7Uz90/h/eq0pSkps/amfun8P70vtTP3T+H96rSlKSm\nz9qZ+6fw/vS+1M/dP4f3qtKUpKbP2pn7p/D+9L7Uz90/h/eq0pSkps/amfun8P70vtTP3T+H96rS\nlKSmz9qZ+6fw/vS+1M/dP4f3qtKUpKbP2pn7p/D+9L7Uz90/h/eq0pSkps/amfun8P70vtTP3T+H\n96rSlKSmz9qZ+6fw/vS+1M/dP4f3qtKUpKbP2pn7p/D+9L7Uz90/h/eq0pSkps/amfun8P70vtTP\n3T+H96rSlKSmz9qZ+6fw/vS+1M/dP4f3qtKUpKbP2pn7p/D+9L7Uz90/h/eq0pSkps/amfun8P70\nvtTP3T+H96rSlKSmz9qZ+6fw/vS+1M/dP4f3qtKUpKbP2pkxtOvwR1QB1HxCvpKUkkkkpSSSSSlJ\nJJJKf//X9VSSSSUpJJJJSkkkklLEAiDqE2xn7o+5SSSUx2M/dH3JbGfuj7lJJJTHYz90fclsZ+6P\nuUkklMdjP3R9yWxn7o+5SSSUx2M/dH3JbGfuj7lJJJTHYz90fclsZ+6PuUkklMdjP3R9yWxn7o+5\nSSSUx2M/dH3JbGfuj7lJJJTHYz90fclsZ+6PuUkklMdjP3R9yWxn7o+5SSSUx2M/dH3JbGfuj7lJ\nJJTHYz90fclsZ+6PuUkklMdjP3R9yWxn7o+5SSSUx2M/dH3JbGfuj7lJJJTHYz90fclsZ+6PuUkk\nlMdjP3R9yWxn7o+5SSSUx2M/dH3JbGfuj7lJJJTHYz90fclsZ+6PuUkklMdjP3R9ykkkkpSSSSSl\nJJJJKUkkkkp//9D1VJJJJSkkkklKSSSSUpJDuc5tZc0wRGvzVf17v3vwH9ySm4kqfr3fvfgP7kvX\nu/e/Af3JKbiSp+vd+9+A/uS9e7978B/ckpuJKn693734D+5L17v3vwH9ySm4kqfr3fvfgP7kvXu/\ne/Af3JKbiSp+vd+9+A/uS9e7978B/ckpuJKn693734D+5L17v3vwH9ySm4kqfr3fvfgP7kvXu/e/\nAf3JKbiSp+vd+9+A/uS9e7978B/ckpuJKn693734D+5L17v3vwH9ySm4kqfr3fvfgP7kvXu/e/Af\n3JKbiSp+vd+9+A/uS9e7978B/ckpuJKn693734D+5L17v3vwH9ySm4kqfr3fvfgP7kvXu/e/Af3J\nKbiSp+vd+9+A/uS9e7978B/ckpuJKn693734D+5L17v3vwH9ySm4kqfr3fvfgP7kvXu/e/Af3JKb\niSp+vd+9+A/uS9e7978B/ckpuJKmL7ZHu7+AVxJSkkkklKSSSSUpJJJJT//R9VSSSSUpJJJJSkkk\nklI7mudWWt1Jj8qr+hd+7+IVxJJTT9C7938Ql6F37v4hXEklNP0Lv3fxCXoXfu/iFcSSU0/Qu/d/\nEJehd+7+IVxJJTT9C7938Ql6F37v4hXEklNP0Lv3fxCXoXfu/iFcSSU0/Qu/d/EJehd+7+IVxJJT\nT9C7938Ql6F37v4hXEklNP0Lv3fxCXoXfu/iFcSSU0/Qu/d/EJehd+7+IVxJJTT9C7938Ql6F37v\n4hXEklNP0Lv3fxCXoXfu/iFcSSU0/Qu/d/EJehd+7+IVxJJTT9C7938Ql6F37v4hXEklNP0Lv3fx\nCXoXfu/iFcSSU0/Qu/d/EJehd+7+IVxJJTT9C7938Ql6F37v4hXEklNP0Lv3fxCXoXfu/iFcSSU0\nxRbI9vfxCuJJJKUkkkkpSSSSSlJJJJKf/9L1VJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJS\nkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSS\nSSUpJJJJSkkkklKSSSSUpJJJJT//0/VUkkklKSSSSUpJJJJSPI/mXfL8oVST4lXLGb2FsxMa/NB+\nyH98fd/tSUhk+JSk+JRvsh/fH3f7Uvsh/fH3f7UlIZPiUpPiUb7If3x93+1L7If3x93+1JSGT4lK\nT4lG+yH98fd/tS+yH98fd/tSUhk+JSk+JRvsh/fH3f7Uvsh/fH3f7UlIZPiUpPiUb7If3x93+1L7\nIf3x93+1JSGT4lKT4lG+yH98fd/tS+yH98fd/tSUhk+JSk+JRvsh/fH3f7Uvsh/fH3f7UlIZPiUp\nPiUb7If3x93+1L7If3x93+1JSGT4lKT4lG+yH98fd/tS+yH98fd/tSUhk+JSk+JRvsh/fH3f7Uvs\nh/fH3f7UlIZPiUfF5f8AL+Kb7If3x93+1EppNcyZmO0cJKSpJJJKUkkkkpSSSSSlJJJJKUkkkkpS\nSSSSlJJJJKUkkkkpSSSSSlJJJJKf/9T1VJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkk\nlKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUp\nJJJJSkkkklKSSSSUpJJJJT//1fVUkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJ\nJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklK\nSSSSUpJJJJSkkkklP//W9VSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSS\nSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJSkkkklKSSSSUpJJJJS\nkkkklKSSSSU//9k=",
+            "xmpGImg:width": "396",
+            "xmpGImg:format": "JPEG",
+            "xmpGImg:height": "512"
+            }
+          },
+        "xmpMM:History": {
+          "jcr:primaryType": "nt:unstructured",
+          "xmpNodeType": "xmpArray",
+          "xmpArraySize": "7",
+          "xmpArrayType": "rdf:Seq",
+          "1": {
+            "jcr:primaryType": "nt:unstructured",
+            "stEvt:action": "created",
+            "xmpNodeType": "xmpStruct",
+            "stEvt:softwareAgent": "Adobe Photoshop CC 2017 (Macintosh)",
+            "stEvt:when": "Fri Oct 06 2017 09:31:06 GMT-0400",
+            "stEvt:instanceID": "xmp.iid:4bb91241-1a1b-4edb-8cef-105e5432c737"
+            },
+          "2": {
+            "jcr:primaryType": "nt:unstructured",
+            "stEvt:action": "converted",
+            "xmpNodeType": "xmpStruct",
+            "stEvt:parameters": "from image/png to application/vnd.adobe.photoshop"
+            },
+          "3": {
+            "jcr:primaryType": "nt:unstructured",
+            "stEvt:action": "saved",
+            "xmpNodeType": "xmpStruct",
+            "stEvt:softwareAgent": "Adobe Photoshop CC 2017 (Macintosh)",
+            "stEvt:when": "Fri Oct 06 2017 18:12:15 GMT-0400",
+            "stEvt:changed": "/",
+            "stEvt:instanceID": "xmp.iid:1724e050-5e3c-4315-a2c7-8bc8fae5f2ef"
+            },
+          "4": {
+            "jcr:primaryType": "nt:unstructured",
+            "stEvt:action": "saved",
+            "xmpNodeType": "xmpStruct",
+            "stEvt:softwareAgent": "Adobe Photoshop CC 2017 (Macintosh)",
+            "stEvt:when": "Mon Oct 09 2017 21:06:45 GMT-0400",
+            "stEvt:changed": "/",
+            "stEvt:instanceID": "xmp.iid:a33b9da9-a15f-4fef-998c-fe5388117d04"
+            },
+          "5": {
+            "jcr:primaryType": "nt:unstructured",
+            "stEvt:action": "converted",
+            "xmpNodeType": "xmpStruct",
+            "stEvt:parameters": "from application/vnd.adobe.photoshop to application/pdf"
+            },
+          "6": {
+            "jcr:primaryType": "nt:unstructured",
+            "stEvt:action": "derived",
+            "xmpNodeType": "xmpStruct",
+            "stEvt:parameters": "converted from application/vnd.adobe.photoshop to application/pdf"
+            },
+          "7": {
+            "jcr:primaryType": "nt:unstructured",
+            "stEvt:action": "saved",
+            "xmpNodeType": "xmpStruct",
+            "stEvt:softwareAgent": "Adobe Photoshop CC 2017 (Macintosh)",
+            "stEvt:when": "Mon Oct 09 2017 21:06:45 GMT-0400",
+            "stEvt:changed": "/",
+            "stEvt:instanceID": "xmp.iid:8e487d5f-a2e0-4f91-8cf2-de725015ef84"
+            }
+          }
+        }
+      }
+    },
+  "Logo-on-dark.png": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:mixinTypes": [
+      "mix:referenceable",
+      "mix:versionable"
+    ],
+    "jcr:createdBy": "admin",
+    "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+    "jcr:isCheckedOut": "true",
+    "jcr:content": {
+      "jcr:primaryType": "dam:AssetContent",
+      "jcr:lastModifiedBy": "admin",
+      "dam:assetState": "processed",
+      "cq:name": "Logo-on-dark.png",
+      "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+      "cq:parentPath": "/content/dam/asset-share-commons/en/site",
+      "dam:relativePath": "asset-share-commons/en/site/Logo-on-dark.png",
+      "renditions": {
+        "jcr:primaryType": "nt:folder",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+        "cq5dam.web.1280.1280.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+            ":jcr:data": "759"
+            }
+          },
+        "cq5dam.thumbnail.48.48.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+            ":jcr:data": "759"
+            }
+          },
+        "cq5dam.thumbnail.140.100.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+            ":jcr:data": "6113"
+            }
+          },
+        "original": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "oak:Resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+            ":jcr:data": "2643"
+            }
+          },
+        "cq5dam.thumbnail.319.319.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+            ":jcr:data": "44694"
+            }
+          }
+        },
+      "related": {"jcr:primaryType": "nt:unstructured"},
+      "metadata": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:mixinTypes": ["cq:Taggable"],
+        "dam:Physicalheightininches": "-1.0",
+        "dam:Physicalwidthininches": "-1.0",
+        "dam:Fileformat": "PNG",
+        "dam:Progressive": "no",
+        "tiff:ImageLength": "46",
+        "jcr:lastModifiedBy": "admin",
+        "dam:extracted": "Tue Oct 17 2017 13:20:21 GMT-0400",
+        "dc:format": "image/png",
+        "dam:Bitsperpixel": "32",
+        "dam:MIMEtype": "image/png",
+        "dam:Comments": "XML:com.adobe.xmp: <?xpacket begin=\"﻿\" id=\"W5M0MpCehiHzreSzNTczkc9d\"?>\n<x:xmpmeta xmlns:x=\"adobe:ns:meta/\" x:xmptk=\"Adobe XMP Core 5.6-c137 1.000000, 0000/00/00-00:00:00        \">\n <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n  <rdf:Description rdf:about=\"\"\n    xmlns:ns1=\"http://www.day.com/dam/1.0\"\n    xmlns:tiff=\"http://ns.adobe.com/tiff/1.0/\"\n    xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n   ns1:Physicalheightininches=\"-1.0\"\n   ns1:Physicalwidthininches=\"-1.0\"\n   ns1:Fileformat=\"PNG\"\n   ns1:Progressive=\"no\"\n   ns1:extracted=\"2017-10-17T13:20:21.382-04:00\"\n   ns1:Bitsperpixel=\"32\"\n   ns1:MIMEtype=\"image/png\"\n   ns1:Physicalwidthindpi=\"-1\"\n   ns1:Physicalheightindpi=\"-1\"\n   ns1:Numberofimages=\"1\"\n   ns1:Numberoftextualcomments=\"0\"\n   ns1:sha1=\"1f0cd080a7d08fa69132e064523df037f0cb420a\"\n   ns1:size=\"1621\"\n   tiff:ImageLength=\"46\"\n   tiff:ImageWidth=\"48\"\n   dc:format=\"image/png\"\n   dc:modified=\"2019-01-13T12:46:02.136+01:00\"/>\n <\/rdf:RDF>\n<\/x:xmpmeta>\n<?xpacket end=\"r\"?>\n",
+        "dam:Physicalwidthindpi": "-1",
+        "dam:Physicalheightindpi": "-1",
+        "dc:modified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+        "dam:Numberofimages": "1",
+        "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+        "dam:Numberoftextualcomments": "1",
+        "tiff:ImageWidth": "48",
+        "dam:sha1": "1f0cd080a7d08fa69132e064523df037f0cb420a",
+        "dam:size": "1621"
+        }
+      }
+    },
+  "we-retail-logo.png": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:mixinTypes": [
+      "mix:referenceable",
+      "mix:versionable"
+    ],
+    "jcr:createdBy": "admin",
+    "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+    "jcr:isCheckedOut": "true",
+    "jcr:content": {
+      "jcr:primaryType": "dam:AssetContent",
+      "jcr:lastModifiedBy": "admin",
+      "dam:copiedAt": "Tue Oct 17 2017 11:32:32 GMT-0400",
+      "dam:assetState": "processed",
+      "cq:name": "we-retail-logo.png",
+      "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+      "cq:parentPath": "/content/dam/asset-share-commons/en/site",
+      "dam:relativePath": "asset-share-commons/en/site/we-retail-logo.png",
+      "dam:parentAssetID": "e017e0cd-9d7a-4c5f-b736-2a58b5cb7640",
+      "renditions": {
+        "jcr:primaryType": "nt:folder",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+        "cq5dam.web.1280.1280.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+            ":jcr:data": "567"
+            }
+          },
+        "cq5dam.thumbnail.48.48.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+            ":jcr:data": "783"
+            }
+          },
+        "cq5dam.thumbnail.140.100.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+            ":jcr:data": "2323"
+            }
+          },
+        "original": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "oak:Resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:01 GMT+0100",
+            ":jcr:data": "18823"
+            }
+          },
+        "cq5dam.thumbnail.319.319.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+            ":jcr:data": "9393"
+            }
+          }
+        },
+      "related": {"jcr:primaryType": "nt:unstructured"},
+      "metadata": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:mixinTypes": ["cq:Taggable"],
+        "dam:Physicalheightininches": "0.2499687522649765",
+        "dam:Physicalwidthininches": "1.4442639350891113",
+        "dam:Fileformat": "PNG",
+        "dam:Progressive": "no",
+        "tiff:ImageLength": "18",
+        "tiff:YResolution": "720000/10000",
+        "exif:ColorSpace": "65535",
+        "jcr:lastModifiedBy": "admin",
+        "xmp:CreatorTool": "Adobe Photoshop CC 2017 (Macintosh)",
+        "dam:extracted": "Tue Oct 17 2017 11:32:32 GMT-0400",
+        "dc:format": "image/png",
+        "dam:Bitsperpixel": "32",
+        "xmpMM:DocumentID": "adobe:docid:photoshop:396299d9-f35f-117a-96ed-c6a54cd89b56",
+        "dam:MIMEtype": "image/png",
+        "tiff:Orientation": "1",
+        "dam:Physicalwidthindpi": "72",
+        "dam:Physicalheightindpi": "72",
+        "tiff:ResolutionUnit": "2",
+        "xmpMM:OriginalDocumentID": "xmp.did:05df9bb7-c853-4964-9ec4-69967112f5fa",
+        "dc:modified": "Tue Oct 17 2017 11:32:36 GMT-0400",
+        "photoshop:ICCProfile": "Display",
+        "photoshop:ColorMode": "3",
+        "dam:Numberofimages": "1",
+        "tiff:XResolution": "720000/10000",
+        "exif:PixelYDimension": "18",
+        "xmp:MetadataDate": "Mon Oct 16 2017 21:35:46 GMT-0400",
+        "exif:PixelXDimension": "104",
+        "jcr:lastModified": "Sun Jan 13 2019 12:46:01 GMT+0100",
+        "dam:Numberoftextualcomments": "0",
+        "xmpMM:InstanceID": "xmp.iid:249a1e9c-1972-4a0a-83cf-9a59bf001856",
+        "xmp:ModifyDate": "Mon Oct 16 2017 21:35:46 GMT-0400",
+        "xmp:CreateDate": "Mon Oct 16 2017 21:08:16 GMT-0400",
+        "tiff:ImageWidth": "104",
+        "dam:sha1": "c988c46b48a7ed65f61e07058bdd8a2434091ae6",
+        "dam:size": "18823",
+        "photoshop:TextLayers": {
+          "jcr:primaryType": "nt:unstructured",
+          "xmpNodeType": "xmpArray",
+          "xmpArraySize": "1",
+          "xmpArrayType": "rdf:Bag",
+          "1": {
+            "jcr:primaryType": "nt:unstructured",
+            "xmpNodeType": "xmpStruct",
+            "photoshop:LayerName": "WE.RETAIL",
+            "photoshop:LayerText": "WE.RETAIL"
+            }
+          },
+        "xmpMM:History": {
+          "jcr:primaryType": "nt:unstructured",
+          "xmpNodeType": "xmpArray",
+          "xmpArraySize": "2",
+          "xmpArrayType": "rdf:Seq",
+          "1": {
+            "jcr:primaryType": "nt:unstructured",
+            "stEvt:action": "saved",
+            "xmpNodeType": "xmpStruct",
+            "stEvt:softwareAgent": "Adobe Photoshop CC 2017 (Macintosh)",
+            "stEvt:when": "Mon Oct 16 2017 21:35:46 GMT-0400",
+            "stEvt:changed": "/",
+            "stEvt:instanceID": "xmp.iid:05df9bb7-c853-4964-9ec4-69967112f5fa"
+            },
+          "2": {
+            "jcr:primaryType": "nt:unstructured",
+            "stEvt:action": "saved",
+            "xmpNodeType": "xmpStruct",
+            "stEvt:softwareAgent": "Adobe Photoshop CC 2017 (Macintosh)",
+            "stEvt:when": "Mon Oct 16 2017 21:35:46 GMT-0400",
+            "stEvt:changed": "/",
+            "stEvt:instanceID": "xmp.iid:249a1e9c-1972-4a0a-83cf-9a59bf001856"
+            }
+          }
+        }
+      }
+    },
+  "placeholder-dark.jpeg": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:mixinTypes": [
+      "mix:referenceable",
+      "mix:versionable"
+    ],
+    "jcr:createdBy": "admin",
+    "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+    "jcr:isCheckedOut": "true",
+    "jcr:content": {
+      "jcr:primaryType": "dam:AssetContent",
+      "jcr:lastModifiedBy": "admin",
+      "dam:copiedAt": "Tue Oct 17 2017 14:11:53 GMT-0400",
+      "dam:assetState": "processed",
+      "cq:name": "placeholder-dark.jpeg",
+      "jcr:lastModified": "Sun Jan 13 2019 12:46:03 GMT+0100",
+      "cq:parentPath": "/content/dam/asset-share-commons/en/site",
+      "dam:relativePath": "asset-share-commons/en/site/placeholder-dark.jpeg",
+      "dam:parentAssetID": "710843dd-f534-4292-a4c1-bae5bf0e637f",
+      "renditions": {
+        "jcr:primaryType": "nt:folder",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+        "cq5dam.thumbnail.48.48.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:03 GMT+0100",
+            ":jcr:data": "3997"
+            }
+          },
+        "cq5dam.thumbnail.140.100.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:03 GMT+0100",
+            ":jcr:data": "24208"
+            }
+          },
+        "cq5dam.web.1280.1280.jpeg": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "image/jpeg",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:03 GMT+0100",
+            ":jcr:data": "44152"
+            }
+          },
+        "original": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "oak:Resource",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:mimeType": "image/jpeg",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+            ":jcr:data": "41511"
+            }
+          },
+        "cq5dam.thumbnail.319.319.png": {
+          "jcr:primaryType": "nt:file",
+          "jcr:createdBy": "admin",
+          "jcr:created": "Sun Jan 13 2019 12:45:50 GMT+0100",
+          "jcr:content": {
+            "jcr:primaryType": "nt:resource",
+            "jcr:lastModifiedBy": "workflow-process-service",
+            "jcr:mimeType": "image/png",
+            "jcr:lastModified": "Sun Jan 13 2019 12:46:03 GMT+0100",
+            ":jcr:data": "81952"
+            }
+          }
+        },
+      "related": {"jcr:primaryType": "nt:unstructured"},
+      "metadata": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:mixinTypes": ["cq:Taggable"],
+        "jcr:title": "Placeholder Image",
+        "dam:Physicalheightininches": "-1.0",
+        "dam:Physicalwidthininches": "-1.0",
+        "dam:Fileformat": "JPEG",
+        "dam:Progressive": "yes",
+        "tiff:ImageLength": "720",
+        "jcr:lastModifiedBy": "admin",
+        "xmpRights:UsageTerms": ["Can be used for commerical or free use."],
+        "dam:extracted": "Tue Oct 17 2017 14:11:53 GMT-0400",
+        "dc:format": "image/jpeg",
+        "dc:description": "This is a description of the placeholder image.",
+        "dam:Bitsperpixel": "24",
+        "dam:MIMEtype": "image/jpeg",
+        "dam:Physicalwidthindpi": "-1",
+        "dam:Physicalheightindpi": "-1",
+        "xmpRights:UsageTerms_xmpArrayType": "rdf:Alt",
+        "cq:tags_xmpArrayType": "rdf:Bag",
+        "dc:modified": "Tue Oct 17 2017 08:39:57 GMT-0400",
+        "dam:Numberofimages": "1",
+        "cq:tags": [
+          "properties:orientation/landscape",
+          "properties:style/color"
+        ],
+        "jcr:lastModified": "Sun Jan 13 2019 12:46:02 GMT+0100",
+        "dam:Numberoftextualcomments": "0",
+        "tiff:ImageWidth": "1280",
+        "dam:sha1": "f1cf53c4d36a7ca29ad44e2f9e3ff4f896ee4582",
+        "dam:size": "41514",
+        "xmpRights:WebStatement": "/content/asset-share-commons/en/dark/actions/license/terms-conditions.html",
+        "dc:title": "Placeholder Image",
+        "Iptc4xmpCore:CreatorContactInfo": {"jcr:primaryType": "nt:unstructured"}
+        }
+      }
+    }
+  }

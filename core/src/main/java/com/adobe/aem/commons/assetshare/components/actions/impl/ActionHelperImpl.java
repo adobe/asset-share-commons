@@ -19,11 +19,12 @@
 
 package com.adobe.aem.commons.assetshare.components.actions.impl;
 
-import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
-import com.adobe.aem.commons.assetshare.configuration.Config;
-import com.adobe.aem.commons.assetshare.content.AssetModel;
-import com.adobe.granite.asset.api.AssetException;
-import com.day.cq.wcm.api.WCMMode;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestParameter;
 import org.apache.sling.api.resource.Resource;
@@ -31,12 +32,13 @@ import org.apache.sling.models.factory.ModelFactory;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
-import javax.net.ssl.StandardConstants;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collection;
+import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
+import com.adobe.aem.commons.assetshare.configuration.Config;
+import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.granite.asset.api.AssetException;
+import com.day.cq.wcm.api.WCMMode;
+
+import java.lang.reflect.*;
 
 @Component
 public final class ActionHelperImpl implements ActionHelper {
@@ -59,6 +61,7 @@ public final class ActionHelperImpl implements ActionHelper {
                 }
 
                 final Resource resource = request.getResourceResolver().getResource(path);
+                boolean isAbstract = Modifier.isAbstract(ModelFactory.class.getModifiers());
                 if (resource != null) {
                     final AssetModel asset = modelFactory.getModelFromWrappedRequest(request, resource, AssetModel.class);
                     if (asset != null) {
@@ -75,7 +78,7 @@ public final class ActionHelperImpl implements ActionHelper {
     public final Collection<AssetModel> getPlaceholderAsset(final SlingHttpServletRequest request) {
         final Collection<AssetModel> assets = new ArrayList<>();
 
-        if (!WCMMode.DISABLED.equals(WCMMode.fromRequest(request))) {
+        if (!WCMMode.DISABLED.equals(WCMMode.fromRequest(request)))  {
             final Config config = request.adaptTo(Config.class);
             final AssetModel placeholder = config.getPlaceholderAsset();
             if (placeholder != null) {

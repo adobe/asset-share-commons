@@ -1,4 +1,5 @@
 {
+  "page_complete" : {
 	"jcr:primaryType" : "cq:Page",
 	"jcr:content" : {
 	  "jcr:primaryType": "cq:PageContent",
@@ -31,7 +32,12 @@
 	            "jcr:primaryType": "nt:unstructured",
 	            "path": "/content/asset-share-commons/en/light/faqs",
 	            "text": "FAQs"
-	            }
+	            },
+	          "item_blank" : {
+	            "jcr:primaryType": "nt:unstructured",
+	            "path": "",
+	            "text": "empty URL"
+	           }
 	          }
 	        }
 	      }
@@ -40,4 +46,5 @@
 	    "jcr:primaryType": "nt:unstructured"
 	    }
 	  }
+	}
 }
