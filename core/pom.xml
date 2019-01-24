@@ -173,7 +173,7 @@
                     <exportScr>true</exportScr>
                     <instructions>
                         <Import-Package>
-                            com.adobe.acs.commons.email;resolution:=optional,
+                            org.apache.sling.xss;version="[1.2.0,2)",
                             *
                         </Import-Package>
                         <_plugin>org.apache.sling.bnd.models.ModelsScannerPlugin</_plugin>
