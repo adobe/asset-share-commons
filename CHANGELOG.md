@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Changed
+- 0359: Expanded org.apache.sling.xss to [1.2.0,2) to support AEM 6.5 and removed unneeded legacy acom.adobe.acs.commons.email;resolution:=optional import.
+
 ## [v1.6.12]
 
 ### Fixed
