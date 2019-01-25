@@ -172,7 +172,7 @@
                     <exportScr>true</exportScr>
                     <instructions>
                         <Import-Package>
-                            org.apache.sling.xss;version="[1.2.0,2)",
+                            org.apache.sling.xss;version="[1.2,3)",
                             *
                         </Import-Package>
                         <_plugin>org.apache.sling.bnd.models.ModelsScannerPlugin</_plugin>
