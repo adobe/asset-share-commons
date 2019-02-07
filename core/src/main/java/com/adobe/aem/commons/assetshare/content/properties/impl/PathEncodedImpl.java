@@ -36,7 +36,7 @@ import static com.adobe.aem.commons.assetshare.content.properties.ComputedProper
 )
 @Designate(ocd = PathEncodedImpl.Cfg.class)
 @Deprecated
-public class PathEncodedImpl extends PathEscapedImpl {
+public class PathEncodedImpl extends UrlImpl {
     public static final String LABEL = "Asset Path (UTF-8 Encoded)";
     public static final String NAME = "path/encoded";
 

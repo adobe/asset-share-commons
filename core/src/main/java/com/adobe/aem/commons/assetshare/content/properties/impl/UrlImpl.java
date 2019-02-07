@@ -22,8 +22,7 @@ package com.adobe.aem.commons.assetshare.content.properties.impl;
 import com.adobe.aem.commons.assetshare.content.properties.AbstractComputedProperty;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
 import com.day.cq.dam.api.Asset;
-import com.google.common.net.UrlEscapers;
-import org.apache.commons.lang.StringUtils;
+import com.day.text.Text;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Activate;
@@ -33,16 +32,11 @@ import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 import static com.adobe.aem.commons.assetshare.content.properties.ComputedProperty.DEFAULT_ASC_COMPUTED_PROPERTY_SERVICE_RANKING;
 
 /**
- * This Computed Property returns a escaped path to the asset.
- *
- * This replaced the path/encoded Computed Property.
- *
+ * This Computed Property returns a escaped path usable as a URL for the asset.
+ **
  * The asset path is collected via the PathImpl Computed Property.
  */
 @Component(
@@ -51,12 +45,10 @@ import static com.adobe.aem.commons.assetshare.content.properties.ComputedProper
                 Constants.SERVICE_RANKING + "=" + DEFAULT_ASC_COMPUTED_PROPERTY_SERVICE_RANKING
         }
 )
-@Designate(ocd = PathEscapedImpl.Cfg.class)
-public class PathEscapedImpl extends AbstractComputedProperty<String> {
-    private static final String PATH_SEGMENT_DELIMITER = "/";
-
-    public static final String LABEL = "Asset Path (for URLs)";
-    public static final String NAME = "path/escaped";
+@Designate(ocd = UrlImpl.Cfg.class)
+public class UrlImpl extends AbstractComputedProperty<String> {
+    public static final String LABEL = "URL";
+    public static final String NAME = "url";
     private Cfg cfg;
 
     @Reference(target = "(component.name=com.adobe.aem.commons.assetshare.content.properties.impl.PathImpl)")
@@ -80,11 +72,8 @@ public class PathEscapedImpl extends AbstractComputedProperty<String> {
     @Override
     public String get(final Asset asset, final SlingHttpServletRequest request) {
         final String path = pathComputedProperty.get(asset, request);
-        final String[] pathSegments = StringUtils.split(path, PATH_SEGMENT_DELIMITER);
 
-        return PATH_SEGMENT_DELIMITER + Arrays.stream(pathSegments)
-                .map(pathSegment -> UrlEscapers.urlPathSegmentEscaper().escape(pathSegment))
-                .collect( Collectors.joining(PATH_SEGMENT_DELIMITER));
+        return Text.escapePath(path);
     }
 
     @Activate
@@ -92,7 +81,7 @@ public class PathEscapedImpl extends AbstractComputedProperty<String> {
         this.cfg = cfg;
     }
 
-    @ObjectClassDefinition(name = "Asset Share Commons - Computed Property - Asset Path (Escaped)")
+    @ObjectClassDefinition(name = "Asset Share Commons - Computed Property - URL")
     public @interface Cfg {
         @AttributeDefinition(name = "Label", description = "Human readable label.")
         String label() default LABEL;
@@ -100,6 +89,6 @@ public class PathEscapedImpl extends AbstractComputedProperty<String> {
         @AttributeDefinition(
                 name = "Types",
                 description = "Defines the type of data this exposes. This classification allows for intelligent exposure of Computed Properties in DataSources, etc.")
-        String[] types() default { Types.URL, Types.RENDITION, Types.VIDEO_RENDITION };
+        String[] types() default { Types.URL };
     }
 }
