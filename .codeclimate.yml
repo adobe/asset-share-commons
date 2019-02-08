@@ -11,6 +11,7 @@ plugins:
       squid:S3776:
         enabled: false
 exclude_patterns:
+- "**/test/"
 - "**/*.png"
 - "**/*.jpeg"
 - "**/*.jpg"

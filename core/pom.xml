@@ -17,8 +17,7 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd ">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd ">
     <modelVersion>4.0.0</modelVersion>
     <!-- ====================================================================== -->
     <!-- P A R E N T P R O J E C T D E S C R I P T I O N -->
@@ -26,7 +25,7 @@
     <parent>
         <groupId>com.adobe.aem.commons</groupId>
         <artifactId>assetshare</artifactId>
-        <version>1.6.11-SNAPSHOT</version>
+        <version>1.6.13-SNAPSHOT</version>
     </parent>
 
     <!-- ====================================================================== -->
@@ -133,9 +132,18 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-email</artifactId>
         </dependency>
+        <!-- Testing -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.testing.sling-mock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.wcm</groupId>
+            <artifactId>io.wcm.testing.aem-mock.junit4</artifactId>
         </dependency>
     </dependencies>
 
@@ -144,18 +152,34 @@
     <!-- ====================================================================== -->
     <build>
         <plugins>
-
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <extensions>true</extensions>
+                <executions>
+                    <!-- Configure extra execution of 'manifest' in process-classes phase to make sure SCR metadata is generated before unit test runs -->
+                    <execution>
+                        <id>scr-metadata</id>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                        <configuration>
+                            <supportIncrementalBuild>true</supportIncrementalBuild>
+                        </configuration>
+                    </execution>
+                </executions>
                 <configuration>
+                    <exportScr>true</exportScr>
                     <instructions>
                         <Import-Package>
-                            com.adobe.acs.commons.email;resolution:=optional,
+                            org.apache.sling.xss;version="[1.2,3)",
                             *
                         </Import-Package>
                         <_plugin>org.apache.sling.bnd.models.ModelsScannerPlugin</_plugin>
+                        <!-- Enable processing of OSGI DS component annotations -->
+                        <_dsannotations>*</_dsannotations>
+                        <!-- Enable processing of OSGI metatype annotations -->
+                        <_metatypeannotations>*</_metatypeannotations>
                     </instructions>
                 </configuration>
                 <dependencies>

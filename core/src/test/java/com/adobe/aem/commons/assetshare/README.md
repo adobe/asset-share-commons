@@ -13,7 +13,6 @@
 * Prefer not depending on any mocks (AEM Mocks or Mockito) when possible (however, this is rarely possible unless classes are specifically written with this in mind and/or are utility classes).
 * Prefer existing AEM Mocks over Mockito mocks.
     * The exception to this rule is if using AEM Mocks requires creating/registering many mocks, where Mockito's mocks (or spies) allow you to do it in fewer.
-* TBD if Sling Mocks dependencies will have to be introduced so supplement Sling Mocks.
 
 ## General test writing style
 
@@ -41,9 +40,8 @@ this test is created:
 Each public method on the class being tested should have at least one corresponding test method. If multiple conditions (working/not-working) required testing, multiple test methods should be defined.
 
 Test method naming:
-* Shares the name of method being tested, ex: `getTitle()`
-* Prefixed with `test`, ex: the test method is `testGetTitle()`
-* Optionally post-fixed with an underscore-prefixed, capitalized condition name, ex: `testGetTitle__EmptyTitle()`
+* Starts w/ the name of method being tested, ex: `getTitle()`
+* Optionally post-fixed with an underscore-prefixed, capitalized condition name, ex: `testGetTitle__WithEmptyTitle()`
 
 For example, to test the method `getTitle()` in `HelloWorld.java`:
 
@@ -51,8 +49,8 @@ For example, to test the method `getTitle()` in `HelloWorld.java`:
 
 The following test methods are created in `HelloWorldImplTest.java`:
 
-    `@Test void testGetTitle()` which tests for the normal, populated title condition
-    `@Test void testGetTitle_EmptyTitle()`, which tests for the condition where the title is missing
+    `@Test void getTitle()` which tests for the normal, populated title condition
+    `@Test void getTitle_WithEmptyTitle()`, which tests for the condition where the title is missing
 
 ### Resource files (JSON)
 
@@ -62,13 +60,15 @@ The following convention for defining JSON resource files should be followed:
 
 * JSON files are created under test/resources under a folder structure that follows the test case class's package and file name, for example:
 
-    `core/src/test/resources/com/adobe/aem/commons/assetshare/components/impl/HelloWorldImplTest.json`
+   core/src/test/resources/com/adobe/aem/commons/assetshare/components/impl/HelloWorldImplTest.json
 
-provides the JSON required by the test case `core/src/test/java/com/adobe/aem.commons/assetshare/components/impl/HelloWorldImplTest.java`.
+provides the JSON required by the test case 
+
+   core/src/test/java/com/adobe/aem.commons/assetshare/components/impl/HelloWorldImplTest.java
 
 Each test case's JSON file can define multiple, well-named JSON definition roots that represent different states and can, in turn, be used across one or many test methods in the corresponding test case.
 
-JSON definitions should contain the MINIMUM definition to satisfy the test-cases. This means NO unnecessary junk data from JCR exports, for example, jcr:lastModifiedBy, cq:lastReplicated, cq:responsive, etc. nodes/properties unless they are required by a test.
+JSON definitions should contain the **MINIMUM** definition to satisfy the test-cases. This means **NO unnecessary junk data** from JCR exports, for example, `jcr:lastModifiedBy`, `cq:lastReplicated`, `cq:responsive`, etc. nodes/properties unless they are required by a test.
 
 For example, the HelloWorldImplTest.java may need to test for: a fully configured ("default")  component, a wholly un-configured component ("empty") and a component with ONLY the title populated ("title") using the JSON file defined below:
 
@@ -95,14 +95,14 @@ For example, the HelloWorldImplTest.java may need to test for: a fully configure
 
 ```
 @Before
-public void setup() {
+public void setUp() {
    ctx.load().json("HelloWorldImplTest.json");
 }
 
 ...
 
 @Test
-public void testGetTitle__EmptyTitle()  {
+public void getTitle__WithEmptyTitle()  {
     context.currentResource("/empty");
     ...
 }
@@ -112,6 +112,15 @@ public void testGetTitle__EmptyTitle()  {
 
 
 ### Sample test case
+
+#### JSON resource defnition file
+
+*Referenced in the Junit test file below in `ctx.load().json(..)`*
+
+`core/src/test/resources/com/adobe/aem/commons/assetshare/components/impl/HelloWorldImplTest.json`
+
+
+#### Junit test file
 
 `core/src/test/java/com/adobe/aem/commons/assetshare/components/impl/HelloWorldImplTest.java`
 
@@ -141,7 +150,7 @@ public class HelloWorldImplTest {
     }
 
     @Test
-    public void testGetTitle() {
+    public void getTitle() {
         final String expected = "hello world!";
 
         ctx.currentResource("/default");
@@ -153,7 +162,7 @@ public class HelloWorldImplTest {
     }
 
     @Test
-    public void testGetTitle_EmptyTitle() {
+    public void getTitle_WithEmptyTitle() {
         ctx.currentResource("/empty");
         HelloWorld helloWorld = ctx.request().adaptTo(HelloWorld.class);
 
