@@ -41,6 +41,7 @@ import com.adobe.granite.security.user.UserPropertiesManager;
 import com.day.cq.commons.Externalizer;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.commons.util.DamUtil;
+import com.day.text.Text;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jackrabbit.api.security.user.Authorizable;
@@ -178,12 +179,17 @@ public class EmailShareServiceImpl implements ShareService {
             if (assetResource != null && DamUtil.isAsset(assetResource)) {
                 final AssetModel asset = modelFactory.getModelFromWrappedRequest(config.getRequest(), assetResource, AssetModel.class);
 
+                // Unescape else gets double-escaped and the link breaks
                 String url = assetDetailsResolver.getFullUrl(config, asset);
 
                 if (StringUtils.isBlank(url)) {
                     log.warn("Could not determine an Asset Details page path for asset at [ {} ]", assetPath);
                     continue;
                 }
+
+                // Unescape the URL since externalizer also escapes, resulting in a breaking, double-escaped URLs
+                // This is required since assetDetailsResolver.getFullUrl(config, asset) performs its own escaping.
+                url =  Text.unescape(url);
 
                 if (isAuthor()) {
                     url = externalizer.authorLink(config.getResourceResolver(), url);

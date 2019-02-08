@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.components.details.Image;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.util.MimeTypeHelper;
 import com.day.cq.dam.api.Rendition;
+import com.day.text.Text;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
@@ -33,6 +34,8 @@ import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import java.net.URLDecoder;
@@ -45,6 +48,7 @@ import java.util.regex.Pattern;
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
 public class ImageImpl extends AbstractEmptyTextComponent implements Image {
+    private static final Logger log = LoggerFactory.getLogger(ImageImpl.class);
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/details/image";
 
     @Self
@@ -101,7 +105,9 @@ public class ImageImpl extends AbstractEmptyTextComponent implements Image {
             }
         }
 
-        return src;
+        log.error("Rendition src: {}", src);
+        src = StringUtils.replace(src, "%20", " ");
+        return Text.escapePath(src);
     }
 
     @Override
@@ -110,7 +116,7 @@ public class ImageImpl extends AbstractEmptyTextComponent implements Image {
     }
 
     @Override
-    public String getFallback() { return fallbackSrc; }
+    public String getFallback() { return Text.escapePath(fallbackSrc); }
 
     @Override
     public boolean isEmpty() {
