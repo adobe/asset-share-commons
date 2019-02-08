@@ -39,7 +39,7 @@ public interface RenditionResolver {
 
     /**
      * The options supported by this RenditionResolver.
-     *
+     *<br>
      * Format should is: Map&lt;OptionName, OptionLabel&gt;
      *
      * @param request the SlingHttpServletRequest.
@@ -79,14 +79,15 @@ public interface RenditionResolver {
 
         /**
          * The file name is computed as:
-         *
+         *<br>
          * &lt;asset-name-without-extension&gt;.&lt;rendition-name&gt;.&lt;asset-extension&gt;
-         *
-         * example:
-         * - cat.png -> cat.web.png
-         * - dog.pdf -> dog.original.png
-         * - mouse.mov -> mouse.tiny.mov
-         *
+         *<br>
+         * examples:<br>
+         *<br>
+         * cat.png -&gt; cat.web.png<br>
+         * dog.pdf -&gt; dog.original.png<br>
+         * mouse.mov -&gt; mouse.tiny.mov<br>
+         *<br>
          * The is only impacts browser downloads, and not the URL or cached file in AEM dispatcher.
          *
          * @return the filename the rendition should download as.

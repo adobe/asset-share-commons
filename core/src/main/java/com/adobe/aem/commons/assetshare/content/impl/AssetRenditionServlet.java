@@ -39,6 +39,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ *
+ *
+ * /content/dam/foo.png.rendition/download/asset.rendition
+ *
+ *
+ */
 @Component(
         service = Servlet.class,
         property = {
@@ -59,11 +66,11 @@ import java.util.Map;
         }
 )
 public class AssetRenditionServlet extends SlingSafeMethodsServlet {
+    private static final Logger log = LoggerFactory.getLogger(AssetRenditionServlet.class);
+
     public static final String SERVLET_EXTENSION = "rendition";
     public static final String DOWNLOAD_AS_ATTACHMENT_SUFFIX_SEGMENT = "download";
-
-    private static final Logger log = LoggerFactory.getLogger(AssetRenditionServlet.class);
-    private static final String[] CACHEABLE_SUFFIX_FILENAMES = {"asset.rendition"};
+    public static final String[] CACHEABLE_SUFFIX_FILENAMES = {"asset.rendition"};
 
     private final RankedServices<RenditionResolver> renditionResolvers = new RankedServices<>(Order.DESCENDING);
 
@@ -108,17 +115,13 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
     /**
      * Represents the parameters provided in the RequestPathInfo's suffix to determine how the rendition is selected and returned.
      */
-    protected class ParamsImpl implements RenditionResolver.Params {
-        private final SlingHttpServletRequest request;
-
+    protected static class ParamsImpl implements RenditionResolver.Params {
         private String renditionName = null;
         private String fileName = null;
         private boolean attachment = false;
         private boolean valid = true;
 
         public ParamsImpl(SlingHttpServletRequest request) {
-            this.request = request;
-
             final Asset asset = DamUtil.resolveToAsset(request.getResource());
             final String[] segments = StringUtils.split(request.getRequestPathInfo().getSuffix(), "/");
 
