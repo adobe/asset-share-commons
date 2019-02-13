@@ -38,7 +38,8 @@
     subject="Check em out"
     successTitle="Success"
     successMessage="E-mail sent successfully"
-    useSharerSignature="{Boolean}true">
+    useSharerSignature="{Boolean}true"
+    replyToSharer="{Boolean}false">
     <data
         jcr:primaryType="nt:unstructured"
         senderEmailAddress="assetsharecommons@gmail.com"

@@ -111,13 +111,14 @@ public class EmailShareServiceImpl implements ShareService {
 
     @Override
     public final void share(final SlingHttpServletRequest request, final SlingHttpServletResponse response, final ValueMap shareParameters) throws ShareException {
-    	
+
         /** Work around for regression issue introduced in AEM 6.4 **/
         SlingBindings bindings = new SlingBindings();
         //intentionally setting the second argument to 'null' since there is no SlingScript to pass in
         bindings.setSling( new ScriptHelper(bundleContext, null, request, response));
         request.setAttribute(SlingBindings.class.getName(), bindings);
-        
+        UserProperties userProperties = getUserProperties(request);
+
         final EmailShare emailShare = request.adaptTo(EmailShare.class);
 
         shareParameters.putAll(xssProtectUserData(emailShare.getUserData()));
@@ -126,10 +127,12 @@ public class EmailShareServiceImpl implements ShareService {
         shareParameters.putAll(emailShare.getConfiguredData());
 
         // Except for signature which we may or may  not want to use from configured data, depending on flags in configured data
-        try {
-            shareParameters.put(SIGNATURE, getSignature(request));
-        } catch (RepositoryException e) {
-            throw new ShareException("Could not obtain user display name for " + request.getResourceResolver().getUserID());
+        shareParameters.put(SIGNATURE, getSignature(emailShare, userProperties));
+
+        // set reply to address, if any
+        String replyToAddress = getReplyToAddress(emailShare, userProperties);
+        if (StringUtils.isNotEmpty(replyToAddress)) {
+            shareParameters.put(EmailService.REPLY_TO, replyToAddress);
         }
 
         share(request.adaptTo(Config.class), shareParameters, StringUtils.defaultIfBlank(emailShare.getEmailTemplatePath(), cfg.emailTemplate()));
@@ -154,7 +157,7 @@ public class EmailShareServiceImpl implements ShareService {
         } else if (ArrayUtils.isEmpty(assetPaths)) {
             throw new ShareException("At least one asset is required to share");
         }
-       
+
         // Convert provided params to <String, String>; anything that needs to be accessed in its native type should be accessed and manipulated via shareParameters.get(..)
         final Map<String, String> emailParameters = new HashMap<String, String>();
         for (final String key : shareParameters.keySet()) {
@@ -209,29 +212,53 @@ public class EmailShareServiceImpl implements ShareService {
         return slingSettingsService.getRunModes().contains("author");
     }
 
-    private String getSignature(final SlingHttpServletRequest request) throws RepositoryException {
-        if (request == null) {
-            return cfg.signature();
-        }
-
-        final EmailShare emailShare = request.adaptTo(EmailShare.class);
-
+    private String getSignature(final EmailShare emailShare, final UserProperties userProperties) throws ShareException {
         boolean useSharerDisplayNameAsSignature = emailShare.getProperties().get(EmailShareImpl.PN_USE_SHARER_NAME_AS_SIGNATURE, false);
 
-        if (useSharerDisplayNameAsSignature) {
-            final String currentUser = request.getResourceResolver().getUserID();
-            if (!"anonymous".equalsIgnoreCase(currentUser) && !"admin".equalsIgnoreCase(currentUser)) {
-                final UserPropertiesManager upm = request.getResourceResolver().adaptTo(UserPropertiesManager.class);
-                final Authorizable authorizable = request.getResourceResolver().adaptTo(Authorizable.class);
-                final UserProperties userProperties = upm.getUserProperties(authorizable, "profile");
-
-                if (userProperties != null) {
-                    return StringUtils.trimToNull(userProperties.getDisplayName());
-                }
+        if (useSharerDisplayNameAsSignature && userProperties != null) {
+            try {
+              return StringUtils.trimToNull(userProperties.getDisplayName());
+            }
+            catch (RepositoryException ex) {
+              throw new ShareException("Could not obtain user display name for '" + userProperties.getAuthorizableID() + "'", ex);
             }
         }
 
         return StringUtils.defaultIfBlank(emailShare.getConfiguredData().get(EmailShareImpl.PN_SIGNATURE, String.class), cfg.signature());
+    }
+
+    private String getReplyToAddress(final EmailShare emailShare, final UserProperties userProperties) throws ShareException {
+        boolean replyToSharer = emailShare.getProperties().get(EmailShare.PN_USE_SHARER_EMAIL_AS_REPLY_TO, false);
+        if (replyToSharer && userProperties != null) {
+
+          try {
+            return userProperties.getProperty(UserProperties.EMAIL);
+          }
+          catch (RepositoryException ex) {
+            throw new ShareException("Could not obtain email address for '" + userProperties.getAuthorizableID() + "'", ex);
+          }
+      }
+
+      return null;
+    }
+
+    private UserProperties getUserProperties(SlingHttpServletRequest request) {
+      if (request != null) {
+
+        final String currentUser = request.getResourceResolver().getUserID();
+        if (!"anonymous".equalsIgnoreCase(currentUser) && !"admin".equalsIgnoreCase(currentUser)) {
+            final UserPropertiesManager upm = request.getResourceResolver().adaptTo(UserPropertiesManager.class);
+            final Authorizable authorizable = request.getResourceResolver().adaptTo(Authorizable.class);
+            try {
+              return upm.getUserProperties(authorizable, "profile");
+            }
+            catch (RepositoryException ex) {
+              log.warn("Cannot get user profile properties of user '{}'", currentUser);
+            }
+        }
+
+      }
+      return null;
     }
 
     /**
@@ -248,7 +275,7 @@ public class EmailShareServiceImpl implements ShareService {
                 cleanUserData.put(entry.getKey(), xssCleanData((String[]) entry.getValue()));
             } else if (entry.getValue() instanceof String) {
                 cleanUserData.put(entry.getKey(), xssCleanData((String) entry.getValue()));
-            }   
+            }
         }
 
         return cleanUserData;
