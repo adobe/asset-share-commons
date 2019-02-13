@@ -244,13 +244,18 @@ public class EmailShareServiceImpl implements ShareService {
     }
 
     private UserProperties getUserProperties(SlingHttpServletRequest request) {
-      if (request != null) {
+        if (request == null) {
+            return null;
+        }
+
         ResourceResolver resolver = request.getResourceResolver();
         final String currentUser = resolver.getUserID();
 
-        boolean adminAnonymousUser = !"anonymous".equalsIgnoreCase(currentUser) && !"admin".equalsIgnoreCase(currentUser);
+        boolean anonymous = StringUtils.equalsIgnoreCase(currentUser, "anonymous");
+        boolean admin = StringUtils.equalsIgnoreCase(currentUser, "admin");
+        boolean validUser = !anonymous && !admin;
 
-        if (adminAnonymousUser) {
+        if (validUser) {
             final UserPropertiesManager upm = resolver.adaptTo(UserPropertiesManager.class);
             final Authorizable authorizable = resolver.adaptTo(Authorizable.class);
             try {
@@ -261,7 +266,6 @@ public class EmailShareServiceImpl implements ShareService {
             }
         }
 
-      }
       return null;
     }
 
