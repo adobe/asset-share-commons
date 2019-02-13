@@ -46,6 +46,7 @@ import org.apache.jackrabbit.api.security.user.Authorizable;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.models.factory.ModelFactory;
@@ -244,11 +245,14 @@ public class EmailShareServiceImpl implements ShareService {
 
     private UserProperties getUserProperties(SlingHttpServletRequest request) {
       if (request != null) {
+        ResourceResolver resolver = request.getResourceResolver();
+        final String currentUser = resolver.getUserID();
 
-        final String currentUser = request.getResourceResolver().getUserID();
-        if (!"anonymous".equalsIgnoreCase(currentUser) && !"admin".equalsIgnoreCase(currentUser)) {
-            final UserPropertiesManager upm = request.getResourceResolver().adaptTo(UserPropertiesManager.class);
-            final Authorizable authorizable = request.getResourceResolver().adaptTo(Authorizable.class);
+        boolean adminAnonymousUser = !"anonymous".equalsIgnoreCase(currentUser) && !"admin".equalsIgnoreCase(currentUser);
+
+        if (adminAnonymousUser) {
+            final UserPropertiesManager upm = resolver.adaptTo(UserPropertiesManager.class);
+            final Authorizable authorizable = resolver.adaptTo(Authorizable.class);
             try {
               return upm.getUserProperties(authorizable, "profile");
             }
