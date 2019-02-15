@@ -46,6 +46,13 @@
                                         name="./hideLabels"
                                         text="Hide Labels"
                                         value="true"/>
+                                    <hide-apply-filter-toggle
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                            fieldDescription="Hides the Apply toggle filter control completely. Often used when all Filter components are set to auto-search on-change."
+                                            name="./hideApplyFilterToggle"
+                                            text="Hide Apply Filter"
+                                            value="true"/>
                                     <apply-label
                                         jcr:primaryType="nt:unstructured"
                                         sling:resourceType="granite/ui/components/coral/foundation/form/textfield"

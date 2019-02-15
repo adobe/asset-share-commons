@@ -29,7 +29,7 @@ jQuery((function($, ns, cart, semanticModal, downloadModal, licenseModal, shareM
             var formData = new ns.FormData();
 
             cart.paths().forEach(function (path) {
-                formData.add("path", path);
+                formData.add("path", encodeURIComponent(path));
             });
 
             // Set this to prevent odd placeholder injection when running on AEM Author; This will be a NOOP

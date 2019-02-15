@@ -61,7 +61,7 @@ $(function () {
                     date: dateFormatter
                 },
                 onChange: function (date, text, mode) {
-                    $(rangeStart).find('input[type="text"]').trigger("change");
+                    $(rangeStart).find('input[type="text"]').val(text).trigger("change");
                 }
             });
 
@@ -72,7 +72,7 @@ $(function () {
                     date: dateFormatter
                 },
                 onChange: function (date, text, mode) {
-                    $(rangeEnd).find('input[type="text"]').trigger("change");
+                    $(rangeEnd).find('input[type="text"]').val(text).trigger("change");
                 }
             });
         });

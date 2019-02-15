@@ -6,9 +6,95 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Fixed
+- 163: User menu disappears when the profile is aleady loaded in previeous requests
+
+### Changed
+- 0359: Expanded org.apache.sling.xss to [1.2.0,3) to support AEM 6.5 (uses version 2.0.1) and removed unneeded legacy acom.adobe.acs.commons.email;resolution:=optional import.
+
+## [v1.6.12]
+
+### Fixed
+- 0326: Removed the sample (non-working) FolderSearchProvider and FolderResult/sImpl from the code base.
+- 0333: Fixed issue with the highest Computed Property, by name, not being selected for use (the first to bind was always being used).
+- 0335: Fixed a content issue that could result in "Remove From Cart" notification no longer working after saving page properties.
+- 0336: Fixed the ASC computed properties to have a default service ranking lower zero (set all to -1).
+- 0344: Fixed a property field mapping in the "Share" component dialog where the property name was `./errorText` instead of `./errorTitle`.
+- 0337: Fixed intermittent race condition when multiple modals are loaded (License > Download)
+
+### Changed
+- 0297: Allow authoring of an the Sort By label value when the sorting property is not present in the Sort component's Sort By options.
+- 0313: Reformatted core/pom.xml
+- 0322: Email Sharing Externalizer extension to allow custom externalizer domain to be used for publish links.
+- 0327: Updated SearchPredicateDataSource and AssetDetailsResolver to GREEDY'ily acquire @References to allow 3rd party service impls to register properly.
+
+### Added
+- 0303: Added ability to hide the Apply Filter Toggle control completely (useful for when auto-search on change is enabled everywhere)
+
+## [v1.6.10]
+
+### Fixed
+- 0259: Fixed issue with the Statistics component misreporting how many more results are available.
+- 0301: Files having special character in the filename. Download, Share and Add to Cart do not work.
+- 0307: Fixed issue with Details page Image component's fallback is not used for non-image assets. 
+- 0308: Fixed issue where unsupported (by the browser) image asset types (ex. DFX) are used for image display in browser (thumbs/preview) instead of placeholder.
+- 0311: Empty metadata fields fail to hide or display emptyText
+
+### Changed
+- 0294: Changes (JS) AssetShare.Navigation.goToTop(..) to avoid using window.location.hash which pushes state to browser's history and prevents use of the browser's back button.
+
+## [v1.6.8]
+
+### Fixed
+- 0283: AssetDetails404Servlet uses sendError(..) to set 404 status, allowing it to work with Sling Error Handlers.
+- 0285: Modal DOM elements are now removed when then modal is hidden.
+- 0288: AssetDetails404Servlet handles UUID based asset details pages.
+
+### Changed
+- 0290: Modals emit JS event when they are shown.
+
+## [v1.6.6]
+
+### Fixed
+- 0275: Revert inclusion of Core Components 2.1.0 as it breaks compatability with AEM 6.3 SP1
+- 0276: Corrected resource injection strategy in SearchConfigImpl that resulted in the model being instantiatable on 6.3.x
+
+### Fixed
+- 0275: Resolves issue with offset not being set.
+- 0255: Removed need for "generic" Sort By and Sort Direction labels; added intelligence to get default values from Search Results 
+## [v1.6.4]
+
+### Fixed
+- 0260: Resolves issue with offset not being set.
+- 0255: Removed need for "generic" Sort By and Sort Direction labels; added intelligence to get default values from Search Results component.
+- 0254: HTTP query param sort parameters are not reflected in Sort component
+- 0249: Fixed issue when Search Statistics (or an other component that uses Search model) is placed before the Search components, resutling in 0 results.
+- 0248: Issue with HTTP parameter QB groups and server-side provided (group_3 would mix in with server-side paths)
+- 0227: Sites editor is missing workflow status information
+- 0237: Fixes issue with ContextHub being unloaded after a Form submissions via modals.
+- 0240: Fixed issue with submitted date-range search values lagging behind actual value by one submission.
+- 0231: metadataFieldTypes does not filter data source for Date Range and Tag Filters
+- 0192: Updated included Core Components to v2.1.0
+
+## [v1.6.2]
+
+### Changed
+- 0069: Fixes issue with request URI being too long for modals by switching from GET to POST
+
+### Fixed
+- 0218: Fixes issue with Action Buttons' Download not working for Licensed assets when Licensing is disabled.
+- 0221: Fixes logic for Dynamic Media download modal to display a dropdown when image presets are set 
+
+## [v1.6.0]
+
+### Added
+- 0208: Addition of Smart Tags Computed Property and support of Smart Tags in the Tags Asset Details Component.
 - 0184: Added Search Predicates framework and provided OOTB implementations for: Exclude Content Fragments, Exclude Expired Assets, Exclude Sub-assets.
 - 0182: Added resource providers for Search and Asset Details pages that warn about mis-configurations of Asset Share Commons in AEM Author.
 - 0191: Support alphabetical or natural ordering of Tags in in the Tags search predicate. Fixed issues with Source options in dialog as well.
+
+### Fixed
+- 0204: For mobile and tablet view, the filter rail should slide from left.
 - 0195: Search does not work in IE11 - Missing findIndex() & find() methods.
 
 ## [v1.5.2]

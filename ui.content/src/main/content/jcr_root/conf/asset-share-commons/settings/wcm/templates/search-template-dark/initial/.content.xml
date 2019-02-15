@@ -34,7 +34,7 @@
                     eventId="cart-add"
                     style="success"
                     text="Asset added to cart"/>
-                <cart-exists
+                <cart-remove
                     jcr:primaryType="nt:unstructured"
                     eventId="cart-remove"
                     style="notice"

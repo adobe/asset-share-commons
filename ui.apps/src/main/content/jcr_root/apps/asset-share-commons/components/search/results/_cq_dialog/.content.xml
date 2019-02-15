@@ -123,6 +123,16 @@
                                         </items>
                                     </default-orderby-sort>
 
+                                    <orderby-case
+                                          jcr:primaryType="nt:unstructured"
+                                          sling:orderBefore="name"
+                                          sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                          fieldDescription="Select for case-insensitive sorting of the default sort configuration. Only use this when 'Default Sort Property` is a text (String) property. This value should be kept in sync with the value for this property in the Sort component."
+                                          name="./orderByCase"
+                                          text="Case-Insensitive Sorting for Default Sort"
+                                          value="{Boolean}false"
+                                          uncheckedValue="{Boolean}true"/>
+
                                 </items>
                             </column>
                         </items>

@@ -18,6 +18,7 @@
 
 <sly    data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
         data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
+        data-sly-test.searchConfig="${modelCache['com.adobe.aem.commons.assetshare.components.search.SearchConfig']}"
         data-sly-use.cart="com.adobe.aem.commons.assetshare.components.actions.cart.Cart"></sly>
 
 <style data-sly-test="${!wccmode.disabled}">
@@ -28,7 +29,7 @@
     }
 </style>
 
-<form method="get"
+<form method="post"
       action="${currentPage.path}.assetdownload.zip/Cart.zip"
       data-asset-share-id="cart"
       data-asset-share-id="cart-modal"
@@ -54,11 +55,12 @@
                 data-sly-use.assetDetails="${'com.adobe.aem.commons.assetshare.configuration.AssetDetails' @ request = slingRequest, asset = asset }">
 
                 <td class="image">
-                    <img src="${asset.properties['thumbnail']}" alt="${asset.properties['title']}"/>
+                    <img src="${asset.properties['thumbnail'] || searchConfig.properties['missingImage']  @ context = 'attribute'}"
+                         alt="${asset.properties['title']}"/>
                 </td>
 
                 <td class="header">
-                    <a href="${assetDetails.url @ suffix = asset.path}">
+                    <a href="${assetDetails.fullUrl}">
                         ${asset.properties['title']}
                     </a>
                 </td>

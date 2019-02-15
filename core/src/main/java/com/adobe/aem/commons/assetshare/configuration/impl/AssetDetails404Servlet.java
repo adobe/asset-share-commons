@@ -18,19 +18,15 @@
 
 package com.adobe.aem.commons.assetshare.configuration.impl;
 
-import com.day.cq.dam.api.Asset;
+import com.adobe.aem.commons.assetshare.content.AssetResolver;
 import com.day.cq.wcm.api.WCMMode;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
-import org.apache.sling.api.request.RequestPathInfo;
-import org.apache.sling.api.resource.Resource;
-import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.servlets.OptingServlet;
 import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.osgi.service.component.annotations.Reference;
 
 import javax.annotation.Nonnull;
 import javax.servlet.Servlet;
@@ -48,37 +44,28 @@ import java.io.IOException;
 )
 public class AssetDetails404Servlet extends SlingSafeMethodsServlet implements OptingServlet {
 
+    @Reference 
+    private AssetResolver assetResolver;
+    
     @Override
     protected final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response)
             throws ServletException, IOException {
         // Control which requests enter this method via accepts(..) below.
-
-        response.setStatus(SlingHttpServletResponse.SC_NOT_FOUND);
-        response.getWriter().print("The path to a valid and accessible asset must be provided to the Asset Details page for it to display.");
-        response.getWriter().flush();
+        //send 404 error to let Sling handle it.
+        response.sendError(SlingHttpServletResponse.SC_NOT_FOUND);
     }
 
-    @Override
-    public boolean accepts(@Nonnull final SlingHttpServletRequest request) {
+    @Override public boolean accepts(@Nonnull final SlingHttpServletRequest request) {
         final WCMMode wcmMode = WCMMode.fromRequest(request);
 
         // ONLY perform this on WCMModes disabled in case someone runs this on AEM Author as disabled.
-        if(WCMMode.DISABLED.equals(wcmMode)) {
-            final RequestPathInfo requestPathInfo = request.getRequestPathInfo();
-            final Resource suffixResource = requestPathInfo.getSuffixResource();
-
-            // If the suffixResource cannot be resolved, then return a 404
-            if (suffixResource == null || ResourceUtil.isNonExistingResource(suffixResource)) {
-                // If the suffix resource is null (blank, invalid resource, etc.)
+        if (WCMMode.DISABLED.equals(wcmMode)) {
+            try {
+                return assetResolver.resolveAsset(request) == null;
+            } catch (IllegalArgumentException illegalArgumentException) {
                 return true;
-            } else {
-                if (suffixResource.adaptTo(Asset.class) == null ) {
-                    // If suffix resource is NOT an asset, then this is also not a valid page to request.
-                    return true;
-                }
             }
         }
-
         return false;
     }
 }

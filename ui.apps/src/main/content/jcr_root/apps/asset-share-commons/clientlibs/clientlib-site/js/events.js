@@ -28,7 +28,9 @@ AssetShare.Events = {
 	PAGE_LOAD: "asset-share-commons.page.load",
 
     SEARCH_BEGIN: "asset-share-commons.search.begin",
-    SEARCH_END: "asset-share-commons.search.end"
+    SEARCH_END: "asset-share-commons.search.end",
+
+    MODAL_SHOWN: "asset-share-commons.modal.shown"
 };
 
 jQuery((function($, ns) {

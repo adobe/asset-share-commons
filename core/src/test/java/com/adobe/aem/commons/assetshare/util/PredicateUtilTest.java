@@ -1,17 +1,17 @@
 package com.adobe.aem.commons.assetshare.util;
 
 import org.apache.sling.api.resource.ValueMap;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertTrue;
 
-class PredicateUtilTest {
+public class PredicateUtilTest {
 
     @Test
-    void findPredicate() {
+    public void findPredicate() {
         final String PATH = "/content/dam/a";
 
         final Map<String, String> input = new HashMap<>();

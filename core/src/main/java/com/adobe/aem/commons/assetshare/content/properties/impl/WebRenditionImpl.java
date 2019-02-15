@@ -21,22 +21,33 @@ package com.adobe.aem.commons.assetshare.content.properties.impl;
 
 import com.adobe.aem.commons.assetshare.content.properties.AbstractComputedProperty;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
+import com.adobe.aem.commons.assetshare.util.MimeTypeHelper;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.commons.util.DamUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-@Component(service = ComputedProperty.class)
+import static com.adobe.aem.commons.assetshare.content.properties.ComputedProperty.DEFAULT_ASC_COMPUTED_PROPERTY_SERVICE_RANKING;
+
+@Component(
+        service = ComputedProperty.class,
+        property = {
+                Constants.SERVICE_RANKING + "=" + DEFAULT_ASC_COMPUTED_PROPERTY_SERVICE_RANKING
+        }
+)
 @Designate(ocd = WebRenditionImpl.Cfg.class)
 public class WebRenditionImpl extends AbstractComputedProperty<String> {
+
+    @Reference
+    private MimeTypeHelper mimeTypeHelper;
 
     public static final String LABEL = "Web Rendition";
     public static final String NAME = "image";
@@ -63,15 +74,20 @@ public class WebRenditionImpl extends AbstractComputedProperty<String> {
         final Rendition rendition = DamUtil.getBestFitRendition(1280, asset.getRenditions());
         String path = "";
 
-        if (rendition != null) {
+        if (rendition != null &&
+                mimeTypeHelper.isBrowserSupportedImage(rendition.getMimeType())) {
             path = rendition.getPath();
-        } else {
-            if (asset.getOriginal() != null) {
-                path = asset.getOriginal().getPath();
-            }
+        } else if (asset.getOriginal() != null &&
+                mimeTypeHelper.isBrowserSupportedImage(asset.getOriginal().getMimeType())) {
+            path = asset.getOriginal().getPath();
         }
 
-        return StringUtils.replace(path, " ", "%20");
+        return escapeString(path);
+    }
+
+    private String escapeString(String str) {
+        str = StringUtils.replace(str, " ", "%20");
+        return StringUtils.replace(str, "/jcr:content", "/_jcr_content");
     }
 
     @Activate

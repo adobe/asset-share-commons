@@ -57,12 +57,6 @@
                                                             jcr:primaryType="nt:unstructured"
                                                             sling:resourceType="granite/ui/components/coral/foundation/container">
                                                         <items jcr:primaryType="nt:unstructured">
-                                                            <order-by-sort-label
-                                                                    jcr:primaryType="nt:unstructured"
-                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                                                    fieldDescription="The label for the Sort By control."
-                                                                    fieldLabel="Sort By Label"
-                                                                    name="./orderByLabel"/>
                                                             <properties
                                                                     jcr:primaryType="nt:unstructured"
                                                                     sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
@@ -93,11 +87,28 @@
                                                                                             jcr:primaryType="nt:unstructured"
                                                                                             sling:resourceType="asset-share-commons/data-sources/orderable-properties"/>
                                                                                 </property>
+                                                                                <orderby-case
+                                                                                  jcr:primaryType="nt:unstructured"
+                                                                                  sling:orderBefore="name"
+                                                                                  sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                                                  fieldDescription="Check for case-insensitive sorting. Only use for text (String) properties."
+                                                                                  name="./orderByCase"
+                                                                                  text="Case-Insensitive Sorting"
+                                                                                  value="{Boolean}false"
+                                                                                  uncheckedValue="{Boolean}true"/>
                                                                             </items>
                                                                         </option>
                                                                     </items>
                                                                 </field>
                                                             </properties>
+                                                            <unknown-sort-by-label
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                                    fieldLabel="Unknown Sort By Label"
+                                                                    fieldDescription="Sort By label to display if the Sort By value (property) is not defined in the above list. This is most-often used if the default sort order is not defined in the Sort component's Sort By Options. Defaults to 'Default'."
+                                                                    emptyText="Default"
+                                                                    name="./unknownSortBy"/>
+
                                                         </items>
                                                     </column>
                                                 </items>
@@ -112,12 +123,6 @@
                                                             jcr:primaryType="nt:unstructured"
                                                             sling:resourceType="granite/ui/components/coral/foundation/container">
                                                         <items jcr:primaryType="nt:unstructured">
-                                                            <order-by-sort-label
-                                                                    jcr:primaryType="nt:unstructured"
-                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                                                    fieldDescription="The label for the Sort Direction control."
-                                                                    fieldLabel="Sort Direction Label"
-                                                                    name="./orderBySortLabel"/>
                                                             <ascending-label
                                                                     jcr:primaryType="nt:unstructured"
                                                                     sling:resourceType="granite/ui/components/coral/foundation/form/textfield"

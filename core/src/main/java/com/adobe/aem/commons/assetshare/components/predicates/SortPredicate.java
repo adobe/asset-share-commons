@@ -19,6 +19,7 @@
 
 package com.adobe.aem.commons.assetshare.components.predicates;
 
+import com.adobe.aem.commons.assetshare.components.predicates.impl.options.SortOptionItem;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -29,6 +30,21 @@ public interface SortPredicate extends Predicate {
     /**
      * @return the option items for this predicate.
      */
-    List<OptionItem> getItems();
+    List<SortOptionItem> getItems();
+
+    /**
+     * @return true if the active sort order is ascending (vs. descending).
+     */
+    default boolean isAscending() { return false; }
+
+    /**
+     * @return the active label for the Order By (Sort By) field.
+     */
+    default String getOrderByLabel() { return "Sort By"; }
+
+    /**
+     * @return the active label for the Order By Sort (Sort Direction) field.
+     */
+    default String getOrderBySortLabel() { return "DESC"; }
 }
 

@@ -26,6 +26,11 @@ import org.osgi.annotation.versioning.ConsumerType;
 @ConsumerType
 public interface ComputedProperty<T> {
 
+    /**
+     * Asset Share Common's Computed Properties Default Service Ranking
+     */
+    int DEFAULT_ASC_COMPUTED_PROPERTY_SERVICE_RANKING = -1;
+
     String getName();
 
     String getLabel();

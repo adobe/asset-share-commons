@@ -28,6 +28,7 @@ import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.components.ComponentContext;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
+import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
@@ -35,10 +36,18 @@ import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-@Component(service = ComputedProperty.class)
+import static com.adobe.aem.commons.assetshare.content.properties.ComputedProperty.DEFAULT_ASC_COMPUTED_PROPERTY_SERVICE_RANKING;
+
+@Component(
+        service = ComputedProperty.class,
+        property = {
+                Constants.SERVICE_RANKING + "=" + DEFAULT_ASC_COMPUTED_PROPERTY_SERVICE_RANKING
+        }
+)
 @Designate(ocd = TagTitlesImpl.Cfg.class)
 public class TagTitlesImpl extends AbstractComputedProperty<List<String>> {
     public static final String LABEL = "Tag Titles";
@@ -81,6 +90,8 @@ public class TagTitlesImpl extends AbstractComputedProperty<List<String>> {
                 tagLabels.add(tag.getTitle(locale));
             }
         }
+
+        Collections.sort(tagLabels);
 
         return tagLabels;
     }

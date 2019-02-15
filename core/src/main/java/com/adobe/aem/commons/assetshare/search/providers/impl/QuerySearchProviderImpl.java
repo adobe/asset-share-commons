@@ -20,6 +20,7 @@
 package com.adobe.aem.commons.assetshare.search.providers.impl;
 
 import com.adobe.aem.commons.assetshare.components.predicates.PagePredicate;
+import com.adobe.aem.commons.assetshare.components.predicates.SortPredicate;
 import com.adobe.aem.commons.assetshare.search.QueryParameterPostProcessor;
 import com.adobe.aem.commons.assetshare.search.SearchSafety;
 import com.adobe.aem.commons.assetshare.search.UnsafeSearchException;
@@ -31,7 +32,6 @@ import com.adobe.aem.commons.assetshare.search.results.Result;
 import com.adobe.aem.commons.assetshare.search.results.Results;
 import com.adobe.aem.commons.assetshare.search.results.impl.results.QueryBuilderResultsImpl;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
-import com.day.cq.dam.api.DamConstants;
 import com.day.cq.search.*;
 import com.day.cq.search.eval.PathPredicateEvaluator;
 import com.day.cq.search.result.Hit;
@@ -54,6 +54,7 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import java.util.*;
+import java.util.stream.StreamSupport;
 
 import static org.osgi.framework.Constants.SERVICE_RANKING;
 
@@ -88,8 +89,8 @@ public class QuerySearchProviderImpl implements SearchProvider {
 
     public Results getResults(final SlingHttpServletRequest request) throws UnsafeSearchException, RepositoryException {
         final ResourceResolver resourceResolver = request.getResourceResolver();
-        final PredicateGroup root;
 
+        final PredicateGroup root;
         if (querySearchPreProcessor != null) {
             root = querySearchPreProcessor.process(request, getParams(request));
         } else {
@@ -160,34 +161,24 @@ public class QuerySearchProviderImpl implements SearchProvider {
         cleanParams(params);
 
         final PagePredicate pagePredicate = request.adaptTo(PagePredicate.class);
-        final PredicateGroup root = PredicateConverter.createPredicates(params);
+        final PredicateGroup paramsPredicateGroup = PredicateConverter.createPredicates(params);
 
         PagePredicate.ParamTypes[] excludeParamTypes = new PagePredicate.ParamTypes[]{};
 
         if (isPathsProvidedByRequestParams(pagePredicate, params)) {
-            excludeParamTypes = new PagePredicate.ParamTypes[]{ PagePredicate.ParamTypes.PATH };
+            excludeParamTypes = new PagePredicate.ParamTypes[]{PagePredicate.ParamTypes.PATH};
         }
 
-        root.addAll(pagePredicate.getPredicateGroup(excludeParamTypes));
+        // Combine the use-provided (HTTP Params) and the server-side params in a manner that will not accidentally replace/merge predicates that collide with Group Ids.
+        final PredicateGroup combinedPredicateGroup = safeMerge(paramsPredicateGroup,
+                pagePredicate.getPredicateGroup(excludeParamTypes));
 
-        // If not provided, use the defaults set on the Search Component resource
-        addToPredicateGroupIfNotPresent(root, Predicate.ORDER_BY, pagePredicate.getOrderBy());
-        addToPredicateGroupIfNotPresent(root, Predicate.ORDER_BY + "." + Predicate.PARAM_SORT, pagePredicate.getOrderBySort());
-
-        params = PredicateConverter.createMap(root);
+        params = PredicateConverter.createMap(combinedPredicateGroup);
         if (queryParametersPostProcessor != null) {
             params = queryParametersPostProcessor.process(request, params);
         }
 
         return params;
-    }
-
-    private void addToPredicateGroupIfNotPresent(final PredicateGroup root, final String key, final String val) {
-        if (root.getByName(key) == null) {
-            root.add(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
-                    put(key, val).
-                    build()));
-        }
     }
 
     private boolean isPathsProvidedByRequestParams(final PagePredicate pagePredicate, final Map<String, String> requestParams) {
@@ -198,7 +189,7 @@ public class QuerySearchProviderImpl implements SearchProvider {
         }
 
         final List<String> allowedPaths = pagePredicate.getPaths();
-        final String[] allowedPathPrefixes = pagePredicate.getPaths().stream().map(path ->  StringUtils.removeEnd(path, "/") + "/").toArray(String[]::new);
+        final String[] allowedPathPrefixes = pagePredicate.getPaths().stream().map(path -> StringUtils.removeEnd(path, "/") + "/").toArray(String[]::new);
 
         boolean hasAllowed = false;
         for (final String key : pathPredicates.keySet()) {
@@ -215,10 +206,46 @@ public class QuerySearchProviderImpl implements SearchProvider {
     }
 
     private void cleanParams(Map<String, String> params) {
+        // Do not allow users to specify guessTotal
+        params.remove("p.guessTotal");
+
+        // Common junk params
         params.remove("mode");
         params.remove("layout");
         params.remove("wcmmode");
         params.remove("forceeditcontext");
+    }
+
+    /**
+     * A utility method to safely combine 2 Predicate Groups without Group ID collisions.
+     * <p>
+     * Note that the parameter order is important. The src MUST NOT have any explicit group_# set and the dest will have any non-"p" group_#'s reset.
+     * If this is not respected, then the merge will be unsafe.
+     *
+     * @param src  the Predicates to merged into dest. These will overwrite what is in dest if there is a collision.
+     *             Typically the src are the HTTP Parameters (which have an "unknown" order).
+     * @param dest the Predicates to serve as a base for the merged.
+     * @return A combined PredicateGroup containing the Predicates from the 2 parameter Predicates Groups, such that there is no group collision.
+     */
+    private PredicateGroup safeMerge(final PredicateGroup src, final PredicateGroup dest) {
+        final PredicateGroup merged = dest.clone();
+
+        StreamSupport.stream(
+                Spliterators.spliteratorUnknownSize(src.iterator(), Spliterator.ORDERED),
+                false).forEach(predicate -> {
+
+            if (!PredicateConverter.GROUP_PARAMETER_PREFIX.equals(predicate.getName()) &&
+                    PredicateGroup.TYPE.equals(predicate.getType())) {
+                // True = resets the predicate name, i.e. the group index.
+                // Merge all other and remove their name's to allow QB to automatically group them
+                merged.add(predicate.clone(true));
+            } else {
+                // If NOT a predicate group, OR is the 'p' predicate group, leave name alone.
+                merged.add(predicate.clone(false));
+            }
+        });
+
+        return merged;
     }
 
     private void debugPreQuery(PredicateGroup predicateGroup) {
@@ -228,7 +255,7 @@ public class QuerySearchProviderImpl implements SearchProvider {
             sortedParams.putAll(PredicateConverter.createMap(predicateGroup));
 
             final StringBuilder sb = new StringBuilder();
-            for(final Map.Entry<String, String> parameter : sortedParams.entrySet()) {
+            for (final Map.Entry<String, String> parameter : sortedParams.entrySet()) {
                 sb.append("\n" + parameter.getKey() + " = " + parameter.getValue());
             }
 

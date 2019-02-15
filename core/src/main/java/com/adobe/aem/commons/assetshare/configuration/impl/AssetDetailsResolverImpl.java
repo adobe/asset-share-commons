@@ -29,8 +29,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -43,6 +42,7 @@ import java.util.concurrent.ConcurrentHashMap;
                         unbind = "unbindAssetDetailsSelector",
                         service = AssetDetailsSelector.class,
                         policy = ReferencePolicy.DYNAMIC,
+                        policyOption = ReferencePolicyOption.GREEDY,
                         cardinality = ReferenceCardinality.MULTIPLE
                 )
         }
@@ -67,6 +67,20 @@ public class AssetDetailsResolverImpl implements AssetDetailsResolver {
         }
 
         return url;
+    }
+
+    public String getFullUrl(final Config config, final AssetModel asset) {
+        String fullUrl = getUrl(config, asset);
+
+        if (StringUtils.isNotBlank(fullUrl)) {
+            if (config.getAssetDetailReferenceById()) {
+                fullUrl += "/" + asset.getAssetId() + ".html";
+            } else {
+                fullUrl += asset.getPath();
+            }
+        }
+
+        return fullUrl;
     }
 
     protected final void bindAssetDetailsSelector(final AssetDetailsSelector service, final Map<Object, Object> props) {

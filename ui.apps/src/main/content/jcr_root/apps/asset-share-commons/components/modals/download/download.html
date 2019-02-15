@@ -29,6 +29,7 @@
 
 <form method="post"
       action="/content/dam.assetdownload.zip/${download.zipFileName}.zip"
+      target="download"
       data-asset-share-id="download-modal"
       class="ui modal cmp-modal-download--wrapper cmp-modal">
 
@@ -61,9 +62,8 @@
             <div class="ui header">${properties['downloadOptionsTitle']}</div>
 
             <sly data-sly-list.asset="${download.assets}">
-                <input type="hidden" name="path"  value="${asset.path}"/>
+                <input type="hidden" name="path"  value="${asset.properties['path/encoded']}"/>
             </sly>
-
 
             <div class="field">
                 <div class="ui checkbox">

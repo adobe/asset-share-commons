@@ -78,7 +78,7 @@
 				<div class="ui header">${properties['shareOptionsTitle']}</div>
 	
 				<sly data-sly-list.asset="${share.assets}">
-					<input type="hidden" name="path" value="${asset.path}" />
+					<input type="hidden" name="path" value="${asset.properties['path/encoded']}" />
 				</sly>
 
 				<div class="field">
