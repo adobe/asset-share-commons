@@ -105,7 +105,6 @@ public class ImageImpl extends AbstractEmptyTextComponent implements Image {
             }
         }
 
-        log.error("Rendition src: {}", src);
         src = StringUtils.replace(src, "%20", " ");
         return Text.escapePath(src);
     }
