@@ -69,9 +69,9 @@ public class AssetModelImplTest {
 
     @Test
     public void getUrl_WithComplexPath() {
-        final String expected = "/content/dam/ir%c4%81%2bpu%20p%c3%b6%20p%c3%aep%e2%98%83.jpeg";
+        final String expected = "/content/dam/ir%c4%81%2bpu%20p%c3%b6%20%26p%c3%aep%e2%98%83.jpeg";
 
-        ctx.currentResource(ctx.resourceResolver().getResource("/content/dam/irā+pu pö pîp☃.jpeg"));
+        ctx.currentResource(ctx.resourceResolver().getResource("/content/dam/irā+pu pö &pîp☃.jpeg"));
 
         final AssetModel actual = ctx.request().adaptTo(AssetModel.class);
 
