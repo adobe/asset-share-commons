@@ -244,25 +244,23 @@ public class EmailShareServiceImpl implements ShareService {
     }
 
     private UserProperties getUserProperties(SlingHttpServletRequest request) {
-        if (request == null) {
-            return null;
-        }
+        if (request != null) {
 
-        ResourceResolver resolver = request.getResourceResolver();
-        final String currentUser = resolver.getUserID();
+            ResourceResolver resolver = request.getResourceResolver();
+            final String currentUser = resolver.getUserID();
 
-        boolean anonymous = StringUtils.equalsIgnoreCase(currentUser, "anonymous");
-        boolean admin = StringUtils.equalsIgnoreCase(currentUser, "admin");
-        boolean validUser = !anonymous && !admin;
+            boolean anonymous = StringUtils.equalsIgnoreCase(currentUser, "anonymous");
+            boolean admin = StringUtils.equalsIgnoreCase(currentUser, "admin");
 
-        if (validUser) {
-            final UserPropertiesManager upm = resolver.adaptTo(UserPropertiesManager.class);
-            final Authorizable authorizable = resolver.adaptTo(Authorizable.class);
-            try {
-              return upm.getUserProperties(authorizable, "profile");
-            }
-            catch (RepositoryException ex) {
-              log.warn("Cannot get user profile properties of user '{}'", currentUser);
+            if (!anonymous && !admin) {
+                final UserPropertiesManager upm = resolver.adaptTo(UserPropertiesManager.class);
+                final Authorizable authorizable = resolver.adaptTo(Authorizable.class);
+                try {
+                  return upm.getUserProperties(authorizable, "profile");
+                }
+                catch (RepositoryException ex) {
+                  log.warn("Cannot get user profile properties of user '{}'", currentUser);
+                }
             }
         }
 
