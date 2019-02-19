@@ -21,18 +21,29 @@ package com.adobe.aem.commons.assetshare.content.impl;
 
 import com.adobe.aem.commons.assetshare.content.MetadataProperties;
 import com.day.cq.dam.commons.util.SchemaFormHelper;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.AbstractResourceVisitor;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.metatype.annotations.AttributeDefinition;
+import org.osgi.service.metatype.annotations.Designate;
+import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 @Component(service = MetadataProperties.class)
+@Designate(ocd = MetadataSchemaPropertiesImpl.Cfg.class)
 public class MetadataSchemaPropertiesImpl implements MetadataProperties {
     private static final Logger log = LoggerFactory.getLogger(MetadataSchemaPropertiesImpl.class);
 
@@ -45,6 +56,7 @@ public class MetadataSchemaPropertiesImpl implements MetadataProperties {
         "granite/ui/components/coral/foundation/form/field", "dam/gui/components/admin/schemafield" };
 
     private static final String[] METADATA_TYPES_PROPERTIES = {"metaType", "type"};
+    private Cfg cfg;
 
     @Override
     public Map<String, List<String>> getMetadataProperties(final SlingHttpServletRequest request) {
@@ -68,9 +80,72 @@ public class MetadataSchemaPropertiesImpl implements MetadataProperties {
             }
         }
 
+        collectedMetadata = collectExtraMetadataProperties(collectedMetadata);
+        collectedMetadata = removeMetadataProperties(collectedMetadata);
+
         return collectedMetadata;
     }
 
+    protected final Map<String, List<String>> collectExtraMetadataProperties(final Map<String, List<String>> collectedMetadata) {
+        for (final String entry : cfg.extra_metadata_properties()) {
+            final String propertyName = StringUtils.substringBefore(entry, "=");
+            final String fieldLabel = StringUtils.substringAfter(entry, "=");
+            collectMetadataProperty(fieldLabel, propertyName, collectedMetadata);
+        }
+
+        return collectedMetadata;
+    }
+
+    protected final Map<String, List<String>> removeMetadataProperties(final Map<String, List<String>> collectedMetadata) {
+        for (String propertyName : cfg.blacklisted_metadata_properties()) {
+
+            String withoutDotSlash = StringUtils.removeStart(propertyName, "./");
+            String withDotSlash = "./" + withoutDotSlash;
+
+            if (collectedMetadata.containsKey(withDotSlash)) {
+                collectedMetadata.remove(withDotSlash);
+            }
+
+            if (collectedMetadata.containsKey(withoutDotSlash)) {
+                collectedMetadata.remove(withoutDotSlash);
+            }
+        }
+
+        return collectedMetadata;
+    }
+
+    protected final void collectMetadataProperty(final String fieldLabel, String propertyName, final Map<String, List<String>> metadata) {
+        if (StringUtils.isNotBlank(fieldLabel) && StringUtils.isNotBlank(propertyName)) {
+
+            propertyName = getRelativePropertyName(propertyName, metadata);
+
+            if (metadata.containsKey(propertyName)) {
+                final List<String> tmp = metadata.get(propertyName);
+                if (!tmp.contains(fieldLabel)) {
+                    tmp.add(fieldLabel);
+                }
+                metadata.put(propertyName, tmp);
+            } else {
+                final ArrayList<String> tmp = new ArrayList<>();
+                if (StringUtils.isNotBlank(fieldLabel)) {
+                    tmp.add(fieldLabel);
+                }
+                metadata.put(propertyName, tmp);
+            }
+        }
+    }
+
+    protected final String getRelativePropertyName(String propertyName, Map<String, List<String>> metadata) {
+        if (metadata.containsKey("./" + StringUtils.removeStart(propertyName, "./"))) {
+            propertyName = "./" + StringUtils.removeStart(propertyName, "./");
+        } else if (metadata.containsKey(StringUtils.removeStart(propertyName, "./"))) {
+            propertyName = StringUtils.removeStart(propertyName, "./");
+        } else {
+            propertyName = "./" + StringUtils.removeStart(propertyName, "./");
+        }
+
+        return propertyName;
+    }
 
 
     private class MetadataSchemaResourceVisitor extends AbstractResourceVisitor {
@@ -112,21 +187,8 @@ public class MetadataSchemaPropertiesImpl implements MetadataProperties {
             final String fieldLabel = properties.get(PN_FIELD_LABEL, String.class);
             final String propertyName = properties.get(PN_NAME, properties.get(NN_FIELD + "/" + PN_NAME, String.class));
 
-            if (StringUtils.isNotBlank(fieldLabel) && StringUtils.isNotBlank(propertyName)) {
-                if (metadata.containsKey(propertyName)) {
-                    final List<String> tmp = metadata.get(propertyName);
-                    if (!tmp.contains(fieldLabel)) {
-                        tmp.add(fieldLabel);
-                    }
-                    metadata.put(propertyName, tmp);
-                } else {
-                    final ArrayList<String> tmp = new ArrayList<>();
-                    tmp.add(fieldLabel);
-                    metadata.put(propertyName, tmp);
-                }
-            }
+            collectMetadataProperty(fieldLabel, propertyName, metadata);
         }
-
 
         private boolean isWidget(Resource resource) {
             if (resource == null) {
@@ -146,5 +208,28 @@ public class MetadataSchemaPropertiesImpl implements MetadataProperties {
             return Arrays.stream(METADATA_TYPES_PROPERTIES).anyMatch(metaTypeProperty-> resource.getValueMap().containsKey(metaTypeProperty)
                 && resource.getValueMap().get(metaTypeProperty).equals(metaType));
         }
+    }
+
+    @Activate
+    protected void activate(Cfg cfg) {
+        this.cfg = cfg;
+    }
+
+
+    @ObjectClassDefinition(
+            name = "Asset Share Commons - Metadata Schema Properties"
+    )
+    @interface Cfg {
+        @AttributeDefinition(
+                name = "Extra metadata properties",
+                description = "<relative metadata property path>=<display title>"
+        )
+        String[] extra_metadata_properties() default {};
+
+        @AttributeDefinition(
+                name = "Blacklisted metadata properties",
+                description = "<relative metadata property path>"
+        )
+        String[] blacklisted_metadata_properties() default {};
     }
 }

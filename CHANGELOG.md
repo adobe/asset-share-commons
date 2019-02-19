@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - 0359: Expanded org.apache.sling.xss to [1.2.0,3) to support AEM 6.5 (uses version 2.0.1) and removed unneeded legacy acom.adobe.acs.commons.email;resolution:=optional import.
+- 0374: Added ability to add extra or blacklist Metadata Properties from the Metadata Properties DataSource via OSGi c    lljsfdonfiguration
 
 ## [v1.6.12]
 
