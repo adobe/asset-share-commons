@@ -74,7 +74,7 @@ public class ShareServlet extends SlingAllMethodsServlet {
         final AtomicInteger counter = new AtomicInteger(0);
 
         // Call all accepting ShareService implementations
-        final Collection<ShareService> theShareServies = this.shareServices;
+        final Collection<ShareService> theShareServices = this.shareServices;
         theShareServies.stream()
                 .filter(Objects::nonNull)
                 .filter(shareService -> shareService.accepts(request))
