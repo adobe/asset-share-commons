@@ -56,7 +56,7 @@ public class ShareServlet extends SlingAllMethodsServlet {
     private ShareService defaultShareService;
 
     @Reference(policyOption = ReferencePolicyOption.GREEDY)
-    private transient Collection<ShareService> shareServices;
+    private volatile Collection<ShareService> shareServices;
 
     @Override
     protected final void doPost(SlingHttpServletRequest request, SlingHttpServletResponse response)
@@ -74,7 +74,8 @@ public class ShareServlet extends SlingAllMethodsServlet {
         final AtomicInteger counter = new AtomicInteger(0);
 
         // Call all accepting ShareService implementations
-        shareServices.stream()
+        final Collection<ShareService> theShareServies = this.shareServices;
+        theShareServies.stream()
                 .filter(Objects::nonNull)
                 .filter(shareService -> shareService.accepts(request))
                 .forEach(shareService -> {
