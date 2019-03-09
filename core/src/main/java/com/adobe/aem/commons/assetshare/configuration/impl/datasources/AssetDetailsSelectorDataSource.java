@@ -21,13 +21,10 @@ package com.adobe.aem.commons.assetshare.configuration.impl.datasources;
 
 import com.adobe.aem.commons.assetshare.configuration.AssetDetailsSelector;
 import com.adobe.aem.commons.assetshare.util.DataSourceBuilder;
-import org.apache.jackrabbit.oak.commons.PropertiesUtil;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
 import org.osgi.service.component.annotations.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -35,7 +32,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Component(
         service = Servlet.class,
@@ -50,13 +46,14 @@ public class AssetDetailsSelectorDataSource extends SlingSafeMethodsServlet {
     private DataSourceBuilder dataSourceBuilder;
 
     @Reference
-    private transient Collection<AssetDetailsSelector> assetDetailsSelectors;
+    private volatile Collection<AssetDetailsSelector> volatileAssetDetailsSelectors;
 
     @Override
     protected final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) throws
             ServletException, IOException {
         final Map<String, Object> data = new TreeMap<>();
 
+        final Collection<AssetDetailsSelector> assetDetailsSelectors = volatileAssetDetailsSelectors;
         for (final AssetDetailsSelector assetDetailsSelector : assetDetailsSelectors) {
             data.put(assetDetailsSelector.getLabel(), assetDetailsSelector.getId());
         }
