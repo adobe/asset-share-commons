@@ -22,7 +22,6 @@ package com.adobe.aem.commons.assetshare.search.impl.datasources;
 import com.adobe.aem.commons.assetshare.content.MetadataProperties;
 import com.adobe.aem.commons.assetshare.search.FastProperties;
 import com.adobe.aem.commons.assetshare.util.DataSourceBuilder;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -48,7 +47,6 @@ import java.util.*;
 public class FilterablePropertiesDataSource extends SlingSafeMethodsServlet {
     private static final String PN_METADATA_FIELD_TYPES = "metadataFieldTypes";
     private static final String PN_PROPERTY_INDEX = "propertyIndex";
-    private static final String PN_FILTER_PROPERTIES = "indexRuleCapabilities";
 
     @Reference
     private DataSourceBuilder dataSourceBuilder;
@@ -60,14 +58,14 @@ public class FilterablePropertiesDataSource extends SlingSafeMethodsServlet {
     private MetadataProperties metadataProperties;
 
     @Override
-    protected final void doGet(final SlingHttpServletRequest request, final SlingHttpServletResponse response) {
+    protected final void doGet(final SlingHttpServletRequest request, final SlingHttpServletResponse response) throws
+            ServletException, IOException {
         final Map<String, Object> data = new TreeMap<>();
         final ValueMap properties = request.getResource().getValueMap();
-        final List<String> metadataFieldTypes = Arrays.asList(properties.get(PN_METADATA_FIELD_TYPES, ArrayUtils.EMPTY_STRING_ARRAY));
-        final List<String> indexRuleCapabilityProperties = Arrays.asList(properties.get(PN_FILTER_PROPERTIES, new String[] { PN_PROPERTY_INDEX} ));
+        final List<String> metadataFieldTypes = Arrays.asList(properties.get(PN_METADATA_FIELD_TYPES, new String[]{}));
 
         final Map<String, List<String>> collectedMetadata = metadataProperties.getMetadataProperties(request, metadataFieldTypes);
-        final List<String> fastProperties = fastPropertiesService.getFastProperties(indexRuleCapabilityProperties);
+        final List<String> fastProperties = fastPropertiesService.getFastProperties(PN_PROPERTY_INDEX);
 
         for (final Map.Entry<String, List<String>> entry : collectedMetadata.entrySet()) {
             final String label = StringUtils.join(entry.getValue(), " / ") + " (" + StringUtils.removeStart(entry.getKey(), "./") + ")";
@@ -80,17 +78,17 @@ public class FilterablePropertiesDataSource extends SlingSafeMethodsServlet {
             }
         }
 
-        if (metadataFieldTypes.isEmpty()) {
+
+        if(metadataFieldTypes.isEmpty()) {
             addDeltaFastProperties(data, fastProperties);
         }
-
         dataSourceBuilder.build(request, data);
     }
 
     private void addDeltaFastProperties(Map<String, Object> data, List<String> fastProperties) {
-        final List<String> deltaFastProperties =
-                fastPropertiesService.getDeltaProperties(fastProperties,
-                        (Collection<String>) (Collection<?>) data.values());
+        final List<String> deltaFastProperties = fastPropertiesService
+            .getDeltaProperties(fastProperties,
+                (Collection<String>) (Collection<?>) data.values());
 
         for (String deltaFastProperty : deltaFastProperties) {
             data.put(FastProperties.DELTA + " " + deltaFastProperty, deltaFastProperty);

@@ -29,17 +29,13 @@ AssetShare.Search.Form = function (ns) {
        return "asset-share-commons__form-id__1";
     }
 
-    function _htmlForm() {
-        return $('form[id="' + getId() + '"]');
-    }
-
     /** Operations **/
     function getUrl() {
         return url;
     }
 
     function reset() {
-        formData = new ns.FormData(_htmlForm());
+        formData = new ns.FormData($('[form="' + getId() + '"]'));
     }
 
     /** Getter Or Setter Methods **/
@@ -130,49 +126,6 @@ AssetShare.Search.Form = function (ns) {
         return buildFormData(formData, event).serialize();
     }
 
-    function _valid(formToValidate) {
-        var valid = true,
-            visible = true;
-
-        formData.getAll().forEach(function(formEntry) {
-           var inputElement = $('[name="' + formEntry.name + '"][form="' + getId() + '"]'),
-               inputElementValid,
-               inputElementValidationMessage;
-
-           if (inputElement && inputElement[0]) {
-               inputElementValid = inputElement[0].checkValidity();
-
-               if (!inputElementValid) {
-                   valid = false;
-                   visible = visible && inputElement.is(':visible');
-
-                   inputElementValidationMessage = inputElement.data('asset-share-input-validation-message');
-                   if (inputElementValidationMessage) {
-                       inputElement[0].setCustomValidity(inputElementValidationMessage);
-                   }
-               }
-           }
-        });
-
-        if (!valid && visible) {
-            // Only trigger if all erroring fields are visible (if not a JS error is thrown)
-            $('<input type="submit">').hide().appendTo(_htmlForm()).click().remove();
-        }
-
-        return valid;
-    }
-
-    function submit(serializationType, resetForm, success) {
-        var formToSubmit = serializeFor(serializationType, resetForm);
-
-        if (_valid(formToSubmit)) {
-            $.when($.get(getUrl(), formToSubmit)).then(success);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     function init() {
         // On init, the DOM is king as its populated by the server page load
         url = ns.Data.attr(ns.Elements.element("form"), "action");
@@ -186,8 +139,7 @@ AssetShare.Search.Form = function (ns) {
     return {
         url: getUrl,
         serializeFor: serializeFor,
-        id: getId,
-        submit: submit
+        id: getId
     };
 };
 
