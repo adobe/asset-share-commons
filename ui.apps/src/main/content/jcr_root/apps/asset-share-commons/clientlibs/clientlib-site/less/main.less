@@ -18,6 +18,14 @@
 
 @import (once) "variables.less";
 
-.hidden {
-    display: none !important;
+#asset-share-commons {
+    .hidden {
+        display: none !important;
+    }
+
+    select:invalid,
+    textarea:invalid,
+    input:invalid {
+        border: solid 1px red;
+    }
 }
