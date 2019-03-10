@@ -42,33 +42,20 @@ public class FastPropertiesImpl implements FastProperties {
 
     private static final String SERVICE_NAME = "oak-index-definition-reader";
 
-    protected static final String DEFAULT_INDEX_DEFINITION_RULES_PATH = "/oak:index/damAssetLucene/indexRules/dam:Asset/properties";
-    protected static final Map<String, Object> AUTH_INFO = Collections.singletonMap(ResourceResolverFactory.SUBSERVICE, SERVICE_NAME);
-
-    protected String[] indexDefinitionRulesPaths = new String[]{DEFAULT_INDEX_DEFINITION_RULES_PATH};
+    private static final String DEFAULT_INDEX_DEFINITION_RULES_PATH = "/oak:index/damAssetLucene/indexRules/dam:Asset/properties";
+    private String[] indexDefinitionRulesPaths = new String[]{DEFAULT_INDEX_DEFINITION_RULES_PATH};
 
     @Reference
     private ResourceResolverFactory resourceResolverFactory;
 
-
-    @Override
-    public final List<String> getFastProperties() {
-        return getFastProperties(Collections.EMPTY_LIST);
-    }
-
-    @Override
     public final List<String> getFastProperties(final String indexConfigFlagPropertyName) {
-        return getFastProperties(Arrays.asList(indexConfigFlagPropertyName));
-    }
-
-    @Override
-    public final List<String> getFastProperties(final List<String> indexConfigFlagPropertyNames) {
-        final Set<String> fastProperties = new TreeSet<>();
+        final List<String> fastProperties = new ArrayList<>();
 
         ResourceResolver resourceResolver = null;
 
         try {
-            resourceResolver = resourceResolverFactory.getServiceResourceResolver(AUTH_INFO);
+            final Map<String, Object> authInfo = Collections.singletonMap(ResourceResolverFactory.SUBSERVICE, (Object) SERVICE_NAME);
+            resourceResolver = resourceResolverFactory.getServiceResourceResolver(authInfo);
 
             for (final String indexDefinitionRulesPath : indexDefinitionRulesPaths) {
                 final Resource damAssetIndexRulesResource = resourceResolver.getResource(indexDefinitionRulesPath);
@@ -83,13 +70,11 @@ public class FastPropertiesImpl implements FastProperties {
                     final Resource indexRule = indexRules.next();
                     final ValueMap properties = indexRule.getValueMap();
 
-                    final String relPath = StringUtils.stripToNull(properties.get(PN_NAME, String.class));
-
-                    if (relPath != null
-                            && (indexConfigFlagPropertyNames == null
-                            || indexConfigFlagPropertyNames.isEmpty()
-                            || indexConfigFlagPropertyNames.stream().allMatch(propertyName -> properties.get(propertyName, false)))) {
-                        fastProperties.add(relPath);
+                    if (properties.get(indexConfigFlagPropertyName, false)) {
+                        final String relPath = properties.get(PN_NAME, String.class);
+                        if (StringUtils.isNotBlank(relPath)) {
+                            fastProperties.add(relPath);
+                        }
                     }
                 }
             }
@@ -101,7 +86,7 @@ public class FastPropertiesImpl implements FastProperties {
             }
         }
 
-        return new ArrayList<>(fastProperties);
+        return fastProperties;
     }
 
     public List<String> getDeltaProperties(final Collection<String> fastProperties, final Collection<String> otherProperties) {
@@ -135,6 +120,7 @@ public class FastPropertiesImpl implements FastProperties {
     public String getSlowLabel(final String label) {
         return SLOW + "  " + label;
     }
+
 
     @Activate
     protected void activate(Cfg cfg) {
