@@ -16,22 +16,10 @@
 
 package com.adobe.aem.commons.assetshare.content.properties.impl;
 
-import com.adobe.aem.commons.assetshare.content.properties.AbstractComputedProperty;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
-import com.adobe.granite.asset.api.AssetException;
-import com.day.cq.dam.api.Asset;
-import org.apache.sling.api.SlingHttpServletRequest;
 import org.osgi.framework.Constants;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
-import org.osgi.service.metatype.annotations.ObjectClassDefinition;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 import static com.adobe.aem.commons.assetshare.content.properties.ComputedProperty.DEFAULT_ASC_COMPUTED_PROPERTY_SERVICE_RANKING;
 
@@ -47,13 +35,10 @@ import static com.adobe.aem.commons.assetshare.content.properties.ComputedProper
         }
 )
 @Designate(ocd = PathEncodedImpl.Cfg.class)
-public class PathEncodedImpl extends AbstractComputedProperty<String> {
+@Deprecated
+public class PathEncodedImpl extends UrlImpl {
     public static final String LABEL = "Asset Path (UTF-8 Encoded)";
     public static final String NAME = "path/encoded";
-    private Cfg cfg;
-
-    @Reference(target = "(component.name=com.adobe.aem.commons.assetshare.content.properties.impl.PathImpl)")
-    ComputedProperty<String> pathComputedProperty;
 
     @Override
     public String getName() {
@@ -62,37 +47,11 @@ public class PathEncodedImpl extends AbstractComputedProperty<String> {
 
     @Override
     public String getLabel() {
-        return cfg.label();
+        return LABEL;
     }
 
     @Override
     public String[] getTypes() {
-        return cfg.types();
-    }
-
-    @Override
-    public String get(final Asset asset, final SlingHttpServletRequest request) {
-        try {
-            return URLEncoder.encode(pathComputedProperty.get(asset, request),
-                    StandardCharsets.UTF_8.name());
-        } catch (UnsupportedEncodingException e) {
-            throw new AssetException("Could not UTF-8 encode the asset path.", asset.getPath());
-        }
-    }
-
-    @Activate
-    protected void activate(final Cfg cfg) {
-        this.cfg = cfg;
-    }
-
-    @ObjectClassDefinition(name = "Asset Share Commons - Computed Property - Asset Path (Encoded)")
-    public @interface Cfg {
-        @AttributeDefinition(name = "Label", description = "Human readable label.")
-        String label() default LABEL;
-
-        @AttributeDefinition(
-                name = "Types",
-                description = "Defines the type of data this exposes. This classification allows for intelligent exposure of Computed Properties in DataSources, etc.")
-        String[] types() default { Types.URL, Types.RENDITION, Types.VIDEO_RENDITION };
+        return new String[]{};
     }
 }
