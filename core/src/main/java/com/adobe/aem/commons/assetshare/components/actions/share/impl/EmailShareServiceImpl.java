@@ -39,7 +39,9 @@ import com.adobe.aem.commons.assetshare.util.EmailService;
 import com.adobe.granite.security.user.UserProperties;
 import com.adobe.granite.security.user.UserPropertiesManager;
 import com.day.cq.commons.Externalizer;
+import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.commons.util.DamUtil;
+import com.day.text.Text;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jackrabbit.api.security.user.Authorizable;
@@ -138,14 +140,12 @@ public class EmailShareServiceImpl implements ShareService {
     private final void share(final Config config, final ValueMap shareParameters, final String emailTemplatePath) throws ShareException {
         final String[] emailAddresses = StringUtils.split(shareParameters.get(EMAIL_ADDRESSES, ""), ",");
         final String[] assetPaths = Arrays.stream(shareParameters.get(ASSET_PATHS, ArrayUtils.EMPTY_STRING_ARRAY))
-                .map(path -> {
-                    try {
-                        return URLDecoder.decode(path, StandardCharsets.UTF_8.name());
-                    } catch (UnsupportedEncodingException e) {
-                        log.warn("Could not decode path [ {} ] as UTF-8; Using path as is,.", path);
-                        return path;
-                    }
-                }).filter(StringUtils::isNotBlank)
+                .filter(StringUtils::isNotBlank)
+                .map(path -> config.getResourceResolver().getResource(path))
+                .filter(Objects::nonNull)
+                .map(DamUtil::resolveToAsset)
+                .filter(Objects::nonNull)
+                .map(Asset::getPath)
                 .toArray(String[]::new);
 
         // Check to ensure the minimum set of e-mail parameters are provided; Throw exception if not.
@@ -179,12 +179,17 @@ public class EmailShareServiceImpl implements ShareService {
             if (assetResource != null && DamUtil.isAsset(assetResource)) {
                 final AssetModel asset = modelFactory.getModelFromWrappedRequest(config.getRequest(), assetResource, AssetModel.class);
 
+                // Unescape else gets double-escaped and the link breaks
                 String url = assetDetailsResolver.getFullUrl(config, asset);
 
                 if (StringUtils.isBlank(url)) {
                     log.warn("Could not determine an Asset Details page path for asset at [ {} ]", assetPath);
                     continue;
                 }
+
+                // Unescape the URL since externalizer also escapes, resulting in a breaking, double-escaped URLs
+                // This is required since assetDetailsResolver.getFullUrl(config, asset) performs its own escaping.
+                url =  Text.unescape(url);
 
                 if (isAuthor()) {
                     url = externalizer.authorLink(config.getResourceResolver(), url);
