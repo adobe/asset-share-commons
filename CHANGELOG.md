@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0376: Replaced use of com.adobe.cq.commerce.common.ValueMapDecorator with org.apache.sling.api.wrappers.ValueMapDecorator
 - 0378: Date range filter includes the end date (evaluated at 12:59:59PM)
 
+### Added
+- 0366: Use sharer email as Reply-To when sharing assets via email
+
 ## [v1.6.12]
 
 ### Fixed
