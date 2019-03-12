@@ -26,6 +26,7 @@ import com.adobe.aem.commons.assetshare.content.properties.impl.LicenseImpl;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
 import com.day.cq.dam.commons.util.UIHelper;
+import com.day.text.Text;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.commons.mime.MimeTypeService;
@@ -155,7 +156,7 @@ public class RenditionsImpl extends AbstractEmptyTextComponent implements Rendit
             this.label = label;
             this.size = UIHelper.getSizeLabel(assetRendition.getSize());
             this.mimeType = assetRendition.getMimeType();
-            this.path = assetRendition.getPath();
+            this.path = Text.escapePath(assetRendition.getPath());
             this.name = assetRendition.getName();
             this.exists = exists;
             this.licensed = licensed;

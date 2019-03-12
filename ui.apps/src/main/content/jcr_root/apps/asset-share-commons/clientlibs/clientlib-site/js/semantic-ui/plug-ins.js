@@ -72,7 +72,7 @@ $(function () {
                     date: dateFormatter
                 },
                 onChange: function (date, text, mode) {
-                    $(rangeEnd).find('input[type="text"]').val(text).trigger("change");
+                    $(rangeEnd).find('input[type="text"]').val(text+'T23:59:59').trigger("change");
                 }
             });
         });

@@ -7,11 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 
 ### Fixed
-- 163: User menu disappears when the profile is aleady loaded in previeous requests
+- 163: User menu disappears when the profile is already loaded in previous requests
+- 340/358: Corrected URL escaping to handle paths/assets file names using extended and unusual characters.
 
 ### Changed
 - 0359: Expanded org.apache.sling.xss to [1.2.0,3) to support AEM 6.5 (uses version 2.0.1) and removed unneeded legacy acom.adobe.acs.commons.email;resolution:=optional import.
-- 0374: Added ability to add extra or blacklist Metadata Properties from the Metadata Properties DataSource via OSGi c    lljsfdonfiguration
+- 0374: Added ability to add extra or blacklist Metadata Properties from the Metadata Properties DataSource via OSGi configuration
+- 0376: Replaced use of com.adobe.cq.commerce.common.ValueMapDecorator with org.apache.sling.api.wrappers.ValueMapDecorator
+- 0378: Date range filter includes the end date (evaluated at 12:59:59PM)
 
 ## [v1.6.12]
 
