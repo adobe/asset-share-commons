@@ -20,16 +20,19 @@
 package com.adobe.aem.commons.assetshare.util;
 
 import com.adobe.aem.commons.assetshare.components.predicates.Predicate;
-import com.adobe.cq.commerce.common.ValueMapDecorator;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
-import com.day.cq.search.eval.PathPredicateEvaluator;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestParameter;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.api.wrappers.ValueMapDecorator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
