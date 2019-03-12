@@ -37,8 +37,6 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.servlet.Servlet;
-import javax.servlet.ServletException;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -61,8 +59,7 @@ public class SearchResultsResourceTypeDataSource extends SlingSafeMethodsServlet
     private DataSourceBuilder dataSourceBuilder;
 
     @Override
-    protected final void doGet(final SlingHttpServletRequest request, final SlingHttpServletResponse response) throws
-            ServletException, IOException {
+    protected final void doGet(final SlingHttpServletRequest request, final SlingHttpServletResponse response) {
 
         final ValueMap properties = request.getResource().getValueMap();
         final String[] extensionTypes = properties.get("extensionTypes", new String[]{});

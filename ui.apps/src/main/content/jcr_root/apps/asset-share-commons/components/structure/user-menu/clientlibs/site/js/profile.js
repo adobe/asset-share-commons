@@ -82,6 +82,7 @@ jQuery((function($, ns, cart) {
         cart.clear();
     });
 
+    profile.eventing.on(ContextHub.Constants.EVENT_STORE_READY, init);
     profile.eventing.on(ContextHub.Constants.EVENT_STORE_UPDATED, init);
 
 }(jQuery,

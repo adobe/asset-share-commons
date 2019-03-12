@@ -39,6 +39,11 @@ public interface AssetModel {
     public String getPath();
 
     /**
+     * @return the escaped Asset path for use in a URL
+     */
+    default public String getUrl() { return getPath(); }
+
+    /**
      * @return the Assets' Id ([dam:Asset]/jcr:contnet@jcr:uuid)
      */
     public String getAssetId();
