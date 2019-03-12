@@ -18,6 +18,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - 0366: Use sharer email as Reply-To when sharing assets via email
 
+### Added
+- 0371: Added Horizontal Masonry Card results.
+
 ## [v1.6.12]
 
 ### Fixed

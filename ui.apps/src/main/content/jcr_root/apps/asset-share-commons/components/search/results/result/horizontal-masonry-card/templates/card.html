@@ -1,0 +1,79 @@
+<!--/*
+  ~ Asset Share Commons
+  ~
+  ~ Copyright [2017]  Adobe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+ */-->
+
+<template data-sly-template.card="${@ asset = result, config = config }">
+
+    <sly data-sly-use.assetDetails="${'com.adobe.aem.commons.assetshare.configuration.AssetDetails' @ request = slingRequest, asset = asset }"></sly>
+
+    <article
+            data-asset-share-id="asset"
+            data-asset-share-asset="${asset.path}"
+            id="${asset.path}"
+            class="cmp-card cmp-card--horizontal-masonry">
+
+        <span class="cmp-card__type"
+                data-sly-test.assetType="${asset.properties['type']}">${assetType}</span>
+
+
+        <a class="cmp-card__link" href="${assetDetails.url @ suffix = asset.path}">
+            <img src="${asset.properties['thumbnail'] || properties['missingImage'] @ context = 'attribute'}"
+                 class="cmp-card__image"
+                 alt="${asset.properties['title']}"/>
+        </a>
+
+        <div class="cmp-card__overlay">
+            <div class="cmp-card__asset-title">${asset.properties['title']}</div>
+
+            <ul class="cmp-card__actions">
+                <li class="cmp-card__action-item"
+                    data-sly-test="${config.downloadEnabled}">
+                    <button class="cmp-card__action-button"
+                            data-asset-share-id="download-asset"
+                            data-asset-share-asset="${asset.path}"
+                            data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}">${'Download' @ i18n}</button>
+                </li>
+                <li class="cmp-card__action-item"
+                    data-sly-test="${config.shareEnabled}">
+                    <button class="cmp-card__action-button"
+                            data-asset-share-id="share-asset"
+                            data-asset-share-asset="${asset.path}"
+                            data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}">${'Share' @ i18n}</button>
+                </li>
+                <li class="cmp-card__action-item"
+                    data-sly-test="${config.cartEnabled}">
+                    <button class="cmp-card__action-button"
+                            data-asset-share-id="add-to-cart"
+                            data-asset-share-asset="${asset.path}"
+                            data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}">${'Add to Cart' @ i18n}</button>
+
+                    <button class="cmp-card__action-button"
+                            data-asset-share-id="remove-from-cart"
+                            data-asset-share-asset="${asset.path}"
+                            data-asset-share-license="${config.licenseEnabled ? asset.properties['license'] : ''}">${'Remove From Cart' @ i18n}</button>
+                </li>
+            </ul>
+        </div>
+
+    </article>
+</template>
+
+<template data-sly-template.noResults="${@ search = search, config = config }">
+    <h1 class="ui center aligned header">
+        ${properties['noResultsText']}
+    </h1>
+</template>
