@@ -78,7 +78,7 @@ public class MetadataSchemaPropertiesImplTest {
         collectedMetadata.put("./jcr:content/foo", Arrays.asList("Blacklisted Too"));
         collectedMetadata.put("./jcr:content/metadata/bar", Arrays.asList("Not blacklisted"));
 
-        collectedMetadata = metadataSchemaProperties.removeMetadataProperties(collectedMetadata);
+        collectedMetadata = metadataSchemaProperties.removeBlacklistedMetadataProperties(collectedMetadata);
 
         assertEquals(1, collectedMetadata.size());
         assertEquals(1, collectedMetadata.get("./jcr:content/metadata/bar").size());

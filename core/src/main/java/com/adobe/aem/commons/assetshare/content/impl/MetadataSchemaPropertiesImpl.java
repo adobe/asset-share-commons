@@ -81,7 +81,7 @@ public class MetadataSchemaPropertiesImpl implements MetadataProperties {
         }
 
         collectedMetadata = collectExtraMetadataProperties(collectedMetadata);
-        collectedMetadata = removeMetadataProperties(collectedMetadata);
+        collectedMetadata = removeBlacklistedMetadataProperties(collectedMetadata);
 
         return collectedMetadata;
     }
@@ -96,7 +96,7 @@ public class MetadataSchemaPropertiesImpl implements MetadataProperties {
         return collectedMetadata;
     }
 
-    protected final Map<String, List<String>> removeMetadataProperties(final Map<String, List<String>> collectedMetadata) {
+    protected final Map<String, List<String>> removeBlacklistedMetadataProperties(final Map<String, List<String>> collectedMetadata) {
         for (String propertyName : cfg.blacklisted_metadata_properties()) {
 
             String withoutDotSlash = StringUtils.removeStart(propertyName, "./");
