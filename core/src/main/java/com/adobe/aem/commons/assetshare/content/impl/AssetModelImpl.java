@@ -23,9 +23,10 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.AssetResolver;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperties;
 import com.adobe.aem.commons.assetshare.content.properties.impl.TitleImpl;
-import com.adobe.cq.commerce.common.ValueMapDecorator;
+import org.apache.sling.api.wrappers.ValueMapDecorator;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
+import com.day.text.Text;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
@@ -85,6 +86,8 @@ public class AssetModelImpl implements AssetModel {
     public String getPath() {
         return asset.getPath();
     }
+
+    public String getUrl() { return Text.escapePath(getPath()); }
 
     public String getAssetId() {
         return asset.getID();

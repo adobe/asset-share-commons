@@ -56,11 +56,15 @@ public interface EmailService {
      */
     public static final String SENDER_NAME = "senderName";
 
-
     /**
      * Subject line variable used to specify the subject in the input parameter map.
      */
     public static final String SUBJECT = "subject";
+
+    /**
+     * Reply-TO email address variable passed in the input parameter map
+     */
+    public static final String REPLY_TO = "replyTo";
 
 
     /**
