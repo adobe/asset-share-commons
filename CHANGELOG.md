@@ -7,8 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 
 ### Fixed
-- 163: User menu disappears when the profile is already loaded in previous requests
-- 340/358: Corrected URL escaping to handle paths/assets file names using extended and unusual characters.
+- 0163: User menu disappears when the profile is aleady loaded in previeous requests
+- 0381: Fixed updating of dynamic service references to multiple share services
+- 0163: User menu disappears when the profile is already loaded in previous requests
+- 0340/0358: Corrected URL escaping to handle paths/assets file names using extended and unusual characters.
 
 ### Changed
 - 0359: Expanded org.apache.sling.xss to [1.2.0,3) to support AEM 6.5 (uses version 2.0.1) and removed unneeded legacy acom.adobe.acs.commons.email;resolution:=optional import.
