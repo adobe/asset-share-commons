@@ -228,7 +228,7 @@
                                             sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
                                             fieldDescription="Except for Anonymous, Admin or user's without Email, in which case no Reply-To address is used."
                                             text="Use Sharer's Email as Reply-To address"
-                                            value="{Boolaen}false"
+                                            value="{Boolean}false"
                                             name="./replyToSharer"/>
 
                                     <allowed-query-params-instructions
