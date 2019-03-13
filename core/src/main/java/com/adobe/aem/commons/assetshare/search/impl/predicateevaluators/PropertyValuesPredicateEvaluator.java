@@ -57,8 +57,12 @@ import static java.util.Collections.emptyList;
  * `values` is the list of values to break out into OOTB property.#_property=value[#]
  * `delimiter` is the delimiter which is used to split the values string
  */
-@Component(factory = "com.day.cq.search.eval.PredicateEvaluator/" + PropertyValuesPredicateEvaluator.PREDICATE_NAME)
-@Designate(ocd = PropertyValuesPredicateEvaluator.Cfg.class)
+@Component(
+        factory = "com.day.cq.search.eval.PredicateEvaluator/" + PropertyValuesPredicateEvaluator.PREDICATE_NAME
+)
+@Designate(
+        ocd = PropertyValuesPredicateEvaluator.Cfg.class
+)
 public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
     private static final Logger log = LoggerFactory.getLogger(PropertyValuesPredicateEvaluator.class);
 
@@ -81,7 +85,7 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
     public static final String VALUES = "values";
     private static final String DELIMITER = "delimiter";
 
-    protected Predicate buildPredicate(Predicate predicate) {
+    protected Predicate buildPredicate(final Predicate predicate) {
         if (PREDICATE_BUILT_VALUE.equals(predicate.get(PREDICATE_BUILT_KEY))) {
             return predicate;
         }
@@ -93,9 +97,9 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
                 .forEach(value -> values.addAll(getValues(value, delimiters)));
 
         if (isFulltextOperation(predicate)) {
-            predicate = buildFulltextPredicate(predicate, values, predicate.get(JcrPropertyPredicateEvaluator.PROPERTY));
+            buildFulltextPredicate(predicate, values, predicate.get(JcrPropertyPredicateEvaluator.PROPERTY));
         } else {
-            predicate = buildPropertyPredicate(predicate, values);
+            buildPropertyPredicate(predicate, values);
         }
 
         predicate.set(PREDICATE_BUILT_KEY, PREDICATE_BUILT_VALUE);
@@ -103,24 +107,19 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
         return predicate;
     }
 
-
-    private Predicate buildPropertyPredicate(Predicate predicate, List<String> values) {
-        final Predicate propertyPredicate = new Predicate(predicate.getName(), JcrPropertyPredicateEvaluator.PROPERTY);
-
+    private void buildPropertyPredicate(final Predicate propertyPredicate, final List<String> values) {
         for (int i = 0; i < values.size(); i++) {
-            propertyPredicate.set(i + "_"  + JcrPropertyPredicateEvaluator.VALUE, values.get(i));
+            propertyPredicate.set(i + "_" + JcrPropertyPredicateEvaluator.VALUE, values.get(i));
         }
 
-        predicate.getParameters().entrySet().stream()
-                .filter(entry -> !entry.getKey().matches("^(\\d+_)?values$"))
-                .filter(entry -> !entry.getKey().matches("^(\\d+_)?delimiter$"))
-                .forEach(entry -> propertyPredicate.set(entry.getKey(), entry.getValue()));
-
-        return propertyPredicate;
+        // Clears out propertyvalues specific params (.#_values and .#_delimiter)
+        propertyPredicate.getParameters().entrySet().stream()
+                .filter(entry -> entry.getKey().matches("^(\\d+_)?((" + VALUES + ")|(" + DELIMITER + "))$"))
+                .forEach(entry -> propertyPredicate.set(entry.getKey(), null));
     }
 
-    private Predicate buildFulltextPredicate(Predicate predicate, List<String> values, String property) {
-        final String operation = predicate.get(JcrPropertyPredicateEvaluator.OPERATION);
+    private void buildFulltextPredicate(final Predicate fulltextPredicate, final List<String> values, String property) {
+        final String operation = fulltextPredicate.get(JcrPropertyPredicateEvaluator.OPERATION);
 
         final String queryParam = values.stream()
                 .map(StringUtils::trimToNull)
@@ -128,8 +127,6 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
                 .filter(value -> value.length() >= 3)
                 .map(value -> buildFulltextValue(operation, value))
                 .collect(Collectors.joining(" OR "));
-
-        final Predicate fulltextPredicate = new Predicate(predicate.getName(), FulltextPredicateEvaluator.FULLTEXT);
 
         fulltextPredicate.set(FulltextPredicateEvaluator.FULLTEXT, queryParam);
 
@@ -141,8 +138,12 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
 
         fulltextPredicate.set(FulltextPredicateEvaluator.REL_PATH, property);
 
-        return fulltextPredicate;
+        // Clears out non-fulltext specific params
+        fulltextPredicate.getParameters().entrySet().stream()
+                .filter(entry -> !entry.getKey().matches("^(\\d+_)?((" + FulltextPredicateEvaluator.FULLTEXT + ")|(" + FulltextPredicateEvaluator.REL_PATH + "))$"))
+                .forEach(entry -> fulltextPredicate.set(entry.getKey(), null));
     }
+
 
     private String buildFulltextValue(String operation, String value) {
         value = StringUtils.strip(value, "*") + "*";
@@ -155,12 +156,12 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
     }
 
     private boolean isFulltextOperation(Predicate predicate) {
-        return ArrayUtils.contains(new String[] {OP_STARTS_WITH, OP_CONTAINS},
-                predicate.get(JcrPropertyPredicateEvaluator.OPERATION));
+        return predicate.get(FulltextPredicateEvaluator.FULLTEXT) != null ||
+                ArrayUtils.contains(new String[]{OP_STARTS_WITH, OP_CONTAINS}, predicate.get(JcrPropertyPredicateEvaluator.OPERATION));
     }
 
     protected PredicateEvaluator getPredicateEvaluator(Predicate predicate) {
-        if(isFulltextOperation(predicate)) {
+        if (isFulltextOperation(predicate)) {
             return fulltextEvaluator;
         } else {
             return propertyEvaluator;
@@ -290,7 +291,7 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
                 name = "Default delimiter",
                 description = "The default delimiters to use when none no #_delimiter= is specified. Defaults to ','."
         )
-        String[] delimiters_default() default { "," };
+        String[] delimiters_default() default {","};
 
         @AttributeDefinition(
                 name = "Delimiters mapping",
