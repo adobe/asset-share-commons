@@ -32,9 +32,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import static org.junit.Assert.*;
@@ -71,13 +69,15 @@ public class PropertyValuesPredicateEvaluatorTest {
 
     @Test
     public void buildPredicate_WithNoneDelimiter() {
-        final Map<String, String> expectedParams = ImmutableMap.<String, String>builder()
-                .put(JcrPropertyPredicateEvaluator.OPERATION, JcrPropertyPredicateEvaluator.OP_EQUALS)
-                .put(JcrPropertyPredicateEvaluator.PROPERTY, "jcr:content/metadata/property")
-                .put("0_" + JcrPropertyPredicateEvaluator.VALUE, "foo bar")
-                .put("1_" + JcrPropertyPredicateEvaluator.VALUE, "zip zap")
-                .put("__asset-share-commons--predicate-built", "true")
-                .build();
+        final Map<String, String> expectedParams = new HashMap<>();
+        expectedParams.put(JcrPropertyPredicateEvaluator.OPERATION, JcrPropertyPredicateEvaluator.OP_EQUALS);
+        expectedParams.put(JcrPropertyPredicateEvaluator.PROPERTY, "jcr:content/metadata/property");
+        expectedParams.put("0_" + JcrPropertyPredicateEvaluator.VALUE, "foo bar");
+        expectedParams.put("1_" + JcrPropertyPredicateEvaluator.VALUE, "zip zap");
+        expectedParams.put("__asset-share-commons--predicate-built", "true");
+        expectedParams.put("values", null);
+        expectedParams.put("1_values", null);
+        expectedParams.put("delimiter", null);
 
         predicate.set("operation", "equals");
         predicate.set("property", "jcr:content/metadata/property");
@@ -87,22 +87,25 @@ public class PropertyValuesPredicateEvaluatorTest {
 
         final Predicate actual = propertyValuesPredicateEvaluator.buildPredicate(predicate);
 
-        assertEquals("property", actual.getType());
+        assertEquals("propertyvalues", actual.getType());
         assertEquals(expectedParams, actual.getParameters());
         assertEquals("test", actual.getName());
     }
 
     @Test
     public void buildPredicate_AsPropertyOperation() {
-        final Map<String, String> expectedParams = ImmutableMap.<String, String>builder()
-                .put(JcrPropertyPredicateEvaluator.OPERATION, JcrPropertyPredicateEvaluator.OP_EQUALS)
-                .put(JcrPropertyPredicateEvaluator.PROPERTY, "jcr:content/metadata/property")
-                .put("0_" + JcrPropertyPredicateEvaluator.VALUE, "foo")
-                .put("1_" + JcrPropertyPredicateEvaluator.VALUE, "bar")
-                .put("2_" + JcrPropertyPredicateEvaluator.VALUE, "zip")
-                .put("3_" + JcrPropertyPredicateEvaluator.VALUE, "zap")
-                .put("__asset-share-commons--predicate-built", "true")
-                .build();
+        final Map<String, String> expectedParams = new HashMap<>();
+        expectedParams.put(JcrPropertyPredicateEvaluator.OPERATION, JcrPropertyPredicateEvaluator.OP_EQUALS);
+        expectedParams.put(JcrPropertyPredicateEvaluator.PROPERTY, "jcr:content/metadata/property");
+        expectedParams.put("0_" + JcrPropertyPredicateEvaluator.VALUE, "foo");
+        expectedParams.put("1_" + JcrPropertyPredicateEvaluator.VALUE, "bar");
+        expectedParams.put("2_" + JcrPropertyPredicateEvaluator.VALUE, "zip");
+        expectedParams.put("3_" + JcrPropertyPredicateEvaluator.VALUE, "zap");
+        expectedParams.put("__asset-share-commons--predicate-built", "true");
+        expectedParams.put("operation", "equals");
+        expectedParams.put("values", null);
+        expectedParams.put("1_values", null);
+        expectedParams.put("99_delimiter", null);
 
         predicate.set("operation", "equals");
         predicate.set("property", "jcr:content/metadata/property");
@@ -112,19 +115,20 @@ public class PropertyValuesPredicateEvaluatorTest {
 
         final Predicate actual = propertyValuesPredicateEvaluator.buildPredicate(predicate);
 
-        assertEquals("property", actual.getType());
+        assertEquals("propertyvalues", actual.getType());
         assertEquals(expectedParams, actual.getParameters());
         assertEquals("test", actual.getName());
     }
 
     @Test
     public void buildPredicate_AsContainsOperation() {
-        final Map<String, String> expectedParams = ImmutableMap
-                .of(
-                        FulltextPredicateEvaluator.FULLTEXT, "*foo* OR *bar*",
-                        FulltextPredicateEvaluator.REL_PATH, "jcr:content/metadata/@property",
-                        "__asset-share-commons--predicate-built", "true"
-                );
+        final Map<String, String> expectedParams = new HashMap<>();
+        expectedParams.put(FulltextPredicateEvaluator.FULLTEXT, "*foo* OR *bar*");
+        expectedParams.put(FulltextPredicateEvaluator.REL_PATH, "jcr:content/metadata/@property");
+        expectedParams.put("__asset-share-commons--predicate-built", "true");
+        expectedParams.put("values", null);
+        expectedParams.put("property", null);
+        expectedParams.put("operation", null);
 
         predicate.set("operation", "contains");
         predicate.set("property", "jcr:content/metadata/property");
@@ -132,19 +136,21 @@ public class PropertyValuesPredicateEvaluatorTest {
 
         final Predicate actual = propertyValuesPredicateEvaluator.buildPredicate(predicate);
 
-        assertEquals("fulltext", actual.getType());
+        assertEquals("propertyvalues", actual.getType());
         assertEquals(expectedParams, actual.getParameters());
         assertEquals("test", actual.getName());
     }
 
     @Test
     public void buildPredicate_AsStartsWithOperation() {
-        final Map<String, String> expectedParams = ImmutableMap
-                .of(
-                        FulltextPredicateEvaluator.FULLTEXT, "foo* OR bar* OR zip* OR zap*",
-                        FulltextPredicateEvaluator.REL_PATH, "jcr:content/metadata/@property",
-                        "__asset-share-commons--predicate-built", "true"
-                );
+        final Map<String, String> expectedParams = new HashMap<>();
+        expectedParams.put(FulltextPredicateEvaluator.FULLTEXT, "foo* OR bar* OR zip* OR zap*");
+        expectedParams.put(FulltextPredicateEvaluator.REL_PATH, "jcr:content/metadata/@property");
+        expectedParams.put("__asset-share-commons--predicate-built", "true");
+        expectedParams.put("values", null);
+        expectedParams.put("property", null);
+        expectedParams.put("operation", null);
+        expectedParams.put("1_values", null);
 
         predicate.set("operation", "startsWith");
         predicate.set("property", "jcr:content/metadata/property");
@@ -153,7 +159,7 @@ public class PropertyValuesPredicateEvaluatorTest {
 
         final Predicate actual = propertyValuesPredicateEvaluator.buildPredicate(predicate);
 
-        assertEquals("fulltext", actual.getType());
+        assertEquals("propertyvalues", actual.getType());
         assertEquals(expectedParams, actual.getParameters());
         assertEquals("test", actual.getName());
     }
