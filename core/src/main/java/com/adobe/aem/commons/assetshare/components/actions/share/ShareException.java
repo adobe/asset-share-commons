@@ -26,7 +26,7 @@ public class ShareException extends Exception {
     /**
      * Creates a new ShareException with a custom message.
      *
-     * @param message the exception messsage.
+     * @param message the exception message.
      */
     public ShareException(String message) {
         super(message);
@@ -40,4 +40,15 @@ public class ShareException extends Exception {
     public ShareException(Exception e) {
         super(e);
     }
+
+    /**
+     * Creates a new ShareException with a custom message.
+     *
+     * @param message the exception message.
+     * @param ex the cause exception
+     */
+    public ShareException(String message, Throwable ex) {
+        super(message, ex);
+    }
+
 }

@@ -45,7 +45,7 @@ jQuery((function($, ns, semanticModal) {
 
             if (typeof formDataOrAssetPath === 'string') {
                 formData = new ns.FormData();
-                formData.add("path", encodeURIComponent(formDataOrAssetPath));
+                formData.add("path", formDataOrAssetPath);
             }
 
             return {

@@ -52,12 +52,13 @@ public class SearchPredicatesDataSource extends SlingSafeMethodsServlet {
             cardinality = ReferenceCardinality.MULTIPLE,
             policyOption = ReferencePolicyOption.GREEDY
     )
-    private transient Collection<SearchPredicate> searchPredicates;
+    private volatile Collection<SearchPredicate> volatileSearchPredicates;
 
     @Override
     protected final void doGet(final SlingHttpServletRequest request, final SlingHttpServletResponse response) {
         final Map<String, Object> data = new TreeMap<>();
 
+        final Collection<SearchPredicate> searchPredicates = volatileSearchPredicates;
         searchPredicates.stream().forEach(searchPredicate -> data.put(searchPredicate.getLabel(), searchPredicate.getName()));
 
         dataSourceBuilder.build(request, data);

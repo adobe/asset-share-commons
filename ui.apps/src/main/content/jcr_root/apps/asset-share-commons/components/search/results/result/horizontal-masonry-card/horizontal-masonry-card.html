@@ -1,0 +1,55 @@
+<!--/*
+  ~ Asset Share Commons
+  ~
+  ~ Copyright [2017]  Adobe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+ */-->
+
+<sly data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
+     data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
+     data-sly-test.search="${modelCache['com.adobe.aem.commons.assetshare.search.Search']}"
+     data-sly-test.pagePredicate="${modelCache['com.adobe.aem.commons.assetshare.components.predicates.PagePredicate']}"
+     data-sly-use.commonTemplate="../templates/common.html"
+     data-sly-use.cardTemplate="templates/card.html"></sly>
+
+<!--/* Common Data */-->
+<sly data-sly-call="${commonTemplate.data @ search = search, pagePredicate = pagePredicate}"></sly>
+
+<!--/* Common Fragments */-->
+<sly data-sly-call="${commonTemplate.fragments @ search = search}"></sly>
+
+<!--/* Card Content */-->
+<div data-asset-share-id="results-content"
+     data-asset-share-missing-image="${properties['missingImage']}"
+     data-asset-share-update-method="replace"
+     data-asset-share-update-when="search">
+
+    <div class="cmp-cards--horizontal-masonry"
+         data-sly-test="${search.results.size > 0}"
+         data-asset-share-id="results-load-more"
+         data-asset-share-update-method="append"
+         data-asset-share-update-when="load-more"
+         data-sly-list.result="${search.results.results}">
+
+        <sly data-sly-call="${cardTemplate.card @ asset = result, config = config}"></sly>
+
+    </div>
+
+    <div data-sly-test="${search.results.runningTotal == 0}"
+         data-sly-call="${cardTemplate.noResults @ search = search, config = config}">
+    </div>
+</div>
+
+<!--/* Common Results Footer */-->
+<sly data-sly-call="${commonTemplate.footer @ search = search }"></sly>

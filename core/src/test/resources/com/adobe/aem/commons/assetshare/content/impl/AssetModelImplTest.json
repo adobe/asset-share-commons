@@ -1,0 +1,20 @@
+{
+  "test.png": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:content": {
+      "jcr:primaryType": "nt:unstructured"
+    }
+  },
+  "伊拉奇蹟狗.pdf": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:content": {
+      "jcr:primaryType": "nt:unstructured"
+    }
+  },
+  "irā+pu pö &pîp☃.jpeg": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:content": {
+      "jcr:primaryType": "nt:unstructured"
+    }
+  }
+}
