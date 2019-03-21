@@ -1,7 +1,7 @@
 /*
  * Asset Share Commons
  *
- * Copyright (C) 2018 Adobe
+ * Copyright (C) 2019 Adobe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,31 +17,29 @@
  *
  */
 
-package com.adobe.aem.commons.assetshare.content.impl.renditionmappings;
+package com.adobe.aem.commons.assetshare.content.renditions.impl.resolvers;
 
-import com.adobe.aem.commons.assetshare.content.RenditionResolver;
-import com.adobe.aem.commons.assetshare.content.impl.AssetRenditionServlet;
-import com.adobe.aem.commons.assetshare.util.impl.ExtensionOverrideRequestWrapper;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionResolver;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionsHelper;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.api.RenditionPicker;
 import com.day.cq.dam.commons.util.DamUtil;
+import com.google.common.io.ByteStreams;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
-import org.apache.sling.api.request.RequestDispatcherOptions;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
@@ -54,7 +52,7 @@ import static org.osgi.framework.Constants.SERVICE_RANKING;
         }
 )
 @Designate(ocd = StaticRenditionResolverImpl.Cfg.class)
-public class StaticRenditionResolverImpl implements RenditionResolver {
+public class StaticRenditionResolverImpl implements AssetRenditionResolver {
     private static final String OSGI_PROPERTY_VALUE_DELIMITER = "=";
 
     private static Logger log = LoggerFactory.getLogger(StaticRenditionResolverImpl.class);
@@ -63,60 +61,44 @@ public class StaticRenditionResolverImpl implements RenditionResolver {
 
     private ConcurrentHashMap<String, Pattern> mappings;
 
+    @Reference
+    private AssetRenditionsHelper assetRenditionsHelper;
+
+    @Override
+    public String getName() {
+        return cfg.name();
+    }
+
     @Override
     public Map<String, String> getOptions() {
-        final Map<String, String> options = new LinkedHashMap<>();
-
-        mappings.keySet().stream()
-                .sorted()
-                .forEach(key -> options.put(key, StringUtils.capitalize(key)));
-
-        return options;
+        return assetRenditionsHelper.getOptions(mappings);
     }
 
     @Override
-    public boolean accepts(SlingHttpServletRequest request, String renditionName) {
-        return getOptions().keySet().contains(renditionName);
+    public boolean accepts(final SlingHttpServletRequest request, final String renditionName) {
+        return getOptions().values().contains(renditionName);
     }
 
     @Override
-    public void dispatch(SlingHttpServletRequest request, SlingHttpServletResponse response) throws IOException, ServletException {
+    public void dispatch(SlingHttpServletRequest request, SlingHttpServletResponse response) throws IOException {
         final Asset asset = DamUtil.resolveToAsset(request.getResource());
-        final String renditionName = getRenditionPatternParam(request.getRequestPathInfo().getSuffix());
+        final String renditionName = assetRenditionsHelper.getRenditionName(request);
 
-        final Rendition rendition = asset.getRendition(new PatternRenditionPicker(mappings.get(renditionName)));
+        Rendition rendition = asset.getRendition(new PatternRenditionPicker(mappings.get(renditionName)));
 
         if (rendition != null) {
+
+            log.debug("Serving rendition [ {} ] for resolved rendition name [ {} ]", rendition.getPath(), renditionName);
+
             response.setHeader("Content-Type", rendition.getMimeType());
+            response.setHeader("Content-Length", String.valueOf(rendition.getSize()));
 
-            final RequestDispatcherOptions options = new RequestDispatcherOptions();
-            options.setReplaceSuffix("");
-            options.setReplaceSelectors("");
-
-            request.getRequestDispatcher(request.getResourceResolver().getResource(rendition.getPath()), options)
-                    .include(new ExtensionOverrideRequestWrapper(request, null), response);
+            ByteStreams.copy(rendition.getStream(), response.getOutputStream());
 
         } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not fine static asset rendition.");
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not serve static asset rendition.");
         }
     }
-
-    @Override
-    public String getUrl(SlingHttpServletRequest request, String renditionName, Asset asset) {
-        return asset.getPath() + "." + AssetRenditionServlet.SERVLET_EXTENSION + "/" + renditionName + ".img";
-    }
-
-    private String getRenditionPatternParam(final String suffix) {
-        final String[] segments  = StringUtils.split(StringUtils.substringBeforeLast(suffix, "."), "/");
-
-        if (segments.length > 0) {
-            return segments[0];
-        } else {
-            return null;
-        }
-    }
-
-
 
     @Activate
     protected void activate(Cfg cfg) {
@@ -137,8 +119,14 @@ public class StaticRenditionResolverImpl implements RenditionResolver {
     @ObjectClassDefinition(name = "Asset Share Commons - Rendition Resolver - Static Renditions")
     public @interface Cfg {
         @AttributeDefinition(
+                name = "Name",
+                description = "The human-friendly name of this Rendition Resolver."
+        )
+        String name() default "Static Renditions";
+
+        @AttributeDefinition(
                 name = "Static rendition mappings",
-                description = "In the form: <renditionName>" + OSGI_PROPERTY_VALUE_DELIMITER + "<renditionPickerPattern>]"
+                description = "In the form: <renditionName>" + OSGI_PROPERTY_VALUE_DELIMITER + "<renditionPickerPattern>"
         )
         String[] rendition_mappings() default {
                 "web=^cq5dam\\.web\\.\\d+\\.\\d+\\.[a-z]+$",
@@ -148,7 +136,7 @@ public class StaticRenditionResolverImpl implements RenditionResolver {
     }
 
     /**
-     * RenditionPicker that pics the first rendition that matches the provided pattern.
+     * RenditionPicker that picks the first rendition that matches the provided pattern.
      * <p>
      * If no matching rendition is found, then null is returned.
      */
@@ -161,11 +149,14 @@ public class StaticRenditionResolverImpl implements RenditionResolver {
 
         /**
          * @param asset the asset whose renditions should be searched.
+         *
          * @return the rendition whose name matches the provided pattern, or null if non match.
          */
         @Override
         public Rendition getRendition(Asset asset) {
-            if (pattern == null) { return null; }
+            if (pattern == null) {
+                return null;
+            }
 
             return asset.getRenditions().stream()
                     .filter(r -> pattern.matcher(r.getName()).matches())
@@ -173,29 +164,4 @@ public class StaticRenditionResolverImpl implements RenditionResolver {
                     .orElse(null);
         }
     }
-
-
-     /*
-    private void streamRenditionToResponse(final Rendition rendition,
-                                           final SlingHttpServletResponse response) throws IOException {
-        final InputStream input = rendition.getStream();
-        final OutputStream output = response.getOutputStream();
-
-        response.setContentType(rendition.getMimeType());
-        response.setContentLength(Math.toIntExact(rendition.getSize()));
-
-        try (
-                final ReadableByteChannel inputChannel = Channels.newChannel(input);
-                final WritableByteChannel outputChannel = Channels.newChannel(output);
-        ) {
-            final ByteBuffer buffer = ByteBuffer.allocateDirect(10240);
-
-            while (inputChannel.read(buffer) != -1) {
-                buffer.flip();
-                outputChannel.write(buffer);
-                buffer.clear();
-            }
-        }
-    }
-    */
 }

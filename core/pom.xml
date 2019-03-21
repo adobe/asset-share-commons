@@ -139,7 +139,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.sling</groupId>
-            <artifactId>org.apache.sling.testing.sling-mock</artifactId>
+            <artifactId>org.apache.sling.testing.sling-mock.junit4</artifactId>
         </dependency>
         <dependency>
             <groupId>io.wcm</groupId>

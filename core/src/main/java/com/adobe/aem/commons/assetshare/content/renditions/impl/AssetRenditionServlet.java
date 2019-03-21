@@ -1,7 +1,7 @@
 /*
  * Asset Share Commons
  *
- * Copyright (C) 2018 Adobe
+ * Copyright (C) 2019 Adobe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,10 @@
  *
  */
 
-package com.adobe.aem.commons.assetshare.content.impl;
+package com.adobe.aem.commons.assetshare.content.renditions.impl;
 
-import com.adobe.aem.commons.assetshare.content.RenditionResolver;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionResolver;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionsHelper;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.commons.util.DamUtil;
 import org.apache.commons.lang3.ArrayUtils;
@@ -27,9 +28,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
-import org.apache.sling.commons.osgi.Order;
-import org.apache.sling.commons.osgi.RankedServices;
-import org.osgi.service.component.annotations.*;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,63 +37,47 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
 
 /**
- *
- *
- * /content/dam/foo.png.rendition/download/asset.rendition
- *
- *
+ * /content/dam/foo.png.renditions/thumbnail/download/asset.rendition
+ * <p>
+ * URL is in the format:
+ * <p>
+ * HTTP GET &lt;absolute asset path&lt;.renditions/&lt;rendition id&gt;/&lt;optional-download&gt;/asset.rendition
+ * <p>
+ * Examples:
+ * <p>
+ * HTTP GET /content/dam/asset-share-commons/en/public/pictures/lilly-rum-250927.jpg.renditions/web/asset.rendition
+ * HTTP GET /content/dam/asset-share-commons/en/public/pictures/ira.png.renditions/web/download/asset.rendition
  */
 @Component(
-        service = Servlet.class,
+        service = {Servlet.class},
         property = {
                 "sling.servlet.methods=GET",
                 "sling.servlet.resourceTypes=dam:Asset",
                 "sling.servlet.extensions=" + AssetRenditionServlet.SERVLET_EXTENSION
-        },
-        reference = {
-                @Reference(
-                        name = "renditionResolver",
-                        bind = "bindRenditionResolver",
-                        unbind = "unbindRenditionResolver",
-                        service = RenditionResolver.class,
-                        policy = ReferencePolicy.DYNAMIC,
-                        policyOption = ReferencePolicyOption.GREEDY,
-                        cardinality = ReferenceCardinality.MULTIPLE
-                )
         }
 )
 public class AssetRenditionServlet extends SlingSafeMethodsServlet {
     private static final Logger log = LoggerFactory.getLogger(AssetRenditionServlet.class);
 
-    public static final String SERVLET_EXTENSION = "rendition";
+    public static final String SERVLET_EXTENSION = "renditions";
     public static final String DOWNLOAD_AS_ATTACHMENT_SUFFIX_SEGMENT = "download";
-    public static final String[] CACHEABLE_SUFFIX_FILENAMES = {"asset.rendition"};
+    public static final String CACHEABLE_SUFFIX_FILENAME = "asset.rendition";
 
-    private final RankedServices<RenditionResolver> renditionResolvers = new RankedServices<>(Order.DESCENDING);
-
-    protected void bindRenditionResolver(RenditionResolver service, Map<String, Object> props) {
-        log.debug("Binding RenditionResolver [ {} ]", service.getClass().getName());
-        renditionResolvers.bind(service, props);
-    }
-
-    protected void unbindRenditionResolver(RenditionResolver service, Map<String, Object> props) {
-        log.debug("Unbinding RenditionResolver [ {} ]", service.getClass().getName());
-        renditionResolvers.unbind(service, props);
-    }
+    @Reference
+    private AssetRenditionsHelper assetRenditionsHelper;
 
     public final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) throws IOException, ServletException {
-        final RenditionResolver.Params params = new ParamsImpl(request);
+        final AssetRenditionResolver.Params params = new ParamsImpl(request);
 
         if (params.isValid()) {
-            for (final RenditionResolver renditionResolver : renditionResolvers) {
-                if (renditionResolver.accepts(request, params.getRenditionName())) {
+            for (final AssetRenditionResolver assetRenditionResolver : assetRenditionsHelper.getAssetRenditionResolvers()) {
+                if (assetRenditionResolver.accepts(request, params.getRenditionName())) {
 
                     setResponseHeaders(response, params);
 
-                    renditionResolver.dispatch(request, response);
+                    assetRenditionResolver.dispatch(request, response);
                     return;
                 }
             }
@@ -101,10 +85,11 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
             log.debug("Request suffix [ {} ] has invalid 'suffix extension'", request.getRequestPathInfo().getSuffix());
         }
 
-        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Unable to locate to handle serving rendition.");
+        response.sendError(HttpServletResponse.SC_NOT_FOUND,
+                "Unable to locate a RenditionResolver to dispatch a rendition for [" + params.getRenditionName() + "].");
     }
 
-    protected void setResponseHeaders(final SlingHttpServletResponse response, final RenditionResolver.Params params) {
+    protected void setResponseHeaders(final SlingHttpServletResponse response, final AssetRenditionResolver.Params params) {
         if (params.isAttachment()) {
             response.setHeader("Content-Disposition", String.format("attachment; filename=%s", params.getFileName()));
         } else {
@@ -115,7 +100,7 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
     /**
      * Represents the parameters provided in the RequestPathInfo's suffix to determine how the rendition is selected and returned.
      */
-    protected static class ParamsImpl implements RenditionResolver.Params {
+    protected static class ParamsImpl implements AssetRenditionResolver.Params {
         private String renditionName = null;
         private String fileName = null;
         private boolean attachment = false;
@@ -127,7 +112,8 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
 
             if (asset == null ||
                     segments.length < 2 ||
-                    !ArrayUtils.contains(CACHEABLE_SUFFIX_FILENAMES, segments[segments.length -1])) {
+                    (!CACHEABLE_SUFFIX_FILENAME.equals(segments[segments.length - 1]) &&
+                            !StringUtils.startsWith(segments[segments.length - 1], CACHEABLE_SUFFIX_FILENAME + "."))) {
                 valid = false;
             } else {
                 if (segments.length > 0) {

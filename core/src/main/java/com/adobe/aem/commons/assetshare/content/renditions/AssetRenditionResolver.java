@@ -1,7 +1,7 @@
 /*
  * Asset Share Commons
  *
- * Copyright (C) 2018 Adobe
+ * Copyright (C) 2019 Adobe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,8 @@
  *
  */
 
-package com.adobe.aem.commons.assetshare.content;
+package com.adobe.aem.commons.assetshare.content.renditions;
 
-import com.day.cq.dam.api.Asset;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.osgi.annotation.versioning.ConsumerType;
@@ -33,40 +32,42 @@ import java.util.Map;
  * Asset (could be a static rendition, or ACS Commons Named Image Transform, Dynamic Media, etc.)
  */
 @ConsumerType
-public interface RenditionResolver {
+public interface AssetRenditionResolver {
 
+    /**
+     * @return the friendly name of this Rendition Resolver.
+     */
+    String getName();
+
+    /**
+     * @return the options provided by the RenditionResolver implementation, in the form:
+     * - key: Option Title
+     * - value: Rendition Name
+     */
     Map<String, String> getOptions();
 
     /**
      * The options supported by this RenditionResolver.
-     *<br>
+     * <br>
      * Format should is: Map&lt;OptionName, OptionLabel&gt;
      *
-     * @param request the SlingHttpServletRequest.
+     * @param request       the SlingHttpServletRequest.
      * @param renditionName the "name" of the rendition to serve.
+     *
      * @return true if this RenditionResolver should handle this request (ie. dispatch(..) will be called).
      */
     boolean accepts(SlingHttpServletRequest request, String renditionName);
 
     /**
-     * Gets the URL for the specified rendition name.
-     *
-     * @param request the SlingHttpServletRequest.
-     * @param renditionName the "name" of the rendition to serve.
-     * @param asset the asset whose rendition should be served.
-     * @return the URL that can be used to serve the renditionName of this the asset.
-     */
-    String getUrl(SlingHttpServletRequest request, String renditionName, Asset asset);
-
-    /**
      * Dispatch the request to the appropriate.
      *
-     * @param request the SlingHttpServletRequest.
-     * @param request the SlingHttpServletResponse to include the rendition on.
-     * @throws IOException
+     * @param request  the SlingHttpServletRequest.
+     * @param response the SlingHttpServletResponse to include the rendition on.
+     *
+     * @throws IOException      if the rendition cannot be written.
+     * @throws ServletException if the request cannot be dispatched properly.
      */
     void dispatch(SlingHttpServletRequest request, SlingHttpServletResponse response) throws IOException, ServletException;
-
 
     /**
      * Represents the parameters used by the RenditionResolver ot resolve the appropriate rendition.
@@ -79,15 +80,15 @@ public interface RenditionResolver {
 
         /**
          * The file name is computed as:
-         *<br>
+         * <br>
          * &lt;asset-name-without-extension&gt;.&lt;rendition-name&gt;.&lt;asset-extension&gt;
-         *<br>
+         * <br>
          * examples:<br>
-         *<br>
+         * <br>
          * cat.png -&gt; cat.web.png<br>
          * dog.pdf -&gt; dog.original.png<br>
          * mouse.mov -&gt; mouse.tiny.mov<br>
-         *<br>
+         * <br>
          * The is only impacts browser downloads, and not the URL or cached file in AEM dispatcher.
          *
          * @return the filename the rendition should download as.
