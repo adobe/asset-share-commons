@@ -24,6 +24,7 @@ import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionsHelper
 import com.adobe.aem.commons.assetshare.util.DataSourceBuilder;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
+import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -36,8 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.Servlet;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 @Component(
         service = Servlet.class,
@@ -51,6 +51,9 @@ import java.util.TreeMap;
 public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
     private static final Logger log = LoggerFactory.getLogger(AssetRenditionsDataSource.class);
 
+    private static final String PN_EXCLUDE_ASSETRENDITIONS = "excludeAssetRenditions";
+    private static final String PN_EXCLUDE_ASSETRENDITIONRESOLVERS = "excludeAssetRenditionResolvers";
+
     @Reference
     private DataSourceBuilder dataSourceBuilder;
 
@@ -62,15 +65,38 @@ public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
     @Override
     protected final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) {
         final Map<String, Object> data = new TreeMap<>();
+        final ValueMap properties = request.getResource().getValueMap();
+
+        final Set<String> excludeAssetRenditionResolverNames = new HashSet<>();
+        if (cfg.exclude_assetrenditionresolver_names() != null) {
+            excludeAssetRenditionResolverNames.addAll(Arrays.asList(cfg.exclude_assetrenditionresolver_names()));
+        }
+        excludeAssetRenditionResolverNames.addAll(Arrays.asList(properties.get(PN_EXCLUDE_ASSETRENDITIONRESOLVERS, new String[]{})));
+
+        final Set<String> excludeAssetRenditionNames = new HashSet<>();
+        if (cfg.exclude_assetrendition_names() != null) {
+            excludeAssetRenditionNames.addAll(Arrays.asList(cfg.exclude_assetrendition_names()));
+        }
+        excludeAssetRenditionNames.addAll(Arrays.asList(properties.get(PN_EXCLUDE_ASSETRENDITIONS, new String[]{})));
 
         for (final AssetRenditionResolver assetRenditionResolver : assetRenditionsHelper.getAssetRenditionResolvers()) {
-            assetRenditionResolver.getOptions().entrySet().stream().forEach(entry -> {
-                    String title = entry.getKey();
-                    if (cfg.add_assetrenditionresolver_to_label()) {
-                       title += " (" + assetRenditionResolver.getName() + ")";
-                    }
-                    data.put(title, entry.getValue());
-            });
+            if (excludeAssetRenditionResolverNames.contains(assetRenditionResolver.getName())) {
+                log.debug("Skip adding AssetRenditionResolver [ {} ] to Data Source as it has been excluded via configuration", assetRenditionResolver.getName());
+                continue;
+            }
+
+            assetRenditionResolver.getOptions().entrySet().stream()
+                    .filter(entry -> !excludeAssetRenditionNames.contains(entry.getValue()))
+                    .forEach(entry -> {
+                        String label = entry.getKey();
+                        String value = entry.getValue();
+
+                        if (cfg.add_assetrenditionresolver_to_label()) {
+                            label += " (" + assetRenditionResolver.getName() + ")";
+                        }
+
+                        data.put(label, value);
+                    });
         }
 
         dataSourceBuilder.build(request, data);
@@ -85,8 +111,20 @@ public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
     public @interface Cfg {
 
         @AttributeDefinition(
+                name = "Exclude AssetRenditionResolvers (by name)",
+                description = "Exclude the listed AssetRenditionResolver's from populating this data source."
+        )
+        String[] exclude_assetrenditionresolver_names() default {};
+
+        @AttributeDefinition(
+                name = "Exclude Asset Renditions (by name)",
+                description = "Exclude the listed Rendition Names's from populating this data source. (This is agnostic to which AssetRenditionResolver defined them)."
+        )
+        String[] exclude_assetrendition_names() default {"card", "list"};
+
+        @AttributeDefinition(
                 name = "Display AssetRenditionResolver names in labels",
-                description = "Select to include the AssetRenditionResolver's name in the DataSource's labels."
+                description = "Select to include the AssetRenditionResolver's name in the DataSource's labels. Adds in format: AssetRendition name (AssetRenditionResolver label)"
         )
         boolean add_assetrenditionresolver_to_label() default false;
     }

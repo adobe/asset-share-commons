@@ -19,38 +19,26 @@
 
 package com.adobe.aem.commons.assetshare.content.renditions.impl.resolvers;
 
-import com.adobe.aem.commons.assetshare.content.AssetResolver;
 import com.adobe.aem.commons.assetshare.content.impl.AssetModelImpl;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperties;
 import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedPropertiesImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionResolver;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionsHelper;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsHelperImpl;
-import com.adobe.aem.commons.assetshare.util.impl.ExtensionOverrideRequestWrapper;
-import com.day.cq.dam.commons.util.DamUtil;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.commons.io.IOUtils;
-import org.apache.sling.api.request.RequestDispatcherOptions;
-import org.apache.sling.api.resource.Resource;
-import org.apache.sling.testing.mock.sling.servlet.MockRequestDispatcherFactory;
-import org.apache.sling.testing.mock.sling.servlet.MockSlingHttpServletResponse;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-
 import java.io.IOException;
 import java.util.Map;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StaticRenditionResolverImplTest {
@@ -78,11 +66,24 @@ public class StaticRenditionResolverImplTest {
     }
 
     @Test
-    public void getName() {
+    public void getLabel() {
         final String expected = "Test Asset Rendition Resolver";
 
         ctx.registerInjectActivateService(new StaticRenditionResolverImpl(),
-                "name", "Test Asset Rendition Resolver");
+                "label", "Test Asset Rendition Resolver");
+
+        final AssetRenditionResolver assetRenditionResolver = ctx.getService(AssetRenditionResolver.class);
+        final String actual = assetRenditionResolver.getLabel();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void getName() {
+        final String expected = "test";
+
+        ctx.registerInjectActivateService(new StaticRenditionResolverImpl(),
+                "name", "test");
 
         final AssetRenditionResolver assetRenditionResolver = ctx.getService(AssetRenditionResolver.class);
         final String actual = assetRenditionResolver.getName();
@@ -141,7 +142,7 @@ public class StaticRenditionResolverImplTest {
 
     @Test
     public void dispatch() throws IOException, ServletException {
-        final String expectedOutputStream = IOUtils.toString(this.getClass().getResourceAsStream("/com/adobe/aem/commons/assetshare/content/renditions/impl/resolvers/StaticRenditionResolverImplTest__cq5dam.web.1280.1280.png"));
+        final byte[] expectedOutputStream = IOUtils.toByteArray(this.getClass().getResourceAsStream("/com/adobe/aem/commons/assetshare/content/renditions/impl/resolvers/StaticRenditionResolverImplTest__cq5dam.web.1280.1280.png"));
 
         ctx.registerInjectActivateService(new StaticRenditionResolverImpl(),
                 ImmutableMap.<String, Object>builder().
@@ -161,6 +162,6 @@ public class StaticRenditionResolverImplTest {
         assertEquals("image/png", ctx.response().getHeader("Content-Type"));
         assertEquals("70", ctx.response().getHeader("Content-Length"));
 
-        assertEquals(expectedOutputStream, ctx.response().getOutputAsString());
+        assertArrayEquals(expectedOutputStream, ctx.response().getOutput());
     }
 }

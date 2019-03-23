@@ -35,7 +35,12 @@ import java.util.Map;
 public interface AssetRenditionResolver {
 
     /**
-     * @return the friendly name of this Rendition Resolver.
+     * @return the friendly name of this Rendition Resolver displayed to Authors.
+     */
+    String getLabel();
+
+    /**
+     * @return the system name of this Rendition Resolver. This should be unique across all AssetRenditionResolvers instances.
      */
     String getName();
 

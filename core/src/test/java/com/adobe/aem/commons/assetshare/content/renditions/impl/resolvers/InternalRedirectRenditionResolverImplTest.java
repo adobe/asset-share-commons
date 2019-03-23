@@ -86,11 +86,24 @@ public class InternalRedirectRenditionResolverImplTest {
     }
 
     @Test
-    public void getName() {
+    public void getLabel() {
         final String expected = "Test Asset Rendition Resolver";
 
         ctx.registerInjectActivateService(new InternalRedirectRenditionResolverImpl(),
-                "name", "Test Asset Rendition Resolver");
+                "label", "Test Asset Rendition Resolver");
+
+        final AssetRenditionResolver assetRenditionResolver = ctx.getService(AssetRenditionResolver.class);
+        final String actual = assetRenditionResolver.getLabel();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void getName() {
+        final String expected = "test";
+
+        ctx.registerInjectActivateService(new InternalRedirectRenditionResolverImpl(),
+                "name", "test");
 
         final AssetRenditionResolver assetRenditionResolver = ctx.getService(AssetRenditionResolver.class);
         final String actual = assetRenditionResolver.getName();

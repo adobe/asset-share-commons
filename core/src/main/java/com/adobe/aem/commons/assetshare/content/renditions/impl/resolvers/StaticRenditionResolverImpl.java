@@ -48,10 +48,14 @@ import static org.osgi.framework.Constants.SERVICE_RANKING;
 
 @Component(
         property = {
-                SERVICE_RANKING + "=" + -10000
+                SERVICE_RANKING + ":Integer=" + -10000,
+                "webconsole.configurationFactory.nameHint={name} [ {label} ]"
         }
 )
-@Designate(ocd = StaticRenditionResolverImpl.Cfg.class)
+@Designate(
+        ocd = StaticRenditionResolverImpl.Cfg.class,
+        factory = true
+)
 public class StaticRenditionResolverImpl implements AssetRenditionResolver {
     private static final String OSGI_PROPERTY_VALUE_DELIMITER = "=";
 
@@ -63,6 +67,11 @@ public class StaticRenditionResolverImpl implements AssetRenditionResolver {
 
     @Reference
     private AssetRenditionsHelper assetRenditionsHelper;
+
+    @Override
+    public String getLabel() {
+        return cfg.label();
+    }
 
     @Override
     public String getName() {
@@ -120,9 +129,15 @@ public class StaticRenditionResolverImpl implements AssetRenditionResolver {
     public @interface Cfg {
         @AttributeDefinition(
                 name = "Name",
-                description = "The human-friendly name of this Rendition Resolver."
+                description = "The system name of this Rendition Resolver. This should be unique across all AssetRenditionResolver instances."
         )
-        String name() default "Static Renditions";
+        String name() default "static";
+
+        @AttributeDefinition(
+                name = "Label",
+                description = "The human-friendly name of this AssetRenditionResolver and may be displayed to authors."
+        )
+        String label() default "Static Renditions";
 
         @AttributeDefinition(
                 name = "Static rendition mappings",

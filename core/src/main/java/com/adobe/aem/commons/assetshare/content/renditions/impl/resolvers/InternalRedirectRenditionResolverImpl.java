@@ -46,10 +46,14 @@ import static org.osgi.framework.Constants.SERVICE_RANKING;
 
 @Component(
         property = {
-                SERVICE_RANKING + "=" + -10000
+                SERVICE_RANKING + ":Integer=" + -10000,
+                "webconsole.configurationFactory.nameHint={name} [ {label} ]"
         }
 )
-@Designate(ocd = InternalRedirectRenditionResolverImpl.Cfg.class)
+@Designate(
+        ocd = InternalRedirectRenditionResolverImpl.Cfg.class,
+        factory = true
+)
 public class InternalRedirectRenditionResolverImpl implements AssetRenditionResolver {
     private static Logger log = LoggerFactory.getLogger(InternalRedirectRenditionResolverImpl.class);
 
@@ -61,6 +65,11 @@ public class InternalRedirectRenditionResolverImpl implements AssetRenditionReso
 
     @Reference
     private AssetRenditionsHelper assetRenditionsHelper;
+
+    @Override
+    public String getLabel() {
+        return cfg.label();
+    }
 
     @Override
     public String getName() {
@@ -122,9 +131,15 @@ public class InternalRedirectRenditionResolverImpl implements AssetRenditionReso
     public @interface Cfg {
         @AttributeDefinition(
                 name = "Name",
-                description = "The human-friendly name of this Rendition Resolver."
+                description = "The system name of this Rendition Resolver. This should be unique across all AssetRenditionResolver instances."
         )
-        String name() default "Internal Redirect Renditions";
+        String name() default "internal-redirect";
+
+        @AttributeDefinition(
+                name = "Label",
+                description = "The human-friendly name of this AssetRenditionResolver and may be displayed to authors."
+        )
+        String label() default "Internal Redirect Renditions";
 
         @AttributeDefinition(
                 name = "Rendition mappings",
