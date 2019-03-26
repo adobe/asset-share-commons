@@ -238,6 +238,13 @@
                 <version>1.2</version>
                 <scope>provided</scope>
             </dependency>
+            <!-- ACS AEM Commons to provide inline dependencies -->
+            <dependency>
+                <groupId>com.adobe.acs</groupId>
+                <artifactId>acs-aem-commons-bundle</artifactId>
+                <version>4.0.0</version>
+                <scope>compile</scope>
+            </dependency>
             <dependency>
                 <groupId>org.apache.sling</groupId>
                 <artifactId>org.apache.sling.testing.sling-mock</artifactId>
