@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - 0390: Fixed issue where initial values from query parameters were not respected in Search / Sort component's HTL.
+- #0388: Corrected spelling of Boolean in dialog value and set to correct value (true from false)
 
 ## [v1.7.0]
 
