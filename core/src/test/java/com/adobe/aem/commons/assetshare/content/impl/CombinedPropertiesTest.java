@@ -121,7 +121,7 @@ public class CombinedPropertiesTest {
 
     @Test
     public void get_WithoutRequestAndWithParameters() {
-        final String expected = "The asset [ /content/dam/test.png ] and [ 3 ] parameters are provided";
+        final String expected = "The asset [ /content/dam/test.png ] and [ 0 ] parameters are provided";
         final String actual = (String) combinedProperties.get("test/no-request" + "?a=b&c=d&testParameter=Hello World!");
 
         assertEquals(expected, actual);

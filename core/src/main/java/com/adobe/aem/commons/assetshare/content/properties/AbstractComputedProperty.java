@@ -74,19 +74,19 @@ public abstract class AbstractComputedProperty<T> implements ComputedProperty<T>
         return accepts(asset, propertyName);
     }
 
-    public T get(Asset asset) {
-        throw new IllegalArgumentException("This computed property requires a SlingHttpServletRequest object to transform the data");
+    public T get(Asset asset, SlingHttpServletRequest request, ValueMap parameters) {
+        return get(asset, request);
+    }
+
+    public T get(Asset asset, SlingHttpServletRequest request) {
+        return get(asset, ValueMap.EMPTY);
     }
 
     public T get(Asset asset, ValueMap parameters) {
         return get(asset);
     }
 
-    public T get(Asset asset, SlingHttpServletRequest request, ValueMap parameters) {
-        return get(asset, parameters);
-    }
-
-    public T get(Asset asset, SlingHttpServletRequest request) {
-        return get(asset, request, ValueMap.EMPTY);
+    public T get(Asset asset) {
+        throw new IllegalArgumentException("This computed property requires a SlingHttpServletRequest object to transform the data");
     }
 }
