@@ -24,24 +24,23 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class AssetRenditionTest {
-
+public class AssetRenditionsTest {
 
     /**
-     *  AssetRendition.UrlParams
+     *  AssetRenditions.UrlParams
      */
 
     @Test
     public void getRenditionName() {
         String expected = "test";
-        AssetRendition.UrlParams params = new AssetRendition.UrlParams(expected, false);
+        AssetRenditions.UrlParams params = new AssetRenditions.UrlParams(expected, false);
         assertEquals(expected, params.getRenditionName());
     }
 
     @Test
     public void setRenditionName() {
         String expected = "test";
-        AssetRendition.UrlParams params = new  AssetRendition.UrlParams();
+        AssetRenditions.UrlParams params = new AssetRenditions.UrlParams();
         params.setRenditionName(expected);
         assertEquals(expected, params.getRenditionName());
     }
@@ -49,15 +48,23 @@ public class AssetRenditionTest {
     @Test
     public void isDownload() {
         boolean expected = true;
-        AssetRendition.UrlParams params = new  AssetRendition.UrlParams("test", expected);
+        AssetRenditions.UrlParams params = new AssetRenditions.UrlParams("test", expected);
         assertTrue(params.isDownload());
     }
 
     @Test
     public void setDownload() {
         boolean expected = true;
-        AssetRendition.UrlParams params = new  AssetRendition.UrlParams();
+        AssetRenditions.UrlParams params = new AssetRenditions.UrlParams();
         params.setDownload(expected);
         assertTrue(expected);
+    }
+
+    @Test
+    public void setAndGet() {
+        String expected = "testing";
+        AssetRenditions.UrlParams params = new AssetRenditions.UrlParams();
+        params.put("test", expected);
+        assertEquals(expected, params.get("test", String.class));
     }
 }

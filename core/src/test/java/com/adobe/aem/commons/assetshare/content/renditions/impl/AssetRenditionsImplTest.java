@@ -24,9 +24,8 @@ import com.adobe.aem.commons.assetshare.content.AssetResolver;
 import com.adobe.aem.commons.assetshare.content.impl.AssetModelImpl;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperties;
 import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedPropertiesImpl;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRendition;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionResolver;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionsHelper;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.resolvers.InternalRedirectRenditionResolverImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.resolvers.StaticRenditionResolverImpl;
 import com.day.cq.dam.commons.util.DamUtil;
@@ -48,7 +47,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AssetRenditionsHelperImplTest {
+public class AssetRenditionsImplTest {
 
     @Rule
     public AemContext ctx = new AemContext();
@@ -65,7 +64,7 @@ public class AssetRenditionsHelperImplTest {
         ctx.registerService(ComputedProperties.class, new ComputedPropertiesImpl());
         ctx.addModelsForClasses(AssetModelImpl.class);
 
-        ctx.registerService(AssetRenditionsHelper.class, new AssetRenditionsHelperImpl());
+        ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
     }
 
     @Test
@@ -78,8 +77,8 @@ public class AssetRenditionsHelperImplTest {
         ctx.registerInjectActivateService(one, Constants.SERVICE_RANKING, 100);
         ctx.registerInjectActivateService(three, Constants.SERVICE_RANKING, 80);
 
-        final AssetRenditionsHelper assetRenditionsHelper = ctx.getService(AssetRenditionsHelper.class);
-        final List<AssetRenditionResolver> actual = assetRenditionsHelper.getAssetRenditionResolvers();
+        final AssetRenditions assetRenditions = ctx.getService(AssetRenditions.class);
+        final List<AssetRenditionResolver> actual = assetRenditions.getAssetRenditionResolvers();
 
         assertEquals(3, actual.size());
         assertSame(one, actual.get(0));
@@ -90,25 +89,25 @@ public class AssetRenditionsHelperImplTest {
     @Test
     public void getRenditionName() {
         final String expected = "test-rendition";
-        final AssetRenditionsHelper assetRenditionsHelper = ctx.getService(AssetRenditionsHelper.class);
+        final AssetRenditions assetRenditions = ctx.getService(AssetRenditions.class);
 
         ctx.requestPathInfo().setResourcePath("/content/dam/test.png");
         ctx.requestPathInfo().setExtension("renditions");
         ctx.requestPathInfo().setSuffix("/test-rendition/asset.rendition");
 
-        String actual = assetRenditionsHelper.getRenditionName(ctx.request());
+        String actual = assetRenditions.getRenditionName(ctx.request());
         assertEquals(expected, actual);
     }
 
     @Test
     public void getUrl() {
         final String expected = "/content/dam/test.png.renditions/test-rendition/asset.rendition";
-        final AssetRenditionsHelper assetRenditionsHelper = ctx.getService(AssetRenditionsHelper.class);
+        final AssetRenditions assetRenditions = ctx.getService(AssetRenditions.class);
 
-        final AssetRendition.UrlParams urlParams = new AssetRendition.UrlParams("test-rendition", false);
+        final AssetRenditions.UrlParams urlParams = new AssetRenditions.UrlParams("test-rendition", false);
         final AssetModel assetModel = ctx.request().adaptTo(AssetModel.class);
 
-        String actual = assetRenditionsHelper.getUrl(ctx.request(), assetModel, urlParams);
+        String actual = assetRenditions.getUrl(ctx.request(), assetModel, urlParams);
 
         assertEquals(expected, actual);
     }
@@ -116,12 +115,12 @@ public class AssetRenditionsHelperImplTest {
     @Test
     public void getUrl_AsDownload() {
         final String expected = "/content/dam/test.png.renditions/test-rendition/download/asset.rendition";
-        final AssetRenditionsHelper assetRenditionsHelper = ctx.getService(AssetRenditionsHelper.class);
+        final AssetRenditions assetRenditions = ctx.getService(AssetRenditions.class);
 
-        final AssetRendition.UrlParams urlParams = new AssetRendition.UrlParams("test-rendition", true);
+        final AssetRenditions.UrlParams urlParams = new AssetRenditions.UrlParams("test-rendition", true);
         final AssetModel assetModel = ctx.request().adaptTo(AssetModel.class);
 
-        String actual = assetRenditionsHelper.getUrl(ctx.request(), assetModel, urlParams);
+        String actual = assetRenditions.getUrl(ctx.request(), assetModel, urlParams);
 
         assertEquals(expected, actual);
     }
@@ -138,9 +137,9 @@ public class AssetRenditionsHelperImplTest {
         expected.put("Foo bar", "foo_bar");
         expected.put("Foo-bar", "foo-bar");
 
-        final AssetRenditionsHelper assetRenditionsHelper = ctx.getService(AssetRenditionsHelper.class);
+        final AssetRenditions assetRenditions = ctx.getService(AssetRenditions.class);
 
-        final Map<String, String> actual = assetRenditionsHelper.getOptions(params);
+        final Map<String, String> actual = assetRenditions.getOptions(params);
         assertEquals(expected, actual);
     }
 
@@ -149,13 +148,13 @@ public class AssetRenditionsHelperImplTest {
         final String expression = "${asset.path}.test-selector.${asset.extension}?filename=${asset.name}&rendition=${rendition.name}";
         final String expected = "/content/dam/test.png.test-selector.png?filename=test.png&rendition=test-rendition";
 
-        final AssetRenditionsHelper assetRenditionsHelper = ctx.getService(AssetRenditionsHelper.class);
+        final AssetRenditions assetRenditions = ctx.getService(AssetRenditions.class);
 
         ctx.requestPathInfo().setResourcePath("/content/dam/test.png");
         ctx.requestPathInfo().setExtension("renditions");
         ctx.requestPathInfo().setSuffix("/test-rendition/asset.rendition");
 
-        String actual = assetRenditionsHelper.evaluateExpression(ctx.request(), expression);
+        String actual = assetRenditions.evaluateExpression(ctx.request(), expression);
         assertEquals(expected, actual);
 
     }

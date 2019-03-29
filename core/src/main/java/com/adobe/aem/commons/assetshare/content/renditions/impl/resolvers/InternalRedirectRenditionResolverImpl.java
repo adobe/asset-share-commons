@@ -20,7 +20,7 @@
 package com.adobe.aem.commons.assetshare.content.renditions.impl.resolvers;
 
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionResolver;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionsHelper;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.util.impl.ExtensionOverrideRequestWrapper;
 import com.day.cq.commons.PathInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -64,7 +64,7 @@ public class InternalRedirectRenditionResolverImpl implements AssetRenditionReso
     private ConcurrentHashMap<String, String> mappings;
 
     @Reference
-    private AssetRenditionsHelper assetRenditionsHelper;
+    private AssetRenditions assetRenditions;
 
     @Override
     public String getLabel() {
@@ -78,7 +78,7 @@ public class InternalRedirectRenditionResolverImpl implements AssetRenditionReso
 
     @Override
     public Map<String, String> getOptions() {
-        return assetRenditionsHelper.getOptions(mappings);
+        return assetRenditions.getOptions(mappings);
     }
 
     @Override
@@ -88,12 +88,12 @@ public class InternalRedirectRenditionResolverImpl implements AssetRenditionReso
 
     @Override
     public void dispatch(SlingHttpServletRequest request, SlingHttpServletResponse response) throws IOException, ServletException {
-        final String renditionName = assetRenditionsHelper.getRenditionName(request);
+        final String renditionName = assetRenditions.getRenditionName(request);
 
         final String expression = mappings.get(renditionName);
 
         if (StringUtils.isNotBlank(expression)) {
-            final String evaluatedExpression = assetRenditionsHelper.evaluateExpression(request, expression);
+            final String evaluatedExpression = assetRenditions.evaluateExpression(request, expression);
             final PathInfo pathInfo = new PathInfo(request.getResourceResolver(), evaluatedExpression);
 
             log.debug("Serving internal redirect rendition [ {} ] for resolved rendition name [ {} ]",

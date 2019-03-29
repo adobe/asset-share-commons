@@ -20,7 +20,7 @@
 package com.adobe.aem.commons.assetshare.content.renditions.impl;
 
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionResolver;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionsHelper;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.commons.util.DamUtil;
 import org.apache.commons.lang3.ArrayUtils;
@@ -66,13 +66,13 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
     public static final String CACHEABLE_SUFFIX_FILENAME = "asset.rendition";
 
     @Reference
-    private AssetRenditionsHelper assetRenditionsHelper;
+    private AssetRenditions assetRenditions;
 
     public final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) throws IOException, ServletException {
         final AssetRenditionResolver.Params params = new ParamsImpl(request);
 
         if (params.isValid()) {
-            for (final AssetRenditionResolver assetRenditionResolver : assetRenditionsHelper.getAssetRenditionResolvers()) {
+            for (final AssetRenditionResolver assetRenditionResolver : assetRenditions.getAssetRenditionResolvers()) {
                 if (assetRenditionResolver.accepts(request, params.getRenditionName())) {
 
                     setResponseHeaders(response, params);

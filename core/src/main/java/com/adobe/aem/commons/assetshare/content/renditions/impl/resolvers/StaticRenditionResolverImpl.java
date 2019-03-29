@@ -20,7 +20,7 @@
 package com.adobe.aem.commons.assetshare.content.renditions.impl.resolvers;
 
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionResolver;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionsHelper;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.api.RenditionPicker;
@@ -66,7 +66,7 @@ public class StaticRenditionResolverImpl implements AssetRenditionResolver {
     private ConcurrentHashMap<String, Pattern> mappings;
 
     @Reference
-    private AssetRenditionsHelper assetRenditionsHelper;
+    private AssetRenditions assetRenditions;
 
     @Override
     public String getLabel() {
@@ -80,7 +80,7 @@ public class StaticRenditionResolverImpl implements AssetRenditionResolver {
 
     @Override
     public Map<String, String> getOptions() {
-        return assetRenditionsHelper.getOptions(mappings);
+        return assetRenditions.getOptions(mappings);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class StaticRenditionResolverImpl implements AssetRenditionResolver {
     @Override
     public void dispatch(SlingHttpServletRequest request, SlingHttpServletResponse response) throws IOException {
         final Asset asset = DamUtil.resolveToAsset(request.getResource());
-        final String renditionName = assetRenditionsHelper.getRenditionName(request);
+        final String renditionName = assetRenditions.getRenditionName(request);
 
         Rendition rendition = asset.getRendition(new PatternRenditionPicker(mappings.get(renditionName)));
 

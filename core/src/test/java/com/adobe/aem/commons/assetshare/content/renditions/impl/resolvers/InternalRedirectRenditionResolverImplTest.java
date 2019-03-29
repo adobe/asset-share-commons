@@ -24,8 +24,8 @@ import com.adobe.aem.commons.assetshare.content.impl.AssetModelImpl;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperties;
 import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedPropertiesImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionResolver;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionsHelper;
-import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsHelperImpl;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
 import com.adobe.aem.commons.assetshare.util.impl.ExtensionOverrideRequestWrapper;
 import com.day.cq.dam.commons.util.DamUtil;
 import com.google.common.collect.ImmutableMap;
@@ -63,7 +63,7 @@ public class InternalRedirectRenditionResolverImplTest {
         ctx.load().json("/com/adobe/aem/commons/assetshare/content/renditions/impl/resolvers/InternalRedirectRenditionResolverImplTest.json", "/content/dam");
         ctx.currentResource("/content/dam/test.png");
 
-        ctx.registerService(AssetRenditionsHelper.class, new AssetRenditionsHelperImpl());
+        ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
 
         final AssetResolver assetResolver = mock(AssetResolver.class);
         doReturn(DamUtil.resolveToAsset(ctx.resourceResolver().getResource("/content/dam/test.png"))).when(assetResolver).resolveAsset(ctx.request());

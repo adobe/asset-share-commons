@@ -23,8 +23,8 @@ import com.adobe.aem.commons.assetshare.content.impl.AssetModelImpl;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperties;
 import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedPropertiesImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionResolver;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionsHelper;
-import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsHelperImpl;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.commons.io.IOUtils;
@@ -60,7 +60,7 @@ public class StaticRenditionResolverImplTest {
 
         ctx.currentResource("/content/dam/test.png");
 
-        ctx.registerService(AssetRenditionsHelper.class, new AssetRenditionsHelperImpl());
+        ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
         ctx.registerService(ComputedProperties.class, new ComputedPropertiesImpl());
         ctx.addModelsForClasses(AssetModelImpl.class);
     }

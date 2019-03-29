@@ -20,9 +20,8 @@
 package com.adobe.aem.commons.assetshare.content.renditions.impl;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRendition;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionResolver;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionsHelper;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.commons.osgi.Order;
@@ -49,8 +48,8 @@ import java.util.Map;
                 )
         }
 )
-public class AssetRenditionsHelperImpl implements AssetRenditionsHelper {
-    private static final Logger log = LoggerFactory.getLogger(AssetRenditionsHelperImpl.class);
+public class AssetRenditionsImpl implements AssetRenditions {
+    private static final Logger log = LoggerFactory.getLogger(AssetRenditionsImpl.class);
 
     @Reference
     private ModelFactory modelFactory;
@@ -85,7 +84,7 @@ public class AssetRenditionsHelperImpl implements AssetRenditionsHelper {
     }
 
     @Override
-    public String getUrl(final SlingHttpServletRequest request, final AssetModel asset, final AssetRendition.UrlParams params) {
+    public String getUrl(final SlingHttpServletRequest request, final AssetModel asset, final UrlParams params) {
         String url = request.getResourceResolver().map(asset.getPath()) + "." + AssetRenditionServlet.SERVLET_EXTENSION + "/" + params.getRenditionName() + "/";
 
         if (params.isDownload()) {

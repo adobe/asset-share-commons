@@ -20,7 +20,7 @@
 package com.adobe.aem.commons.assetshare.content.impl.datasources;
 
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionResolver;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionsHelper;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.util.DataSourceBuilder;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -58,7 +58,7 @@ public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
     private DataSourceBuilder dataSourceBuilder;
 
     @Reference
-    private AssetRenditionsHelper assetRenditionsHelper;
+    private AssetRenditions assetRenditions;
 
     private Cfg cfg;
 
@@ -79,7 +79,7 @@ public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
         }
         excludeAssetRenditionNames.addAll(Arrays.asList(properties.get(PN_EXCLUDE_ASSETRENDITIONS, new String[]{})));
 
-        for (final AssetRenditionResolver assetRenditionResolver : assetRenditionsHelper.getAssetRenditionResolvers()) {
+        for (final AssetRenditionResolver assetRenditionResolver : assetRenditions.getAssetRenditionResolvers()) {
             if (excludeAssetRenditionResolverNames.contains(assetRenditionResolver.getName())) {
                 log.debug("Skip adding AssetRenditionResolver [ {} ] to Data Source as it has been excluded via configuration", assetRenditionResolver.getName());
                 continue;
@@ -124,7 +124,7 @@ public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
 
         @AttributeDefinition(
                 name = "Display AssetRenditionResolver names in labels",
-                description = "Select to include the AssetRenditionResolver's name in the DataSource's labels. Adds in format: AssetRendition name (AssetRenditionResolver label)"
+                description = "Select to include the AssetRenditionResolver's name in the DataSource's labels. Adds in formatAssetRendition name (AssetRenditionResolver label)"
         )
         boolean add_assetrenditionresolver_to_label() default false;
     }

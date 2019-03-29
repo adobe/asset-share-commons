@@ -20,7 +20,7 @@
 package com.adobe.aem.commons.assetshare.content.renditions.impl;
 
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionResolver;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionsHelper;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.junit.Before;
@@ -56,7 +56,7 @@ public class AssetRenditionServletTest {
         ctx.load().json("/com/adobe/aem/commons/assetshare/content/renditions/impl/AssetRenditionServletTest.json", "/content/dam");
         ctx.currentResource("/content/dam/test.png");
 
-        ctx.registerService(AssetRenditionsHelper.class, new AssetRenditionsHelperImpl());
+        ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
     }
 
     @Test
