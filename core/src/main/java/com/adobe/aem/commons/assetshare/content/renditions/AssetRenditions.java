@@ -40,12 +40,12 @@ public interface AssetRenditions {
     String VAR_RENDITION_NAME = "${rendition.name}";
 
     /**
-     * @return a list of all registered AssetRenditionResolvers in the system ordered in Descending order by service.ranking.
+     * @return a list of all registered AssetRenditionDispatchers in the system ordered in Descending order by service.ranking.
      */
-    List<AssetRenditionResolver> getAssetRenditionResolvers();
+    List<AssetRenditionDispatcher> getAssetRenditionDispatchers();
 
     /**
-     * Derives the renditionName from the request which is typically used to resolve the AssetRenditionResolver and the mapping there-in.
+     * Derives the renditionName from the request which is typically used to resolve the AssetRenditionDispatcher and the mapping there-in.
      * <p>
      * This typically pulls the first segment of the suffix, however this logic may change overtime if the scheme changes.
      *
@@ -69,7 +69,7 @@ public interface AssetRenditions {
     /**
      * Creates a Map that is used to provide the label/values to drive the AssetRenditionsDatasource dropdown.
      * <p>
-     * This is a convenience method, however each AssetRenditionResolver implementation can implement their own getOptions() rather than wrapping a call to this method.
+     * This is a convenience method, however each AssetRenditionDispatcher implementation can implement their own getOptions() rather than wrapping a call to this method.
      *
      * @param mappings the raw mappings from the
      *

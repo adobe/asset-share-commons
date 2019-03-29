@@ -28,11 +28,11 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * This interface defines an OSGi Service (with expected multiple implementations) that resolves some rendition of an
- * Asset (could be a static rendition, or ACS Commons Named Image Transform, Dynamic Media, etc.)
+ * An OSGi Service (with multiple implementations) that dispatches requests to the AssetRenditionsServlet to some representation of the resolved asset rendition.
+ * This could be a static rendition (resource in AEM), or ACS Commons Named Image Transform, Dynamic Media, etc. via internal forward/redirects or external redirects (301/302).
  */
 @ConsumerType
-public interface AssetRenditionResolver {
+public interface AssetRenditionDispatcher {
 
     /**
      * @return the friendly name of this Rendition Resolver displayed to Authors.
@@ -75,7 +75,7 @@ public interface AssetRenditionResolver {
     void dispatch(SlingHttpServletRequest request, SlingHttpServletResponse response) throws IOException, ServletException;
 
     /**
-     * Represents the parameters used by the RenditionResolver ot resolve the appropriate rendition.
+     * Represents the parameters used by the RenditionResolver to resolve the appropriate rendition.
      */
     interface Params {
         /**

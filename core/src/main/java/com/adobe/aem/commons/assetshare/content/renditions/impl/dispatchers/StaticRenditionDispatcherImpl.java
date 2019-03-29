@@ -17,9 +17,9 @@
  *
  */
 
-package com.adobe.aem.commons.assetshare.content.renditions.impl.resolvers;
+package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionResolver;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
@@ -48,18 +48,18 @@ import static org.osgi.framework.Constants.SERVICE_RANKING;
 
 @Component(
         property = {
-                SERVICE_RANKING + ":Integer=" + -10000,
+                SERVICE_RANKING + ":Integer=" + -100000,
                 "webconsole.configurationFactory.nameHint={name} [ {label} ]"
         }
 )
 @Designate(
-        ocd = StaticRenditionResolverImpl.Cfg.class,
+        ocd = StaticRenditionDispatcherImpl.Cfg.class,
         factory = true
 )
-public class StaticRenditionResolverImpl implements AssetRenditionResolver {
+public class StaticRenditionDispatcherImpl implements AssetRenditionDispatcher {
     private static final String OSGI_PROPERTY_VALUE_DELIMITER = "=";
 
-    private static Logger log = LoggerFactory.getLogger(StaticRenditionResolverImpl.class);
+    private static Logger log = LoggerFactory.getLogger(StaticRenditionDispatcherImpl.class);
 
     private Cfg cfg;
 
@@ -97,7 +97,7 @@ public class StaticRenditionResolverImpl implements AssetRenditionResolver {
 
         if (rendition != null) {
 
-            log.debug("Serving rendition [ {} ] for resolved rendition name [ {} ]", rendition.getPath(), renditionName);
+            log.debug("Streaming rendition [ {} ] for resolved rendition name [ {} ]", rendition.getPath(), renditionName);
 
             response.setHeader("Content-Type", rendition.getMimeType());
             response.setHeader("Content-Length", String.valueOf(rendition.getSize()));
@@ -125,17 +125,17 @@ public class StaticRenditionResolverImpl implements AssetRenditionResolver {
         }
     }
 
-    @ObjectClassDefinition(name = "Asset Share Commons - Rendition Resolver - Static Renditions")
+    @ObjectClassDefinition(name = "Asset Share Commons - Rendition Dispatcher - Static Renditions")
     public @interface Cfg {
         @AttributeDefinition(
                 name = "Name",
-                description = "The system name of this Rendition Resolver. This should be unique across all AssetRenditionResolver instances."
+                description = "The system name of this Rendition Dispatcher. This should be unique across all AssetRenditionDispatcher instances."
         )
         String name() default "static";
 
         @AttributeDefinition(
                 name = "Label",
-                description = "The human-friendly name of this AssetRenditionResolver and may be displayed to authors."
+                description = "The human-friendly name of this AssetRenditionDispatcher and may be displayed to authors."
         )
         String label() default "Static Renditions";
 

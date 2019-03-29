@@ -19,7 +19,7 @@
 
 package com.adobe.aem.commons.assetshare.content.renditions.impl;
 
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionResolver;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.commons.util.DamUtil;
@@ -69,15 +69,15 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
     private AssetRenditions assetRenditions;
 
     public final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) throws IOException, ServletException {
-        final AssetRenditionResolver.Params params = new ParamsImpl(request);
+        final AssetRenditionDispatcher.Params params = new ParamsImpl(request);
 
         if (params.isValid()) {
-            for (final AssetRenditionResolver assetRenditionResolver : assetRenditions.getAssetRenditionResolvers()) {
-                if (assetRenditionResolver.accepts(request, params.getRenditionName())) {
+            for (final AssetRenditionDispatcher assetRenditionDispatcher : assetRenditions.getAssetRenditionDispatchers()) {
+                if (assetRenditionDispatcher.accepts(request, params.getRenditionName())) {
 
                     setResponseHeaders(response, params);
 
-                    assetRenditionResolver.dispatch(request, response);
+                    assetRenditionDispatcher.dispatch(request, response);
                     return;
                 }
             }
@@ -86,10 +86,10 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
         }
 
         response.sendError(HttpServletResponse.SC_NOT_FOUND,
-                "Unable to locate a RenditionResolver to dispatch a rendition for [" + params.getRenditionName() + "].");
+                "Unable to locate a AssetRenditionDispatcher to dispatch a rendition for [" + params.getRenditionName() + "].");
     }
 
-    protected void setResponseHeaders(final SlingHttpServletResponse response, final AssetRenditionResolver.Params params) {
+    protected void setResponseHeaders(final SlingHttpServletResponse response, final AssetRenditionDispatcher.Params params) {
         if (params.isAttachment()) {
             response.setHeader("Content-Disposition", String.format("attachment; filename=%s", params.getFileName()));
         } else {
@@ -100,7 +100,7 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
     /**
      * Represents the parameters provided in the RequestPathInfo's suffix to determine how the rendition is selected and returned.
      */
-    protected static class ParamsImpl implements AssetRenditionResolver.Params {
+    protected static class ParamsImpl implements AssetRenditionDispatcher.Params {
         private String renditionName = null;
         private String fileName = null;
         private boolean attachment = false;

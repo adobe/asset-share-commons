@@ -24,10 +24,10 @@ import com.adobe.aem.commons.assetshare.content.AssetResolver;
 import com.adobe.aem.commons.assetshare.content.impl.AssetModelImpl;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperties;
 import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedPropertiesImpl;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionResolver;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
-import com.adobe.aem.commons.assetshare.content.renditions.impl.resolvers.InternalRedirectRenditionResolverImpl;
-import com.adobe.aem.commons.assetshare.content.renditions.impl.resolvers.StaticRenditionResolverImpl;
+import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.InternalRedirectRenditionDispatcherImpl;
+import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
 import com.day.cq.dam.commons.util.DamUtil;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.junit.Before;
@@ -69,16 +69,16 @@ public class AssetRenditionsImplTest {
 
     @Test
     public void getAssetRenditionResolvers() {
-        AssetRenditionResolver one = new StaticRenditionResolverImpl();
-        AssetRenditionResolver two = new InternalRedirectRenditionResolverImpl();
-        AssetRenditionResolver three = new InternalRedirectRenditionResolverImpl();
+        AssetRenditionDispatcher one = new StaticRenditionDispatcherImpl();
+        AssetRenditionDispatcher two = new InternalRedirectRenditionDispatcherImpl();
+        AssetRenditionDispatcher three = new InternalRedirectRenditionDispatcherImpl();
 
         ctx.registerInjectActivateService(two, Constants.SERVICE_RANKING, 90);
         ctx.registerInjectActivateService(one, Constants.SERVICE_RANKING, 100);
         ctx.registerInjectActivateService(three, Constants.SERVICE_RANKING, 80);
 
         final AssetRenditions assetRenditions = ctx.getService(AssetRenditions.class);
-        final List<AssetRenditionResolver> actual = assetRenditions.getAssetRenditionResolvers();
+        final List<AssetRenditionDispatcher> actual = assetRenditions.getAssetRenditionDispatchers();
 
         assertEquals(3, actual.size());
         assertSame(one, actual.get(0));

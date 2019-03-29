@@ -17,9 +17,9 @@
  *
  */
 
-package com.adobe.aem.commons.assetshare.content.renditions.impl.resolvers;
+package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionResolver;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.util.impl.ExtensionOverrideRequestWrapper;
 import com.day.cq.commons.PathInfo;
@@ -46,16 +46,16 @@ import static org.osgi.framework.Constants.SERVICE_RANKING;
 
 @Component(
         property = {
-                SERVICE_RANKING + ":Integer=" + -10000,
+                SERVICE_RANKING + ":Integer=" + -100000,
                 "webconsole.configurationFactory.nameHint={name} [ {label} ]"
         }
 )
 @Designate(
-        ocd = InternalRedirectRenditionResolverImpl.Cfg.class,
+        ocd = InternalRedirectRenditionDispatcherImpl.Cfg.class,
         factory = true
 )
-public class InternalRedirectRenditionResolverImpl implements AssetRenditionResolver {
-    private static Logger log = LoggerFactory.getLogger(InternalRedirectRenditionResolverImpl.class);
+public class InternalRedirectRenditionDispatcherImpl implements AssetRenditionDispatcher {
+    private static Logger log = LoggerFactory.getLogger(InternalRedirectRenditionDispatcherImpl.class);
 
     private static final String OSGI_PROPERTY_VALUE_DELIMITER = "=";
 
@@ -127,17 +127,17 @@ public class InternalRedirectRenditionResolverImpl implements AssetRenditionReso
         }
     }
 
-    @ObjectClassDefinition(name = "Asset Share Commons - Rendition Resolver - Internal Redirect Renditions")
+    @ObjectClassDefinition(name = "Asset Share Commons - Rendition Dispatcher - Internal Redirect Renditions")
     public @interface Cfg {
         @AttributeDefinition(
                 name = "Name",
-                description = "The system name of this Rendition Resolver. This should be unique across all AssetRenditionResolver instances."
+                description = "The system name of this Rendition Dispatcher. This should be unique across all AssetRenditionDispatcher instances."
         )
         String name() default "internal-redirect";
 
         @AttributeDefinition(
                 name = "Label",
-                description = "The human-friendly name of this AssetRenditionResolver and may be displayed to authors."
+                description = "The human-friendly name of this AssetRenditionDispatcher and may be displayed to authors."
         )
         String label() default "Internal Redirect Renditions";
 

@@ -19,7 +19,7 @@
 
 package com.adobe.aem.commons.assetshare.content.renditions.impl;
 
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionResolver;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
@@ -46,10 +46,10 @@ public class AssetRenditionServletTest {
     public final AemContext ctx = new AemContext();
 
     @Mock
-    private AssetRenditionResolver resolver1;
+    private AssetRenditionDispatcher resolver1;
 
     @Mock
-    private AssetRenditionResolver resolver2;
+    private AssetRenditionDispatcher resolver2;
 
     @Before
     public void setUp() throws Exception {
@@ -61,7 +61,7 @@ public class AssetRenditionServletTest {
 
     @Test
     public void doGet() throws IOException, ServletException {
-        ctx.registerService(AssetRenditionResolver.class,
+        ctx.registerService(AssetRenditionDispatcher.class,
                 resolver1,
                 ImmutableMap.<String, Object>builder().
                         put("rendition.mappings", new String[]{
@@ -75,7 +75,7 @@ public class AssetRenditionServletTest {
             }
         }).when(resolver1).accepts(eq(ctx.request()), any(String.class));
 
-        ctx.registerService(AssetRenditionResolver.class,
+        ctx.registerService(AssetRenditionDispatcher.class,
                 resolver2,
                 ImmutableMap.<String, Object>builder().
                         put("rendition.mappings", new String[]{
@@ -107,7 +107,7 @@ public class AssetRenditionServletTest {
         ctx.requestPathInfo().setExtension("rendition");
         ctx.requestPathInfo().setSuffix("testing/asset.rendition");
 
-        AssetRenditionResolver.Params params = new AssetRenditionServlet.ParamsImpl(ctx.request());
+        AssetRenditionDispatcher.Params params = new AssetRenditionServlet.ParamsImpl(ctx.request());
 
         new AssetRenditionServlet().setResponseHeaders(ctx.response(), params);
 
@@ -120,7 +120,7 @@ public class AssetRenditionServletTest {
         ctx.requestPathInfo().setExtension("rendition");
         ctx.requestPathInfo().setSuffix("testing/download/asset.rendition");
 
-        AssetRenditionResolver.Params params = new AssetRenditionServlet.ParamsImpl(ctx.request());
+        AssetRenditionDispatcher.Params params = new AssetRenditionServlet.ParamsImpl(ctx.request());
 
         new AssetRenditionServlet().setResponseHeaders(ctx.response(), params);
 
@@ -136,7 +136,7 @@ public class AssetRenditionServletTest {
         ctx.requestPathInfo().setExtension("rendition");
         ctx.requestPathInfo().setSuffix("testing/asset.rendition");
 
-        AssetRenditionResolver.Params actual = new AssetRenditionServlet.ParamsImpl(ctx.request());
+        AssetRenditionDispatcher.Params actual = new AssetRenditionServlet.ParamsImpl(ctx.request());
 
         assertTrue(actual.isValid());
         assertEquals("testing", actual.getRenditionName());
@@ -150,7 +150,7 @@ public class AssetRenditionServletTest {
         ctx.requestPathInfo().setExtension("rendition");
         ctx.requestPathInfo().setSuffix("testing/download/asset.rendition");
 
-        AssetRenditionResolver.Params actual = new AssetRenditionServlet.ParamsImpl(ctx.request());
+        AssetRenditionDispatcher.Params actual = new AssetRenditionServlet.ParamsImpl(ctx.request());
 
         assertTrue(actual.isValid());
         assertEquals("testing", actual.getRenditionName());

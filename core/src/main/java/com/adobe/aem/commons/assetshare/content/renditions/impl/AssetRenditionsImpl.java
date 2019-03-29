@@ -20,7 +20,7 @@
 package com.adobe.aem.commons.assetshare.content.renditions.impl;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionResolver;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -39,9 +39,9 @@ import java.util.Map;
         reference = {
                 @Reference(
                         name = "renditionResolver",
-                        bind = "bindAssetRenditionResolver",
-                        unbind = "unbindAssetRenditionResolver",
-                        service = AssetRenditionResolver.class,
+                        bind = "bindAssetRenditionDispatcher",
+                        unbind = "unbindAssetRenditionDispatcher",
+                        service = AssetRenditionDispatcher.class,
                         policy = ReferencePolicy.DYNAMIC,
                         policyOption = ReferencePolicyOption.GREEDY,
                         cardinality = ReferenceCardinality.MULTIPLE
@@ -54,20 +54,20 @@ public class AssetRenditionsImpl implements AssetRenditions {
     @Reference
     private ModelFactory modelFactory;
 
-    private final RankedServices<AssetRenditionResolver> assetRenditionResolvers = new RankedServices<>(Order.DESCENDING);
+    private final RankedServices<AssetRenditionDispatcher> assetRenditionResolvers = new RankedServices<>(Order.DESCENDING);
 
-    protected void bindAssetRenditionResolver(AssetRenditionResolver service, Map<String, Object> props) {
-        log.debug("Binding AssetRenditionResolver [ {} ]", service.getClass().getName());
+    protected void bindAssetRenditionDispatcher(AssetRenditionDispatcher service, Map<String, Object> props) {
+        log.debug("Binding AssetRenditionDispatcher [ {} ]", service.getClass().getName());
         assetRenditionResolvers.bind(service, props);
     }
 
-    protected void unbindAssetRenditionResolver(AssetRenditionResolver service, Map<String, Object> props) {
-        log.debug("Unbinding AssetRenditionResolver [ {} ]", service.getClass().getName());
+    protected void unbindAssetRenditionDispatcher(AssetRenditionDispatcher service, Map<String, Object> props) {
+        log.debug("Unbinding AssetRenditionDispatcher [ {} ]", service.getClass().getName());
         assetRenditionResolvers.unbind(service, props);
     }
 
     @Override
-    public List<AssetRenditionResolver> getAssetRenditionResolvers() {
+    public List<AssetRenditionDispatcher> getAssetRenditionDispatchers() {
         return assetRenditionResolvers.getList();
     }
 

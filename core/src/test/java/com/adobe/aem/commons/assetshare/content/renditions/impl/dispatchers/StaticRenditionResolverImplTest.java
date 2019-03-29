@@ -17,12 +17,12 @@
  *
  */
 
-package com.adobe.aem.commons.assetshare.content.renditions.impl.resolvers;
+package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 
 import com.adobe.aem.commons.assetshare.content.impl.AssetModelImpl;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperties;
 import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedPropertiesImpl;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionResolver;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
 import com.google.common.collect.ImmutableMap;
@@ -48,14 +48,14 @@ public class StaticRenditionResolverImplTest {
 
     @Before
     public void setUp() throws Exception {
-        ctx.load().json("/com/adobe/aem/commons/assetshare/content/renditions/impl/resolvers/StaticRenditionResolverImplTest.json", "/content/dam");
+        ctx.load().json("/com/adobe/aem/commons/assetshare/content/renditions/impl/dispatchers/StaticRenditionResolverImplTest.json", "/content/dam");
 
         // 1x1 pixel red png
-        ctx.load().binaryFile("/com/adobe/aem/commons/assetshare/content/renditions/impl/resolvers/StaticRenditionResolverImplTest__original.png",
+        ctx.load().binaryFile("/com/adobe/aem/commons/assetshare/content/renditions/impl/dispatchers/StaticRenditionResolverImplTest__original.png",
                 "/content/dam/test.png/jcr:content/renditions/original");
 
         // 1x1 pixel blue png
-        ctx.load().binaryFile("/com/adobe/aem/commons/assetshare/content/renditions/impl/resolvers/StaticRenditionResolverImplTest__cq5dam.web.1280.1280.png",
+        ctx.load().binaryFile("/com/adobe/aem/commons/assetshare/content/renditions/impl/dispatchers/StaticRenditionResolverImplTest__cq5dam.web.1280.1280.png",
                 "/content/dam/test.png/jcr:content/renditions/cq5dam.web.1280.1280.png");
 
         ctx.currentResource("/content/dam/test.png");
@@ -69,11 +69,11 @@ public class StaticRenditionResolverImplTest {
     public void getLabel() {
         final String expected = "Test Asset Rendition Resolver";
 
-        ctx.registerInjectActivateService(new StaticRenditionResolverImpl(),
+        ctx.registerInjectActivateService(new StaticRenditionDispatcherImpl(),
                 "label", "Test Asset Rendition Resolver");
 
-        final AssetRenditionResolver assetRenditionResolver = ctx.getService(AssetRenditionResolver.class);
-        final String actual = assetRenditionResolver.getLabel();
+        final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
+        final String actual = assetRenditionDispatcher.getLabel();
 
         assertEquals(expected, actual);
     }
@@ -82,11 +82,11 @@ public class StaticRenditionResolverImplTest {
     public void getName() {
         final String expected = "test";
 
-        ctx.registerInjectActivateService(new StaticRenditionResolverImpl(),
+        ctx.registerInjectActivateService(new StaticRenditionDispatcherImpl(),
                 "name", "test");
 
-        final AssetRenditionResolver assetRenditionResolver = ctx.getService(AssetRenditionResolver.class);
-        final String actual = assetRenditionResolver.getName();
+        final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
+        final String actual = assetRenditionDispatcher.getName();
 
         assertEquals(expected, actual);
     }
@@ -99,65 +99,65 @@ public class StaticRenditionResolverImplTest {
                 put("Foo-bar", "foo-bar").
                 build();
 
-        ctx.registerInjectActivateService(new StaticRenditionResolverImpl(),
+        ctx.registerInjectActivateService(new StaticRenditionDispatcherImpl(),
                 ImmutableMap.<String, Object>builder().
                         put("rendition.mappings", new String[]{
                                 "foo=foo value",
                                 "foo_bar=foo_bar value",
                                 "foo-bar=foo-bar value"}).
                         build());
-        final AssetRenditionResolver assetRenditionResolver = ctx.getService(AssetRenditionResolver.class);
-        final Map<String, String> actual = assetRenditionResolver.getOptions();
+        final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
+        final Map<String, String> actual = assetRenditionDispatcher.getOptions();
 
         assertEquals(expected, actual);
     }
 
     @Test
     public void accepts() {
-        ctx.registerInjectActivateService(new StaticRenditionResolverImpl(),
+        ctx.registerInjectActivateService(new StaticRenditionDispatcherImpl(),
                 ImmutableMap.<String, Object>builder().
                         put("rendition.mappings", new String[]{
                                 "foo=foo value",
                                 "test-rendition=test-rendition value"}).
                         build());
-        final AssetRenditionResolver assetRenditionResolver = ctx.getService(AssetRenditionResolver.class);
-        final boolean actual = assetRenditionResolver.accepts(ctx.request(), "test-rendition");
+        final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
+        final boolean actual = assetRenditionDispatcher.accepts(ctx.request(), "test-rendition");
 
         assertTrue(actual);
     }
 
     @Test
     public void accepts_Reject() {
-        ctx.registerInjectActivateService(new StaticRenditionResolverImpl(),
+        ctx.registerInjectActivateService(new StaticRenditionDispatcherImpl(),
                 ImmutableMap.<String, Object>builder().
                         put("rendition.mappings", new String[]{
                                 "foo=foo value",
                                 "test-rendition=test-rendition value"}).
                         build());
-        final AssetRenditionResolver assetRenditionResolver = ctx.getService(AssetRenditionResolver.class);
-        final boolean actual = assetRenditionResolver.accepts(ctx.request(), "unknown-rendition");
+        final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
+        final boolean actual = assetRenditionDispatcher.accepts(ctx.request(), "unknown-rendition");
 
         assertFalse(actual);
     }
 
     @Test
     public void dispatch() throws IOException, ServletException {
-        final byte[] expectedOutputStream = IOUtils.toByteArray(this.getClass().getResourceAsStream("/com/adobe/aem/commons/assetshare/content/renditions/impl/resolvers/StaticRenditionResolverImplTest__cq5dam.web.1280.1280.png"));
+        final byte[] expectedOutputStream = IOUtils.toByteArray(this.getClass().getResourceAsStream("/com/adobe/aem/commons/assetshare/content/renditions/impl/dispatchers/StaticRenditionResolverImplTest__cq5dam.web.1280.1280.png"));
 
-        ctx.registerInjectActivateService(new StaticRenditionResolverImpl(),
+        ctx.registerInjectActivateService(new StaticRenditionDispatcherImpl(),
                 ImmutableMap.<String, Object>builder().
                         put("rendition.mappings", new String[]{
                                 "original=original",
                                 "testing=^cq5dam\\.web\\..*"}).
                         build());
 
-        final AssetRenditionResolver assetRenditionResolver = ctx.getService(AssetRenditionResolver.class);
+        final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
 
         ctx.requestPathInfo().setResourcePath("/content/dam/test.png");
         ctx.requestPathInfo().setExtension("rendition");
         ctx.requestPathInfo().setSuffix("testing/download/asset.rendition");
 
-        assetRenditionResolver.dispatch(ctx.request(), ctx.response());
+        assetRenditionDispatcher.dispatch(ctx.request(), ctx.response());
 
         assertEquals("image/png", ctx.response().getHeader("Content-Type"));
         assertEquals("70", ctx.response().getHeader("Content-Length"));

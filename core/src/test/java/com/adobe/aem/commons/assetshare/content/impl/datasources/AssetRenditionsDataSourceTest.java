@@ -21,7 +21,7 @@ package com.adobe.aem.commons.assetshare.content.impl.datasources;
 
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
-import com.adobe.aem.commons.assetshare.content.renditions.impl.resolvers.StaticRenditionResolverImpl;
+import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
 import com.adobe.aem.commons.assetshare.util.DataSourceBuilder;
 import com.adobe.aem.commons.assetshare.util.impl.DataSourceBuilderImpl;
 import com.adobe.granite.ui.components.ds.DataSource;
@@ -56,7 +56,7 @@ public class AssetRenditionsDataSourceTest {
         ctx.registerService(DataSourceBuilder.class, new DataSourceBuilderImpl());
 
         ctx.registerInjectActivateService(
-                new StaticRenditionResolverImpl(),
+                new StaticRenditionDispatcherImpl(),
                 ImmutableMap.<String, Object>builder().
                         put("name", "one").
                         put("rendition.mappings", new String[]{
@@ -65,7 +65,7 @@ public class AssetRenditionsDataSourceTest {
                         build());
 
         ctx.registerInjectActivateService(
-                new StaticRenditionResolverImpl(),
+                new StaticRenditionDispatcherImpl(),
                 ImmutableMap.<String, Object>builder().
                         put("name", "two").
                         put("rendition.mappings", new String[]{
@@ -94,14 +94,14 @@ public class AssetRenditionsDataSourceTest {
     }
 
     @Test
-    public void doGet_ExcludeAssetRenditionResolversViaOsgiConfig() throws ServletException, IOException {
+    public void doGet_ExcludeAssetRenditionDispatcherssViaOsgiConfig() throws ServletException, IOException {
         String[] expected = new String[]{"c", "d"};
 
         ctx.currentResource("/apps/dialog/default");
         ctx.registerInjectActivateService(new AssetRenditionsDataSource(),
                 "sling.servlet.resourceTypes", "asset-share-commons/data-sources/asset-renditions",
                 "sling.servlet.methods", "GET",
-                "exclude.assetrenditionresolver.names", "one");
+                "exclude.assetrenditiondispatcher.names", "one");
 
         final Servlet servlet = ctx.getService(Servlet.class);
 
@@ -134,10 +134,10 @@ public class AssetRenditionsDataSourceTest {
     }
 
     @Test
-    public void doGet_ExcludeAssetRenditionResolversViaProperty() throws ServletException, IOException {
+    public void doGet_ExcludeAssetRenditionDispatchersViaProperty() throws ServletException, IOException {
         String[] expected = new String[]{"c", "d"};
 
-        ctx.currentResource("/apps/dialog/exclude-assetrenditionresolvers");
+        ctx.currentResource("/apps/dialog/exclude-assetrenditiondispatchers");
         ctx.registerInjectActivateService(new AssetRenditionsDataSource(),
                 "sling.servlet.resourceTypes", "asset-share-commons/data-sources/asset-renditions",
                 "sling.servlet.methods", "GET");

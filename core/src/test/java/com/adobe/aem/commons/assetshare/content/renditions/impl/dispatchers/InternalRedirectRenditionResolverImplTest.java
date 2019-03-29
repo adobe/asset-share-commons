@@ -17,13 +17,13 @@
  *
  */
 
-package com.adobe.aem.commons.assetshare.content.renditions.impl.resolvers;
+package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 
 import com.adobe.aem.commons.assetshare.content.AssetResolver;
 import com.adobe.aem.commons.assetshare.content.impl.AssetModelImpl;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperties;
 import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedPropertiesImpl;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionResolver;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
 import com.adobe.aem.commons.assetshare.util.impl.ExtensionOverrideRequestWrapper;
@@ -60,7 +60,7 @@ public class InternalRedirectRenditionResolverImplTest {
 
     @Before
     public void setUp() throws Exception {
-        ctx.load().json("/com/adobe/aem/commons/assetshare/content/renditions/impl/resolvers/InternalRedirectRenditionResolverImplTest.json", "/content/dam");
+        ctx.load().json("/com/adobe/aem/commons/assetshare/content/renditions/impl/dispatchers/InternalRedirectRenditionDispatcherImplTest.json", "/content/dam");
         ctx.currentResource("/content/dam/test.png");
 
         ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
@@ -89,11 +89,11 @@ public class InternalRedirectRenditionResolverImplTest {
     public void getLabel() {
         final String expected = "Test Asset Rendition Resolver";
 
-        ctx.registerInjectActivateService(new InternalRedirectRenditionResolverImpl(),
+        ctx.registerInjectActivateService(new InternalRedirectRenditionDispatcherImpl(),
                 "label", "Test Asset Rendition Resolver");
 
-        final AssetRenditionResolver assetRenditionResolver = ctx.getService(AssetRenditionResolver.class);
-        final String actual = assetRenditionResolver.getLabel();
+        final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
+        final String actual = assetRenditionDispatcher.getLabel();
 
         assertEquals(expected, actual);
     }
@@ -102,11 +102,11 @@ public class InternalRedirectRenditionResolverImplTest {
     public void getName() {
         final String expected = "test";
 
-        ctx.registerInjectActivateService(new InternalRedirectRenditionResolverImpl(),
+        ctx.registerInjectActivateService(new InternalRedirectRenditionDispatcherImpl(),
                 "name", "test");
 
-        final AssetRenditionResolver assetRenditionResolver = ctx.getService(AssetRenditionResolver.class);
-        final String actual = assetRenditionResolver.getName();
+        final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
+        final String actual = assetRenditionDispatcher.getName();
 
         assertEquals(expected, actual);
     }
@@ -119,56 +119,56 @@ public class InternalRedirectRenditionResolverImplTest {
                 put("Foo-bar", "foo-bar").
                 build();
 
-        ctx.registerInjectActivateService(new InternalRedirectRenditionResolverImpl(),
+        ctx.registerInjectActivateService(new InternalRedirectRenditionDispatcherImpl(),
                 ImmutableMap.<String, Object>builder().
                         put("rendition.mappings", new String[]{
                                 "foo=foo value",
                                 "foo_bar=foo_bar value",
                                 "foo-bar=foo-bar value"}).
                         build());
-        final AssetRenditionResolver assetRenditionResolver = ctx.getService(AssetRenditionResolver.class);
-        final Map<String, String> actual = assetRenditionResolver.getOptions();
+        final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
+        final Map<String, String> actual = assetRenditionDispatcher.getOptions();
 
         assertEquals(expected, actual);
     }
 
     @Test
     public void accepts() {
-        ctx.registerInjectActivateService(new InternalRedirectRenditionResolverImpl(),
+        ctx.registerInjectActivateService(new InternalRedirectRenditionDispatcherImpl(),
                 ImmutableMap.<String, Object>builder().
                         put("rendition.mappings", new String[]{
                                 "foo=foo value",
                                 "test-rendition=test-rendition value"}).
                         build());
-        final AssetRenditionResolver assetRenditionResolver = ctx.getService(AssetRenditionResolver.class);
-        final boolean actual = assetRenditionResolver.accepts(ctx.request(), "test-rendition");
+        final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
+        final boolean actual = assetRenditionDispatcher.accepts(ctx.request(), "test-rendition");
 
         assertTrue(actual);
     }
 
     @Test
     public void accepts_Reject() {
-        ctx.registerInjectActivateService(new InternalRedirectRenditionResolverImpl(),
+        ctx.registerInjectActivateService(new InternalRedirectRenditionDispatcherImpl(),
                 ImmutableMap.<String, Object>builder().
                         put("rendition.mappings", new String[]{
                                 "foo=foo value",
                                 "test-rendition=test-rendition value"}).
                         build());
-        final AssetRenditionResolver assetRenditionResolver = ctx.getService(AssetRenditionResolver.class);
-        final boolean actual = assetRenditionResolver.accepts(ctx.request(), "unknown-rendition");
+        final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
+        final boolean actual = assetRenditionDispatcher.accepts(ctx.request(), "unknown-rendition");
 
         assertFalse(actual);
     }
 
     @Test
     public void dispatch() throws IOException, ServletException {
-        ctx.registerInjectActivateService(new InternalRedirectRenditionResolverImpl(),
+        ctx.registerInjectActivateService(new InternalRedirectRenditionDispatcherImpl(),
                 ImmutableMap.<String, Object>builder().
                         put("rendition.mappings", new String[]{
                                 "testing=${asset.path}.test.500.500.${asset.extension}"}).
                         build());
 
-        final AssetRenditionResolver assetRenditionResolver = ctx.getService(AssetRenditionResolver.class);
+        final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
 
         ctx.requestPathInfo().setResourcePath("/content/dam/test.png");
         ctx.requestPathInfo().setExtension("rendition");
@@ -181,7 +181,7 @@ public class InternalRedirectRenditionResolverImplTest {
             return null; // void method, return null
         }).when(requestDispatcher).include(any(ExtensionOverrideRequestWrapper.class), eq(ctx.response()));
         
-        assetRenditionResolver.dispatch(ctx.request(), ctx.response());
+        assetRenditionDispatcher.dispatch(ctx.request(), ctx.response());
 
         assertEquals("test", ctx.response().getOutputAsString());
     }
