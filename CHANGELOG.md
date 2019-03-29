@@ -6,8 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
-- 0345: Cacheable asset renditions
+### Added
+- 0345: Asset Rendition Dispatcher framework allowing for named, cacheable renditions.
 
+### Fixed
+- #0388: Corrected spelling of Boolean in dialog value.
 
 ## [v1.7.0]
 
