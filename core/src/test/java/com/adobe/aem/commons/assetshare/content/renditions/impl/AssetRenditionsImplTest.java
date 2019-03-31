@@ -54,7 +54,7 @@ public class AssetRenditionsImplTest {
 
     @Before
     public void setUp() throws Exception {
-        ctx.load().json("/com/adobe/aem/commons/assetshare/content/renditions/impl/AssetRenditionsHelperImplTest.json", "/content/dam");
+        ctx.load().json("/com/adobe/aem/commons/assetshare/content/renditions/impl/AssetRenditionsImplTest.json", "/content/dam");
         ctx.currentResource("/content/dam/test.png");
 
         final AssetResolver assetResolver = mock(AssetResolver.class);
