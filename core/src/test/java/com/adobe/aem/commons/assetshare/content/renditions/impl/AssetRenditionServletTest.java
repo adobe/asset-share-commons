@@ -133,7 +133,7 @@ public class AssetRenditionServletTest {
     @Test
     public void paramsImpl_WithRenditionName() {
         ctx.requestPathInfo().setResourcePath("/content/dam/test.png");
-        ctx.requestPathInfo().setExtension("rendition");
+        ctx.requestPathInfo().setExtension("renditions");
         ctx.requestPathInfo().setSuffix("testing/asset.rendition");
 
         AssetRenditionDispatcher.Params actual = new AssetRenditionServlet.ParamsImpl(ctx.request());
@@ -147,7 +147,7 @@ public class AssetRenditionServletTest {
     @Test
     public void paramsImpl_AsAttachment() {
         ctx.requestPathInfo().setResourcePath("/content/dam/test.png");
-        ctx.requestPathInfo().setExtension("rendition");
+        ctx.requestPathInfo().setExtension("renditions");
         ctx.requestPathInfo().setSuffix("testing/download/asset.rendition");
 
         AssetRenditionDispatcher.Params actual = new AssetRenditionServlet.ParamsImpl(ctx.request());
@@ -157,4 +157,31 @@ public class AssetRenditionServletTest {
         assertTrue(actual.isAttachment());
         assertEquals("test.testing.png", actual.getFileName());
     }
+
+    @Test
+    public void paramsImpl_MissingRenditionName() {
+        ctx.requestPathInfo().setResourcePath("/content/dam/test.png");
+        ctx.requestPathInfo().setExtension("renditions");
+        ctx.requestPathInfo().setSuffix("asset.rendition");
+
+        AssetRenditionDispatcher.Params actual = new AssetRenditionServlet.ParamsImpl(ctx.request());
+
+        assertFalse(actual.isValid());
+    }
+
+    /*
+    @Test
+    public void paramsImpl_RenditionNameWithDot() {
+        ctx.requestPathInfo().setResourcePath("/content/dam/test.png");
+        ctx.requestPathInfo().setExtension("renditions");
+        ctx.requestPathInfo().setSuffix("test.ing/asset.rendition");
+
+        AssetRenditionDispatcher.Params actual = new AssetRenditionServlet.ParamsImpl(ctx.request());
+
+        assertTrue(actual.isValid());
+        assertEquals("test.ing", actual.getRenditionName());
+        assertTrue(actual.isAttachment());
+        assertEquals("test.test.ing.png", actual.getFileName());
+    }
+    */
 }
