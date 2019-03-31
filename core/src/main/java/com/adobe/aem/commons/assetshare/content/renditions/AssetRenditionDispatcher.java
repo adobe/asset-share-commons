@@ -54,7 +54,7 @@ public interface AssetRenditionDispatcher {
     /**
      * The options supported by this RenditionResolver.
      * <br>
-     * Format should is: Map&lt;OptionName, OptionLabel&gt;
+     * Format is: Map&lt;OptionName, OptionLabel&gt;
      *
      * @param request       the SlingHttpServletRequest.
      * @param renditionName the "name" of the rendition to serve.
@@ -64,7 +64,7 @@ public interface AssetRenditionDispatcher {
     boolean accepts(SlingHttpServletRequest request, String renditionName);
 
     /**
-     * Dispatch the request to the appropriate.
+     * Dispatch the request to the appropriate mechanism that will provide the desired rendition.
      *
      * @param request  the SlingHttpServletRequest.
      * @param response the SlingHttpServletResponse to include the rendition on.
