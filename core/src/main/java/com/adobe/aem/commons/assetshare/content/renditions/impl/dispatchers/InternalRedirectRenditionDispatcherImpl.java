@@ -20,6 +20,7 @@
 package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.util.impl.ExtensionOverrideRequestWrapper;
 import com.day.cq.commons.PathInfo;
@@ -90,9 +91,9 @@ public class InternalRedirectRenditionDispatcherImpl implements AssetRenditionDi
 
     @Override
     public void dispatch(SlingHttpServletRequest request, SlingHttpServletResponse response) throws IOException, ServletException {
-        final String renditionName = assetRenditions.getRenditionName(request);
+        final AssetRenditionParameters parameters = new AssetRenditionParameters(request);
 
-        final String expression = mappings.get(renditionName);
+        final String expression = mappings.get(parameters.getRenditionName());
 
         if (StringUtils.isNotBlank(expression)) {
             final String evaluatedExpression = assetRenditions.evaluateExpression(request, expression);
@@ -100,7 +101,7 @@ public class InternalRedirectRenditionDispatcherImpl implements AssetRenditionDi
 
             log.debug("Serving internal redirect rendition [ {} ] for resolved rendition name [ {} ]",
                     evaluatedExpression,
-                    renditionName);
+                    parameters.getRenditionName());
 
             final RequestDispatcherOptions options = new RequestDispatcherOptions();
             options.setReplaceSelectors(StringUtils.removeStart(pathInfo.getSelectorString(), "."));

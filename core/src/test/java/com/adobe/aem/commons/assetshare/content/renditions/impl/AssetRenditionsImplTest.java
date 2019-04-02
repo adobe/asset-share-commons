@@ -25,6 +25,7 @@ import com.adobe.aem.commons.assetshare.content.impl.AssetModelImpl;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperties;
 import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedPropertiesImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.InternalRedirectRenditionDispatcherImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
@@ -52,6 +53,8 @@ public class AssetRenditionsImplTest {
     @Rule
     public AemContext ctx = new AemContext();
 
+    private AssetModel testAssetModel;
+
     @Before
     public void setUp() throws Exception {
         ctx.load().json(getClass().getResourceAsStream("AssetRenditionsImplTest.json"), "/content/dam");
@@ -65,6 +68,8 @@ public class AssetRenditionsImplTest {
         ctx.addModelsForClasses(AssetModelImpl.class);
 
         ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
+
+        testAssetModel = ctx.request().adaptTo(AssetModel.class);
     }
 
     @Test
@@ -87,28 +92,14 @@ public class AssetRenditionsImplTest {
     }
 
     @Test
-    public void getRenditionName() {
-        final String expected = "test-rendition";
-        final AssetRenditions assetRenditions = ctx.getService(AssetRenditions.class);
-
-        ctx.requestPathInfo().setResourcePath("/content/dam/test.png");
-        ctx.requestPathInfo().setExtension("renditions");
-        ctx.requestPathInfo().setSuffix("/test-rendition/asset.rendition");
-
-        String actual = assetRenditions.getRenditionName(ctx.request());
-        assertEquals(expected, actual);
-    }
-
-    /*
-    @Test
     public void getUrl() {
         final String expected = "/content/dam/test.png.renditions/test-rendition/asset.rendition";
         final AssetRenditions assetRenditions = ctx.getService(AssetRenditions.class);
 
-        final AssetRenditions.UrlParams urlParams = new AssetRenditions.UrlParams("test-rendition", false);
+        final AssetRenditionParameters params = new AssetRenditionParameters(testAssetModel, "test-rendition", false);
         final AssetModel assetModel = ctx.request().adaptTo(AssetModel.class);
 
-        String actual = assetRenditions.getUrl(ctx.request(), assetModel, urlParams);
+        String actual = assetRenditions.getUrl(ctx.request(), assetModel, params);
 
         assertEquals(expected, actual);
     }
@@ -118,10 +109,10 @@ public class AssetRenditionsImplTest {
         final String expected = "/content/dam/test.png.renditions/test-rendition/download/asset.rendition";
         final AssetRenditions assetRenditions = ctx.getService(AssetRenditions.class);
 
-        final AssetRenditions.UrlParams urlParams = new AssetRenditions.UrlParams("test-rendition", true);
+        final AssetRenditionParameters params = new AssetRenditionParameters(testAssetModel, "test-rendition", true);
         final AssetModel assetModel = ctx.request().adaptTo(AssetModel.class);
 
-        String actual = assetRenditions.getUrl(ctx.request(), assetModel, urlParams);
+        String actual = assetRenditions.getUrl(ctx.request(), assetModel, params);
 
         assertEquals(expected, actual);
     }
@@ -143,8 +134,6 @@ public class AssetRenditionsImplTest {
         final Map<String, String> actual = assetRenditions.getOptions(params);
         assertEquals(expected, actual);
     }
-
-    */
 
     @Test
     public void evaluateExpression() {

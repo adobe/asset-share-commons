@@ -21,11 +21,8 @@ package com.adobe.aem.commons.assetshare.content.renditions;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import org.apache.sling.api.SlingHttpServletRequest;
-import org.apache.sling.api.resource.ValueMap;
-import org.apache.sling.api.wrappers.ValueMapDecorator;
 import org.osgi.annotation.versioning.ProviderType;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,17 +40,6 @@ public interface AssetRenditions {
      * @return a list of all registered AssetRenditionDispatchers in the system ordered in Descending order by service.ranking.
      */
     List<AssetRenditionDispatcher> getAssetRenditionDispatchers();
-
-    /**
-     * Derives the renditionName from the request which is typically used to resolve the AssetRenditionDispatcher and the mapping there-in.
-     * <p>
-     * This typically pulls the first segment of the suffix, however this logic may change overtime if the scheme changes.
-     *
-     * @param request the request TO the AssetRenditionServlet.
-     *
-     * @return the renditionName parsed from the
-     */
-    String getRenditionName(SlingHttpServletRequest request);
 
     /**
      * Creates a URL to the AssetRenditionServlet for the

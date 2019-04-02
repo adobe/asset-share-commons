@@ -73,12 +73,6 @@ public class AssetRenditionsImpl implements AssetRenditions {
     }
 
     @Override
-    public String getRenditionName(final SlingHttpServletRequest request) throws IllegalArgumentException {
-        final AssetRenditionParameters parameters = new AssetRenditionParameters(request);
-        return parameters.getRenditionName();
-    }
-
-    @Override
     public String getUrl(final SlingHttpServletRequest request, final AssetModel asset, final AssetRenditionParameters parameters) {
         String url = request.getResourceResolver().map(asset.getPath()) + "." + AssetRenditionServlet.SERVLET_EXTENSION + "/" + parameters.getRenditionName() + "/";
 
@@ -115,7 +109,7 @@ public class AssetRenditionsImpl implements AssetRenditions {
         final String assetPath = assetModel.getUrl();
         final String assetName = assetModel.getName();
         final String assetExtension = StringUtils.substringAfterLast(assetName, ".");
-        final String renditionName = getRenditionName(request);
+        final String renditionName = new AssetRenditionParameters(request).getRenditionName();
 
         expression = StringUtils.replace(expression, VAR_ASSET_PATH, assetPath);
         expression = StringUtils.replace(expression, VAR_ASSET_NAME, assetName);

@@ -20,6 +20,7 @@
 package com.adobe.aem.commons.assetshare.content.renditions.impl;
 
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
@@ -101,15 +102,13 @@ public class AssetRenditionServletTest {
         verify(resolver2, times(1)).dispatch(ctx.request(), ctx.response());
     }
 
-    /*
-
     @Test
     public void setResponseHeaders() {
         ctx.requestPathInfo().setResourcePath("/content/dam/test.png");
         ctx.requestPathInfo().setExtension("rendition");
         ctx.requestPathInfo().setSuffix("testing/asset.rendition");
 
-        AssetRenditionDispatcher.Params params = new AssetRenditionServlet.ParamsImpl(ctx.request());
+        final AssetRenditionParameters params = new AssetRenditionParameters(ctx.request());
 
         new AssetRenditionServlet().setResponseHeaders(ctx.response(), params);
 
@@ -122,65 +121,10 @@ public class AssetRenditionServletTest {
         ctx.requestPathInfo().setExtension("rendition");
         ctx.requestPathInfo().setSuffix("testing/download/asset.rendition");
 
-        AssetRenditionDispatcher.Params params = new AssetRenditionServlet.ParamsImpl(ctx.request());
+        final AssetRenditionParameters params = new AssetRenditionParameters(ctx.request());
 
         new AssetRenditionServlet().setResponseHeaders(ctx.response(), params);
 
         assertEquals("attachment; filename=test.testing.png", ctx.response().getHeader("Content-Disposition"));
     }
-
-    @Test
-    public void paramsImpl_WithRenditionName() {
-        ctx.requestPathInfo().setResourcePath("/content/dam/test.png");
-        ctx.requestPathInfo().setExtension("renditions");
-        ctx.requestPathInfo().setSuffix("testing/asset.rendition");
-
-        AssetRenditionDispatcher.Params actual = new AssetRenditionServlet.ParamsImpl(ctx.request());
-
-        assertTrue(actual.isValid());
-        assertEquals("testing", actual.getRenditionName());
-        assertFalse(actual.isAttachment());
-        assertEquals("test.testing.png", actual.getFileName());
-    }
-
-    @Test
-    public void paramsImpl_AsAttachment() {
-        ctx.requestPathInfo().setResourcePath("/content/dam/test.png");
-        ctx.requestPathInfo().setExtension("renditions");
-        ctx.requestPathInfo().setSuffix("testing/download/asset.rendition");
-
-        AssetRenditionDispatcher.Params actual = new AssetRenditionServlet.ParamsImpl(ctx.request());
-
-        assertTrue(actual.isValid());
-        assertEquals("testing", actual.getRenditionName());
-        assertTrue(actual.isAttachment());
-        assertEquals("test.testing.png", actual.getFileName());
-    }
-
-    @Test
-    public void paramsImpl_MissingRenditionName() {
-        ctx.requestPathInfo().setResourcePath("/content/dam/test.png");
-        ctx.requestPathInfo().setExtension("renditions");
-        ctx.requestPathInfo().setSuffix("asset.rendition");
-
-        AssetRenditionDispatcher.Params actual = new AssetRenditionServlet.ParamsImpl(ctx.request());
-
-        assertFalse(actual.isValid());
-    }
-*/
-    /*
-    @Test
-    public void paramsImpl_RenditionNameWithDot() {
-        ctx.requestPathInfo().setResourcePath("/content/dam/test.png");
-        ctx.requestPathInfo().setExtension("renditions");
-        ctx.requestPathInfo().setSuffix("test.ing/asset.rendition");
-
-        AssetRenditionDispatcher.Params actual = new AssetRenditionServlet.ParamsImpl(ctx.request());
-
-        assertTrue(actual.isValid());
-        assertEquals("test.ing", actual.getRenditionName());
-        assertTrue(actual.isAttachment());
-        assertEquals("test.test.ing.png", actual.getFileName());
-    }
-    */
 }
