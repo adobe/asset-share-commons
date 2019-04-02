@@ -20,6 +20,7 @@
 package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
@@ -92,13 +93,12 @@ public class StaticRenditionDispatcherImpl implements AssetRenditionDispatcher {
     @Override
     public void dispatch(SlingHttpServletRequest request, SlingHttpServletResponse response) throws IOException {
         final Asset asset = DamUtil.resolveToAsset(request.getResource());
-        final String renditionName = assetRenditions.getRenditionName(request);
+        final AssetRenditionParameters parameters = new AssetRenditionParameters(request);
 
-        Rendition rendition = asset.getRendition(new PatternRenditionPicker(mappings.get(renditionName)));
+        final Rendition rendition = asset.getRendition(new PatternRenditionPicker(mappings.get(parameters.getRenditionName())));
 
         if (rendition != null) {
-
-            log.debug("Streaming rendition [ {} ] for resolved rendition name [ {} ]", rendition.getPath(), renditionName);
+            log.debug("Streaming rendition [ {} ] for resolved rendition name [ {} ]", rendition.getPath(), parameters.getRenditionName());
 
             response.setHeader("Content-Type", rendition.getMimeType());
             response.setHeader("Content-Length", String.valueOf(rendition.getSize()));
