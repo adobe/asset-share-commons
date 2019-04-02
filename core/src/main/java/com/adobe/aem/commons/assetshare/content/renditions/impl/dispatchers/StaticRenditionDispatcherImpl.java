@@ -43,6 +43,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
@@ -86,8 +87,8 @@ public class StaticRenditionDispatcherImpl implements AssetRenditionDispatcher {
     }
 
     @Override
-    public boolean accepts(final SlingHttpServletRequest request, final String renditionName) {
-        return getOptions().values().contains(renditionName);
+    public Set<String> getRenditionNames() {
+        return mappings.keySet();
     }
 
     @Override

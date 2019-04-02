@@ -44,9 +44,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -133,31 +136,23 @@ public class InternalRedirectRenditionResolverImplTest {
     }
 
     @Test
-    public void accepts() {
+    public void getRenditionNames() {
+        Set<String> expected = new HashSet<>();
+        expected.add("foo");
+        expected.add("test.ing-rendition");
+
         ctx.registerInjectActivateService(new InternalRedirectRenditionDispatcherImpl(),
                 ImmutableMap.<String, Object>builder().
                         put("rendition.mappings", new String[]{
                                 "foo=foo value",
-                                "test-rendition=test-rendition value"}).
+                                "test.ing-rendition=test-rendition value"}).
                         build());
         final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
-        final boolean actual = assetRenditionDispatcher.accepts(ctx.request(), "test-rendition");
+        final Set<String> actual = assetRenditionDispatcher.getRenditionNames();
 
-        assertTrue(actual);
-    }
-
-    @Test
-    public void accepts_Reject() {
-        ctx.registerInjectActivateService(new InternalRedirectRenditionDispatcherImpl(),
-                ImmutableMap.<String, Object>builder().
-                        put("rendition.mappings", new String[]{
-                                "foo=foo value",
-                                "test-rendition=test-rendition value"}).
-                        build());
-        final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
-        final boolean actual = assetRenditionDispatcher.accepts(ctx.request(), "unknown-rendition");
-
-        assertFalse(actual);
+        assertEquals(expected.size(), actual.size());
+        assertTrue(expected.contains("foo"));
+        assertTrue(expected.contains("test.ing-rendition"));
     }
 
     @Test

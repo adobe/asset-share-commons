@@ -32,6 +32,7 @@ import org.apache.sling.api.resource.ValueMap;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.osgi.framework.Constants;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -39,6 +40,7 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -58,6 +60,8 @@ public class AssetRenditionsDataSourceTest {
         ctx.registerInjectActivateService(
                 new StaticRenditionDispatcherImpl(),
                 ImmutableMap.<String, Object>builder().
+                        put(Constants.SERVICE_RANKING, 0).
+                        put("label", "One AssetRenditionDispatcher").
                         put("name", "one").
                         put("rendition.mappings", new String[]{
                                 "a=value",
@@ -67,6 +71,8 @@ public class AssetRenditionsDataSourceTest {
         ctx.registerInjectActivateService(
                 new StaticRenditionDispatcherImpl(),
                 ImmutableMap.<String, Object>builder().
+                        put(Constants.SERVICE_RANKING, 0).
+                        put("label", "Two AssetRenditionDispatcher").
                         put("name", "two").
                         put("rendition.mappings", new String[]{
                                 "c=value",
@@ -171,8 +177,50 @@ public class AssetRenditionsDataSourceTest {
         assertArrayEquals(expected, actual.values().toArray());
     }
 
+
+    @Test
+    public void doGet_ServiceRanking() throws ServletException, IOException {
+        final String[] expectedKeys = new String[]{
+                "A (Three AssetRenditionDispatcher)",
+                "B (One AssetRenditionDispatcher)",
+                "C (Three AssetRenditionDispatcher)",
+                "D (Two AssetRenditionDispatcher)"
+        };
+
+        final String[] expectedValues = new String[]{"a", "b", "c", "d"};
+
+        ctx.currentResource("/apps/dialog/default");
+        ctx.registerInjectActivateService(new AssetRenditionsDataSource(),
+                "sling.servlet.resourceTypes", "asset-share-commons/data-sources/asset-renditions",
+                "add.assetrenditiondispatcher.to.label", true,
+                "sling.servlet.methods", "GET");
+
+
+        ctx.registerInjectActivateService(
+                new StaticRenditionDispatcherImpl(),
+                ImmutableMap.<String, Object>builder().
+                        put(Constants.SERVICE_RANKING, 1000).
+                        put("label", "Three AssetRenditionDispatcher").
+                        put("name", "three").
+                        put("rendition.mappings", new String[]{
+                                "a=preferred value for a",
+                                "c=preferred value for c"}).
+                        build());
+
+
+        final Servlet servlet = ctx.getService(Servlet.class);
+
+        servlet.service(ctx.request(), ctx.response());
+
+        final DataSource sds = (DataSource) ctx.request().getAttribute(DataSource.class.getName());
+        final Map<String, String> actual = toMap(sds);
+
+        assertArrayEquals(expectedKeys, actual.keySet().toArray());
+        assertArrayEquals(expectedValues, actual.values().toArray());
+    }
+
     private Map<String, String> toMap(DataSource dataSource) {
-        final Map<String, String> results = new HashMap<>();
+        final Map<String, String> results = new LinkedHashMap<>();
         final Iterator<Resource> resourcesIterator = dataSource.iterator();
         while (resourcesIterator.hasNext()) {
             final Resource resource = resourcesIterator.next();

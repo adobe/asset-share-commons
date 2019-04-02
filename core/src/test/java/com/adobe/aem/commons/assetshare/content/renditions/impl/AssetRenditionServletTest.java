@@ -22,35 +22,24 @@ package com.adobe.aem.commons.assetshare.content.renditions.impl;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
 public class AssetRenditionServletTest {
 
     @Rule
     public final AemContext ctx = new AemContext();
-
-    @Mock
-    private AssetRenditionDispatcher resolver1;
-
-    @Mock
-    private AssetRenditionDispatcher resolver2;
 
     @Before
     public void setUp() throws Exception {
@@ -62,44 +51,33 @@ public class AssetRenditionServletTest {
 
     @Test
     public void doGet() throws IOException, ServletException {
-        ctx.registerService(AssetRenditionDispatcher.class,
-                resolver1,
+
+        AssetRenditionDispatcher assetRenditionDispatcher = spy(new StaticRenditionDispatcherImpl());
+
+        ctx.registerInjectActivateService(
+                new StaticRenditionDispatcherImpl(),
                 ImmutableMap.<String, Object>builder().
                         put("rendition.mappings", new String[]{
                                 "testing1=value doesnt matter"}).
                         build());
 
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
-                return "testing1".equals(invocationOnMock.getArguments()[1]);
-            }
-        }).when(resolver1).accepts(eq(ctx.request()), any(String.class));
-
-        ctx.registerService(AssetRenditionDispatcher.class,
-                resolver2,
+        ctx.registerInjectActivateService(
+                assetRenditionDispatcher,
                 ImmutableMap.<String, Object>builder().
                         put("rendition.mappings", new String[]{
                                 "testing2=value doesnt matter"}).
                         build());
 
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
-                return "testing2".equals(invocationOnMock.getArguments()[1]);
-            }
-        }).when(resolver2).accepts(eq(ctx.request()), any(String.class));
-
         ctx.registerInjectActivateService(new AssetRenditionServlet());
 
         ctx.request().setMethod("GET");
         ctx.requestPathInfo().setResourcePath("/content/dam/test.png");
-        ctx.requestPathInfo().setExtension("rendition");
+        ctx.requestPathInfo().setExtension("renditions");
         ctx.requestPathInfo().setSuffix("testing2/asset.rendition");
 
         ctx.getService(Servlet.class).service(ctx.request(), ctx.response());
 
-        verify(resolver2, times(1)).dispatch(ctx.request(), ctx.response());
+        verify(assetRenditionDispatcher, times(1)).dispatch(ctx.request(), ctx.response());
     }
 
     @Test

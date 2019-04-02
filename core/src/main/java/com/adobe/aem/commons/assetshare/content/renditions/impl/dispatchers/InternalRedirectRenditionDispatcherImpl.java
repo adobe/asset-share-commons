@@ -40,8 +40,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
@@ -85,8 +84,8 @@ public class InternalRedirectRenditionDispatcherImpl implements AssetRenditionDi
     }
 
     @Override
-    public boolean accepts(final SlingHttpServletRequest request, final String renditionName) {
-        return getOptions().values().contains(renditionName);
+    public Set<String> getRenditionNames() {
+        return mappings.keySet();
     }
 
     @Override

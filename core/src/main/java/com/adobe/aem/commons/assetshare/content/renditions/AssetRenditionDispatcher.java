@@ -25,7 +25,9 @@ import org.osgi.annotation.versioning.ConsumerType;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * An OSGi Service (with multiple implementations) that dispatches requests to the AssetRenditionsServlet to some representation of the resolved asset rendition.
@@ -40,28 +42,27 @@ public interface AssetRenditionDispatcher {
     String getLabel();
 
     /**
+     * The return value fo this method is used to select the AssetRenditionDispatcher by the AssetRenditionServlet.
+     *
      * @return the system name of this Rendition Resolver. This should be unique across all AssetRenditionResolvers instances.
      */
     String getName();
 
     /**
-     * @return the options provided by the RenditionResolver implementation, in the form:
-     * - key: Option Title
+     * Option map entries in the form:
+     * <br>
+     * - key: Option Label
+     * <br>
      * - value: Rendition Name
+     *
+     * @return the options provided by the RenditionResolver implementation.
      */
     Map<String, String> getOptions();
 
     /**
-     * The options supported by this RenditionResolver.
-     * <br>
-     * Format is: Map&lt;OptionName, OptionLabel&gt;
-     *
-     * @param request       the SlingHttpServletRequest.
-     * @param renditionName the "name" of the rendition to serve.
-     *
-     * @return true if this RenditionResolver should handle this request (ie. dispatch(..) will be called).
+     * @return a list of all the rendition names this AssetRenditionDispatcher can handle.
      */
-    boolean accepts(SlingHttpServletRequest request, String renditionName);
+    Set<String> getRenditionNames();
 
     /**
      * Dispatch the request to the appropriate mechanism that will provide the desired rendition.

@@ -36,7 +36,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -113,32 +115,24 @@ public class StaticRenditionDispatcherImplTest {
     }
 
     @Test
-    public void accepts() {
+    public void getRenditionNames() {
+        Set<String> expected = new LinkedHashSet<>();
+        expected.add("foo");
+        expected.add("test.ing");
+
         ctx.registerInjectActivateService(new StaticRenditionDispatcherImpl(),
                 ImmutableMap.<String, Object>builder().
                         put("rendition.mappings", new String[]{
                                 "foo=foo value",
-                                "test-rendition=test-rendition value"}).
+                                "test.ing-rendition=test-rendition value"}).
                         build());
         final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
-        final boolean actual = assetRenditionDispatcher.accepts(ctx.request(), "test-rendition");
+        final Set<String> actual = assetRenditionDispatcher.getRenditionNames();
 
-        assertTrue(actual);
-    }
+        assertEquals(expected.size(), actual.size());
+        assertTrue(expected.contains("foo"));
+        assertTrue(expected.contains("test.ing"));    }
 
-    @Test
-    public void accepts_Reject() {
-        ctx.registerInjectActivateService(new StaticRenditionDispatcherImpl(),
-                ImmutableMap.<String, Object>builder().
-                        put("rendition.mappings", new String[]{
-                                "foo=foo value",
-                                "test-rendition=test-rendition value"}).
-                        build());
-        final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
-        final boolean actual = assetRenditionDispatcher.accepts(ctx.request(), "unknown-rendition");
-
-        assertFalse(actual);
-    }
 
     @Test
     public void dispatch() throws IOException, ServletException {

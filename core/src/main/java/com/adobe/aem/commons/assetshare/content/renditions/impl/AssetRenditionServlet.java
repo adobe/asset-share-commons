@@ -26,6 +26,7 @@ import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.commons.util.DamUtil;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.util.CollectionUtil;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
@@ -38,6 +39,7 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collections;
 
 /**
  * /content/dam/foo.png.renditions/thumbnail/download/asset.rendition
@@ -63,7 +65,6 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
     private static final Logger log = LoggerFactory.getLogger(AssetRenditionServlet.class);
 
     public static final String SERVLET_EXTENSION = "renditions";
-    //public static final String CACHEABLE_SUFFIX_FILENAME = "asset.rendition";
 
     @Reference
     private AssetRenditions assetRenditions;
@@ -73,7 +74,7 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
             final AssetRenditionParameters parameters = new AssetRenditionParameters(request);
 
             for (final AssetRenditionDispatcher assetRenditionDispatcher : assetRenditions.getAssetRenditionDispatchers()) {
-                if (assetRenditionDispatcher.accepts(request, parameters.getRenditionName())) {
+                if (accepts(assetRenditionDispatcher, parameters)) {
 
                     setResponseHeaders(response, parameters);
 
@@ -87,6 +88,16 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
 
         response.sendError(HttpServletResponse.SC_NOT_FOUND,
                 "Unable to locate a AssetRenditionDispatcher which can dispatch an appropriate rendition.");
+    }
+
+    protected boolean accepts(final AssetRenditionDispatcher assetRenditionDispatcher, final AssetRenditionParameters parameters) {
+        if (assetRenditionDispatcher.getRenditionNames() == null ||
+                assetRenditions == null ||
+                StringUtils.isBlank(parameters.getRenditionName())) {
+            return false;
+        } else {
+            return assetRenditionDispatcher.getRenditionNames().contains(parameters.getRenditionName());
+        }
     }
 
     protected void setResponseHeaders(final SlingHttpServletResponse response, final AssetRenditionParameters parameters) {

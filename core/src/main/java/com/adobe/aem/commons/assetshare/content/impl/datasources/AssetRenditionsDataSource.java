@@ -83,12 +83,13 @@ public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
 
             assetRenditionDispatcher.getOptions().entrySet().stream()
                     .filter(entry -> !excludeAssetRenditions.contains(entry.getValue()))
+                    .filter(entry -> !data.containsValue(entry.getValue()))
                     .forEach(entry -> {
                         String label = entry.getKey();
                         String value = entry.getValue();
 
                         if (cfg.add_assetrenditiondispatcher_to_label()) {
-                            label += " (" + assetRenditionDispatcher.getName() + ")";
+                            label += " (" + assetRenditionDispatcher.getLabel() + ")";
                         }
 
                         data.put(label, value);
