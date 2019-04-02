@@ -67,26 +67,22 @@ public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
         final Map<String, Object> data = new TreeMap<>();
         final ValueMap properties = request.getResource().getValueMap();
 
-        final Set<String> excludeAssetRenditionResolverNames = new HashSet<>();
-        if (cfg.exclude_assetrenditiondispatcher_names() != null) {
-            excludeAssetRenditionResolverNames.addAll(Arrays.asList(cfg.exclude_assetrenditiondispatcher_names()));
-        }
-        excludeAssetRenditionResolverNames.addAll(Arrays.asList(properties.get(PN_EXCLUDE_ASSETRENDITIONDISPATCHERS, new String[]{})));
+        final Set<String> excludeAssetRenditionDispatchers = getExcluded(properties,
+                cfg.exclude_assetrenditiondispatcher_names(),
+                PN_EXCLUDE_ASSETRENDITIONDISPATCHERS);
 
-        final Set<String> excludeAssetRenditionNames = new HashSet<>();
-        if (cfg.exclude_assetrendition_names() != null) {
-            excludeAssetRenditionNames.addAll(Arrays.asList(cfg.exclude_assetrendition_names()));
-        }
-        excludeAssetRenditionNames.addAll(Arrays.asList(properties.get(PN_EXCLUDE_ASSETRENDITIONS, new String[]{})));
+        final Set<String> excludeAssetRenditions = getExcluded(properties,
+                cfg.exclude_assetrendition_names(),
+                PN_EXCLUDE_ASSETRENDITIONS);
 
         for (final AssetRenditionDispatcher assetRenditionDispatcher : assetRenditions.getAssetRenditionDispatchers()) {
-            if (excludeAssetRenditionResolverNames.contains(assetRenditionDispatcher.getName())) {
+            if (excludeAssetRenditionDispatchers.contains(assetRenditionDispatcher.getName())) {
                 log.debug("Skip adding AssetRenditionDispatcher [ {} ] to Data Source as it has been excluded via configuration", assetRenditionDispatcher.getName());
                 continue;
             }
 
             assetRenditionDispatcher.getOptions().entrySet().stream()
-                    .filter(entry -> !excludeAssetRenditionNames.contains(entry.getValue()))
+                    .filter(entry -> !excludeAssetRenditions.contains(entry.getValue()))
                     .forEach(entry -> {
                         String label = entry.getKey();
                         String value = entry.getValue();
@@ -100,6 +96,21 @@ public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
         }
 
         dataSourceBuilder.build(request, data);
+    }
+
+    private Set<String> getExcluded(final ValueMap properties,
+                                    final String[] excludedViaOsgiConfig,
+                                    final String excludedPropertyName) {
+
+        final Set<String> excluded = new HashSet<>();
+
+        if (excludedViaOsgiConfig != null) {
+            excluded.addAll(Arrays.asList(excludedViaOsgiConfig));
+        }
+
+        excluded.addAll(Arrays.asList(properties.get(excludedPropertyName, new String[]{})));
+
+        return excluded;
     }
 
     @Activate

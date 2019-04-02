@@ -40,6 +40,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
@@ -48,8 +49,8 @@ import static org.osgi.framework.Constants.SERVICE_RANKING;
 
 @Component(
         property = {
-                SERVICE_RANKING + ":Integer=" + -100000,
-                "webconsole.configurationFactory.nameHint={name} [ {label} ]"
+                SERVICE_RANKING + ":Integer=" + -20000,
+                "webconsole.configurationFactory.nameHint={name} [ {label} ] @ {service.ranking}"
         }
 )
 @Designate(
@@ -116,14 +117,14 @@ public class StaticRenditionDispatcherImpl implements AssetRenditionDispatcher {
         this.mappings = new ConcurrentHashMap<>();
 
         if (this.cfg.rendition_mappings() != null) {
-            for (final String mapping : this.cfg.rendition_mappings()) {
-                final String[] segments = StringUtils.split(mapping, OSGI_PROPERTY_VALUE_DELIMITER);
-
-                if (segments.length == 2) {
-                    mappings.put(StringUtils.strip(segments[0]),
-                            Pattern.compile(StringUtils.strip(segments[1])));
-                }
-            }
+            Arrays.stream(this.cfg.rendition_mappings())
+                    .map(mapping -> StringUtils.split(mapping, OSGI_PROPERTY_VALUE_DELIMITER))
+                    .filter(segments -> segments.length == 2)
+                    .filter(segments -> StringUtils.isNotBlank(segments[0]))
+                    .filter(segments -> StringUtils.isNotBlank(segments[1]))
+                    .forEach(segments ->
+                            mappings.put(StringUtils.strip(segments[0]),
+                                    Pattern.compile(StringUtils.strip(segments[1]))));
         }
     }
 
