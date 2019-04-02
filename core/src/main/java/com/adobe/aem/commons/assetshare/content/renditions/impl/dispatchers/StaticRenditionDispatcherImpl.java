@@ -147,6 +147,12 @@ public class StaticRenditionDispatcherImpl implements AssetRenditionDispatcher {
                 description = "In the form: <renditionName>" + OSGI_PROPERTY_VALUE_DELIMITER + "<renditionPickerPattern>"
         )
         String[] rendition_mappings() default {};
+
+        @AttributeDefinition(
+                name = "Service ranking",
+                description = "The larger the number, the higher the precedence."
+        )
+        int service_ranking() default 0;
     }
 
     /**
