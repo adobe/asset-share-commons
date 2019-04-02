@@ -53,7 +53,7 @@ public class AssetRenditionServletTest {
 
     @Before
     public void setUp() throws Exception {
-        ctx.load().json("/com/adobe/aem/commons/assetshare/content/renditions/impl/AssetRenditionServletTest.json", "/content/dam");
+        ctx.load().json(getClass().getResourceAsStream("AssetRenditionServletTest.json"), "/content/dam");
         ctx.currentResource("/content/dam/test.png");
 
         ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
@@ -101,6 +101,8 @@ public class AssetRenditionServletTest {
         verify(resolver2, times(1)).dispatch(ctx.request(), ctx.response());
     }
 
+    /*
+
     @Test
     public void setResponseHeaders() {
         ctx.requestPathInfo().setResourcePath("/content/dam/test.png");
@@ -126,9 +128,6 @@ public class AssetRenditionServletTest {
 
         assertEquals("attachment; filename=test.testing.png", ctx.response().getHeader("Content-Disposition"));
     }
-
-    /** Static Rendition Params **/
-
 
     @Test
     public void paramsImpl_WithRenditionName() {
@@ -168,7 +167,7 @@ public class AssetRenditionServletTest {
 
         assertFalse(actual.isValid());
     }
-
+*/
     /*
     @Test
     public void paramsImpl_RenditionNameWithDot() {

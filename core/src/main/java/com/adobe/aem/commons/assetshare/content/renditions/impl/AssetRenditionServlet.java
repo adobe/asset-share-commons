@@ -20,6 +20,7 @@
 package com.adobe.aem.commons.assetshare.content.renditions.impl;
 
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.commons.util.DamUtil;
@@ -62,94 +63,37 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
     private static final Logger log = LoggerFactory.getLogger(AssetRenditionServlet.class);
 
     public static final String SERVLET_EXTENSION = "renditions";
-    public static final String DOWNLOAD_AS_ATTACHMENT_SUFFIX_SEGMENT = "download";
-    public static final String CACHEABLE_SUFFIX_FILENAME = "asset.rendition";
+    //public static final String CACHEABLE_SUFFIX_FILENAME = "asset.rendition";
 
     @Reference
     private AssetRenditions assetRenditions;
 
     public final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) throws IOException, ServletException {
-        final AssetRenditionDispatcher.Params params = new ParamsImpl(request);
+        try {
+            final AssetRenditionParameters parameters = new AssetRenditionParameters(request);
 
-        if (params.isValid()) {
             for (final AssetRenditionDispatcher assetRenditionDispatcher : assetRenditions.getAssetRenditionDispatchers()) {
-                if (assetRenditionDispatcher.accepts(request, params.getRenditionName())) {
+                if (assetRenditionDispatcher.accepts(request, parameters.getRenditionName())) {
 
-                    setResponseHeaders(response, params);
+                    setResponseHeaders(response, parameters);
 
                     assetRenditionDispatcher.dispatch(request, response);
                     return;
                 }
             }
-        } else {
-            log.debug("Request suffix [ {} ] has invalid 'suffix extension'", request.getRequestPathInfo().getSuffix());
+        } catch (IllegalArgumentException e) {
+            log.debug("Invalid request parameters for AssetRenditionServlet", e);
         }
 
         response.sendError(HttpServletResponse.SC_NOT_FOUND,
-                "Unable to locate a AssetRenditionDispatcher to dispatch a rendition for [" + params.getRenditionName() + "].");
+                "Unable to locate a AssetRenditionDispatcher which can dispatch an appropriate rendition.");
     }
 
-    protected void setResponseHeaders(final SlingHttpServletResponse response, final AssetRenditionDispatcher.Params params) {
-        if (params.isAttachment()) {
-            response.setHeader("Content-Disposition", String.format("attachment; filename=%s", params.getFileName()));
+    protected void setResponseHeaders(final SlingHttpServletResponse response, final AssetRenditionParameters parameters) {
+        if (parameters.isDownload()) {
+            response.setHeader("Content-Disposition", String.format("attachment; filename=%s", parameters.getFileName()));
         } else {
-            response.setHeader("Content-Disposition", String.format("filename=%s", params.getFileName()));
-        }
-    }
-
-    /**
-     * Represents the parameters provided in the RequestPathInfo's suffix to determine how the rendition is selected and returned.
-     */
-    protected static class ParamsImpl implements AssetRenditionDispatcher.Params {
-        private String renditionName = null;
-        private String fileName = null;
-        private boolean attachment = false;
-        private boolean valid = true;
-
-        public ParamsImpl(SlingHttpServletRequest request) {
-            final Asset asset = DamUtil.resolveToAsset(request.getResource());
-            final String[] segments = StringUtils.split(request.getRequestPathInfo().getSuffix(), "/");
-
-            if (asset == null ||
-                    segments.length < 2 ||
-                    (!CACHEABLE_SUFFIX_FILENAME.equals(segments[segments.length - 1]) &&
-                            !StringUtils.startsWith(segments[segments.length - 1], CACHEABLE_SUFFIX_FILENAME + "."))) {
-                valid = false;
-            } else {
-                if (segments.length > 0) {
-                    renditionName = StringUtils.stripToNull(StringUtils.substringBefore(segments[0], "."));
-                }
-
-                attachment = ArrayUtils.indexOf(segments, DOWNLOAD_AS_ATTACHMENT_SUFFIX_SEGMENT) > 0;
-
-                final int dotIndex = StringUtils.lastIndexOf(asset.getName(), ".");
-
-                if (dotIndex < 0) {
-                    fileName = asset.getName() + "." + renditionName;
-                } else {
-                    fileName = asset.getName().substring(0, dotIndex) + "." + renditionName + asset.getName().substring(dotIndex);
-                }
-            }
-        }
-
-        @Override
-        public String getRenditionName() {
-            return renditionName;
-        }
-
-        @Override
-        public String getFileName() {
-            return fileName;
-        }
-
-        @Override
-        public boolean isAttachment() {
-            return attachment;
-        }
-
-        @Override
-        public boolean isValid() {
-            return valid;
+            response.setHeader("Content-Disposition", String.format("filename=%s", parameters.getFileName()));
         }
     }
 }

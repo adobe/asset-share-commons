@@ -41,21 +41,21 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class StaticRenditionResolverImplTest {
+public class StaticRenditionDispatcherImplTest {
 
     @Rule
     public AemContext ctx = new AemContext();
 
     @Before
     public void setUp() throws Exception {
-        ctx.load().json("/com/adobe/aem/commons/assetshare/content/renditions/impl/dispatchers/StaticRenditionResolverImplTest.json", "/content/dam");
+        ctx.load().json(getClass().getResourceAsStream("StaticRenditionDispatcherImplTest.json"), "/content/dam");
 
         // 1x1 pixel red png
-        ctx.load().binaryFile("/com/adobe/aem/commons/assetshare/content/renditions/impl/dispatchers/StaticRenditionResolverImplTest__original.png",
+        ctx.load().binaryFile(getClass().getResourceAsStream("StaticRenditionDispatcherImplTest__original.png"),
                 "/content/dam/test.png/jcr:content/renditions/original");
 
         // 1x1 pixel blue png
-        ctx.load().binaryFile("/com/adobe/aem/commons/assetshare/content/renditions/impl/dispatchers/StaticRenditionResolverImplTest__cq5dam.web.1280.1280.png",
+        ctx.load().binaryFile(getClass().getResourceAsStream("StaticRenditionDispatcherImplTest__cq5dam.web.1280.1280.png"),
                 "/content/dam/test.png/jcr:content/renditions/cq5dam.web.1280.1280.png");
 
         ctx.currentResource("/content/dam/test.png");
@@ -142,7 +142,7 @@ public class StaticRenditionResolverImplTest {
 
     @Test
     public void dispatch() throws IOException, ServletException {
-        final byte[] expectedOutputStream = IOUtils.toByteArray(this.getClass().getResourceAsStream("/com/adobe/aem/commons/assetshare/content/renditions/impl/dispatchers/StaticRenditionResolverImplTest__cq5dam.web.1280.1280.png"));
+        final byte[] expectedOutputStream = IOUtils.toByteArray(this.getClass().getResourceAsStream("StaticRenditionDispatcherImplTest__cq5dam.web.1280.1280.png"));
 
         ctx.registerInjectActivateService(new StaticRenditionDispatcherImpl(),
                 ImmutableMap.<String, Object>builder().

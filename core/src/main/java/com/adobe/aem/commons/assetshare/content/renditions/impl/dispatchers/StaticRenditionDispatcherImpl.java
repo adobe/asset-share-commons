@@ -115,12 +115,14 @@ public class StaticRenditionDispatcherImpl implements AssetRenditionDispatcher {
 
         this.mappings = new ConcurrentHashMap<>();
 
-        for (final String mapping : this.cfg.rendition_mappings()) {
-            final String[] segments = StringUtils.split(mapping, OSGI_PROPERTY_VALUE_DELIMITER);
+        if (this.cfg.rendition_mappings() != null) {
+            for (final String mapping : this.cfg.rendition_mappings()) {
+                final String[] segments = StringUtils.split(mapping, OSGI_PROPERTY_VALUE_DELIMITER);
 
-            if (segments.length == 2) {
-                mappings.put(StringUtils.strip(segments[0]),
-                        Pattern.compile(StringUtils.strip(segments[1])));
+                if (segments.length == 2) {
+                    mappings.put(StringUtils.strip(segments[0]),
+                            Pattern.compile(StringUtils.strip(segments[1])));
+                }
             }
         }
     }
@@ -143,11 +145,7 @@ public class StaticRenditionDispatcherImpl implements AssetRenditionDispatcher {
                 name = "Static rendition mappings",
                 description = "In the form: <renditionName>" + OSGI_PROPERTY_VALUE_DELIMITER + "<renditionPickerPattern>"
         )
-        String[] rendition_mappings() default {
-                "web=^cq5dam\\.web\\.\\d+\\.\\d+\\.[a-z]+$",
-                "thumbnail=^cq5dam\\.thumbnail\\.140\\.100\\.[a-z]+$",
-                "original=^original$"
-        };
+        String[] rendition_mappings() default {};
     }
 
     /**

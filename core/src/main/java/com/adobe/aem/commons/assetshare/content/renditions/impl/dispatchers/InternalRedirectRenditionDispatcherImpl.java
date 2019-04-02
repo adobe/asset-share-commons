@@ -118,11 +118,13 @@ public class InternalRedirectRenditionDispatcherImpl implements AssetRenditionDi
 
         this.mappings = new ConcurrentHashMap<>();
 
-        for (final String mapping : this.cfg.rendition_mappings()) {
-            final String[] segments = StringUtils.split(mapping, OSGI_PROPERTY_VALUE_DELIMITER);
+        if (this.cfg.rendition_mappings() != null) {
+            for (final String mapping : this.cfg.rendition_mappings()) {
+                final String[] segments = StringUtils.split(mapping, OSGI_PROPERTY_VALUE_DELIMITER);
 
-            if (segments.length == 2) {
-                mappings.put(StringUtils.strip(segments[0]), StringUtils.strip(segments[1]));
+                if (segments.length == 2) {
+                    mappings.put(StringUtils.strip(segments[0]), StringUtils.strip(segments[1]));
+                }
             }
         }
     }
@@ -145,9 +147,6 @@ public class InternalRedirectRenditionDispatcherImpl implements AssetRenditionDi
                 name = "Rendition mappings",
                 description = "In the form: <renditionName>" + OSGI_PROPERTY_VALUE_DELIMITER + "<postFix>"
         )
-        String[] rendition_mappings() default {
-                "card=${asset.path}.thumb.319.319.${asset.extension}",
-                "list=${asset.path}.thumb.25.25.${asset.extension}"
-        };
+        String[] rendition_mappings() default {};
     }
 }

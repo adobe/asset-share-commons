@@ -60,11 +60,11 @@ public interface AssetRenditions {
      *
      * @param request the request object.
      * @param asset   the asset to rendition.
-     * @param params  the params which describe how the AssetRenditionServlet should handle sending the asset rendition to the response.
+     * @param parameters  the params which describe how the AssetRenditionServlet should handle sending the asset rendition to the response.
      *
      * @return the URL that can be used to HTTP GET Request the specified asset rendition (does NOT include scheme/host/port).
      */
-    String getUrl(SlingHttpServletRequest request, AssetModel asset, UrlParams params);
+    String getUrl(SlingHttpServletRequest request, AssetModel asset, AssetRenditionParameters parameters);
 
     /**
      * Creates a Map that is used to provide the label/values to drive the AssetRenditionsDatasource dropdown.
@@ -85,57 +85,4 @@ public interface AssetRenditions {
      * @return the expression with the variables replaced with values derived from the request.
      */
     String evaluateExpression(SlingHttpServletRequest request, String expression);
-
-    /**
-     *
-     */
-    final class UrlParams<T> {
-        private String renditionName;
-        private boolean download;
-        private ValueMap otherProperties;
-
-        public UrlParams() {
-            this.otherProperties = new ValueMapDecorator(new HashMap<>());
-        }
-
-        public UrlParams(final String renditionName, final boolean download) {
-            this.renditionName = renditionName;
-            this.download = download;
-            this.otherProperties = new ValueMapDecorator(new HashMap<>());
-        }
-
-        public UrlParams(final String renditionName, final boolean download, final Map<String, Object> otherProperties) {
-            this.renditionName = renditionName;
-            this.download = download;
-            this.otherProperties = new ValueMapDecorator(otherProperties);
-        }
-
-        public String getRenditionName() {
-            return renditionName;
-        }
-
-        public void setRenditionName(String renditionName) {
-            this.renditionName = renditionName;
-        }
-
-        public boolean isDownload() {
-            return download;
-        }
-
-        public void setDownload(boolean download) {
-            this.download = download;
-        }
-
-        public void put(String key, final Object value) {
-            this.otherProperties.put(key, value);
-        }
-
-        public T get(String key, T defaultValue) {
-            return otherProperties.get(key, defaultValue);
-        }
-
-        public T get(String key, Class<T> clazz) {
-            return otherProperties.get(key, clazz);
-        }
-    }
 }

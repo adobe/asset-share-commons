@@ -21,6 +21,7 @@ package com.adobe.aem.commons.assetshare.content.renditions.impl;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -72,26 +73,20 @@ public class AssetRenditionsImpl implements AssetRenditions {
     }
 
     @Override
-    public String getRenditionName(final SlingHttpServletRequest request) {
-        final String suffix = request.getRequestPathInfo().getSuffix();
-        final String[] segments = StringUtils.split(StringUtils.substringBeforeLast(suffix, "."), "/");
-
-        if (segments != null && segments.length > 0) {
-            return segments[0];
-        } else {
-            return null;
-        }
+    public String getRenditionName(final SlingHttpServletRequest request) throws IllegalArgumentException {
+        final AssetRenditionParameters parameters = new AssetRenditionParameters(request);
+        return parameters.getRenditionName();
     }
 
     @Override
-    public String getUrl(final SlingHttpServletRequest request, final AssetModel asset, final UrlParams params) {
-        String url = request.getResourceResolver().map(asset.getPath()) + "." + AssetRenditionServlet.SERVLET_EXTENSION + "/" + params.getRenditionName() + "/";
+    public String getUrl(final SlingHttpServletRequest request, final AssetModel asset, final AssetRenditionParameters parameters) {
+        String url = request.getResourceResolver().map(asset.getPath()) + "." + AssetRenditionServlet.SERVLET_EXTENSION + "/" + parameters.getRenditionName() + "/";
 
-        if (params.isDownload()) {
-            url += AssetRenditionServlet.DOWNLOAD_AS_ATTACHMENT_SUFFIX_SEGMENT + "/";
+        if (parameters.isDownload()) {
+            url += AssetRenditionParameters.DOWNLOAD + "/";
         }
 
-        url += AssetRenditionServlet.CACHEABLE_SUFFIX_FILENAME;
+        url += AssetRenditionParameters.CACHE_FILENAME;
 
         return url;
     }

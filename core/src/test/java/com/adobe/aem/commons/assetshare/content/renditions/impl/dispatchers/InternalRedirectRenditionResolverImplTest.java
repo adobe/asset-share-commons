@@ -60,7 +60,7 @@ public class InternalRedirectRenditionResolverImplTest {
 
     @Before
     public void setUp() throws Exception {
-        ctx.load().json("/com/adobe/aem/commons/assetshare/content/renditions/impl/dispatchers/InternalRedirectRenditionDispatcherImplTest.json", "/content/dam");
+        ctx.load().json(getClass().getResourceAsStream("InternalRedirectRenditionDispatcherImplTest.json"), "/content/dam");
         ctx.currentResource("/content/dam/test.png");
 
         ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());

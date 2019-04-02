@@ -73,41 +73,4 @@ public interface AssetRenditionDispatcher {
      * @throws ServletException if the request cannot be dispatched properly.
      */
     void dispatch(SlingHttpServletRequest request, SlingHttpServletResponse response) throws IOException, ServletException;
-
-    /**
-     * Represents the parameters used by the RenditionResolver to resolve the appropriate rendition.
-     */
-    interface Params {
-        /**
-         * @return the rendition name to resolve.
-         */
-        String getRenditionName();
-
-        /**
-         * The file name is computed as:
-         * <br>
-         * &lt;asset-name-without-extension&gt;.&lt;rendition-name&gt;.&lt;asset-extension&gt;
-         * <br>
-         * examples:<br>
-         * <br>
-         * cat.png -&gt; cat.web.png<br>
-         * dog.pdf -&gt; dog.original.png<br>
-         * mouse.mov -&gt; mouse.tiny.mov<br>
-         * <br>
-         * The is only impacts browser downloads, and not the URL or cached file in AEM dispatcher.
-         *
-         * @return the filename the rendition should download as.
-         */
-        String getFileName();
-
-        /**
-         * @return true if the rendition should be downloaded as an attachment.
-         */
-        boolean isAttachment();
-
-        /**
-         * @return true if the URL is valid and the requires params can be parsed from it's Suffix.
-         */
-        boolean isValid();
-    }
 }
