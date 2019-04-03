@@ -28,13 +28,13 @@ import io.wcm.testing.mock.aem.junit.AemContext;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
 
 public class AssetRenditionServletTest {
 
@@ -51,8 +51,7 @@ public class AssetRenditionServletTest {
 
     @Test
     public void doGet() throws IOException, ServletException {
-
-        AssetRenditionDispatcher assetRenditionDispatcher = spy(new StaticRenditionDispatcherImpl());
+        AssetRenditionDispatcher assetRenditionDispatcher = Mockito.spy(new StaticRenditionDispatcherImpl());
 
         ctx.registerInjectActivateService(
                 new StaticRenditionDispatcherImpl(),
@@ -77,7 +76,31 @@ public class AssetRenditionServletTest {
 
         ctx.getService(Servlet.class).service(ctx.request(), ctx.response());
 
-        verify(assetRenditionDispatcher, times(1)).dispatch(ctx.request(), ctx.response());
+        Mockito.verify(assetRenditionDispatcher, Mockito.times(1)).dispatch(ctx.request(), ctx.response());
+    }
+
+    @Test
+    public void doGet_InvalidParameters() throws IOException, ServletException {
+        final AssetRenditionDispatcher assetRenditionDispatcher = Mockito.spy(new StaticRenditionDispatcherImpl());
+
+        ctx.registerInjectActivateService(
+                assetRenditionDispatcher,
+                ImmutableMap.<String, Object>builder().
+                        put("rendition.mappings", new String[]{
+                                "testing=value doesnt matter"}).
+                        build());
+
+        ctx.registerInjectActivateService(new AssetRenditionServlet());
+
+        ctx.request().setMethod("GET");
+        ctx.requestPathInfo().setResourcePath("/content/dam/test.png");
+        ctx.requestPathInfo().setExtension("renditions");
+        ctx.requestPathInfo().setSuffix("testing/download/dont-allow-this-parameter/asset.rendition");
+
+        ctx.getService(Servlet.class).service(ctx.request(), ctx.response());
+
+        assertEquals(404, ctx.response().getStatus());
+        Mockito.verify(assetRenditionDispatcher, Mockito.times(0)).dispatch(ctx.request(), ctx.response());
     }
 
     @Test

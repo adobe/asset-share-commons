@@ -219,6 +219,38 @@ public class AssetRenditionsDataSourceTest {
         assertArrayEquals(expectedValues, actual.values().toArray());
     }
 
+    @Test
+    public void doGet_WithHiddenAssetRenditionDispatcher() throws ServletException, IOException {
+        final String[] expectedValues = new String[]{"a", "b", "c", "d"};
+
+        ctx.currentResource("/apps/dialog/default");
+        ctx.registerInjectActivateService(new AssetRenditionsDataSource(),
+                "sling.servlet.resourceTypes", "asset-share-commons/data-sources/asset-renditions",
+                "sling.servlet.methods", "GET");
+
+        ctx.registerInjectActivateService(
+                new StaticRenditionDispatcherImpl(),
+                ImmutableMap.<String, Object>builder().
+                        put(Constants.SERVICE_RANKING, 1000).
+                        put("label", "Three AssetRenditionDispatcher").
+                        put("name", "three").
+                        put ("hidden", true).
+                        put("rendition.mappings", new String[]{
+                                "e=value",
+                                "f=value"}).
+                        build());
+
+
+        final Servlet servlet = ctx.getService(Servlet.class);
+
+        servlet.service(ctx.request(), ctx.response());
+
+        final DataSource sds = (DataSource) ctx.request().getAttribute(DataSource.class.getName());
+        final Map<String, String> actual = toMap(sds);
+
+        assertArrayEquals(expectedValues, actual.values().toArray());
+    }
+
     private Map<String, String> toMap(DataSource dataSource) {
         final Map<String, String> results = new LinkedHashMap<>();
         final Iterator<Resource> resourcesIterator = dataSource.iterator();

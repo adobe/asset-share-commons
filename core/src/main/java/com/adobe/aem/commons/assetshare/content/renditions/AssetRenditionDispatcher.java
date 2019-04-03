@@ -65,6 +65,13 @@ public interface AssetRenditionDispatcher {
     Set<String> getRenditionNames();
 
     /**
+     * Returning true will prevent this AssetRenditionDispatcher's options from being listed in the AssetRenditionsDataSource.
+     *
+     * @return true if this AssetRenditionDispatcher is intended to be hidden from the AEM author's view, and used in the programmatic construction of URLs.
+     */
+    default boolean isHidden() { return false; }
+
+    /**
      * Dispatch the request to the appropriate mechanism that will provide the desired rendition.
      *
      * @param request  the SlingHttpServletRequest.

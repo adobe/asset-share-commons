@@ -53,7 +53,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class InternalRedirectRenditionResolverImplTest {
+public class InternalRedirectRenditionDispatcherImplTest {
 
     @Rule
     public AemContext ctx = new AemContext();

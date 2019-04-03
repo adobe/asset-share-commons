@@ -40,9 +40,10 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Pattern;
 
 import static org.osgi.framework.Constants.SERVICE_RANKING;
 
@@ -81,6 +82,11 @@ public class InternalRedirectRenditionDispatcherImpl implements AssetRenditionDi
     @Override
     public Map<String, String> getOptions() {
         return assetRenditions.getOptions(mappings);
+    }
+
+    @Override
+    public boolean isHidden() {
+        return cfg.hidden();
     }
 
     @Override
@@ -133,6 +139,9 @@ public class InternalRedirectRenditionDispatcherImpl implements AssetRenditionDi
 
     @ObjectClassDefinition(name = "Asset Share Commons - Rendition Dispatcher - Internal Redirect Renditions")
     public @interface Cfg {
+        @AttributeDefinition
+        String webconsole_configurationFactory_nameHint() default "{name} [ {label} ] @ {service.ranking}";
+
         @AttributeDefinition(
                 name = "Name",
                 description = "The system name of this Rendition Dispatcher. This should be unique across all AssetRenditionDispatcher instances."
@@ -146,6 +155,12 @@ public class InternalRedirectRenditionDispatcherImpl implements AssetRenditionDi
         String label() default "Internal Redirect Renditions";
 
         @AttributeDefinition(
+                name = "Hide renditions",
+                description = "Hide if this AssetRenditionDispatcher configuration is not intended to be exposed to AEM authors for selection in dialogs."
+        )
+        boolean hidden() default false;
+
+        @AttributeDefinition(
                 name = "Rendition mappings",
                 description = "In the form: <renditionName>" + OSGI_PROPERTY_VALUE_DELIMITER + "<postFix>"
         )
@@ -156,6 +171,5 @@ public class InternalRedirectRenditionDispatcherImpl implements AssetRenditionDi
                 description = "The larger the number, the higher the precedence."
         )
         int service_ranking() default 0;
-
     }
 }

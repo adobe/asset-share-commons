@@ -51,8 +51,7 @@ import static org.osgi.framework.Constants.SERVICE_RANKING;
 
 @Component(
         property = {
-                SERVICE_RANKING + ":Integer=" + -20000,
-                "webconsole.configurationFactory.nameHint={name} [ {label} ] @ {service.ranking}"
+                SERVICE_RANKING + ":Integer=" + -20000
         }
 )
 @Designate(
@@ -84,6 +83,11 @@ public class StaticRenditionDispatcherImpl implements AssetRenditionDispatcher {
     @Override
     public Map<String, String> getOptions() {
         return assetRenditions.getOptions(mappings);
+    }
+
+    @Override
+    public boolean isHidden() {
+        return cfg.hidden();
     }
 
     @Override
@@ -131,6 +135,9 @@ public class StaticRenditionDispatcherImpl implements AssetRenditionDispatcher {
 
     @ObjectClassDefinition(name = "Asset Share Commons - Rendition Dispatcher - Static Renditions")
     public @interface Cfg {
+        @AttributeDefinition
+        String webconsole_configurationFactory_nameHint() default "{name} [ {label} ] @ {service.ranking}";
+
         @AttributeDefinition(
                 name = "Name",
                 description = "The system name of this Rendition Dispatcher. This should be unique across all AssetRenditionDispatcher instances."
@@ -142,6 +149,12 @@ public class StaticRenditionDispatcherImpl implements AssetRenditionDispatcher {
                 description = "The human-friendly name of this AssetRenditionDispatcher and may be displayed to authors."
         )
         String label() default "Static Renditions";
+
+        @AttributeDefinition(
+                name = "Hide renditions",
+                description = "Hide if this AssetRenditionDispatcher configuration is not intended to be exposed to AEM authors for selection in dialogs."
+        )
+        boolean hidden() default false;
 
         @AttributeDefinition(
                 name = "Static rendition mappings",

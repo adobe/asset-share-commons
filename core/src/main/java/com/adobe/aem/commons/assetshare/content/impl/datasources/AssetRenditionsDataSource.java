@@ -76,8 +76,11 @@ public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
                 PN_EXCLUDE_ASSETRENDITIONS);
 
         for (final AssetRenditionDispatcher assetRenditionDispatcher : assetRenditions.getAssetRenditionDispatchers()) {
-            if (excludeAssetRenditionDispatchers.contains(assetRenditionDispatcher.getName())) {
-                log.debug("Skip adding AssetRenditionDispatcher [ {} ] to Data Source as it has been excluded via configuration", assetRenditionDispatcher.getName());
+            if (assetRenditionDispatcher.isHidden()) {
+                log.debug("Skip adding AssetRenditionDispatcher factory [ {} ] to Data Source as it has been marked as hidden via configuration", assetRenditionDispatcher.getName());
+                continue;
+            } else if (excludeAssetRenditionDispatchers.contains(assetRenditionDispatcher.getName())) {
+                log.debug("Skip adding AssetRenditionDispatcher factory [ {} ] to Data Source as it has been excluded via configuration", assetRenditionDispatcher.getName());
                 continue;
             }
 
