@@ -99,7 +99,7 @@ public class AssetRenditionServletTest {
 
         ctx.getService(Servlet.class).service(ctx.request(), ctx.response());
 
-        assertEquals(404, ctx.response().getStatus());
+        assertEquals(400, ctx.response().getStatus());
         Mockito.verify(assetRenditionDispatcher, Mockito.times(0)).dispatch(ctx.request(), ctx.response());
     }
 

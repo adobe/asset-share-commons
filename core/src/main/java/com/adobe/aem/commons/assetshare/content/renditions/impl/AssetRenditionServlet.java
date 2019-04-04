@@ -86,13 +86,18 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
                         return;
                     }
                 }
+
+                response.sendError(HttpServletResponse.SC_NOT_FOUND,
+                        "Unable to resolve an AssetRenditionDispatcher that can dispatch to a rendition.");
+
+            } else {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unsupported suffix parameters detected.");
             }
         } catch (IllegalArgumentException e) {
-            log.debug("Invalid request parameters for AssetRenditionServlet", e);
-        }
+            log.debug("Invalid request URL format for AssetRenditionServlet.", e);
 
-        response.sendError(HttpServletResponse.SC_NOT_FOUND,
-                "Unable to locate a AssetRenditionDispatcher which can dispatch an appropriate rendition.");
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR , "Invalid request URL format for AssetRenditionServlet.");
+        }
     }
 
     protected boolean acceptedByAssetRenditionDispatcher(final AssetRenditionDispatcher assetRenditionDispatcher, final AssetRenditionParameters parameters) {
