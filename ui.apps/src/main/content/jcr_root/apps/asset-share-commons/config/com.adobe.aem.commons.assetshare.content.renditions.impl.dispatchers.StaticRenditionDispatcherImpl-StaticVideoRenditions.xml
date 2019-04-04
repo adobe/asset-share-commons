@@ -20,8 +20,8 @@
 
 <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
           jcr:primaryType="sling:OsgiConfig"
-          service.ranking="-100000"
-          label="Static Renditions"
-          name="asset-share-commons-static-renditions"
-          rendition.mappings="[original=^original$,web=^cq5dam\\.web\\.\\d+\\.\\d+\\..+]"
+          service.ranking="-100001"
+          label="Static Video Renditions"
+          name="asset-share-commons-static-video-renditions"
+          rendition.mappings="[original=^original$,m4v=^cq5dam\\.video\\..+\\.m4v,m4v=^cq5dam\\.video\\..+\\.mp4]"
 />
