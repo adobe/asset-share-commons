@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - #0395: Support for parameterized Computed Properties.
 
+### Fixed
+- #0388: Corrected spelling of Boolean in dialog value.
+
 ## [v1.7.0]
 
 ### Fixed
