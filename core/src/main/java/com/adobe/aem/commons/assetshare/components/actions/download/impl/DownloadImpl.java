@@ -22,6 +22,8 @@ package com.adobe.aem.commons.assetshare.components.actions.download.impl;
 import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
 import com.adobe.aem.commons.assetshare.components.actions.download.Download;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.day.cq.dam.api.DamConstants;
+import com.day.cq.dam.commons.util.UIHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.models.annotations.Default;
@@ -45,6 +47,7 @@ import java.util.Collection;
 )
 public class DownloadImpl implements Download {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/modals/download";
+    private static final Logger log = LoggerFactory.getLogger(DownloadImpl.class);
 
     @Self
     @Required
@@ -55,11 +58,17 @@ public class DownloadImpl implements Download {
     @Default(values = "Assets")
     protected String zipFileName;
 
+    @ValueMapValue
+    @Optional
+    protected Long maxContentSize;
+
     @OSGiService
     @Required
     protected ActionHelper actionHelper;
 
     protected Collection<AssetModel> assets = new ArrayList<>();
+
+    private Long downloadContentSize;
 
     @PostConstruct
     protected void init() {
@@ -67,6 +76,9 @@ public class DownloadImpl implements Download {
 
         if (assets.isEmpty()) {
             assets = actionHelper.getPlaceholderAsset(request);
+            downloadContentSize = -1L;
+        } else {
+            downloadContentSize = calculateDownloadContentSize(assets);
         }
     }
 
@@ -76,5 +88,31 @@ public class DownloadImpl implements Download {
 
     public String getZipFileName() {
         return StringUtils.removeEndIgnoreCase(zipFileName, ".zip");
+    }
+
+    @Override
+    public boolean isMaxContentSize() {
+        if(maxContentSize != null && maxContentSize < downloadContentSize) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String getMaxContentSizeLimit() {
+        return UIHelper.getSizeLabel(maxContentSize, request);
+    }
+
+    @Override
+    public String getDownloadContentSize() {
+        return UIHelper.getSizeLabel(downloadContentSize, request);
+    }
+
+    private long calculateDownloadContentSize(Collection<AssetModel> assets) {
+        Long contentSize = 0L;
+        for(AssetModel asset : assets) {
+            contentSize += asset.getProperties().get(DamConstants.DAM_SIZE, 0L);
+        }
+        return contentSize;
     }
 }
