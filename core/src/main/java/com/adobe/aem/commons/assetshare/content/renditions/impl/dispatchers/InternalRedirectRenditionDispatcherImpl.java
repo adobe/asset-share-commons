@@ -19,11 +19,13 @@
 
 package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 
+import com.adobe.acs.commons.util.PathInfoUtil;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.util.impl.ExtensionOverrideRequestWrapper;
 import com.day.cq.commons.PathInfo;
+import com.day.text.Text;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -109,10 +111,12 @@ public class InternalRedirectRenditionDispatcherImpl implements AssetRenditionDi
                     parameters.getRenditionName());
 
             final RequestDispatcherOptions options = new RequestDispatcherOptions();
+            final String resourcePath = Text.unescape(pathInfo.getResourcePath());
+
             options.setReplaceSelectors(StringUtils.removeStart(pathInfo.getSelectorString(), "."));
             options.setReplaceSuffix(pathInfo.getSuffix());
 
-            request.getRequestDispatcher(request.getResourceResolver().getResource(pathInfo.getResourcePath()), options)
+            request.getRequestDispatcher(resourcePath, options)
                     .include(new ExtensionOverrideRequestWrapper(request, pathInfo.getExtension()), response);
 
         } else {

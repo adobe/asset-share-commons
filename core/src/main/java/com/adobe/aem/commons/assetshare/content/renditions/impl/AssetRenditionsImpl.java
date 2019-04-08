@@ -106,12 +106,14 @@ public class AssetRenditionsImpl implements AssetRenditions {
         final AssetModel assetModel = request.adaptTo(AssetModel.class);
 
         // Even though, the name is .path, we use url since this is the URL escaped version of the path
-        final String assetPath = assetModel.getUrl();
+        final String assetPath = assetModel.getPath();
+        final String assetUrl = assetModel.getUrl();
         final String assetName = assetModel.getName();
         final String assetExtension = StringUtils.substringAfterLast(assetName, ".");
         final String renditionName = new AssetRenditionParameters(request).getRenditionName();
 
         expression = StringUtils.replace(expression, VAR_ASSET_PATH, assetPath);
+        expression = StringUtils.replace(expression, VAR_ASSET_URL, assetUrl);
         expression = StringUtils.replace(expression, VAR_ASSET_NAME, assetName);
         expression = StringUtils.replace(expression, VAR_ASSET_EXTENSION, assetExtension);
         expression = StringUtils.replace(expression, VAR_RENDITION_NAME, renditionName);

@@ -61,15 +61,17 @@ public class InternalRedirectRenditionDispatcherImplTest {
     @Mock
     private RequestDispatcher requestDispatcher;
 
+    @Mock
+    private AssetResolver assetResolver;
+
     @Before
     public void setUp() throws Exception {
         ctx.load().json(getClass().getResourceAsStream("InternalRedirectRenditionDispatcherImplTest.json"), "/content/dam");
         ctx.currentResource("/content/dam/test.png");
+        doReturn(DamUtil.resolveToAsset(ctx.resourceResolver().getResource("/content/dam/test.png"))).when(assetResolver).resolveAsset(ctx.request());
 
         ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
 
-        final AssetResolver assetResolver = mock(AssetResolver.class);
-        doReturn(DamUtil.resolveToAsset(ctx.resourceResolver().getResource("/content/dam/test.png"))).when(assetResolver).resolveAsset(ctx.request());
         ctx.registerService(AssetResolver.class, assetResolver);
 
         ctx.registerService(ComputedProperties.class, new ComputedPropertiesImpl());
@@ -83,7 +85,8 @@ public class InternalRedirectRenditionDispatcherImplTest {
 
             @Override
             public RequestDispatcher getRequestDispatcher(Resource resource, RequestDispatcherOptions options) {
-                return requestDispatcher;
+                assertEquals("This method signature should not be called", "This method signature was called.");
+                return null;
             }
         });
     }
@@ -116,7 +119,7 @@ public class InternalRedirectRenditionDispatcherImplTest {
 
     @Test
     public void getOptions() {
-        final Map<String, String> expected =  ImmutableMap.<String, String>builder().
+        final Map<String, String> expected = ImmutableMap.<String, String>builder().
                 put("Foo", "foo").
                 put("Foo bar", "foo_bar").
                 put("Foo-bar", "foo-bar").
@@ -172,10 +175,51 @@ public class InternalRedirectRenditionDispatcherImplTest {
         doAnswer(invocation -> {
             Object[] args = invocation.getArguments();
             // Write some data to the response so we know that that requestDispatcher.include(..) was infact invoked.
-            ((MockSlingHttpServletResponse)args[1]).getOutputStream().print("test");
+            ((MockSlingHttpServletResponse) args[1]).getOutputStream().print("test");
             return null; // void method, return null
         }).when(requestDispatcher).include(any(ExtensionOverrideRequestWrapper.class), eq(ctx.response()));
-        
+
+        assetRenditionDispatcher.dispatch(ctx.request(), ctx.response());
+
+        assertEquals("test", ctx.response().getOutputAsString());
+    }
+
+    @Test
+    public void dispatch_WithSpacesInPath() throws IOException, ServletException {
+        ctx.registerInjectActivateService(new InternalRedirectRenditionDispatcherImpl(),
+                ImmutableMap.<String, Object>builder().
+                        put("rendition.mappings", new String[]{
+                                "testing=${asset.path}.test.500.500.${asset.extension}"}).
+                        build());
+
+        final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
+
+        doReturn(DamUtil.resolveToAsset(ctx.resourceResolver().getResource("/content/dam/test with spaces.png"))).when(assetResolver).resolveAsset(ctx.request());
+        ctx.currentResource("/content/dam/test with spaces.png");
+        ctx.requestPathInfo().setExtension("rendition");
+        ctx.requestPathInfo().setSuffix("testing/download/asset.rendition");
+
+        doAnswer(invocation -> {
+            Object[] args = invocation.getArguments();
+            // Write some data to the response so we know that that requestDispatcher.include(..) was infact invoked.
+            ((MockSlingHttpServletResponse) args[1]).getOutputStream().print("test");
+            return null; // void method, return null
+        }).when(requestDispatcher).include(any(ExtensionOverrideRequestWrapper.class), eq(ctx.response()));
+
+        ctx.request().setRequestDispatcherFactory(new MockRequestDispatcherFactory() {
+            @Override
+            public RequestDispatcher getRequestDispatcher(String path, RequestDispatcherOptions options) {
+                assertEquals("/content/dam/test with spaces.png.test.500.500.png", path);
+                return requestDispatcher;
+            }
+
+            @Override
+            public RequestDispatcher getRequestDispatcher(Resource resource, RequestDispatcherOptions options) {
+                assertEquals("This method signature should not be called", "This method signature was called.");
+                return null;
+            }
+        });
+
         assetRenditionDispatcher.dispatch(ctx.request(), ctx.response());
 
         assertEquals("test", ctx.response().getOutputAsString());
