@@ -123,6 +123,10 @@
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.service.component.annotations</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.adobe.acs</groupId>
+            <artifactId>acs-aem-commons-bundle</artifactId>
+        </dependency>
         <!-- Required for E-mail functionality -->
         <dependency>
             <groupId>javax.mail</groupId>
@@ -132,6 +136,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-email</artifactId>
         </dependency>
+        <!-- Embedded dependency -->
+        <dependency>
+            <groupId>com.adobe.acs</groupId>
+            <artifactId>acs-aem-commons-bundle</artifactId>
+        </dependency>
         <!-- Testing -->
         <dependency>
             <groupId>org.mockito</groupId>
@@ -139,7 +148,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.sling</groupId>
-            <artifactId>org.apache.sling.testing.sling-mock</artifactId>
+            <artifactId>org.apache.sling.testing.sling-mock.junit4</artifactId>
         </dependency>
         <dependency>
             <groupId>io.wcm</groupId>
@@ -173,8 +182,12 @@
                     <instructions>
                         <Import-Package>
                             org.apache.sling.xss;version="[1.2,3)",
+
                             *
                         </Import-Package>
+                        <Embed-Dependency>
+                            acs-aem-commons-bundle;inline=com/adobe/acs/commons/util/ParameterUtil.class|com/adobe/acs/commons/util/PathInfoUtil.class
+                        </Embed-Dependency>
                         <_plugin>org.apache.sling.bnd.models.ModelsScannerPlugin</_plugin>
                         <!-- Enable processing of OSGI DS component annotations -->
                         <_dsannotations>*</_dsannotations>

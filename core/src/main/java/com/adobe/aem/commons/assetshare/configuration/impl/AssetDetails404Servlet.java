@@ -50,7 +50,7 @@ public class AssetDetails404Servlet extends SlingSafeMethodsServlet implements O
     @Override
     protected final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response)
             throws ServletException, IOException {
-        // Control which requests enter this method via accepts(..) below.
+        // Control which requests enter this method via acceptedByAssetRenditionDispatcher(..) below.
         //send 404 error to let Sling handle it.
         response.sendError(SlingHttpServletResponse.SC_NOT_FOUND);
     }
