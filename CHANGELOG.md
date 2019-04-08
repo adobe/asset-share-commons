@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - 0388: Corrected spelling of Boolean in dialog value.
+- 0400: InternalRedirectRenditionDispatcherImpl now supports asset paths with spaces.
 
 ## [v1.7.0]
 
