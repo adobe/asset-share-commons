@@ -18,7 +18,7 @@
   -->
 
 <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0"
-          xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+          xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"  xmlns:granite="http://www.adobe.com/jcr/granite/1.0"
           jcr:primaryType="nt:unstructured"
           jcr:title="Image"
           sling:resourceType="cq/gui/components/authoring/dialog">
@@ -42,28 +42,47 @@
                                     sling:resourceType="granite/ui/components/coral/foundation/container">
                                 <items jcr:primaryType="nt:unstructured">
 
-                                    <computed-property
+                                    <asset-rendition
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/select"
-                                            emptyText="Available Computed Properties"
-                                            fieldDescription="A list of available computed properties."
-                                            fieldLabel="Rendition Type"
-                                            name="./computedProperty"
-                                            noneText="Use 'Rendition File Name Regex' defined below"
-                                            noneValue=""
-                                            computedPropertyTypes="[rendition]">
+                                            emptyText="Select an asset rendition"
+                                            fieldDescription="Select the rendition to use."
+                                            fieldLabel="Rendition"
+                                            name="./renditionName">
                                         <datasource
                                                 jcr:primaryType="nt:unstructured"
-                                                sling:resourceType="asset-share-commons/data-sources/computed-properties"/>
-                                    </computed-property>
+                                                sling:resourceType="asset-share-commons/data-sources/asset-renditions"/>
+                                    </asset-rendition>
 
-                                    <rendition-regex
+                                    <legacy
                                             jcr:primaryType="nt:unstructured"
-                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                            name="./renditionRegex"
-                                            fieldLabel="Rendition File Name Regex"
-                                            emptyText="cq5dam\.web\.\d+\.\d+\.[a-zA-Z0-9]+"
-                                            fieldDescription="Regular expression (regex) to select a the asset rendition to use; the first matching rendition is used. This is only used if the Computed Property (above) cannot resolve an image src. This is not a regular expression (regex)."/>
+                                            sling:resourceType="granite/ui/components/coral/foundation/container"
+                                            granite:hidden="true">
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <legacy-computed-property
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                                emptyText="Available Computed Properties"
+                                                fieldDescription="A list of available computed properties."
+                                                fieldLabel="Rendition (Legacy)"
+                                                name="./computedProperty"
+                                                noneText="Use 'Rendition File Name Regex' defined below"
+                                                noneValue=""
+                                                computedPropertyTypes="[rendition]">
+                                            <datasource
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="asset-share-commons/data-sources/computed-properties"/>
+                                            </legacy-computed-property>
+
+                                        <legacy-rendition-regex
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                name="./renditionRegex"
+                                                fieldLabel="Rendition File Name Regex"
+                                                emptyText="cq5dam\.web\.\d+\.\d+\.[a-zA-Z0-9]+"
+                                                fieldDescription="Regular expression (regex) to select a the asset rendition to use; the first matching rendition is used. This is only used if the Computed Property (above) cannot resolve an image src. This is not a regular expression (regex)."/>
+                                        </items>
+                                </legacy>
 
                                     <fallback-src
                                             jcr:primaryType="nt:unstructured"
@@ -79,6 +98,17 @@
                                             min="{Double}1"
                                             fieldLabel="Maximum Image Height (in pixels)"
                                             fieldDescription="Leave blank for no maximum image height."/>
+
+                                    <legacy-mode
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/switch"
+                                            fieldDescription="Select the rendition to use."
+                                            fieldLabel="Legacy mode"
+                                            onText="Legacy mode activated"
+                                            offText="Not in legacy mode"
+                                            value=""
+                                            uncheckedValue="legacy">
+                                    </legacy-mode>
 
                                 </items>
                             </column>
