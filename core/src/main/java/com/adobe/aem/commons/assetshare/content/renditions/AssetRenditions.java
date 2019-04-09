@@ -32,6 +32,7 @@ import java.util.Map;
 @ProviderType
 public interface AssetRenditions {
     String VAR_ASSET_PATH = "${asset.path}";
+    String VAR_ASSET_URL = "${asset.url}";
     String VAR_ASSET_NAME = "${asset.name}";
     String VAR_ASSET_EXTENSION = "${asset.extension}";
     String VAR_RENDITION_NAME = "${rendition.name}";
