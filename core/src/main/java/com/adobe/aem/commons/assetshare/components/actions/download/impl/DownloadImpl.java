@@ -20,9 +20,11 @@
 package com.adobe.aem.commons.assetshare.components.actions.download.impl;
 
 import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
+import com.adobe.aem.commons.assetshare.components.actions.AssetDownloadHelper;
 import com.adobe.aem.commons.assetshare.components.actions.download.Download;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.day.cq.dam.api.DamConstants;
+import com.day.cq.dam.api.jobs.AssetDownloadService;
 import com.day.cq.dam.commons.util.UIHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -58,27 +60,38 @@ public class DownloadImpl implements Download {
     @Default(values = "Assets")
     protected String zipFileName;
 
-    @ValueMapValue
-    @Optional
-    protected Long maxContentSize;
-
     @OSGiService
     @Required
     protected ActionHelper actionHelper;
 
+    
+    @OSGiService
+    @Required
+    protected AssetDownloadHelper assetDownloadHelper;
+
     protected Collection<AssetModel> assets = new ArrayList<>();
 
-    private Long downloadContentSize;
+    /***
+     * Max content size retrieved from com.day.cq.dam.core.impl.servlet.AssetDownloadServlet
+     */
+    protected Long maxContentSize;
+
+    /***
+     * Potential download size of current assets
+     */
+    protected Long downloadContentSize;
 
     @PostConstruct
     protected void init() {
         assets = actionHelper.getAssetsFromQueryParameter(request, "path");
-
         if (assets.isEmpty()) {
             assets = actionHelper.getPlaceholderAsset(request);
-            downloadContentSize = -1L;
         } else {
-            downloadContentSize = calculateDownloadContentSize(assets);
+            this.maxContentSize = assetDownloadHelper.getMaxContentSizeLimit();
+            log.info("Max Content Size: " + this.maxContentSize);
+            
+            this.downloadContentSize = assetDownloadHelper.computeAssetDownloadSize(assets, request.getResource());
+            log.info("Download content size: " + this.downloadContentSize);
         }
     }
 
@@ -92,7 +105,7 @@ public class DownloadImpl implements Download {
 
     @Override
     public boolean isMaxContentSize() {
-        if(maxContentSize != null && maxContentSize < downloadContentSize) {
+        if(maxContentSize != null && maxContentSize > 0 &&  maxContentSize < downloadContentSize) {
             return true;
         }
         return false;
@@ -106,13 +119,5 @@ public class DownloadImpl implements Download {
     @Override
     public String getDownloadContentSize() {
         return UIHelper.getSizeLabel(downloadContentSize, request);
-    }
-
-    private long calculateDownloadContentSize(Collection<AssetModel> assets) {
-        Long contentSize = 0L;
-        for(AssetModel asset : assets) {
-            contentSize += asset.getProperties().get(DamConstants.DAM_SIZE, 0L);
-        }
-        return contentSize;
     }
 }
