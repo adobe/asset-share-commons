@@ -1,0 +1,26 @@
+{
+  "test.png": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:content": {
+      "jcr:primaryType": "nt:unstructured",
+      "metadata": {
+        "jcr:primaryType": "nt:unstructured"
+      },
+      "renditions": {
+        "jcr:primaryType": "nt:unstructured"
+      }
+    }
+  },
+  "test with spaces.png": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:content": {
+      "jcr:primaryType": "nt:unstructured",
+      "metadata": {
+        "jcr:primaryType": "nt:unstructured"
+      },
+      "renditions": {
+        "jcr:primaryType": "nt:unstructured"
+      }
+    }
+  }
+}
