@@ -1,0 +1,28 @@
+{
+  "vanilla": {
+    "jcr:primaryType": "nt:unstructured",
+    "name": "jcr:content/vanilla"
+  },
+  "property-index-rule": {
+    "jcr:primaryType": "nt:unstructured",
+    "name": "jcr:content/propertyIndexRule",
+    "propertyIndex": true
+  },
+  "analyzed-index-rule": {
+    "jcr:primaryType": "nt:unstructured",
+    "name": "jcr:content/analyzedIndexRule",
+    "analyzed": true
+  },
+  "property-and-analyzed-index-rule": {
+    "jcr:primaryType": "nt:unstructured",
+    "name": "jcr:content/propertyAndAnalyzedIndexRule",
+    "analyzed": true,
+    "propertyIndex": true
+  },
+  "duplicate": {
+    "jcr:primaryType": "nt:unstructured",
+    "name": "jcr:content/propertyAndAnalyzedIndexRule",
+    "analyzed": true,
+    "propertyIndex": true
+  }
+}
