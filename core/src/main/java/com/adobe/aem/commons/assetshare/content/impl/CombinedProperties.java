@@ -19,21 +19,28 @@
 
 package com.adobe.aem.commons.assetshare.content.impl;
 
+import com.adobe.acs.commons.util.ParameterUtil;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
 import com.day.cq.dam.api.Asset;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.api.wrappers.ValueMapDecorator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public final class CombinedProperties implements Map<String, Object> {
     private static final Logger log = LoggerFactory.getLogger(CombinedProperties.class);
 
-    private static final String UNSUPPORTED_OPERATION = "This operation is not permitted on the CombinedProperties map.";
+    private static final String COMPUTED_PROPERTY_NAME_PARAMETER_DELIMITER = "?";
+    private static final String PARAMETER_DELIMITER = "&";
+    private static final String PARAMETER_KEY_VALUE_DELIMITER = "=";
 
+    private static final String UNSUPPORTED_OPERATION = "This operation is not permitted on the CombinedProperties map.";
 
     private final Map<String, ComputedProperty> computedProperties;
     private final Map<String, Object> cachedValues = new HashMap<>();
@@ -68,23 +75,24 @@ public final class CombinedProperties implements Map<String, Object> {
 
     @Override
     public final boolean containsKey(Object key) {
-        final String propertyName = (String) key;
+        final ComputedPropertyParameter computedPropertyParameter = new ComputedPropertyParameter((String) key);
+
         boolean result = false;
 
-        final ComputedProperty computedProperty = computedProperties.get(propertyName);
+        final ComputedProperty computedProperty = computedProperties.get(computedPropertyParameter.getName());
 
         if (computedProperty != null) {
-            if (cachedValues.containsKey(propertyName) || computedProperty.accepts(asset, request, propertyName)) {
+            if (cachedValues.containsKey(computedPropertyParameter.getCacheId()) || computedProperty.accepts(asset, request, computedPropertyParameter.getName())) {
                 result = true;
             }
         }
 
         if (!result) {
-            result = assetProperties.get(propertyName) != null;
+            result = assetProperties.get(computedPropertyParameter.getName()) != null;
         }
 
         if (!result) {
-            result = metaProperties.get(propertyName) != null;
+            result = metaProperties.get(computedPropertyParameter.getName()) != null;
         }
 
         return result;
@@ -97,46 +105,50 @@ public final class CombinedProperties implements Map<String, Object> {
 
     @Override
     public final Object get(Object key) {
-        final String propertyName = (String) key;
-
-        log.trace("Getting value for key [ {} ] from CombinedProperties", propertyName);
-
         if (key == null) {
+            return null;
+        }
+
+        final ComputedPropertyParameter computedPropertyParameter = new ComputedPropertyParameter((String) key);
+
+        log.trace("Getting value for key [ {} ] from CombinedProperties", computedPropertyParameter.getCacheId());
+
+        if (computedPropertyParameter.getName() == null) {
             return null;
         }
 
         Object result = null;
 
-        final ComputedProperty computedProperty = computedProperties.get(propertyName);
+        final ComputedProperty computedProperty = computedProperties.get(computedPropertyParameter.getName());
 
         if (computedProperty != null) {
-            if (computedProperty.isCachable() && cachedValues.containsKey(propertyName)) {
-                result = cachedValues.get(propertyName);
+            if (computedProperty.isCachable() && cachedValues.containsKey(computedPropertyParameter.getCacheId())) {
+                result = cachedValues.get(computedPropertyParameter.getCacheId());
                 if (log.isDebugEnabled()) {
-                    log.debug(String.format("Computed value [ %s -> %s ] using [ %s ] served from ComputedPropertyAccessor cache.", propertyName, result, computedProperty.getClass().getName()));
+                    log.debug(String.format("Computed value [ %s -> %s ] using [ %s ] served from ComputedPropertyAccessor cache.", computedPropertyParameter.getCacheId(), result, computedProperty.getClass().getName()));
                 }
-            } else if (computedProperty.accepts(asset, request, propertyName)) {
+            } else if (computedProperty.accepts(asset, request, computedPropertyParameter.getName())) {
                 try {
-                    result = computedProperty.get(asset, request);
+                    result = computedProperty.get(asset, request, computedPropertyParameter.getParameters());
                     if (computedProperty.isCachable()) {
-                        cachedValues.put(propertyName, result);
+                        cachedValues.put(computedPropertyParameter.getCacheId(), result);
                     }
                     if (log.isDebugEnabled()) {
-                        log.debug(String.format("Computed value [ %s -> %s ] using [ %s ] ", propertyName, result, computedProperty.getClass().getName()));
+                        log.debug(String.format("Computed value [ %s -> %s ] using [ %s ] ", computedPropertyParameter.getCacheId(), result, computedProperty.getClass().getName()));
                     }
                 } catch (Exception ex) {
-                    log.error("Exception occurred when requesting computed property [ {} ] for asset [ {} ]. Returning null.", propertyName, asset.getPath());
+                    log.error("Exception occurred when requesting computed property [ {} ] for asset [ {} ]. Returning null.", computedPropertyParameter.getCacheId(), asset.getPath());
                     return null;
                 }
             }
         }
 
         if (result == null && metaProperties != null) {
-            result = metaProperties.get(propertyName);
+            result = metaProperties.get(computedPropertyParameter.getName());
         }
 
         if (result == null && assetProperties != null) {
-            result = assetProperties.get(propertyName);
+            result = assetProperties.get(computedPropertyParameter.getName());
         }
 
         return result;
@@ -188,7 +200,7 @@ public final class CombinedProperties implements Map<String, Object> {
     }
 
     /**
-     * private helper methods
+     * Internal helper methods and classes
      **/
 
     protected final ValueMap getProperties() {
@@ -213,5 +225,55 @@ public final class CombinedProperties implements Map<String, Object> {
         }
 
         return result;
+    }
+
+    /**
+     * Internal class that parses and collects the Computed Property "key" into the ComputedProperty name (used to select the ComputedProperty) and optional Parameters.
+     * <br>
+     * The Key is inspired by query parameter format:
+     * <br>
+     * &lt;computed-property-name&gt;?&lt;param1-key&gt;=&lt;param1-value&gt;&&lt;param2-key&gt;=&lt;param2-value&gt;
+     */
+    protected static class ComputedPropertyParameter {
+        private final String name;
+        private final ValueMap parameters = new ValueMapDecorator(new TreeMap<>());
+        private String cacheId;
+
+        public ComputedPropertyParameter(String rawParam) {
+            name = StringUtils.substringBefore(rawParam, COMPUTED_PROPERTY_NAME_PARAMETER_DELIMITER);
+            parameters.putAll(
+                    ParameterUtil.toMap(StringUtils.split(
+                            StringUtils.substringAfter(rawParam, COMPUTED_PROPERTY_NAME_PARAMETER_DELIMITER),
+                            PARAMETER_DELIMITER),
+                            PARAMETER_KEY_VALUE_DELIMITER, true, ""));
+            cacheId = name;
+
+            if (!parameters.isEmpty()) {
+                cacheId += COMPUTED_PROPERTY_NAME_PARAMETER_DELIMITER + parameters.keySet().stream()
+                        .map(key -> key + PARAMETER_KEY_VALUE_DELIMITER + parameters.get(key, ""))
+                        .collect(Collectors.joining(PARAMETER_DELIMITER));
+            }
+        }
+
+        /**
+         * This is in the following format:
+         * <br>
+         * &lt;computed-property-name&gt;?&lt;param1-key&gt;=&lt;param1-value&gt;&&lt;param2-key&gt;=&lt;param2-value&gt;
+         * <br>
+         * With the parameters alphabetized by key (a-z).. This is used to allow parameterized calls to ComputedProperties to be cached as long as the parameters are the same.
+         *
+         * @return the normalized ID for this parameterization. This is used for internal caching.
+         */
+        public String getCacheId() {
+            return cacheId;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public ValueMap getParameters() {
+            return parameters;
+        }
     }
 }
