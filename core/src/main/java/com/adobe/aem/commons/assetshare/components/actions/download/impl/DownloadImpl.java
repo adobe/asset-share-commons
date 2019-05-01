@@ -23,8 +23,6 @@ import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
 import com.adobe.aem.commons.assetshare.components.actions.AssetDownloadHelper;
 import com.adobe.aem.commons.assetshare.components.actions.download.Download;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
-import com.day.cq.dam.api.DamConstants;
-import com.day.cq.dam.api.jobs.AssetDownloadService;
 import com.day.cq.dam.commons.util.UIHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -64,7 +62,7 @@ public class DownloadImpl implements Download {
     @Required
     protected ActionHelper actionHelper;
 
-    
+
     @OSGiService
     @Required
     protected AssetDownloadHelper assetDownloadHelper;
@@ -84,14 +82,15 @@ public class DownloadImpl implements Download {
     @PostConstruct
     protected void init() {
         assets = actionHelper.getAssetsFromQueryParameter(request, "path");
+
         if (assets.isEmpty()) {
             assets = actionHelper.getPlaceholderAsset(request);
         } else {
             this.maxContentSize = assetDownloadHelper.getMaxContentSizeLimit();
-            log.info("Max Content Size: " + this.maxContentSize);
-            
+            log.debug("Max allowed content size (in bytes) [ {} ]", this.maxContentSize);
+
             this.downloadContentSize = assetDownloadHelper.computeAssetDownloadSize(assets, request.getResource());
-            log.info("Download content size: " + this.downloadContentSize);
+            log.debug("Requested download content size (in bytes) [ {} ]", this.downloadContentSize);
         }
     }
 
@@ -105,10 +104,9 @@ public class DownloadImpl implements Download {
 
     @Override
     public boolean isMaxContentSize() {
-        if(maxContentSize != null && maxContentSize > 0 &&  maxContentSize < downloadContentSize) {
-            return true;
-        }
-        return false;
+        return maxContentSize != null &&
+                maxContentSize > 0 &&
+                maxContentSize < downloadContentSize;
     }
 
     @Override
