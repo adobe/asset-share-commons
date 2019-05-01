@@ -22,188 +22,96 @@
  */
 (function (document, $, Coral) {
     "use strict";
+    var CFW = '.coral-Form-fieldwrapper';
 
-
-
-
-    $(document).on("foundation-contentloaded", function (e) {
-        $("LEGACY MODE CHECKBOX", e.target).each(function (i, element) {
-            var legacyMode = element.adaptTo('foundation-field'),
-                modernContainer = $(legacyMode.get('')).adaptTo('foundation-toggleable'),
-                legacyContainer = $(legacyMode.get('')).adaptTo('foundation-toggleable'),
-                legacyKeyFields = legacyMode.get('') || [],
-                modernKeyFields = legacyMode.get('') || [],
-                isLegacy = false;
-
-            // Read the current data values, and set legacyMode appropriately
-            $(modernKeyFields.join(',')).map(function(el) { return el.adaptTo('foundation-field')}).each(component, function() {
-                if (component.getValue() === '') {
-                    // A key modern field is empty, therefore we assume not modern
-                    isLegacy = true;
-                }
-            });
-
-            if (isLegacy) {
-                // If its not modern, then check if its legacy...
-                $(legacyKeyFields.join(',')).map(function(el) { return el.adaptTo('foundation-field')}).each(component, function() {
-                    if (component.getValue() === '') {
-                        // If a key legacy field is empty, we assume legacy is not filled out, thus modern
-                        isLegacy = false;
-                    }
-                });
-            }
-
-            // Add change event listener on legacyMode to toggle
-            legacyMode.on("change", function () {
-                if (component.value === 'true') {
-                    // Is legacy
-                    modernContainer.hide();
-                    legacyContainer.show();
-                } else {
-                    // Is modern
-                    legacyContainer.hide();
-                    modernContainer.show();
-                }
-
-
-
-                showHidePropertyDropdown(component, propertyFieldSet, analyzedPropertyTarget);
-            });
-
-            legacyMode.setValue(isLegacy);
-
-
-
-            var operationField = $(element),
-                propertyFieldSet = operationField
-                    .closest('.cmp-search-freeform-text--editor')
-                    .find('.cq-dialog-property__field-set')
-                    .closest('.coral-Form-fieldwrapper'),
-                analyzedPropertyTarget = operationField
-                    .closest('.cmp-search-freeform-text--editor')
-                    .find('.cq-dialog-analyzed-property__field-set')
-                    .closest('.coral-Form-fieldwrapper');
-
-            if (operationField && propertyFieldSet && analyzedPropertyTarget) {
-                Coral.commons.ready(element, function (component) {
-                    showHidePropertyDropdown(component, propertyFieldSet, analyzedPropertyTarget);
-
-                    component.on("change", function () {
-                        showHidePropertyDropdown(component, propertyFieldSet, analyzedPropertyTarget);
-                    });
-                });
-            }
+    function getFields(elements) {
+        // Turn the selected elements into GraniteUI Fields
+        return  elements.map(function(index, el) {
+            var field  = $(el).adaptTo('foundation-field');
+            if (field) { return field; }
         });
-    });
-
-
-
-
-
-    /**
-     * Show / Hide the Property field based on the dialog dropdown value.
-     *
-     */
-
-    function showHidePropertyDropdown(component, propertyTarget, analyzedPropertyTarget) {
-        var propertyComponent = propertyTarget.find('.coral-Form-field').adaptTo('foundation-field'),
-            analyzedPropertyComponent = analyzedPropertyTarget.find('.coral-Form-field').adaptTo('foundation-field'),
-            analyzed = component.value !== 'equals';
-
-        analyzedPropertyComponent.setValue(propertyComponent.getValue());
-        propertyTarget.toggleClass('hide', analyzed);
-        propertyComponent.setDisabled(analyzed);
-
-        propertyComponent.setValue(analyzedPropertyComponent.getValue());
-        analyzedPropertyTarget.toggleClass('hide',!analyzed);
-        analyzedPropertyComponent.setDisabled(!analyzed);
     }
 
-    $(document).on("foundation-contentloaded", function (e) {
-        $(".cmp-search-freeform-text--editor coral-select.cq-dialog-operation__value", e.target).each(function (i, element) {
-            var operationField = $(element),
-                propertyFieldSet = operationField
-                    .closest('.cmp-search-freeform-text--editor')
-                    .find('.cq-dialog-property__field-set')
-                    .closest('.coral-Form-fieldwrapper'),
-                analyzedPropertyTarget = operationField
-                    .closest('.cmp-search-freeform-text--editor')
-                    .find('.cq-dialog-analyzed-property__field-set')
-                    .closest('.coral-Form-fieldwrapper');
+    function getElements(dialog, fieldNames) {
+        // Get create a selector from the parameters
+        var selector = fieldNames.map(function(fieldName) {
+            return '[name="' + fieldName + '"]'
+        }).join(',');
 
-            if (operationField && propertyFieldSet && analyzedPropertyTarget) {
-                Coral.commons.ready(element, function (component) {
-                    showHidePropertyDropdown(component, propertyFieldSet, analyzedPropertyTarget);
-
-                    component.on("change", function () {
-                        showHidePropertyDropdown(component, propertyFieldSet, analyzedPropertyTarget);
-                    });
-                });
-            }
+        // Turn the selected elements into GraniteUI Fields
+        return  dialog.find(selector).map(function(index, el) {
+            var field  = $(el).adaptTo('foundation-field');
+            if (field) { return $(el); }
         });
-    });
-
-
-    /**
-     * Show / Hide the Delimiter Input field based on the dialog dropdown value.
-     *
-     * Only the Custom field shows the text input allowing for the author to type in custom values.
-     */
-
-    function showHideDelimiter(component, target) {
-        target.toggleClass('hide', component.value !== '_CUSTOM');
     }
 
-    $(document).on("foundation-contentloaded", function (e) {
-        $(".cmp-search-freeform-text--editor coral-select.cq-dialog-delimiter__value", e.target).each(function (i, element) {
-            var delimiterField = $(element),
-                fieldSet = delimiterField.closest('.cq-dialog-delimiter__field-set'),
-                customDelimiterField = fieldSet.find('.cq-dialog-delimiter__custom-value');
+    function hasContent(fields) {
+        var i;
 
-            if (fieldSet && customDelimiterField) {
-                Coral.commons.ready(element, function (component) {
-                    showHideDelimiter(component, customDelimiterField);
-                    component.on("change", function () { showHideDelimiter(component, customDelimiterField); });
-                });
+        for (i = 0; i < fields.length; i++) {
+            if (fields[i].getValue()) {
+                return true;
             }
-        });
-
-
-        /**
-         * Handles show and hide of the Input Validation Field based on the # of Rows.
-         *
-         * This is because input fields only support native HTML5 pattern validation which is when rows = 1.
-         * Textareas do NOT support pattern validation; when rows > 1
-         */
-
-        function showHideValidation(component, target) {
-            target.toggleClass('hide', component.value > 1);
         }
 
-        $('.cmp-search-freeform-text--editor .cq-dialog-rows__field-set', e.target).each(function (i, element) {
-            var rowsInputElement = $(element).find('input[type="number"]'),
-                validationPatternFieldSet = rowsInputElement
-                    .closest('.cmp-search-freeform-text--editor')
-                    .find('.cq-dialog-validation-pattern__field-set')
-                    .closest('.coral-Form-fieldwrapper'),
-                validationMessageFieldSet = rowsInputElement
-                    .closest('.cmp-search-freeform-text--editor')
-                    .find('.cq-dialog-validation-message__field-set')
-                    .closest('.coral-Form-fieldwrapper');
+        return false;
+    }
 
-
-            if (rowsInputElement && validationPatternFieldSet && validationMessageFieldSet) {
-                Coral.commons.ready(element, function (component) {
-                    showHideValidation(component, validationPatternFieldSet);
-                    showHideValidation(component, validationMessageFieldSet);
-
-                    component.on("change", function () {
-                        showHideValidation(component, validationPatternFieldSet);
-                        showHideValidation(component, validationMessageFieldSet);
-                    });
-                });
-            }
+    function toggleElements(modernElements, legacyElements, showLegacy) {
+        modernElements.each(function(index, el) {
+            toggleElement(el, !showLegacy);
         });
 
+        legacyElements.each(function(index, el) {
+            toggleElement(el, showLegacy);
+        });
+    }
+
+    function toggleElement(element, visible) {
+        element.closest(CFW).toggle(visible);
+    }
+
+    function parseFieldNameValues(values) {
+        values = values || '';
+        if (values.indexOf('[') === 0) {
+            values = values.substr(1);
+        }
+        if (values.lastIndexOf(']') === values.length - 1) {
+            values = values.substr(0, values.length - 2);
+        }
+
+        return values.split(',') || [];
+    }
+
+    $(document).on("foundation-contentloaded", function (e) {
+        $(".asset-share-commons__dialog--legacy-support .asset-share-commons__legacy-mode", e.target).each(function (i, element) {
+
+            var dialog = $(element).closest('.asset-share-commons__dialog--legacy-support'),
+                legacyMode = $(element),
+                legacyModeField = legacyMode.adaptTo('foundation-field'),
+                modernFieldNames = parseFieldNameValues(legacyMode.data('modern-field-names')),
+                legacyFieldNames = parseFieldNameValues(legacyMode.data('legacy-field-names')),
+                modernElements = getElements(dialog, modernFieldNames) || [],
+                legacyElements = getElements(dialog, legacyFieldNames) || [],
+                hasModernConfig = hasContent(getFields(modernElements)),
+                hasLegacyConfig = hasContent(getFields(legacyElements)),
+                initialStateIsLegacy = !hasModernConfig && hasLegacyConfig;
+
+            Coral.commons.ready(legacyMode, function (legacyModeComponent) {
+                // Add change event listener on legacyMode to toggle
+                toggleElements(modernElements, legacyElements, initialStateIsLegacy);
+                legacyModeField.setValue(initialStateIsLegacy ? 'legacy' : '');
+
+                if (hasLegacyConfig) {
+                    legacyModeComponent.on('change', function () {
+                        toggleElements(modernElements, legacyElements, legacyModeField.getValue() === 'legacy');
+                    }); // change
+                } else {
+                    toggleElement(legacyMode, false);
+                }
+            }); // Coral.commons.ready
+
+        });
     });
+
 }(document, Granite.$, Coral));

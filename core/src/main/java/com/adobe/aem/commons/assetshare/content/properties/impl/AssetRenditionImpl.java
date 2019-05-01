@@ -71,13 +71,10 @@ public class AssetRenditionImpl extends AbstractComputedProperty<String> {
     }
 
     @Override
-    public String get(Asset asset, SlingHttpServletRequest request) {
-        // Move to params after merge
-        ValueMap parameters = new ValueMapDecorator(new HashMap<>());
+    public String get(Asset asset, SlingHttpServletRequest request, ValueMap computedPropertyParameters) {
+        String url = asset.getPath() + ".renditions/" + computedPropertyParameters.get("name", String.class) + "/";
 
-        String url = asset.getPath() + ".renditions/" + parameters.get("name", String.class) + "/";
-
-        if (parameters.get("download", false)) {
+        if (computedPropertyParameters.get("download", false)) {
             url += "download/";
         }
 

@@ -19,6 +19,7 @@
   -->
 
 <jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
-    jcr:primaryType="cq:ClientLibraryFolder"
-    categories="[asset-share-commons.author.dialog.legacy]"
-    jsProcessor="[min:gcc,default:none]"/>
+          jcr:primaryType="cq:ClientLibraryFolder"
+          categories="[asset-share-commons.author.dialog.legacy]"
+          allowProxy="{Boolean}true"
+          jsProcessor="[min:gcc,default:none]"/>
