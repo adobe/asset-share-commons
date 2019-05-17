@@ -23,5 +23,6 @@
           service.ranking="-100001"
           label="Static Video Renditions"
           name="asset-share-commons-static-video-renditions"
-          rendition.mappings="[original=^original$,m4v=^cq5dam\\.video\\..+\\.m4v,m4v=^cq5dam\\.video\\..+\\.mp4]"
+          types="[video]"
+          rendition.mappings="[original=^original$,m4v=^cq5dam\\.video\\..+\\.m4v,mp4=^cq5dam\\.video\\..+\\.mp4]"
 />

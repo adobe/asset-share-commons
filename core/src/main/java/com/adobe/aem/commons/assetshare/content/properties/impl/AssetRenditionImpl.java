@@ -21,6 +21,7 @@ package com.adobe.aem.commons.assetshare.content.properties.impl;
 
 import com.adobe.aem.commons.assetshare.content.properties.AbstractComputedProperty;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
+import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionServlet;
 import com.adobe.aem.commons.assetshare.util.MimeTypeHelper;
 import com.adobe.cq.commerce.common.ValueMapDecorator;
 import com.day.cq.dam.api.Asset;
@@ -72,7 +73,8 @@ public class AssetRenditionImpl extends AbstractComputedProperty<String> {
 
     @Override
     public String get(Asset asset, SlingHttpServletRequest request, ValueMap computedPropertyParameters) {
-        String url = asset.getPath() + ".renditions/" + computedPropertyParameters.get("name", String.class) + "/";
+        String url = asset.getPath() + "." + AssetRenditionServlet.SERVLET_EXTENSION + "/"
+                + computedPropertyParameters.get("name", String.class) + "/";
 
         if (computedPropertyParameters.get("download", false)) {
             url += "download/";

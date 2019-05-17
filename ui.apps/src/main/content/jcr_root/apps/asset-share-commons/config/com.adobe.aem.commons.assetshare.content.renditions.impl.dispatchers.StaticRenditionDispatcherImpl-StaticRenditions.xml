@@ -23,5 +23,6 @@
           service.ranking="-100000"
           label="Static Renditions"
           name="asset-share-commons-static-renditions"
+          types="[image]"
           rendition.mappings="[original=^original$,web=^cq5dam\\.web\\.\\d+\\.\\d+\\..+]"
 />

@@ -53,6 +53,7 @@ public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
 
     private static final String PN_EXCLUDE_ASSETRENDITIONS = "excludeAssetRenditions";
     private static final String PN_EXCLUDE_ASSETRENDITIONDISPATCHERS = "excludeAssetRenditionDispatchers";
+    private static final String PN_ALLOWED_ASSETRENDITIONDISPATCHER_TYPES = "allowedAssetRenditionTypes";
 
     @Reference
     private DataSourceBuilder dataSourceBuilder;
@@ -66,6 +67,7 @@ public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
     protected final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) {
         final Map<String, Object> data = new TreeMap<>();
         final ValueMap properties = request.getResource().getValueMap();
+        final List<String> allowedAssetRenditionTypes = Arrays.asList(properties.get(PN_ALLOWED_ASSETRENDITIONDISPATCHER_TYPES, new String[]{}));
 
         final Set<String> excludeAssetRenditionDispatchers = getExcluded(properties,
                 cfg.exclude_assetrenditiondispatcher_names(),
@@ -76,7 +78,12 @@ public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
                 PN_EXCLUDE_ASSETRENDITIONS);
 
         for (final AssetRenditionDispatcher assetRenditionDispatcher : assetRenditions.getAssetRenditionDispatchers()) {
-            if (assetRenditionDispatcher.isHidden()) {
+            if (!assetRenditionDispatcher.getTypes().isEmpty() &&
+                    !allowedAssetRenditionTypes.isEmpty() &&
+                    Collections.disjoint(assetRenditionDispatcher.getTypes(), allowedAssetRenditionTypes)) {
+                log.debug("Skip adding AssetRenditionDispatcher factory [ {} ] to Data Source as it does not have any allowed types", assetRenditionDispatcher.getName());
+                continue;
+            }  else if (assetRenditionDispatcher.isHidden()) {
                 log.debug("Skip adding AssetRenditionDispatcher factory [ {} ] to Data Source as it has been marked as hidden via configuration", assetRenditionDispatcher.getName());
                 continue;
             } else if (excludeAssetRenditionDispatchers.contains(assetRenditionDispatcher.getName())) {
