@@ -20,7 +20,7 @@
 
 <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
           jcr:primaryType="sling:OsgiConfig"
-          service.ranking="-200000"
+          service.ranking="-100001"
           label="Original Rendition"
           name="asset-share-commons-original-renditions"
           rendition.mappings="[original=^original$]"
