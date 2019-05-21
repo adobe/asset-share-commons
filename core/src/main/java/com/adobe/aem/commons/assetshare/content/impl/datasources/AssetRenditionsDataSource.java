@@ -108,16 +108,16 @@ public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
                 !allowedAssetRenditionTypes.isEmpty() &&
                 Collections.disjoint(assetRenditionDispatcher.getTypes(), allowedAssetRenditionTypes)) {
             log.debug("Skip adding AssetRenditionDispatcher factory [ {} ] to Data Source as it does not have any allowed types", assetRenditionDispatcher.getName());
-            return true;
+            return false;
         }  else if (assetRenditionDispatcher.isHidden()) {
             log.debug("Skip adding AssetRenditionDispatcher factory [ {} ] to Data Source as it has been marked as hidden via configuration", assetRenditionDispatcher.getName());
-            return true;
+            return false;
         } else if (excludeAssetRenditionDispatchers.contains(assetRenditionDispatcher.getName())) {
             log.debug("Skip adding AssetRenditionDispatcher factory [ {} ] to Data Source as it has been excluded via configuration", assetRenditionDispatcher.getName());
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     private Set<String> getExcluded(final ValueMap properties,
