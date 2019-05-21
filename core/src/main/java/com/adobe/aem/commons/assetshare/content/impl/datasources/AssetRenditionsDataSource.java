@@ -67,7 +67,8 @@ public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
     protected final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) {
         final Map<String, Object> data = new TreeMap<>();
         final ValueMap properties = request.getResource().getValueMap();
-        final List<String> allowedAssetRenditionTypes = Arrays.asList(properties.get(PN_ALLOWED_ASSETRENDITIONDISPATCHER_TYPES, new String[]{}));
+        final List<String> allowedAssetRenditionTypes =
+                Arrays.asList(properties.get(PN_ALLOWED_ASSETRENDITIONDISPATCHER_TYPES, new String[]{}));
 
         final Set<String> excludeAssetRenditionDispatchers = getExcluded(properties,
                 cfg.exclude_assetrenditiondispatcher_names(),
@@ -78,35 +79,45 @@ public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
                 PN_EXCLUDE_ASSETRENDITIONS);
 
         for (final AssetRenditionDispatcher assetRenditionDispatcher : assetRenditions.getAssetRenditionDispatchers()) {
-            if (!assetRenditionDispatcher.getTypes().isEmpty() &&
-                    !allowedAssetRenditionTypes.isEmpty() &&
-                    Collections.disjoint(assetRenditionDispatcher.getTypes(), allowedAssetRenditionTypes)) {
-                log.debug("Skip adding AssetRenditionDispatcher factory [ {} ] to Data Source as it does not have any allowed types", assetRenditionDispatcher.getName());
-                continue;
-            }  else if (assetRenditionDispatcher.isHidden()) {
-                log.debug("Skip adding AssetRenditionDispatcher factory [ {} ] to Data Source as it has been marked as hidden via configuration", assetRenditionDispatcher.getName());
-                continue;
-            } else if (excludeAssetRenditionDispatchers.contains(assetRenditionDispatcher.getName())) {
-                log.debug("Skip adding AssetRenditionDispatcher factory [ {} ] to Data Source as it has been excluded via configuration", assetRenditionDispatcher.getName());
-                continue;
+
+            if (acceptsAssetRenditionDispatcher(allowedAssetRenditionTypes,
+                    excludeAssetRenditionDispatchers,
+                    assetRenditionDispatcher)) {
+
+                assetRenditionDispatcher.getOptions().entrySet().stream()
+                        .filter(entry -> !excludeAssetRenditions.contains(entry.getValue()))
+                        .filter(entry -> !data.containsValue(entry.getValue()))
+                        .forEach(entry -> {
+                            String label = entry.getKey();
+                            String value = entry.getValue();
+
+                            if (cfg.add_assetrenditiondispatcher_to_label()) {
+                                label += " (" + assetRenditionDispatcher.getLabel() + ")";
+                            }
+
+                            data.put(label, value);
+                        });
             }
-
-            assetRenditionDispatcher.getOptions().entrySet().stream()
-                    .filter(entry -> !excludeAssetRenditions.contains(entry.getValue()))
-                    .filter(entry -> !data.containsValue(entry.getValue()))
-                    .forEach(entry -> {
-                        String label = entry.getKey();
-                        String value = entry.getValue();
-
-                        if (cfg.add_assetrenditiondispatcher_to_label()) {
-                            label += " (" + assetRenditionDispatcher.getLabel() + ")";
-                        }
-
-                        data.put(label, value);
-                    });
         }
 
         dataSourceBuilder.build(request, data);
+    }
+
+    private boolean acceptsAssetRenditionDispatcher(List<String> allowedAssetRenditionTypes, Set<String> excludeAssetRenditionDispatchers, AssetRenditionDispatcher assetRenditionDispatcher) {
+        if (!assetRenditionDispatcher.getTypes().isEmpty() &&
+                !allowedAssetRenditionTypes.isEmpty() &&
+                Collections.disjoint(assetRenditionDispatcher.getTypes(), allowedAssetRenditionTypes)) {
+            log.debug("Skip adding AssetRenditionDispatcher factory [ {} ] to Data Source as it does not have any allowed types", assetRenditionDispatcher.getName());
+            return true;
+        }  else if (assetRenditionDispatcher.isHidden()) {
+            log.debug("Skip adding AssetRenditionDispatcher factory [ {} ] to Data Source as it has been marked as hidden via configuration", assetRenditionDispatcher.getName());
+            return true;
+        } else if (excludeAssetRenditionDispatchers.contains(assetRenditionDispatcher.getName())) {
+            log.debug("Skip adding AssetRenditionDispatcher factory [ {} ] to Data Source as it has been excluded via configuration", assetRenditionDispatcher.getName());
+            return true;
+        }
+
+        return false;
     }
 
     private Set<String> getExcluded(final ValueMap properties,
