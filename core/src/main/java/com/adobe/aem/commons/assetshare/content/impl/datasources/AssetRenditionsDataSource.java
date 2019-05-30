@@ -107,6 +107,10 @@ public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
         if (!assetRenditionDispatcher.getTypes().isEmpty() &&
                 !allowedAssetRenditionTypes.isEmpty() &&
                 Collections.disjoint(assetRenditionDispatcher.getTypes(), allowedAssetRenditionTypes)) {
+            // If the AssetRenditionDispatcher specifies types, AND allowedRenditionTypes are specified on the DataSource,
+            // then check to see if there is at least one type in common between the AssetRenditionDispatcher and the DataSource.
+            // If there IS at least one type in common, then continue checking the other criteria, if either of these
+            // When assetRenditionDispatcher's types is empty, the is the equivalent of saying that it applies to ALL types, or in other words, it ALWAYS matches.
             log.debug("Skip adding AssetRenditionDispatcher factory [ {} ] to Data Source as it does not have any allowed types", assetRenditionDispatcher.getName());
             return false;
         }  else if (assetRenditionDispatcher.isHidden()) {

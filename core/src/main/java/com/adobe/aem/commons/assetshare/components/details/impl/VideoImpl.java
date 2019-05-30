@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.adobe.aem.commons.assetshare.util.UrlUtil;
 import com.day.text.Text;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -94,16 +95,17 @@ public class VideoImpl extends AbstractEmptyTextComponent implements Video {
     @Override
     public String getSrc() {
         if (src == null) {
-            if (!legacyMode && StringUtils.isNotBlank(renditionName)) {
+            String tmp;
+
+            if (!legacyMode) {
                 final AssetRenditionParameters parameters =
                         new AssetRenditionParameters(asset, renditionName, false);
-                src = assetRenditions.getUrl(request, asset, parameters);
-            } else if (src == null) {
-                src = getLegacySrc();
+                tmp = assetRenditions.getUrl(request, asset, parameters);
+            } else {
+                tmp = getLegacySrc();
             }
 
-            src = StringUtils.replace(src, "%20", " ");
-            return Text.escapePath(src);
+            src =  UrlUtil.escape(tmp);
         }
 
         return src;

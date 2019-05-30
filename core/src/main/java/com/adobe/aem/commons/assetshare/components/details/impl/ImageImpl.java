@@ -24,6 +24,7 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.util.MimeTypeHelper;
+import com.adobe.aem.commons.assetshare.util.UrlUtil;
 import com.day.cq.dam.api.Rendition;
 import com.day.text.Text;
 import org.apache.commons.lang3.StringUtils;
@@ -109,20 +110,21 @@ public class ImageImpl extends AbstractEmptyTextComponent implements Image {
     public String getSrc() {
         if (src == null) {
 
-            if (!legacyMode && StringUtils.isNotBlank(renditionName)) {
+            String tmp;
+
+            if (!legacyMode) {
                 final AssetRenditionParameters parameters =
                         new AssetRenditionParameters(asset, renditionName, false);
-                src = assetRenditions.getUrl(request, asset, parameters);
-            } else if (src == null) {
-                src = getLegacySrc();
+                tmp = assetRenditions.getUrl(request, asset, parameters);
+            } else {
+                tmp = getLegacySrc();
             }
 
-            if (StringUtils.isBlank(src)) {
-                src = fallbackSrc;
+            if (StringUtils.isBlank(tmp)) {
+                tmp = fallbackSrc;
             }
 
-            src = StringUtils.replace(src, "%20", " ");
-            return Text.escapePath(src);
+            src = UrlUtil.escape(tmp);
         }
 
         return src;
@@ -154,7 +156,7 @@ public class ImageImpl extends AbstractEmptyTextComponent implements Image {
     }
 
     @Override
-    public String getFallback() { return Text.escapePath(fallbackSrc); }
+    public String getFallback() { return UrlUtil.escape(fallbackSrc); }
 
     @Override
     public boolean isEmpty() {

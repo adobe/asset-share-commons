@@ -23,10 +23,12 @@ import com.adobe.aem.commons.assetshare.content.properties.AbstractComputedPrope
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionServlet;
 import com.adobe.aem.commons.assetshare.util.MimeTypeHelper;
+import com.adobe.aem.commons.assetshare.util.UrlUtil;
 import com.adobe.cq.commerce.common.ValueMapDecorator;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.commons.util.DamUtil;
+import com.day.text.Text;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.ValueMap;
@@ -82,12 +84,7 @@ public class AssetRenditionImpl extends AbstractComputedProperty<String> {
 
         url += "asset.rendition";
 
-        return escapeString(url);
-    }
-
-    private String escapeString(String str) {
-        str = StringUtils.replace(str, " ", "%20");
-        return StringUtils.replace(str, "/jcr:content", "/_jcr_content");
+        return UrlUtil.escape(url);
     }
 
     @Activate

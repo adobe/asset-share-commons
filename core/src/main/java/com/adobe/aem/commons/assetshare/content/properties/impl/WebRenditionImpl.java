@@ -22,6 +22,7 @@ package com.adobe.aem.commons.assetshare.content.properties.impl;
 import com.adobe.aem.commons.assetshare.content.properties.AbstractComputedProperty;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
 import com.adobe.aem.commons.assetshare.util.MimeTypeHelper;
+import com.adobe.aem.commons.assetshare.util.UrlUtil;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.commons.util.DamUtil;
@@ -82,12 +83,7 @@ public class WebRenditionImpl extends AbstractComputedProperty<String> {
             path = asset.getOriginal().getPath();
         }
 
-        return escapeString(path);
-    }
-
-    private String escapeString(String str) {
-        str = StringUtils.replace(str, " ", "%20");
-        return StringUtils.replace(str, "/jcr:content", "/_jcr_content");
+        return UrlUtil.escape(path);
     }
 
     @Activate
