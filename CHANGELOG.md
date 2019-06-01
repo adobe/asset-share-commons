@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - 0395: Support for parameterized Computed Properties.
 - 0345: Asset Rendition Dispatcher framework allowing for named, cacheable renditions.
-- 0398: Added JDK11 support and updated travis to handle JDK8 and JDK11
+- 0398: Added JDK11 support and updated travis to handle JDK8 and JDK11 
 
 ### Fixed
 - 0390: Fixed issue where initial values from query parameters were not respected in Search / Sort component's HTL.
