@@ -18,7 +18,6 @@ matrix:
       name: Java 8 hi_IN (Lightweight Build)
       env: MAVEN_SKIP_RC=true MAVEN_OPTS="-Xmx512m -XX:MaxMetaspaceSize=512m -Duser.language=hi -Duser.country=IN" POST_COVERAGE=false SKIP_DEPENDENCY_CHECK=true
     - jdk: oraclejdk11
-      dist: xenial
       name: Java 11 en_US (Lightweight Build)
       env: MAVEN_SKIP_RC=true MAVEN_OPTS="-Xmx512m -XX:MaxMetaspaceSize=512m -Duser.language=en -Duser.country=US" POST_COVERAGE=false SKIP_DEPENDENCY_CHECK=true
 script: mvn verify -B
