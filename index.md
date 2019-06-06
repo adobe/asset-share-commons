@@ -12,6 +12,17 @@ layout: default
         <span class="image main">
             <img src="{{ site.baseurl }}/pages/images/hero.png" alt="Asset Share Commons" />
         </span>
+
+        <hr/>
+
+        <div style="text-align: center;">
+            <h2>Checkout the live demo sites!</h2>
+
+            <a href="https://aem.enablementadobe.com/content/asset-share-commons/en/light.html" class="button">Light theme demo</a>
+            <span style="display:inline-block; width: 2rem;"></span>
+            <a href="https://aem.enablementadobe.com/content/asset-share-commons/en/dark.html" class="button">Dark theme demo</a>
+        </div>
+
     </div>
 </section>
 
