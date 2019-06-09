@@ -85,13 +85,18 @@ public class DownloadImpl implements Download {
 
         if (assets.isEmpty()) {
             assets = actionHelper.getPlaceholderAsset(request);
+            this.maxContentSize = -1L;
         } else {
             this.maxContentSize = assetDownloadHelper.getMaxContentSizeLimit();
             log.debug("Max allowed content size (in bytes) [ {} ]", this.maxContentSize);
 
-            this.downloadContentSize = assetDownloadHelper.computeAssetDownloadSize(assets, request.getResource());
-            log.debug("Requested download content size (in bytes) [ {} ]", this.downloadContentSize);
-        }
+            //check if needed to caclulate max content size
+            if(this.maxContentSize != null && this.maxContentSize > 0) {
+                log.debug("Max content size set, requires calculation of download  content size.");
+                this.downloadContentSize = assetDownloadHelper.computeAssetDownloadSize(assets, request.getResource());
+                log.debug("Requested download content size (in bytes) [ {} ]", this.downloadContentSize);
+            }
+        }    
     }
 
     public Collection<AssetModel> getAssets() {
@@ -103,19 +108,22 @@ public class DownloadImpl implements Download {
     }
 
     @Override
-    public boolean isMaxContentSize() {
-        return maxContentSize != null &&
-                maxContentSize > 0 &&
-                maxContentSize < downloadContentSize;
+    public long getMaxContentSize() {
+        return this.maxContentSize;
     }
 
     @Override
-    public String getMaxContentSizeLimit() {
-        return UIHelper.getSizeLabel(maxContentSize, request);
+    public long getDownloadContentSize() {
+        return this.downloadContentSize;
     }
 
     @Override
-    public String getDownloadContentSize() {
-        return UIHelper.getSizeLabel(downloadContentSize, request);
+    public String getMaxContentSizeLabel() {
+        return UIHelper.getSizeLabel(getMaxContentSize(), request);
+    }
+
+    @Override
+    public String getDownloadContentSizeLabel() {
+        return UIHelper.getSizeLabel(getDownloadContentSize(), request);
     }
 }

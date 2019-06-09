@@ -35,25 +35,32 @@ public class AssetDownloadHelperImpl implements AssetDownloadHelper {
     @Override
     public long getMaxContentSizeLimit() {
         try {
-            Configuration[] configurations = configAdmin.listConfigurations(
-                    "(service.pid=" + ASSET_DOWNLOAD_SERVLET_PID + ")");
-
-            if (configurations != null && configurations.length == 1) {
-                @SuppressWarnings("unchecked") final Dictionary<String, Object> osgiConfigurationProperties = configurations[0].getProperties();
-
-                if (osgiConfigurationProperties != null) {
-                    return PropertiesUtil.toLong(osgiConfigurationProperties.get(MAX_SIZE_PROPERTY), -1L);
-                } else{
-                    log.debug("No OSGi configuration properties could be found for service.pid [ {} ]", ASSET_DOWNLOAD_SERVLET_PID);
-                }
-            } else {
-                log.debug("A non-unary number of OSGi configuration could be found for service.pid [ {} ]", ASSET_DOWNLOAD_SERVLET_PID);
+            final Dictionary<String, Object> osgiConfigurationProperties = getAssetDownloadServletProperties();
+           
+            if (osgiConfigurationProperties != null) {
+                return PropertiesUtil.toLong(osgiConfigurationProperties.get(MAX_SIZE_PROPERTY), -1L);
+            } else{
+                log.debug("No OSGi configuration properties could be found for service.pid [ {} ]", ASSET_DOWNLOAD_SERVLET_PID);
             }
         } catch (IOException | InvalidSyntaxException e) {
             log.error("Could not get max content size property for AEM's Asset Download Servlet", e);
         }
 
         return -1L;
+    }
+
+    @SuppressWarnings("unchecked")
+    private Dictionary<String, Object> getAssetDownloadServletProperties () throws IOException, InvalidSyntaxException {
+         Configuration[] configurations = configAdmin.listConfigurations(
+                    "(service.pid=" + ASSET_DOWNLOAD_SERVLET_PID + ")");
+
+            if (configurations != null && configurations.length == 1) {
+                return configurations[0].getProperties();
+            } else {
+                log.debug("A non-unary number of OSGi configuration could be found for service.pid [ {} ]", ASSET_DOWNLOAD_SERVLET_PID);
+            }
+            return null;
+
     }
 
     @Override

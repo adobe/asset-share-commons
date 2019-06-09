@@ -41,18 +41,23 @@ public interface Download {
 
     /**
      * 
-     * @return a boolean if the maximum size limit for downloads has been exceeded
+     * @return a long representing the maximum content size limit allowed
      */
-    boolean isMaxContentSize();
+    long getMaxContentSize();
 
     /**
-     * 
-     * @return a string representing the maximum content size limit allowed
+     * @return a long representing the size of the contents about to be downloaded
      */
-    String getMaxContentSizeLimit();
+    long getDownloadContentSize();
 
     /**
-     * @return a string representing the size of the contents about to be downloaded
+     * @return a string with a human readable label of the max content size limit
      */
-    String getDownloadContentSize();
+    String getMaxContentSizeLabel();
+
+    /**
+     * @return a string with a human readable label of the current download size
+     */
+    String getDownloadContentSizeLabel();
+
 }

@@ -25,7 +25,6 @@
                     cancelButton="Cancel"
                     downloadButton="Download"
                     downloadOptionsTitle="Download Options"
-                    maxContentSize="52428800"
                     maxContentSizeMessage="Maximum content size of download exceeded:"
                     modalTitle="Download"
                     zipFileName="assets"/>

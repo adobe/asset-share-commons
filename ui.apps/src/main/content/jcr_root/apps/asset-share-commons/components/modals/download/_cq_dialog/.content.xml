@@ -114,13 +114,6 @@
                                         jcr:primaryType="nt:unstructured"
                                         sling:resourceType="granite/ui/components/coral/foundation/well">
                                         <items jcr:primaryType="nt:unstructured">
-                                            <max-content-size
-                                                jcr:primaryType="nt:unstructured"
-                                                sling:resourceType="granite/ui/components/coral/foundation/form/numberfield"
-                                                fieldDescription="Sets a maximum size limit for downloads (in bytes). Recommended to match size in AssetDownloadServlet OSGi config. Leave blank for no maximum content size."
-                                                fieldLabel="Max Content Size Limit (bytes)"
-                                                min="{Long}1"
-                                                name="./maxContentSize"/>
                                             <max-content-size-message
                                                 jcr:primaryType="nt:unstructured"
                                                 sling:resourceType="granite/ui/components/coral/foundation/form/textarea"
