@@ -182,7 +182,7 @@
                     <instructions>
                         <Import-Package>
                             org.apache.sling.xss;version="[1.2,3)",
-
+                            javax.annotation;version=0.0.0,
                             *
                         </Import-Package>
                         <Embed-Dependency>
