@@ -2,7 +2,7 @@ dist: trusty
 language: java
 env:
   global:
-    - CODECOV_TOKEN=fb2e5905-3a40-4402-9fc5-63f6765bd7e8
+    - CODECOV_TOKEN=:fb2e5905-3a40-4402-9fc5-63f6765bd7e8
 matrix:
   include:
     - jdk: oraclejdk8
