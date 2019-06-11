@@ -255,6 +255,10 @@ public final class EmailServiceImpl implements EmailService {
             email.setSubject(params.get(EmailService.SUBJECT));
         }
 
+        if (params.containsKey(EmailService.REPLY_TO)) {
+          email.addReplyTo(params.get(EmailService.REPLY_TO));
+        }
+
         return email;
     }
 
@@ -285,7 +289,6 @@ public final class EmailServiceImpl implements EmailService {
 
         return mailTemplate;
     }
-
 
     @Activate
     protected void activate(Cfg cfg) {

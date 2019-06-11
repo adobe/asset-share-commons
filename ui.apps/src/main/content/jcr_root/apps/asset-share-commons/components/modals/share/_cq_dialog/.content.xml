@@ -223,6 +223,13 @@
                                             fieldLabel="Signature"
                                             required="{Boolean}true"
                                             name="./data/signature"/>
+                                    <reply-to-sharer-email
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                            fieldDescription="Except for Anonymous, Admin or user's without Email, in which case no Reply-To address is used."
+                                            text="Use Sharer's Email as Reply-To address"
+                                            value="{Boolean}true"
+                                            name="./replyToSharer"/>
 
                                     <allowed-query-params-instructions
                                             jcr:primaryType="nt:unstructured"

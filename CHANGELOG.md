@@ -6,8 +6,32 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Added
+- 0395: Support for parameterized Computed Properties.
+- 0345: Asset Rendition Dispatcher framework allowing for named, cacheable renditions.
+- 0398: Added JDK11 support and updated travis to handle JDK8 and JDK11 
+
+### Fixed
+- 0390: Fixed issue where initial values from query parameters were not respected in Search / Sort component's HTL.
+- 0388: Corrected spelling of Boolean in dialog value.
+- 0400: InternalRedirectRenditionDispatcherImpl now supports asset paths with spaces.
+
+## [v1.7.0]
+
+### Fixed
+- 0163: User menu disappears when the profile is aleady loaded in previeous requests
+- 0340/0358: Corrected URL escaping to handle paths/assets file names using extended and unusual characters.
+- 0381: Fixed updating of dynamic service references to multiple share services
+
 ### Changed
 - 0359: Expanded org.apache.sling.xss to [1.2.0,3) to support AEM 6.5 (uses version 2.0.1) and removed unneeded legacy acom.adobe.acs.commons.email;resolution:=optional import.
+- 0374: Added ability to add extra or blacklist Metadata Properties from the Metadata Properties DataSource via OSGi configuration
+- 0376: Replaced use of com.adobe.cq.commerce.common.ValueMapDecorator with org.apache.sling.api.wrappers.ValueMapDecorator
+- 0378: Date range filter includes the end date (evaluated at 12:59:59PM)
+
+### Added
+- 0366: Use sharer email as Reply-To when sharing assets via email
+- 0371: Added Horizontal Masonry Card results.
 
 ## [v1.6.12]
 
@@ -24,9 +48,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0313: Reformatted core/pom.xml
 - 0322: Email Sharing Externalizer extension to allow custom externalizer domain to be used for publish links.
 - 0327: Updated SearchPredicateDataSource and AssetDetailsResolver to GREEDY'ily acquire @References to allow 3rd party service impls to register properly.
+- 0265: Added custom-delimiter support to PropertyValues predicate evalutor.
 
 ### Added
 - 0303: Added ability to hide the Apply Filter Toggle control completely (useful for when auto-search on change is enabled everywhere)
+- 0265: Added Freeform-text search component
 
 ## [v1.6.10]
 

@@ -25,7 +25,7 @@ import com.adobe.aem.commons.assetshare.components.predicates.impl.options.Selec
 import com.adobe.aem.commons.assetshare.components.predicates.impl.options.UnselectedOptionItem;
 import com.adobe.aem.commons.assetshare.search.impl.predicateevaluators.PropertyValuesPredicateEvaluator;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
-import com.adobe.cq.commerce.common.ValueMapDecorator;
+import org.apache.sling.api.wrappers.ValueMapDecorator;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
 import com.day.cq.search.eval.PathPredicateEvaluator;
@@ -126,6 +126,7 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
         return typeString;
     }
 
+    @Override
     public String getProperty() {
         return property;
     }
@@ -135,10 +136,12 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
         return PropertyValuesPredicateEvaluator.VALUES;
     }
 
+    @Override
     public boolean hasOperation() {
         return StringUtils.isNotBlank(getOperation());
     }
 
+    @Override
     public String getOperation() {
         return operation;
     }

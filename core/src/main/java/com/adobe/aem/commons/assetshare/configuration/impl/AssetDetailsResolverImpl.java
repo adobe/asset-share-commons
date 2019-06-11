@@ -76,7 +76,7 @@ public class AssetDetailsResolverImpl implements AssetDetailsResolver {
             if (config.getAssetDetailReferenceById()) {
                 fullUrl += "/" + asset.getAssetId() + ".html";
             } else {
-                fullUrl += asset.getPath();
+                fullUrl += asset.getUrl();
             }
         }
 

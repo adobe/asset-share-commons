@@ -29,6 +29,11 @@ import java.util.List;
 public interface PropertyPredicate extends Predicate {
 
     /**
+     * @return true of an operation is set.
+     */
+    default boolean hasOperation() { return false; }
+
+    /**
      * @return the querybuilder predication operation (equals, not equals, exists)
      */
     String getOperation();

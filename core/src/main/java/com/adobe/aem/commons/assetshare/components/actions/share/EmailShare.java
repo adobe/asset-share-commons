@@ -29,6 +29,8 @@ public interface EmailShare extends Share {
 
     String PN_USE_SHARER_NAME_AS_SIGNATURE = "useSharerSignature";
 
+    String PN_USE_SHARER_EMAIL_AS_REPLY_TO = "replyToSharer";
+
     /**
      * For example, in the default ASC Email Share implementation, this is the valuemap for the Email Share Modal Component.
      *
