@@ -1,0 +1,48 @@
+{
+  "dam": {
+    "jcr:primaryType": "nt:folder",
+    "test.png": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured",
+        "metadata": {
+          "dc:title": "Test Asset"
+        }
+      }
+    }
+  },
+  "metadata": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/metadata",
+    "type": "text",
+    "propertyName": "./dc:title"
+  },
+  "computed": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/metadata",
+    "type": "computed",
+    "computedProperty": "title"
+  },
+  "number": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/metadata",
+    "type": "number",
+    "formatNumber": "#.###"
+  },
+  "date": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/metadata",
+    "type": "date",
+    "formatDate": "yyyy-MM-dd"
+  },
+  "empty": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/metadata"
+  },
+  "empty-text": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/metadata",
+    "type": "text",
+    "propertyName": "nonexistingProperty"
+  }
+}
