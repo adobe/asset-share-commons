@@ -29,6 +29,7 @@ AssetShare.Events = {
 
     SEARCH_BEGIN: "asset-share-commons.search.begin",
     SEARCH_END: "asset-share-commons.search.end",
+    SEARCH_INVALID: "asset-share-commons.search.invalid",
 
     MODAL_SHOWN: "asset-share-commons.modal.shown"
 };
