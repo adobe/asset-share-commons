@@ -55,7 +55,7 @@
                 data-sly-use.assetDetails="${'com.adobe.aem.commons.assetshare.configuration.AssetDetails' @ request = slingRequest, asset = asset }">
 
                 <td class="image">
-                    <img src="${asset.properties['thumbnail'] || searchConfig.properties['missingImage']  @ context = 'attribute'}"
+                    <img src="${asset.properties['rendition?name=list'] || searchConfig.properties['missingImage']  @ context = 'attribute'}"
                          alt="${asset.properties['title']}"/>
                 </td>
 

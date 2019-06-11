@@ -19,6 +19,7 @@ package com.adobe.aem.commons.assetshare.content.properties.impl;
 import com.adobe.aem.commons.assetshare.content.properties.AbstractComputedProperty;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
 import com.adobe.aem.commons.assetshare.util.MimeTypeHelper;
+import com.adobe.aem.commons.assetshare.util.UrlUtil;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
 import org.apache.commons.lang3.StringUtils;
@@ -81,9 +82,7 @@ public class ThumbnailImpl extends AbstractComputedProperty<String> {
 
         // Ensure the rendition is of mime/type image; else the thumbnail will not be able to render
         if (rendition != null && mimeTypeHelper.isBrowserSupportedImage(rendition.getMimeType())) {
-            String path = StringUtils.replace(rendition.getPath(), " ", "%20");
-            path = StringUtils.replace(path, "/jcr:content", "/_jcr_content");
-            return path;
+            return UrlUtil.escape(rendition.getPath());
         }
 
         return "";

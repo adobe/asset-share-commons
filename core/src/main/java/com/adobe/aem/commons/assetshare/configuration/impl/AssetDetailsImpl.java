@@ -24,6 +24,7 @@ import com.adobe.aem.commons.assetshare.configuration.AssetDetailsResolver;
 import com.adobe.aem.commons.assetshare.configuration.Config;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.properties.impl.UrlImpl;
+import com.adobe.aem.commons.assetshare.util.UrlUtil;
 import com.day.text.Text;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.models.annotations.Model;
@@ -67,7 +68,7 @@ public class AssetDetailsImpl implements AssetDetails {
 
     @Override
     public String getFullUrl() {
-        String fullUrl = Text.escapePath(getUrl());
+        String fullUrl = getUrl();
 
         if (config.getAssetDetailReferenceById()) {
             fullUrl += "/" + asset.getAssetId() + ".html";
@@ -75,6 +76,6 @@ public class AssetDetailsImpl implements AssetDetails {
             fullUrl += asset.getProperties().get(UrlImpl.NAME, asset.getPath());
         }
 
-        return fullUrl;
+        return UrlUtil.escape(fullUrl);
     }
 }

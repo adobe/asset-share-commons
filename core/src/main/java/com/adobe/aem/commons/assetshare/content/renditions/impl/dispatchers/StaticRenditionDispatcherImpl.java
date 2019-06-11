@@ -41,9 +41,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
@@ -93,6 +91,15 @@ public class StaticRenditionDispatcherImpl implements AssetRenditionDispatcher {
     @Override
     public Set<String> getRenditionNames() {
         return mappings.keySet();
+    }
+
+    @Override
+    public List<String> getTypes() {
+        if (cfg.types() != null) {
+            return Arrays.asList(cfg.types());
+        }
+
+        return Collections.EMPTY_LIST;
     }
 
     @Override
@@ -149,6 +156,12 @@ public class StaticRenditionDispatcherImpl implements AssetRenditionDispatcher {
                 description = "The human-friendly name of this AssetRenditionDispatcher and may be displayed to authors."
         )
         String label() default "Static Renditions";
+
+        @AttributeDefinition(
+                name = "Rendition types",
+                description = "The types of renditions this configuration will return. Ideally all renditions in this configuration apply types specified here. This is used to drive and scope the Asset Renditions displays in Authoring datasources. OOTB types are: `image` and `video`"
+        )
+        String[] types() default {};
 
         @AttributeDefinition(
                 name = "Hide renditions",
