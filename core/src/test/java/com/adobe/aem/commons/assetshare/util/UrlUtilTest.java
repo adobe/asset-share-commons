@@ -57,10 +57,12 @@ public class UrlUtilTest {
         assertTrue(UrlUtil.isEscaped("/content/dam/test.png"));
         assertTrue(UrlUtil.isEscaped("/content/dam/test%20asset.png"));
         assertTrue(UrlUtil.isEscaped("/content/dam/test%20asset.png/_jcr_content"));
+        assertTrue(UrlUtil.isEscaped("/content/dam/testasset.png/_jcr_content"));
         assertTrue(UrlUtil.isEscaped("/content/dam/test%20folder/ir%c4%81%2bpu%20p%c3%b6%20%26p%c3%aep%e2%98%83.jpeg/_jcr_content/test"));
 
         assertFalse(UrlUtil.isEscaped("/content/dam/test asset.png"));
         assertFalse(UrlUtil.isEscaped("/content/dam/test asset.png/jcr:content"));
+        assertFalse(UrlUtil.isEscaped("/content/dam/testasset.png/jcr:content"));
         assertFalse(UrlUtil.isEscaped("/content/dam/test folder/irā+pu pö &pîp☃.jpeg/jcr:content/test"));
     }
 }
