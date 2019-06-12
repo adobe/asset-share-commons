@@ -1,7 +1,7 @@
 /*
  * Asset Share Commons
  *
- * Copyright (C) 2017 Adobe
+ * Copyright (C) 2019 Adobe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,13 +21,17 @@ package com.adobe.aem.commons.assetshare.content.properties.impl;
 
 import com.adobe.aem.commons.assetshare.content.properties.AbstractComputedProperty;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
+import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionServlet;
 import com.adobe.aem.commons.assetshare.util.MimeTypeHelper;
 import com.adobe.aem.commons.assetshare.util.UrlUtil;
+import com.adobe.cq.commerce.common.ValueMapDecorator;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.commons.util.DamUtil;
+import com.day.text.Text;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.resource.ValueMap;
 import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -35,6 +39,8 @@ import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
+
+import java.util.HashMap;
 
 import static com.adobe.aem.commons.assetshare.content.properties.ComputedProperty.DEFAULT_ASC_COMPUTED_PROPERTY_SERVICE_RANKING;
 
@@ -44,14 +50,11 @@ import static com.adobe.aem.commons.assetshare.content.properties.ComputedProper
                 Constants.SERVICE_RANKING + "=" + DEFAULT_ASC_COMPUTED_PROPERTY_SERVICE_RANKING
         }
 )
-@Designate(ocd = WebRenditionImpl.Cfg.class)
-public class WebRenditionImpl extends AbstractComputedProperty<String> {
+@Designate(ocd = AssetRenditionImpl.Cfg.class)
+public class AssetRenditionImpl extends AbstractComputedProperty<String> {
 
-    @Reference
-    private MimeTypeHelper mimeTypeHelper;
-
-    public static final String LABEL = "Web Rendition";
-    public static final String NAME = "image";
+    public static final String LABEL = "Asset Rendition";
+    public static final String NAME = "rendition";
 
     private Cfg cfg;
 
@@ -71,19 +74,17 @@ public class WebRenditionImpl extends AbstractComputedProperty<String> {
     }
 
     @Override
-    public String get(Asset asset, SlingHttpServletRequest request) {
-        final Rendition rendition = DamUtil.getBestFitRendition(1280, asset.getRenditions());
-        String path = "";
+    public String get(Asset asset, SlingHttpServletRequest request, ValueMap computedPropertyParameters) {
+        String url = asset.getPath() + "." + AssetRenditionServlet.SERVLET_EXTENSION + "/"
+                + computedPropertyParameters.get("name", String.class) + "/";
 
-        if (rendition != null &&
-                mimeTypeHelper.isBrowserSupportedImage(rendition.getMimeType())) {
-            path = rendition.getPath();
-        } else if (asset.getOriginal() != null &&
-                mimeTypeHelper.isBrowserSupportedImage(asset.getOriginal().getMimeType())) {
-            path = asset.getOriginal().getPath();
+        if (computedPropertyParameters.get("download", false)) {
+            url += "download/";
         }
 
-        return UrlUtil.escape(path);
+        url += "asset.rendition";
+
+        return UrlUtil.escape(url);
     }
 
     @Activate
@@ -91,7 +92,7 @@ public class WebRenditionImpl extends AbstractComputedProperty<String> {
         this.cfg = cfg;
     }
 
-    @ObjectClassDefinition(name = "Asset Share Commons - Computed Property - Web Rendition")
+    @ObjectClassDefinition(name = "Asset Share Commons - Computed Property - Asset Rendition")
     public @interface Cfg {
         @AttributeDefinition(
                 name = "Label",
@@ -103,6 +104,6 @@ public class WebRenditionImpl extends AbstractComputedProperty<String> {
                 name = "Types",
                 description = "Defines the type of data this exposes. This classification allows for intelligent exposure of Computed Properties in DataSources, etc."
         )
-        String[] types() default {Types.RENDITION};
+        String[] types() default { };
     }
 }

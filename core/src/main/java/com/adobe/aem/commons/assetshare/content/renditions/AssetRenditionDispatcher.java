@@ -25,6 +25,7 @@ import org.osgi.annotation.versioning.ConsumerType;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,6 +36,10 @@ import java.util.Set;
  */
 @ConsumerType
 public interface AssetRenditionDispatcher {
+    final class Types {
+        public static final String IMAGE = "image";
+        public static final String VIDEO = "video";
+    }
 
     /**
      * @return the friendly name of this Rendition Resolver displayed to Authors.
@@ -81,4 +86,11 @@ public interface AssetRenditionDispatcher {
      * @throws ServletException if the request cannot be dispatched properly.
      */
     void dispatch(SlingHttpServletRequest request, SlingHttpServletResponse response) throws IOException, ServletException;
+
+    /**
+     * Ideally a rendition dispatcher instances returns renditions that apply to all types returned bu this method.
+     *
+     * @return a list of Rendition Types this rendition Dispatcher will return;
+     */
+    default List<String> getTypes() { return Collections.EMPTY_LIST; }
 }

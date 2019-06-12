@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [v1.7.0]
 
 ### Fixed
-- 0163: User menu disappears when the profile is aleady loaded in previeous requests
+- 0163: User menu disappears when the profile is already loaded in previous requests
 - 0340/0358: Corrected URL escaping to handle paths/assets file names using extended and unusual characters.
 - 0381: Fixed updating of dynamic service references to multiple share services
 

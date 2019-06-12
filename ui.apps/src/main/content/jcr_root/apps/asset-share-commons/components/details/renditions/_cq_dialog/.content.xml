@@ -87,6 +87,7 @@
                                                     fieldDescription="Rendition label"
                                                     fieldLabel="Renditions"
                                                     renderReadOnly="{Boolean}true">
+
                                                 <field
                                                         granite:class="cmp-options--editor-item-multifield-composite-item coral-Well"
                                                         jcr:primaryType="nt:unstructured"

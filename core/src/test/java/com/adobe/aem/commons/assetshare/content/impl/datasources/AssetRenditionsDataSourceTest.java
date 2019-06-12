@@ -63,6 +63,7 @@ public class AssetRenditionsDataSourceTest {
                         put(Constants.SERVICE_RANKING, 0).
                         put("label", "One AssetRenditionDispatcher").
                         put("name", "one").
+                        put ("types", new String[]{"image", "video"}).
                         put("rendition.mappings", new String[]{
                                 "a=value",
                                 "b=value",}).
@@ -74,6 +75,7 @@ public class AssetRenditionsDataSourceTest {
                         put(Constants.SERVICE_RANKING, 0).
                         put("label", "Two AssetRenditionDispatcher").
                         put("name", "two").
+                        put ("types", new String[]{"video"}).
                         put("rendition.mappings", new String[]{
                                 "c=value",
                                 "d=value"}).
@@ -235,6 +237,38 @@ public class AssetRenditionsDataSourceTest {
                         put("label", "Three AssetRenditionDispatcher").
                         put("name", "three").
                         put ("hidden", true).
+                        put("rendition.mappings", new String[]{
+                                "e=value",
+                                "f=value"}).
+                        build());
+
+
+        final Servlet servlet = ctx.getService(Servlet.class);
+
+        servlet.service(ctx.request(), ctx.response());
+
+        final DataSource sds = (DataSource) ctx.request().getAttribute(DataSource.class.getName());
+        final Map<String, String> actual = toMap(sds);
+
+        assertArrayEquals(expectedValues, actual.values().toArray());
+    }
+
+    @Test
+    public void doGet_WithAllowedAssetRenditionDispatcherTypes() throws ServletException, IOException {
+        final String[] expectedValues = new String[]{"a", "b", "e", "f"};
+
+        ctx.currentResource("/apps/dialog/allowed-assetrendition-types");
+        ctx.registerInjectActivateService(new AssetRenditionsDataSource(),
+                "sling.servlet.resourceTypes", "asset-share-commons/data-sources/asset-renditions",
+                "sling.servlet.methods", "GET");
+
+        ctx.registerInjectActivateService(
+                new StaticRenditionDispatcherImpl(),
+                ImmutableMap.<String, Object>builder().
+                        put(Constants.SERVICE_RANKING, 1000).
+                        put("label", "Three AssetRenditionDispatcher").
+                        put("name", "three").
+                        put ("types", new String[]{"image"}).
                         put("rendition.mappings", new String[]{
                                 "e=value",
                                 "f=value"}).
