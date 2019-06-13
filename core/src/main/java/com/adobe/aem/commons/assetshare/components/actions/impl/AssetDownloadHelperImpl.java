@@ -25,6 +25,7 @@ public class AssetDownloadHelperImpl implements AssetDownloadHelper {
 
     private static final String ASSET_DOWNLOAD_SERVLET_PID = "com.day.cq.dam.core.impl.servlet.AssetDownloadServlet";
     private static final String MAX_SIZE_PROPERTY = "asset.download.prezip.maxcontentsize";
+    private static final long DEFAULT_SIZE_LIMIT = -1L;
 
     @Reference
     private AssetDownloadService assetDownloadService;
@@ -38,7 +39,7 @@ public class AssetDownloadHelperImpl implements AssetDownloadHelper {
             final Dictionary<String, Object> osgiConfigurationProperties = getAssetDownloadServletProperties();
            
             if (osgiConfigurationProperties != null) {
-                return PropertiesUtil.toLong(osgiConfigurationProperties.get(MAX_SIZE_PROPERTY), -1L);
+                return PropertiesUtil.toLong(osgiConfigurationProperties.get(MAX_SIZE_PROPERTY), DEFAULT_SIZE_LIMIT);
             } else{
                 log.debug("No OSGi configuration properties could be found for service.pid [ {} ]", ASSET_DOWNLOAD_SERVLET_PID);
             }
@@ -46,7 +47,7 @@ public class AssetDownloadHelperImpl implements AssetDownloadHelper {
             log.error("Could not get max content size property for AEM's Asset Download Servlet", e);
         }
 
-        return -1L;
+        return DEFAULT_SIZE_LIMIT;
     }
 
     @SuppressWarnings("unchecked")

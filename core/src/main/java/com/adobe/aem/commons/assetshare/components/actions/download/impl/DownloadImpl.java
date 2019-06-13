@@ -46,8 +46,10 @@ import java.util.Collection;
         resourceType = {DownloadImpl.RESOURCE_TYPE}
 )
 public class DownloadImpl implements Download {
+	
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/modals/download";
     private static final Logger log = LoggerFactory.getLogger(DownloadImpl.class);
+    private static final long DEFAULT_SIZE_LIMIT = -1L;
 
     @Self
     @Required
@@ -85,18 +87,26 @@ public class DownloadImpl implements Download {
 
         if (assets.isEmpty()) {
             assets = actionHelper.getPlaceholderAsset(request);
-            this.maxContentSize = -1L;
+            this.maxContentSize = DEFAULT_SIZE_LIMIT;
+            this.downloadContentSize = DEFAULT_SIZE_LIMIT;
         } else {
-            this.maxContentSize = assetDownloadHelper.getMaxContentSizeLimit();
-            log.debug("Max allowed content size (in bytes) [ {} ]", this.maxContentSize);
-
-            //check if needed to caclulate max content size
-            if(this.maxContentSize != null && this.maxContentSize > 0) {
-                log.debug("Max content size set, requires calculation of download  content size.");
-                this.downloadContentSize = assetDownloadHelper.computeAssetDownloadSize(assets, request.getResource());
-                log.debug("Requested download content size (in bytes) [ {} ]", this.downloadContentSize);
-            }
+            calculateSizes();
         }    
+    }
+    
+    private void calculateSizes() {
+    	this.maxContentSize = assetDownloadHelper.getMaxContentSizeLimit();
+        log.debug("Max allowed content size (in bytes) [ {} ]", this.maxContentSize);
+
+        //check if needed to caclulate max content size
+        if(this.maxContentSize > 0) {
+            log.debug("Max content size set, requires calculation of download  content size.");
+            this.downloadContentSize = assetDownloadHelper.computeAssetDownloadSize(assets, request.getResource());
+            log.debug("Requested download content size (in bytes) [ {} ]", this.downloadContentSize);
+        } else {
+        	this.downloadContentSize = DEFAULT_SIZE_LIMIT;
+        }
+    	
     }
 
     public Collection<AssetModel> getAssets() {
