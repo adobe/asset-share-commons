@@ -45,7 +45,6 @@ public class MetadataImplTest {
     public void setUp() throws Exception {
         ctx.load().json("/com/adobe/aem/commons/assetshare/components/details/impl/MetadataImplTest.json", "/content");
 
-        ctx.registerService(TitleImpl.class);
         ctx.addModelsForClasses(MetadataImpl.class);
 
         ctx.requestPathInfo().setSuffix("/content/dam/test.png");
@@ -126,7 +125,6 @@ public class MetadataImplTest {
 
         assertEquals(expected, metadata.getPropertyName());
     }
-
 
     @Test
     public void getPropertyName_ComputedProperty() {
