@@ -110,12 +110,14 @@ public class ImageImpl extends AbstractEmptyTextComponent implements Image {
     public String getSrc() {
         if (src == null) {
 
-            String tmp;
+            String tmp = null;
 
             if (!legacyMode) {
-                final AssetRenditionParameters parameters =
-                        new AssetRenditionParameters(asset, renditionName, false);
-                tmp = assetRenditions.getUrl(request, asset, parameters);
+                if (asset != null && StringUtils.isNotBlank(renditionName)) {
+                    final AssetRenditionParameters parameters =
+                            new AssetRenditionParameters(asset, renditionName, false);
+                    tmp = assetRenditions.getUrl(request, asset, parameters);
+                }
             } else {
                 tmp = getLegacySrc();
             }
