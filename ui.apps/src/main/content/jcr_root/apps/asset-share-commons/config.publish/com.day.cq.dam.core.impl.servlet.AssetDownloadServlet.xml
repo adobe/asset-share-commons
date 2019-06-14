@@ -18,5 +18,5 @@
   -->
 <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
     jcr:primaryType="sling:OsgiConfig"
-    asset.download.prezip.maxcontentsize="{Long}52428800"
+    asset.download.prezip.maxcontentsize="{Long}1073741824"
     enabled="{Boolean}true"/>
