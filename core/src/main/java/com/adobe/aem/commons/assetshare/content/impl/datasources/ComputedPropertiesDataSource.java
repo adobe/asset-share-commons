@@ -90,13 +90,15 @@ public class ComputedPropertiesDataSource extends SlingSafeMethodsServlet {
     }
 
     private boolean containsAny(String[] arrayOne, String[] arrayTwo) {
-        for (final String valueOne : arrayOne) {
-            for (final String valueTwo : arrayTwo) {
-                if (StringUtils.equals(valueOne, valueTwo)) {
-                    return true;
+    	if(arrayOne != null && arrayTwo != null) {
+    		for (final String valueOne : arrayOne) {
+                for (final String valueTwo : arrayTwo) {
+                    if (StringUtils.equals(valueOne, valueTwo)) {
+                        return true;
+                    }
                 }
             }
-        }
+    	}
 
         return false;
     }
