@@ -29,19 +29,25 @@ public class UrlUtil {
      *
      * @param unescaped the unescaped URL representation to escape.
      *
-     * @return the escaped URL representation.
+     * @return the escaped URL representation, or null if the unescaped parameter is null.
      */
     public static final String escape(final String unescaped) {
-       return escape(unescaped, true);
+        if (unescaped == null) {
+            return null;
+        }
+
+        return escape(unescaped, true);
     }
 
     /**
      * @param unescaped the unescaped URL representation to escape.
      * @param preventDoubleEscaping true to check if unescaped is already escaped before attempting to re-escape.
-     * @return the escaped URL representation.
+     * @return the escaped URL representation, or null if the unescaped parameter is null.
      */
     public static final String escape(final String unescaped, final boolean preventDoubleEscaping) {
-        if (preventDoubleEscaping && isEscaped(unescaped)) {
+        if (unescaped == null) {
+            return null;
+        }  else if (preventDoubleEscaping && isEscaped(unescaped)) {
             return unescaped;
         }
 
@@ -57,8 +63,18 @@ public class UrlUtil {
     }
 
 
+    /**
+     * Checks if the candidate url appears to already be escaped.
+     * A null candidate parameter returns false;
+     *
+     * @param candidate the url to check if is already escaped.
+     * @return true if already escaped, else false. A null candidate also returns false.
+     */
     public static final boolean isEscaped(final String candidate) {
-        String unescaped = Text.unescape(candidate);
+        if (candidate == null) { return false; }
+
+        String unescaped = Text.unescape(StringUtils.stripToEmpty(candidate));
+
         unescaped = StringUtils.replace(unescaped, "/_jcr_content", "/jcr:content");
 
         if (!StringUtils.equals(unescaped, candidate)) {

@@ -31,14 +31,10 @@ import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.Servlet;
-import javax.servlet.ServletException;
-import java.io.IOException;
-import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -90,10 +86,12 @@ public class ComputedPropertiesDataSource extends SlingSafeMethodsServlet {
     }
 
     private boolean containsAny(String[] arrayOne, String[] arrayTwo) {
-        for (final String valueOne : arrayOne) {
-            for (final String valueTwo : arrayTwo) {
-                if (StringUtils.equals(valueOne, valueTwo)) {
-                    return true;
+        if (arrayOne != null && arrayTwo != null) {
+            for (final String valueOne : arrayOne) {
+                for (final String valueTwo : arrayTwo) {
+                    if (StringUtils.equals(valueOne, valueTwo)) {
+                        return true;
+                    }
                 }
             }
         }
