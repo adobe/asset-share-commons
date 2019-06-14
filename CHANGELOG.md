@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0388: Corrected spelling of Boolean in dialog value.
 - 0400: InternalRedirectRenditionDispatcherImpl now supports asset paths with spaces.
 - 0412: Search Results dialog not opening due to MetadataSchemaPropertiesImpl throws NPE when OSGi properties not configured
+- 0421: AssetRenditions thumbnail sizes on AEM 6.3.x, and null input handling in UrlUtil.
 
 ## [v1.7.0]
 
