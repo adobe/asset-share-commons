@@ -43,7 +43,7 @@ public class MetadataImplTest {
 
     @Before
     public void setUp() throws Exception {
-        ctx.load().json("/com/adobe/aem/commons/assetshare/components/details/impl/MetadataImpl.json", "/content");
+        ctx.load().json("/com/adobe/aem/commons/assetshare/components/details/impl/MetadataImplTest.json", "/content");
 
         ctx.registerService(TitleImpl.class);
         ctx.addModelsForClasses(MetadataImpl.class);
