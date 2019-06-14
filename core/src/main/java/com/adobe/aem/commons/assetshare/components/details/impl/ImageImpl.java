@@ -112,7 +112,7 @@ public class ImageImpl extends AbstractEmptyTextComponent implements Image {
 
             String tmp = null;
 
-            if (!legacyMode) {
+            if (!isLegacyConfig()) {
                 if (asset != null && StringUtils.isNotBlank(renditionName)) {
                     final AssetRenditionParameters parameters =
                             new AssetRenditionParameters(asset, renditionName, false);
@@ -150,6 +150,16 @@ public class ImageImpl extends AbstractEmptyTextComponent implements Image {
         }
 
         return src;
+    }
+    
+    private boolean isLegacyConfig() {
+    	if(legacyMode) {
+    		return true;
+    	} else if(StringUtils.isBlank(renditionName) && StringUtils.isNotBlank(computedProperty)){
+    		return true;
+    	}
+    	
+    	return false;
     }
 
     @Override
