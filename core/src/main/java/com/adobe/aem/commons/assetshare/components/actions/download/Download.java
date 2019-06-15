@@ -38,4 +38,26 @@ public interface Download {
      * @return the name of the zip file that contains the assets (and their renditions) to download.
      */
     String getZipFileName();
+
+    /**
+     * 
+     * @return a long representing the maximum content size limit allowed
+     */
+    long getMaxContentSize();
+
+    /**
+     * @return a long representing the size of the contents about to be downloaded
+     */
+    long getDownloadContentSize();
+
+    /**
+     * @return a string with a human readable label of the max content size limit
+     */
+    String getMaxContentSizeLabel();
+
+    /**
+     * @return a string with a human readable label of the current download size
+     */
+    String getDownloadContentSizeLabel();
+
 }

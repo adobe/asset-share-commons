@@ -105,6 +105,13 @@
                                             fieldLabel="ZIP File Name"
                                             name="./zipFileName"
                                             required="{Boolean}true"/>
+                                     <max-content-size-message
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Maximum content size of download exceeded:"
+                                            fieldDescription="Message displayed if the potential size of assets exceeds the max content size limit set by AEM's AssetDownloadServlet."
+                                            fieldLabel="Max Content Size Message"
+                                            name="./maxContentSizeMessage" />
                                 </items>
                             </column>
                         </items>

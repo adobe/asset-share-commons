@@ -41,6 +41,13 @@
 
     <i class="close icon"></i>
 
+    <div data-sly-test.isMaxSize="${download.maxContentSize > 0 && download.maxContentSize < download.downloadContentSize}" 
+        class="ui attached warning message cmp-message">
+        ${properties['maxContentSizeMessage']}
+        <br/>
+        <label>${"Limit" @ i18n}:</label> <span class="detail">${download.maxContentSizeLabel}</span> | 
+        <label>${"Current Size" @ i18n}:</label> <span class="detail">${download.downloadContentSizeLabel}</span>
+    </div>
     <div class="header">
         ${properties['modalTitle']}
     </div>
@@ -81,18 +88,17 @@
                     <label>${"Include Sub-assets" @ i18n}</label>
                 </div>
             </div>
-        </div>
+        </div>        
     </div>
     <div class="actions cmp-footer__actions">
         <div class="ui deny button">
             ${properties['cancelButton']}
         </div>
-        <button type="submit" class="ui positive primary right labeled icon button">
+        <button type="submit" class="ui positive primary right labeled icon button ${isMaxSize ? 'disabled': ''}">
             ${properties['downloadButton']}
             <i class="download icon"></i>
         </button>
     </div>
-
     <script>
         $(function() {
             $('[data-asset-share-id="download-modal"] .ui.checkbox').checkbox();
