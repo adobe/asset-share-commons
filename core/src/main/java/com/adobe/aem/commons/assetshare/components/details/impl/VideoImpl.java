@@ -92,7 +92,7 @@ public class VideoImpl extends AbstractEmptyTextComponent implements Video {
         if (src == null) {
             String tmp = null;
 
-            if (!legacyMode) {
+            if (!isLegacyConfig()) {
                 if (asset != null && StringUtils.isNotBlank(renditionName)) {
                     final AssetRenditionParameters parameters =
                             new AssetRenditionParameters(asset, renditionName, false);
@@ -117,6 +117,16 @@ public class VideoImpl extends AbstractEmptyTextComponent implements Video {
         }
 
         return src;
+    }
+    
+    private boolean isLegacyConfig() {
+    	if(legacyMode) {
+    		return true;
+    	} else if(StringUtils.isBlank(renditionName) && StringUtils.isNotBlank(computedProperty)){
+    		return true;
+    	}
+    	
+    	return false;
     }
 
     /**
