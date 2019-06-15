@@ -151,4 +151,46 @@ public class ImageImplTest {
         final Image image = ctx.request().adaptTo(Image.class);
         assertFalse(image.isReady());
     }
+
+    @Test
+    public void isLegacyMode_NoLegacyConfigOrLegacyMode() {
+        ctx.currentResource("/content/image");
+        final Image image = ctx.request().adaptTo(Image.class);
+        assertFalse(((ImageImpl) image).isLegacyMode());
+    }
+
+    @Test
+    public void isLegacyMode_WithComputedPropertyAndNoLegacyMode() {
+        ctx.currentResource("/content/legacy-computed-property");
+        final Image image = ctx.request().adaptTo(Image.class);
+        assertTrue(((ImageImpl) image).isLegacyMode());
+    }
+
+    @Test
+    public void isLegacyMode_WithRenditionRegexAndNoLegacyMode() {
+        ctx.currentResource("/content/legacy-rendition-regex");
+        final Image image = ctx.request().adaptTo(Image.class);
+        assertTrue(((ImageImpl) image).isLegacyMode());
+    }
+
+    @Test
+    public void isLegacyMode_WithAllConfigsAndNoLegacyMode() {
+        ctx.currentResource("/content/all-configs");
+        final Image image = ctx.request().adaptTo(Image.class);
+        assertFalse(((ImageImpl) image).isLegacyMode());
+    }
+
+    @Test
+    public void isLegacyMode_On() {
+        ctx.currentResource("/content/legacy-on");
+        final Image image = ctx.request().adaptTo(Image.class);
+        assertTrue(((ImageImpl) image).isLegacyMode());
+    }
+
+    @Test
+    public void isLegacyMode_Off() {
+        ctx.currentResource("/content/legacy-off");
+        final Image image = ctx.request().adaptTo(Image.class);
+        assertFalse(((ImageImpl) image).isLegacyMode());
+    }
 }

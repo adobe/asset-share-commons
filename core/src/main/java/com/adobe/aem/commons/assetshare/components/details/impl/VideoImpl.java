@@ -60,8 +60,7 @@ public class VideoImpl extends AbstractEmptyTextComponent implements Video {
     private String renditionRegex;
 
     @ValueMapValue
-    @Default(booleanValues = false)
-    private boolean legacyMode;
+    private Boolean legacyMode;
 
     @ValueMapValue
     private String renditionName;
@@ -92,7 +91,7 @@ public class VideoImpl extends AbstractEmptyTextComponent implements Video {
         if (src == null) {
             String tmp = null;
 
-            if (!legacyMode) {
+            if (!isLegacyMode()) {
                 if (asset != null && StringUtils.isNotBlank(renditionName)) {
                     final AssetRenditionParameters parameters =
                             new AssetRenditionParameters(asset, renditionName, false);
@@ -142,5 +141,17 @@ public class VideoImpl extends AbstractEmptyTextComponent implements Video {
         }
 
         return false;
+    }
+
+    boolean isLegacyMode() {
+        if (legacyMode == null) {
+            if (StringUtils.isNotBlank(renditionName)) {
+                return false;
+            } else {
+                return StringUtils.isNotBlank(computedProperty) || StringUtils.isNotBlank(renditionRegex);
+            }
+        } else {
+            return legacyMode;
+        }
     }
 }

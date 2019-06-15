@@ -25,17 +25,16 @@ import com.adobe.aem.commons.assetshare.content.impl.AssetModelImpl;
 import com.adobe.aem.commons.assetshare.content.impl.AssetResolverImpl;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperties;
 import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedPropertiesImpl;
-import com.adobe.aem.commons.assetshare.content.properties.impl.TitleImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
-import com.adobe.aem.commons.assetshare.util.MimeTypeHelper;
-import com.adobe.aem.commons.assetshare.util.impl.MimeTypeHelperImpl;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class VideoImplTest {
     @Rule
@@ -101,10 +100,52 @@ public class VideoImplTest {
     }
 
     @Test
-    public void isVideoAsset_ImageAsset() {
+    public void isVideoAsset_VideoAsset() {
         ctx.currentResource("/content/video");
         ctx.requestPathInfo().setSuffix("/content/dam/test.png");
         final Video video = ctx.request().adaptTo(Video.class);
         assertFalse(video.isVideoAsset());
+    }
+
+    @Test
+    public void isLegacyMode_NoLegacyConfigOrLegacyMode() {
+        ctx.currentResource("/content/video");
+        final Video video = ctx.request().adaptTo(Video.class);
+        assertFalse(((VideoImpl) video).isLegacyMode());
+    }
+
+    @Test
+    public void isLegacyMode_WithComputedPropertyAndNoLegacyMode() {
+        ctx.currentResource("/content/legacy-computed-property");
+        final Video video = ctx.request().adaptTo(Video.class);
+        assertTrue(((VideoImpl) video).isLegacyMode());
+    }
+
+    @Test
+    public void isLegacyMode_WithRenditionRegexAndNoLegacyMode() {
+        ctx.currentResource("/content/legacy-rendition-regex");
+        final Video video = ctx.request().adaptTo(Video.class);
+        assertTrue(((VideoImpl) video).isLegacyMode());
+    }
+
+    @Test
+    public void isLegacyMode_WithAllConfigsAndNoLegacyMode() {
+        ctx.currentResource("/content/all-configs");
+        final Video video = ctx.request().adaptTo(Video.class);
+        assertFalse(((VideoImpl) video).isLegacyMode());
+    }
+
+    @Test
+    public void isLegacyMode_On() {
+        ctx.currentResource("/content/legacy-on");
+        final Video video = ctx.request().adaptTo(Video.class);
+        assertTrue(((VideoImpl) video).isLegacyMode());
+    }
+
+    @Test
+    public void isLegacyMode_Off() {
+        ctx.currentResource("/content/legacy-off");
+        final Video video = ctx.request().adaptTo(Video.class);
+        assertFalse(((VideoImpl) video).isLegacyMode());
     }
 }
