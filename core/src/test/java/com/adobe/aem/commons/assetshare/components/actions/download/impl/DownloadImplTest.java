@@ -1,6 +1,5 @@
 package com.adobe.aem.commons.assetshare.components.actions.download.impl;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ResourceBundle;
@@ -19,8 +18,11 @@ import com.adobe.aem.commons.assetshare.components.actions.download.Download;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 
 import io.wcm.testing.mock.aem.junit.AemContext;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doReturn;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DownloadImplTest {
@@ -53,7 +55,6 @@ public class DownloadImplTest {
 
 	@Before
 	public void setUp() throws Exception {
-
 		ctx.load().json("/com/adobe/aem/commons/assetshare/components/actions/download/impl/DownloadImplTest.json",
 				"/content");
 
@@ -150,7 +151,7 @@ public class DownloadImplTest {
 	public void getDownloadContentSize() {
 		long expected = 1024L;
 		ctx.currentResource("/content/download");
-		doReturn(1024L).when(assetDownloadHelper).computeAssetDownloadSize(assetModels, ctx.currentResource());
+		doReturn(1024L).when(assetDownloadHelper).getAssetDownloadSize(assetModels, ctx.currentResource());
 		final Download download = ctx.request().adaptTo(Download.class);
 
 		assertEquals(expected, download.getDownloadContentSize());
@@ -178,5 +179,4 @@ public class DownloadImplTest {
 		assertFalse(download.getAssets().isEmpty());
 		assertEquals(expected, download.getDownloadContentSize());
 	}
-
 }

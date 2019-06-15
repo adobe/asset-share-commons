@@ -101,7 +101,7 @@ public class DownloadImpl implements Download {
         //check if needed to caclulate max content size
         if(this.maxContentSize > 0) {
             log.debug("Max content size set, requires calculation of download  content size.");
-            this.downloadContentSize = assetDownloadHelper.computeAssetDownloadSize(assets, request.getResource());
+            this.downloadContentSize = assetDownloadHelper.getAssetDownloadSize(assets, request.getResource());
             log.debug("Requested download content size (in bytes) [ {} ]", this.downloadContentSize);
         } else {
         	this.downloadContentSize = DEFAULT_SIZE_LIMIT;

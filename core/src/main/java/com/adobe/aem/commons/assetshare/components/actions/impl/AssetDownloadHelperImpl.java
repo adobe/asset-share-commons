@@ -65,7 +65,7 @@ public class AssetDownloadHelperImpl implements AssetDownloadHelper {
     }
 
     @Override
-    public long computeAssetDownloadSize(Collection<AssetModel> assets, Resource requestResource) {
+    public long getAssetDownloadSize(Collection<AssetModel> assets, Resource configResource) {
         final Set<Resource> assetDownloadRequestPathsSet = new HashSet<Resource>();
 
         for (final AssetModel asset : assets) {
@@ -74,7 +74,7 @@ public class AssetDownloadHelperImpl implements AssetDownloadHelper {
 
         // Use AssetDownloadService to compute the pre-zip size based on list of assets
         final AssetDownloadService.AssetDownloadParams preZipComputationParams = new AssetDownloadService.AssetDownloadParams(
-                requestResource,
+                configResource,
                 assetDownloadRequestPathsSet,
                 true,
                 true,
