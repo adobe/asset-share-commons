@@ -25,6 +25,7 @@
                     cancelButton="Cancel"
                     downloadButton="Download"
                     downloadOptionsTitle="Download Options"
+                    maxContentSizeMessage="Maximum content size of download exceeded:"
                     modalTitle="Download"
                     zipFileName="assets"/>
             </responsivegrid>
