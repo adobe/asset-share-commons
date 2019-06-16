@@ -86,8 +86,7 @@ public class ImageImpl extends AbstractEmptyTextComponent implements Image {
     private String renditionRegex;
 
     @ValueMapValue
-    @Default(booleanValues = false)
-    private boolean legacyMode;
+    private Boolean legacyMode;
 
     @ValueMapValue
     private String renditionName;
@@ -110,12 +109,14 @@ public class ImageImpl extends AbstractEmptyTextComponent implements Image {
     public String getSrc() {
         if (src == null) {
 
-            String tmp;
+            String tmp = null;
 
-            if (!legacyMode) {
-                final AssetRenditionParameters parameters =
-                        new AssetRenditionParameters(asset, renditionName, false);
-                tmp = assetRenditions.getUrl(request, asset, parameters);
+            if (!isLegacyMode()) {
+                if (asset != null && StringUtils.isNotBlank(renditionName)) {
+                    final AssetRenditionParameters parameters =
+                            new AssetRenditionParameters(asset, renditionName, false);
+                    tmp = assetRenditions.getUrl(request, asset, parameters);
+                }
             } else {
                 tmp = getLegacySrc();
             }
@@ -166,5 +167,17 @@ public class ImageImpl extends AbstractEmptyTextComponent implements Image {
     @Override
     public boolean isReady() {
         return !isEmpty();
+    }
+
+    boolean isLegacyMode() {
+        if (legacyMode == null) {
+            if (StringUtils.isNotBlank(renditionName)) {
+                return false;
+            } else {
+                return StringUtils.isNotBlank(computedProperty) || StringUtils.isNotBlank(renditionRegex);
+            }
+        } else {
+            return legacyMode;
+        }
     }
 }
