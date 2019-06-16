@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.components.details.Renditions;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.Rendition;
 import com.adobe.aem.commons.assetshare.content.properties.impl.LicenseImpl;
+import com.adobe.aem.commons.assetshare.util.UrlUtil;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
 import com.day.cq.dam.commons.util.UIHelper;
@@ -156,7 +157,7 @@ public class RenditionsImpl extends AbstractEmptyTextComponent implements Rendit
             this.label = label;
             this.size = UIHelper.getSizeLabel(assetRendition.getSize());
             this.mimeType = assetRendition.getMimeType();
-            this.path = Text.escapePath(assetRendition.getPath());
+            this.path = UrlUtil.escape(assetRendition.getPath());
             this.name = assetRendition.getName();
             this.exists = exists;
             this.licensed = licensed;

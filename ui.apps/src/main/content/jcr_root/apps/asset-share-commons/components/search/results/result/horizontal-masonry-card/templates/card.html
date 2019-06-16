@@ -29,9 +29,8 @@
         <span class="cmp-card__type"
                 data-sly-test.assetType="${asset.properties['type']}">${assetType}</span>
 
-
         <a class="cmp-card__link" href="${assetDetails.url @ suffix = asset.path}">
-            <img src="${asset.properties['thumbnail'] || properties['missingImage'] @ context = 'attribute'}"
+            <img src="${asset.properties['rendition?name=card'] || properties['missingImage'] @ context = 'attribute'}"
                  class="cmp-card__image"
                  alt="${asset.properties['title']}"/>
         </a>

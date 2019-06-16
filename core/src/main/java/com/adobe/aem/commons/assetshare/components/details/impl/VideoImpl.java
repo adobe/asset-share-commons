@@ -1,47 +1,69 @@
 package com.adobe.aem.commons.assetshare.components.details.impl;
 
-import java.util.regex.Pattern;
-
-import javax.annotation.PostConstruct;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.sling.api.SlingHttpServletRequest;
-import org.apache.sling.api.resource.ValueMap;
-import org.apache.sling.models.annotations.DefaultInjectionStrategy;
-import org.apache.sling.models.annotations.Model;
-import org.apache.sling.models.annotations.Required;
-import org.apache.sling.models.annotations.injectorspecific.Self;
-import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
-
 import com.adobe.aem.commons.assetshare.components.details.Video;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.adobe.aem.commons.assetshare.util.UrlUtil;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.commons.util.DamUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.models.annotations.Default;
+import org.apache.sling.models.annotations.DefaultInjectionStrategy;
+import org.apache.sling.models.annotations.Model;
+import org.apache.sling.models.annotations.Required;
+import org.apache.sling.models.annotations.injectorspecific.OSGiService;
+import org.apache.sling.models.annotations.injectorspecific.Self;
+import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
+
+import javax.annotation.PostConstruct;
+import java.util.regex.Pattern;
 
 /**
- *
  * Sling Model for Video Component
- *
  */
 @Model(
-        adaptables = { SlingHttpServletRequest.class },
-        adapters = { Video.class },
-        resourceType = { VideoImpl.RESOURCE_TYPE },
+        adaptables = {SlingHttpServletRequest.class},
+        adapters = {Video.class},
+        resourceType = {VideoImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL)
 public class VideoImpl extends AbstractEmptyTextComponent implements Video {
-
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/details/video";
 
     @Self
     @Required
-    private AssetModel assetModel;
+    private SlingHttpServletRequest request;
 
+    @Self
+    @Required
+    private AssetModel asset;
+
+    @OSGiService
+    @Required
+    private AssetRenditions assetRenditions;
+
+    /**
+     * @deprecated replaced by renditionName
+     */
+    @Deprecated
     @ValueMapValue
     private String computedProperty;
 
+    /**
+     * @deprecated replaced by renditionName
+     */
+    @Deprecated
     @ValueMapValue
     private String renditionRegex;
+
+    @ValueMapValue
+    private Boolean legacyMode;
+
+    @ValueMapValue
+    private String renditionName;
 
     private ValueMap combinedProperties;
 
@@ -49,8 +71,8 @@ public class VideoImpl extends AbstractEmptyTextComponent implements Video {
 
     @PostConstruct
     public void init() {
-        if (assetModel != null) {
-            combinedProperties = assetModel.getProperties();
+        if (asset != null) {
+            combinedProperties = asset.getProperties();
         }
     }
 
@@ -67,20 +89,43 @@ public class VideoImpl extends AbstractEmptyTextComponent implements Video {
     @Override
     public String getSrc() {
         if (src == null) {
-            src = combinedProperties.get(computedProperty, String.class);
-            if (StringUtils.isBlank(src) && StringUtils.isNotBlank(renditionRegex)) {
-                fetchSrcFromRegex();
+            String tmp = null;
+
+            if (!isLegacyMode()) {
+                if (asset != null && StringUtils.isNotBlank(renditionName)) {
+                    final AssetRenditionParameters parameters =
+                            new AssetRenditionParameters(asset, renditionName, false);
+                    tmp = assetRenditions.getUrl(request, asset, parameters);
+                }
+            } else {
+                tmp = getLegacySrc();
             }
+
+            src = UrlUtil.escape(tmp);
         }
+
+        return src;
+    }
+
+    @Deprecated
+    private String getLegacySrc() {
+        String src = combinedProperties.get(computedProperty, String.class);
+
+        if (StringUtils.isBlank(src) && StringUtils.isNotBlank(renditionRegex)) {
+            fetchSrcFromRegex();
+        }
+
         return src;
     }
 
     /**
      * Method fetches the rendition path from regex
      */
+    @Deprecated
     private void fetchSrcFromRegex() {
         final Pattern pattern = Pattern.compile(renditionRegex);
-        for (final Rendition rendition : assetModel.getRenditions()) {
+
+        for (final Rendition rendition : asset.getRenditions()) {
             if (!"video/x-flv".equalsIgnoreCase(rendition.getMimeType())
                     && pattern.matcher(rendition.getName()).matches()) {
                 src = rendition.getPath();
@@ -91,13 +136,22 @@ public class VideoImpl extends AbstractEmptyTextComponent implements Video {
 
     @Override
     public boolean isVideoAsset() {
-        if (null != assetModel && null != assetModel.getResource()) {
-            final Asset asset = assetModel.getResource().adaptTo(Asset.class);
-            if (DamUtil.isVideo(asset)) {
-                return true;
-            }
+        if (null != asset && null != asset.getResource()) {
+            return DamUtil.isVideo(asset.getResource().adaptTo(Asset.class));
         }
+
         return false;
     }
 
+    boolean isLegacyMode() {
+        if (legacyMode == null) {
+            if (StringUtils.isNotBlank(renditionName)) {
+                return false;
+            } else {
+                return StringUtils.isNotBlank(computedProperty) || StringUtils.isNotBlank(renditionRegex);
+            }
+        } else {
+            return legacyMode;
+        }
+    }
 }

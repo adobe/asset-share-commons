@@ -1,0 +1,42 @@
+{
+  "dam": {
+    "jcr:primaryType": "nt:folder",
+    "test.png": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured",
+        "metadata": {
+          "dc:title": "Test Asset"
+        }
+      }
+    }
+  },
+  "editor-links": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/editor-links",
+    "assetDetailsLinkLabel": "text",
+    "assetFolderLinkLabel": "./dc:title"
+  },
+  "computed": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/editor-links",
+    "type": "computed",
+    "computedProperty": "title"
+  },
+  "number": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/editor-links",
+    "type": "number",
+    "formatNumber": "#.###"
+  },
+  "date": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/editor-links",
+    "type": "date",
+    "formatDate": "yyyy-MM-dd"
+  },
+  "empty": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/editor-links"
+  }
+}

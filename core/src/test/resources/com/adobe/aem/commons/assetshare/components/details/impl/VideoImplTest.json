@@ -1,0 +1,67 @@
+{
+  "dam": {
+    "jcr:primaryType": "nt:folder",
+    "test.mp4": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured",
+        "metadata": {
+          "dc:title": "Test Video Asset",
+          "dc:format": "video/mp4"
+        }
+      }
+    },
+    "test.png": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured",
+        "metadata": {
+          "dc:title": "Test Image Asset",
+          "dc:format": "image/png"
+        }
+      }
+    }
+  },
+  "video": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/video",
+    "renditionName": "mp4"
+  },
+  "empty": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/video"
+  },
+  "all-configs": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/video",
+    "computedProperty": "path",
+    "renditionRegex": ".*web.*",
+    "renditionName": "web"
+  },
+  "legacy-computed-property": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/video",
+    "computedProperty": "path"
+  },
+  "legacy-rendition-regex": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/video",
+    "renditionRegex": ".*web.*"
+  },
+  "legacy-off": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/video",
+    "computedProperty": "path",
+    "renditionRegex": ".*web.*",
+    "renditionName": "web",
+    "legacyMode": false
+  },
+  "legacy-on": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/video",
+    "computedProperty": "path",
+    "renditionRegex": ".*web.*",
+    "renditionName": "web",
+    "legacyMode": true
+  }
+}

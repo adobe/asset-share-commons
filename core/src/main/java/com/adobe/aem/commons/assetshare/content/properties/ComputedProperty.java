@@ -21,6 +21,7 @@ package com.adobe.aem.commons.assetshare.content.properties;
 
 import com.day.cq.dam.api.Asset;
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.resource.ValueMap;
 import org.osgi.annotation.versioning.ConsumerType;
 
 @ConsumerType
@@ -31,10 +32,23 @@ public interface ComputedProperty<T> {
      */
     int DEFAULT_ASC_COMPUTED_PROPERTY_SERVICE_RANKING = -1;
 
+    /**
+     * This return value may NOT have a ?, &amp; or = in it, as this will conflict with parameters.
+     *
+     * @return the computed property's name.
+     */
     String getName();
 
+    /**
+     * @return the human-friendly label for this Computed Property.
+     */
     String getLabel();
 
+    /**
+     * This is primarily used to select ComputedProperties for DataSources which drive Dropdown lists in the AEM Authoring UI.
+     *
+     * @return the types this ComputedProperty applies to.
+     */
     String[] getTypes();
 
     /**
@@ -47,15 +61,60 @@ public interface ComputedProperty<T> {
      */
     boolean isCachable();
 
+    /**
+     * @param asset the asset
+     * @param request the request object
+     * @param propertyName the computed property name
+     * @return true if this ComputedProperty should accept the handling of this invocation.
+     */
     boolean accepts(Asset asset, SlingHttpServletRequest request, String propertyName);
 
+    /**
+     * @param asset the asset
+     * @param propertyName the computed property name
+     * @return true if this ComputedProperty should accept the handling of this invocation.
+     */
     boolean accepts(Asset asset, String propertyName);
 
+    /**
+     * Gets the computed value for the asset.
+     * <br>
+     * This is the primary get(..) method signature to implement as this is what is exposed from AssetModel's CombinedProperties
+     *
+     * @param asset the asset
+     * @param request the request
+     * @param parameters any parameters. If this method is implemented, it should handle the case where no parameters
+     * @return the computed value.
+     */
+    default T get(Asset asset, SlingHttpServletRequest request, ValueMap parameters) { return get(asset, request); }
+
+    /**
+     * Gets the computed value for the asset.
+     *
+     * @param asset the asset
+     * @param request the request
+     * @return the computed value.
+     */
     T get(Asset asset, SlingHttpServletRequest request);
 
-    T get(Asset asset);
+    /**
+     * Gets the computed value for the asset.
+     *
+     * @param asset the asset
+     * @param parameters any parameters. If this method is implemented, it should handle the case where no parametersters
+     * @return the computed value.
+     */
+    default T get(Asset asset, ValueMap parameters) { return get(asset); }
 
-    static final class Types {
+    /**
+     * Gets the computed value for the asset.
+     *
+     * @param asset the asset
+     * @return the computed value.
+     */
+     T get(Asset asset);
+
+     final class Types {
         public static final String METADATA = "metadata";
         public static final String RENDITION = "rendition";
         public static final String URL = "url";

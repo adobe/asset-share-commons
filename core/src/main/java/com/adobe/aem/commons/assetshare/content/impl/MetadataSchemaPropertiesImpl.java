@@ -87,27 +87,31 @@ public class MetadataSchemaPropertiesImpl implements MetadataProperties {
     }
 
     protected final Map<String, List<String>> collectExtraMetadataProperties(final Map<String, List<String>> collectedMetadata) {
-        for (final String entry : cfg.extra_metadata_properties()) {
-            final String propertyName = StringUtils.substringBefore(entry, "=");
-            final String fieldLabel = StringUtils.substringAfter(entry, "=");
-            collectMetadataProperty(fieldLabel, propertyName, collectedMetadata);
+        if (cfg != null && cfg.extra_metadata_properties() != null) {
+            for (final String entry : cfg.extra_metadata_properties()) {
+                final String propertyName = StringUtils.substringBefore(entry, "=");
+                final String fieldLabel = StringUtils.substringAfter(entry, "=");
+                collectMetadataProperty(fieldLabel, propertyName, collectedMetadata);
+            }
         }
 
         return collectedMetadata;
     }
 
     protected final Map<String, List<String>> removeBlacklistedMetadataProperties(final Map<String, List<String>> collectedMetadata) {
-        for (String propertyName : cfg.blacklisted_metadata_properties()) {
+        if (cfg != null && cfg.blacklisted_metadata_properties() != null) {
+            for (String propertyName : cfg.blacklisted_metadata_properties()) {
 
-            String withoutDotSlash = StringUtils.removeStart(propertyName, "./");
-            String withDotSlash = "./" + withoutDotSlash;
+                String withoutDotSlash = StringUtils.removeStart(propertyName, "./");
+                String withDotSlash = "./" + withoutDotSlash;
 
-            if (collectedMetadata.containsKey(withDotSlash)) {
-                collectedMetadata.remove(withDotSlash);
-            }
+                if (collectedMetadata.containsKey(withDotSlash)) {
+                    collectedMetadata.remove(withDotSlash);
+                }
 
-            if (collectedMetadata.containsKey(withoutDotSlash)) {
-                collectedMetadata.remove(withoutDotSlash);
+                if (collectedMetadata.containsKey(withoutDotSlash)) {
+                    collectedMetadata.remove(withoutDotSlash);
+                }
             }
         }
 

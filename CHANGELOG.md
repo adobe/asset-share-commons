@@ -4,10 +4,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [v1.8.0]
+
+### Added
+- 0345: Asset Rendition Dispatcher framework allowing for named, cacheable renditions.
+- 0392: Dialog support to allow selection of Rendition via Rendition Servlet
+- 0393: Added max size configuration for AssetDownloadServlet and UI check for end user downloads.
+- 0395: Support for parameterized Computed Properties.
+- 0398: Added JDK11 support and updated travis to handle JDK8 and JDK11.
+- 0418: Added codecov support for travis builds.
+
+### Fixed
+- 0388: Corrected spelling of Boolean in dialog value.
+- 0390: Fixed issue where initial values from query parameters were not respected in Search / Sort component's HTL.
+- 0400: InternalRedirectRenditionDispatcherImpl now supports asset paths with spaces.
+- 0412: Search Results dialog not opening due to MetadataSchemaPropertiesImpl throws NPE when OSGi properties not configured
+- 0421: AssetRenditions thumbnail sizes on AEM 6.3.x, and null input handling in UrlUtil.
+
 ## [v1.7.0]
 
 ### Fixed
-- 0163: User menu disappears when the profile is aleady loaded in previeous requests
+- 0163: User menu disappears when the profile is already loaded in previous requests
 - 0340/0358: Corrected URL escaping to handle paths/assets file names using extended and unusual characters.
 - 0381: Fixed updating of dynamic service references to multiple share services
 
@@ -36,9 +53,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0313: Reformatted core/pom.xml
 - 0322: Email Sharing Externalizer extension to allow custom externalizer domain to be used for publish links.
 - 0327: Updated SearchPredicateDataSource and AssetDetailsResolver to GREEDY'ily acquire @References to allow 3rd party service impls to register properly.
+- 0265: Added custom-delimiter support to PropertyValues predicate evalutor.
 
 ### Added
 - 0303: Added ability to hide the Apply Filter Toggle control completely (useful for when auto-search on change is enabled everywhere)
+- 0265: Added Freeform-text search component
 
 ## [v1.6.10]
 

@@ -19,181 +19,155 @@
 
 package com.adobe.aem.commons.assetshare.components.details.impl;
 
-import org.apache.sling.api.resource.ValueMap;
-import org.apache.sling.api.wrappers.ValueMapDecorator;
+import com.adobe.aem.commons.assetshare.components.details.Metadata;
+import com.adobe.aem.commons.assetshare.content.AssetResolver;
+import com.adobe.aem.commons.assetshare.content.impl.AssetModelImpl;
+import com.adobe.aem.commons.assetshare.content.impl.AssetResolverImpl;
+import com.adobe.aem.commons.assetshare.content.properties.ComputedProperties;
+import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedPropertiesImpl;
+import io.wcm.testing.mock.aem.junit.AemContext;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.*;
+import java.util.Locale;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-@RunWith(MockitoJUnitRunner.class)
 public class MetadataImplTest {
-    String COMBINED_PROPERTY_NAME = "test";
-
-    @Mock
-    ValueMap combinedProperties;
-
-    @InjectMocks
-    MetadataImpl metadataImpl;
+    @Rule
+    public final AemContext ctx = new AemContext();
 
     @Before
     public void setUp() throws Exception {
-        metadataImpl  = new MetadataImpl();
-        MockitoAnnotations.initMocks(this);
-    }
+        ctx.load().json("/com/adobe/aem/commons/assetshare/components/details/impl/MetadataImplTest.json", "/content");
 
-    /** Empty Tests **/
+        ctx.addModelsForClasses(MetadataImpl.class);
 
-    @Test
-    public void isEmpty_EmptyPropertyName() {
-        metadataImpl = spy(metadataImpl);
+        ctx.requestPathInfo().setSuffix("/content/dam/test.png");
 
-        doReturn(" ").when(metadataImpl).getPropertyName();
-        assertTrue(metadataImpl.isEmpty());
-    }
-
-    @Test
-    public void isEmpty_NullPropertyName() {
-        metadataImpl = spy(metadataImpl);
-
-        doReturn(null).when(metadataImpl).getPropertyName();
-        assertTrue(metadataImpl.isEmpty());
+        // Dependencies to instantiate AssetModels
+        ctx.registerService(ComputedProperties.class, new ComputedPropertiesImpl());
+        ctx.registerService(AssetResolver.class, new AssetResolverImpl());
+        ctx.addModelsForClasses(AssetModelImpl.class);
     }
 
     @Test
-    public void isEmpty_NullPropertyValue() {
-        metadataImpl = spy(metadataImpl);
+    public void getType() {
+        final Metadata.DataType expected = Metadata.DataType.TEXT;
 
-        doReturn(COMBINED_PROPERTY_NAME).when(metadataImpl).getPropertyName();
-        when(combinedProperties.get(COMBINED_PROPERTY_NAME)).thenReturn(null);
+        ctx.currentResource("/content/metadata");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
 
-        assertTrue(metadataImpl.isEmpty());
-    }
-
-
-    @Test
-    public void isEmpty_EmptyPropertyValue() {
-        metadataImpl = spy(metadataImpl);
-
-        doReturn(COMBINED_PROPERTY_NAME).when(metadataImpl).getPropertyName();
-        when(combinedProperties.get(COMBINED_PROPERTY_NAME)).thenReturn(" ");
-
-        assertTrue(metadataImpl.isEmpty());
+        assertEquals(expected, metadata.getType());
     }
 
     @Test
-    public void isEmpty_EmptyStringArrayPropertyValue() {
-        metadataImpl = spy(metadataImpl);
+    public void getLocale_Default() {
+        final String expected = Locale.getDefault().getLanguage();
+        ctx.currentResource("/content/metadata");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
 
-        doReturn(COMBINED_PROPERTY_NAME).when(metadataImpl).getPropertyName();
-        when(combinedProperties.get(COMBINED_PROPERTY_NAME)).thenReturn(new String[]{});
-
-        assertTrue(metadataImpl.isEmpty());
+        assertEquals(expected, metadata.getLocale());
     }
 
     @Test
-    public void isEmpty_EmptyDateArrayPropertyValue() {
-        metadataImpl = spy(metadataImpl);
+    public void getFormat() {
+        ctx.currentResource("/content/metadata");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
 
-        doReturn(COMBINED_PROPERTY_NAME).when(metadataImpl).getPropertyName();
-        when(combinedProperties.get(COMBINED_PROPERTY_NAME)).thenReturn(new Date[]{});
-
-        assertTrue(metadataImpl.isEmpty());
+        assertNull(metadata.getFormat());
     }
 
     @Test
-    public void isEmpty_StringArrayWithEmptyValuesPropertyValue() {
-        metadataImpl = spy(metadataImpl);
+    public void getFormat_Date() {
+        final String expected = "yyyy-MM-dd";
 
-        doReturn(COMBINED_PROPERTY_NAME).when(metadataImpl).getPropertyName();
-        when(combinedProperties.get(COMBINED_PROPERTY_NAME)).thenReturn(new String[]{ "", "  ", "      "});
+        ctx.currentResource("/content/date");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
 
-        assertTrue(metadataImpl.isEmpty());
+        assertEquals(expected, metadata.getFormat());
     }
 
     @Test
-    public void isEmpty_EmptyCollectionPropertyValue() {
-        metadataImpl = spy(metadataImpl);
+    public void getFormat_Number() {
+        final String expected = "#.###";
 
-        doReturn(COMBINED_PROPERTY_NAME).when(metadataImpl).getPropertyName();
-        when(combinedProperties.get(COMBINED_PROPERTY_NAME)).thenReturn(new ArrayList(){});
+        ctx.currentResource("/content/number");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
 
-        assertTrue(metadataImpl.isEmpty());
-    }
-
-    /** Not Empty Tests **/
-
-    @Test
-    public void isEmpty_NonNullStringPropertyValue() {
-        metadataImpl = spy(metadataImpl);
-
-        doReturn(COMBINED_PROPERTY_NAME).when(metadataImpl).getPropertyName();
-        when(combinedProperties.get(COMBINED_PROPERTY_NAME)).thenReturn("Hello world");
-
-        assertFalse(metadataImpl.isEmpty());
+        assertEquals(expected, metadata.getFormat());
     }
 
     @Test
-    public void isEmpty_NonNullIntPropertyValue() {
-        metadataImpl = spy(metadataImpl);
-
-        doReturn(COMBINED_PROPERTY_NAME).when(metadataImpl).getPropertyName();
-        when(combinedProperties.get(COMBINED_PROPERTY_NAME)).thenReturn(100);
-
-        assertFalse(metadataImpl.isEmpty());
+    public void getProperties() {
     }
 
     @Test
-    public void isEmpty_NonEmptyStringArrayPropertyValue() {
-        metadataImpl = spy(metadataImpl);
+    public void getAsset() {
+        final String expected = "/content/dam/test.png";
 
-        doReturn(COMBINED_PROPERTY_NAME).when(metadataImpl).getPropertyName();
-        when(combinedProperties.get(COMBINED_PROPERTY_NAME)).thenReturn(new String[]{ "Hello", "world"});
+        ctx.currentResource("/content/metadata");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
 
-        assertFalse(metadataImpl.isEmpty());
+        assertEquals(expected, metadata.getAsset().getPath());
     }
 
     @Test
-    public void isEmpty_StringArrayWithMixedEmptyValuesPropertyValue() {
-        metadataImpl = spy(metadataImpl);
+    public void getPropertyName() {
+        final String expected = "./dc:title";
 
-        doReturn(COMBINED_PROPERTY_NAME).when(metadataImpl).getPropertyName();
-        when(combinedProperties.get(COMBINED_PROPERTY_NAME)).thenReturn(new String[]{ "", "  ", "      ", "hello world", " "});
+        ctx.currentResource("/content/metadata");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
 
-        assertFalse(metadataImpl.isEmpty());
+        assertEquals(expected, metadata.getPropertyName());
     }
 
     @Test
-    public void isEmpty_NonEmptyObjectArrayPropertyValue() {
-        metadataImpl = spy(metadataImpl);
+    public void getPropertyName_ComputedProperty() {
+        final String expected = "title";
 
-        doReturn(COMBINED_PROPERTY_NAME).when(metadataImpl).getPropertyName();
-        when(combinedProperties.get(COMBINED_PROPERTY_NAME)).thenReturn(new Object[] { "Hello from", Calendar.getInstance(), 100});
+        ctx.currentResource("/content/computed");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
 
-        assertFalse(metadataImpl.isEmpty());
+        assertEquals(expected, metadata.getPropertyName());
     }
 
     @Test
-    public void isEmpty_NonEmptyCollectionPropertyValue() {
-        metadataImpl = spy(metadataImpl);
+    public void isEmpty_NullValue() {
+        ctx.currentResource("/content/empty");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
+        assertTrue(metadata.isEmpty());
+    }
 
-        List<String> list = new ArrayList();
-        list.add("Hello");
-        list.add("world");
+    @Test
+    public void isEmpty_EmptyText() {
+        ctx.currentResource("/content/empty-text");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
+        assertTrue(metadata.isEmpty());
+    }
 
-        doReturn(COMBINED_PROPERTY_NAME).when(metadataImpl).getPropertyName();
-        when(combinedProperties.get(COMBINED_PROPERTY_NAME)).thenReturn(list);
+    @Test
+    public void isEmpty_NotEmpty() {
+        ctx.currentResource("/content/metadata");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
+        assertFalse(metadata.isEmpty());
+    }
 
-        assertFalse(metadataImpl.isEmpty());
+    @Test
+    public void isReady() {
+        ctx.currentResource("/content/metadata");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
+        assertTrue(metadata.isReady());
+    }
+
+    @Test
+    public void isReady_NotReady() {
+        ctx.currentResource("/content/empty");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
+        assertFalse(metadata.isReady());
     }
 }
