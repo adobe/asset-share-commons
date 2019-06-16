@@ -5,6 +5,7 @@ title: Set Up
 
 ## Pre-requisites
 
+* [AEM 6.5](https://helpx.adobe.com/experience-manager/6-5/release-notes.html)
 * [AEM 6.4](https://helpx.adobe.com/experience-manager/6-4/release-notes.html)
 * [AEM 6.3 Service Pack 1 (6.3.1.0)](https://docs.adobe.com/docs/en/aem/6-3/release-notes/sp1.html)
 * [ACS AEM Commons 3.11.0+](https://github.com/Adobe-Consulting-Services/acs-aem-commons/releases)
@@ -17,7 +18,7 @@ title: Set Up
 
 Download the latest available versions of the **ui.apps** and **ui.content** packages.
 
-## Dispatcher 
+## Dispatcher
 
 Ensure AEM Dispatcher allows the following URL paths/patterns:
 
@@ -38,6 +39,14 @@ Example `dispatcher.any` rules
         /0102 { /type "allow" /url "/libs/granite/security/currentuser.json" }
       }
 ```
+
+## Production Setup
+
+Best practices of deploying an AEM Sites project in production should be followed when deploying Asset Share Commons. This includes:
+
+1. Installing AEM with **nosamplecontent** runmode to use [Production Ready Mode](https://helpx.adobe.com/experience-manager/6-5/sites/administering/using/production-ready.html).
+2. Review and implement the [Security Checklist](https://helpx.adobe.com/experience-manager/6-5/sites/administering/using/security-checklist.html) for deployments.
+3. Review the Asset Download Servlet settings as part of the [Download component](../../actions/download).
 
 ## Set Up Video
 
