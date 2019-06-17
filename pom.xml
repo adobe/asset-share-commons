@@ -65,6 +65,13 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <license.licenseName>apache_v2</license.licenseName>
         <license.addJavaLicenseAfterPackage>false</license.addJavaLicenseAfterPackage>
+
+        <bintray.org>asc</bintray.org>
+        <bintray.repo>releases</bintray.repo>
+        <bintray.package>asset-share-commons</bintray.package>
+
+        <project.scm.id>adobe-acsbuild-github-token</project.scm.id>
+
     </properties>
 
 
@@ -504,12 +511,12 @@
             </activation>
             <distributionManagement>
                 <repository>
-                    <id>bintray-adobe-maven</id>
+                    <id>bintray-asc-releases</id>
                     <name>Adobe Bintray Maven</name>
                     <url>https://api.bintray.com/maven/${bintray.org}/${bintray.repo}/${bintray.package}/;publish=1</url>
                 </repository>
                 <snapshotRepository>
-                    <id>bintray-adobe-maven</id>
+                    <id>bintray-asc-releases</id>
                     <name>Adobe Bintray Maven</name>
                     <url>https://api.bintray.com/maven/${bintray.org}/${bintray.repo}/${bintray.package}/;publish=1</url>
                 </snapshotRepository>
