@@ -121,6 +121,6 @@ public class SearchImpl implements Search {
     public String getLayout() {
         final String value = PredicateUtil.getParamFromQueryParams(request, "layout");
 
-        return StringUtils.defaultIfBlank(value, properties.get(PN_LAYOUT, DEFAULT_LAYOUT));
+        return StringUtils.defaultIfBlank(value, searchConfig.getLayout());
     }
 }
