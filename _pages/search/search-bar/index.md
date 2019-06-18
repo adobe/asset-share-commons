@@ -5,7 +5,7 @@ component-group: search
 ---
 ![Search bar component](./images/main.png)
 
-The Search Bar render a full-text search bar allowing users to enter search terms of phrases.
+The Search Bar renders a full-text search bar allowing users to enter search terms or phrases.
 
 As this component passes through its input to AEM's Query Builder Fulltext predicate evaluator, it supports all the native lucene operators that AEM/Apache Oak supports.
 

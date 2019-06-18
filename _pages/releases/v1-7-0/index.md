@@ -17,3 +17,4 @@ title: v1.7.0
 ### Added
 - 0366: Use sharer email as Reply-To when sharing assets via email
 - 0371: Added Horizontal Masonry Card results.
+- 0265: Added Freeform-text search component
