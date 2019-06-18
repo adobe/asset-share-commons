@@ -25,27 +25,10 @@ The new HTTP Request URL pattern looks like `<asset-path>.renditions/<rendition-
 `/content/dam/images/dog.png.renditions/web/asset.rendition`. Note that the extension of this URL as understood by Web servers or CDN is `.rendition` and not a well known extension type such as `.jpeg` or `.png`.
 To ensure the client understands how to treat these requests the Asset Renditions framework sets the appropriate Content-Type HTTP Response header, however this can be lost of the response is cached.
 
-In order to configure AEM Dispatcher to handle this gracefully, two adjustment need to be made:
+Ensure your [AEM Dispatcher configuration](asset-share-commons/pages/development/asset-renditions/index.html#dispatcher-confi) has been updated per the recommendations.
 
-1. Add an `allow` filter to AEM Dispatcher that allows the `.renditions` extension.
-
-    /10000 {
-        /type "allow"
-        /method "GET"
-        /path "/content/dam"
-        /extension '(renditions)'
-    }
-
-2. Configure AEM Dispatcher to cache (at least) the following HTTP response headers set by the Asset Renditions framework.
-
-     /headers {
-         ...
-         "Content-Disposition"
-         "Content-Type"
-         "Content-Length"
-         ...
-      }
-
-Also, note that the Details Image and Video components have been updated to use the Asset Renditions framework.
+Also, note that the Details Image and Video components have been updated to use the [Asset Renditions framework](/asset-share-commons/pages/development/asset-renditions/).
 Existing Image and Video components can continue operating in the legacy mode (using the dialog switch) however it is recommended to move to the new framework ASAP.
-This may require new Rendition definitions which can be deployed via OSGi configuration.
+
+
+This may require [new Asset Rendition configurations](/asset-share-commons/pages/development/asset-renditions/) which can be deployed via OSGi configuration.
