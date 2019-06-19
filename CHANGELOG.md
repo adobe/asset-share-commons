@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- 0430: Fixes issue with default search result layout is incorrect when Statistics component is added above the search results component.
+
 
 ## [v1.8.0]
 
