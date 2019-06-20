@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.day.cq.commons.Externalizer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.commons.osgi.Order;
@@ -35,6 +36,8 @@ import org.slf4j.LoggerFactory;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.day.cq.dam.scene7.api.constants.Scene7Constants.*;
 
 @Component(
         reference = {
@@ -54,6 +57,9 @@ public class AssetRenditionsImpl implements AssetRenditions {
 
     @Reference
     private ModelFactory modelFactory;
+
+    @Reference
+    private Externalizer externalizer;
 
     private final RankedServices<AssetRenditionDispatcher> assetRenditionResolvers = new RankedServices<>(Order.DESCENDING);
 
@@ -112,11 +118,26 @@ public class AssetRenditionsImpl implements AssetRenditions {
         final String assetExtension = StringUtils.substringAfterLast(assetName, ".");
         final String renditionName = new AssetRenditionParameters(request).getRenditionName();
 
+        // Dynamic Media properties
+        final String dmName = assetModel.getProperties().get(PN_S7_NAME, String.class);
+        final String dmId = assetModel.getProperties().get(PN_S7_ASSET_ID, String.class);
+        final String dmFile = assetModel.getProperties().get(PN_S7_FILE, String.class);
+        final String dmFolder = assetModel.getProperties().get(PN_S7_FOLDER, String.class);
+        final String dmDomain = assetModel.getProperties().get(PN_S7_DOMAIN, String.class);
+        final String dmApiServer = assetModel.getProperties().get(PN_S7_API_SERVER, String.class);
+
         expression = StringUtils.replace(expression, VAR_ASSET_PATH, assetPath);
         expression = StringUtils.replace(expression, VAR_ASSET_URL, assetUrl);
         expression = StringUtils.replace(expression, VAR_ASSET_NAME, assetName);
         expression = StringUtils.replace(expression, VAR_ASSET_EXTENSION, assetExtension);
         expression = StringUtils.replace(expression, VAR_RENDITION_NAME, renditionName);
+
+        expression = StringUtils.replace(expression, VAR_DM_NAME, dmName);
+        expression = StringUtils.replace(expression, VAR_DM_ID, dmId);
+        expression = StringUtils.replace(expression, VAR_DM_FILE, dmFile);
+        expression = StringUtils.replace(expression, VAR_DM_FOLDER, dmFolder);
+        expression = StringUtils.replace(expression, VAR_DM_DOMAIN, dmDomain);
+        expression = StringUtils.replace(expression, VAR_DM_API_SERVER, dmApiServer);
 
         return expression;
     }

@@ -29,6 +29,7 @@ import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParamet
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.InternalRedirectRenditionDispatcherImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
+import com.adobe.aem.commons.assetshare.util.UrlUtil;
 import com.day.cq.dam.commons.util.DamUtil;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.junit.Before;
@@ -38,6 +39,10 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.osgi.framework.Constants;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -148,6 +153,30 @@ public class AssetRenditionsImplTest {
 
         String actual = assetRenditions.evaluateExpression(ctx.request(), expression);
         assertEquals(expected, actual);
+
+    }
+
+    @Test
+    public void evaluateExpression_ForDynamicMediaVariables() {
+        final String expression = "${dm.domain}is/image/${dm.file}?folder=${dm.folder}&name=${dm.name}&id=${dm.id}&api=${dm.api-server}";
+        final String expected = "http://test.scene7.com/is/image/testing/test_1?folder=testing&name=test_1&id=x|1234&api=https://test.api.scene7.com";
+
+        final AssetRenditions assetRenditions = ctx.getService(AssetRenditions.class);
+
+        ctx.requestPathInfo().setResourcePath("/content/dam/test.png");
+        ctx.requestPathInfo().setExtension("renditions");
+        ctx.requestPathInfo().setSuffix("/test-rendition/asset.rendition");
+
+        String actual = assetRenditions.evaluateExpression(ctx.request(), expression);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testing() throws MalformedURLException, URISyntaxException {
+
+
+        System.out.println(UrlUtil.escape("http://foo.com/content/dam/foo bar.png"));
+
 
     }
 }

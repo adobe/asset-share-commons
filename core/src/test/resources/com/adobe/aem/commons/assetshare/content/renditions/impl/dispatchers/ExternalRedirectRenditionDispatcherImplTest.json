@@ -1,0 +1,30 @@
+{
+  "test.png": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:content": {
+      "jcr:primaryType": "nt:unstructured",
+      "metadata": {
+        "jcr:primaryType": "nt:unstructured",
+        "dam:scene7Domain": "http://test.scene7.com/",
+        "dam:scene7File": "testing/test"
+      },
+      "renditions": {
+        "jcr:primaryType": "nt:unstructured"
+      }
+    }
+  },
+  "test with spaces.png": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:content": {
+      "jcr:primaryType": "nt:unstructured",
+      "metadata": {
+        "jcr:primaryType": "nt:unstructured",
+        "dam:scene7Domain": "http://test.scene7.com",
+        "dam:scene7File": "testing/test_with_spaces"
+      },
+      "renditions": {
+        "jcr:primaryType": "nt:unstructured"
+      }
+    }
+  }
+}

@@ -37,6 +37,12 @@ public interface AssetRenditions {
     String VAR_ASSET_EXTENSION = "${asset.extension}";
     String VAR_RENDITION_NAME = "${rendition.name}";
 
+    String VAR_DM_NAME = "${dm.name}"; // dam:scene7Name
+    String VAR_DM_ID = "${dm.id}"; // dam:scene7ID
+    String VAR_DM_FILE = "${dm.file}"; // dam:scene7File
+    String VAR_DM_FOLDER= "${dm.folder}"; // dam:scene7Folder
+    String VAR_DM_DOMAIN = "${dm.domain}"; // dam:scene7Domain
+    String VAR_DM_API_SERVER = "${dm.api-server}"; // dam:scene7APIServer
     /**
      * @return a list of all registered AssetRenditionDispatchers in the system ordered in Descending order by service.ranking.
      */
