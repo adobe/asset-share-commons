@@ -4,7 +4,13 @@
     "jcr:content": {
       "jcr:primaryType": "nt:unstructured",
       "metadata": {
-        "jcr:primaryType": "nt:unstructured"
+        "jcr:primaryType": "nt:unstructured",
+        "dam:scene7Name": "test_1",
+        "dam:scene7ID": "x|1234",
+        "dam:scene7Folder": "testing",
+        "dam:scene7File": "testing/test_1",
+        "dam:scene7Domain": "http://test.scene7.com/",
+        "dam:scene7APIServer": "https://test.api.scene7.com"
       },
       "renditions": {
         "jcr:primaryType": "nt:unstructured"

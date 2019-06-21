@@ -22,6 +22,12 @@ package com.adobe.aem.commons.assetshare.util;
 import com.day.text.Text;
 import org.apache.commons.lang3.StringUtils;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+
 public class UrlUtil {
 
     /**
@@ -53,15 +59,25 @@ public class UrlUtil {
 
         String tmp = unescaped;
 
-        // Change jcr:content to cachable path equivalent
-        tmp = StringUtils.replace(tmp, "/jcr:content", "/_jcr_content");
+        // URL cannot handle spaces, so convert them to %20; escapePath(..) will handle converting them back for later escaping
+        tmp = StringUtils.replace(tmp, " ", "%20");
 
-        // Turn %20 into spaces, as Text.escapePath(..) will double-encode them
-        tmp = StringUtils.replace(tmp, "%20", " ");
+        try {
+            final URL url = new URL(tmp);
+            String path = escapePath(url.getPath());
 
-        return Text.escapePath(tmp);
+            if (StringUtils.isNotBlank(url.getQuery())) {
+                path += "?" + url.getQuery();
+            }
+
+            // Reconstruct the URL using the escaped path
+            return new URL(url.getProtocol(), url.getHost(), url.getPort(), path).toString();
+
+        } catch (MalformedURLException e) {
+            // Treat as internal path
+            return escapePath(tmp);
+        }
     }
-
 
     /**
      * Checks if the candidate url appears to already be escaped.
@@ -86,5 +102,19 @@ public class UrlUtil {
         }
 
         return false;
+    }
+
+
+    /**
+     * Escapes the path portion of the URL.
+     *
+     * @param path the path segment to escape
+     * @return an escaped version of the path parameter.
+     */
+    private static String escapePath(String path) {
+        path = StringUtils.replace(path, "%20", " ");
+        path = StringUtils.replace(path, "/jcr:content", "/_jcr_content");
+        path = Text.escapePath(path);
+        return path;
     }
 }
