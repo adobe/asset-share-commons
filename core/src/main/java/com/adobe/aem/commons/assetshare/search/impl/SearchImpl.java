@@ -115,12 +115,12 @@ public class SearchImpl implements Search {
     }
 
     public String getMode() {
-        return currentPage.getProperties().get(PN_MODE, DEFAULT_MODE);
+        return StringUtils.defaultIfBlank(searchConfig.getMode(), currentPage.getProperties().get(PN_MODE, DEFAULT_MODE));
     }
 
     public String getLayout() {
         final String value = PredicateUtil.getParamFromQueryParams(request, "layout");
 
-        return StringUtils.defaultIfBlank(value, properties.get(PN_LAYOUT, DEFAULT_LAYOUT));
+        return StringUtils.defaultIfBlank(value, searchConfig.getLayout());
     }
 }
