@@ -3,14 +3,13 @@ layout: content-page
 title: Release Process
 ---
 
-
-## Executing the Process
+## Executing the Automated Process
 
 > The release process can only be executed by Adobe Employees with access to ACS Jenkins Instance.
 
-
 The release process is performed entirely by the Jenkins pipeline. To perform a release:
 
+1. Log in to the Adobe VPN.
 1. Access the [AEM Modernize Tools pipeline](https://acs.ci.corp.adobe.com/blue/organizations/jenkins/AEM%20Modernize%20Tools/branches/) on the ACS Jenkins instance.
 1. Trigger the pipeline (do *not* replay the last run.)
 1. Answer the question on the type of release being performed.
@@ -21,8 +20,7 @@ The release process is performed entirely by the Jenkins pipeline. To perform a 
 > It may take several days for the artifacts to be promoted to [repo.adobe.com](https://repo.adobe.com/nexus/content/groups/public/com/adobe/aem/commons/assetshare/), however the artifacts are immediately available on [bintray.com > Set Up](https://bintray.com/asc/releases/asset-share-commons).
 
 
-
-## Setting it up
+## Setting up the Automated Process
 
 The pipeline setup has already been performed. But as a mechanism for documentation in the event it needs to be recreated:
 
@@ -102,5 +100,36 @@ This may be resolved at a future date if we decide to move these steps to a Shar
     <img src="{{ site.baseurl }}/pages/releases/process/images/script-approvals.png" alt="Jenkins Script Approvals"/>
 </p>
 
+
+## Executing the Manual Process (Legacy)
+
+> The release process can only be executed by core contributors with access to dependency systems.
+
+1. On the `/develop`, verify the `CHANGELOG.md` is prepared for release ([Unrelease] -> [vX.X.X])
+2. Create a Pull Request from `/develop` -> `/master` with title `vX.X.X Release`
+3. Ensure all checks pass (CodeClimate and TravisCI)
+2. Keep all commits (do NOT Squash and Merge) when merging `/develop` -> `/master`
+4. Checkout `/master` to your local machine; ensure it is up-to-date with `origin/master` via `git pull` and `git status`
+5. Ensure that there are no empty directories using `git clean -i`
+5. In the same folder as the reactor pom, execute the command:
+	* `mvn -Pbintray-asset-share-commons release:prepare`
+	* Set the release tag as: `asset-share-commons-X.X.X`
+6. When complete, copy the resulting AEM packages from the `ui.apps` and `ui.content` target folders to a safe place (will be used in Step 10)
+	* `asset-share-commons.ui.apps-X.X.X.zip`
+	* `asset-share-commons.ui.content-X.X.X.zip`
+7. Also copy the generated `apidocs` folder from the `ui.core` project's target/site to a safe place.
+8. In the same folder as the reactor pom, execute the command:
+	* `mvn -Pbintray-asset-share-commons release:perform`
+9. [Publish the 16 artifacts on bintray.com](https://bintray.com/asc/releases/asset-share-commons)
+10. Contact the Adobe release contact (Simo!), and request an artifact deployment to repo.adobe.com (with key INFRA-5605)
+11. [Create a release on GitHub](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/releases) for `asset-share-commons-X.X.X`
+	* Upload the 2 artifacts from step 6 to the release.
+	* Link to the changelog in the description for the matching release tag commit.
+		* https://github.com/Adobe-Marketing-Cloud/asset-share-commons/blob/asset-share-commons-X.X.X/CHANGELOG.md
+12. Merge (do NOT squash and merge) `/master` back into `/develop` to update the the pom versions w/ commit message: `vX.X.X-SNAPSHOT`.
+13. [Close the GitHub milestone](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/milestones) `X.X.X` and create the next Milestone. Ensure all issues associated with the completed milestone are closed.
+14. Copy the `apidocs` from step 7 into the Asset Share Commons GitHub pages site (asset-share-commons/gh-pages branch) at `/apidocs`.
+
+> It may take several days for the artifacts to be promoted to [repo.adobe.com](https://repo.adobe.com/nexus/content/groups/public/com/adobe/aem/commons/assetshare/), however the artifacts are immediately available on [bintray.com > Set Up](https://bintray.com/asc/releases/asset-share-commons).
 
 
