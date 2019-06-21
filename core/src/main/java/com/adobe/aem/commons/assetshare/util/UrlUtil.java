@@ -22,6 +22,8 @@ package com.adobe.aem.commons.assetshare.util;
 import com.day.text.Text;
 import org.apache.commons.lang3.StringUtils;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,48 +58,31 @@ public class UrlUtil {
         }
 
         String tmp = unescaped;
-        String host = null;
-        String queryParams = null;
 
-        // Handle hosts
-        int indexOfScheme = StringUtils.indexOf(tmp, "://");
-        int indexOfQueryParam = StringUtils.indexOf(tmp, "?");
+        // URL cannot handle spaces, so convert them to %20; escapePath(..) will handle converting them back for later escaping
+        tmp = StringUtils.replace(tmp, " ", "%20");
 
-        boolean hasScheme = indexOfScheme > 0;
-        boolean hasQueryParams = indexOfQueryParam >= 0;
+        try {
+            final URL url = new URL(tmp);
+            String path = escapePath(url.getPath());
 
-        // Remove the scheme, if it exists, as we dont want to encode that
-        if (hasScheme) {
-            if (!hasQueryParams || (hasQueryParams && indexOfScheme < indexOfQueryParam)) {
-                host = StringUtils.substring(tmp, 0, indexOfScheme + "://".length());
-                tmp = StringUtils.substring(tmp, indexOfScheme + "://".length());
+            if (StringUtils.isNotBlank(url.getQuery())) {
+                path += "?" + url.getQuery();
             }
-            // Else the scheme was detected as part of the query params so dont bother with it
+
+            return new URL(url.getProtocol(), url.getHost(), url.getPort(), path).toString();
+
+        } catch (MalformedURLException e) {
+            // Treat as internal path
+            return escapePath(tmp);
         }
+    }
 
-        // Turn %20 into spaces, as Text.escapePath(..) will double-encode them
-        tmp = StringUtils.replace(tmp, "%20", " ");
-
-        // Handle queryParams
-        if (hasQueryParams) {
-            queryParams = StringUtils.substringAfter(tmp, "?");
-            tmp = StringUtils.substringBefore(tmp, "?");
-        }
-
-        // Change jcr:content to cachable path equivalent
-        tmp = StringUtils.replace(tmp, "/jcr:content", "/_jcr_content");
-
-        tmp =  Text.escapePath(tmp);
-
-        if (host != null) {
-            tmp = host + tmp;
-        }
-
-        if (queryParams != null) {
-            tmp = tmp + "?" + queryParams;
-        }
-
-        return tmp;
+    private static String escapePath(String path) {
+        path = StringUtils.replace(path, "%20", " ");
+        path = StringUtils.replace(path, "/jcr:content", "/_jcr_content");
+        path = Text.escapePath(path);
+        return path;
     }
 
 

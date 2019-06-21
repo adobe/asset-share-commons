@@ -92,7 +92,7 @@ public class UrlUtilTest {
     public void escape_WithQueryParams() {
         Assert.assertEquals("http://www.test.com/content/dam/test.png?$testing$",
                 UrlUtil.escape("http://www.test.com/content/dam/test.png?$testing$", false));
-        Assert.assertEquals("http://www.test.com/content/dam/test.png?foo=$bar$&zip=zap!&crazy=irā+pu pö &pîp☃",
+        Assert.assertEquals("http://www.test.com/content/dam/test.png?foo=$bar$&zip=zap!&crazy=irā+pu%20pö%20&pîp☃",
                 UrlUtil.escape("http://www.test.com/content/dam/test.png?foo=$bar$&zip=zap!&crazy=irā+pu pö &pîp☃", false));
 
     }
