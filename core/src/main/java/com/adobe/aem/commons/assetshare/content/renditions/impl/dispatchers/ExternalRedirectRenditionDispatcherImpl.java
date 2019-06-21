@@ -39,8 +39,6 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -60,10 +58,8 @@ import static org.osgi.framework.Constants.SERVICE_RANKING;
         ocd = ExternalRedirectRenditionDispatcherImpl.Cfg.class,
         factory = true
 )
-public class ExternalRedirectRenditionDispatcherImpl implements AssetRenditionDispatcher {
+public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDispatcherImpl implements AssetRenditionDispatcher {
     private static Logger log = LoggerFactory.getLogger(ExternalRedirectRenditionDispatcherImpl.class);
-
-    private static final String OSGI_PROPERTY_VALUE_DELIMITER = "=";
 
     private Cfg cfg;
 
@@ -136,17 +132,7 @@ public class ExternalRedirectRenditionDispatcherImpl implements AssetRenditionDi
     protected void activate(Cfg cfg) {
         this.cfg = cfg;
 
-        this.mappings = new ConcurrentHashMap<>();
-
-        if (this.cfg.rendition_mappings() != null) {
-            Arrays.stream(this.cfg.rendition_mappings())
-                    .map(mapping -> StringUtils.split(mapping, OSGI_PROPERTY_VALUE_DELIMITER))
-                    .filter(segments -> segments.length == 2)
-                    .filter(segments -> StringUtils.isNotBlank(segments[0]))
-                    .filter(segments -> StringUtils.isNotBlank(segments[1]))
-                    .forEach(segments ->
-                            mappings.put(StringUtils.strip(segments[0]), StringUtils.strip(segments[1])));
-        }
+        this.mappings = super.parseMappingsAsStrings(cfg.rendition_mappings());
     }
 
     @ObjectClassDefinition(name = "Asset Share Commons - Rendition Dispatcher - External Redirect Renditions")

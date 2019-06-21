@@ -19,7 +19,6 @@
 
 package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 
-import com.adobe.acs.commons.util.PathInfoUtil;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
@@ -42,7 +41,11 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.osgi.framework.Constants.SERVICE_RANKING;
@@ -57,10 +60,8 @@ import static org.osgi.framework.Constants.SERVICE_RANKING;
         ocd = InternalRedirectRenditionDispatcherImpl.Cfg.class,
         factory = true
 )
-public class InternalRedirectRenditionDispatcherImpl implements AssetRenditionDispatcher {
+public class InternalRedirectRenditionDispatcherImpl extends AbstractRenditionDispatcherImpl implements AssetRenditionDispatcher {
     private static Logger log = LoggerFactory.getLogger(InternalRedirectRenditionDispatcherImpl.class);
-
-    private static final String OSGI_PROPERTY_VALUE_DELIMITER = "=";
 
     private Cfg cfg;
 
@@ -135,17 +136,7 @@ public class InternalRedirectRenditionDispatcherImpl implements AssetRenditionDi
     protected void activate(Cfg cfg) {
         this.cfg = cfg;
 
-        this.mappings = new ConcurrentHashMap<>();
-
-        if (this.cfg.rendition_mappings() != null) {
-            Arrays.stream(this.cfg.rendition_mappings())
-                    .map(mapping -> StringUtils.split(mapping, OSGI_PROPERTY_VALUE_DELIMITER))
-                    .filter(segments -> segments.length == 2)
-                    .filter(segments -> StringUtils.isNotBlank(segments[0]))
-                    .filter(segments -> StringUtils.isNotBlank(segments[1]))
-                    .forEach(segments ->
-                            mappings.put(StringUtils.strip(segments[0]), StringUtils.strip(segments[1])));
-        }
+        this.mappings = super.parseMappingsAsStrings(cfg.rendition_mappings());
     }
 
     @ObjectClassDefinition(name = "Asset Share Commons - Rendition Dispatcher - Internal Redirect Renditions")
