@@ -70,6 +70,7 @@ public class UrlUtil {
                 path += "?" + url.getQuery();
             }
 
+            // Reconstruct the URL using the escaped path
             return new URL(url.getProtocol(), url.getHost(), url.getPort(), path).toString();
 
         } catch (MalformedURLException e) {
@@ -77,14 +78,6 @@ public class UrlUtil {
             return escapePath(tmp);
         }
     }
-
-    private static String escapePath(String path) {
-        path = StringUtils.replace(path, "%20", " ");
-        path = StringUtils.replace(path, "/jcr:content", "/_jcr_content");
-        path = Text.escapePath(path);
-        return path;
-    }
-
 
     /**
      * Checks if the candidate url appears to already be escaped.
@@ -109,5 +102,19 @@ public class UrlUtil {
         }
 
         return false;
+    }
+
+
+    /**
+     * Escapes the path portion of the URL.
+     *
+     * @param path the path segment to escape
+     * @return an escaped version of the path parameter.
+     */
+    private static String escapePath(String path) {
+        path = StringUtils.replace(path, "%20", " ");
+        path = StringUtils.replace(path, "/jcr:content", "/_jcr_content");
+        path = Text.escapePath(path);
+        return path;
     }
 }

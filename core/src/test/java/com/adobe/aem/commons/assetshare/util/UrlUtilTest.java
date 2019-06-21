@@ -86,7 +86,7 @@ public class UrlUtilTest {
         Assert.assertFalse(UrlUtil.isEscaped("http://www.test.com/content/dam/testasset.png/jcr:content"));
         Assert.assertFalse(UrlUtil.isEscaped("http://www.test.com/content/dam/test folder/irā+pu pö &pîp☃.jpeg/jcr:content/test"));
     }
-    
+
     @Test
     public void escape_WithQueryParams() {
         Assert.assertEquals("http://www.test.com/content/dam/test.png?$testing$",
