@@ -23,7 +23,6 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
-import com.day.cq.commons.Externalizer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.commons.osgi.Order;
@@ -57,9 +56,6 @@ public class AssetRenditionsImpl implements AssetRenditions {
 
     @Reference
     private ModelFactory modelFactory;
-
-    @Reference
-    private Externalizer externalizer;
 
     private final RankedServices<AssetRenditionDispatcher> assetRenditionResolvers = new RankedServices<>(Order.DESCENDING);
 
