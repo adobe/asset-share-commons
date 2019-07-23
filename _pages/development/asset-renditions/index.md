@@ -109,6 +109,13 @@ Supported "variables" in the `rendition.types` field are as follows:
 * `${asset.name}` = the asset's node name
 * `${asset.extension}` = the asset's extension (derived from the node name)
 * `${rendition.name}` = the rendition name provided as the key for the matched expression
+* `${dm.name}` = The asset's `dam:scene7Name` property
+* `${dm.id}` = The asset's `dam:scene7ID` property
+* `${dm.file}` = The asset's `dam:scene7File` property
+* `${dm.folder}` = The asset's `dam:scene7Folder` property
+* `${dm.domain}` = The asset's `dam:scene7Domain` property
+* `${dm.api-server}` = The asset's `dam:scene7APIServer` property
+
 
 #### Example OSGi factory configuration
 
