@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - 0428: Jenkins pipeline for automating releases.
 - 0432: Added the External Redirection Asset Rendition Dispatcher - including updated UrlUrl.escape() support for more complex URLs.
+- 0448: Added AEM Content Services Sling Model Exporter annotations to Asset Share Commons WCM component Sling Models.
 
 ### Changed
 

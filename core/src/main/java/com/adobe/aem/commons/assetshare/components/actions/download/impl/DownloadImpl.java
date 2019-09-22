@@ -23,13 +23,12 @@ import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
 import com.adobe.aem.commons.assetshare.components.actions.AssetDownloadHelper;
 import com.adobe.aem.commons.assetshare.components.actions.download.Download;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.cq.export.json.ComponentExporter;
+import com.adobe.cq.export.json.ExporterConstants;
 import com.day.cq.dam.commons.util.UIHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
-import org.apache.sling.models.annotations.Default;
-import org.apache.sling.models.annotations.Model;
-import org.apache.sling.models.annotations.Optional;
-import org.apache.sling.models.annotations.Required;
+import org.apache.sling.models.annotations.*;
 import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
@@ -42,9 +41,11 @@ import java.util.Collection;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {Download.class},
+        adapters = {Download.class, ComponentExporter.class},
         resourceType = {DownloadImpl.RESOURCE_TYPE}
 )
+@Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
+
 public class DownloadImpl implements Download {
 	
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/modals/download";

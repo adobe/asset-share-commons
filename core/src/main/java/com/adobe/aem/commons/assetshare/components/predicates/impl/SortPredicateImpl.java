@@ -24,6 +24,8 @@ import com.adobe.aem.commons.assetshare.components.predicates.SortPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.impl.options.SortOptionItem;
 import com.adobe.aem.commons.assetshare.components.search.SearchConfig;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
+import com.adobe.cq.export.json.ComponentExporter;
+import com.adobe.cq.export.json.ExporterConstants;
 import com.adobe.cq.wcm.core.components.models.form.Options;
 import com.day.cq.search.Predicate;
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.wrappers.ValueMapDecorator;
 import org.apache.sling.models.annotations.Default;
+import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.Self;
@@ -44,9 +47,10 @@ import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {SortPredicate.class},
+        adapters = {SortPredicate.class, ComponentExporter.class},
         resourceType = {SortPredicateImpl.RESOURCE_TYPE}
 )
+@Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
 public class SortPredicateImpl extends AbstractPredicate implements SortPredicate {
 
   protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/sort";

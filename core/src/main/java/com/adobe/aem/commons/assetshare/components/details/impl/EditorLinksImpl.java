@@ -21,10 +21,13 @@ package com.adobe.aem.commons.assetshare.components.details.impl;
 
 import com.adobe.aem.commons.assetshare.components.details.EditorLinks;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.cq.export.json.ComponentExporter;
+import com.adobe.cq.export.json.ExporterConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
+import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.OSGiService;
@@ -34,10 +37,11 @@ import org.apache.sling.settings.SlingSettingsService;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {EditorLinks.class},
+        adapters = {EditorLinks.class, ComponentExporter.class},
         resourceType = {EditorLinksImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
+@Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
 public class EditorLinksImpl extends AbstractEmptyTextComponent implements EditorLinks {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/details/editor-links";
 

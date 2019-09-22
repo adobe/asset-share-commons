@@ -20,14 +20,13 @@
 package com.adobe.aem.commons.assetshare.components.actions.share.impl;
 
 import com.adobe.aem.commons.assetshare.components.actions.share.EmailShare;
+import com.adobe.cq.export.json.ComponentExporter;
+import com.adobe.cq.export.json.ExporterConstants;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.wrappers.ValueMapDecorator;
-import org.apache.sling.models.annotations.Default;
-import org.apache.sling.models.annotations.DefaultInjectionStrategy;
-import org.apache.sling.models.annotations.Model;
-import org.apache.sling.models.annotations.Required;
+import org.apache.sling.models.annotations.*;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 import org.slf4j.Logger;
@@ -41,10 +40,11 @@ import java.util.Map;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {EmailShare.class},
+        adapters = {EmailShare.class, ComponentExporter.class},
         resourceType = {EmailShareImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
+@Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
 public class EmailShareImpl extends ShareImpl implements EmailShare {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/modals/share";
 

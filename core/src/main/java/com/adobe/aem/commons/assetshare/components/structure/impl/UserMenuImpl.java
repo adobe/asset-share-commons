@@ -20,6 +20,8 @@
 package com.adobe.aem.commons.assetshare.components.structure.impl;
 
 import com.adobe.aem.commons.assetshare.components.structure.UserMenu;
+import com.adobe.cq.export.json.ComponentExporter;
+import com.adobe.cq.export.json.ExporterConstants;
 import com.adobe.granite.security.user.UserProperties;
 import com.adobe.granite.security.user.UserPropertiesManager;
 import com.day.cq.wcm.api.designer.Style;
@@ -27,6 +29,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.jackrabbit.api.security.user.Authorizable;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.Self;
@@ -39,9 +42,10 @@ import javax.jcr.RepositoryException;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {UserMenu.class},
+        adapters = {UserMenu.class, ComponentExporter.class},
         resourceType = UserMenuImpl.RESOURCE_TYPE
 )
+@Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
 public class UserMenuImpl implements UserMenu {
     private static final Logger log = LoggerFactory.getLogger(UserMenuImpl.class);
 

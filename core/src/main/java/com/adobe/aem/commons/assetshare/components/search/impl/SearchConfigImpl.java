@@ -2,6 +2,8 @@ package com.adobe.aem.commons.assetshare.components.search.impl;
 
 import com.adobe.aem.commons.assetshare.components.search.SearchConfig;
 import com.adobe.aem.commons.assetshare.util.ResourceTypeVisitor;
+import com.adobe.cq.export.json.ComponentExporter;
+import com.adobe.cq.export.json.ExporterConstants;
 import com.day.cq.dam.api.DamConstants;
 import com.day.cq.search.Predicate;
 import com.day.cq.wcm.api.Page;
@@ -10,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Optional;
 import org.apache.sling.models.annotations.injectorspecific.OSGiService;
@@ -26,9 +29,10 @@ import java.util.stream.Collectors;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {SearchConfig.class},
+        adapters = {SearchConfig.class, ComponentExporter.class},
         resourceType = {SearchConfigImpl.RESOURCE_TYPE}
 )
+@Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
 public class SearchConfigImpl implements SearchConfig {
     public static final String RESOURCE_TYPE = "asset-share-commons/components/search/results";
 

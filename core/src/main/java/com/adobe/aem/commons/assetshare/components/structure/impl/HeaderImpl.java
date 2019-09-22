@@ -20,6 +20,8 @@
 package com.adobe.aem.commons.assetshare.components.structure.impl;
 
 import com.adobe.aem.commons.assetshare.components.structure.Header;
+import com.adobe.cq.export.json.ComponentExporter;
+import com.adobe.cq.export.json.ExporterConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.designer.Style;
@@ -27,6 +29,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.injectorspecific.ScriptVariable;
 import org.slf4j.Logger;
@@ -40,9 +43,10 @@ import java.util.List;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {Header.class},
+        adapters = {Header.class, ComponentExporter.class},
         resourceType = {HeaderImpl.RESOURCE_TYPE}
 )
+@Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
 public class HeaderImpl implements Header {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/structure/header";
 

@@ -26,6 +26,8 @@ import com.adobe.aem.commons.assetshare.components.search.SearchConfig;
 import com.adobe.aem.commons.assetshare.search.searchpredicates.SearchPredicate;
 import com.adobe.aem.commons.assetshare.util.ComponentModelVisitor;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
+import com.adobe.cq.export.json.ComponentExporter;
+import com.adobe.cq.export.json.ExporterConstants;
 import com.day.cq.dam.api.DamConstants;
 import com.day.cq.search.Predicate;
 import com.day.cq.search.PredicateConverter;
@@ -40,6 +42,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestParameter;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
+import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.OSGiService;
@@ -48,14 +51,19 @@ import org.apache.sling.models.factory.ModelFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {PagePredicate.class},
+        adapters = {PagePredicate.class, ComponentExporter.class},
         resourceType = {PagePredicateImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
+@Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
 public class PagePredicateImpl extends AbstractPredicate implements PagePredicate {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/results";
 

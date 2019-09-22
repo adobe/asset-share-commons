@@ -21,6 +21,8 @@ package com.adobe.aem.commons.assetshare.components.predicates.impl;
 
 import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.HiddenPredicate;
+import com.adobe.cq.export.json.ComponentExporter;
+import com.adobe.cq.export.json.ExporterConstants;
 import com.day.cq.search.PredicateConverter;
 import com.day.cq.search.PredicateGroup;
 import org.apache.commons.lang.StringUtils;
@@ -28,6 +30,7 @@ import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.AbstractResourceVisitor;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.OSGiService;
@@ -41,13 +44,13 @@ import java.util.*;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {HiddenPredicate.class},
+        adapters = {HiddenPredicate.class, ComponentExporter.class},
         resourceType = {HiddenPredicateImpl.RESOURCE_TYPE}
 )
+@Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
 public class HiddenPredicateImpl extends AbstractPredicate implements HiddenPredicate {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/hidden";
 
-    private static final String RT_HIDDEN_PREDICATE = RESOURCE_TYPE;
     private static final String NN_PREDICATES = "predicates";
     private static final String PN_PREDICATE = "predicate";
     private static final String PN_VALUE = "value";

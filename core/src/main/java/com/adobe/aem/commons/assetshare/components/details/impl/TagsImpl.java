@@ -22,12 +22,15 @@ package com.adobe.aem.commons.assetshare.components.details.impl;
 import com.adobe.aem.commons.assetshare.components.details.Tags;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.properties.impl.TagTitlesImpl;
+import com.adobe.cq.export.json.ComponentExporter;
+import com.adobe.cq.export.json.ExporterConstants;
 import com.day.cq.tagging.Tag;
 import com.day.cq.tagging.TagManager;
 import com.day.cq.wcm.api.Page;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
+import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.ScriptVariable;
@@ -41,10 +44,11 @@ import java.util.*;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {Tags.class},
+        adapters = {Tags.class, ComponentExporter.class},
         resourceType = {TagsImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
+@Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
 public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
     private static final Logger log = LoggerFactory.getLogger(TagsImpl.class);
 
