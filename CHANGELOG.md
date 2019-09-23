@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- 0428: Jenkins pipeline for automating releases.
+- 0432: Added the External Redirection Asset Rendition Dispatcher - including updated UrlUrl.escape() support for more complex URLs.
+
+### Changed
+
+### Fixed
+
+- 0430: Fixes issue with default search result layout is incorrect when Statistics component is added above the search results component.
+
+
 ## [v1.8.0]
 
 ### Added

@@ -22,19 +22,17 @@ package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
-import com.adobe.aem.commons.assetshare.util.impl.ExtensionOverrideRequestWrapper;
-import com.day.cq.commons.PathInfo;
-import com.day.text.Text;
+import com.adobe.aem.commons.assetshare.util.UrlUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
-import org.apache.sling.api.request.RequestDispatcherOptions;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
+import org.osgi.service.metatype.annotations.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,11 +55,11 @@ import static org.osgi.framework.Constants.SERVICE_RANKING;
         }
 )
 @Designate(
-        ocd = InternalRedirectRenditionDispatcherImpl.Cfg.class,
+        ocd = ExternalRedirectRenditionDispatcherImpl.Cfg.class,
         factory = true
 )
-public class InternalRedirectRenditionDispatcherImpl extends AbstractRenditionDispatcherImpl implements AssetRenditionDispatcher {
-    private static Logger log = LoggerFactory.getLogger(InternalRedirectRenditionDispatcherImpl.class);
+public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDispatcherImpl implements AssetRenditionDispatcher {
+    private static Logger log = LoggerFactory.getLogger(ExternalRedirectRenditionDispatcherImpl.class);
 
     private Cfg cfg;
 
@@ -109,25 +107,23 @@ public class InternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
         final AssetRenditionParameters parameters = new AssetRenditionParameters(request);
 
         final String expression = mappings.get(parameters.getRenditionName());
+        final String evaluatedExpression = assetRenditions.evaluateExpression(request, expression);
 
-        if (StringUtils.isNotBlank(expression)) {
-            final String evaluatedExpression = assetRenditions.evaluateExpression(request, expression);
-            final PathInfo pathInfo = new PathInfo(request.getResourceResolver(), evaluatedExpression);
-
-            log.debug("Serving internal redirect rendition [ {} ] for resolved rendition name [ {} ]",
+        if (StringUtils.isNotBlank(evaluatedExpression)) {
+            log.debug("Serving External redirect rendition [ {} ] for resolved rendition name [ {} ]",
                     evaluatedExpression,
                     parameters.getRenditionName());
 
-            final RequestDispatcherOptions options = new RequestDispatcherOptions();
-            final String resourcePath = Text.unescape(pathInfo.getResourcePath());
+            if (cfg.redirect() == HttpServletResponse.SC_MOVED_TEMPORARILY) {
+                response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
+            } else {
+                response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+            }
 
-            options.setReplaceSelectors(StringUtils.removeStart(pathInfo.getSelectorString(), "."));
-            options.setReplaceSuffix(pathInfo.getSuffix());
-
-            request.getRequestDispatcher(resourcePath, options)
-                    .include(new ExtensionOverrideRequestWrapper(request, pathInfo.getExtension()), response);
+            response.setHeader("Location", UrlUtil.escape(evaluatedExpression));
 
         } else {
+            log.error("Could not convert [ {} ] into a valid URI", evaluatedExpression);
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not serve asset rendition.");
         }
     }
@@ -139,7 +135,7 @@ public class InternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
         this.mappings = super.parseMappingsAsStrings(cfg.rendition_mappings());
     }
 
-    @ObjectClassDefinition(name = "Asset Share Commons - Rendition Dispatcher - Internal Redirect Renditions")
+    @ObjectClassDefinition(name = "Asset Share Commons - Rendition Dispatcher - External Redirect Renditions")
     public @interface Cfg {
         @AttributeDefinition
         String webconsole_configurationFactory_nameHint() default "{name} [ {label} ] @ {service.ranking}";
@@ -148,13 +144,13 @@ public class InternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
                 name = "Name",
                 description = "The system name of this Rendition Dispatcher. This should be unique across all AssetRenditionDispatcher instances."
         )
-        String name() default "internal-redirect";
+        String name() default "external-redirect";
 
         @AttributeDefinition(
                 name = "Label",
                 description = "The human-friendly name of this AssetRenditionDispatcher and may be displayed to authors."
         )
-        String label() default "Internal Redirect Renditions";
+        String label() default "External Redirect Renditions";
 
         @AttributeDefinition(
                 name = "Rendition types",
@@ -169,8 +165,18 @@ public class InternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
         boolean hidden() default false;
 
         @AttributeDefinition(
+                name = "Redirect",
+                description = "Select the type of redirect that should be made: Moved Permanently (301) or Moved Temporarily (302). Defaults to 301.",
+                options = {
+                        @Option(label = "Moved Permanently (301)", value = "301"),
+                        @Option(label = "Moved Temporarily (302)", value = "302"),
+                }
+        )
+        int redirect() default HttpServletResponse.SC_MOVED_PERMANENTLY;
+
+        @AttributeDefinition(
                 name = "Rendition mappings",
-                description = "In the form: <renditionName>" + OSGI_PROPERTY_VALUE_DELIMITER + "<internal redirect url>"
+                description = "In the form: <rendition name>" + OSGI_PROPERTY_VALUE_DELIMITER + "<redirect location>"
         )
         String[] rendition_mappings() default {};
 
