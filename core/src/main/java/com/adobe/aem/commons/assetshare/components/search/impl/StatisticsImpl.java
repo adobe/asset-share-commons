@@ -65,6 +65,6 @@ public class StatisticsImpl implements Statistics {
 
     @Override
     public boolean isReady() {
-        return true;
+        return search != null;
     }
 }
