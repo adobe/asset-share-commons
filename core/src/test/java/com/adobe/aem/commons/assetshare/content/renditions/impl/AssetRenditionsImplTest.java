@@ -29,7 +29,6 @@ import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParamet
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.InternalRedirectRenditionDispatcherImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
-import com.adobe.aem.commons.assetshare.util.UrlUtil;
 import com.day.cq.dam.commons.util.DamUtil;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.junit.Before;
@@ -39,16 +38,11 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.osgi.framework.Constants;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
@@ -85,7 +79,7 @@ public class AssetRenditionsImplTest {
 
         ctx.registerService(AssetRenditionDispatcher.class, two, Constants.SERVICE_RANKING, 90);
         ctx.registerService(AssetRenditionDispatcher.class, one, Constants.SERVICE_RANKING, 100);
-        ctx.registerService(AssetRenditionDispatcher.class, three, Constants.SERVICE_RANKING, 80);
+        ctx.registerService(AssetRenditionDispatcher.class, three, Constants.SERVICE_RANKING, 80, "rendition.mappings", "foo=bar,test-rendition=im real");
 
         final AssetRenditions assetRenditions = ctx.getService(AssetRenditions.class);
         final List<AssetRenditionDispatcher> actual = assetRenditions.getAssetRenditionDispatchers();
@@ -172,11 +166,14 @@ public class AssetRenditionsImplTest {
     }
 
     @Test
-    public void testing() throws MalformedURLException, URISyntaxException {
+    public void isValidAssetRenditionName() {
+        AssetRenditionDispatcher one = new InternalRedirectRenditionDispatcherImpl();
 
+        ctx.registerInjectActivateService(one, Constants.SERVICE_RANKING, 80, "rendition.mappings", "test-rendition=im real");
 
-        System.out.println(UrlUtil.escape("http://foo.com/content/dam/foo bar.png"));
+        final AssetRenditions assetRenditions = ctx.getService(AssetRenditions.class);
 
-
+        assertTrue(assetRenditions.isValidAssetRenditionName("test-rendition"));
+        assertFalse(assetRenditions.isValidAssetRenditionName("fake-rendition-name"));
     }
 }

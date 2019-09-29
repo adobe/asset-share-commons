@@ -27,15 +27,20 @@
     function getFields(elements) {
         // Turn the selected elements into GraniteUI Fields
         return  elements.map(function(index, el) {
-            var field  = $(el).adaptTo('foundation-field');
-            if (field) { return field; }
+            var foundationField  = $(el).adaptTo('foundation-field');
+            if (foundationField) {
+                return {
+                    type: $(el).data('granite-coral-multifield-name') ? 'collection' : 'field',
+                    field: foundationField
+                };
+            }
         });
     }
 
     function getElements(dialog, fieldNames) {
         // Get create a selector from the parameters
         var selector = fieldNames.map(function(fieldName) {
-            return '[name="' + fieldName + '"]';
+            return '[name="' + fieldName + '"],[data-granite-coral-multifield-name="' + fieldName + '"]';
         }).join(',');
 
         // Turn the selected elements into GraniteUI Fields
@@ -49,8 +54,18 @@
         var i;
 
         for (i = 0; i < fields.length; i++) {
-            if (fields[i].getValue()) {
+            var fieldType = fields[i].type,
+                field = fields[i].field;
+
+            if (field.getValue()) {
                 return true;
+            } else if (field.getValues()) {
+                if (fieldType === 'field' && field.getValues().length === 1 && field.getValues()[0]) {
+                    return true;
+                } else if (fieldType === 'collection' && field.getValues().length > 0) {
+                    // Handle case of multifield lists
+                    return true;
+                }
             }
         }
 
@@ -88,6 +103,7 @@
                 legacyElements = getElements(dialog, legacyFieldNames) || [];
 
             Coral.commons.ready(legacyMode, function (legacyModeComponent) {
+
                 var hasModernConfig = hasContent(getFields(modernElements)),
                     hasLegacyConfig = hasContent(getFields(legacyElements)),
                     initialStateIsLegacy = legacyModeField.getValue() === 'true' || (!hasModernConfig && hasLegacyConfig);
@@ -96,7 +112,6 @@
                 toggleElements(modernElements, legacyElements, initialStateIsLegacy);
 
                 legacyModeField.setValue(initialStateIsLegacy ? 'true' : '');
-
                 if (hasLegacyConfig) {
                     legacyModeComponent.on('change', function () {
                         toggleElements(modernElements, legacyElements, legacyModeField.getValue() === 'true');

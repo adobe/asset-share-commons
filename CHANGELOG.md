@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
+- 0453: Added support to the Asset Details - Renditions component for the new ASC Asset Rendition framework
+
 ### Fixed
 
 - 0430: Fixes issue with default search result layout is incorrect when Statistics component is added above the search results component.
