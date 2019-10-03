@@ -32,6 +32,7 @@ import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -45,7 +46,7 @@ import java.util.Map;
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
 @Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
-public class EmailShareImpl extends ShareImpl implements EmailShare {
+public class EmailShareImpl extends ShareImpl implements EmailShare, ComponentExporter {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/modals/share";
 
     @Self
@@ -104,5 +105,11 @@ public class EmailShareImpl extends ShareImpl implements EmailShare {
     @Override
     public String getEmailTemplatePath() {
         return emailTemplatePath;
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }

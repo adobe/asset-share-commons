@@ -37,9 +37,8 @@ import java.util.Collection;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {Share.class, ComponentExporter.class}
+        adapters = {Share.class}
 )
-@Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
 public class ShareImpl implements Share {
 
     @Self

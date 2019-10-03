@@ -35,6 +35,7 @@ import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,7 +47,7 @@ import java.util.Collection;
 )
 @Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
 
-public class DownloadImpl implements Download {
+public class DownloadImpl implements Download, ComponentExporter {
 	
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/modals/download";
     private static final Logger log = LoggerFactory.getLogger(DownloadImpl.class);
@@ -136,5 +137,11 @@ public class DownloadImpl implements Download {
     @Override
     public String getDownloadContentSizeLabel() {
         return UIHelper.getSizeLabel(getDownloadContentSize(), request);
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }
