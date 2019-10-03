@@ -21,6 +21,7 @@ import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.SlingObject;
 import org.apache.sling.models.factory.ModelFactory;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +34,7 @@ import java.util.stream.Collectors;
         resourceType = {SearchConfigImpl.RESOURCE_TYPE}
 )
 @Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
-public class SearchConfigImpl implements SearchConfig {
+public class SearchConfigImpl implements SearchConfig, ComponentExporter {
     public static final String RESOURCE_TYPE = "asset-share-commons/components/search/results";
 
     private static final int MAX_GUESS_TOTAL = 2000;
@@ -184,5 +185,11 @@ public class SearchConfigImpl implements SearchConfig {
 
     private boolean isValidResource(Resource resource) {
         return resource != null && StringUtils.startsWith(resource.getPath(), "/content/");
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }
