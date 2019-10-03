@@ -40,6 +40,7 @@ import org.apache.sling.models.factory.ModelFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 
 @Model(
@@ -151,5 +152,11 @@ public class HiddenPredicateImpl extends AbstractPredicate implements HiddenPred
         }
 
         return params;
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }

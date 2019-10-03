@@ -18,6 +18,7 @@ import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import java.util.regex.Pattern;
 
@@ -143,7 +144,7 @@ public class VideoImpl extends AbstractEmptyTextComponent implements Video {
         return false;
     }
 
-    boolean isLegacyMode() {
+    private boolean isLegacyMode() {
         if (legacyMode == null) {
             if (StringUtils.isNotBlank(renditionName)) {
                 return false;
@@ -153,5 +154,11 @@ public class VideoImpl extends AbstractEmptyTextComponent implements Video {
         } else {
             return legacyMode;
         }
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }

@@ -39,6 +39,7 @@ import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.inject.Named;
 import java.util.*;
 
@@ -169,5 +170,11 @@ public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
     @Override
     public boolean isReady() {
         return !isEmpty() || hasEmptyText();
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }

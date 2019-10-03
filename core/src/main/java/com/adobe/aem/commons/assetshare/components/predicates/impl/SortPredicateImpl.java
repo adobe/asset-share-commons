@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -187,5 +188,11 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
       SortOptionItem sortOptionItem = new SortOptionItem(properties.get(PN_TEXT, String.class),
           properties.get("value", String.class), properties.get(PN_ORDER_BY_CASE, true));
       items.add(sortOptionItem);
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }

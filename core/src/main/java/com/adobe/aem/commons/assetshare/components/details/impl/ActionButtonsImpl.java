@@ -32,6 +32,8 @@ import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
+import javax.annotation.Nonnull;
+
 @Model(
         adaptables = {SlingHttpServletRequest.class},
         adapters = {ActionButtons.class, ComponentExporter.class},
@@ -86,5 +88,11 @@ public class ActionButtonsImpl extends AbstractEmptyTextComponent implements Act
 
     private boolean isShareEnabled(Config config) {
         return config.isShareEnabled() && StringUtils.isNotBlank(shareLabel);
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }

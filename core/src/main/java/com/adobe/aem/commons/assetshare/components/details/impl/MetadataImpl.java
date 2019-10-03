@@ -39,6 +39,7 @@ import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.Collection;
@@ -181,5 +182,11 @@ public class MetadataImpl extends AbstractEmptyTextComponent implements Metadata
     @Override
     public boolean isReady() {
         return !isEmpty() || hasEmptyText();
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }

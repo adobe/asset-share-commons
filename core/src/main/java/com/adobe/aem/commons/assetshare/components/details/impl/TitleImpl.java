@@ -32,6 +32,7 @@ import org.apache.sling.models.annotations.injectorspecific.ScriptVariable;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 
 @Model(
@@ -119,5 +120,11 @@ public class TitleImpl extends AbstractEmptyTextComponent implements Title {
     @Override
     public boolean isEmpty() {
         return StringUtils.isBlank(getTitle());
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }

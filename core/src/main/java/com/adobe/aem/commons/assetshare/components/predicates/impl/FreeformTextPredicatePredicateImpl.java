@@ -33,6 +33,7 @@ import org.apache.sling.models.annotations.*;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import java.util.List;
@@ -212,5 +213,11 @@ public class FreeformTextPredicatePredicateImpl extends AbstractPredicate implem
         }
 
         return valuesFromRequest;
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }

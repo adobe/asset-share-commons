@@ -35,6 +35,8 @@ import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 import org.apache.sling.settings.SlingSettingsService;
 
+import javax.annotation.Nonnull;
+
 @Model(
         adaptables = {SlingHttpServletRequest.class},
         adapters = {EditorLinks.class, ComponentExporter.class},
@@ -95,5 +97,11 @@ public class EditorLinksImpl extends AbstractEmptyTextComponent implements Edito
         }
 
         return true;
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }

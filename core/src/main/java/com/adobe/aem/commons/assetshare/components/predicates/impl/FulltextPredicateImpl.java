@@ -34,6 +34,7 @@ import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
 
@@ -121,5 +122,11 @@ public class FulltextPredicateImpl extends AbstractPredicate implements Fulltext
         final ValueMap intialValues = new ValueMapDecorator(new HashMap<>());
         intialValues.put(getName(), getInitialValue());
         return intialValues;
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }

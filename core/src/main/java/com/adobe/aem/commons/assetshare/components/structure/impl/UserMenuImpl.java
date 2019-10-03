@@ -36,6 +36,7 @@ import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.jcr.RepositoryException;
@@ -142,5 +143,11 @@ public class UserMenuImpl implements UserMenu {
                 StringUtils.isNotEmpty(logInLink) &&
                 StringUtils.isNotEmpty(logOutLabel) &&
                 StringUtils.isNotEmpty(logOutLink);
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }

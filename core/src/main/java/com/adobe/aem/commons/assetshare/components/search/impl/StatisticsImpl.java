@@ -11,6 +11,7 @@ import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 
 @Model(
@@ -70,5 +71,11 @@ public class StatisticsImpl implements Statistics {
     @Override
     public boolean isReady() {
         return true;
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }

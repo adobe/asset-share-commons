@@ -49,6 +49,7 @@ import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.factory.ModelFactory;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -335,5 +336,11 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
     @Deprecated
     public Map<String, String> getParams(ParamTypes... excludeParamTypes) {
         return PredicateConverter.createMap(getPredicateGroup(excludeParamTypes));
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }

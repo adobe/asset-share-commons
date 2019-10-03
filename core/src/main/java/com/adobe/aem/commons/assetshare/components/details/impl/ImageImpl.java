@@ -40,6 +40,7 @@ import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import java.net.URLDecoder;
 import java.util.regex.Pattern;
@@ -179,5 +180,11 @@ public class ImageImpl extends AbstractEmptyTextComponent implements Image {
         } else {
             return legacyMode;
         }
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }
