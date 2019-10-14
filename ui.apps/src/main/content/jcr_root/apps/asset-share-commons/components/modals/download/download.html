@@ -17,7 +17,8 @@
  */-->
 
 <sly data-sly-use.download="com.adobe.aem.commons.assetshare.components.actions.download.Download"
-     data-sly-test.downloadAssets="${properties.excludeOriginalAssets ? false : true}"></sly>
+     data-sly-test.legacyMode="${download.legacyMode}"
+     data-sly-use.legacyTemplate="templates/legacy.html"></sly>
 
 <style data-sly-test="${!wccmode.disabled}">
     .cmp-modal-download .ui.modal {
@@ -27,33 +28,22 @@
     }
 </style>
 
-<form method="post"
-      action="/content/dam.assetdownload.zip/${download.zipFileName}.zip"
-      target="download"
-      data-asset-share-id="download-modal"
-      class="ui modal cmp-modal-download--wrapper cmp-modal">
-
-    <input type="hidden" name="licenseCheck" value="true"/>
-    <input type="hidden" name="flatStructure" value="false"/>
-
-    <input type="hidden" name="downloadAssets"
-           value="${downloadAssets ? 'true' : 'false'}"/>
+<form data-sly-test="${!legacyMode}"
+          method="post"
+          action="/content/dam.assetdownload.zip/${download.zipFileName}.zip"
+          target="download"
+          data-asset-share-id="download-modal"
+          class="ui modal cmp-modal-download--wrapper cmp-modal">
 
     <i class="close icon"></i>
 
-    <div data-sly-test.isMaxSize="${download.maxContentSize > 0 && download.maxContentSize < download.downloadContentSize}" 
-        class="ui attached warning message cmp-message">
-        ${properties['maxContentSizeMessage']}
-        <br/>
-        <label>${"Limit" @ i18n}:</label> <span class="detail">${download.maxContentSizeLabel}</span> | 
-        <label>${"Current Size" @ i18n}:</label> <span class="detail">${download.downloadContentSizeLabel}</span>
-    </div>
     <div class="header">
         ${properties['modalTitle']}
     </div>
+
     <div class="image scrolling content cmp-content">
         <div class="ui medium image">
-            <div class="ui header">${properties['assetListTitle']}</div>
+            <h3 class="ui header">${properties['assetListTitle']}</h3>
 
             <div class="ui list" data-sly-list.asset="${download.assets}">
                 <div class="item">
@@ -63,33 +53,41 @@
                     </div>
                 </div>
             </div>
-
         </div>
+
         <div class="description ui form">
-            <div class="ui header">${properties['downloadOptionsTitle']}</div>
+            <h3 class="ui header">${properties['downloadOptionsTitle']}</h3>
 
             <sly data-sly-list.asset="${download.assets}">
                 <input type="hidden" name="path"  value="${asset.url}"/>
             </sly>
 
-            <div class="field">
-                <div class="ui checkbox">
-                    <input type="checkbox" tabindex="3" class="hidden" name="downloadRenditions" value="true"
-                           data-sly-attribute.checked="${!downloadAssets}"
-                           data-sly-attribute.required="${!downloadAssets}"
-                           data-sly-attribute.readonly="${!downloadAssets}">
-                    <label>${"Include Renditions" @ i18n}</label>
-                </div>
-            </div>
+            <sly data-sly-list.assetRenditionsGroup="${download.assetRenditionsGroups}">
 
             <div class="field">
-                <div class="ui checkbox">
-                    <input type="checkbox" tabindex="4" class="hidden" name="downloadSubassets" value="true">
-                    <label>${"Include Sub-assets" @ i18n}</label>
-                </div>
+
+                <h4 class="ui header">${assetRenditionsGroup.title}</h4>
+
+                <sly data-sly-test="${properties.selectAllLabel && assetRenditionsGroup.items.size > 1}">
+                    <div class="ui checkbox">
+                        <input type="checkbox" onchange="$(this).closest('.field').find('input[type=\'checkbox\']').prop('checked', $(this).prop('checked'));">
+                        <label>${properties.selectAllLabel}</label>
+                    </div>
+                    <br/>
+                </sly>
+
+                <sly data-sly-list.assetRendition="${assetRenditionsGroup.items}">
+                    <div class="ui checkbox">
+                        <input type="checkbox" class="hidden" name="???" value="${assetRendition.value}">
+                        <label>${assetRendition.text}</label>
+                    </div>
+                    <br/>
+                </sly>
             </div>
+            </sly>
         </div>        
     </div>
+
     <div class="actions cmp-footer__actions">
         <div class="ui deny button">
             ${properties['cancelButton']}
@@ -105,3 +103,9 @@
         });
     </script>
 </form>
+
+
+
+<!--/* Load Legacy Template */-->
+<sly data-sly-test="${legacyMode}"
+     data-sly-call="${legacyTemplate.legacy @ download=download}"></sly>

@@ -12,5 +12,62 @@
 		"jcr:primaryType": "nt:unstructured",
 		"sling:resourceType": "asset-share-commons/components/modals/download",
 		"zipFileName": "myassets.zip"
+	},
+	"download_legacy": {
+		"jcr:primaryType": "nt:unstructured",
+		"sling:resourceType": "asset-share-commons/components/modals/download",
+		"excludeOriginalAssets": "true"
+	},
+	"download_with_asset_rendition_groups": {
+		"jcr:primaryType": "nt:unstructured",
+		"sling:resourceType": "asset-share-commons/components/modals/download",
+		"excludeOriginalAssets": "true",
+		"zipFileName": "myassets.zip",
+		"asset-renditions-groups": {
+			"jcr:primaryType": "nt:unstructured",
+			"items": {
+				"jcr:primaryType": "nt:unstructured",
+				"item0": {
+					"jcr:primaryType": "nt:unstructured",
+					"assetRenditionsGroupTitle": "Group 1",
+					"asset-renditions": {
+						"jcr:primaryType": "nt:unstructured",
+						"items": {
+							"jcr:primaryType": "nt:unstructured",
+							"item0": {
+								"jcr:primaryType": "nt:unstructured",
+								"text": "Rendition 1.1",
+								"value": "rendition-1-1"
+							},
+							"item1": {
+								"jcr:primaryType": "nt:unstructured",
+								"text": "Rendition 1.2",
+								"value": "rendition-1-2"
+							}
+						}
+					}
+				},
+				"item1": {
+					"jcr:primaryType": "nt:unstructured",
+					"assetRenditionsGroupTitle": "Group 2",
+					"asset-renditions": {
+						"jcr:primaryType": "nt:unstructured",
+						"items": {
+							"jcr:primaryType": "nt:unstructured",
+							"item0": {
+								"jcr:primaryType": "nt:unstructured",
+								"text": "Rendition 2.1",
+								"value": "rendition-2-1"
+							},
+							"item1": {
+								"jcr:primaryType": "nt:unstructured",
+								"text": "Rendition 2.2",
+								"value": "rendition-2-2"
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }

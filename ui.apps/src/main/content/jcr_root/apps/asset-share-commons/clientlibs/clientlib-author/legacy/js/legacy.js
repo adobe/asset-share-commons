@@ -51,11 +51,13 @@
     }
 
     function hasContent(fields) {
-        var i;
+        var i,
+            fieldType,
+            field;
 
         for (i = 0; i < fields.length; i++) {
-            var fieldType = fields[i].type,
-                field = fields[i].field;
+            fieldType = fields[i].type;
+            field = fields[i].field;
 
             if (field.getValue()) {
                 return true;

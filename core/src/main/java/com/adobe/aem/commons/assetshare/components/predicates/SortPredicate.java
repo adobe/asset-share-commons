@@ -19,7 +19,6 @@
 
 package com.adobe.aem.commons.assetshare.components.predicates;
 
-import com.adobe.aem.commons.assetshare.components.predicates.impl.options.SortOptionItem;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -46,5 +45,13 @@ public interface SortPredicate extends Predicate {
      * @return the active label for the Order By Sort (Sort Direction) field.
      */
     default String getOrderBySortLabel() { return "DESC"; }
+
+    interface SortOptionItem extends OptionItem {
+        default boolean isCaseSensitive() {
+            return false;
+        }
+
+        void setSelected(boolean selected);
+    }
 }
 
