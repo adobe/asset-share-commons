@@ -144,7 +144,7 @@ public class VideoImpl extends AbstractEmptyTextComponent implements Video {
         return false;
     }
 
-    private boolean isLegacyMode() {
+    protected boolean isLegacyMode() {
         if (legacyMode == null) {
             if (StringUtils.isNotBlank(renditionName)) {
                 return false;
