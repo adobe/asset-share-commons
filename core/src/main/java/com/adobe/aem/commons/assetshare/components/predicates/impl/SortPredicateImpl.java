@@ -42,6 +42,7 @@ import org.apache.sling.api.wrappers.ValueMapDecorator;
 import org.apache.sling.models.annotations.Default;
 import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
+import org.apache.sling.models.annotations.Optional;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
@@ -75,7 +76,7 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
     private Options coreOptions;
 
     @Self
-    @Required
+    @Optional
     private SearchConfig searchConfig;
 
     @ValueMapValue
@@ -144,7 +145,7 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
 
     @Override
     public boolean isReady() {
-        return !getItems().isEmpty();
+        return searchConfig != null && !getItems().isEmpty();
     }
 
     @Override
