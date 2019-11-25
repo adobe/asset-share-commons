@@ -24,6 +24,8 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.Rendition;
 import com.adobe.aem.commons.assetshare.content.properties.impl.LicenseImpl;
 import com.adobe.aem.commons.assetshare.util.UrlUtil;
+import com.adobe.cq.export.json.ComponentExporter;
+import com.adobe.cq.export.json.ExporterConstants;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
 import com.day.cq.dam.commons.util.UIHelper;
@@ -32,12 +34,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.commons.mime.MimeTypeService;
 import org.apache.sling.models.annotations.Default;
+import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,9 +51,10 @@ import java.util.regex.Pattern;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {Renditions.class},
+        adapters = {Renditions.class, ComponentExporter.class},
         resourceType = {RenditionsImpl.RESOURCE_TYPE}
 )
+@Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
 public class RenditionsImpl extends AbstractEmptyTextComponent implements Renditions {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/details/renditions";
 
@@ -139,6 +144,12 @@ public class RenditionsImpl extends AbstractEmptyTextComponent implements Rendit
     @Override
     public boolean isReady() {
         return !isEmpty();
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 
     /**
