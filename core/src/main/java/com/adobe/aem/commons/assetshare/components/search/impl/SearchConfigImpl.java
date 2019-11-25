@@ -3,6 +3,7 @@ package com.adobe.aem.commons.assetshare.components.search.impl;
 import com.adobe.aem.commons.assetshare.components.search.SearchConfig;
 import com.adobe.aem.commons.assetshare.util.ResourceTypeVisitor;
 import com.day.cq.dam.api.DamConstants;
+import com.day.cq.replication.ListenerLogDelegator;
 import com.day.cq.search.Predicate;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -17,6 +18,8 @@ import org.apache.sling.models.annotations.injectorspecific.ScriptVariable;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.SlingObject;
 import org.apache.sling.models.factory.ModelFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -30,6 +33,8 @@ import java.util.stream.Collectors;
         resourceType = {SearchConfigImpl.RESOURCE_TYPE}
 )
 public class SearchConfigImpl implements SearchConfig {
+    private static final Logger log = LoggerFactory.getLogger(SearchConfigImpl.class);
+
     public static final String RESOURCE_TYPE = "asset-share-commons/components/search/results";
 
     private static final int MAX_GUESS_TOTAL = 2000;
@@ -172,8 +177,11 @@ public class SearchConfigImpl implements SearchConfig {
 
         if (visitor.getResources().size() > 0) {
             return visitor.getResources().iterator().next();
-        } else {
+        } else if (page.getParent() != null) {
             return resolveSearchConfigResource(pageManager, page.getParent().getContentResource());
+        } else {
+            log.warn("Unable to locate a Search Results component resource that can represent the Search Config. It is likely the Search Results component has not been added to the Search page yet!");
+            return null;
         }
     }
 
