@@ -191,20 +191,36 @@ public class DownloadImplTest {
 		assertTrue("Should be legacy mode", ((DownloadImpl)download).isLegacyMode());
 	}
 
+	@Test
+	public void isLegacyMode_Yes_WithMode() {
+		ctx.currentResource("/content/download_legacy_mode");
+		final Download download = ctx.request().adaptTo(Download.class);
+
+		assertTrue("Should be legacy mode", ((DownloadImpl)download).isLegacyMode());
+	}
+
     @Test
 	public void isLegacyMode_No() {
+		ctx.currentResource("/content/download");
+		final Download download = ctx.request().adaptTo(Download.class);
+
+		assertFalse("Should be NOT be legacy mode", ((DownloadImpl)download).isLegacyMode());
+	}
+
+	@Test
+	public void isLegacyMode_No_WithGroups() {
 		ctx.currentResource("/content/download_with_asset_rendition_groups");
 
-        final Options group1Options = new TestOptionsImpl(ctx.currentResource().getChild("asset-renditions-groups/items/item0/asset-renditions/items"));
-        final Options group2Options = new TestOptionsImpl(ctx.currentResource().getChild("asset-renditions-groups/items/item1/asset-renditions/items"));
+		final Options group1Options = new TestOptionsImpl(ctx.currentResource().getChild("asset-renditions-groups/items/item0/asset-renditions/items"));
+		final Options group2Options = new TestOptionsImpl(ctx.currentResource().getChild("asset-renditions-groups/items/item1/asset-renditions/items"));
 
-        doReturn(group1Options).when(modelFactory).getModelFromWrappedRequest(eq(ctx.request()),
-                argThat(new IsSameResourceByPath(ctx.currentResource().getChild("asset-renditions-groups/items/item0/asset-renditions/items").getPath())),
-                eq(Options.class));
+		doReturn(group1Options).when(modelFactory).getModelFromWrappedRequest(eq(ctx.request()),
+				argThat(new IsSameResourceByPath(ctx.currentResource().getChild("asset-renditions-groups/items/item0/asset-renditions").getPath())),
+				eq(Options.class));
 
-        doReturn(group2Options).when(modelFactory).getModelFromWrappedRequest(eq(ctx.request()),
-                argThat(new IsSameResourceByPath(ctx.currentResource().getChild("asset-renditions-groups/items/item1/asset-renditions/items").getPath())),
-                eq(Options.class));
+		doReturn(group2Options).when(modelFactory).getModelFromWrappedRequest(eq(ctx.request()),
+				argThat(new IsSameResourceByPath(ctx.currentResource().getChild("asset-renditions-groups/items/item1/asset-renditions").getPath())),
+				eq(Options.class));
 
 		final Download download = ctx.request().adaptTo(Download.class);
 
@@ -216,8 +232,8 @@ public class DownloadImplTest {
 	public void getAssetRenditionGroups() {
 		ctx.currentResource("/content/download_with_asset_rendition_groups");
 
-		final Options group1Options = new TestOptionsImpl(ctx.currentResource().getChild("asset-renditions-groups/items/item0/asset-renditions"));
-		final Options group2Options = new TestOptionsImpl(ctx.currentResource().getChild("asset-renditions-groups/items/item1/asset-renditions"));
+		final Options group1Options = new TestOptionsImpl(ctx.currentResource().getChild("asset-renditions-groups/items/item0/asset-renditions/items"));
+		final Options group2Options = new TestOptionsImpl(ctx.currentResource().getChild("asset-renditions-groups/items/item1/asset-renditions/items"));
 
 		doReturn(group1Options).when(modelFactory).getModelFromWrappedRequest(eq(ctx.request()),
 				argThat(new IsSameResourceByPath(ctx.currentResource().getChild("asset-renditions-groups/items/item0/asset-renditions").getPath())),

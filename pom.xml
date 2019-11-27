@@ -184,7 +184,7 @@
             <dependency>
                 <groupId>com.adobe.aem</groupId>
                 <artifactId>uber-jar</artifactId>
-                <version>6.3.1</version>
+                <version>6.4.0</version>
                 <scope>provided</scope>
                 <classifier>apis</classifier>
             </dependency>
@@ -259,7 +259,7 @@
             <dependency>
                 <groupId>com.adobe.acs</groupId>
                 <artifactId>acs-aem-commons-bundle</artifactId>
-                <version>4.0.0</version>
+                <version>4.2.2</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>

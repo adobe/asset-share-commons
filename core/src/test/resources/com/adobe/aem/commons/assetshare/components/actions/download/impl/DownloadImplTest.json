@@ -18,10 +18,14 @@
 		"sling:resourceType": "asset-share-commons/components/modals/download",
 		"excludeOriginalAssets": "true"
 	},
+	"download_legacy_mode": {
+		"jcr:primaryType": "nt:unstructured",
+		"sling:resourceType": "asset-share-commons/components/modals/download",
+		"legacyMode": "true"
+	},
 	"download_with_asset_rendition_groups": {
 		"jcr:primaryType": "nt:unstructured",
 		"sling:resourceType": "asset-share-commons/components/modals/download",
-		"excludeOriginalAssets": "true",
 		"zipFileName": "myassets.zip",
 		"asset-renditions-groups": {
 			"jcr:primaryType": "nt:unstructured",

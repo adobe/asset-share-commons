@@ -1,4 +1,4 @@
-package com.adobe.aem.commons.assetshare.testhelpers;
+package com.adobe.aem.commons.assetshare.testing;
 
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
@@ -11,11 +11,12 @@ import java.util.List;
 public class TestOptionsImpl implements Options {
 
     private final Resource resource;
-    private List<OptionItem> optionItems = null;
 
     public TestOptionsImpl(Resource resource) {
         this.resource = resource;
     }
+
+    private List<OptionItem> optionItems = null;
 
     public List<OptionItem> getItems() {
         if (optionItems == null) {
@@ -31,7 +32,7 @@ public class TestOptionsImpl implements Options {
     }
 
     @Override
-    public Options.Type getType() {
+    public Type getType() {
         return Type.CHECKBOX;
     }
 

@@ -154,6 +154,14 @@
             <groupId>io.wcm</groupId>
             <artifactId>io.wcm.testing.aem-mock.junit4</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.api</artifactId>
+            <version>2.18.4</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <!-- ====================================================================== -->
@@ -187,7 +195,7 @@
                             *
                         </Import-Package>
                         <Embed-Dependency>
-                            acs-aem-commons-bundle;inline=com/adobe/acs/commons/util/ParameterUtil.class|com/adobe/acs/commons/util/PathInfoUtil.class
+                            acs-aem-commons-bundle;inline=com/adobe/acs/commons/util/ParameterUtil.class|com/adobe/acs/commons/util/PathInfoUtil.class|com/adobe/acs/commons/util/BufferedSlingHttpServletResponse.class|com/adobe/acs/commons/util/ServletOutputStreamWrapper.class|com/adobe/acs/commons/util/BufferedServletOutput.class|com/adobe/acs/commons/util/BufferedServletResponse.class|com/adobe/acs/commons/util/BufferedServletOutput$ResponseWriteMethod.class
                         </Embed-Dependency>
                         <_plugin>org.apache.sling.bnd.models.ModelsScannerPlugin</_plugin>
                         <!-- Enable processing of OSGI DS component annotations -->
