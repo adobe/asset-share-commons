@@ -106,11 +106,4 @@ public interface PagePredicate extends Predicate {
      */
     @Deprecated
     Map<String, String> getParams(ParamTypes... excludeParamTypes);
-
-    /**
-     * @return the HTML form id
-     */
-    default String getFormId() {
-        return "asset-share-commons__form-id__1";
-    }
 }
