@@ -65,7 +65,6 @@ public class AssetRenditionsDownloadServlet extends SlingAllMethodsServlet {
 
     private static final String PN_ALLOWED_RENDITION_NAMES = "allowedRenditionNames";
 
-
     @Reference
     private ServletHelper servletHelper;
 
@@ -130,79 +129,4 @@ public class AssetRenditionsDownloadServlet extends SlingAllMethodsServlet {
                 .filter(renditionName -> allowedRenditionNames.length == 0 || ArrayUtils.contains(allowedRenditionNames, renditionName))
                 .collect(Collectors.toList());
     }
-
-
-    /*
-    private void zip(final SlingHttpServletRequest request,
-                     final SlingHttpServletResponse response,
-                     final List<String> assetPaths,
-                     final List<String> renditionNames) throws IOException {
-
-        final ResourceResolver resourceResolver = request.getResourceResolver();
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final ZipOutputStream zipOutputStream = new ZipOutputStream(baos);
-
-        long size = 0L;
-
-        for (final String assetPath : assetPaths) {
-            //    final Asset asset = DamUtil.resolveToAsset(resourceResolver.getResource(path));
-            final Resource assetResource = resourceResolver.getResource(assetPath);
-
-            if (assetResource == null) {
-                log.warn("Could not create an AssetModel from [ {} ]", assetPath);
-                continue;
-            }
-
-            final AssetModel asset = modelFactory.getModelFromWrappedRequest(request, assetResource, AssetModel.class);
-
-            for (final String renditionName : renditionNames) {
-
-                AssetRenditionDownloadResponse assetRenditionDownloadResponse = null;
-                ByteArrayOutputStream assetRenditionOutputStream = null;
-
-                try {
-                    assetRenditionDownloadResponse = getAssetRendition(request, response, asset, renditionName);
-
-                    if (assetRenditionDownloadResponse.getStatusCode() > 302) {
-                        log.warn("Response of [ {} ] from dispatched response is unacceptable. Skip adding [ {} ] to zip.",
-                                assetRenditionDownloadResponse.getStatusCode(), asset.getPath());
-                    }  else if (assetRenditionDownloadResponse.isRedirect()) {
-                        assetRenditionOutputStream = fetchExternalRendition(assetRenditionDownloadResponse.getRedirect());
-                    } else {
-                        assetRenditionOutputStream = assetRenditionDownloadResponse.getByteArrayOutputStream();
-                    }
-
-                    size += assetRenditionOutputStream.size();
-                    if (size > cfg.max_size() * BYTES_IN_MB) {
-                        throw new ServletException("Selected assets exceed maximum allows size");
-                    }
-
-                    addAssetRenditionAsZipEntry(getZipEntryName(asset, renditionName, assetRenditionDownloadResponse.getContentType()),
-                            zipOutputStream,
-                            assetRenditionOutputStream);
-                } catch (ServletException e) {
-                    log.error("Unable to add rendition [ {} ] for asset [ {} ] to the zip", renditionName, asset.getPath(), e);
-                } finally {
-                    if (baos != null) {
-                        baos.close();
-                    }
-                }
-            } // for renditionNames
-        } // for assetPaths
-
-
-        try {
-            zipOutputStream.close();
-            response.setContentLength(baos.size());
-            IOUtils.write(baos.toByteArray(), response.getOutputStream());
-            response.flushBuffer();
-        } catch (
-                Exception e) {
-            log.error("what thee heck", e);
-        } finally {
-            baos.close();
-        }
-    }
-    */
-
 }

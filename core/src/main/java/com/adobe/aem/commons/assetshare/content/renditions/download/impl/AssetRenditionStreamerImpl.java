@@ -51,7 +51,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 
-
 @Component
 @Designate(ocd = AssetRenditionStreamerImpl.Cfg.class)
 public class AssetRenditionStreamerImpl implements AssetRenditionStreamer {
@@ -135,6 +134,7 @@ public class AssetRenditionStreamerImpl implements AssetRenditionStreamer {
         try (CloseableHttpClient httpClient = getHttpClient(cfg.http_fetch_timeout())) {
             final CloseableHttpResponse response = httpClient.execute(get);
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
             IOUtils.copy(response.getEntity().getContent(), baos);
             response.close();
 
@@ -181,9 +181,9 @@ public class AssetRenditionStreamerImpl implements AssetRenditionStreamer {
     @ObjectClassDefinition(name = "Asset Share Commons - Asset Rendition Streamer")
     public @interface Cfg {
         @AttributeDefinition(
-                name = "HTTP Fetch Timeout",
-                description = "In milliseconds"
+                name = "HTTP (External) Fetch Timeout",
+                description = "HTTP Request timeout for external dispatching. Value is in milliseconds. Default is 600000 ms, or 10 minutes."
         )
-        int http_fetch_timeout() default 10000;
+        int http_fetch_timeout() default 600000;
     }
 }

@@ -175,7 +175,7 @@ public class AssetRenditionsZipperImpl implements AssetRenditionsPacker {
         this.cfg = cfg;
     }
 
-    @ObjectClassDefinition(name = "Asset Share Commons - Asset Rendition Zipper")
+    @ObjectClassDefinition(name = "Asset Share Commons - Asset Renditions Zipper")
     public @interface Cfg {
         @AttributeDefinition
         String webconsole_configurationFactory_nameHint() default "{zip_filename_expression} with max size in MB {max.size}";
@@ -194,7 +194,7 @@ public class AssetRenditionsZipperImpl implements AssetRenditionsPacker {
 
         @AttributeDefinition(
                 name = "Rendition Filename Expression",
-                description = "The expression that defines how the filename for each entry in the zip file is constructed. "
+                description = "The expression that defines how the filename for each entry in the zip file is constructed."
         )
         String rendition_filename_expression() default "${asset.name}__${rendition.name}.${rendition.extension}";
     }

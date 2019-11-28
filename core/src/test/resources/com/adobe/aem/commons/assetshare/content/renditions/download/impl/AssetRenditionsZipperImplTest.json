@@ -10,7 +10,11 @@
       "jcr:content": {
         "jcr:primaryType": "nt:unstructured",
         "metadata": {
+          "jcr:primaryType": "nt:unstructured",
           "dc:title": "Test Asset"
+        },
+        "renditions": {
+          "jcr:primaryType": "nt:folder"
         }
       }
     }
