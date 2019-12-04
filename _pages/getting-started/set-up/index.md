@@ -24,20 +24,35 @@ Ensure AEM Dispatcher allows the following URL paths/patterns:
 
 * `HTTP GET /libs/granite/security/currentuser.json?nocache=<time-in-ms>` on page loads to retrieve the current user. This URI must be allowed via AEM Dispatcher.  
 * `HTTP GET /home/users/.../<user>.infinity.json` on page loads to retrieve the current user. This URI must be allowed via AEM Dispatcher. This is a standard request made by the OOTB ContextHub Profile store.
+* `HTTP GET /content/dam/...<asset>.renditions/...` which is used to serve asset renditions via the Asset Renditions framework.
+* Enable caching of the following HTTP Response Headers
+   * `Content-Disposition`
+   * `Content-Type`
+   * `Content-Length`
 
 Example `dispatcher.any` rules
 
 ```
- /filter
-      {
-        ...
-        
-        # ContextHub Calls:
-         /0101 { /type "allow" /glob "GET /home/users/*/profile/*" }
+/filter {
+  ...
 
-        # Current User:
-        /0102 { /type "allow" /url "/libs/granite/security/currentuser.json" }
-      }
+  # ContextHub Calls:
+   /0101 { /type "allow" /glob "GET /home/users/*/profile/*" }
+
+  # Current User:
+  /0102 { /type "allow" /url "/libs/granite/security/currentuser.json" }
+
+  // Asset Renditions requests
+  /0103 { /type "allow" /method "GET" /path "/content/dam" /extension "renditions" }
+}
+
+/headers {
+    ...
+    "Content-Disposition"
+    "Content-Type"
+    "Content-Length"
+    ...
+}
 ```
 
 ## Production Setup
