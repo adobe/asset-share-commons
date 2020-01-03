@@ -30,7 +30,7 @@
 
 <form data-sly-test="${!legacyMode}"
           method="post"
-          action="/content/dam.assetdownload.zip/${download.zipFileName}.zip"
+          action="${resource.path @ selectors = 'download-asset-renditions', extension = 'zip'}"
           target="download"
           data-asset-share-id="download-modal"
           class="ui modal cmp-modal-download--wrapper cmp-modal">
@@ -64,21 +64,21 @@
 
             <sly data-sly-list.assetRenditionsGroup="${download.assetRenditionsGroups}">
 
-            <div class="field">
+            <div class="field cmp-modal-download__asset-rendition-group">
 
-                <h4 class="ui header">${assetRenditionsGroup.title}</h4>
+                <h4 class="ui header cmp-modal-download__asset-rendition-group-title">${assetRenditionsGroup.title}</h4>
 
                 <sly data-sly-test="${properties.selectAllLabel && assetRenditionsGroup.items.size > 1}">
-                    <div class="ui checkbox">
-                        <input type="checkbox" onchange="$(this).closest('.field').find('input[type=\'checkbox\']').prop('checked', $(this).prop('checked'));">
+                    <div class="ui checkbox cmp-modal-download__asset-rendition-group-option">
+                        <input type="checkbox" onchange="$(this).closest('.cmp-modal-download__asset-rendition-group').find('input[type=\'checkbox\']').prop('checked', $(this).prop('checked'));">
                         <label>${properties.selectAllLabel}</label>
                     </div>
                     <br/>
                 </sly>
 
                 <sly data-sly-list.assetRendition="${assetRenditionsGroup.items}">
-                    <div class="ui checkbox">
-                        <input type="checkbox" class="hidden" name="???" value="${assetRendition.value}">
+                    <div class="ui checkbox cmp-modal-download__asset-rendition-group-option">
+                        <input type="checkbox" class="hidden" name="renditionName" value="${assetRendition.value}" checked="${assetRendition.selected}">
                         <label>${assetRendition.text}</label>
                     </div>
                     <br/>

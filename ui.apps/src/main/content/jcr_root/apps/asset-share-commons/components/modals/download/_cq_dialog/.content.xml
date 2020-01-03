@@ -95,12 +95,12 @@
                                     sling:resourceType="granite/ui/components/coral/foundation/container">
                                 <items jcr:primaryType="nt:unstructured">
 
-                                    <renditions-group
+                                    <renditions-groups
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
                                             composite="{Boolean}true"
-                                            fieldDescription="Download-able Renditions Groups"
-                                            fieldLabel="Download-able Renditions Groups"
+                                            fieldDescription="The list of Asset Renditions Groups that will be exposed as downloadable options via this Download modal."
+                                            fieldLabel="Downloadable Renditions Groups"
                                             renderReadOnly="{Boolean}true">
 
                                         <field
@@ -140,6 +140,14 @@
                                                                             jcr:primaryType="nt:unstructured"
                                                                             sling:resourceType="granite/ui/components/coral/foundation/container">
                                                                         <items jcr:primaryType="nt:unstructured">
+                                                                            <selected
+                                                                                    granite:class="cmp-form-option-item-active"
+                                                                                    jcr:primaryType="nt:unstructured"
+                                                                                    sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                                                    name="./selected"
+                                                                                    text="Selected"
+                                                                                    uncheckedValue="false"
+                                                                                    value="{Boolean}true"/>
                                                                             <text
                                                                                     jcr:primaryType="nt:unstructured"
                                                                                     sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
@@ -167,13 +175,14 @@
                                                 </option>
                                             </items>
                                         </field>
-                                    </renditions-group>
+                                    </renditions-groups>
 
                                     <select-all-label
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
                                             fieldLabel="Select All Label"
-                                            emptyText="Select All"
+                                            fieldDescription="Enter a label to create a checkbox option for toggling the selection of all options in a Rendition Group."
+                                            emptyText="Leave blank to hide Select All control"
                                             name="./selectAllLabel"/>
 
                                     <exclude-original-assets
@@ -184,6 +193,16 @@
                                             name="./excludeOriginalAssets"
                                             value="{Boolean}true"
                                             uncheckedValue="{Boolean}false"/>
+
+                                    <download-file-name
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Assets"
+                                            fieldDescription="The name of the file that a user will download."
+                                            fieldLabel="File Name"
+                                            name="./fileName"
+                                            required="{Boolean}false"/>
+
                                     <zip-file-name
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
@@ -192,6 +211,7 @@
                                             fieldLabel="ZIP File Name"
                                             name="./zipFileName"
                                             required="{Boolean}true"/>
+
                                     <max-content-size-message
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
@@ -199,6 +219,23 @@
                                             fieldDescription="Message displayed if the potential size of assets exceeds the max content size limit set by AEM's AssetDownloadServlet."
                                             fieldLabel="Max Content Size Message"
                                             name="./maxContentSizeMessage"/>
+
+                                    <no-content-file-name
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            fieldLabel="No Content File Name"
+                                            fieldDescription="Name of the file to add to the downloaded zip when no downloadable renditions can be obtained. This file will contain the text authored in the 'No Content Message' field."
+                                            emptyText=""
+                                            name="./noContentFileName"/>
+
+                                    <no-content-message
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            fieldLabel="No Content Message"
+                                            fieldDescription="The message to write to the 'No Content File Name' file in the zip, when no downloadable renditions can be obtained."
+                                            emptyText=""
+                                            name="./noContentMessage"/>
+
                                     <legacy-mode
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/switch"
@@ -213,8 +250,8 @@
                                             deleteHint="{Boolean}true">
                                         <granite:data
                                                 jcr:primaryType="nt:unstructured"
-                                                modern-field-names="./asset-rendition-groups/items/renditionGroupsTitle,./selectAllLabel"
-                                                legacy-field-names="./excludeOriginalAssets"/>
+                                                modern-field-names="./asset-renditions-groups/items,./asset-renditions-groups/items/renditionGroupsTitle,./selectAllLabel,./fileName"
+                                                legacy-field-names="./excludeOriginalAssets,./zipFileName"/>
                                     </legacy-mode>
                                 </items>
                             </column>

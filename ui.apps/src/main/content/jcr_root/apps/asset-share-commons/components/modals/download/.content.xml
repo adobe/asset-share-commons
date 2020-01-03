@@ -22,5 +22,5 @@
     jcr:description="Allows a user to download assets with options for renditions."
     jcr:primaryType="cq:Component"
     jcr:title="Download Modal"
-    sling:resourceSuperType="asset-share-commons/actions/share"
+    sling:resourceSuperType="asset-share-commons/actions/download"
     componentGroup="Asset Share Commons - Modals"/>

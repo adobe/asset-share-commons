@@ -152,7 +152,6 @@ public class AssetRenditionStreamerImpl implements AssetRenditionStreamer {
         return clientBuilderFactory.newBuilder().setDefaultRequestConfig(requestConfig).build();
     }
 
-
     public class StreamImpl implements AssetRenditionStream {
         private final ByteArrayOutputStream outputStream;
         private final String contentType;

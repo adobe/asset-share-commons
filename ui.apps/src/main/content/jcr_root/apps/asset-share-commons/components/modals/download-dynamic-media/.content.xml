@@ -23,4 +23,4 @@
     jcr:primaryType="cq:Component"
     jcr:title="Download Modal (Dynamic Media)"
     sling:resourceSuperType="asset-share-commons/components/modals/download"
-    componentGroup="Asset Share Commons - Modals"/>
+    componentGroup=".deprecated"/>

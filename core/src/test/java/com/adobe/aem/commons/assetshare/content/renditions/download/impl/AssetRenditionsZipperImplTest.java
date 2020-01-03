@@ -1,20 +1,16 @@
 package com.adobe.aem.commons.assetshare.content.renditions.download.impl;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
-import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionStreamer;
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsException;
-import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsPacker;
+import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsDownloadOrchestrator;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
 import com.adobe.aem.commons.assetshare.testing.MockAssetModels;
-import com.adobe.aem.commons.assetshare.util.DataSourceBuilder;
-import com.adobe.aem.commons.assetshare.util.impl.DataSourceBuilderImpl;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
-import org.apache.commons.io.IOUtils;
 import org.apache.http.osgi.services.HttpClientBuilderFactory;
+import org.apache.sling.api.wrappers.ValueMapDecorator;
 import org.apache.sling.models.factory.ModelFactory;
 import org.junit.Before;
 import org.junit.Rule;
@@ -24,10 +20,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.osgi.framework.Constants;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -72,25 +66,37 @@ public class AssetRenditionsZipperImplTest {
 
     @Test
     public void accepts() {
-        ctx.registerService(AssetRenditionsPacker.class, new AssetRenditionsZipperImpl());
+        ctx.registerService(AssetRenditionsDownloadOrchestrator.class, new AssetRenditionsZipperImpl());
 
-        AssetRenditionsZipperImpl zipper = (AssetRenditionsZipperImpl) ctx.getService(AssetRenditionsPacker.class);
+        AssetRenditionsZipperImpl zipper = (AssetRenditionsZipperImpl) ctx.getService(AssetRenditionsDownloadOrchestrator.class);
 
-        ctx.request().setQueryString(AssetRenditionsPacker.REQUEST_PARAMETER_NAME + "=" + AssetRenditionsZipperImpl.NAME);
+        ctx.request().setQueryString(AssetRenditionsDownloadOrchestrator.REQUEST_PARAMETER_NAME + "=" + AssetRenditionsZipperImpl.NAME);
 
         assertTrue(zipper.accepts(ctx.request(), Collections.emptyList(), Collections.emptyList()));
     }
 
     @Test
-    public void getFileName() {
+    public void getFileName_FromResource() {
+        final String expected = "My Assets.zip";
+
+        ctx.registerInjectActivateService(new AssetRenditionsZipperImpl(),
+                "file.name", "OSGi value");
+
+        AssetRenditionsZipperImpl zipper = (AssetRenditionsZipperImpl) ctx.getService(AssetRenditionsDownloadOrchestrator.class);
+
+        assertEquals(expected, zipper.getFileName(new ValueMapDecorator(ImmutableMap.of("fileName", "My Assets"))));
+    }
+
+    @Test
+    public void getFileName_FromOSGiConfig() {
         final String expected = "Test Assets.zip";
 
         ctx.registerInjectActivateService(new AssetRenditionsZipperImpl(),
                 "file.name", expected);
 
-        AssetRenditionsZipperImpl zipper = (AssetRenditionsZipperImpl) ctx.getService(AssetRenditionsPacker.class);
+        AssetRenditionsZipperImpl zipper = (AssetRenditionsZipperImpl) ctx.getService(AssetRenditionsDownloadOrchestrator.class);
 
-        assertEquals(expected, zipper.getFileName());
+        assertEquals(expected, zipper.getFileName(new ValueMapDecorator(Collections.emptyMap())));
     }
 
     @Test
@@ -99,9 +105,9 @@ public class AssetRenditionsZipperImplTest {
 
         ctx.registerInjectActivateService(new AssetRenditionsZipperImpl());
 
-        AssetRenditionsZipperImpl zipper = (AssetRenditionsZipperImpl) ctx.getService(AssetRenditionsPacker.class);
+        AssetRenditionsZipperImpl zipper = (AssetRenditionsZipperImpl) ctx.getService(AssetRenditionsDownloadOrchestrator.class);
 
-        assertEquals(expected, zipper.getFileName());
+        assertEquals(expected, zipper.getFileName(new ValueMapDecorator(Collections.emptyMap())));
     }
 
     @Test
@@ -111,7 +117,7 @@ public class AssetRenditionsZipperImplTest {
         ctx.registerInjectActivateService(new AssetRenditionsZipperImpl(),
                 "max.size", 10000);
 
-        AssetRenditionsZipperImpl zipper = (AssetRenditionsZipperImpl) ctx.getService(AssetRenditionsPacker.class);
+        AssetRenditionsZipperImpl zipper = (AssetRenditionsZipperImpl) ctx.getService(AssetRenditionsDownloadOrchestrator.class);
 
         zipper.checkForMaxSize(200);
         assertTrue( "Exception should not be throw", true);
@@ -124,7 +130,7 @@ public class AssetRenditionsZipperImplTest {
         ctx.registerInjectActivateService(new AssetRenditionsZipperImpl(),
                 "max.size", 10000);
 
-        AssetRenditionsZipperImpl zipper = (AssetRenditionsZipperImpl) ctx.getService(AssetRenditionsPacker.class);
+        AssetRenditionsZipperImpl zipper = (AssetRenditionsZipperImpl) ctx.getService(AssetRenditionsDownloadOrchestrator.class);
 
         zipper.checkForMaxSize((10000 * 1024) + 100);
         assertTrue( "Exception should not be throw", true);
@@ -138,11 +144,31 @@ public class AssetRenditionsZipperImplTest {
                 "rendition.filename.expression",
                 AssetRenditionsZipperImpl.VAR_ASSET_NAME + "__" +  AssetRenditionsZipperImpl.VAR_RENDITION_NAME + "." + AssetRenditionsZipperImpl.VAR_ASSET_EXTENSION );
 
-        AssetRenditionsZipperImpl zipper = (AssetRenditionsZipperImpl) ctx.getService(AssetRenditionsPacker.class);
+        AssetRenditionsZipperImpl zipper = (AssetRenditionsZipperImpl) ctx.getService(AssetRenditionsDownloadOrchestrator.class);
 
         AssetModel asset = modelFactory.getModelFromWrappedRequest(ctx.request(), ctx.resourceResolver().getResource("/content/dam/test.png"), AssetModel.class);
 
-        final String actual = zipper.getZipEntryName(asset, "my-rendition", "image/png");
+        final String actual = zipper.getZipEntryName("", asset, "my-rendition", "image/png", new HashSet<>());
+
+        assertEquals( expected, actual);
+    }
+
+    @Test
+    public void getZipEntryName_GenerateUniqueZipFileNameEntry() {
+        final String expected = "1-test__my-rendition.png";
+
+        final Set<String> zipEntryFileNames = new HashSet<>();
+        zipEntryFileNames.add("test__my-rendition.png");
+
+        ctx.registerInjectActivateService(new AssetRenditionsZipperImpl(),
+                "rendition.filename.expression",
+                AssetRenditionsZipperImpl.VAR_ASSET_NAME + "__" +  AssetRenditionsZipperImpl.VAR_RENDITION_NAME + "." + AssetRenditionsZipperImpl.VAR_ASSET_EXTENSION );
+
+        AssetRenditionsZipperImpl zipper = (AssetRenditionsZipperImpl) ctx.getService(AssetRenditionsDownloadOrchestrator.class);
+
+        AssetModel asset = modelFactory.getModelFromWrappedRequest(ctx.request(), ctx.resourceResolver().getResource("/content/dam/test.png"), AssetModel.class);
+
+        final String actual = zipper.getZipEntryName("", asset, "my-rendition", "image/png", zipEntryFileNames);
 
         assertEquals( expected, actual);
     }
@@ -150,11 +176,13 @@ public class AssetRenditionsZipperImplTest {
     @Test
     public void pack() throws IOException {
         ctx.registerInjectActivateService(new AssetRenditionsZipperImpl());
-        AssetRenditionsZipperImpl zipper = (AssetRenditionsZipperImpl) ctx.getService(AssetRenditionsPacker.class);
+        AssetRenditionsZipperImpl zipper = (AssetRenditionsZipperImpl) ctx.getService(AssetRenditionsDownloadOrchestrator.class);
+
+        ctx.currentResource("/content/default");
 
         AssetModel asset = modelFactory.getModelFromWrappedRequest(ctx.request(), ctx.resourceResolver().getResource("/content/dam/test.png"), AssetModel.class);
 
-        zipper.pack(ctx.request(), ctx.response(), Arrays.asList(asset), Arrays.asList("test"));
+        zipper.execute(ctx.request(), ctx.response(), Arrays.asList(asset), Arrays.asList("test"));
 
         assertEquals("application/zip", ctx.response().getContentType());
         assertEquals(288286,  ctx.response().getOutput().length);

@@ -28,16 +28,9 @@ import java.io.IOException;
 import java.util.List;
 
 @ProviderType
-public interface AssetRenditionsPacker {
+public interface AssetRenditionsDownloadOrchestrator {
 
-    String REQUEST_PARAMETER_NAME = "asset-rendition-packer";
-
-    /**
-     * This is typically used to define the file_name that collects the packed asset renditions.
-     *
-     * @return the suggested file_name that contains the packed asset renditions.
-     */
-    String getFileName();
+    String REQUEST_PARAMETER_NAME = "asset-renditions-download-orchestrator";
 
     /**
      * @param request the request
@@ -47,7 +40,7 @@ public interface AssetRenditionsPacker {
      * @throws IOException when the binary data cannot be streamed out
      * @throws AssetRenditionsException when an error occurs
      */
-    void pack(SlingHttpServletRequest request, SlingHttpServletResponse response, List<AssetModel> assets, List<String> renditionNames) throws IOException, AssetRenditionsException;
+    void execute(SlingHttpServletRequest request, SlingHttpServletResponse response, List<AssetModel> assets, List<String> renditionNames) throws IOException, AssetRenditionsException;
 
     /**
      * @param request the request

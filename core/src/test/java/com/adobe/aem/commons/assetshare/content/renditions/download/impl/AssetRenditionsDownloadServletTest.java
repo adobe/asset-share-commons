@@ -20,12 +20,13 @@
 package com.adobe.aem.commons.assetshare.content.renditions.download.impl;
 
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
-import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsPacker;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
+import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
 import com.adobe.aem.commons.assetshare.testing.MockAssetModels;
-import com.adobe.aem.commons.assetshare.util.ServletHelper;
 import com.adobe.aem.commons.assetshare.util.impl.ServletHelperImpl;
+import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
+import org.apache.http.osgi.services.HttpClientBuilderFactory;
 import org.apache.sling.models.factory.ModelFactory;
 import org.junit.Before;
 import org.junit.Rule;
@@ -33,8 +34,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.osgi.framework.Constants;
 
 import javax.servlet.Servlet;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -46,19 +51,37 @@ public class AssetRenditionsDownloadServletTest {
     public final AemContext ctx = new AemContext();
 
     @Mock
+    HttpClientBuilderFactory httpClientBuilderFactory;
+
+    @Mock
     ModelFactory modelFactory;
 
     @Before
     public void setUp() {
         ctx.load().json(getClass().getResourceAsStream("AssetRenditionsDownloadServletTest.json"), "/content");
+        ctx.load().binaryFile(getClass().getResourceAsStream("test.original.png"), "/content/dam/test.png/jcr:content/renditions/original", "image/png");
 
-        MockAssetModels.mockModelFactory(ctx, modelFactory, "/content/dam/test-1.png");
+        MockAssetModels.mockModelFactory(ctx, modelFactory, "/content/dam/test.png");
 
-        ctx.registerService(AssetRenditionsPacker.class, new AssetRenditionsZipperImpl());
+        ctx.registerService(HttpClientBuilderFactory.class, httpClientBuilderFactory);
 
         ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
 
-        ctx.registerService(ServletHelper.class, new ServletHelperImpl());
+        ctx.registerInjectActivateService(new AssetRenditionStreamerImpl());
+
+        ctx.registerInjectActivateService(new AssetRenditionsZipperImpl());
+
+        ctx.registerInjectActivateService(new ServletHelperImpl());
+
+        ctx.registerInjectActivateService(
+                new StaticRenditionDispatcherImpl(),
+                ImmutableMap.<String, Object>builder().
+                        put(Constants.SERVICE_RANKING, 0).
+                        put("label", "Test AssetRenditionDispatcher").
+                        put("name", "test").
+                        put ("types", new String[]{"image", "video"}).
+                        put("rendition.mappings", new String[]{ "test=original" }).
+                        build());
 
         ctx.registerService(ModelFactory.class, modelFactory, org.osgi.framework.Constants.SERVICE_RANKING,
                 Integer.MAX_VALUE);
@@ -70,12 +93,12 @@ public class AssetRenditionsDownloadServletTest {
 
         AssetRenditionsDownloadServlet servlet = (AssetRenditionsDownloadServlet) ctx.getService(Servlet.class);
 
-        ctx.request().setQueryString("path=/content/dam/test-1.png&path=/content/dam/test-2.png&path=/content/dam/test-3.png");
+        ctx.request().setQueryString("path=/content/dam/test.png&path=/content/dam/test-2.png&path=/content/dam/test-3.png");
 
         List<com.adobe.aem.commons.assetshare.content.AssetModel> actual = servlet.getAssets(ctx.request());
 
         assertEquals(1, actual.size());
-        assertEquals("/content/dam/test-1.png", actual.get(0).getPath());
+        assertEquals("/content/dam/test.png", actual.get(0).getPath());
     }
 
     @Test
@@ -89,5 +112,62 @@ public class AssetRenditionsDownloadServletTest {
         List<String> actual = servlet.getRenditionNames(ctx.request());
         assertEquals(1, actual.size());
         assertEquals("one", actual.get(0));
+    }
+
+    @Test
+    public void doPost() throws ServletException, IOException {
+        ctx.registerInjectActivateService(new AssetRenditionsDownloadServlet());
+
+        AssetRenditionsDownloadServlet servlet = (AssetRenditionsDownloadServlet) ctx.getService(Servlet.class);
+
+        ctx.currentResource("/content/download-servlet");
+        ctx.request().setMethod("POST");
+        ctx.requestPathInfo().setResourcePath("/content/download-servlet");
+        ctx.requestPathInfo().setSelectorString("asset-renditions-download");
+        ctx.requestPathInfo().setExtension("zip");
+        ctx.request().setQueryString("path=/content/dam/test.png&renditionName=test");
+
+        servlet.service(ctx.request(), ctx.response());
+
+        assertEquals("application/zip", ctx.response().getContentType());
+        assertEquals(288286,  ctx.response().getOutput().length);
+    }
+
+    @Test
+    public void doPost_EmptyRenditionName() throws ServletException, IOException {
+        ctx.registerInjectActivateService(new AssetRenditionsDownloadServlet());
+
+        AssetRenditionsDownloadServlet servlet = (AssetRenditionsDownloadServlet) ctx.getService(Servlet.class);
+
+        ctx.currentResource("/content/download-servlet");
+        ctx.request().setMethod("POST");
+        ctx.requestPathInfo().setResourcePath("/content/download-servlet");
+        ctx.requestPathInfo().setSelectorString("asset-renditions-download");
+        ctx.requestPathInfo().setExtension("zip");
+        ctx.request().setQueryString("path=/content/dam/test.png");
+
+        servlet.service(ctx.request(), ctx.response());
+
+        assertEquals("application/zip", ctx.response().getContentType());
+        assertEquals(253,  ctx.response().getOutput().length); // Size of zip w/ default no content message
+    }
+
+    @Test
+    public void doPost_InvalidAssetPath() throws ServletException, IOException {
+        ctx.registerInjectActivateService(new AssetRenditionsDownloadServlet());
+
+        AssetRenditionsDownloadServlet servlet = (AssetRenditionsDownloadServlet) ctx.getService(Servlet.class);
+
+        ctx.currentResource("/content/download-servlet");
+        ctx.request().setMethod("POST");
+        ctx.requestPathInfo().setResourcePath("/content/download-servlet");
+        ctx.requestPathInfo().setSelectorString("asset-renditions-download");
+        ctx.requestPathInfo().setExtension("zip");
+        ctx.request().setQueryString("path=/content/dam/fake.png&renditionName=test");
+
+        servlet.service(ctx.request(), ctx.response());
+
+        assertEquals("application/zip", ctx.response().getContentType());
+        assertEquals(253,  ctx.response().getOutput().length); // Size of zip w/ default no content message
     }
 }

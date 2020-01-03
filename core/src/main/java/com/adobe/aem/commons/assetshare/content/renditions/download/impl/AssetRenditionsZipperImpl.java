@@ -21,12 +21,13 @@ package com.adobe.aem.commons.assetshare.content.renditions.download.impl;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsException;
-import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsPacker;
+import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsDownloadOrchestrator;
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionStreamer;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
+import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.commons.mime.MimeTypeService;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -39,18 +40,18 @@ import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 @Component
 @Designate(ocd = AssetRenditionsZipperImpl.Cfg.class)
-public class AssetRenditionsZipperImpl implements AssetRenditionsPacker {
+public class AssetRenditionsZipperImpl implements AssetRenditionsDownloadOrchestrator {
     private static final Logger log = LoggerFactory.getLogger(AssetRenditionsZipperImpl.class);
 
-    public static final String NAME = "asset-share-commons__zip-packer";
+    private static final String DEFAULT_FILE_ATTACHMENT_NAME = "Assets.zip";
+
+    public static final String NAME = "asset-share-commons__download-orchestrator--zip-packer";
 
     private static final long BYTES_IN_MB = 1024;
 
@@ -61,6 +62,13 @@ public class AssetRenditionsZipperImpl implements AssetRenditionsPacker {
     public static final String VAR_ASSET_FILE_NAME = "${asset.filename}";
     public static final String VAR_ASSET_TITLE = "${asset.title}";
 
+    private static final String PN_NO_CONTENT_FILE_NAME = "noContentFileName";
+    private static final String PN_NO_CONTENT_MESSAGE = "noContentMessage";
+    private static final String PN_FILE_NAME = "fileName";
+    public static final String ZIP_EXTENSION = ".zip";
+    public static final String DEFAULT_NO_CONTENT_FILE_NAME = "NO DOWNLOADABLE RENDITIONS.txt";
+    public static final String DEFAULT_NO_CONTENT_MESSAGE = "Sorry, we could not find any downloadable renditions for the selected assets / renditions combinations.";
+
     @Reference
     private AssetRenditionStreamer assetRenditionStreamer;
 
@@ -70,15 +78,14 @@ public class AssetRenditionsZipperImpl implements AssetRenditionsPacker {
     private Cfg cfg;
 
     @Override
-    public String getFileName() {
-        return StringUtils.defaultString(cfg.file_name(), "Assets.zip");
-    }
+    public void execute(final SlingHttpServletRequest request,
+                        final SlingHttpServletResponse response,
+                        final List<AssetModel> assets,
+                        final List<String> renditionNames) throws IOException {
 
-    @Override
-    public void pack(final SlingHttpServletRequest request,
-                                      final SlingHttpServletResponse response,
-                                      final List<AssetModel> assets,
-                                      final List<String> renditionNames) throws IOException {
+        final String filename = StringUtils.defaultIfBlank(getFileName(request.getResource().getValueMap()), DEFAULT_FILE_ATTACHMENT_NAME);
+
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
         response.setContentType("application/zip");
 
         final ZipOutputStream zipOutputStream = new ZipOutputStream(response.getOutputStream());
@@ -87,27 +94,36 @@ public class AssetRenditionsZipperImpl implements AssetRenditionsPacker {
 
         long size = 0L;
 
+        final Set<String> zipEntryFileNames = new HashSet<>();
+        final Set<String> zipEntryFolderNames = new HashSet<>();
+
         for (final AssetModel asset : assets) {
-            String folderName = "";
+            String folderName = null;
 
             if (groupAssetRenditionsByFolder) {
-                folderName = asset.getName() + "/";
-                addFolderAsZipEntry(folderName, zipOutputStream);
+                folderName = generateUniqueZipEntry(asset.getName(), zipEntryFolderNames);
             }
 
             for (final String renditionName : renditionNames) {
-
                 AssetRenditionStreamer.AssetRenditionStream stream = null;
+
                 try {
                     stream = assetRenditionStreamer.getAssetRendition(request, response, asset, renditionName);
 
-                    size += stream.getOutputStream().size();
+                    if (stream.getOutputStream().size() > 0) {
+                        size += stream.getOutputStream().size();
 
-                    checkForMaxSize(size);
+                        checkForMaxSize(size);
 
-                    final String zipEntryName = getZipEntryName(asset, renditionName, stream.getContentType());
-                    addAssetRenditionAsZipEntry(folderName, zipEntryName, zipOutputStream, stream.getOutputStream());
+                        if (folderName != null && !zipEntryFolderNames.contains(folderName)) {
+                            addFolderAsZipEntry(folderName + "/", zipOutputStream);
+                            zipEntryFolderNames.add(folderName);
+                        }
 
+                        final String zipEntryName = getZipEntryName(folderName, asset, renditionName, stream.getContentType(), zipEntryFileNames);
+
+                        addAssetRenditionAsZipEntry(folderName, zipEntryName, zipOutputStream, stream.getOutputStream());
+                    }
                 } catch (AssetRenditionsException ex) {
                     log.error("Unable to obtain the AssetRendition as an output stream. Skipping...", ex);
                     continue;
@@ -119,7 +135,23 @@ public class AssetRenditionsZipperImpl implements AssetRenditionsPacker {
             }
         }
 
+        if (size == 0) {
+            final String fileName = request.getResource().getValueMap().get(PN_NO_CONTENT_FILE_NAME, String.class);
+            String message = request.getResource().getValueMap().get(PN_NO_CONTENT_MESSAGE, String.class);
+            addNoContentFile(fileName, message, zipOutputStream);
+        }
+
         zipOutputStream.close();
+    }
+
+    private void addNoContentFile(String fileName, String message, final ZipOutputStream zipOutputStream) throws IOException {
+        fileName = StringUtils.defaultString(fileName, DEFAULT_NO_CONTENT_FILE_NAME);
+        message = StringUtils.defaultString(message, DEFAULT_NO_CONTENT_MESSAGE);
+
+        final ZipEntry zipEntry = new ZipEntry(fileName);
+        zipOutputStream.putNextEntry(zipEntry);
+        IOUtils.write(message, zipOutputStream);
+        zipOutputStream.closeEntry();
     }
 
     @Override
@@ -133,7 +165,16 @@ public class AssetRenditionsZipperImpl implements AssetRenditionsPacker {
         }
     }
 
-    protected String getZipEntryName(final AssetModel asset, final String renditionName, final String responseContentType) {
+    protected String getFileName(final ValueMap properties) {
+        String fileName = properties.get(PN_FILE_NAME, StringUtils.defaultString(cfg.file_name(), DEFAULT_FILE_ATTACHMENT_NAME));
+
+        if (!StringUtils.endsWith(fileName, ZIP_EXTENSION)) {
+            fileName += ZIP_EXTENSION;
+        }
+        return fileName;
+    }
+
+    protected String getZipEntryName(final String folderName, final AssetModel asset, final String renditionName, final String responseContentType, final Set<String> zipEntryFileNames) {
         final String extension = mimeTypeService.getExtension(responseContentType);
 
         final Map<String, String> variables = new HashMap<>();
@@ -145,11 +186,30 @@ public class AssetRenditionsZipperImpl implements AssetRenditionsPacker {
         variables.put(VAR_RENDITION_NAME, renditionName);
         variables.put(VAR_RENDITION_EXTENSION, extension);
 
-        return StringUtils.replaceEach(cfg.rendition_filename_expression(),
+        String zipEntryName = StringUtils.replaceEach(cfg.rendition_filename_expression(),
                 variables.keySet().toArray(new String[variables.keySet().size()]),
                 variables.values().toArray(new String[variables.values().size()]));
+
+        zipEntryName = generateUniqueZipEntry(zipEntryName, zipEntryFileNames);
+        if (folderName != null) {
+            zipEntryFileNames.add(folderName + "/" + zipEntryName);
+        } else {
+            zipEntryFileNames.add(zipEntryName);
+        }
+
+        return zipEntryName;
     }
 
+    private String generateUniqueZipEntry(final String zipEntryName, final Set<String> existingZipEntryNames ) {
+        String tmpZipEntryName = zipEntryName;
+        int count = 1;
+
+        while (existingZipEntryNames.contains(tmpZipEntryName)) {
+            tmpZipEntryName = count++ + "-" + zipEntryName;
+        }
+
+        return tmpZipEntryName;
+    }
 
     private void addFolderAsZipEntry(final String folderName,
                                              final ZipOutputStream zipOutputStream) throws IOException {
@@ -159,11 +219,14 @@ public class AssetRenditionsZipperImpl implements AssetRenditionsPacker {
     }
 
     private void addAssetRenditionAsZipEntry(final String prefix,
-                                             final String zipEntryName,
+                                             String zipEntryName,
                                              final ZipOutputStream zipOutputStream,
                                              final ByteArrayOutputStream assetRenditionOutputStream) throws IOException {
+        if (prefix != null) {
+            zipEntryName = prefix + "/" +  zipEntryName;
+        }
 
-        final ZipEntry zipEntry = new ZipEntry(prefix + zipEntryName);
+        final ZipEntry zipEntry = new ZipEntry(zipEntryName);
         zipOutputStream.putNextEntry(zipEntry);
         IOUtils.write(assetRenditionOutputStream.toByteArray(), zipOutputStream);
         zipOutputStream.closeEntry();
