@@ -22,22 +22,27 @@ package com.adobe.aem.commons.assetshare.components.actions.cart.impl;
 import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
 import com.adobe.aem.commons.assetshare.components.actions.cart.Cart;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.cq.export.json.ComponentExporter;
+import com.adobe.cq.export.json.ExporterConstants;
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {Cart.class},
+        adapters = {Cart.class, ComponentExporter.class},
         resourceType = {CartImpl.RESOURCE_TYPE}
 )
-public class CartImpl implements Cart {
+@Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
+public class CartImpl implements Cart, ComponentExporter {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/modals/cart";
 
     @Self
@@ -71,5 +76,11 @@ public class CartImpl implements Cart {
 
     public Collection<String> getPaths() {
         return paths;
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }

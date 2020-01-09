@@ -21,12 +21,14 @@ package com.adobe.aem.commons.assetshare.components.actions.dmdownload.impl;
 
 import com.adobe.aem.commons.assetshare.components.actions.dmdownload.DynamicMediaDownload;
 import com.adobe.aem.commons.assetshare.components.actions.download.impl.DownloadImpl;
+import com.adobe.cq.export.json.ComponentExporter;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.models.annotations.Default;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Optional;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.Collection;
@@ -36,7 +38,7 @@ import java.util.Collection;
         adapters = {DynamicMediaDownload.class},
         resourceType = {DynamicMediaDownloadImpl.RESOURCE_TYPE}
 )
-public class DynamicMediaDownloadImpl extends DownloadImpl implements DynamicMediaDownload {
+public class DynamicMediaDownloadImpl extends DownloadImpl implements DynamicMediaDownload, ComponentExporter {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/modals/download-dynamic-media";
 
     @ValueMapValue
@@ -51,5 +53,11 @@ public class DynamicMediaDownloadImpl extends DownloadImpl implements DynamicMed
 
     public final Collection<String> getImagePresets() {
         return Arrays.asList(imagePresets);
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }
