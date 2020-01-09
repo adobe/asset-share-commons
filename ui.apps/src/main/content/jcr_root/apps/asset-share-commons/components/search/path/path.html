@@ -36,10 +36,14 @@
 		</div>
   	</div>
 
-    <!--/* DROP-DOWN */-->
-    <div class="form-group ${predicate.type.value} ui form"
-         data-sly-test="${predicate.type.value == 'drop-down' || predicate.type.value == 'multi-drop-down'}"
-         data-sly-call="${optionsTemplate.dropdown @ predicate = predicate}"></div>
+	<!--/* DROP-DOWN */-->
+	<div class="ui form"
+		 data-sly-test="${predicate.type.value == 'drop-down' || predicate.type.value == 'multi-drop-down'}">
+		<div class="ui fluid styled accordion field">
+			<div class="${predicate.type.value}"
+				 data-sly-call="${optionsTemplate.dropdown @ predicate = predicate}"></div>
+		</div>
+	</div>
 
 </sly>
 <sly data-sly-call="${placeholderTemplate.placeholder @ isEmpty=!ready}"></sly>
