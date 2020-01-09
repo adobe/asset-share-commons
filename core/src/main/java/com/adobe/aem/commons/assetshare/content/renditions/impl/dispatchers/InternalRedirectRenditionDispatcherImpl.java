@@ -57,7 +57,7 @@ import static org.osgi.framework.Constants.SERVICE_RANKING;
         }
 )
 @Designate(
-        ocd = InternalRedirectReInternalRedirectRenditionDispatcherImplnditionDispatcherImpl.Cfg.class,
+        ocd = InternalRedirectRenditionDispatcherImpl.Cfg.class,
         factory = true
 )
 public class InternalRedirectRenditionDispatcherImpl extends AbstractRenditionDispatcherImpl implements AssetRenditionDispatcher {
@@ -115,23 +115,20 @@ public class InternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
             final PathInfo pathInfo = new PathInfo(request.getResourceResolver(), evaluatedExpression);
 
             // We have to manually clean up the pathInfo resourcePath due to issues with the PathInfo impl when /etc/map is in play
-            final String pathInfoResourcePath = cleanPathInfoRequestPath(pathInfo.getResourcePath());
+            final String resourcePath = Text.unescape(cleanPathInfoRequestPath(pathInfo.getResourcePath()));
 
-
-            log.debug("Serving internal redirect rendition [ {} ~= {}] for resolved rendition name [ {} ]",
+            log.debug("Serving internal redirect rendition [ {} ] for expression [ {} ] and resolved rendition name [ {} ]",
+                    resourcePath,
                     evaluatedExpression,
-                    pathInfo.getResourcePath() + pathInfo.getSelectorString() + pathInfo.getExtension() + pathInfo.getSuffix(),
                     parameters.getRenditionName());
 
             final RequestDispatcherOptions options = new RequestDispatcherOptions();
-            final String resourcePath = Text.unescape(pathInfo.getResourcePath());
 
             options.setReplaceSelectors(StringUtils.removeStart(pathInfo.getSelectorString(), "."));
             options.setReplaceSuffix(pathInfo.getSuffix());
 
             request.getRequestDispatcher(resourcePath, options)
                     .include(new ExtensionOverrideRequestWrapper(request, pathInfo.getExtension()), response);
-
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not serve asset rendition.");
         }
