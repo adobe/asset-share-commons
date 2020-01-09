@@ -56,7 +56,7 @@ jQuery((function($, ns, cart, semanticModal, downloadModal, licenseModal, shareM
         }
 
         function updateCartModal() {
-            $.get(CART_URL, serialize()).then(function (htmlResponse) {
+            $.post(CART_URL, serialize()).then(function (htmlResponse) {
                 ns.Elements.update(htmlResponse, WHEN_CART_UPDATED);
             });
         }
