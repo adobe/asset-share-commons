@@ -21,11 +21,15 @@
 AssetShare.FormData = function (formEl) {
     "use strict";
 
-    var form = [];
+    var form = [],
+        formId = 'asset-share-commons__form-id__1';
 
     if (formEl) {
-        form = $(formEl).serializeArray();
+        formId = formEl.attr('id');
     }
+
+    // Select everything using the form attribute manually for IE11 support
+    form = $('[form="' + formId + '"]').serializeArray();
 
     /* IE polyfills for findIndex() and find() */
 
