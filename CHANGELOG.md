@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0430: Fixes issue with default search result layout is incorrect when Statistics component is added above the search results component.
 - 0435: Fixes issue with Dropdown rendering of Search components: Property, Tag and Paths.
 - 0443: Fixed issue on Search Page authoring where page-breaking errors are thrown if a Search Results component has not been added yet (Sort, Filter Toggle and Statistics).
+- 0458: Fixed issue with Form Submissions in IE11
 - 0467: Fixed issue in removing asset in cart modal with large number of assets.
 
 ## [v1.8.0]

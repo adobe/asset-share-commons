@@ -22,7 +22,7 @@
      data-sly-use.togglesTemplate="templates/toggles.html"
      data-sly-test.hideLabels="${properties['hideLabels']}"></sly>
 
-<div data-sly-test.ready="${pagePredicate != null}"
+<div data-sly-test.ready="${pagePredicate}"
         class="ui basic segment">
     <div class="ui column grid"
          data-sly-test.showApplyFilterToggle="${!properties['hideApplyFilterToggle']}">
