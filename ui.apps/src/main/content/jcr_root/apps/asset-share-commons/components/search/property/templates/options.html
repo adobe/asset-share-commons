@@ -50,21 +50,27 @@
 
 <!--/* Dropdown Template - renders a dropdown */-->
 <template data-sly-template.dropdown="${ @ predicate}">
-    <select class="ui fluid dropdown"
-            name="${predicate.group}.${predicate.name}.${predicate.valuesKey}"
-			value="${predicate.intialValue}"
-			form="${predicate.formId}"
-			for="${predicate.id}"
-			data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}"
-			data-asset-share-id="${predicate.id}__fields"
-			data-asset-share-update-method="${predicate.componentUpdateMethod}">
-	<option value="">${predicate.title}</option>
-    	<sly data-sly-list.optionItem="${predicate.items}">
-    		<option value="${optionItem.value}"
-    		        disabled="${optionItem.disabled}"
-    		        selected="${optionItem.selected ? 'selected' : ''}">
-    		        ${optionItem.text}
-    		</option>
-    	</sly>
-    </select>
+	<div class="${predicate.isExpanded ? 'active' : ''} title right">
+		<i class="dropdown icon"></i> ${predicate.title}
+	</div>
+
+	<div class="${predicate.isExpanded ? 'active' : ''} content field">
+		<select class="ui fluid dropdown"
+				name="${predicate.group}.${predicate.name}.${predicate.valuesKey}"
+				value="${predicate.intialValue}"
+				form="${predicate.formId}"
+				for="${predicate.id}"
+				data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}"
+				data-asset-share-id="${predicate.id}__fields"
+				data-asset-share-update-method="${predicate.componentUpdateMethod}">
+		<option value="">${predicate.title}</option>
+			<sly data-sly-list.optionItem="${predicate.items}">
+				<option value="${optionItem.value}"
+						disabled="${optionItem.disabled}"
+						selected="${optionItem.selected ? 'selected' : ''}">
+						${optionItem.text}
+				</option>
+			</sly>
+		</select>
+	</div>
 </template>
