@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0448: Added AEM Content Services Sling Model Exporter annotations to Asset Share Commons WCM component Sling Models.
 
 ### Changed
-- 0474: UberJar dependency to 6.4.4 and Core Component to 2.8.0 (and using v2 of components)
+- 0474: UberJar dependency to 6.4.3 and Core Component to 2.8.0 (and using v2 of components)
 
 ### Fixed
 
