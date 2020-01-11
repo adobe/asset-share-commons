@@ -21,5 +21,5 @@
     jcr:description="Displays the position of the current page within the site hierarchy"
     jcr:primaryType="cq:Component"
     jcr:title="Breadcrumb"
-    sling:resourceSuperType="core/wcm/components/breadcrumb/v1/breadcrumb"
+    sling:resourceSuperType="core/wcm/components/breadcrumb/v2/breadcrumb"
     componentGroup="Asset Share Commons - Content"/>
