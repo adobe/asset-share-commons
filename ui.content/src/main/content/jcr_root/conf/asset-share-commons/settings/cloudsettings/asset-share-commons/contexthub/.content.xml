@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:mix="http://www.jcp.org/jcr/mix/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:lastModified="{Date}2018-01-12T12:35:16.957-05:00"
+    jcr:lastModifiedBy="admin"
+    jcr:mixinTypes="[mix:lastModified,sling:HierarchyNode]"
+    jcr:primaryType="nt:unstructured"
+    jcr:title="ContextHub Configuration"
+    sling:resourceType="/libs/granite/contexthub/cloudsettings/components/baseconfiguration"
+    debug="{Boolean}false"
+    disabled="{Boolean}false">
+    <cart/>
+    <device/>
+    <persona/>
+</jcr:root>

@@ -140,7 +140,7 @@ public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
     }
 
     @Activate
-    protected void activate(AssetRenditionsDataSource.Cfg cfg) {
+    protected void activate(Cfg cfg) {
         this.cfg = cfg;
     }
 
