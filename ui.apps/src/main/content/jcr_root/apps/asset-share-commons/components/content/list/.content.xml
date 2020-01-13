@@ -21,5 +21,5 @@
     jcr:description="Configurable collection of items or content"
     jcr:primaryType="cq:Component"
     jcr:title="List"
-    sling:resourceSuperType="core/wcm/components/list/v1/list"
+    sling:resourceSuperType="core/wcm/components/list/v2/list"
     componentGroup="Asset Share Commons - Content"/>
