@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
+- 0479: Updated overall Project structure to be based on AEM Maven Archetype; following separation of content and code, as splitting out sample ASC site and assets to a ui.content.sample project
+
 ### Fixed
 
 - 0430: Fixes issue with default search result layout is incorrect when Statistics component is added above the search results component.
