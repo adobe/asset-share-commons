@@ -722,6 +722,13 @@
                 <version>4.3.4</version>
                 <scope>compile</scope>
             </dependency>
+            <!-- Java 11 Compile -->
+            <dependency>
+                <groupId>com.sun.activation</groupId>
+                <artifactId>javax.activation</artifactId>
+                <version>1.2.0</version>
+                <scope>compile</scope>
+            </dependency>
             <!-- Testing -->
             <dependency>
                 <groupId>org.junit</groupId>
