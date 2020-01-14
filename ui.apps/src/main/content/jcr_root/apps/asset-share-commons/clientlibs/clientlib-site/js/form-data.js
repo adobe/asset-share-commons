@@ -22,14 +22,17 @@ AssetShare.FormData = function (formEl) {
     "use strict";
 
     var form = [],
-        formId = 'asset-share-commons__form-id__1';
+        formId;
 
     if (formEl) {
         formId = formEl.attr('id');
     }
 
-    // Select everything using the form attribute manually for IE11 support
-    form = $('[form="' + formId + '"]').serializeArray();
+    if (formId) {
+        // Select everything using the form attribute manually for IE11 support
+        // But ONLY if the formEl exists; otherwise leave empty array
+        form = $('[form="' + formId + '"]').serializeArray();
+    }
 
     /* IE polyfills for findIndex() and find() */
 
@@ -46,13 +49,13 @@ AssetShare.FormData = function (formEl) {
     }
 
     function find(key) {
-       var index = findIndex(key);
+        var index = findIndex(key);
 
-       if (index > -1) {
-           return form[index];
-       }
+        if (index > -1) {
+            return form[index];
+        }
 
-       return null;
+        return null;
     }
 
     function forEach(fn) {

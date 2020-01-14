@@ -224,4 +224,21 @@ public class InternalRedirectRenditionDispatcherImplTest {
 
         assertEquals("test", ctx.response().getOutputAsString());
     }
+
+    @Test
+    public void cleanPathInfoRequestPath() {
+        final InternalRedirectRenditionDispatcherImpl assetRenditionDispatcher = new InternalRedirectRenditionDispatcherImpl();
+
+        assertEquals("/content/dam/test with spaces.png.test.500.500.png",
+                assetRenditionDispatcher.cleanPathInfoRequestPath("/content/dam/test with spaces.png.test.500.500.png"));
+
+        assertEquals("/content/dam/test with spaces.png.test.500.500.png",
+                assetRenditionDispatcher.cleanPathInfoRequestPath("content/dam/test with spaces.png.test.500.500.png"));
+
+        assertEquals("/content/dam/test with spaces.png.test.500.500.png",
+                assetRenditionDispatcher.cleanPathInfoRequestPath("https://test.com/content/dam/test with spaces.png.test.500.500.png"));
+
+        assertEquals("/content/dam/test_without_spaces.png.test.500.500.png",
+                assetRenditionDispatcher.cleanPathInfoRequestPath("https://test.com/content/dam/test_without_spaces.png.test.500.500.png"));
+    }
 }
