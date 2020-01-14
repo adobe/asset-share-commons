@@ -114,21 +114,35 @@ public class InternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
             final String evaluatedExpression = assetRenditions.evaluateExpression(request, expression);
             final PathInfo pathInfo = new PathInfo(request.getResourceResolver(), evaluatedExpression);
 
-            log.debug("Serving internal redirect rendition [ {} ] for resolved rendition name [ {} ]",
+            // We have to manually clean up the pathInfo resourcePath due to issues with the PathInfo impl when /etc/map is in play
+            final String resourcePath = Text.unescape(cleanPathInfoRequestPath(pathInfo.getResourcePath()));
+
+            log.debug("Serving internal redirect rendition [ {} ] for expression [ {} ] and resolved rendition name [ {} ]",
+                    resourcePath,
                     evaluatedExpression,
                     parameters.getRenditionName());
 
             final RequestDispatcherOptions options = new RequestDispatcherOptions();
-            final String resourcePath = Text.unescape(pathInfo.getResourcePath());
 
             options.setReplaceSelectors(StringUtils.removeStart(pathInfo.getSelectorString(), "."));
             options.setReplaceSuffix(pathInfo.getSuffix());
 
             request.getRequestDispatcher(resourcePath, options)
                     .include(new ExtensionOverrideRequestWrapper(request, pathInfo.getExtension()), response);
-
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not serve asset rendition.");
+        }
+    }
+
+    protected String cleanPathInfoRequestPath(String resourcePath) {
+        if (StringUtils.startsWith(resourcePath, "/")) {
+            return resourcePath;
+        } else if (resourcePath.contains("://")) {
+            log.debug("Resource Path [ {} ] appears to have a scheme, stripping to just the path.", resourcePath);
+            return "/" + StringUtils.substringAfter(StringUtils.substringAfter(resourcePath, "://"), "/");
+        } else {
+            log.debug("Resource Path [ {} ] appears to be relative, changing to be absolute.", resourcePath);
+            return "/" + resourcePath;
         }
     }
 
