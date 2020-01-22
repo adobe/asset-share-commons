@@ -42,8 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
@@ -80,7 +79,7 @@ public class AssetRenditionsImplTest {
 
         ctx.registerService(AssetRenditionDispatcher.class, two, Constants.SERVICE_RANKING, 90);
         ctx.registerService(AssetRenditionDispatcher.class, one, Constants.SERVICE_RANKING, 100);
-        ctx.registerService(AssetRenditionDispatcher.class, three, Constants.SERVICE_RANKING, 80);
+        ctx.registerService(AssetRenditionDispatcher.class, three, Constants.SERVICE_RANKING, 80, "rendition.mappings", "foo=bar,test-rendition=im real");
 
         final AssetRenditions assetRenditions = ctx.getService(AssetRenditions.class);
         final List<AssetRenditionDispatcher> actual = assetRenditions.getAssetRenditionDispatchers();
@@ -149,5 +148,32 @@ public class AssetRenditionsImplTest {
         String actual = assetRenditions.evaluateExpression(ctx.request(), expression);
         assertEquals(expected, actual);
 
+    }
+
+    @Test
+    public void evaluateExpression_ForDynamicMediaVariables() {
+        final String expression = "${dm.domain}is/image/${dm.file}?folder=${dm.folder}&name=${dm.name}&id=${dm.id}&api=${dm.api-server}";
+        final String expected = "http://test.scene7.com/is/image/testing/test_1?folder=testing&name=test_1&id=x|1234&api=https://test.api.scene7.com";
+
+        final AssetRenditions assetRenditions = ctx.getService(AssetRenditions.class);
+
+        ctx.requestPathInfo().setResourcePath("/content/dam/test.png");
+        ctx.requestPathInfo().setExtension("renditions");
+        ctx.requestPathInfo().setSuffix("/test-rendition/asset.rendition");
+
+        String actual = assetRenditions.evaluateExpression(ctx.request(), expression);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void isValidAssetRenditionName() {
+        AssetRenditionDispatcher one = new InternalRedirectRenditionDispatcherImpl();
+
+        ctx.registerInjectActivateService(one, Constants.SERVICE_RANKING, 80, "rendition.mappings", "test-rendition=im real");
+
+        final AssetRenditions assetRenditions = ctx.getService(AssetRenditions.class);
+
+        assertTrue(assetRenditions.isValidAssetRenditionName("test-rendition"));
+        assertFalse(assetRenditions.isValidAssetRenditionName("fake-rendition-name"));
     }
 }

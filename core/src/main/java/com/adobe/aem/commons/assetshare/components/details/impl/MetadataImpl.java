@@ -21,6 +21,8 @@ package com.adobe.aem.commons.assetshare.components.details.impl;
 
 import com.adobe.aem.commons.assetshare.components.details.Metadata;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.cq.export.json.ComponentExporter;
+import com.adobe.cq.export.json.ExporterConstants;
 import com.adobe.cq.sightly.SightlyWCMMode;
 import com.day.cq.wcm.api.Page;
 import org.apache.commons.lang3.ArrayUtils;
@@ -28,6 +30,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
+import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.ScriptVariable;
@@ -36,6 +39,7 @@ import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.Collection;
@@ -43,10 +47,11 @@ import java.util.Locale;
 
 @Model(
         adaptables = SlingHttpServletRequest.class,
-        adapters = {Metadata.class},
+        adapters = {Metadata.class, ComponentExporter.class},
         resourceType = {MetadataImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
+@Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
 public class MetadataImpl extends AbstractEmptyTextComponent implements Metadata {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/details/metadata";
     protected static final String PN_TYPE = "type";
@@ -177,5 +182,11 @@ public class MetadataImpl extends AbstractEmptyTextComponent implements Metadata
     @Override
     public boolean isReady() {
         return !isEmpty() || hasEmptyText();
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }

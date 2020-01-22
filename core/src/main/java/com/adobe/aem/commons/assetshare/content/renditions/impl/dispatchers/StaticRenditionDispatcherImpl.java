@@ -27,7 +27,6 @@ import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.api.RenditionPicker;
 import com.day.cq.dam.commons.util.DamUtil;
 import com.google.common.io.ByteStreams;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.osgi.service.component.annotations.Activate;
@@ -41,7 +40,11 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
@@ -56,7 +59,7 @@ import static org.osgi.framework.Constants.SERVICE_RANKING;
         ocd = StaticRenditionDispatcherImpl.Cfg.class,
         factory = true
 )
-public class StaticRenditionDispatcherImpl implements AssetRenditionDispatcher {
+public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherImpl implements AssetRenditionDispatcher {
     private static final String OSGI_PROPERTY_VALUE_DELIMITER = "=";
 
     private static Logger log = LoggerFactory.getLogger(StaticRenditionDispatcherImpl.class);
@@ -90,7 +93,11 @@ public class StaticRenditionDispatcherImpl implements AssetRenditionDispatcher {
 
     @Override
     public Set<String> getRenditionNames() {
-        return mappings.keySet();
+        if (mappings == null) {
+            return Collections.EMPTY_SET;
+        } else {
+            return mappings.keySet();
+        }
     }
 
     @Override
@@ -126,18 +133,8 @@ public class StaticRenditionDispatcherImpl implements AssetRenditionDispatcher {
     protected void activate(Cfg cfg) {
         this.cfg = cfg;
 
-        this.mappings = new ConcurrentHashMap<>();
+        this.mappings = super.parseMappingsAsPatterns(cfg.rendition_mappings());
 
-        if (this.cfg.rendition_mappings() != null) {
-            Arrays.stream(this.cfg.rendition_mappings())
-                    .map(mapping -> StringUtils.split(mapping, OSGI_PROPERTY_VALUE_DELIMITER))
-                    .filter(segments -> segments.length == 2)
-                    .filter(segments -> StringUtils.isNotBlank(segments[0]))
-                    .filter(segments -> StringUtils.isNotBlank(segments[1]))
-                    .forEach(segments ->
-                            mappings.put(StringUtils.strip(segments[0]),
-                                    Pattern.compile(StringUtils.strip(segments[1]))));
-        }
     }
 
     @ObjectClassDefinition(name = "Asset Share Commons - Rendition Dispatcher - Static Renditions")

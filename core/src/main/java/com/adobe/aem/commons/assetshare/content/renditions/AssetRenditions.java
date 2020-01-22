@@ -37,6 +37,12 @@ public interface AssetRenditions {
     String VAR_ASSET_EXTENSION = "${asset.extension}";
     String VAR_RENDITION_NAME = "${rendition.name}";
 
+    String VAR_DM_NAME = "${dm.name}"; // dam:scene7Name
+    String VAR_DM_ID = "${dm.id}"; // dam:scene7ID
+    String VAR_DM_FILE = "${dm.file}"; // dam:scene7File
+    String VAR_DM_FOLDER= "${dm.folder}"; // dam:scene7Folder
+    String VAR_DM_DOMAIN = "${dm.domain}"; // dam:scene7Domain
+    String VAR_DM_API_SERVER = "${dm.api-server}"; // dam:scene7APIServer
     /**
      * @return a list of all registered AssetRenditionDispatchers in the system ordered in Descending order by service.ranking.
      */
@@ -72,4 +78,11 @@ public interface AssetRenditions {
      * @return the expression with the variables replaced with values derived from the request.
      */
     String evaluateExpression(SlingHttpServletRequest request, String expression);
+
+    /**
+     * Checks if the provided asset rendition name is a valid, registered asset rendition.
+     * @param name the asset rendition name.
+     * @return true if the name is registered as a valid asset rendition
+     */
+    default boolean isValidAssetRenditionName(String name) { return false; }
 }

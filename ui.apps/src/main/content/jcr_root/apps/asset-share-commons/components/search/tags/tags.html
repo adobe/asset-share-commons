@@ -42,14 +42,24 @@
            form="${predicate.formId}"
            data-asset-share-predicate-id="${predicate.id}"/>
 
-	<!--/* CHECKBOX and Variations*/-->
-	<div class="ui form">
-		<div class="ui fluid styled accordion field"
-			 data-sly-test="${predicate.type.value == 'checkbox' || predicate.type.value == 'radio'}">
-		 <sly
-			  data-sly-call="${optionsTemplate.checkbox @ predicate = predicate}"></sly>
-		</div>
-  	</div>
+    <!--/* CHECKBOX and Variations*/-->
+    <div class="ui form">
+        <div class="ui fluid styled accordion field"
+             data-sly-test="${predicate.type.value == 'checkbox' || predicate.type.value == 'radio'}">
+            <sly
+                    data-sly-call="${optionsTemplate.checkbox @ predicate = predicate}"></sly>
+        </div>
+    </div>
+
+    <!--/* DROP-DOWN */-->
+    <div class="ui form"
+		 data-sly-test="${predicate.type.value == 'drop-down' || predicate.type.value == 'multi-drop-down'}">
+        <div class="ui fluid styled accordion field">
+            <div class="${predicate.type.value}"
+                 data-sly-call="${optionsTemplate.dropdown @ predicate = predicate}"></div>
+        </div>
+    </div>
+</sly>
 
 </sly>
 <sly data-sly-call="${placeholderTemplate.placeholder @ isEmpty=!ready}"></sly>

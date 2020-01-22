@@ -26,14 +26,9 @@ import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedProperti
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
-import com.adobe.aem.commons.assetshare.util.impl.ExtensionOverrideRequestWrapper;
 import com.day.cq.dam.commons.util.DamUtil;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
-import org.apache.sling.api.request.RequestDispatcherOptions;
-import org.apache.sling.api.resource.Resource;
-import org.apache.sling.testing.mock.sling.servlet.MockRequestDispatcherFactory;
-import org.apache.sling.testing.mock.sling.servlet.MockSlingHttpServletResponse;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,7 +36,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.HashSet;
@@ -50,23 +44,20 @@ import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
 
 @RunWith(MockitoJUnitRunner.class)
-public class InternalRedirectRenditionDispatcherImplTest {
+public class ExternalRedirectRenditionDispatcherImplTest {
 
     @Rule
     public AemContext ctx = new AemContext();
-
-    @Mock
-    private RequestDispatcher requestDispatcher;
 
     @Mock
     private AssetResolver assetResolver;
 
     @Before
     public void setUp() throws Exception {
-        ctx.load().json(getClass().getResourceAsStream("InternalRedirectRenditionDispatcherImplTest.json"), "/content/dam");
+        ctx.load().json(getClass().getResourceAsStream("ExternalRedirectRenditionDispatcherImplTest.json"), "/content/dam");
         ctx.currentResource("/content/dam/test.png");
         doReturn(DamUtil.resolveToAsset(ctx.resourceResolver().getResource("/content/dam/test.png"))).when(assetResolver).resolveAsset(ctx.request());
 
@@ -76,26 +67,13 @@ public class InternalRedirectRenditionDispatcherImplTest {
 
         ctx.registerService(ComputedProperties.class, new ComputedPropertiesImpl());
         ctx.addModelsForClasses(AssetModelImpl.class);
-
-        ctx.request().setRequestDispatcherFactory(new MockRequestDispatcherFactory() {
-            @Override
-            public RequestDispatcher getRequestDispatcher(String path, RequestDispatcherOptions options) {
-                return requestDispatcher;
-            }
-
-            @Override
-            public RequestDispatcher getRequestDispatcher(Resource resource, RequestDispatcherOptions options) {
-                assertEquals("This method signature should not be called", "This method signature was called.");
-                return null;
-            }
-        });
     }
 
     @Test
     public void getLabel() {
         final String expected = "Test Asset Rendition Resolver";
 
-        ctx.registerInjectActivateService(new InternalRedirectRenditionDispatcherImpl(),
+        ctx.registerInjectActivateService(new ExternalRedirectRenditionDispatcherImpl(),
                 "label", "Test Asset Rendition Resolver");
 
         final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
@@ -108,7 +86,7 @@ public class InternalRedirectRenditionDispatcherImplTest {
     public void getName() {
         final String expected = "test";
 
-        ctx.registerInjectActivateService(new InternalRedirectRenditionDispatcherImpl(),
+        ctx.registerInjectActivateService(new ExternalRedirectRenditionDispatcherImpl(),
                 "name", "test");
 
         final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
@@ -125,7 +103,7 @@ public class InternalRedirectRenditionDispatcherImplTest {
                 put("Foo-bar", "foo-bar").
                 build();
 
-        ctx.registerInjectActivateService(new InternalRedirectRenditionDispatcherImpl(),
+        ctx.registerInjectActivateService(new ExternalRedirectRenditionDispatcherImpl(),
                 ImmutableMap.<String, Object>builder().
                         put("rendition.mappings", new String[]{
                                 "foo=foo value",
@@ -144,7 +122,7 @@ public class InternalRedirectRenditionDispatcherImplTest {
         expected.add("foo");
         expected.add("test.ing-rendition");
 
-        ctx.registerInjectActivateService(new InternalRedirectRenditionDispatcherImpl(),
+        ctx.registerInjectActivateService(new ExternalRedirectRenditionDispatcherImpl(),
                 ImmutableMap.<String, Object>builder().
                         put("rendition.mappings", new String[]{
                                 "foo=foo value",
@@ -160,10 +138,10 @@ public class InternalRedirectRenditionDispatcherImplTest {
 
     @Test
     public void dispatch() throws IOException, ServletException {
-        ctx.registerInjectActivateService(new InternalRedirectRenditionDispatcherImpl(),
+        ctx.registerInjectActivateService(new ExternalRedirectRenditionDispatcherImpl(),
                 ImmutableMap.<String, Object>builder().
                         put("rendition.mappings", new String[]{
-                                "testing=${asset.path}.test.500.500.${asset.extension}"}).
+                                "testing=${dm.domain}is/image/${dm.file}?$greyscale$"}).
                         build());
 
         final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
@@ -172,24 +150,19 @@ public class InternalRedirectRenditionDispatcherImplTest {
         ctx.requestPathInfo().setExtension("rendition");
         ctx.requestPathInfo().setSuffix("testing/download/asset.rendition");
 
-        doAnswer(invocation -> {
-            Object[] args = invocation.getArguments();
-            // Write some data to the response so we know that that requestDispatcher.include(..) was infact invoked.
-            ((MockSlingHttpServletResponse) args[1]).getOutputStream().print("test");
-            return null; // void method, return null
-        }).when(requestDispatcher).include(any(ExtensionOverrideRequestWrapper.class), eq(ctx.response()));
-
         assetRenditionDispatcher.dispatch(ctx.request(), ctx.response());
 
-        assertEquals("test", ctx.response().getOutputAsString());
+        assertEquals(301, ctx.response().getStatus());
+        //assertEquals("http://test.scene7.com/is/image/testing/test?%24greyscale%24", ctx.response().getHeader("Location"));
     }
 
     @Test
     public void dispatch_WithSpacesInPath() throws IOException, ServletException {
-        ctx.registerInjectActivateService(new InternalRedirectRenditionDispatcherImpl(),
+        ctx.registerInjectActivateService(new ExternalRedirectRenditionDispatcherImpl(),
                 ImmutableMap.<String, Object>builder().
                         put("rendition.mappings", new String[]{
                                 "testing=${asset.path}.test.500.500.${asset.extension}"}).
+                        put("redirect", 302).
                         build());
 
         final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
@@ -199,46 +172,9 @@ public class InternalRedirectRenditionDispatcherImplTest {
         ctx.requestPathInfo().setExtension("rendition");
         ctx.requestPathInfo().setSuffix("testing/download/asset.rendition");
 
-        doAnswer(invocation -> {
-            Object[] args = invocation.getArguments();
-            // Write some data to the response so we know that that requestDispatcher.include(..) was infact invoked.
-            ((MockSlingHttpServletResponse) args[1]).getOutputStream().print("test");
-            return null; // void method, return null
-        }).when(requestDispatcher).include(any(ExtensionOverrideRequestWrapper.class), eq(ctx.response()));
-
-        ctx.request().setRequestDispatcherFactory(new MockRequestDispatcherFactory() {
-            @Override
-            public RequestDispatcher getRequestDispatcher(String path, RequestDispatcherOptions options) {
-                assertEquals("/content/dam/test with spaces.png.test.500.500.png", path);
-                return requestDispatcher;
-            }
-
-            @Override
-            public RequestDispatcher getRequestDispatcher(Resource resource, RequestDispatcherOptions options) {
-                assertEquals("This method signature should not be called", "This method signature was called.");
-                return null;
-            }
-        });
-
         assetRenditionDispatcher.dispatch(ctx.request(), ctx.response());
 
-        assertEquals("test", ctx.response().getOutputAsString());
-    }
-
-    @Test
-    public void cleanPathInfoRequestPath() {
-        final InternalRedirectRenditionDispatcherImpl assetRenditionDispatcher = new InternalRedirectRenditionDispatcherImpl();
-
-        assertEquals("/content/dam/test with spaces.png.test.500.500.png",
-                assetRenditionDispatcher.cleanPathInfoRequestPath("/content/dam/test with spaces.png.test.500.500.png"));
-
-        assertEquals("/content/dam/test with spaces.png.test.500.500.png",
-                assetRenditionDispatcher.cleanPathInfoRequestPath("content/dam/test with spaces.png.test.500.500.png"));
-
-        assertEquals("/content/dam/test with spaces.png.test.500.500.png",
-                assetRenditionDispatcher.cleanPathInfoRequestPath("https://test.com/content/dam/test with spaces.png.test.500.500.png"));
-
-        assertEquals("/content/dam/test_without_spaces.png.test.500.500.png",
-                assetRenditionDispatcher.cleanPathInfoRequestPath("https://test.com/content/dam/test_without_spaces.png.test.500.500.png"));
+        assertEquals(302, ctx.response().getStatus());
+        assertEquals("/content/dam/test%20with%20spaces.png.test.500.500.png", ctx.response().getHeader("Location"));
     }
 }

@@ -129,7 +129,7 @@ AssetShare.Search = (function (window, $, ns, ajax) {
     (function() {
         // ONLY EXECUTE ON THE SEARCH PAGE
         if (ns.Elements.element("form").length > 0) {
-            ns.Navigation.returnUrl(window.location.pathname);
+            ns.Navigation.returnUrl(window.location.pathname + window.location.search);
         }
     }());
 
