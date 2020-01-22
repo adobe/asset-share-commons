@@ -10,7 +10,7 @@ title: Release Process
 The release process is performed entirely by the Jenkins pipeline. To perform a release:
 
 1. Log in to the Adobe VPN.
-1. Access the [AEM Modernize Tools pipeline](https://acs.ci.corp.adobe.com/blue/organizations/jenkins/AEM%20Modernize%20Tools/branches/) on the ACS Jenkins instance.
+1. Access the [Asset Share Commons pipeline](https://acs.ci.corp.adobe.com/blue/organizations/jenkins/Asset%20Share%20Commons/branches/) on the ACS Jenkins instance.
 1. Trigger the pipeline (do *not* replay the last run.)
 1. Answer the question on the type of release being performed.
 1. Verify the release version.
@@ -112,14 +112,14 @@ This may be resolved at a future date if we decide to move these steps to a Shar
 4. Checkout `/master` to your local machine; ensure it is up-to-date with `origin/master` via `git pull` and `git status`
 5. Ensure that there are no empty directories using `git clean -i`
 5. In the same folder as the reactor pom, execute the command:
-	* `mvn -Pbintray-asset-share-commons release:prepare`
+	* `mvn -Pbintray-release release:prepare`
 	* Set the release tag as: `asset-share-commons-X.X.X`
 6. When complete, copy the resulting AEM packages from the `ui.apps` and `ui.content` target folders to a safe place (will be used in Step 10)
 	* `asset-share-commons.ui.apps-X.X.X.zip`
 	* `asset-share-commons.ui.content-X.X.X.zip`
 7. Also copy the generated `apidocs` folder from the `ui.core` project's target/site to a safe place.
 8. In the same folder as the reactor pom, execute the command:
-	* `mvn -Pbintray-asset-share-commons release:perform`
+	* `mvn -Pbintray-release release:perform`
 9. [Publish the 16 artifacts on bintray.com](https://bintray.com/asc/releases/asset-share-commons)
 10. Contact the Adobe release contact (Simo!), and request an artifact deployment to repo.adobe.com (with key INFRA-5605)
 11. [Create a release on GitHub](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/releases) for `asset-share-commons-X.X.X`
