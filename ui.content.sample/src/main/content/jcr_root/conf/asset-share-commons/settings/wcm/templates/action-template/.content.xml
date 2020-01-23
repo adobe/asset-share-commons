@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:Template">
+    <jcr:content
+        cq:lastModified="{Date}2017-10-16T17:48:41.656-04:00"
+        cq:lastModifiedBy="admin"
+        cq:templateType="/conf/asset-share-commons/settings/wcm/template-types/empty-page"
+        jcr:description="Displays a single action modal."
+        jcr:primaryType="cq:PageContent"
+        jcr:title="Action Template"
+        status="enabled"/>
+</jcr:root>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="cq:Page">
+    <jcr:content
+        cq:lastModified="{Date}2017-10-06T08:55:49.431-04:00"
+        cq:lastModifiedBy="admin"
+        cq:template="/conf/asset-share-commons/settings/wcm/templates/details-template"
+        jcr:primaryType="cq:PageContent"
+        sling:resourceType="asset-share-commons/components/structure/details-page">
+        <root
+            jcr:primaryType="nt:unstructured"
+            sling:resourceType="asset-share-commons/components/structure/root">
+            <rail
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="wcm/foundation/components/responsivegrid">
+                <cq:responsive jcr:primaryType="nt:unstructured"/>
+                <responsivegrid
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="wcm/foundation/components/responsivegrid">
+                    <tags
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="asset-share-commons/components/details/tags"
+                        label="TAGS"/>
+                    <metadata_1986108074
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="asset-share-commons/components/details/metadata"
+                        label="DESCRIPTION"
+                        propertyName="./jcr:content/metadata/dc:description"
+                        type="text"/>
+                    <metadata
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="asset-share-commons/components/details/metadata"
+                        computedProperty="height"
+                        formatDate="dd MMM. y"
+                        label="CREATED"
+                        propertyName="./jcr:created"
+                        type="date">
+                        <cq:responsive jcr:primaryType="nt:unstructured">
+                            <default
+                                jcr:primaryType="nt:unstructured"
+                                width="6"/>
+                            <tablet
+                                jcr:primaryType="nt:unstructured"
+                                width="12"/>
+                        </cq:responsive>
+                    </metadata>
+                    <metadata_694450310
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="asset-share-commons/components/details/metadata"
+                        computedProperty="type"
+                        label="TYPE"
+                        type="computed">
+                        <cq:responsive jcr:primaryType="nt:unstructured">
+                            <default
+                                jcr:primaryType="nt:unstructured"
+                                width="6"/>
+                            <tablet
+                                jcr:primaryType="nt:unstructured"
+                                width="12"/>
+                        </cq:responsive>
+                    </metadata_694450310>
+                    <metadata_982072597
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="asset-share-commons/components/details/metadata"
+                        computedProperty="fileSize"
+                        label="SIZE"
+                        type="computed">
+                        <cq:responsive jcr:primaryType="nt:unstructured">
+                            <default
+                                jcr:primaryType="nt:unstructured"
+                                offset="0"
+                                width="6"/>
+                            <tablet
+                                jcr:primaryType="nt:unstructured"
+                                behavior="newline"
+                                offset="0"
+                                width="12"/>
+                        </cq:responsive>
+                    </metadata_982072597>
+                    <metadata_400227960
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="asset-share-commons/components/details/metadata"
+                        formatDate="relativetime"
+                        label="LAST MODIFIED"
+                        propertyName="./jcr:content/jcr:lastModified"
+                        type="date">
+                        <cq:responsive jcr:primaryType="nt:unstructured">
+                            <default
+                                jcr:primaryType="nt:unstructured"
+                                width="6"/>
+                            <tablet
+                                jcr:primaryType="nt:unstructured"
+                                width="12"/>
+                        </cq:responsive>
+                    </metadata_400227960>
+                    <metadata_1595456315
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="asset-share-commons/components/details/metadata"
+                        computedProperty="resolution"
+                        label="RES."
+                        type="computed">
+                        <cq:responsive jcr:primaryType="nt:unstructured">
+                            <default
+                                jcr:primaryType="nt:unstructured"
+                                width="6"/>
+                            <tablet
+                                jcr:primaryType="nt:unstructured"
+                                width="12"/>
+                        </cq:responsive>
+                    </metadata_1595456315>
+                    <metadata_101020596
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="asset-share-commons/components/details/metadata"
+                        computedProperty="expired"
+                        label="EXPIRED"
+                        type="computed">
+                        <cq:responsive jcr:primaryType="nt:unstructured">
+                            <default
+                                jcr:primaryType="nt:unstructured"
+                                width="6"/>
+                            <tablet
+                                jcr:primaryType="nt:unstructured"
+                                width="12"/>
+                        </cq:responsive>
+                    </metadata_101020596>
+                    <metadata_1100170134
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="asset-share-commons/components/details/metadata"
+                        computedProperty="height"
+                        emptyText="n/a"
+                        formatDate="dd MMM. y"
+                        label="USAGE"
+                        propertyName="./jcr:content/metadata/xmpRights:UsageTerms"
+                        type="text">
+                        <cq:responsive jcr:primaryType="nt:unstructured">
+                            <default
+                                jcr:primaryType="nt:unstructured"
+                                width="12"/>
+                        </cq:responsive>
+                    </metadata_1100170134>
+                </responsivegrid>
+            </rail>
+            <main
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="wcm/foundation/components/responsivegrid">
+                <cq:responsive jcr:primaryType="nt:unstructured"/>
+                <responsivegrid
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="wcm/foundation/components/responsivegrid">
+                    <title
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="asset-share-commons/components/details/title"/>
+                    <image
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="asset-share-commons/components/details/image"
+                        computedProperty="image"
+                        maxHeight="{Long}600"/>
+                    <renditions
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="asset-share-commons/components/details/renditions"
+                        allowLinks="{Boolean}true"
+                        label="Renditions"
+                        showMissingRenditions="{Boolean}true">
+                        <items jcr:primaryType="nt:unstructured">
+                            <item-0
+                                jcr:primaryType="nt:unstructured"
+                                text="Original File"
+                                value="original"/>
+                            <item-1
+                                jcr:primaryType="nt:unstructured"
+                                text="Web Rendition"
+                                value="cq5dam\\.web\\.\\d+\\.\\d+\\.[a-zA-Z0-9]+"/>
+                        </items>
+                        <cq:responsive jcr:primaryType="nt:unstructured">
+                            <default
+                                jcr:primaryType="nt:unstructured"
+                                width="6"/>
+                        </cq:responsive>
+                    </renditions>
+                    <action_buttons
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="asset-share-commons/components/details/action-buttons"
+                        addToCartLabel="Add to Cart"
+                        removeFromCartLabel="Remove from Cart"
+                        downloadLabel="Download"
+                        label="Actions"
+                        shareLabel="Share">
+                        <cq:responsive jcr:primaryType="nt:unstructured">
+                            <default
+                                jcr:primaryType="nt:unstructured"
+                                width="6"/>
+                        </cq:responsive>
+                    </action_buttons>
+                </responsivegrid>
+            </main>
+        </root>
+    </jcr:content>
+</jcr:root>
