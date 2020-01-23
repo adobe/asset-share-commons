@@ -25,7 +25,7 @@
     </parent>
     <artifactId>assetshare.core</artifactId>
     <name>asset-share-commons - Core</name>
-    <description>Core bundle for asset-share-commons</description>
+    <description>OSGi Core bundle for Asset Share Commons</description>
     <build>
         <plugins>
             <plugin>
@@ -198,6 +198,13 @@ Bundle-DocURL:
         <dependency>
             <groupId>com.adobe.acs</groupId>
             <artifactId>acs-aem-commons-bundle</artifactId>
+        </dependency>
+        <!-- JDK 11 -->
+        <!-- JDK 11 -->
+        <dependency>
+            <artifactId>org.apache.sling.javax.activation</artifactId>
+            <version>0.1.0</version>
+            <groupId>org.apache.sling</groupId>
         </dependency>
         <!-- Unit test dependencies -->
         <dependency>
