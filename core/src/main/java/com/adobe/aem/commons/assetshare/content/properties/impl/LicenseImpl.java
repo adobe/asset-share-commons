@@ -43,7 +43,7 @@ import static com.adobe.aem.commons.assetshare.content.properties.ComputedProper
 public class LicenseImpl extends AbstractComputedProperty<String> {
     public static final String LABEL = "License";
     public static final String NAME = "license";
-    private Cfg cfg;
+    private LicenseImpl.Cfg cfg;
 
     @Override
     public String getName() {
