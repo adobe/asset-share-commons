@@ -28,43 +28,6 @@
     <description>Core bundle for asset-share-commons</description>
     <build>
         <plugins>
-<!--
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.1.1</version>
-                <executions>
-                    <execution>
-                        <id>unpack</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>com.adobe.acs</groupId>
-                                    <artifactId>acs-aem-commons-bundle</artifactId>
-                                    <version>4.3.4</version>
-                                    <type>jar</type>
-                                    <overWrite>false</overWrite>
-                                    <outputDirectory>${project.build.directory}/classes</outputDirectory>
-                                    <includes>
-                                        com/adobe/acs/commons/util/ParameterUtil.class,
-                                        com/adobe/acs/commons/util/PathInfoUtil.class,
-                                        com/adobe/acs/commons/util/BufferedSlingHttpServletResponse.class,
-                                        com/adobe/acs/commons/util/ServletOutputStreamWrapper.class,
-                                        com/adobe/acs/commons/util/BufferedServletOutput.class,
-                                        com/adobe/acs/commons/util/BufferedServletResponse.class,
-                                        com/adobe/acs/commons/util/BufferedServletOutput$ResponseWriteMethod.class
-                                    </includes>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
--->
             <plugin>
                 <groupId>org.apache.sling</groupId>
                 <artifactId>sling-maven-plugin</artifactId>
@@ -79,8 +42,6 @@
                             <goal>bnd-process</goal>
                         </goals>
                         <configuration>
-<!-- Embed-Dependency: acs-aem-commons-bundle;inline=com/adobe/acs/commons/util/ParameterUtil.class|com/adobe/acs/commons/util/PathInfoUtil.class|com/adobe/acs/commons/util/BufferedSlingHttpServletResponse.class|com/adobe/acs/commons/util/ServletOutputStreamWrapper.class|com/adobe/acs/commons/util/BufferedServletOutput.class|com/adobe/acs/commons/util/BufferedServletResponse.class|com/adobe/acs/commons/util/BufferedServletOutput$ResponseWriteMethod.class
- -->
                             <bnd><![CDATA[
 Bundle-Name: Asset Share Commons - Core
 Bundle-SymbolicName: com.adobe.aem.commons.assetshare.core
