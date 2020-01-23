@@ -20,51 +20,14 @@
     <parent>
         <groupId>com.adobe.aem.commons</groupId>
         <artifactId>assetshare</artifactId>
-        <version>1.9.1-SNAPSHOT</version>
+        <version>1.10.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>assetshare.core</artifactId>
     <name>asset-share-commons - Core</name>
-    <description>Core bundle for asset-share-commons</description>
+    <description>OSGi Core bundle for Asset Share Commons</description>
     <build>
         <plugins>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.1.1</version>
-                <executions>
-                    <execution>
-                        <id>unpack</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>com.adobe.acs</groupId>
-                                    <artifactId>acs-aem-commons-bundle</artifactId>
-                                    <version>4.3.4</version>
-                                    <type>jar</type>
-                                    <overWrite>false</overWrite>
-                                    <outputDirectory>${project.build.directory}/classes</outputDirectory>
-                                    <includes>
-                                        com/adobe/acs/commons/util/ParameterUtil.class,
-                                        com/adobe/acs/commons/util/PathInfoUtil.class,
-                                        com/adobe/acs/commons/util/BufferedSlingHttpServletResponse.class,
-                                        com/adobe/acs/commons/util/ServletOutputStreamWrapper.class,
-                                        com/adobe/acs/commons/util/BufferedServletOutput.class,
-                                        com/adobe/acs/commons/util/BufferedServletResponse.class,
-                                        com/adobe/acs/commons/util/BufferedServletOutput$ResponseWriteMethod.class
-                                    </includes>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
             <plugin>
                 <groupId>org.apache.sling</groupId>
                 <artifactId>sling-maven-plugin</artifactId>
@@ -84,7 +47,7 @@ Bundle-Name: Asset Share Commons - Core
 Bundle-SymbolicName: com.adobe.aem.commons.assetshare.core
 Bundle-Category: asset-share-commons
 Import-Package: javax.annotation;version=0.0.0,*
-Embed-Dependency: acs-aem-commons-bundle;inline=com/adobe/acs/commons/util/ParameterUtil.class|com/adobe/acs/commons/util/PathInfoUtil.class|com/adobe/acs/commons/util/BufferedSlingHttpServletResponse.class|com/adobe/acs/commons/util/ServletOutputStreamWrapper.class|com/adobe/acs/commons/util/BufferedServletOutput.class|com/adobe/acs/commons/util/BufferedServletResponse.class|com/adobe/acs/commons/util/BufferedServletOutput$ResponseWriteMethod.class
+-conditionalpackage: com.adobe.acs.commons.util.*,
 -exportcontents: ${packages;VERSIONED}
 -snapshot: ${tstamp;yyyyMMddHHmmssSSS}
 Bundle-DocURL:
@@ -194,10 +157,6 @@ Bundle-DocURL:
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.sun.activation</groupId>
-            <artifactId>javax.activation</artifactId>
-        </dependency>
-        <dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
         </dependency>
@@ -239,6 +198,13 @@ Bundle-DocURL:
         <dependency>
             <groupId>com.adobe.acs</groupId>
             <artifactId>acs-aem-commons-bundle</artifactId>
+        </dependency>
+        <!-- JDK 11 -->
+        <!-- JDK 11 -->
+        <dependency>
+            <artifactId>org.apache.sling.javax.activation</artifactId>
+            <version>0.1.0</version>
+            <groupId>org.apache.sling</groupId>
         </dependency>
         <!-- Unit test dependencies -->
         <dependency>
