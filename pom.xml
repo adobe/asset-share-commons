@@ -18,7 +18,7 @@
     <groupId>com.adobe.aem.commons</groupId>
     <artifactId>assetshare</artifactId>
     <packaging>pom</packaging>
-    <version>1.9.1-SNAPSHOT</version>
+    <version>1.10.0-SNAPSHOT</version>
     <description>asset-share-commons</description>
 
     <modules>
@@ -720,13 +720,6 @@
                 <groupId>com.adobe.acs</groupId>
                 <artifactId>acs-aem-commons-bundle</artifactId>
                 <version>4.3.4</version>
-                <scope>compile</scope>
-            </dependency>
-            <!-- Java 11 Compile -->
-            <dependency>
-                <groupId>com.sun.activation</groupId>
-                <artifactId>javax.activation</artifactId>
-                <version>1.2.0</version>
                 <scope>compile</scope>
             </dependency>
             <!-- Testing -->
