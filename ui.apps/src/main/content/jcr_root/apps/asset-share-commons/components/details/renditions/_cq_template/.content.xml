@@ -22,14 +22,15 @@
           xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
           jcr:primaryType="nt:unstructured"
           label="Renditions"
-          allowLinks="{Boolean}true"
-          showMissingRenditions="{Boolean}true">
-    <items jcr:primaryType="nt:unstructured">
-        <item-0 jcr:primaryType="nt:unstructured"
-                text="Original File"
-                value="original"/>
-        <item-1 jcr:primaryType="nt:unstructured"
-                text="Web Rendition"
-                value="cq5dam\\.web\\.\\d+\\.\\d+\\.[a-zA-Z0-9]+"/>
-    </items>
+          allowLinks="{Boolean}true">
+    <asset-renditions jcr:primaryType="nt:unstructured">
+        <items jcr:primaryType="nt:unstructured">
+            <item-0 jcr:primaryType="nt:unstructured"
+                    text="Original File"
+                    value="original"/>
+            <item-1 jcr:primaryType="nt:unstructured"
+                    text="Web Rendition"
+                    value="web"/>
+        </items>
+    </asset-renditions>
 </jcr:root>

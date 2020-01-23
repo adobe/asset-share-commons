@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- 0479: Updated overall Project structure to be based on AEM Maven Archetype; following separation of content and code, as splitting out sample ASC site and assets to a ui.content.sample project
+
+## [v1.9.0]
+
 ### Added
 
 - 0428: Jenkins pipeline for automating releases.
@@ -14,7 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
-- 0479: Updated overall Project structure to be based on AEM Maven Archetype; following separation of content and code, as splitting out sample ASC site and assets to a ui.content.sample project
+- 0453: Added support to the Asset Details - Renditions component for the new ASC Asset Rendition framework
 
 ### Fixed
 
@@ -23,6 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0443: Fixed issue on Search Page authoring where page-breaking errors are thrown if a Search Results component has not been added yet (Sort, Filter Toggle and Statistics).
 - 0458: Fixed issue with Form Submissions in IE11
 - 0467: Fixed issue in removing asset in cart modal with large number of assets.
+- 0472: Fixed issue with InternalRedirectRenditionDispatcherImpl failing to dispatch when /etc/map is configured
 
 ## [v1.8.0]
 

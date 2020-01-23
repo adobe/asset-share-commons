@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.commons.osgi.Order;
@@ -32,9 +33,7 @@ import org.osgi.service.component.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.day.cq.dam.scene7.api.constants.Scene7Constants.*;
 
@@ -71,7 +70,11 @@ public class AssetRenditionsImpl implements AssetRenditions {
 
     @Override
     public List<AssetRenditionDispatcher> getAssetRenditionDispatchers() {
-        return assetRenditionResolvers.getList();
+        if (assetRenditionResolvers == null || assetRenditionResolvers.getList() == null) {
+            return Collections.EMPTY_LIST;
+        } else {
+            return ImmutableList.copyOf(assetRenditionResolvers.getList());
+        }
     }
 
     @Override
@@ -101,6 +104,15 @@ public class AssetRenditionsImpl implements AssetRenditions {
                 });
 
         return options;
+    }
+
+    @Override
+    public boolean isValidAssetRenditionName(final String name) {
+        final Optional<AssetRenditionDispatcher> found = getAssetRenditionDispatchers().stream()
+                .filter(dispatcher -> dispatcher.getRenditionNames().contains(name))
+                .findAny();
+
+        return found.isPresent();
     }
 
     @Override

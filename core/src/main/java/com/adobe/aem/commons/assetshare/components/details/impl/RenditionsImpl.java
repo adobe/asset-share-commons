@@ -23,23 +23,29 @@ import com.adobe.aem.commons.assetshare.components.details.Renditions;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.Rendition;
 import com.adobe.aem.commons.assetshare.content.properties.impl.LicenseImpl;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.util.UrlUtil;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.export.json.ExporterConstants;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
 import com.day.cq.dam.commons.util.UIHelper;
-import com.day.text.Text;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.commons.mime.MimeTypeService;
 import org.apache.sling.models.annotations.Default;
 import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
+import org.apache.sling.models.annotations.Optional;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
+import org.apache.sling.models.factory.ModelFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
@@ -56,6 +62,9 @@ import java.util.regex.Pattern;
 )
 @Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
 public class RenditionsImpl extends AbstractEmptyTextComponent implements Renditions {
+    private static final Logger log = LoggerFactory.getLogger(RenditionsImpl.class);
+    private static final String NN_ASSET_RENDITIONS_OPTIONS = "asset-renditions";
+
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/details/renditions";
 
     @Self
@@ -65,10 +74,6 @@ public class RenditionsImpl extends AbstractEmptyTextComponent implements Rendit
     @Self
     @Required
     private AssetModel asset;
-
-    @Self
-    @Required
-    private Options coreOptions;
 
     @ValueMapValue
     @Default(booleanValues = false)
@@ -82,16 +87,42 @@ public class RenditionsImpl extends AbstractEmptyTextComponent implements Rendit
     @Required
     private MimeTypeService mimeTypeService;
 
+    @OSGiService
+    @Required
+    private AssetRenditions assetRenditions;
+
+    @OSGiService
+    @Required
+    private ModelFactory modelFactory;
+
+    @ValueMapValue
+    @Optional
+    private Boolean legacyMode;
+
     private Collection<Rendition> renditions = null;
+
+    @Deprecated
+    private Options legacyRenditionOptions;
+
+    private Options renditionOptions;
 
     @PostConstruct
     protected void init() {
-        coreOptions = request.adaptTo(Options.class);
+        legacyRenditionOptions = request.adaptTo(Options.class);
+
+        Resource assetRenditionsOptionsResource = request.getResource().getChild(NN_ASSET_RENDITIONS_OPTIONS);
+        if (assetRenditionsOptionsResource != null) {
+            renditionOptions = modelFactory.getModelFromWrappedRequest(request, assetRenditionsOptionsResource, Options.class);
+        }
     }
 
     @Override
     public Collection<Rendition> getRenditions() {
-        return getRenditions(isShowMissingRenditions());
+        if (isLegacyMode()) {
+            return getLegacyRenditions(isShowMissingRenditions());
+        } else {
+            return getRenditions(isShowMissingRenditions());
+        }
     }
 
     @Override
@@ -104,12 +135,41 @@ public class RenditionsImpl extends AbstractEmptyTextComponent implements Rendit
         return showMissingRenditions;
     }
 
+    @Deprecated
     private Collection<Rendition> getRenditions(boolean includeAll) {
+        if (renditions == null) {
+            final List<Rendition> collectedRenditions = new ArrayList<>();
+
+            if (renditionOptions != null) {
+                for (final OptionItem item : renditionOptions.getItems()) {
+
+                    AssetRenditionParameters parameters = new AssetRenditionParameters(asset, item.getValue(), true);
+
+                    if (assetRenditions.isValidAssetRenditionName(item.getValue())) {
+                        collectedRenditions.add(new RenditionImpl(item.getText(),
+                                assetRenditions.getUrl(request, asset, parameters),
+                                StringUtils.isNotBlank(asset.getProperties().get(LicenseImpl.NAME, String.class)),
+                                true));
+                    } else if (includeAll) {
+                        collectedRenditions.add(new MissingRenditionImpl(item.getText()));
+                    }
+                }
+            }
+
+            renditions = collectedRenditions;
+        }
+
+        return renditions;
+    }
+
+
+    @Deprecated
+    private Collection<Rendition> getLegacyRenditions(boolean includeAll) {
         if (renditions == null) {
             final List<Rendition> collectedRenditions = new ArrayList<>();
             final List<com.day.cq.dam.api.Rendition> assetRenditions = asset.getRenditions();
 
-            for (final OptionItem item : coreOptions.getItems()) {
+            for (final OptionItem item : legacyRenditionOptions.getItems()) {
                 final Pattern pattern = Pattern.compile(item.getValue());
                 boolean found = false;
 
@@ -117,7 +177,7 @@ public class RenditionsImpl extends AbstractEmptyTextComponent implements Rendit
                     final Matcher matcher = pattern.matcher(assetRendition.getName());
 
                     if (matcher.matches()) {
-                        collectedRenditions.add(new RenditionImpl(item.getText(),
+                        collectedRenditions.add(new LegacyRenditionImpl(item.getText(),
                                 assetRendition,
                                 StringUtils.isNotBlank(asset.getProperties().get(LicenseImpl.NAME, String.class)),
                                 true));
@@ -146,6 +206,20 @@ public class RenditionsImpl extends AbstractEmptyTextComponent implements Rendit
         return !isEmpty();
     }
 
+    private boolean isLegacyMode() {
+        if (legacyMode == null) {
+            if (renditionOptions != null && !renditionOptions.getItems().isEmpty()) {
+                // Is the new renditions exist, then assume modern
+                return false;
+            } else {
+                // modern does not exist, so check if legacy exists...
+                return legacyRenditionOptions != null && !legacyRenditionOptions.getItems().isEmpty();
+            }
+        } else {
+            return legacyMode;
+        }
+    }
+  
     @Nonnull
     @Override
     public String getExportedType() {
@@ -157,6 +231,55 @@ public class RenditionsImpl extends AbstractEmptyTextComponent implements Rendit
      */
     private class RenditionImpl implements Rendition {
         private final String label;
+        private final String path;
+        private final String name;
+        private final boolean exists;
+        private final boolean licensed;
+
+        public RenditionImpl(String label, String url, boolean licensed, boolean exists) {
+            this.label = label;
+            this.path = UrlUtil.escape(url);
+            this.name = label;
+            this.exists = exists;
+            this.licensed = licensed;
+        }
+
+        public String getDownloadFileName() {
+            return "";
+        }
+
+        public boolean isExists() {
+            return exists;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public String getSize() {
+            return "";
+        }
+
+        public String getMimeType() {
+            return null;
+        }
+
+        public String getPath() {
+            return path;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public boolean isLicensed() {
+            return licensed;
+        }
+    }
+
+    @Deprecated
+    private class LegacyRenditionImpl implements Rendition {
+        private final String label;
         private final String size;
         private final String mimeType;
         private final String path;
@@ -164,7 +287,7 @@ public class RenditionsImpl extends AbstractEmptyTextComponent implements Rendit
         private final boolean exists;
         private final boolean licensed;
 
-        public RenditionImpl(String label, com.day.cq.dam.api.Rendition assetRendition, boolean licensed, boolean exists) {
+        public LegacyRenditionImpl(String label, com.day.cq.dam.api.Rendition assetRendition, boolean licensed, boolean exists) {
             this.label = label;
             this.size = UIHelper.getSizeLabel(assetRendition.getSize());
             this.mimeType = assetRendition.getMimeType();
@@ -271,5 +394,4 @@ public class RenditionsImpl extends AbstractEmptyTextComponent implements Rendit
             return false;
         }
     }
-
 }

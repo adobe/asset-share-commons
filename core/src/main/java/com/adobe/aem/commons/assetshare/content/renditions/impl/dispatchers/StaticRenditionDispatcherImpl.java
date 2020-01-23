@@ -93,7 +93,11 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
 
     @Override
     public Set<String> getRenditionNames() {
-        return mappings.keySet();
+        if (mappings == null) {
+            return Collections.EMPTY_SET;
+        } else {
+            return mappings.keySet();
+        }
     }
 
     @Override
