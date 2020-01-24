@@ -24,6 +24,7 @@
     <modules>
         <module>all</module>
         <module>core</module>
+        <module>ui.frontend.light</module>
         <module>ui.apps</module>
         <module>ui.content</module>
         <module>ui.content.sample</module>

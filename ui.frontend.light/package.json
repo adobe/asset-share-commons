@@ -1,0 +1,32 @@
+{
+  "name": "asset-share-commons-light",
+  "version": "1.0.0",
+  "description": "Asset Share Commons Light Theme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Adobe-Marketing-Cloud/asset-share-commons"
+  },
+  "private": true,
+  "main": "src/theme.config",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "scripts": {
+    "dev": "webpack -d --env dev --config ./webpack.dev.js && clientlib --verbose",
+    "prod": "gulp build && clientlib --verbose",
+    "docs": "gulp build-docs",
+    "watch": "gulp watch",
+    "start": "webpack-dev-server --open --config ./webpack.dev.js"
+  },
+  "devDependencies": {
+    "aem-clientlib-generator": "^1.4.3",
+    "autoprefixer": "^9.2.1",
+    "browserslist": "^4.2.1",
+    "gulp": "^3.9.1"
+  },
+  "dependencies": {
+    "semantic-ui": "^2.4.2"
+  },
+  "browserslist": [
+    "last 2 version",
+    "> 1%"
+  ]
+}

@@ -1,0 +1,5 @@
+@verticalPadding : 0.833em;
+@horizontalPadding : 1.5em;
+
+@primaryColor  : @buttonPrimaryColor;
+@primaryColorHover  : @buttonPrimaryColorHover;

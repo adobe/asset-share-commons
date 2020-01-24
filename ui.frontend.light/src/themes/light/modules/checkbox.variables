@@ -1,0 +1,55 @@
+/*******************************
+            Checkbox
+*******************************/
+
+/* Label */
+
+@labelColor: @unselectedTextColor;
+
+@labelFocusColor: @textColor;
+
+/* Checkbox */
+@checkboxActiveBackground: @white;
+@checkboxActiveCheckColor: @filterPrimaryColor;
+
+/* Checkbox Border */
+@checkboxBorder: 1px solid @borderColor;
+@checkboxHoverBorderColor : @borderColor;
+@checkboxFocusBorderColor : @filterPrimaryColor;
+@checkboxPressedBorderColor : @filterPrimaryColor;
+@checkboxActiveBorderColor : @filterPrimaryColor;
+
+/* Focused Checkbox */
+@checkboxActiveFocusBackground: @white;
+@checkboxActiveFocusCheckColor: @filterPrimaryColor;
+@checkboxTransition: none;
+
+/* Radio */
+@radioActiveBackground: @white;
+@radioActiveBorderColor: @filterPrimaryColor;
+@radioActiveBulletColor: @filterPrimaryColor;
+
+/* Focused Radio */
+@radioActiveFocusBackground: @white;
+@radioActiveFocusBorderColor: @filterPrimaryColorFocus;
+@radioActiveFocusBulletColor: @filterPrimaryColorFocus;
+
+/* Slider */
+@sliderLineColor : @borderColor;
+@sliderOnFocusLineColor : @borderColor;
+@sliderOnLineColor: @filterPrimaryColor;
+
+/* Focused Slider */
+@sliderOnFocusLineColor: @filterPrimaryColorFocus;
+
+/* Hover Slider */
+@sliderHoverLaneBackground : @borderColor;
+
+/* Toggle */
+@toggleOffLabelColor: @labelColor;
+@toggleOnLabelColor : @labelColor;
+@toggleHoverColor     : @toggleLaneBackground;
+@toggleFocusColor : @filterPrimaryColor;
+@toggleOnLaneColor : @filterPrimaryColor;
+@toggleOnFocusLaneColor : @filterPrimaryColor;
+

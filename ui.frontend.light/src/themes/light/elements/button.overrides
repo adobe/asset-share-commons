@@ -1,0 +1,32 @@
+/*******************************
+         Theme Overrides
+*******************************/
+
+.actions .ui.button {
+	min-width:95pt;
+}
+/* Renders a button to appear as a link */
+
+.ui.button.link {
+  background-color: transparent;
+  padding: 0;
+  display: inline;
+  color: @linkColor;
+  text-decoration: @linkUnderline;
+  font-weight: normal;
+  &:hover {
+    color: @linkHoverColor;
+    text-decoration: @linkHoverUnderline;
+  }
+}
+
+/* Renders a button icon to appear just as an icon */
+
+.ui.icon.button.plain {
+	background: none;
+}
+
+.ui.icon.button.plain:hover {
+	background: none;
+	color: @linkHoverColor;
+}
