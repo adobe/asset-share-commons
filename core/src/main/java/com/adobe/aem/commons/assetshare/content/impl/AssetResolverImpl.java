@@ -47,6 +47,10 @@ public class AssetResolverImpl implements AssetResolver {
 
         if (suffixResource != null) {
             asset = getAssetByPath(suffixResource);
+        } else if (StringUtils.startsWith(request.getRequestPathInfo().getResourcePath(), DamConstants.MOUNTPOINT_ASSETS) &&
+            StringUtils.equals(request.getRequestPathInfo().getExtension(), AssetRenditionServlet.SERVLET_EXTENSION)) {
+            // Dont try resolving the asset from the suffix (ie. the ID) since this is a AssetRenditionsServlet request.. fall down and look for assets from resource path
+            asset = null;       
         } else if (StringUtils.isNotBlank(suffix) && !StringUtils.startsWith(suffix, DamConstants.MOUNTPOINT_ASSETS)) {
             asset = getAssetById(request, suffix);
         }
