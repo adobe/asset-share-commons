@@ -22,11 +22,11 @@ module.exports = {
             ],
             resources: [
                 {
-                    src: "dist/themes/default/assets/fonts/*",
+                    src: "dist/resources/default/assets/fonts/*",
                     dest: "assets/fonts"
                 },
                 {
-                    src: "dist/themes/light/assets/fonts/*",
+                    src: "dist/resources/light/assets/fonts/*",
                     dest: "assets/fonts"
                 }
             ]

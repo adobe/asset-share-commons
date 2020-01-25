@@ -11,6 +11,9 @@ var
   // watch changes
   watch        = require('./tasks/watch'),
 
+  // browser sync
+  bSync        = require('./tasks/browsersync'),
+
   // build all files
   build        = require('./tasks/build'),
   buildJS      = require('./tasks/build/javascript'),
@@ -40,6 +43,9 @@ gulp.task('default', false, [
 ]);
 
 gulp.task('watch', 'Watch for site/theme changes', watch);
+
+gulp.task('browser-sync', 'Start local browsersync', bSync);
+gulp.task('serve', ['watch','browser-sync']);
 
 gulp.task('build', 'Builds all files from source', build);
 gulp.task('build-javascript', 'Builds all javascript from source', buildJS);

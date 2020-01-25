@@ -10,19 +10,19 @@
   "main": "src/theme.config",
   "license": "SEE LICENSE IN LICENSE.txt",
   "scripts": {
-    "dev": "webpack -d --env dev --config ./webpack.dev.js && clientlib --verbose",
     "prod": "gulp build && clientlib --verbose",
-    "docs": "gulp build-docs",
-    "watch": "gulp watch",
-    "start": "webpack-dev-server --open --config ./webpack.dev.js"
+    "start": "gulp serve",
+    "dev": "gulp build && clientlib --verbose && aemsync -p ./../ui.apps/src/main/content/jcr_root/apps/asset-share-commons/clientlibs/clientlib-theme/semanticui-light"
   },
   "devDependencies": {
     "aem-clientlib-generator": "^1.4.3",
+    "aemsync": "^4.0.0",
     "autoprefixer": "^9.2.1",
     "browserslist": "^4.2.1",
     "gulp": "^3.9.1"
   },
   "dependencies": {
+    "browser-sync": "^2.26.7",
     "semantic-ui": "^2.4.2"
   },
   "browserslist": [

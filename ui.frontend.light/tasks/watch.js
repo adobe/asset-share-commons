@@ -4,6 +4,9 @@
 
 var
   gulp         = require('gulp-help')(require('gulp')),
+ 
+  // browser-sync dependencies
+  browserSync  = require('browser-sync').create(),
 
   // node dependencies
   console      = require('better-console'),
@@ -229,3 +232,13 @@ module.exports = function(callback) {
   ;
 
 };
+var browserSync = require('browser-sync').create();
+
+// Static server
+gulp.task('browser-sync', function() {
+  browserSync.init({
+      server: {
+          baseDir: "../../dist"
+      }
+  });
+});
