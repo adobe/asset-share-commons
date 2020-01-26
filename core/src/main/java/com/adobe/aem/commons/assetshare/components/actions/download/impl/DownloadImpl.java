@@ -24,6 +24,8 @@ import com.adobe.aem.commons.assetshare.components.actions.AssetDownloadHelper;
 import com.adobe.aem.commons.assetshare.components.actions.download.Download;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.cq.wcm.core.components.models.form.Options;
+import com.adobe.cq.export.json.ComponentExporter;
+import com.adobe.cq.export.json.ExporterConstants;
 import com.day.cq.dam.commons.util.UIHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -36,6 +38,7 @@ import org.apache.sling.models.factory.ModelFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,12 +47,15 @@ import java.util.List;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
+        adapters = {Download.class, ComponentExporter.class},
+        resourceType = {DownloadImpl.RESOURCE_TYPE}
         adapters = {Download.class},
-        resourceType = {DownloadImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
-public class DownloadImpl implements Download {
+@Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
 
+public class DownloadImpl implements Download, ComponentExporter {
+	
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/modals/download";
     private static final Logger log = LoggerFactory.getLogger(DownloadImpl.class);
     private static final long DEFAULT_SIZE_LIMIT = -1L;
@@ -197,5 +203,11 @@ public class DownloadImpl implements Download {
         } else {
             this.downloadContentSize = DEFAULT_SIZE_LIMIT;
         }
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }

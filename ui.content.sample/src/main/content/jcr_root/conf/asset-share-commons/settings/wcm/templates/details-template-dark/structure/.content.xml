@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="cq:Page">
+    <jcr:content
+        cq:lastModified="{Date}2017-10-16T18:46:12.390-04:00"
+        cq:lastModifiedBy="admin"
+        cq:template="/conf/asset-share-commons/settings/wcm/templates/details-template-dark"
+        jcr:primaryType="cq:PageContent"
+        sling:resourceType="asset-share-commons/components/structure/details-page">
+        <root
+            jcr:primaryType="nt:unstructured"
+            sling:resourceType="asset-share-commons/components/structure/root">
+            <rail
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="wcm/foundation/components/responsivegrid">
+                <cq:responsive jcr:primaryType="nt:unstructured"/>
+                <user_menu
+                    jcr:created="{Date}2017-10-16T18:45:29.623-04:00"
+                    jcr:createdBy="admin"
+                    jcr:lastModified="{Date}2017-10-16T18:45:29.623-04:00"
+                    jcr:lastModifiedBy="admin"
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="asset-share-commons/components/structure/user-menu"/>
+                <responsivegrid
+                    jcr:created="{Date}2017-10-16T18:45:44.791-04:00"
+                    jcr:createdBy="admin"
+                    jcr:lastModified="{Date}2017-10-16T18:45:44.791-04:00"
+                    jcr:lastModifiedBy="admin"
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="wcm/foundation/components/responsivegrid"
+                    editable="{Boolean}true">
+                    <cq:responsive jcr:primaryType="nt:unstructured"/>
+                </responsivegrid>
+            </rail>
+            <main
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="wcm/foundation/components/responsivegrid">
+                <cq:responsive jcr:primaryType="nt:unstructured"/>
+                <header
+                    jcr:created="{Date}2017-10-16T18:44:10.499-04:00"
+                    jcr:createdBy="admin"
+                    jcr:lastModified="{Date}2017-10-16T18:44:10.499-04:00"
+                    jcr:lastModifiedBy="admin"
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="asset-share-commons/components/structure/header"/>
+                <responsivegrid
+                    jcr:created="{Date}2017-10-16T18:44:14.288-04:00"
+                    jcr:createdBy="admin"
+                    jcr:lastModified="{Date}2017-10-16T18:44:14.288-04:00"
+                    jcr:lastModifiedBy="admin"
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="wcm/foundation/components/responsivegrid"
+                    editable="{Boolean}true">
+                    <cq:responsive jcr:primaryType="nt:unstructured"/>
+                </responsivegrid>
+                <footer
+                    jcr:created="{Date}2017-10-16T18:46:12.387-04:00"
+                    jcr:createdBy="admin"
+                    jcr:lastModified="{Date}2017-10-16T18:46:12.387-04:00"
+                    jcr:lastModifiedBy="admin"
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="asset-share-commons/components/structure/footer"/>
+            </main>
+        </root>
+        <cq:responsive jcr:primaryType="nt:unstructured">
+            <breakpoints jcr:primaryType="nt:unstructured">
+                <phone
+                    jcr:primaryType="nt:unstructured"
+                    title="Smaller Screen"
+                    width="{Long}650"/>
+                <tablet
+                    jcr:primaryType="nt:unstructured"
+                    title="Tablet"
+                    width="{Long}1200"/>
+            </breakpoints>
+        </cq:responsive>
+    </jcr:content>
+</jcr:root>

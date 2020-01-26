@@ -30,6 +30,7 @@ import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.injectorspecific.ScriptVariable;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -45,6 +46,8 @@ public class MessagesImpl implements Messages {
     private static final String PN_MESSAGE_LABEL = "label";
     private static final String PN_MESSAGE_TEXT = "text";
     private static final String PN_MESSAGE_EVENT_ID = "eventId";
+
+    protected static final String RESOURCE_TYPE = "asset-share-commons/components/configuration/messages";
 
     @Self
     private SlingHttpServletRequest request;
@@ -101,5 +104,11 @@ public class MessagesImpl implements Messages {
     @Override
     public boolean isReady() {
         return !getMessages().isEmpty();
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }

@@ -161,7 +161,7 @@
                         jcr:primaryType="nt:unstructured"
                         jcr:title="Footer Text Policy"
                         sling:resourceType="wcm/core/components/policy/policy"
-                        text="&amp;copy; ADOBE SYSTEMS INC. 2017">
+                        text="&amp;copy; 2020 ADOBE">
                         <jcr:content jcr:primaryType="nt:unstructured"/>
                     </policy_1507064728495>
                 </footer>

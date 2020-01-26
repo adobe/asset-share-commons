@@ -2,7 +2,7 @@
 <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:mix="http://www.jcp.org/jcr/mix/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
     jcr:primaryType="cq:Page">
     <jcr:content
-        cq:deviceGroups="[/etc/mobile/groups/responsive]"
+        cq:deviceGroups="[mobile/groups/responsive]"
         cq:lastModified="{Date}2017-10-03T16:03:09.266-04:00"
         cq:lastModifiedBy="admin"
         cq:template="/conf/asset-share-commons/settings/wcm/templates/search-template"
@@ -65,7 +65,7 @@
                     jcr:lastModifiedBy="admin"
                     jcr:primaryType="nt:unstructured"
                     sling:resourceType="asset-share-commons/components/structure/footer"
-                    text="&lt;a href=&quot;#&quot;>&amp;copy; ADOBE SYSTEMS INC. 2017&lt;/a>"/>
+                    text="&lt;a href=&quot;#&quot;>&amp;copy; 2020 ADOBE.&lt;/a>"/>
             </main>
         </root>
         <cq:responsive jcr:primaryType="nt:unstructured">

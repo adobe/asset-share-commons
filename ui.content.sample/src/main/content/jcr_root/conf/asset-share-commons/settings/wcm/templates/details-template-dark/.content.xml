@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:Template">
+    <jcr:content
+        cq:lastModified="{Date}2017-10-16T18:48:40.892-04:00"
+        cq:lastModifiedBy="admin"
+        cq:templateType="/conf/asset-share-commons/settings/wcm/template-types/details-page"
+        jcr:description="Asset details page with Dark theme."
+        jcr:primaryType="cq:PageContent"
+        jcr:title="Asset Details Template Dark"
+        status="enabled"/>
+</jcr:root>

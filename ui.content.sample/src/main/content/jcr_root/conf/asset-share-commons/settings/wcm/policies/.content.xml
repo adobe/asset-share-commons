@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0" xmlns:rep="internal"
+    jcr:mixinTypes="[rep:AccessControllable]"
+    jcr:primaryType="cq:Page">
+    <wcm jcr:primaryType="nt:unstructured">
+        <foundation jcr:primaryType="nt:unstructured">
+            <components jcr:primaryType="nt:unstructured">
+                <responsivegrid jcr:primaryType="nt:unstructured">
+                    <policy_10069721106623
+                        jcr:lastModified="{Date}2017-10-16T18:44:04.422-04:00"
+                        jcr:lastModifiedBy="admin"
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Asset Share Commons - Structure"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        components="[/libs/wcm/foundation/components/responsivegrid,group:Asset Share Commons - Structure]">
+                        <jcr:content
+                            jcr:primaryType="nt:unstructured"/>
+                    </policy_10069721106623>
+                    <policy_10145173992105
+                        jcr:lastModified="{Date}2017-10-16T18:29:41.604-04:00"
+                        jcr:lastModifiedBy="admin"
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Asset Share Commons - Search"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        components="[/libs/wcm/foundation/components/responsivegrid,group:Asset Share Commons - Content,group:Asset Share Commons - Search]">
+                        <jcr:content
+                            jcr:primaryType="nt:unstructured"/>
+                    </policy_10145173992105>
+                    <policy_1504902064537
+                        jcr:lastModified="{Date}2017-09-12T21:36:28.974-04:00"
+                        jcr:lastModifiedBy="admin"
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Asset Share Commons - Modals"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        components="[group:Asset Share Commons - Modals]">
+                        <jcr:content
+                            jcr:primaryType="nt:unstructured"/>
+                    </policy_1504902064537>
+                    <policy_1505268753836
+                        jcr:lastModified="{Date}2017-10-16T18:45:56.972-04:00"
+                        jcr:lastModifiedBy="admin"
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Asset Share Commons - Asset Details"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        components="[group:Asset Share Commons - Content,group:Asset Share Commons - Details]">
+                        <jcr:content
+                            jcr:primaryType="nt:unstructured"/>
+                    </policy_1505268753836>
+                    <policy_32005087383376
+                        jcr:lastModified="{Date}2017-10-06T10:38:56.117-04:00"
+                        jcr:lastModifiedBy="admin"
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Asset Share Commons - Content"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        components="[/libs/wcm/foundation/components/responsivegrid,group:Asset Share Commons - Content]">
+                        <jcr:content
+                            jcr:primaryType="nt:unstructured"/>
+                        <cq:authoring jcr:primaryType="nt:unstructured">
+                            <assetToComponentMapping jcr:primaryType="nt:unstructured">
+                                <mapping_1506985705020
+                                    jcr:primaryType="nt:unstructured"
+                                    assetGroup="media"
+                                    assetMimetype="[image/gif,image/jpeg,image/png,image/webp,image/tiff]"
+                                    droptarget="image"
+                                    resourceType="asset-share-commons/components/content/image"/>
+                            </assetToComponentMapping>
+                        </cq:authoring>
+                    </policy_32005087383376>
+                </responsivegrid>
+            </components>
+        </foundation>
+    </wcm>
+    <asset-share-commons jcr:primaryType="nt:unstructured">
+        <components jcr:primaryType="nt:unstructured">
+            <structure jcr:primaryType="nt:unstructured">
+                <search-page jcr:primaryType="nt:unstructured">
+                    <policy_1505596518330
+                        jcr:lastModified="{Date}2017-10-13T10:25:43.508-04:00"
+                        jcr:lastModifiedBy="admin"
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Light Theme"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        clientlibs="asset-share-commons.semantic-ui-light">
+                        <jcr:content
+                            jcr:primaryType="nt:unstructured"/>
+                    </policy_1505596518330>
+                    <policy_1507903461206
+                        jcr:lastModified="{Date}2017-10-16T18:27:13.392-04:00"
+                        jcr:lastModifiedBy="admin"
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Dark Theme"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        clientlibs="asset-share-commons.semantic-ui-dark">
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
+                    </policy_1507903461206>
+                </search-page>
+                <responsivegrid jcr:primaryType="nt:unstructured">
+                    <policy_1505677994332
+                        jcr:lastModified="{Date}2017-09-17T15:58:26.442-04:00"
+                        jcr:lastModifiedBy="admin"
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Rail Content"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        components="[/libs/wcm/foundation/components/responsivegrid,group:Asset Share Commons - Structure]">
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
+                    </policy_1505677994332>
+                </responsivegrid>
+                <rail jcr:primaryType="nt:unstructured">
+                    <policy_1505681285132
+                        jcr:lastModified="{Date}2017-09-17T17:08:15.768-04:00"
+                        jcr:lastModifiedBy="admin"
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Rail Structure"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        components="[/libs/wcm/foundation/components/responsivegrid,/apps/asset-share-commons/components/structure/cart]">
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
+                    </policy_1505681285132>
+                </rail>
+                <page jcr:primaryType="nt:unstructured">
+                    <policy_1505683782054
+                        jcr:lastModified="{Date}2017-10-13T10:25:29.334-04:00"
+                        jcr:lastModifiedBy="admin"
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Light Theme"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        clientlibs="asset-share-commons.semantic-ui-light">
+                        <jcr:content
+                            jcr:primaryType="nt:unstructured"/>
+                    </policy_1505683782054>
+                    <policy_1507904573557
+                        jcr:lastModified="{Date}2017-10-13T10:25:05.473-04:00"
+                        jcr:lastModifiedBy="admin"
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Dark Theme"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        clientlibs="asset-share-commons.semantic-ui-dark">
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
+                    </policy_1507904573557>
+                </page>
+                <header jcr:primaryType="nt:unstructured"/>
+                <user-menu jcr:primaryType="nt:unstructured">
+                    <policy_1507063443964
+                        jcr:lastModified="{Date}2017-10-16T18:45:36.958-04:00"
+                        jcr:lastModifiedBy="admin"
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="User Menu Policy"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        greeting="Hello, "
+                        logInLabel="Log In"
+                        logInLink="#"
+                        logOutLabel="Log Out"
+                        logOutLink="#"
+                        showLabels="true">
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
+                    </policy_1507063443964>
+                </user-menu>
+                <footer jcr:primaryType="nt:unstructured">
+                    <policy_1507064728495
+                        jcr:lastModified="{Date}2017-10-16T18:49:02.553-04:00"
+                        jcr:lastModifiedBy="admin"
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Footer Text Policy"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        text="&amp;copy; ADOBE SYSTEMS INC. 2017">
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
+                    </policy_1507064728495>
+                </footer>
+                <details-page jcr:primaryType="nt:unstructured">
+                    <policy_1507903894205
+                        jcr:lastModified="{Date}2017-10-16T18:43:31.014-04:00"
+                        jcr:lastModifiedBy="admin"
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Dark Theme"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        clientlibs="asset-share-commons.semantic-ui-dark">
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
+                    </policy_1507903894205>
+                    <policy_1507904632283
+                        jcr:lastModified="{Date}2017-10-13T10:24:06.448-04:00"
+                        jcr:lastModifiedBy="admin"
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Light Theme"
+                        sling:resourceType="wcm/core/components/policy/policy"
+                        clientlibs="asset-share-commons.semantic-ui-light">
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
+                    </policy_1507904632283>
+                </details-page>
+            </structure>
+        </components>
+    </asset-share-commons>
+    <rep:policy/>
+</jcr:root>

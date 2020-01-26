@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:mix="http://www.jcp.org/jcr/mix/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="cq:Page">
+    <jcr:content
+        cq:lastModified="{Date}2017-10-13T10:24:06.451-04:00"
+        cq:lastModifiedBy="admin"
+        cq:policy="asset-share-commons/components/structure/details-page/policy_1507904632283"
+        jcr:isCheckedOut="{Boolean}true"
+        jcr:mixinTypes="[mix:versionable]"
+        jcr:primaryType="nt:unstructured"
+        jcr:uuid="131eb56b-d8b8-4d17-a895-45867ae552cc"
+        sling:resourceType="wcm/core/components/policies/mappings">
+        <root jcr:primaryType="nt:unstructured">
+            <main
+                cq:policy="wcm/foundation/components/responsivegrid/policy_10069721106623"
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="wcm/core/components/policies/mapping">
+                <responsivegrid
+                    cq:policy="wcm/foundation/components/responsivegrid/policy_1505268753836"
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="wcm/core/components/policies/mapping"/>
+                <footer
+                    cq:policy="asset-share-commons/components/structure/footer/policy_1507064728495"
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="wcm/core/components/policies/mapping"/>
+            </main>
+            <rail
+                cq:policy="wcm/foundation/components/responsivegrid/policy_10069721106623"
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="wcm/core/components/policies/mapping">
+                <responsivegrid
+                    cq:policy="wcm/foundation/components/responsivegrid/policy_1505268753836"
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="wcm/core/components/policies/mapping"/>
+                <user_menu
+                    cq:policy="asset-share-commons/components/structure/user-menu/policy_1507063443964"
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="wcm/core/components/policies/mapping"/>
+            </rail>
+        </root>
+    </jcr:content>
+</jcr:root>
