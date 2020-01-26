@@ -22,7 +22,7 @@ jQuery((function($) {
     "use strict";
 
     (function() {
-        $('.cmp-details-image .cmp-details-image__image[data-asset-share-fallback]').error(function() {
+        $('.cmp-details-image .cmp-details-image__image[data-asset-share-fallback]').on('error', function(){
             var element = $(this),
                 fallback = element.data('asset-share-fallback');
 
