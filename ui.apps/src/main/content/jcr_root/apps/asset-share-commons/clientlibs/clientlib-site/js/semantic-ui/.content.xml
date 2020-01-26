@@ -21,7 +21,6 @@
     jcr:primaryType="cq:ClientLibraryFolder"
     allowProxy="{Boolean}true"
     categories="[asset-share-commons.site.semantic-ui,asset-share-commons.site.semantic-ui.modal]"
-    dependencies="[asset-share-commons.common]"
     jsProcessor="[min:gcc,default:none]"/>
 
 <!-- NOTE: This has a dependency on the SemanticUI JS; However because this JS is exposed via Themes, and we dont know what Theme is being used, we can't target the clientlib category -->
