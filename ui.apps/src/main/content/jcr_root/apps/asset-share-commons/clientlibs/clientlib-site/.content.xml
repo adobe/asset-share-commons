@@ -21,4 +21,5 @@
     jcr:primaryType="cq:ClientLibraryFolder"
     allowProxy="{Boolean}true"
     categories="[asset-share-commons.site,asset-share-commons.common]"
+    dependencies="[jquery]"
     jsProcessor="[min:gcc,default:none]"/>
