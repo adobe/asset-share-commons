@@ -48,8 +48,7 @@ import java.util.List;
 @Model(
         adaptables = {SlingHttpServletRequest.class},
         adapters = {Download.class, ComponentExporter.class},
-        resourceType = {DownloadImpl.RESOURCE_TYPE}
-        adapters = {Download.class},
+        resourceType = {DownloadImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
 @Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
