@@ -21,3 +21,5 @@ exclude_patterns:
 - "**/apps/asset-share-commons/resources/"
 - "**/content/dam/"
 - "**/content/asset-share-commons/"
+- "ui.frontend.light/src/definitions/"
+- "ui.frontent.light/tasks/"
