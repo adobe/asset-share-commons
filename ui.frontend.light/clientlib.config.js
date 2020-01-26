@@ -10,6 +10,7 @@ module.exports = {
         allowProxy: true,
         categories: ["asset-share-commons.semantic-ui-light"],
         embed: ["asset-share-commons.site.semantic-ui","asset-share-commons.site.semantic-ui.components"],
+        dependencies: ["asset-share-commons.base"],
         serializationFormat: "xml",
         cssProcessor : ["default:none", "min:none"],
         jsProcessor: ["default:none", "min:none"],
