@@ -22,7 +22,7 @@
 /* Below is a condensed list of variables for easy updating of the theme */
 
 /* Color Palette */
-@primaryColor      : #2FCC9C;
+@primaryColor      : #FFC0CB;
 @secondaryColor    : #505050;
 
 /* Custom Neutrals */
@@ -53,7 +53,7 @@
 @linkHoverColor      : @primaryColor;
 
 /* Buttons */
-@buttonPrimaryColor      : #2FCC9C; /* must be a value to prevent variable recursion*/
+@buttonPrimaryColor      : #FFC0CB; /* must be a value to prevent variable recursion*/
 @buttonPrimaryColorHover : saturate(darken(@buttonPrimaryColor, 5), 10, relative);
 
 /* Filters (Checkboxes,radio buttons, toggle, slider, dropdown, accordion colors)*/

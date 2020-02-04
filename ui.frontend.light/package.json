@@ -1,29 +1,38 @@
 {
   "name": "asset-share-commons-light",
   "version": "1.0.0",
-  "description": "Asset Share Commons Light Theme",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Adobe-Marketing-Cloud/asset-share-commons"
-  },
-  "private": true,
-  "main": "src/theme.config",
-  "license": "SEE LICENSE IN LICENSE.txt",
+  "description": "Asset Share Commons light theme based on Fomantic UI",
+  "main": "src/them.config",
   "scripts": {
     "prod": "gulp build && clientlib --verbose",
-    "start": "gulp serve",
     "dev": "gulp build && clientlib --verbose && aemsync -p ./../ui.apps/src/main/content/jcr_root/apps/asset-share-commons/clientlibs/clientlib-theme/semanticui-light"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Adobe-Marketing-Cloud/asset-share-commons.git"
+  },
+  "keywords": [
+    "aem",
+    "assets",
+    "share",
+    "semantic",
+    "fomantic"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Adobe-Marketing-Cloud/asset-share-commons/issues"
+  },
+  "homepage": "https://github.com/Adobe-Marketing-Cloud/asset-share-commons#readme",
+  "dependencies": {
+    "fomantic-ui": "^2.8.3"
   },
   "devDependencies": {
     "aem-clientlib-generator": "^1.4.3",
     "aemsync": "^4.0.0",
     "autoprefixer": "^9.2.1",
     "browserslist": "^4.2.1",
-    "gulp": "^3.9.1"
-  },
-  "dependencies": {
-    "browser-sync": "^2.26.7",
-    "semantic-ui": "^2.4.2"
+    "gulp": "^4.0.2"
   },
   "browserslist": [
     "last 2 version",

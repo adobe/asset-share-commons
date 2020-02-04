@@ -1,5 +1,5 @@
 /*******************************
-            Calendar
+           Calendar
 *******************************/
 
 @focusBoxShadow: inset 0 0 0 1px @focusedFormBorderColor;
@@ -13,3 +13,6 @@
 @rangeInvertedBackground: @transparentWhite;
 @rangeInvertedTextColor: @invertedSelectedTextColor;
 @rangeInvertedBoxShadow: none;
+
+@adjacentTextColor: @mutedTextColor;
+@adjacentBackground: @subtleTransparentBlack;
