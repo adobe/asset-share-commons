@@ -3,82 +3,55 @@
 const path                    = require('path');
 const webpack                 = require('webpack');
 const MiniCssExtractPlugin    = require("mini-css-extract-plugin");
-const TSConfigPathsPlugin     = require('tsconfig-paths-webpack-plugin');
-const TSLintPlugin            = require('tslint-webpack-plugin');
-const CopyWebpackPlugin       = require('copy-webpack-plugin');
 const { CleanWebpackPlugin }  = require('clean-webpack-plugin');
-
-const SOURCE_ROOT = __dirname + '/src/main/webpack';
 
 module.exports = {
         resolve: {
-            extensions: ['.js', '.ts'],
-            plugins: [new TSConfigPathsPlugin({
-                configFile: "./tsconfig.json"
-            })]
+            alias: {
+                '../../theme.config$': path.join(__dirname, 'light-theme/theme.config')  
+            }
         },
         entry: {
-            site: SOURCE_ROOT + '/site/main.ts',
-            dependencies: SOURCE_ROOT + '/site/vendors.js'
+            site: __dirname + '/src/index.js'
         },
         output: {
-            filename: (chunkData) => {
-                return chunkData.chunk.name === 'dependencies' ? 'clientlib-dependencies/[name].js' : 'clientlib-site/[name].js';
-            },
+            filename: 'semanticui-light/js/[name].bundle.js',
             path: path.resolve(__dirname, 'dist')
+        },
+        optimization: {
+            splitChunks: {
+                   chunks: 'all'
+                 }
         },
         module: {
             rules: [
                 {
-                    test: /\.tsx?$/,
-                    exclude: [
-                        /(node_modules)/
-                    ],
+                    test: /\.less$/,
                     use: [
-                        {
-                            loader: "ts-loader"
-                        },
-                        {
-                            loader: "webpack-import-glob-loader",
-                            options: {
-                                url: false
-                            }
-                        }
+                      {
+                        loader: MiniCssExtractPlugin.loader
+                      },
+                      'css-loader',
+                      'less-loader'
                     ]
                 },
+                 // this rule handles images
                 {
-                    test: /\.scss$/,
-                    use: [
-                        MiniCssExtractPlugin.loader,
-                        {
-                            loader: "css-loader",
-                            options: {
-                                url: false
-                            }
-                        },
-                        {
-                            loader: 'postcss-loader',
-                            options: {
-                                plugins() {
-                                    return [
-                                        require('autoprefixer')
-                                    ];
-                                }
-                            }
-                        },
-                        {
-                            loader: "sass-loader",
-                            options: {
-                                url: false
-                            }
-                        },
-                        {
-                            loader: "webpack-import-glob-loader",
-                            options: {
-                                url: false
-                            }
-                        }
-                    ]
+                    test: /\.jpe?g$|\.gif$|\.ico$|\.png$|\.svg$/,
+                    use: 'file-loader?name=../resources/images/[name].[ext]?[hash]'
+                },
+                // the following 3 rules handle font extraction
+                {
+                    test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                    loader: 'file-loader?name=../resources/fonts/[name].[ext]&mimetype=application/font-woff'
+                },
+                {
+                    test: /\.(ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                    loader: 'file-loader?name=../resources/fonts/[name].[ext]'
+                },
+                {
+                test: /\.otf(\?.*)?$/,
+                use: 'file-loader?name=../resources/fonts/[name].[ext]&mimetype=application/font-otf'
                 }
             ]
         },
@@ -86,15 +59,8 @@ module.exports = {
             new CleanWebpackPlugin(),
             new webpack.NoEmitOnErrorsPlugin(),
             new MiniCssExtractPlugin({
-                filename: 'clientlib-[name]/[name].css'
-            }),
-            new TSLintPlugin({
-                files: [SOURCE_ROOT + '/**/*.ts', SOURCE_ROOT + '/**/*.tsx'],
-                config: './tslint.json'
-            }),
-            new CopyWebpackPlugin([
-                { from: path.resolve(__dirname, SOURCE_ROOT + '/resources'), to: './clientlib-site/resources' }
-            ]) 
+                filename: 'semanticui-light/css/[name].bundle.css'
+            })
         ],
         stats: {
             assetsSort: "chunks",

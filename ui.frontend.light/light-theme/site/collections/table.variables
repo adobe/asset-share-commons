@@ -1,0 +1,33 @@
+/*******************************
+             Table
+*******************************/
+
+/*-------------------
+       Element
+--------------------*/
+@borderRadius: 0; // Override
+@background: transparent; // Override
+@borderWidth: 0; // Override
+
+
+/*--------------
+     Parts
+---------------*/
+
+/* Table Row */
+@rowBorder: 0;
+
+/* Table Cell */
+@cellVerticalPadding: @relativeLarge; // Override
+@cellHorizontalPadding: @relativeLarge; // Override
+@cellBorder: 1px solid @offWhite;
+
+/* Table Header */
+@headerBorder: 0; // Override
+@headerBackground: transparent; // Override
+@headerFontWeight: normal; // Override
+@headerTextTransform: uppercase; // Override
+
+/* Table Footer */
+
+@footerBackground: transparent; // Override

@@ -1,0 +1,92 @@
+/*******************************
+    CARD User Variable Overrides
+*******************************/
+
+.ui.card {
+  .grid {
+    .column {
+      margin-right: 0 !important;
+      padding: 0;
+    }
+  }
+
+  .image img {
+    object-fit: cover;
+    object-position: center;
+    max-height: 15em;
+  }
+
+  h3.header:not(.ui) {
+    margin: 1em 0 2em 0 !important;
+    font-weight: normal !important;
+	float:left;
+	width: 100%;
+    &:hover {
+      color: @textColor !important;
+    }
+    a {
+    	text-overflow: ellipsis;
+    	overflow: hidden;
+    	width: 100%;
+    	float: left;
+    	padding-bottom: .25em;
+    	word-wrap:break-word;
+    }
+  }
+
+  .meta {
+    text-align: left;
+    text-transform: uppercase;
+    
+    .property {
+    	float:left;
+    	&.two {
+    		width:48%;
+    	}
+    	
+    	&.three {
+    		width:32%;
+    	}
+    	
+    	.value {
+    		width:100%;
+    		float:left;
+    		margin-top:.5em;
+    	}
+    	
+    }
+
+    span {
+      color: @textColor;
+    }
+   
+  }
+
+  .extra {
+    margin-bottom: 2em !important;
+    
+    .divider {
+    	margin-top: .5rem;
+    }
+
+    .link.button {
+      text-transform: uppercase;
+      font-size: 1em;
+    }
+
+    .center.aligned * {
+      text-align: center;
+    }
+
+    .right.aligned * {
+      text-align: right;
+    }
+    
+    .action {
+    	margin-right: .8em;
+    }
+    .action:last-child {
+   		margin-right: 0em;
+   } 
+  }
+}

@@ -1,0 +1,39 @@
+
+/*--- Primary Color ---*/
+@primaryTextColor: @white;
+@primaryHoverTextColor: @white;
+
+.ui.primary.labels .label,
+.ui.primary.label {
+  background-color: @labelPrimaryColor !important;
+  border-color: @labelPrimaryColor !important;
+  color: @primaryTextColor !important;
+}
+/* Link */
+.ui.primary.labels .label:hover,
+a.ui.primary.label:hover{
+  background-color: @linkHoverColor !important;
+  border-color: @linkHoverColor !important;
+  color: @linkHoverColor !important;
+}
+/* Corner */
+.ui.primary.corner.label,
+.ui.primary.corner.label:hover {
+  background-color: transparent !important;
+}
+/* Ribbon */
+.ui.primary.ribbon.label {
+  border-color: @labelPrimaryColorHover !important;
+}
+/* Basic */
+.ui.basic.primary.label {
+  background-color: @white !important;
+  color: @labelPrimaryColor !important;
+  border-color: @labelPrimaryColor !important;
+}
+.ui.basic.primary.labels a.label:hover,
+a.ui.basic.primary.label:hover {
+  background-color: @white !important;
+  color: @labelPrimaryColorHover !important;
+  border-color: @labelPrimaryColorHover !important;
+}

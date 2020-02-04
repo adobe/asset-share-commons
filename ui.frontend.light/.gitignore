@@ -5,3 +5,9 @@ node_modules/
 npm-debug.log
 package-lock.json
 install.js
+
+# packaged css and js
+dist/
+
+# processed resources
+resources/
