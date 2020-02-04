@@ -1,4 +1,0 @@
-
-.ui.sidebar {
-	background-color: @sideBarBackground;
-}
