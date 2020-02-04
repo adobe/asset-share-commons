@@ -41,7 +41,10 @@
   },
   "dependencies": {
     "fomantic-ui-less": "^2.8.3",
-    "jquery": "^3.4.1"
+    "formdata-polyfill": "^3.0.19",
+    "jquery": "^3.4.1",
+    "modernizr": "^3.9.0",
+    "moment": "^2.24.0"
   },
   "browserslist": [
     "last 2 version",
