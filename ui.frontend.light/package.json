@@ -4,7 +4,7 @@
   "description": "Asset Share Commons light theme based on Fomantic UI",
   "main": "src/them.config",
   "scripts": {
-    "prod": "gulp build && clientlib --verbose",
+    "prod": "clientlib --verbose",
     "dev": "gulp build && clientlib --verbose && aemsync -p ./../ui.apps/src/main/content/jcr_root/apps/asset-share-commons/clientlibs/clientlib-theme/semanticui-light"
   },
   "repository": {
