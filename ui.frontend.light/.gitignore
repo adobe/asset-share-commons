@@ -15,6 +15,8 @@ src/definitions/
 tasks/
 
 # ignore all themes
-src/themes/
+src/themes/*
+
 #but keep light
 !src/themes/light/
+

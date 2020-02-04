@@ -19,6 +19,8 @@
          Theme Variables
 *******************************/
 
+@import "variation.variables";
+
 /* Below is a condensed list of variables for easy updating of the theme */
 
 /* Color Palette */
