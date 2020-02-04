@@ -5,10 +5,14 @@ node_modules/
 npm-debug.log
 package-lock.json
 
+# ignore compiled css and javascript
 dist/
 
 # ignore fomantic-ui definitions
 src/definitions/
+
+# ignore fomancit-ui gulp tasks
+tasks/
 
 # ignore all themes
 src/themes/
