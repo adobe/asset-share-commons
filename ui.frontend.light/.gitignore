@@ -6,3 +6,11 @@ npm-debug.log
 package-lock.json
 
 dist/
+
+# ignore fomantic-ui definitions
+src/definitions/
+
+# ignore all themes
+src/themes/
+#but keep light
+!src/themes/light/
