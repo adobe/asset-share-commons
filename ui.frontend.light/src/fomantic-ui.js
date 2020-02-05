@@ -1,3 +1,6 @@
+// jQuery
+var jQuery = require("jquery");
+
 /* Import Fomantic UI JS from Definitions folder */
 
 /* Global */
