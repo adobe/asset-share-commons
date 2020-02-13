@@ -22,6 +22,7 @@ package com.adobe.aem.commons.assetshare.content.impl;
 import com.adobe.aem.commons.assetshare.configuration.Config;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.AssetResolver;
+import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionServlet;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.DamConstants;
 import com.day.cq.dam.commons.util.DamUtil;
