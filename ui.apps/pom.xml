@@ -60,7 +60,7 @@
                     <repositoryStructurePackages>
                         <repositoryStructurePackage>
                             <groupId>com.adobe.aem.commons</groupId>
-                            <artifactId>assetshare.repository-structure</artifactId>
+                            <artifactId>ui.apps.structure</artifactId>
                         </repositoryStructurePackage>
                     </repositoryStructurePackages>
                     <embeddeds>
@@ -115,7 +115,13 @@
         </dependency>
         <dependency>
             <groupId>com.adobe.aem.commons</groupId>
-            <artifactId>assetshare.repository-structure</artifactId>
+            <artifactId>ui.apps.structure</artifactId>
+            <version>${project.version}</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>com.adobe.aem.commons</groupId>
+            <artifactId>assetshare.ui.frontend.theme.light</artifactId>
             <version>${project.version}</version>
             <type>zip</type>
         </dependency>
