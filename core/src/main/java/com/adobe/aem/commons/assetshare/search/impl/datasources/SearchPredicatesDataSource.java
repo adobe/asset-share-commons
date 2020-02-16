@@ -46,7 +46,7 @@ import java.util.TreeMap;
 public class SearchPredicatesDataSource extends SlingSafeMethodsServlet {
 
     @Reference
-    private DataSourceBuilder dataSourceBuilder;
+    private transient DataSourceBuilder dataSourceBuilder;
 
     @Reference(
             cardinality = ReferenceCardinality.MULTIPLE,

@@ -71,11 +71,11 @@ public class CartImpl implements Cart, ComponentExporter {
     }
 
     public Collection<AssetModel> getAssets() {
-        return assets;
+        return new ArrayList<>(assets);
     }
 
     public Collection<String> getPaths() {
-        return paths;
+        return new ArrayList<>(paths);
     }
 
     @Nonnull

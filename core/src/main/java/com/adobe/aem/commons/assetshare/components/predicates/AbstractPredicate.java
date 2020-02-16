@@ -24,6 +24,7 @@ import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.day.cq.wcm.commons.WCMUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.Default;
 import org.apache.sling.models.annotations.Required;
@@ -99,7 +100,7 @@ public abstract class AbstractPredicate implements Predicate {
     }
 
     public String getId() {
-        if (request.getResource() != null) {
+        if (request.getResource() != null && !ResourceUtil.isNonExistingResource(request.getResource())) {
             return "cmp-" + getName() + "_" + String.valueOf(request.getResource().getPath().hashCode());
         } else {
             return "cmp-" + coreField.getId();
@@ -163,6 +164,7 @@ public abstract class AbstractPredicate implements Predicate {
      *
      * @param request the current SlingHttpServletRequest object.
      */
+    @SuppressWarnings("AEM Rules:AEM-15")
     protected synchronized final void initGroup(final SlingHttpServletRequest request) {
         /* Track Predicate Groups across Request */
 

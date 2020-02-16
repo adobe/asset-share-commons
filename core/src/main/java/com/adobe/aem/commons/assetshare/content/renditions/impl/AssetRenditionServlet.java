@@ -68,9 +68,9 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
     public static final String SERVLET_EXTENSION = "renditions";
 
     @Reference
-    private AssetRenditions assetRenditions;
+    private transient AssetRenditions assetRenditions;
 
-    private Set allowedParameters = new HashSet();
+    private transient Set allowedParameters = new HashSet();
 
     public final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) throws IOException, ServletException {
         try {
@@ -94,7 +94,7 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unsupported suffix parameters detected.");
             }
         } catch (IllegalArgumentException e) {
-            log.debug("Invalid request URL format for AssetRenditionServlet.", e);
+            log.warn("Invalid request URL format for AssetRenditionServlet.", e);
 
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR , "Invalid request URL format for AssetRenditionServlet.");
         }
