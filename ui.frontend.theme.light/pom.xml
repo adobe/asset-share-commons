@@ -31,10 +31,9 @@
     <!-- ====================================================================== -->
     <!-- P R O J E C T  D E S C R I P T I O N                                   -->
     <!-- ====================================================================== -->
-    <artifactId>assetshare.ui.frontend.light</artifactId>
+    <artifactId>assetshare.ui.frontend.theme.light</artifactId>
     <packaging>pom</packaging>
-    <name>Asset Share Commons - UI Frontend Light Theme</name>
-
+    <name>Asset Share Commons - UI Frontend - Light Theme</name>
 
     <!-- ====================================================================== -->
     <!-- B U I L D   D E F I N I T I O N                                        -->

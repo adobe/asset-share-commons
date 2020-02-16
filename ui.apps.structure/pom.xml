@@ -15,7 +15,7 @@
     <!-- ====================================================================== -->
     <!-- P R O J E C T  D E S C R I P T I O N                                   -->
     <!-- ====================================================================== -->
-    <artifactId>assetshare.repository-structure</artifactId>
+    <artifactId>ui.apps.structure</artifactId>
     <packaging>content-package</packaging>
     <name>asset-share-commons - Repository Structure Package</name>
     <description>
