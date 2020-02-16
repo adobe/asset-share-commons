@@ -17,7 +17,7 @@
     <!-- ====================================================================== -->
     <artifactId>ui.apps.structure</artifactId>
     <packaging>content-package</packaging>
-    <name>asset-share-commons - Repository Structure Package</name>
+    <name>asset-share-commons - UI apps repository structure</name>
     <description>
         Empty package that defines the structure of the Adobe Experience Manager repository the Code packages in this project deploy into.
         Any roots in the Code packages of this project should have their parent enumerated in the Filters list below.
