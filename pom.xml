@@ -921,7 +921,8 @@
             <dependency>
                 <groupId>org.apache.sling</groupId>
                 <artifactId>org.apache.sling.testing.osgi-mock.junit4</artifactId>
-                <version>2.4.14</version>
+                <!-- Bumping this to 2.4.14 changes behavior in how mock context resolves ranked service, which breaks ComputedPropertiesTest -->
+                <version>2.4.10</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
