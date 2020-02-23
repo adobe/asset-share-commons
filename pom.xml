@@ -207,7 +207,7 @@
                     </dependencies>
                     <configuration>
                         <parallel>methods</parallel>
-                        <threadCount>1</threadCount>
+                        <threadCount>5</threadCount>
                     </configuration>
                 </plugin>
                 <!-- Maven Failsafe Plugin -->
@@ -357,8 +357,10 @@
                 <!-- Maven Javadoc Plugin -->
                 <plugin>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>2.9.1</version>
+                    <version>3.1.1</version>
                     <configuration>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                        <source>8</source>
                         <excludePackageNames>
                             *.impl
                         </excludePackageNames>
@@ -401,7 +403,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>findbugs-maven-plugin</artifactId>
-                    <version>3.0.0</version>
+                    <version>3.0.5</version>
                 </plugin>
                 <!-- Maven Checkstyle Plugin -->
                 <plugin>
@@ -566,9 +568,6 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <configuration>
-                            <encoding>${project.build.sourceEncoding}</encoding>
-                        </configuration>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
