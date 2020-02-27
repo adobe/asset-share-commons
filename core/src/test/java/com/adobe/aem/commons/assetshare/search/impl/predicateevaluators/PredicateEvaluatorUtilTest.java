@@ -1,10 +1,9 @@
 package com.adobe.aem.commons.assetshare.search.impl.predicateevaluators;
 
 import com.day.cq.search.Predicate;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.List;
 

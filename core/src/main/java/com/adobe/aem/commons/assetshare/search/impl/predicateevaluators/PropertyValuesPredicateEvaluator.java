@@ -33,8 +33,6 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.jcr.query.Row;
 import java.util.*;
@@ -47,14 +45,14 @@ import static java.util.Collections.emptyList;
 /**
  * The QueryBuilder predicate for this Sample would be structured like so...
  * <p>
- * type=cq:PageContent
- * path=/content
+ * type=cq:PageContent<br>
+ * path=/content<br>
  * <p>
- * propertyvalues.values=val1,val2
- * propertyvalues.delimiter=,
- * propertyvalues.XXX <- all other JcrPropertyPredicateEvaluator configs
+ * propertyvalues.values=val1,val2<br>
+ * propertyvalues.delimiter=,<br>
+ * propertyvalues.XXX &lt;- all other JcrPropertyPredicateEvaluator configs<br>
  * <p>
- * `values` is the list of values to break out into OOTB property.#_property=value[#]
+ * `values` is the list of values to break out into OOTB property.#_property=value[#]<br>
  * `delimiter` is the delimiter which is used to split the values string
  */
 @Component(
@@ -64,8 +62,6 @@ import static java.util.Collections.emptyList;
         ocd = PropertyValuesPredicateEvaluator.Cfg.class
 )
 public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
-    private static final Logger log = LoggerFactory.getLogger(PropertyValuesPredicateEvaluator.class);
-
     private PredicateEvaluator propertyEvaluator = new JcrPropertyPredicateEvaluator();
     private PredicateEvaluator fulltextEvaluator = new FulltextPredicateEvaluator();
 
