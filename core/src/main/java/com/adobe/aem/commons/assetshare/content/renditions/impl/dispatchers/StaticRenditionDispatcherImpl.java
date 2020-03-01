@@ -22,29 +22,29 @@ package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.api.RenditionPicker;
 import com.day.cq.dam.commons.util.DamUtil;
 import com.google.common.io.ByteStreams;
+import org.apache.jackrabbit.api.binary.BinaryDownload;
+import org.apache.jackrabbit.api.binary.BinaryDownloadOptions;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.*;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jcr.RepositoryException;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.net.URI;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
@@ -60,16 +60,22 @@ import static org.osgi.framework.Constants.SERVICE_RANKING;
         factory = true
 )
 public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherImpl implements AssetRenditionDispatcher {
-    private static final String OSGI_PROPERTY_VALUE_DELIMITER = "=";
-
     private static Logger log = LoggerFactory.getLogger(StaticRenditionDispatcherImpl.class);
+
+    private static final String OSGI_PROPERTY_VALUE_DELIMITER = "=";
 
     private Cfg cfg;
 
     private ConcurrentHashMap<String, Pattern> mappings;
 
+    @Reference(
+            policy = ReferencePolicy.DYNAMIC,
+            policyOption = ReferencePolicyOption.GREEDY
+    )
+    private volatile AssetRenditions assetRenditions;
+
     @Reference
-    private AssetRenditions assetRenditions;
+    private transient RequireAem requireAem;
 
     @Override
     public String getLabel() {
@@ -110,12 +116,20 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
     }
 
     @Override
-    public void dispatch(SlingHttpServletRequest request, SlingHttpServletResponse response) throws IOException {
+    public void dispatch(SlingHttpServletRequest request, SlingHttpServletResponse response) throws IOException, ServletException {
         final Asset asset = DamUtil.resolveToAsset(request.getResource());
         final AssetRenditionParameters parameters = new AssetRenditionParameters(request);
 
         final Rendition rendition = asset.getRendition(new PatternRenditionPicker(mappings.get(parameters.getRenditionName())));
 
+        if (requireAem.isRunningInAdobeCloud()) {
+            dispatchFromAemCloud(rendition, parameters, response);
+        } else {
+            dispatchFromAem(rendition, parameters, response);
+        }
+    }
+
+    private void dispatchFromAem(Rendition rendition, AssetRenditionParameters parameters, SlingHttpServletResponse response) throws IOException {
         if (rendition != null) {
             log.debug("Streaming rendition [ {} ] for resolved rendition name [ {} ]", rendition.getPath(), parameters.getRenditionName());
 
@@ -129,12 +143,52 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
         }
     }
 
+    private void dispatchFromAemCloud(Rendition rendition, AssetRenditionParameters parameters, SlingHttpServletResponse response) throws IOException, ServletException {
+        if (rendition != null && rendition.getBinary() != null && rendition.getBinary() instanceof BinaryDownload) {
+            log.debug("Redirecting rendition [ {} ] for resolved rendition name [ {} ] from the Adobe Cloud", rendition.getPath(), parameters.getRenditionName());
+
+            final BinaryDownload binaryDownload = (BinaryDownload) rendition.getBinary();
+
+            BinaryDownloadOptions downloadOptions;
+
+            if (parameters.isDownload()) {
+                // Mark disposition type as Attachment, to invoke download in browser
+                downloadOptions = BinaryDownloadOptions.builder()
+                        .withMediaType(rendition.getMimeType())
+                        .withFileName(parameters.getFileName())
+                        .withDispositionTypeAttachment()
+                        .build();
+            } else {
+                // Mark disposition type as Inline, to invoke native browser viewer
+                downloadOptions = BinaryDownloadOptions.builder()
+                        .withMediaType(rendition.getMimeType())
+                        .withFileName(parameters.getFileName())
+                        .withDispositionTypeInline()
+                        .build();
+            }
+
+            final URI uri;
+            try {
+                uri = binaryDownload.getURI(downloadOptions);
+
+                if (uri != null) {
+                    response.sendRedirect(uri.toString());
+                } else {
+                    log.debug("Unable to get Adobe Cloud redirect for rendition [ {} ]", rendition.getPath());
+                }
+            } catch (RepositoryException e) {
+                throw new ServletException("Unable to dispatch static rendition request to Adobe Cloud", e);
+            }
+        } else {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not serve static asset rendition.");
+        }
+    }
+
     @Activate
     protected void activate(Cfg cfg) {
         this.cfg = cfg;
 
         this.mappings = super.parseMappingsAsPatterns(cfg.rendition_mappings());
-
     }
 
     @ObjectClassDefinition(name = "Asset Share Commons - Rendition Dispatcher - Static Renditions")

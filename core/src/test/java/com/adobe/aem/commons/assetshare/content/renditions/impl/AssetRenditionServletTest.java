@@ -23,6 +23,8 @@ import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatc
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
+import com.adobe.aem.commons.assetshare.util.RequireAem;
+import com.adobe.aem.commons.assetshare.util.impl.RequireAemImpl;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.junit.Before;
@@ -46,6 +48,7 @@ public class AssetRenditionServletTest {
         ctx.load().json(getClass().getResourceAsStream("AssetRenditionServletTest.json"), "/content/dam");
         ctx.currentResource("/content/dam/test.png");
 
+        ctx.registerService(RequireAem.class, new RequireAemImpl());
         ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
     }
 

@@ -23,7 +23,9 @@ import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
 import com.adobe.aem.commons.assetshare.util.DataSourceBuilder;
+import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.aem.commons.assetshare.util.impl.DataSourceBuilderImpl;
+import com.adobe.aem.commons.assetshare.util.impl.RequireAemImpl;
 import com.adobe.granite.ui.components.ds.DataSource;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
@@ -36,14 +38,12 @@ import org.osgi.framework.Constants;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
-
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
 
 public class AssetRenditionsDataSourceTest {
 
@@ -54,6 +54,7 @@ public class AssetRenditionsDataSourceTest {
     public void setUp() throws Exception {
         ctx.load().json("/com/adobe/aem/commons/assetshare/content/impl/AssetRenditionsDataSourceTest.json", "/apps/dialog");
 
+        ctx.registerService(RequireAem.class, new RequireAemImpl());
         ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
         ctx.registerService(DataSourceBuilder.class, new DataSourceBuilderImpl());
 

@@ -25,7 +25,6 @@ import com.adobe.aem.commons.assetshare.configuration.impl.selectors.AlwaysUseDe
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.util.ForcedInheritanceValueMapWrapper;
 import com.day.cq.commons.inherit.HierarchyNodeInheritanceValueMap;
-import com.day.cq.dam.entitlement.api.EntitlementConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.components.ComponentContext;
@@ -37,7 +36,6 @@ import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.featureflags.Features;
 import org.apache.sling.models.annotations.Model;
-import org.apache.sling.models.annotations.Optional;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.InjectionStrategy;
 import org.apache.sling.models.annotations.injectorspecific.OSGiService;
@@ -113,8 +111,6 @@ public class ConfigImpl implements Config {
     private String viewSelector;
 
     private String rootPath;
-
-    private Boolean dynamicMediaEnabled;
 
     @PostConstruct
     protected void init() {
@@ -234,20 +230,6 @@ public class ConfigImpl implements Config {
     @Override
     public String getRootPath() {
         return getRootPath(currentPage);
-    }
-
-    @Override
-    public boolean isDynamicMediaEnabled() {
-        if (dynamicMediaEnabled == null) {
-            if (features == null) {
-                dynamicMediaEnabled = Boolean.FALSE;
-            } else {
-                dynamicMediaEnabled = features.isEnabled(SCENE7_FEATURE_FLAG) ||
-                        features.isEnabled(EntitlementConstants.ASSETS_DYNAMICMEDIA_FEATURE_FLAG_PID);
-            }
-        }
-
-        return dynamicMediaEnabled;
     }
 
     /**
