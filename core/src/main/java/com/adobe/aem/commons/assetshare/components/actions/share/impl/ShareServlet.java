@@ -53,10 +53,10 @@ public class ShareServlet extends SlingAllMethodsServlet {
     private static final Logger log = LoggerFactory.getLogger(ShareServlet.class);
 
     @Reference(target = "(component.name=com.adobe.aem.commons.assetshare.components.actions.share.impl.EmailShareServiceImpl)")
-    private ShareService defaultShareService;
+    private transient ShareService defaultShareService;
 
     @Reference(policyOption = ReferencePolicyOption.GREEDY)
-    private volatile Collection<ShareService> volatileShareServices;
+    private transient volatile Collection<ShareService> volatileShareServices;
 
     @Override
     protected final void doPost(SlingHttpServletRequest request, SlingHttpServletResponse response)

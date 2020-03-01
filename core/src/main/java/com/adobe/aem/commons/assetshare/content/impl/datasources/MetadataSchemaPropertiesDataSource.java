@@ -48,10 +48,10 @@ public class MetadataSchemaPropertiesDataSource extends SlingSafeMethodsServlet 
     private static final String PN_METADATA_FIELD_RESOURCE_TYPES = "metadataFieldResourceTypes";
 
     @Reference
-    private DataSourceBuilder dataSourceBuilder;
+    private transient DataSourceBuilder dataSourceBuilder;
 
     @Reference
-    private MetadataProperties metadataProperties;
+    private transient MetadataProperties metadataProperties;
 
     @Override
     protected final void doGet(final SlingHttpServletRequest request, final SlingHttpServletResponse response) {

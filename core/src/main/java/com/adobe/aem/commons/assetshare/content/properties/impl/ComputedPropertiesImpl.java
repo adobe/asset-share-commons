@@ -65,9 +65,10 @@ public final class ComputedPropertiesImpl implements ComputedProperties {
             });
         }
 
-        return rankedComputedProperties;
+        return new ArrayList<>(rankedComputedProperties);
     }
 
+    @SuppressWarnings("AEM Rules:AEM-15")
     void bindComputedProperty(ComputedProperty computedProperty, Map<String, Object> props) {
         final RankedComputedProperty rankedComputedProperty = new RankedComputedProperty(computedProperty, props);
 
@@ -81,6 +82,7 @@ public final class ComputedPropertiesImpl implements ComputedProperties {
         }
     }
 
+    @SuppressWarnings("AEM Rules:AEM-15")
     void unbindComputedProperty(ComputedProperty computedProperty, Map<String, Object> props) {
         final RankedComputedProperty rankedComputedProperty = new RankedComputedProperty(computedProperty, props);
 

@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - 0317: Re-organized Semantic UI theme to be served from a dedicated front-end module; Updated vendor dependencies to latest versions; Optimized client-side library dependency chain
 - 0479: Updated overall Project structure to be based on AEM Maven Archetype; following separation of content and code, as splitting out sample ASC site and assets to a ui.content.sample project
+- 0494: Updated code to conform to Cloud Manager quality gates; Of note, removed Dynamic Media Hybrid Download component.
 
 ## [v1.9.0]
 

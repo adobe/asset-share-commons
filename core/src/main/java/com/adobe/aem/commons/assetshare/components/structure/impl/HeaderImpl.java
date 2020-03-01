@@ -32,8 +32,6 @@ import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.injectorspecific.ScriptVariable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
@@ -101,8 +99,8 @@ public class HeaderImpl implements Header {
     /**
      * Return true if the header resource is null or not populated
      *
-     * @param headerResource
-     * @return
+     * @param headerResource the header content resource.
+     * @return true if header is empty
      */
     private boolean isEmptyHeader(Resource headerResource) {
         if (headerResource != null) {
@@ -119,13 +117,14 @@ public class HeaderImpl implements Header {
     @Override
     public Collection<NavigationItem> getItems() {
         if (items == null) {
-            items = new ArrayList<>();
-            createNavigation();
+            items = createNavigationItems();
         }
-        return items;
+        return new ArrayList<>(items);
     }
 
-    private void createNavigation() {
+    private List<Header.NavigationItem> createNavigationItems() {
+        List<Header.NavigationItem> navigationItems = new ArrayList<>();
+
         if (headerResource != null) {
             //get multi-value properties beneath header resource
             Resource pagesRes = headerResource.getChild(PAGES_NODE);
@@ -134,11 +133,13 @@ public class HeaderImpl implements Header {
                 while (childResources.hasNext()) {
                     NavigationItem navItem = createNavItem(childResources.next());
                     if (navItem != null) {
-                        items.add(navItem);
+                        navigationItems.add(navItem);
                     }
                 }
             }
         }
+
+        return navigationItems;
     }
 
 

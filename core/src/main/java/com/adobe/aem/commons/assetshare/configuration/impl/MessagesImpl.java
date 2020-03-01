@@ -81,7 +81,7 @@ public class MessagesImpl implements Messages {
             }
         }
 
-        return messages;
+        return new ArrayList<>(messages);
     }
 
     private void addToTracker(final List<String> tracker, final Resource child) {

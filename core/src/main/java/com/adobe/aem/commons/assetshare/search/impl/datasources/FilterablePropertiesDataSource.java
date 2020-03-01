@@ -33,8 +33,6 @@ import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Reference;
 
 import javax.servlet.Servlet;
-import javax.servlet.ServletException;
-import java.io.IOException;
 import java.util.*;
 
 @Component(
@@ -51,13 +49,13 @@ public class FilterablePropertiesDataSource extends SlingSafeMethodsServlet {
     private static final String PN_FILTER_PROPERTIES = "indexRuleCapabilities";
 
     @Reference
-    private DataSourceBuilder dataSourceBuilder;
+    private transient DataSourceBuilder dataSourceBuilder;
 
     @Reference
-    private FastProperties fastPropertiesService;
+    private transient FastProperties fastPropertiesService;
 
     @Reference
-    private MetadataProperties metadataProperties;
+    private transient MetadataProperties metadataProperties;
 
     @Override
     protected final void doGet(final SlingHttpServletRequest request, final SlingHttpServletResponse response) {

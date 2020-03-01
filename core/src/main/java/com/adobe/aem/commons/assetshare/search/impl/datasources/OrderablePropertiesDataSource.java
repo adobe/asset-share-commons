@@ -29,13 +29,8 @@ import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Reference;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.Servlet;
-import javax.servlet.ServletException;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -52,17 +47,16 @@ public class OrderablePropertiesDataSource extends SlingSafeMethodsServlet {
     private static final String PN_ORDERED = "ordered";
 
     @Reference
-    private DataSourceBuilder dataSourceBuilder;
+    private transient DataSourceBuilder dataSourceBuilder;
 
     @Reference
-    private FastProperties fastPropertiesService;
+    private transient FastProperties fastPropertiesService;
 
     @Reference
-    private MetadataProperties metadataProperties;
+    private transient MetadataProperties metadataProperties;
 
     @Override
-    protected final void doGet(final SlingHttpServletRequest request, final SlingHttpServletResponse response) throws
-            ServletException, IOException {
+    protected final void doGet(final SlingHttpServletRequest request, final SlingHttpServletResponse response) {
 
         final Map<String, Object> data = new TreeMap<>();
 

@@ -82,7 +82,7 @@ public class TagsImpl extends AbstractEmptyTextComponent implements Tags {
             }
         }
 
-        return tagTitles;
+        return new ArrayList<>(tagTitles);
     }
 
     /**

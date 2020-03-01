@@ -52,10 +52,10 @@ public class ComputedPropertiesDataSource extends SlingSafeMethodsServlet {
     public static final String PN_COMPUTED_PROPERTY_TYPES = "computedPropertyTypes";
 
     @Reference
-    private DataSourceBuilder dataSourceBuilder;
+    private transient DataSourceBuilder dataSourceBuilder;
 
     @Reference
-    private ComputedProperties computedProperties;
+    private transient ComputedProperties computedProperties;
 
     @Override
     protected final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) {

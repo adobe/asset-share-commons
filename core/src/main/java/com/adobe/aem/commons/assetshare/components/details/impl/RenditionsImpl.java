@@ -159,7 +159,7 @@ public class RenditionsImpl extends AbstractEmptyTextComponent implements Rendit
             renditions = collectedRenditions;
         }
 
-        return renditions;
+        return new ArrayList<>(renditions);
     }
 
 
@@ -193,7 +193,7 @@ public class RenditionsImpl extends AbstractEmptyTextComponent implements Rendit
             renditions = collectedRenditions;
         }
 
-        return renditions;
+        return new ArrayList<>(renditions);
     }
 
     @Override

@@ -45,7 +45,7 @@ import java.io.IOException;
 public class AssetDetails404Servlet extends SlingSafeMethodsServlet implements OptingServlet {
 
     @Reference 
-    private AssetResolver assetResolver;
+    private transient AssetResolver assetResolver;
     
     @Override
     protected final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response)

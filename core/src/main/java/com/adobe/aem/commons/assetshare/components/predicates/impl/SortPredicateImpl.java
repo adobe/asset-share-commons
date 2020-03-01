@@ -26,26 +26,24 @@ import com.adobe.aem.commons.assetshare.components.search.SearchConfig;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.export.json.ExporterConstants;
+import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
 import com.day.cq.search.Predicate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
-import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.wrappers.ValueMapDecorator;
-import org.apache.sling.models.annotations.Default;
-import org.apache.sling.models.annotations.Exporter;
-import org.apache.sling.models.annotations.Model;
-import org.apache.sling.models.annotations.Optional;
-import org.apache.sling.models.annotations.Required;
+import org.apache.sling.models.annotations.*;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
+
+import javax.annotation.Nonnull;
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
@@ -98,7 +96,7 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
     }
 
     @Override
-    public List<SortOptionItem> getItems() {
+    public List<OptionItem> getItems() {
       final ValueMap initialValues = getInitialValues();
 
       return items.stream().map(optionItem -> {
@@ -113,7 +111,7 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
     @Override
     public String getOrderByLabel() {
         String label = unknownSortBy;
-        for (final SortOptionItem optionItem : getItems()) {
+        for (final OptionItem optionItem : getItems()) {
             if (optionItem.isSelected()) {
                 label = optionItem.getText();
                 break;
