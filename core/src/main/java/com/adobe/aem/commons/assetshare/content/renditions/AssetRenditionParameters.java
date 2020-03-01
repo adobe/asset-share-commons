@@ -127,7 +127,7 @@ public final class AssetRenditionParameters {
     }
 
     public List<String> getParameters() {
-        return otherParameters;
+        return new ArrayList<>(otherParameters);
     }
 
     protected String buildFileName(final Asset asset, final String renditionName) {

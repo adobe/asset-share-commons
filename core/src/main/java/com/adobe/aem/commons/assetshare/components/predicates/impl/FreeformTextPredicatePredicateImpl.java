@@ -25,6 +25,7 @@ import com.adobe.aem.commons.assetshare.search.impl.predicateevaluators.Property
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.export.json.ExporterConstants;
+import com.day.cq.commons.jcr.JcrConstants;
 import org.apache.commons.lang.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
@@ -64,7 +65,7 @@ public class FreeformTextPredicatePredicateImpl extends AbstractPredicate implem
     private SlingHttpServletRequest request;
 
     @ValueMapValue
-    @Named("jcr:title")
+    @Named(JcrConstants.JCR_TITLE)
     private String title;
 
     @ValueMapValue

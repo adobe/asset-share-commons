@@ -57,12 +57,12 @@ public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
     private static final String PN_ADD_ASSET_RENDITION_DISPATCHER_TO_LABEL = "addAssetRenditionDispatcherToLabel";
 
     @Reference
-    private DataSourceBuilder dataSourceBuilder;
+    private transient DataSourceBuilder dataSourceBuilder;
 
     @Reference
-    private AssetRenditions assetRenditions;
+    private transient AssetRenditions assetRenditions;
 
-    private Cfg cfg;
+    private transient Cfg cfg;
 
     @Override
     protected final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) {

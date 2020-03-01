@@ -55,7 +55,7 @@ import java.util.Locale;
 public class ConfigImpl implements Config {
     private static final Logger log = LoggerFactory.getLogger(ConfigImpl.class);
 
-    public static String NODE_NAME = "config";
+    public static final String NODE_NAME = "config";
 
     private static final String HTML_EXTENSION = ".html";
     private static final String[] rootResourceTypes = new String[]{"asset-share-commons/components/structure/search-page"};

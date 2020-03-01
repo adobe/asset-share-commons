@@ -62,10 +62,10 @@ public class ShareImpl implements Share {
     }
 
     public Collection<AssetModel> getAssets() {
-        return assets;
+        return new ArrayList<>(assets);
     }
 
     public Collection<String> getPaths() {
-        return paths;
+        return new ArrayList<>(paths);
     }
 }

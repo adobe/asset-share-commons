@@ -43,10 +43,10 @@ import java.util.TreeMap;
 )
 public class AssetDetailsSelectorDataSource extends SlingSafeMethodsServlet {
     @Reference
-    private DataSourceBuilder dataSourceBuilder;
+    private transient DataSourceBuilder dataSourceBuilder;
 
     @Reference
-    private volatile Collection<AssetDetailsSelector> volatileAssetDetailsSelectors;
+    private transient volatile Collection<AssetDetailsSelector> volatileAssetDetailsSelectors;
 
     @Override
     protected final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) throws
