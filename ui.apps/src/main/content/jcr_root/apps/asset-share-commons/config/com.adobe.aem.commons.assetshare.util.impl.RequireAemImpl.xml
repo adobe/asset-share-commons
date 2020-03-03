@@ -17,13 +17,11 @@
   ~ limitations under the License.
   ~
   -->
-
-<!--
-This OSGi config is a bit strange, but it is used _by_ Asset Share Commons internal code to detect if the AEM service
-is running IN the Adobe Cloud or not.
--->
-
 <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
           jcr:primaryType="sling:OsgiConfig"
           cloud.only.variable="$[env/programId]"
 />
+<!--
+This OSGi config is a bit strange, but it is used _by_ Asset Share Commons internal code to detect if the AEM service
+is running IN the Adobe Cloud or not.
+-->

@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 public class RequireAemImpl implements RequireAem {
     private static final Logger log = LoggerFactory.getLogger(RequireAemImpl.class);
 
-    private static final String CLOUD_ONLY_OSGI_PROPERTY = "$[env:programId]";
+    static final String CLOUD_ONLY_OSGI_PROPERTY_VALUE = "$[env:programId]";
 
     private boolean runningInAdobeCloud = false;
 
@@ -25,8 +25,7 @@ public class RequireAemImpl implements RequireAem {
 
     @Activate
     protected void activate(RequireAemImpl.Cfg cfg) {
-       this.runningInAdobeCloud = !(StringUtils.isBlank(cfg.cloud_only_variable()) ||
-               StringUtils.equals(CLOUD_ONLY_OSGI_PROPERTY, cfg.cloud_only_variable()));
+       this.runningInAdobeCloud = StringUtils.isNotBlank(cfg.cloud_only_variable()) && !StringUtils.equals(CLOUD_ONLY_OSGI_PROPERTY_VALUE, cfg.cloud_only_variable());
     }
 
     @ObjectClassDefinition(name = "Asset Share Commons - Require AEM")
