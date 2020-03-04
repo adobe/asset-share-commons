@@ -20,6 +20,7 @@
 package com.adobe.aem.commons.assetshare.content.renditions.impl;
 
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
@@ -50,6 +51,7 @@ public class AssetRenditionServletTest {
 
         ctx.registerService(RequireAem.class, new RequireAemImpl());
         ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
+        ctx.registerService(AssetRenditionDispatchers.class, new AssetRenditionDispatchersImpl());
     }
 
     @Test
