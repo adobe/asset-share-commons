@@ -25,12 +25,13 @@ public class RequireAemImpl implements RequireAem {
 
     @Activate
     protected void activate(RequireAemImpl.Cfg cfg) {
-        log.debug("Activating Require AEM");
-        log.debug("Activated Require AEM cfg.cloud_only_variable() [ {} ]", cfg.cloud_only_variable());
-
         this.runningInAdobeCloud = StringUtils.isNotBlank(cfg.cloud_only_variable()) && !StringUtils.equals(CLOUD_ONLY_OSGI_PROPERTY_VALUE, cfg.cloud_only_variable());
 
-        log.debug("Activated Require AEM [ {} ]", this.isRunningInAdobeCloud());
+        if (this.isRunningInAdobeCloud()) {
+            log.debug("RequireAemImpl determined this AEM environment is running the Adobe Cloud");
+        } else {
+            log.debug("RequireAemImpl determined this AEM environment is NOT running the Adobe Cloud");
+        }
     }
 
     @ObjectClassDefinition(name = "Asset Share Commons - Require AEM")
