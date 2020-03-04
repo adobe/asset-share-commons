@@ -24,11 +24,8 @@ import com.adobe.aem.commons.assetshare.content.AssetResolver;
 import com.adobe.aem.commons.assetshare.content.impl.AssetModelImpl;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperties;
 import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedPropertiesImpl;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
-import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.InternalRedirectRenditionDispatcherImpl;
-import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
 import com.day.cq.dam.commons.util.DamUtil;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.junit.Before;
@@ -36,13 +33,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.osgi.framework.Constants;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
@@ -69,25 +64,6 @@ public class AssetRenditionsImplTest {
         ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
 
         testAssetModel = ctx.request().adaptTo(AssetModel.class);
-    }
-
-    @Test
-    public void getAssetRenditionDispatchers() {
-        AssetRenditionDispatcher one = new StaticRenditionDispatcherImpl();
-        AssetRenditionDispatcher two = new InternalRedirectRenditionDispatcherImpl();
-        AssetRenditionDispatcher three = new InternalRedirectRenditionDispatcherImpl();
-
-        ctx.registerService(AssetRenditionDispatcher.class, two, Constants.SERVICE_RANKING, 90);
-        ctx.registerService(AssetRenditionDispatcher.class, one, Constants.SERVICE_RANKING, 100);
-        ctx.registerService(AssetRenditionDispatcher.class, three, Constants.SERVICE_RANKING, 80, "rendition.mappings", "foo=bar,test-rendition=im real");
-
-        final AssetRenditions assetRenditions = ctx.getService(AssetRenditions.class);
-        final List<AssetRenditionDispatcher> actual = assetRenditions.getAssetRenditionDispatchers();
-
-        assertEquals(3, actual.size());
-        assertSame(one, actual.get(0));
-        assertSame(two, actual.get(1));
-        assertSame(three, actual.get(2));
     }
 
     @Test
@@ -163,17 +139,5 @@ public class AssetRenditionsImplTest {
 
         String actual = assetRenditions.evaluateExpression(ctx.request(), expression);
         assertEquals(expected, actual);
-    }
-
-    @Test
-    public void isValidAssetRenditionName() {
-        AssetRenditionDispatcher one = new InternalRedirectRenditionDispatcherImpl();
-
-        ctx.registerInjectActivateService(one, Constants.SERVICE_RANKING, 80, "rendition.mappings", "test-rendition=im real");
-
-        final AssetRenditions assetRenditions = ctx.getService(AssetRenditions.class);
-
-        assertTrue(assetRenditions.isValidAssetRenditionName("test-rendition"));
-        assertFalse(assetRenditions.isValidAssetRenditionName("fake-rendition-name"));
     }
 }

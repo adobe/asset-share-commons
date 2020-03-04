@@ -19,7 +19,9 @@
 
 package com.adobe.aem.commons.assetshare.content.impl.datasources;
 
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionDispatchersImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
 import com.adobe.aem.commons.assetshare.util.DataSourceBuilder;
@@ -55,6 +57,7 @@ public class AssetRenditionsDataSourceTest {
         ctx.load().json("/com/adobe/aem/commons/assetshare/content/impl/AssetRenditionsDataSourceTest.json", "/apps/dialog");
 
         ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
+        ctx.registerService(AssetRenditionDispatchers.class, new AssetRenditionDispatchersImpl());
         ctx.registerService(DataSourceBuilder.class, new DataSourceBuilderImpl());
 
         ctx.registerInjectActivateService(
