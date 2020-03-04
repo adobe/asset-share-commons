@@ -75,7 +75,7 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
     private volatile AssetRenditions assetRenditions;
 
     @Reference
-    private transient RequireAem requireAem;
+    private RequireAem requireAem;
 
     @Override
     public String getLabel() {
@@ -187,6 +187,7 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
     @Activate
     protected void activate(Cfg cfg) {
         this.cfg = cfg;
+        log.debug("Activating Static Rendition Dispatcher instance");
 
         this.mappings = super.parseMappingsAsPatterns(cfg.rendition_mappings());
     }
