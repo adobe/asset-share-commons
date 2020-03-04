@@ -83,6 +83,8 @@ public class ConfigImpl implements Config {
     private static final String PN_ASSET_DETAILS_SELECTOR = "config/asset-details/selector";
     public static final String PN_PLACEHOLDER_ASSET_PATH = "config/asset-details/placeholderPath";
     public static final String PN_ASSET_REFERENCE_BY_ID = "config/asset-details/assetReferenceById";
+
+    @SuppressWarnings("CQRules:CQBP-71")
     public static final String DEFAULT_PLACEHOLDER_ASSET_PATH = "/apps/asset-share-commons/resources/placeholder.png";
 
     @Self
@@ -111,6 +113,7 @@ public class ConfigImpl implements Config {
     private String viewSelector;
 
     private String rootPath;
+
 
     @PostConstruct
     protected void init() {

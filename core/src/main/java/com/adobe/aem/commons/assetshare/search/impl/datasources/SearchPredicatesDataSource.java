@@ -52,7 +52,7 @@ public class SearchPredicatesDataSource extends SlingSafeMethodsServlet {
             cardinality = ReferenceCardinality.MULTIPLE,
             policyOption = ReferencePolicyOption.GREEDY
     )
-    private volatile Collection<SearchPredicate> volatileSearchPredicates;
+    private transient Collection<SearchPredicate> volatileSearchPredicates;
 
     @Override
     protected final void doGet(final SlingHttpServletRequest request, final SlingHttpServletResponse response) {
