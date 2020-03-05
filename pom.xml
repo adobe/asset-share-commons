@@ -25,7 +25,7 @@
 
     <groupId>com.adobe.aem.commons</groupId>
     <artifactId>assetshare</artifactId>
-    <version>1.9.3-SNAPSHOT</version>
+    <version>1.9.4</version>
     <packaging>pom</packaging>
 
     <name>Asset Share Commons - Reactor Project</name>
@@ -83,7 +83,7 @@
         <developerConnection>scm:git:git@github.com/Adobe-Marketing-Cloud/asset-share-commons.git</developerConnection>
 
         <url>https://github.com/Adobe-Marketing-Cloud/asset-share-commons/tree/master</url>
-        <tag>HEAD</tag>
+        <tag>assetshare-1.9.4</tag>
     </scm>
 
 
