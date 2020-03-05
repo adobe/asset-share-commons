@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [v1.9.2]
 
 - 0488: Fixed benign but overly-chatty error log messaging when the asset renditions servlet is requested.
+- 0502: Fix cyclic dependency with asset rendition dispatchers
 
 ## [v1.9.0]
 
