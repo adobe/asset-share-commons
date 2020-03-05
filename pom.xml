@@ -74,13 +74,18 @@
 
     </properties>
 
-
     <scm>
+        <!--
         <connection>scm:git:https://github.com/Adobe-Marketing-Cloud/asset-share-commons.git</connection>
         <developerConnection>scm:git:https://github.com/Adobe-Marketing-Cloud/asset-share-commons.git</developerConnection>
+        -->
+        <connection>scm:git:git@github.com/Adobe-Marketing-Cloud/asset-share-commons.git</connection>
+        <developerConnection>scm:git:git@github.com/Adobe-Marketing-Cloud/asset-share-commons.git</developerConnection>
+
         <url>https://github.com/Adobe-Marketing-Cloud/asset-share-commons/tree/master</url>
         <tag>assetshare-1.9.2</tag>
     </scm>
+
 
 
     <dependencyManagement>
