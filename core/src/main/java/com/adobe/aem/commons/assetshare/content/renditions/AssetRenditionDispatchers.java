@@ -17,8 +17,26 @@
  *
  */
 
-@Version("2.0.0")
 package com.adobe.aem.commons.assetshare.content.renditions;
 
-import org.osgi.annotation.versioning.Version;
+import org.osgi.annotation.versioning.ProviderType;
 
+import java.util.List;
+
+/**
+ *
+ */
+@ProviderType
+public interface AssetRenditionDispatchers {
+    /**
+     * @return a list of all registered AssetRenditionDispatchers in the system ordered in Descending order by service.ranking.
+     */
+    List<AssetRenditionDispatcher> getAssetRenditionDispatchers();
+
+    /**
+     * Checks if the provided asset rendition name is a valid, registered asset rendition.
+     * @param name the asset rendition name.
+     * @return true if the name is registered as a valid asset rendition
+     */
+    default boolean isValidAssetRenditionName(String name) { return false; }
+}
