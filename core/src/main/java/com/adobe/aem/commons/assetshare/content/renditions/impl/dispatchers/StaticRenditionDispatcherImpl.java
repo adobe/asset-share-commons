@@ -134,7 +134,6 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
         this.cfg = cfg;
 
         this.mappings = super.parseMappingsAsPatterns(cfg.rendition_mappings());
-
     }
 
     @ObjectClassDefinition(name = "Asset Share Commons - Rendition Dispatcher - Static Renditions")

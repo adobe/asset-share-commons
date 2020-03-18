@@ -1,7 +1,7 @@
 /*
  * Asset Share Commons
  *
- * Copyright (C) 2017 Adobe
+ * Copyright (C) 2019 Adobe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,18 @@
  *
  */
 
-@Version("1.8.0")
 package com.adobe.aem.commons.assetshare.util;
 
-import org.osgi.annotation.versioning.Version;
+import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.SlingHttpServletResponse;
+import org.osgi.annotation.versioning.ProviderType;
 
+@ProviderType
+public interface ServletHelper {
+    /**
+     * Adds SlingBindings to the SlingHttpServletRequest object so it can be used to create Sling Models.
+     * @param request the SlingHttpServletRequest object to add the SlingBindings to
+     * @param response the SlingHttpResponse object to create the SlingScriptHelper
+     */
+    void addSlingBindings(final SlingHttpServletRequest request, final SlingHttpServletResponse response);
+}

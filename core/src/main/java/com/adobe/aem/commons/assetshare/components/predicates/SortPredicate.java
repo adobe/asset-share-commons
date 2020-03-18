@@ -45,5 +45,13 @@ public interface SortPredicate extends Predicate {
      * @return the active label for the Order By Sort (Sort Direction) field.
      */
     default String getOrderBySortLabel() { return "DESC"; }
+
+    interface SortOptionItem extends OptionItem {
+        default boolean isCaseSensitive() {
+            return false;
+        }
+
+        void setSelected(boolean selected);
+    }
 }
 
