@@ -21,8 +21,8 @@ package com.adobe.aem.commons.assetshare.content.renditions.download.impl;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionStreamer;
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsException;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionServlet;
@@ -60,7 +60,7 @@ public class AssetRenditionStreamerImpl implements AssetRenditionStreamer {
     private HttpClientBuilderFactory clientBuilderFactory;
 
     @Reference
-    private AssetRenditions assetRenditions;
+    private AssetRenditionDispatchers assetRenditionDispatchers;
 
     private Cfg cfg;
 
@@ -108,7 +108,7 @@ public class AssetRenditionStreamerImpl implements AssetRenditionStreamer {
                 new StringWriter(),
                 new ByteArrayOutputStream());
 
-        for (final AssetRenditionDispatcher assetRenditionDispatcher : assetRenditions.getAssetRenditionDispatchers()) {
+        for (final AssetRenditionDispatcher assetRenditionDispatcher : assetRenditionDispatchers.getAssetRenditionDispatchers()) {
             if (acceptedByAssetRenditionDispatcher(assetRenditionDispatcher, new AssetRenditionParameters(assetRenditionRequest))) {
                 assetRenditionDispatcher.dispatch(assetRenditionRequest, assetRenditionResponse);
                 break;
@@ -120,7 +120,7 @@ public class AssetRenditionStreamerImpl implements AssetRenditionStreamer {
 
     protected boolean acceptedByAssetRenditionDispatcher(final AssetRenditionDispatcher assetRenditionDispatcher, final AssetRenditionParameters parameters) {
         if (assetRenditionDispatcher.getRenditionNames() == null ||
-                assetRenditions == null ||
+                assetRenditionDispatchers == null ||
                 StringUtils.isBlank(parameters.getRenditionName())) {
             return false;
         } else {
