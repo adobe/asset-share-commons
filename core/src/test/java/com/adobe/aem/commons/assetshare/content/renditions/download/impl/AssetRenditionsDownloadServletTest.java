@@ -19,15 +19,22 @@
 
 package com.adobe.aem.commons.assetshare.content.renditions.download.impl;
 
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionDispatchersImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
 import com.adobe.aem.commons.assetshare.testing.MockAssetModels;
 import com.adobe.aem.commons.assetshare.util.impl.ServletHelperImpl;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.osgi.services.HttpClientBuilderFactory;
+import org.apache.sling.api.request.RequestDispatcherOptions;
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.models.factory.ModelFactory;
+import org.apache.sling.testing.mock.sling.servlet.MockRequestDispatcherFactory;
+import org.apache.sling.testing.mock.sling.servlet.MockSlingHttpServletResponse;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -36,6 +43,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.osgi.framework.Constants;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
@@ -43,6 +51,8 @@ import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AssetRenditionsDownloadServletTest {
@@ -56,14 +66,26 @@ public class AssetRenditionsDownloadServletTest {
     @Mock
     ModelFactory modelFactory;
 
+    @Mock
+    private RequestDispatcher requestDispatcher;
+
     @Before
     public void setUp() {
         ctx.load().json(getClass().getResourceAsStream("AssetRenditionsDownloadServletTest.json"), "/content");
-        ctx.load().binaryFile(getClass().getResourceAsStream("test.original.png"), "/content/dam/test.png/jcr:content/renditions/original", "image/png");
+
+        // 1x1 pixel red png
+        ctx.load().binaryFile(getClass().getResourceAsStream("AssetRenditionsDownloadServletTest__original.png"),
+                "/content/dam/test.png/jcr:content/renditions/original");
+
+        // 1x1 pixel blue png
+        ctx.load().binaryFile(getClass().getResourceAsStream("AssetRenditionsDownloadServletTest__cq5dam.web.1280.1280.png"),
+                "/content/dam/test.png/jcr:content/renditions/cq5dam.web.1280.1280.png");
 
         MockAssetModels.mockModelFactory(ctx, modelFactory, "/content/dam/test.png");
 
         ctx.registerService(HttpClientBuilderFactory.class, httpClientBuilderFactory);
+
+        ctx.registerService(AssetRenditionDispatchers.class, new AssetRenditionDispatchersImpl());
 
         ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
 
@@ -85,6 +107,19 @@ public class AssetRenditionsDownloadServletTest {
 
         ctx.registerService(ModelFactory.class, modelFactory, org.osgi.framework.Constants.SERVICE_RANKING,
                 Integer.MAX_VALUE);
+
+        ctx.request().setRequestDispatcherFactory(new MockRequestDispatcherFactory() {
+            @Override
+            public RequestDispatcher getRequestDispatcher(String path, RequestDispatcherOptions options) {
+                return requestDispatcher;
+            }
+
+            @Override
+            public RequestDispatcher getRequestDispatcher(Resource resource, RequestDispatcherOptions options) {
+                assertEquals("This method signature should not be called", "This method signature was called.");
+                return null;
+            }
+        });
     }
 
     @Test
@@ -130,7 +165,6 @@ public class AssetRenditionsDownloadServletTest {
         servlet.service(ctx.request(), ctx.response());
 
         assertEquals("application/zip", ctx.response().getContentType());
-        assertEquals(288286,  ctx.response().getOutput().length);
     }
 
     @Test

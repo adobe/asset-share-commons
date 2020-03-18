@@ -92,9 +92,9 @@ public class AssetRenditionServletTest {
 
     @Test
     public void doGet() throws IOException, ServletException {
-        final byte[] expectedOutputStream = IOUtils.toByteArray(this.getClass().getResourceAsStream("AssetRenditionServletTest__cq5dam.web.1280.1280.png"));
         final AssetRenditionDispatcher assetRenditionDispatcher = Mockito.spy(new StaticRenditionDispatcherImpl());
 
+        final byte[] expectedOutputStream = IOUtils.toByteArray(this.getClass().getResourceAsStream("AssetRenditionServletTest__cq5dam.web.1280.1280.png"));
         doAnswer(invocation -> {
             Object[] args = invocation.getArguments();
             // Write some data to the response so we know that that requestDispatcher.include(..) was infact invoked.
