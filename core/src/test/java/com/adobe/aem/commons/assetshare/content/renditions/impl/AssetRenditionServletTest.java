@@ -102,7 +102,7 @@ public class AssetRenditionServletTest {
         doAnswer(invocation -> {
             Object[] args = invocation.getArguments();
             // Write some data to the response so we know that that requestDispatcher.include(..) was infact invoked.
-            ((AssetRenditionDownloadResponse) args[1]).getOutputStream().write(expectedOutputStream);
+            ((MockSlingHttpServletResponse) args[1]).getOutputStream().write(expectedOutputStream);
             return null; // void method, return null
         }).when(requestDispatcher).include(any(SlingHttpServletRequest.class), any(SlingHttpServletResponse.class));
 
