@@ -22,16 +22,13 @@ package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
-import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.api.RenditionPicker;
 import com.day.cq.dam.commons.util.DamUtil;
-import com.google.common.io.ByteStreams;
-import org.apache.jackrabbit.api.binary.BinaryDownload;
-import org.apache.jackrabbit.api.binary.BinaryDownloadOptions;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
+import org.apache.sling.api.request.RequestDispatcherOptions;
 import org.osgi.service.component.annotations.*;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
@@ -39,11 +36,8 @@ import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.jcr.RepositoryException;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URI;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
@@ -73,9 +67,6 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
             policyOption = ReferencePolicyOption.GREEDY
     )
     private volatile AssetRenditions assetRenditions;
-
-    @Reference
-    private RequireAem requireAem;
 
     @Override
     public String getLabel() {
@@ -122,66 +113,15 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
 
         final Rendition rendition = asset.getRendition(new PatternRenditionPicker(mappings.get(parameters.getRenditionName())));
 
-        if (requireAem.isRunningInAdobeCloud()) {
-            dispatchFromAemCloud(rendition, parameters, response);
-        } else {
-            dispatchFromAem(rendition, parameters, response);
-        }
-    }
+        log.debug("Serving internal static rendition [ {} ] and resolved rendition name [ {} ] through internal Sling include",
+                rendition.getPath(),
+                parameters.getRenditionName());
+        final RequestDispatcherOptions options = new RequestDispatcherOptions();
 
-    private void dispatchFromAem(Rendition rendition, AssetRenditionParameters parameters, SlingHttpServletResponse response) throws IOException {
-        if (rendition != null) {
-            log.debug("Streaming rendition [ {} ] for resolved rendition name [ {} ]", rendition.getPath(), parameters.getRenditionName());
+        options.setReplaceSelectors("");
+        options.setReplaceSuffix("");
 
-            response.setHeader("Content-Type", rendition.getMimeType());
-            response.setHeader("Content-Length", String.valueOf(rendition.getSize()));
-
-            ByteStreams.copy(rendition.getStream(), response.getOutputStream());
-
-        } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not serve static asset rendition.");
-        }
-    }
-
-    private void dispatchFromAemCloud(Rendition rendition, AssetRenditionParameters parameters, SlingHttpServletResponse response) throws IOException, ServletException {
-        if (rendition != null && rendition.getBinary() != null && rendition.getBinary() instanceof BinaryDownload) {
-            log.debug("Redirecting rendition [ {} ] for resolved rendition name [ {} ] from the Adobe Cloud", rendition.getPath(), parameters.getRenditionName());
-
-            final BinaryDownload binaryDownload = (BinaryDownload) rendition.getBinary();
-
-            BinaryDownloadOptions downloadOptions;
-
-            if (parameters.isDownload()) {
-                // Mark disposition type as Attachment, to invoke download in browser
-                downloadOptions = BinaryDownloadOptions.builder()
-                        .withMediaType(rendition.getMimeType())
-                        .withFileName(parameters.getFileName())
-                        .withDispositionTypeAttachment()
-                        .build();
-            } else {
-                // Mark disposition type as Inline, to invoke native browser viewer
-                downloadOptions = BinaryDownloadOptions.builder()
-                        .withMediaType(rendition.getMimeType())
-                        .withFileName(parameters.getFileName())
-                        .withDispositionTypeInline()
-                        .build();
-            }
-
-            final URI uri;
-            try {
-                uri = binaryDownload.getURI(downloadOptions);
-
-                if (uri != null) {
-                    response.sendRedirect(uri.toString());
-                } else {
-                    log.debug("Unable to get Adobe Cloud redirect for rendition [ {} ]", rendition.getPath());
-                }
-            } catch (RepositoryException e) {
-                throw new ServletException("Unable to dispatch static rendition request to Adobe Cloud", e);
-            }
-        } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not serve static asset rendition.");
-        }
+        request.getRequestDispatcher(rendition.getPath(), options).include(request, response);
     }
 
     @Activate
