@@ -230,11 +230,5 @@ public class AssetRenditionsZipperImplTest {
 
         assertEquals("application/zip", ctx.response().getContentType());
         assertEquals(334,  ctx.response().getOutput().length);
-
-
-        FileOutputStream outputStream = new FileOutputStream("/Users/davidg/Desktop/foo.zip");
-        outputStream.write(ctx.response().getOutput());
-
-        outputStream.close();
     }
 }
