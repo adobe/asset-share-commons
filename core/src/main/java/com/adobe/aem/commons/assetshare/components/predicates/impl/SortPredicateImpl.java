@@ -25,6 +25,7 @@ import com.adobe.aem.commons.assetshare.components.search.SearchConfig;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.export.json.ExporterConstants;
+import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
 import com.day.cq.search.Predicate;
 import java.util.ArrayList;
@@ -46,12 +47,6 @@ import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Model(
         adaptables = {SlingHttpServletRequest.class},
         adapters = {SortPredicate.class, ComponentExporter.class},
@@ -62,8 +57,10 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
 
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/sort";
 
+    private static final String NAME_ORDER_BY = "orderby";
     private static final String NN_ITEMS = "items";
     private static final String PN_TEXT = "text";
+    private static final String PN_VALUE = "value";
     private static final String PN_ORDER_BY_CASE = "orderByCase";
 
     protected ValueMap valuesFromRequest = null;
@@ -103,7 +100,7 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
     }
 
     @Override
-    public List<SortOptionItem> getItems() {
+    public List<OptionItem> getItems() {
         final ValueMap initialValues = getInitialValues();
 
         return items.stream().map(optionItem -> {
@@ -118,7 +115,7 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
     @Override
     public String getOrderByLabel() {
         String label = unknownSortBy;
-        for (final SortOptionItem optionItem : getItems()) {
+        for (final OptionItem optionItem : getItems()) {
             if (optionItem.isSelected()) {
                 label = optionItem.getText();
                 break;
@@ -145,7 +142,7 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
 
     @Override
     public String getName() {
-        return "orderby";
+        return NAME_ORDER_BY;
     }
 
     @Override
@@ -193,7 +190,7 @@ public class SortPredicateImpl extends AbstractPredicate implements SortPredicat
         ValueMap properties = resource.getValueMap();
         SortOptionItem sortOptionItem = new com.adobe.aem.commons.assetshare.components.predicates.impl.options.SortOptionItem(
                 properties.get(PN_TEXT, String.class),
-                properties.get("value", String.class),
+                properties.get(PN_VALUE, String.class),
                 properties.get(PN_ORDER_BY_CASE, true));
         items.add(sortOptionItem);
     }
