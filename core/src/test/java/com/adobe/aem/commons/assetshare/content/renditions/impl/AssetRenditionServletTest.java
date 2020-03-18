@@ -28,35 +28,79 @@ import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.aem.commons.assetshare.util.impl.RequireAemImpl;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
+import org.apache.commons.io.IOUtils;
+import org.apache.sling.api.request.RequestDispatcherOptions;
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.testing.mock.sling.servlet.MockRequestDispatcherFactory;
+import org.apache.sling.testing.mock.sling.servlet.MockSlingHttpServletResponse;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AssetRenditionServletTest {
 
     @Rule
     public final AemContext ctx = new AemContext();
 
+    @Mock
+    private RequestDispatcher requestDispatcher;
+
     @Before
     public void setUp() throws Exception {
         ctx.load().json(getClass().getResourceAsStream("AssetRenditionServletTest.json"), "/content/dam");
+
+        // 1x1 pixel red png
+        ctx.load().binaryFile(getClass().getResourceAsStream("AssetRenditionServletTest__original.png"),
+                "/content/dam/test.png/jcr:content/renditions/original");
+
+        // 1x1 pixel blue png
+        ctx.load().binaryFile(getClass().getResourceAsStream("AssetRenditionServletTest__cq5dam.web.1280.1280.png"),
+                "/content/dam/test.png/jcr:content/renditions/cq5dam.web.1280.1280.png");
+
         ctx.currentResource("/content/dam/test.png");
 
-        ctx.registerService(RequireAem.class, new RequireAemImpl());
         ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
         ctx.registerService(AssetRenditionDispatchers.class, new AssetRenditionDispatchersImpl());
+
+        ctx.request().setRequestDispatcherFactory(new MockRequestDispatcherFactory() {
+            @Override
+            public RequestDispatcher getRequestDispatcher(String path, RequestDispatcherOptions options) {
+                return requestDispatcher;
+            }
+
+            @Override
+            public RequestDispatcher getRequestDispatcher(Resource resource, RequestDispatcherOptions options) {
+                assertEquals("This method signature should not be called", "This method signature was called.");
+                return null;
+            }
+        });
     }
 
     @Test
     public void doGet() throws IOException, ServletException {
-        AssetRenditionDispatcher assetRenditionDispatcher = Mockito.spy(new StaticRenditionDispatcherImpl());
+        final byte[] expectedOutputStream = IOUtils.toByteArray(this.getClass().getResourceAsStream("AssetRenditionServletTest__cq5dam.web.1280.1280.png"));
+        final AssetRenditionDispatcher assetRenditionDispatcher = Mockito.spy(new StaticRenditionDispatcherImpl());
+
+        doAnswer(invocation -> {
+            Object[] args = invocation.getArguments();
+            // Write some data to the response so we know that that requestDispatcher.include(..) was infact invoked.
+            ((MockSlingHttpServletResponse) args[1]).getOutputStream().write(expectedOutputStream);
+            return null; // void method, return null
+        }).when(requestDispatcher).include(eq(ctx.request()), eq(ctx.response()));
 
         ctx.registerInjectActivateService(
                 new StaticRenditionDispatcherImpl(),
@@ -69,7 +113,8 @@ public class AssetRenditionServletTest {
                 assetRenditionDispatcher,
                 ImmutableMap.<String, Object>builder().
                         put("rendition.mappings", new String[]{
-                                "testing2=value doesnt matter"}).
+                                "original=original",
+                                "testing2=^cq5dam\\.web\\..*"}).
                         build());
 
         ctx.registerInjectActivateService(new AssetRenditionServlet());

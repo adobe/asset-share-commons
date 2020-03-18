@@ -81,7 +81,6 @@ public class StaticRenditionDispatcherImplTest {
         ctx.registerService(ComputedProperties.class, new ComputedPropertiesImpl());
         ctx.addModelsForClasses(AssetModelImpl.class);
 
-
         ctx.request().setRequestDispatcherFactory(new MockRequestDispatcherFactory() {
             @Override
             public RequestDispatcher getRequestDispatcher(String path, RequestDispatcherOptions options) {

@@ -113,15 +113,19 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
 
         final Rendition rendition = asset.getRendition(new PatternRenditionPicker(mappings.get(parameters.getRenditionName())));
 
-        log.debug("Serving internal static rendition [ {} ] and resolved rendition name [ {} ] through internal Sling include",
-                rendition.getPath(),
-                parameters.getRenditionName());
-        final RequestDispatcherOptions options = new RequestDispatcherOptions();
+        if (rendition != null) {
+            log.debug("Serving internal static rendition [ {} ] and resolved rendition name [ {} ] through internal Sling include",
+                    rendition.getPath(),
+                    parameters.getRenditionName());
+            final RequestDispatcherOptions options = new RequestDispatcherOptions();
 
-        options.setReplaceSelectors("");
-        options.setReplaceSuffix("");
+            options.setReplaceSelectors("");
+            options.setReplaceSuffix("");
 
-        request.getRequestDispatcher(rendition.getPath(), options).include(request, response);
+            request.getRequestDispatcher(rendition.getPath(), options).include(request, response);
+        } else {
+            throw new ServletException(String.format("Cloud not locate rendition [ %s ] for assets [ %s ]", parameters.getRenditionName(), asset.getPath()));
+        }
     }
 
     @Activate
