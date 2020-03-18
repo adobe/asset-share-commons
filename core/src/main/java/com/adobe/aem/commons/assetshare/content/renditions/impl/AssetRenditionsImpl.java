@@ -20,62 +20,27 @@
 package com.adobe.aem.commons.assetshare.content.renditions.impl;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
-import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
-import org.apache.sling.commons.osgi.Order;
-import org.apache.sling.commons.osgi.RankedServices;
 import org.apache.sling.models.factory.ModelFactory;
-import org.osgi.service.component.annotations.*;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static com.day.cq.dam.scene7.api.constants.Scene7Constants.*;
 
-@Component(
-        reference = {
-                @Reference(
-                        name = "renditionResolver",
-                        bind = "bindAssetRenditionDispatcher",
-                        unbind = "unbindAssetRenditionDispatcher",
-                        service = AssetRenditionDispatcher.class,
-                        policy = ReferencePolicy.DYNAMIC,
-                        policyOption = ReferencePolicyOption.GREEDY,
-                        cardinality = ReferenceCardinality.MULTIPLE
-                )
-        }
-)
+@Component
 public class AssetRenditionsImpl implements AssetRenditions {
     private static final Logger log = LoggerFactory.getLogger(AssetRenditionsImpl.class);
 
     @Reference
     private ModelFactory modelFactory;
-
-    private final RankedServices<AssetRenditionDispatcher> assetRenditionResolvers = new RankedServices<>(Order.DESCENDING);
-
-    protected void bindAssetRenditionDispatcher(AssetRenditionDispatcher service, Map<String, Object> props) {
-        log.debug("Binding AssetRenditionDispatcher [ {} ]", service.getClass().getName());
-        assetRenditionResolvers.bind(service, props);
-    }
-
-    protected void unbindAssetRenditionDispatcher(AssetRenditionDispatcher service, Map<String, Object> props) {
-        log.debug("Unbinding AssetRenditionDispatcher [ {} ]", service.getClass().getName());
-        assetRenditionResolvers.unbind(service, props);
-    }
-
-    @Override
-    public List<AssetRenditionDispatcher> getAssetRenditionDispatchers() {
-        if (assetRenditionResolvers == null || assetRenditionResolvers.getList() == null) {
-            return Collections.EMPTY_LIST;
-        } else {
-            return ImmutableList.copyOf(assetRenditionResolvers.getList());
-        }
-    }
 
     @Override
     public String getUrl(final SlingHttpServletRequest request, final AssetModel asset, final AssetRenditionParameters parameters) {
@@ -104,15 +69,6 @@ public class AssetRenditionsImpl implements AssetRenditions {
                 });
 
         return options;
-    }
-
-    @Override
-    public boolean isValidAssetRenditionName(final String name) {
-        final Optional<AssetRenditionDispatcher> found = getAssetRenditionDispatchers().stream()
-                .filter(dispatcher -> dispatcher.getRenditionNames().contains(name))
-                .findAny();
-
-        return found.isPresent();
     }
 
     @Override

@@ -29,8 +29,6 @@ import org.apache.sling.api.wrappers.ValueMapDecorator;
 import org.apache.sling.models.annotations.*;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
@@ -56,6 +54,7 @@ public class EmailShareImpl extends ShareImpl implements EmailShare, ComponentEx
     @ValueMapValue
     private String emailTemplatePath;
 
+    @SuppressWarnings("AEM Rules:AEM-1")
     @ValueMapValue
     @Default(values = {"email", "path", "message"})
     private List<String> allowedQueryParams;

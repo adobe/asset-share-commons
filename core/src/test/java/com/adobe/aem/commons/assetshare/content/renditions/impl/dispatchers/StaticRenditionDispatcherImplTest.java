@@ -25,15 +25,24 @@ import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedProperti
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
+import com.adobe.aem.commons.assetshare.util.RequireAem;
+import com.adobe.aem.commons.assetshare.util.impl.ExtensionOverrideRequestWrapper;
+import com.adobe.aem.commons.assetshare.util.impl.RequireAemImpl;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.commons.io.IOUtils;
+import org.apache.sling.api.request.RequestDispatcherOptions;
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.testing.mock.sling.servlet.MockRequestDispatcherFactory;
+import org.apache.sling.testing.mock.sling.servlet.MockSlingHttpServletResponse;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.LinkedHashSet;
@@ -41,12 +50,18 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StaticRenditionDispatcherImplTest {
 
     @Rule
     public AemContext ctx = new AemContext();
+
+    @Mock
+    private RequestDispatcher requestDispatcher;
 
     @Before
     public void setUp() throws Exception {
@@ -65,6 +80,19 @@ public class StaticRenditionDispatcherImplTest {
         ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
         ctx.registerService(ComputedProperties.class, new ComputedPropertiesImpl());
         ctx.addModelsForClasses(AssetModelImpl.class);
+
+        ctx.request().setRequestDispatcherFactory(new MockRequestDispatcherFactory() {
+            @Override
+            public RequestDispatcher getRequestDispatcher(String path, RequestDispatcherOptions options) {
+                return requestDispatcher;
+            }
+
+            @Override
+            public RequestDispatcher getRequestDispatcher(Resource resource, RequestDispatcherOptions options) {
+                assertEquals("This method signature should not be called", "This method signature was called.");
+                return null;
+            }
+        });
     }
 
     @Test
@@ -138,6 +166,13 @@ public class StaticRenditionDispatcherImplTest {
     public void dispatch() throws IOException, ServletException {
         final byte[] expectedOutputStream = IOUtils.toByteArray(this.getClass().getResourceAsStream("StaticRenditionDispatcherImplTest__cq5dam.web.1280.1280.png"));
 
+        doAnswer(invocation -> {
+            Object[] args = invocation.getArguments();
+            // Write some data to the response so we know that that requestDispatcher.include(..) was infact invoked.
+            ((MockSlingHttpServletResponse) args[1]).getOutputStream().write(expectedOutputStream);
+            return null; // void method, return null
+        }).when(requestDispatcher).include(eq(ctx.request()), eq(ctx.response()));
+
         ctx.registerInjectActivateService(new StaticRenditionDispatcherImpl(),
                 ImmutableMap.<String, Object>builder().
                         put("rendition.mappings", new String[]{
@@ -152,9 +187,6 @@ public class StaticRenditionDispatcherImplTest {
         ctx.requestPathInfo().setSuffix("testing/download/asset.rendition");
 
         assetRenditionDispatcher.dispatch(ctx.request(), ctx.response());
-
-        assertEquals("image/png", ctx.response().getHeader("Content-Type"));
-        assertEquals("70", ctx.response().getHeader("Content-Length"));
 
         assertArrayEquals(expectedOutputStream, ctx.response().getOutput());
     }

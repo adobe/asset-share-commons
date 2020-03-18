@@ -6,11 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- 0504: Added RequireAem OSGi Service to determine if ASC is running in the Adobe Cloud or not.
+
 ### Changed
 
 - 0317: Re-organized Semantic UI theme to be served from a dedicated front-end module; Updated vendor dependencies to latest versions; Optimized client-side library dependency chain
 - 0479: Updated overall Project structure to be based on AEM Maven Archetype; following separation of content and code, as splitting out sample ASC site and assets to a ui.content.sample project
 - 0494: Updated code to conform to Cloud Manager quality gates; Of note, removed Dynamic Media Hybrid Download component.
+- 0506: Moved Service Users, ACLs, and base content structures to use Sling Repo Init
+- 0504: Updated StaticRenditionDispatcherImpl to selectively serve static renditions from the Blob store directly or via AEM, depending on if ASC is running in the Adobe Cloud or not. 
+
+### Fixed
+
+- 0502: Fixed cyclic OSGi dependencies
 
 ## [v1.9.0]
 
