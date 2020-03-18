@@ -30,6 +30,8 @@ import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.osgi.services.HttpClientBuilderFactory;
+import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.request.RequestDispatcherOptions;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.models.factory.ModelFactory;
@@ -51,6 +53,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 
@@ -76,10 +79,6 @@ public class AssetRenditionsDownloadServletTest {
         // 1x1 pixel red png
         ctx.load().binaryFile(getClass().getResourceAsStream("AssetRenditionsDownloadServletTest__original.png"),
                 "/content/dam/test.png/jcr:content/renditions/original");
-
-        // 1x1 pixel blue png
-        ctx.load().binaryFile(getClass().getResourceAsStream("AssetRenditionsDownloadServletTest__cq5dam.web.1280.1280.png"),
-                "/content/dam/test.png/jcr:content/renditions/cq5dam.web.1280.1280.png");
 
         MockAssetModels.mockModelFactory(ctx, modelFactory, "/content/dam/test.png");
 
@@ -151,6 +150,14 @@ public class AssetRenditionsDownloadServletTest {
 
     @Test
     public void doPost() throws ServletException, IOException {
+        final byte[] expectedOutputStream = IOUtils.toByteArray(this.getClass().getResourceAsStream("AssetRenditionsDownloadServletTest__original.png"));
+        doAnswer(invocation -> {
+            Object[] args = invocation.getArguments();
+            // Write some data to the response so we know that that requestDispatcher.include(..) was infact invoked.
+            ((AssetRenditionDownloadResponse) args[1]).getOutputStream().write(expectedOutputStream);
+            return null; // void method, return null
+        }).when(requestDispatcher).include(any(SlingHttpServletRequest.class), any(SlingHttpServletResponse.class));
+
         ctx.registerInjectActivateService(new AssetRenditionsDownloadServlet());
 
         AssetRenditionsDownloadServlet servlet = (AssetRenditionsDownloadServlet) ctx.getService(Servlet.class);
@@ -165,6 +172,7 @@ public class AssetRenditionsDownloadServletTest {
         servlet.service(ctx.request(), ctx.response());
 
         assertEquals("application/zip", ctx.response().getContentType());
+        assertEquals(334,  ctx.response().getOutput().length);
     }
 
     @Test

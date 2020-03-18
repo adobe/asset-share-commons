@@ -122,6 +122,8 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
             options.setReplaceSelectors("");
             options.setReplaceSuffix("");
 
+            response.setHeader("Content-Type", rendition.getMimeType());
+
             request.getRequestDispatcher(rendition.getPath(), options).include(request, response);
         } else {
             throw new ServletException(String.format("Cloud not locate rendition [ %s ] for assets [ %s ]", parameters.getRenditionName(), asset.getPath()));
