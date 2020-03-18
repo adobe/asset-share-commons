@@ -64,6 +64,7 @@ public class SearchResultsResourceTypeDataSource extends SlingSafeMethodsServlet
     private transient DataSourceBuilder dataSourceBuilder;
 
     @Override
+    @SuppressWarnings("CQRules:CQBP-71")
     protected final void doGet(final SlingHttpServletRequest request, final SlingHttpServletResponse response) {
 
         final ValueMap properties = request.getResource().getValueMap();

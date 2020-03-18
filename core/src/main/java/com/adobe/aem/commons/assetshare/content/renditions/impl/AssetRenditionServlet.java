@@ -20,8 +20,8 @@
 package com.adobe.aem.commons.assetshare.content.renditions.impl;
 
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -39,7 +39,10 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * /content/dam/foo.png.renditions/thumbnail/download/asset.rendition
@@ -68,7 +71,7 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
     public static final String SERVLET_EXTENSION = "renditions";
 
     @Reference
-    private transient AssetRenditions assetRenditions;
+    private transient AssetRenditionDispatchers assetRenditionDispatchers;
 
     private transient Set allowedParameters = new HashSet();
 
@@ -77,7 +80,7 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
             final AssetRenditionParameters parameters = new AssetRenditionParameters(request);
 
             if (acceptsAssetRenditionParameters(parameters)) {
-                for (final AssetRenditionDispatcher assetRenditionDispatcher : assetRenditions.getAssetRenditionDispatchers()) {
+                for (final AssetRenditionDispatcher assetRenditionDispatcher : assetRenditionDispatchers.getAssetRenditionDispatchers()) {
                     if (acceptedByAssetRenditionDispatcher(assetRenditionDispatcher, parameters)) {
 
                         setResponseHeaders(response, parameters);
@@ -102,7 +105,7 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
 
     protected boolean acceptedByAssetRenditionDispatcher(final AssetRenditionDispatcher assetRenditionDispatcher, final AssetRenditionParameters parameters) {
         if (assetRenditionDispatcher.getRenditionNames() == null ||
-                assetRenditions == null ||
+                assetRenditionDispatchers == null ||
                 StringUtils.isBlank(parameters.getRenditionName())) {
             return false;
         } else {

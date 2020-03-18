@@ -23,7 +23,6 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.osgi.annotation.versioning.ProviderType;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,10 +42,6 @@ public interface AssetRenditions {
     String VAR_DM_FOLDER= "${dm.folder}"; // dam:scene7Folder
     String VAR_DM_DOMAIN = "${dm.domain}"; // dam:scene7Domain
     String VAR_DM_API_SERVER = "${dm.api-server}"; // dam:scene7APIServer
-    /**
-     * @return a list of all registered AssetRenditionDispatchers in the system ordered in Descending order by service.ranking.
-     */
-    List<AssetRenditionDispatcher> getAssetRenditionDispatchers();
 
     /**
      * Creates a URL to the AssetRenditionServlet for the
@@ -78,11 +73,4 @@ public interface AssetRenditions {
      * @return the expression with the variables replaced with values derived from the request.
      */
     String evaluateExpression(SlingHttpServletRequest request, String expression);
-
-    /**
-     * Checks if the provided asset rendition name is a valid, registered asset rendition.
-     * @param name the asset rendition name.
-     * @return true if the name is registered as a valid asset rendition
-     */
-    default boolean isValidAssetRenditionName(String name) { return false; }
 }
