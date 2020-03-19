@@ -115,8 +115,7 @@ public class AssetRenditionsDownloadServletTest {
 
             @Override
             public RequestDispatcher getRequestDispatcher(Resource resource, RequestDispatcherOptions options) {
-                assertEquals("This method signature should not be called", "This method signature was called.");
-                return null;
+                return requestDispatcher;
             }
         });
     }

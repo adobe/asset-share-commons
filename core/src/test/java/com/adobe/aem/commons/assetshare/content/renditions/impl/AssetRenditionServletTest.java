@@ -23,10 +23,9 @@ import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatc
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
-import com.adobe.aem.commons.assetshare.content.renditions.download.impl.AssetRenditionDownloadResponse;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
-import com.adobe.aem.commons.assetshare.util.RequireAem;
-import com.adobe.aem.commons.assetshare.util.impl.RequireAemImpl;
+import com.adobe.aem.commons.assetshare.util.ServletHelper;
+import com.adobe.aem.commons.assetshare.util.impl.ServletHelperImpl;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.commons.io.IOUtils;
@@ -51,7 +50,6 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -77,6 +75,7 @@ public class AssetRenditionServletTest {
 
         ctx.currentResource("/content/dam/test.png");
 
+        ctx.registerService(ServletHelper.class, new ServletHelperImpl());
         ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
         ctx.registerService(AssetRenditionDispatchers.class, new AssetRenditionDispatchersImpl());
 
@@ -88,8 +87,7 @@ public class AssetRenditionServletTest {
 
             @Override
             public RequestDispatcher getRequestDispatcher(Resource resource, RequestDispatcherOptions options) {
-                assertEquals("This method signature should not be called", "This method signature was called.");
-                return null;
+                return requestDispatcher;
             }
         });
     }

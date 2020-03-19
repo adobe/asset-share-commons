@@ -72,9 +72,6 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
     )
     private volatile AssetRenditions assetRenditions;
 
-    @Reference
-    private volatile ServletHelper servletHelper;
-
     @Override
     public String getLabel() {
         return cfg.label();
