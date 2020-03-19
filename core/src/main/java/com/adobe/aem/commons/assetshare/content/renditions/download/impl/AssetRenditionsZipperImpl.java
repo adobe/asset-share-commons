@@ -20,9 +20,9 @@
 package com.adobe.aem.commons.assetshare.content.renditions.download.impl;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
-import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsException;
-import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsDownloadOrchestrator;
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionStreamer;
+import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsDownloadOrchestrator;
+import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -82,7 +82,6 @@ public class AssetRenditionsZipperImpl implements AssetRenditionsDownloadOrchest
                         final SlingHttpServletResponse response,
                         final List<AssetModel> assets,
                         final List<String> renditionNames) throws IOException {
-
         final String filename = StringUtils.defaultIfBlank(getFileName(request.getResource().getValueMap()), DEFAULT_FILE_ATTACHMENT_NAME);
 
         response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
@@ -127,6 +126,9 @@ public class AssetRenditionsZipperImpl implements AssetRenditionsDownloadOrchest
                 } catch (AssetRenditionsException ex) {
                     log.error("Unable to obtain the AssetRendition as an output stream. Skipping...", ex);
                     continue;
+                } catch (IOException ex) {
+                    log.error("Unable to add entry to Zip that is streamed to HTTP Response. Skipping...", ex);
+                    continue;
                 } finally {
                     if (stream != null && stream.getOutputStream() != null) {
                         stream.getOutputStream().close();
@@ -142,16 +144,6 @@ public class AssetRenditionsZipperImpl implements AssetRenditionsDownloadOrchest
         }
 
         zipOutputStream.close();
-    }
-
-    private void addNoContentFile(String fileName, String message, final ZipOutputStream zipOutputStream) throws IOException {
-        fileName = StringUtils.defaultString(fileName, DEFAULT_NO_CONTENT_FILE_NAME);
-        message = StringUtils.defaultString(message, DEFAULT_NO_CONTENT_MESSAGE);
-
-        final ZipEntry zipEntry = new ZipEntry(fileName);
-        zipOutputStream.putNextEntry(zipEntry);
-        IOUtils.write(message, zipOutputStream);
-        zipOutputStream.closeEntry();
     }
 
     @Override
@@ -174,7 +166,8 @@ public class AssetRenditionsZipperImpl implements AssetRenditionsDownloadOrchest
         return fileName;
     }
 
-    protected String getZipEntryName(final String folderName, final AssetModel asset, final String renditionName, final String responseContentType, final Set<String> zipEntryFileNames) {
+    protected String getZipEntryName(final String folderName, final AssetModel asset, final String renditionName,
+                                     final String responseContentType, final Set<String> zipEntryFileNames) {
         final String extension = mimeTypeService.getExtension(responseContentType);
 
         final Map<String, String> variables = new HashMap<>();
@@ -222,7 +215,7 @@ public class AssetRenditionsZipperImpl implements AssetRenditionsDownloadOrchest
                                              String zipEntryName,
                                              final ZipOutputStream zipOutputStream,
                                              final ByteArrayOutputStream assetRenditionOutputStream) throws IOException {
-        if (prefix != null) {
+        if (StringUtils.isNotBlank(prefix)) {
             zipEntryName = prefix + "/" +  zipEntryName;
         }
 
@@ -231,6 +224,16 @@ public class AssetRenditionsZipperImpl implements AssetRenditionsDownloadOrchest
         IOUtils.write(assetRenditionOutputStream.toByteArray(), zipOutputStream);
         zipOutputStream.closeEntry();
         assetRenditionOutputStream.close();
+    }
+
+    private void addNoContentFile(String fileName, String message, final ZipOutputStream zipOutputStream) throws IOException {
+        fileName = StringUtils.defaultString(fileName, DEFAULT_NO_CONTENT_FILE_NAME);
+        message = StringUtils.defaultString(message, DEFAULT_NO_CONTENT_MESSAGE);
+
+        final ZipEntry zipEntry = new ZipEntry(fileName);
+        zipOutputStream.putNextEntry(zipEntry);
+        IOUtils.write(message, zipOutputStream, "UTF-8");
+        zipOutputStream.closeEntry();
     }
 
     @Activate

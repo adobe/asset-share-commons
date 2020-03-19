@@ -109,8 +109,6 @@ public class AssetRenditionsDownloadServlet extends SlingAllMethodsServlet imple
 
         try {
             orchestrator.execute(request, response, assets, renditionNames);
-
-            response.getOutputStream().flush();
         } catch (AssetRenditionsException e) {
             throw new ServletException(e);
         }

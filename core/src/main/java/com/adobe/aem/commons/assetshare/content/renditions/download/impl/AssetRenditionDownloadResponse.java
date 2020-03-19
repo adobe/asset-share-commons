@@ -33,6 +33,7 @@ public class AssetRenditionDownloadResponse extends BufferedSlingHttpServletResp
     private int statusCode = SC_OK;
     private boolean redirect = false;
     private String contentType;
+    private int contentLength;
 
     public AssetRenditionDownloadResponse(SlingHttpServletResponse wrappedResponse, StringWriter writer, ByteArrayOutputStream outputStream) {
         super(wrappedResponse, writer, outputStream);
@@ -68,6 +69,8 @@ public class AssetRenditionDownloadResponse extends BufferedSlingHttpServletResp
             redirectLocation = value;
         } else if ("Content-Type".equals(key)) {
             contentType = value;
+        } else if ("Content-Length".equals(key)) {
+            contentLength = Integer.parseInt(value);
         }
         // Else ignore
     }
@@ -93,6 +96,11 @@ public class AssetRenditionDownloadResponse extends BufferedSlingHttpServletResp
     @Override
     public String getContentType() {
         return StringUtils.defaultIfEmpty(contentType, super.getContentType());
+    }
+
+    @Override
+    public void setContentLength(int contentLength) {
+        this.contentLength = contentLength;
     }
 }
 
