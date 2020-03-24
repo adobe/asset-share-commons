@@ -126,6 +126,12 @@
             <type>zip</type>
         </dependency>
         <dependency>
+            <groupId>com.adobe.aem.commons</groupId>
+            <artifactId>assetshare.ui.frontend.theme.dark</artifactId>
+            <version>${project.version}</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
             <groupId>com.adobe.cq</groupId>
             <artifactId>core.wcm.components.core</artifactId>
         </dependency>
