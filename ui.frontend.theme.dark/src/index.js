@@ -1,4 +1,4 @@
-// Semantic UI Light
+// Semantic UI Theme
 import '../semanticui/semantic.less';
 
 // Fomantic UI JS
