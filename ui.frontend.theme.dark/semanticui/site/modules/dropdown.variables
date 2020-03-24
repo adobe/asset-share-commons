@@ -1,0 +1,28 @@
+/*******************************
+            Dropdown
+*******************************/
+
+
+/* Default Text */
+@defaultTextColor : @textColor;
+
+/* Border */
+@selectionBorderColor: @borderColor;
+@selectionFocusBorderColor: @selectionBorderColor;
+@selectionHoverBorderColor : @selectionBorderColor;
+@selectionActiveHoverBorderColor: @selectionBorderColor;
+
+/* Background */
+@menuBackground : @inputBackground;
+@hoveredItemBackground : @darkBlack;
+
+/* Items */
+@selectionItemDivider : @black;
+@hoveredItemColor : @white;
+@selectedColor : @white;
+
+/* Hide box shadow */
+@menuBoxShadow : none;
+@selectionFocusMenuBoxShadow: none;
+@selectionActiveHoverMenuBoxShadow : none;
+

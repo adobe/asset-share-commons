@@ -1,0 +1,16 @@
+/*******************************
+         Theme Overrides
+*******************************/
+
+.ui.calendar .ui.popup {
+  max-width: none;
+  padding: 0;
+  border: 1px solid @borderColor;
+  user-select: none;
+  background: @pageBackground;
+}
+
+.ui.calendar .ui.table tr th,
+.ui.calendar .ui.table tr td {
+ border: none;
+}
