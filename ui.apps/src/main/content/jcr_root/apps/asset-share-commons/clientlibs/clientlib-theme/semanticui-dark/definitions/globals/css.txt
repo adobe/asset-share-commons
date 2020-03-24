@@ -1,4 +1,0 @@
-//Globals
-
-reset.less
-site.less

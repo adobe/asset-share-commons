@@ -7,9 +7,9 @@ module.exports = {
 
     libs: [
         {
-            name: "semanticui-light",
+            name: "semanticui-dark",
             allowProxy: true,
-            categories: ["asset-share-commons.semantic-ui-light"],
+            categories: ["asset-share-commons.semantic-ui-dark"],
             embed: ["asset-share-commons.site.semantic-ui","asset-share-commons.site.semantic-ui.components"],
             dependencies: ["asset-share-commons.base"],
             serializationFormat: "xml",
