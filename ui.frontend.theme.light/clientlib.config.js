@@ -17,12 +17,12 @@ module.exports = {
             jsProcessor: ["default:none", "min:none"],
             assets: {
                 js: [
-                    "dist/semanticui-light/js/vendors~site.*.js",
-                    "dist/semanticui-light/js/site.*.js"
+                    "dist/semanticui-theme/js/vendors~site.*.js",
+                    "dist/semanticui-theme/js/site.*.js"
                 ],
                 css: [
-                    "dist/semanticui-light/css/vendors~site.*.css",
-                    "dist/semanticui-light/css/site.*.css"
+                    "dist/semanticui-theme/css/vendors~site.*.css",
+                    "dist/semanticui-theme/css/site.*.css"
                 ],
                 resources: {
                     cwd: "./resources",

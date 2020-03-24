@@ -1,5 +1,5 @@
 // Semantic UI Light
-import '../light-theme/semantic.less';
+import '../semanticui/semantic.less';
 
 // Fomantic UI JS
 import './fomantic-ui';

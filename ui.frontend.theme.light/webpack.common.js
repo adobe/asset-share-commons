@@ -8,14 +8,14 @@ const { CleanWebpackPlugin }  = require('clean-webpack-plugin');
 module.exports = {
         resolve: {
             alias: {
-                '../../theme.config$': path.join(__dirname, 'light-theme/theme.config')  
+                '../../theme.config$': path.join(__dirname, 'semanticui/theme.config')  
             }
         },
         entry: {
             site: __dirname + '/src/index.js'
         },
         output: {
-            filename: 'semanticui-light/js/[name].bundle.js',
+            filename: 'semanticui-theme/js/[name].bundle.js',
             path: path.resolve(__dirname, 'dist')
         },
         optimization: {
@@ -59,7 +59,7 @@ module.exports = {
             new CleanWebpackPlugin(),
             new webpack.NoEmitOnErrorsPlugin(),
             new MiniCssExtractPlugin({
-                filename: 'semanticui-light/css/[name].bundle.css'
+                filename: 'semanticui-theme/css/[name].bundle.css'
             })
         ],
         stats: {
