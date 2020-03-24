@@ -1,7 +1,7 @@
 /*
  * Asset Share Commons
  *
- * Copyright (C) 2017 Adobe
+ * Copyright (C) 2019 Adobe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,10 @@
  *
  */
 
-@Version("4.0.0")
-package com.adobe.aem.commons.assetshare.components.predicates;
+package com.adobe.aem.commons.assetshare.content.renditions.download;
 
-import org.osgi.annotation.versioning.Version;
-
+public class AssetRenditionsException extends Exception {
+    public AssetRenditionsException(String msg) {
+        super(msg);
+    }
+}

@@ -2,13 +2,18 @@ package com.adobe.aem.commons.assetshare.components.actions.download.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.ResourceBundle;
-import org.apache.sling.api.SlingHttpServletRequest;
+import java.util.List;
+
+import com.adobe.aem.commons.assetshare.testhelpers.TestOptionsImpl;
+import com.adobe.cq.wcm.core.components.models.form.Options;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.models.factory.ModelFactory;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.osgi.framework.Constants;
@@ -22,6 +27,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -38,12 +45,6 @@ public class DownloadImplTest {
 
 	@Mock
 	ModelFactory modelFactory;
-
-	@Mock
-	SlingHttpServletRequest mockRequest;
-
-	@Mock
-	ResourceBundle resourceBundle;
 
 	@Mock
 	AssetModel asset1;
@@ -68,8 +69,10 @@ public class DownloadImplTest {
 		ctx.registerService(ActionHelper.class, actionHelper, Constants.SERVICE_RANKING, Integer.MAX_VALUE);
 		ctx.registerService(AssetDownloadHelper.class, assetDownloadHelper, Constants.SERVICE_RANKING,
 				Integer.MAX_VALUE);
+        ctx.registerService(ModelFactory.class, modelFactory, org.osgi.framework.Constants.SERVICE_RANKING,
+                Integer.MAX_VALUE);
 		ctx.addModelsForClasses(Download.class);
-	}
+    }
 
 	@Test
 	public void getAssets() {
@@ -179,4 +182,97 @@ public class DownloadImplTest {
 		assertFalse(download.getAssets().isEmpty());
 		assertEquals(expected, download.getDownloadContentSize());
 	}
+
+	@Test
+	public void isLegacyMode_Yes() {
+		ctx.currentResource("/content/download_legacy");
+		final Download download = ctx.request().adaptTo(Download.class);
+
+		assertTrue("Should be legacy mode", ((DownloadImpl)download).isLegacyMode());
+	}
+
+	@Test
+	public void isLegacyMode_Yes_WithMode() {
+		ctx.currentResource("/content/download_legacy_mode");
+		final Download download = ctx.request().adaptTo(Download.class);
+
+		assertTrue("Should be legacy mode", ((DownloadImpl)download).isLegacyMode());
+	}
+
+    @Test
+	public void isLegacyMode_No() {
+		ctx.currentResource("/content/download");
+		final Download download = ctx.request().adaptTo(Download.class);
+
+		assertFalse("Should be NOT be legacy mode", ((DownloadImpl)download).isLegacyMode());
+	}
+
+	@Test
+	public void isLegacyMode_No_WithGroups() {
+		ctx.currentResource("/content/download_with_asset_rendition_groups");
+
+		final Options group1Options = new TestOptionsImpl(ctx.currentResource().getChild("asset-renditions-groups/items/item0/asset-renditions/items"));
+		final Options group2Options = new TestOptionsImpl(ctx.currentResource().getChild("asset-renditions-groups/items/item1/asset-renditions/items"));
+
+		doReturn(group1Options).when(modelFactory).getModelFromWrappedRequest(eq(ctx.request()),
+				argThat(new IsSameResourceByPath(ctx.currentResource().getChild("asset-renditions-groups/items/item0/asset-renditions").getPath())),
+				eq(Options.class));
+
+		doReturn(group2Options).when(modelFactory).getModelFromWrappedRequest(eq(ctx.request()),
+				argThat(new IsSameResourceByPath(ctx.currentResource().getChild("asset-renditions-groups/items/item1/asset-renditions").getPath())),
+				eq(Options.class));
+
+		final Download download = ctx.request().adaptTo(Download.class);
+
+		assertFalse("Should be NOT be legacy mode", ((DownloadImpl)download).isLegacyMode());
+	}
+
+
+	@Test
+	public void getAssetRenditionGroups() {
+		ctx.currentResource("/content/download_with_asset_rendition_groups");
+
+		final Options group1Options = new TestOptionsImpl(ctx.currentResource().getChild("asset-renditions-groups/items/item0/asset-renditions/items"));
+		final Options group2Options = new TestOptionsImpl(ctx.currentResource().getChild("asset-renditions-groups/items/item1/asset-renditions/items"));
+
+		doReturn(group1Options).when(modelFactory).getModelFromWrappedRequest(eq(ctx.request()),
+				argThat(new IsSameResourceByPath(ctx.currentResource().getChild("asset-renditions-groups/items/item0/asset-renditions").getPath())),
+				eq(Options.class));
+
+		doReturn(group2Options).when(modelFactory).getModelFromWrappedRequest(eq(ctx.request()),
+				argThat(new IsSameResourceByPath(ctx.currentResource().getChild("asset-renditions-groups/items/item1/asset-renditions").getPath())),
+				eq(Options.class));
+
+		final Download download = ctx.request().adaptTo(Download.class);
+
+		final List<Download.AssetRenditionsGroup> actual = download.getAssetRenditionsGroups();
+
+		assertEquals(2, actual.size());
+		assertEquals("Group 1", actual.get(0).getTitle());
+		assertEquals("Rendition 1.1", actual.get(0).getItems().get(0).getText());
+		assertEquals("rendition-1-1", actual.get(0).getItems().get(0).getValue());
+		assertEquals("Rendition 1.2", actual.get(0).getItems().get(1).getText());
+		assertEquals("rendition-1-2", actual.get(0).getItems().get(1).getValue());
+
+		assertEquals(2, actual.size());
+		assertEquals("Group 2", actual.get(1).getTitle());
+		assertEquals("Rendition 2.1", actual.get(1).getItems().get(0).getText());
+		assertEquals("rendition-2-1", actual.get(1).getItems().get(0).getValue());
+		assertEquals("Rendition 2.2", actual.get(1).getItems().get(1).getText());
+		assertEquals("rendition-2-2", actual.get(1).getItems().get(1).getValue());
+	}
+
+
+    private class IsSameResourceByPath implements ArgumentMatcher<Resource> {
+        private final String path;
+
+        public IsSameResourceByPath(String path) {
+	        this.path = path;
+        }
+
+        public boolean matches(Resource resource) {
+            return StringUtils.equals(path, resource.getPath());
+        }
+    }
+
 }

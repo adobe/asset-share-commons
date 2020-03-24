@@ -25,12 +25,11 @@ import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedProperti
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
-import com.adobe.aem.commons.assetshare.util.RequireAem;
-import com.adobe.aem.commons.assetshare.util.impl.ExtensionOverrideRequestWrapper;
-import com.adobe.aem.commons.assetshare.util.impl.RequireAemImpl;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.commons.io.IOUtils;
+import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.request.RequestDispatcherOptions;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.testing.mock.sling.servlet.MockRequestDispatcherFactory;
@@ -89,8 +88,7 @@ public class StaticRenditionDispatcherImplTest {
 
             @Override
             public RequestDispatcher getRequestDispatcher(Resource resource, RequestDispatcherOptions options) {
-                assertEquals("This method signature should not be called", "This method signature was called.");
-                return null;
+                return requestDispatcher;
             }
         });
     }
@@ -171,7 +169,7 @@ public class StaticRenditionDispatcherImplTest {
             // Write some data to the response so we know that that requestDispatcher.include(..) was infact invoked.
             ((MockSlingHttpServletResponse) args[1]).getOutputStream().write(expectedOutputStream);
             return null; // void method, return null
-        }).when(requestDispatcher).include(eq(ctx.request()), eq(ctx.response()));
+        }).when(requestDispatcher).include(any(SlingHttpServletRequest.class), any(SlingHttpServletResponse.class));
 
         ctx.registerInjectActivateService(new StaticRenditionDispatcherImpl(),
                 ImmutableMap.<String, Object>builder().

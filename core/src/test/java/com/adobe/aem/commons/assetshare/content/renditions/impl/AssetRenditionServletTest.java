@@ -24,11 +24,13 @@ import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatc
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
-import com.adobe.aem.commons.assetshare.util.RequireAem;
-import com.adobe.aem.commons.assetshare.util.impl.RequireAemImpl;
+import com.adobe.aem.commons.assetshare.util.ServletHelper;
+import com.adobe.aem.commons.assetshare.util.impl.ServletHelperImpl;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.commons.io.IOUtils;
+import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.request.RequestDispatcherOptions;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.testing.mock.sling.servlet.MockRequestDispatcherFactory;
@@ -47,7 +49,7 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -73,6 +75,7 @@ public class AssetRenditionServletTest {
 
         ctx.currentResource("/content/dam/test.png");
 
+        ctx.registerService(ServletHelper.class, new ServletHelperImpl());
         ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
         ctx.registerService(AssetRenditionDispatchers.class, new AssetRenditionDispatchersImpl());
 
@@ -84,23 +87,22 @@ public class AssetRenditionServletTest {
 
             @Override
             public RequestDispatcher getRequestDispatcher(Resource resource, RequestDispatcherOptions options) {
-                assertEquals("This method signature should not be called", "This method signature was called.");
-                return null;
+                return requestDispatcher;
             }
         });
     }
 
     @Test
     public void doGet() throws IOException, ServletException {
-        final byte[] expectedOutputStream = IOUtils.toByteArray(this.getClass().getResourceAsStream("AssetRenditionServletTest__cq5dam.web.1280.1280.png"));
         final AssetRenditionDispatcher assetRenditionDispatcher = Mockito.spy(new StaticRenditionDispatcherImpl());
 
+        final byte[] expectedOutputStream = IOUtils.toByteArray(this.getClass().getResourceAsStream("AssetRenditionServletTest__cq5dam.web.1280.1280.png"));
         doAnswer(invocation -> {
             Object[] args = invocation.getArguments();
             // Write some data to the response so we know that that requestDispatcher.include(..) was infact invoked.
             ((MockSlingHttpServletResponse) args[1]).getOutputStream().write(expectedOutputStream);
             return null; // void method, return null
-        }).when(requestDispatcher).include(eq(ctx.request()), eq(ctx.response()));
+        }).when(requestDispatcher).include(any(SlingHttpServletRequest.class), any(SlingHttpServletResponse.class));
 
         ctx.registerInjectActivateService(
                 new StaticRenditionDispatcherImpl(),

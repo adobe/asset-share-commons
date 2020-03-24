@@ -22,6 +22,8 @@ package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.adobe.aem.commons.assetshare.content.renditions.download.impl.AssetRenditionDownloadRequest;
+import com.adobe.aem.commons.assetshare.util.ServletHelper;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.api.RenditionPicker;
@@ -29,6 +31,8 @@ import com.day.cq.dam.commons.util.DamUtil;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.request.RequestDispatcherOptions;
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.scripting.SlingBindings;
 import org.osgi.service.component.annotations.*;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
@@ -114,15 +118,23 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
         final Rendition rendition = asset.getRendition(new PatternRenditionPicker(mappings.get(parameters.getRenditionName())));
 
         if (rendition != null) {
-            log.debug("Serving internal static rendition [ {} ] and resolved rendition name [ {} ] through internal Sling include",
+
+            log.debug("Serving internal static rendition [ {} ] with resolved rendition name [ {} ] through internal Sling Forward",
                     rendition.getPath(),
                     parameters.getRenditionName());
-            final RequestDispatcherOptions options = new RequestDispatcherOptions();
 
-            options.setReplaceSelectors("");
-            options.setReplaceSuffix("");
+            response.setHeader("Content-Type", rendition.getMimeType());
 
-            request.getRequestDispatcher(rendition.getPath(), options).include(request, response);
+            request.getRequestDispatcher(rendition.adaptTo(Resource.class)).include(
+                   new AssetRenditionDownloadRequest(request,
+                           "GET",
+                           rendition.adaptTo(Resource.class),
+                           new String[]{},
+                           null,
+                           ""), response);
+
+            log.debug("Finishing the include");
+
         } else {
             throw new ServletException(String.format("Cloud not locate rendition [ %s ] for assets [ %s ]", parameters.getRenditionName(), asset.getPath()));
         }
