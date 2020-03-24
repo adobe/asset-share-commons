@@ -223,7 +223,7 @@ public class RenditionsImpl extends AbstractEmptyTextComponent implements Rendit
             return legacyMode;
         }
     }
-  
+
     @Nonnull
     @Override
     public String getExportedType() {
