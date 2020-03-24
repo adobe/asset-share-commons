@@ -20,6 +20,7 @@
 package com.adobe.aem.commons.assetshare.search.impl;
 
 import com.adobe.aem.commons.assetshare.search.FastProperties;
+import com.adobe.aem.commons.assetshare.util.impl.OakIndexResolver;
 import org.apache.commons.lang.StringUtils;
 import org.apache.sling.api.resource.*;
 import org.osgi.service.component.annotations.Activate;
@@ -42,14 +43,18 @@ public class FastPropertiesImpl implements FastProperties {
 
     private static final String SERVICE_NAME = "oak-index-definition-reader";
 
-    protected static final String DEFAULT_INDEX_DEFINITION_RULES_PATH = "/oak:index/damAssetLucene/indexRules/dam:Asset/properties";
+    protected static final String NN_OAK_INDEX = "/oak:index";
+
+    protected static final String NN_DAM_ASSET_LUCENE_INDEX = "damAssetLucene";
+
+    protected static final String INDEX_DEFINITION_RULES_SUB_PATH = "indexRules/dam:Asset/properties";
+
     protected static final Map<String, Object> AUTH_INFO = Collections.singletonMap(ResourceResolverFactory.SUBSERVICE, SERVICE_NAME);
 
-    protected String[] indexDefinitionRulesPaths = new String[]{DEFAULT_INDEX_DEFINITION_RULES_PATH};
+    protected String oakIndexName = NN_DAM_ASSET_LUCENE_INDEX;
 
     @Reference
     private ResourceResolverFactory resourceResolverFactory;
-
 
     @Override
     public final List<String> getFastProperties() {
@@ -66,9 +71,11 @@ public class FastPropertiesImpl implements FastProperties {
         final Set<String> fastProperties = new TreeSet<>();
 
         ResourceResolver resourceResolver = null;
-
         try {
             resourceResolver = resourceResolverFactory.getServiceResourceResolver(AUTH_INFO);
+
+            final String resolvedOakIndexName = StringUtils.defaultIfBlank(OakIndexResolver.resolveRankingOakIndex(resourceResolver, oakIndexName), oakIndexName);
+            final String[] indexDefinitionRulesPaths = new String[] { NN_OAK_INDEX + "/" + resolvedOakIndexName + "/" + INDEX_DEFINITION_RULES_SUB_PATH};
 
             for (final String indexDefinitionRulesPath : indexDefinitionRulesPaths) {
                 final Resource damAssetIndexRulesResource = resourceResolver.getResource(indexDefinitionRulesPath);
@@ -138,15 +145,15 @@ public class FastPropertiesImpl implements FastProperties {
 
     @Activate
     protected void activate(Cfg cfg) {
-        indexDefinitionRulesPaths = cfg.indexDefinitionPaths();
+        oakIndexName = cfg.oakIndexName();
     }
 
     @ObjectClassDefinition(name = "Asset Share Commons - Fast Properties")
     public @interface Cfg {
 
-        @AttributeDefinition(name = "Index definition rules paths",
-                             description = "The absolute index definitions rules paths to inspect to determine fast properties. These must be readable by the oak-index-definition-reader service user.")
-        String[] indexDefinitionPaths() default {DEFAULT_INDEX_DEFINITION_RULES_PATH};
+        @AttributeDefinition(name = "Oak Index Definition (Root) Name",
+                             description = "The 'root' name of the index definitions rules paths to inspect to determine fast properties. These must be readable by the oak-index-definition-reader service user. Defaults to [ " + NN_DAM_ASSET_LUCENE_INDEX + " ].")
+        String oakIndexName() default NN_DAM_ASSET_LUCENE_INDEX;
 
     }
 }
