@@ -1,5 +1,0 @@
-/*******************************
-            Popup Theme
-*******************************/
-
-@arrowBackground : @pageBackground;
