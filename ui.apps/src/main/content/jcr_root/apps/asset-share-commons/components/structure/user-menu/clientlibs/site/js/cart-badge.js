@@ -16,9 +16,9 @@
  * limitations under the License.
  */
 
-/*global jQuery: false, AssetShare: false, ContextHub: false*/
+/*global jQuery: false, AssetShare: false*/
 
-jQuery((function($, ns, cart, contextHub) {
+jQuery((function($, ns, cart, storage) {
     "use strict";
 
     function updateCartCountBadge(size) {
@@ -26,7 +26,7 @@ jQuery((function($, ns, cart, contextHub) {
     }
 
     // On cart change
-    $("body").on("asset-share-commons.cart.update", function(e, size, paths) {
+    $("body").on(ns.Events.CART_UPDATE, function(e, size, paths) {
         updateCartCountBadge(size);
     });
 
@@ -35,11 +35,19 @@ jQuery((function($, ns, cart, contextHub) {
         updateCartCountBadge(cart.size);
     }
 
-    init();
+    // Add Event Listener for when profile loaded to init
+    var bodyElement = document.getElementsByTagName("body")[0];
+    bodyElement.addEventListener(ns.Events.PROFILE_LOAD, function(e) {
+        init();
+    });
 
-    cart.store().eventing.on(contextHub.Constants.EVENT_STORE_READY, init);
+    /* in the unlikely event that the local profile has already loaded 
+       before our event listener has been registered */
+    if(storage.isReady()) {
+        init();
+    }
 
 }(jQuery,
     AssetShare,
     AssetShare.Cart,
-    ContextHub)));
+    AssetShare.Storage)));

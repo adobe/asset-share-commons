@@ -2,12 +2,13 @@
 
 # Common Modules
 namespace.js
+events.js
+storage.js
 messages.js
 elements.js
 data.js
 navigation.js
 form-data.js
 ajax.js
-contexthub.js
-events.js
+pageload.js
 util.js

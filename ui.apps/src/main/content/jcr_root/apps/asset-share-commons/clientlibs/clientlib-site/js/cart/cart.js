@@ -16,13 +16,13 @@
  * limitations under the License.
  */
 
-/*global ContextHub: false, jQuery: false, AssetShare: false */
+/*global jQuery: false, AssetShare: false */
 
-AssetShare.Cart = (function ($, ns, contextHubStore) {
+AssetShare.Cart = (function ($, ns, storage) {
     "use strict";
 
     function enabled() {
-        return contextHubStore !== null && typeof contextHubStore !== "undefined";
+        return storage !== null && storage.isReady();
     }
 
     function getPaths() {
@@ -30,8 +30,7 @@ AssetShare.Cart = (function ($, ns, contextHubStore) {
             paths = [];
 
         if (enabled()) {
-            //assetsInCart = contextHubStore.get();
-            assetsInCart = ns.Storage.getCartAssets();
+            assetsInCart = storage.getCartAssets();
         }
 
         if (!(assetsInCart instanceof Array)) {
@@ -64,8 +63,7 @@ AssetShare.Cart = (function ($, ns, contextHubStore) {
     function add(assetPath, licensed) {
         if (enabled()) {
             if(!contains(assetPath)) {
-                ns.Storage.addCartAsset(assetPath);
-                //contextHubStore.add(assetPath);
+                storage.addCartAsset(assetPath);
 
                 $("body").trigger(ns.Events.CART_ADD, [getSize(), assetPath]);
                 $("body").trigger(ns.Events.CART_UPDATE, [getSize(), getPaths()]);
@@ -80,8 +78,7 @@ AssetShare.Cart = (function ($, ns, contextHubStore) {
 
     function remove(assetPath) {
         if (enabled() && contains(assetPath)) {
-            ns.Storage.removeCartAsset(assetPath);
-            //contextHubStore.remove(assetPath);
+            storage.removeCartAsset(assetPath);
 
             $("body").trigger(ns.Events.CART_REMOVE, [getSize(), assetPath]);
             $("body").trigger(ns.Events.CART_UPDATE, [getSize(), getPaths()]);
@@ -92,21 +89,14 @@ AssetShare.Cart = (function ($, ns, contextHubStore) {
     }
 
     function clear() {
-        if (enabled() && contextHubStore.get() && contextHubStore.get().length > 0) {
-            //contextHubStore.clear();
-            ns.Storage.clearCartAssets();
-
+        if (enabled()) {
+            storage.clearCartAssets();
             $("body").trigger(ns.Events.CART_UPDATE, [getSize(), getPaths()]);
             $("body").trigger(ns.Events.CART_CLEAR, [getSize(), getPaths()]);
         }
     }
 
-    function getContextHubStore() {
-        return contextHubStore;
-    }
-
     return {
-        store: getContextHubStore,
         add: add,
         clear: clear,
         remove: remove,
@@ -117,4 +107,4 @@ AssetShare.Cart = (function ($, ns, contextHubStore) {
 
 }(jQuery,
     AssetShare,
-    ContextHub.getStore("cart")));
+    AssetShare.Storage));

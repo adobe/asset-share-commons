@@ -1,7 +1,7 @@
 /*
  * Asset Share Commons
  *
- * Copyright [2017]  Adobe
+ * Copyright [2020]  Adobe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,16 @@
  * limitations under the License.
  */
 
-/*global ContextHub: false, jQuery: false, AssetShare: false */
+/*global jQuery: false, AssetShare: false */
 
 AssetShare.Storage = (function (window, ns) {
     "use strict";
 
-    var LOCAL_STORAGE_KEY = "asset-share-commonsp",
+    var LOCAL_STORAGE_KEY = "asset-share-commons",
+        CURRENT_USER_URI  = "/libs/granite/security/currentuser.json",
         currentUserId,
-        enabled = false;
+        localStorageEnabled = false,
+        profileLoaded = false;
 
     /* Return the user profile for the current logged in user from local storage */
     function getUserProfile() {
@@ -40,14 +42,11 @@ AssetShare.Storage = (function (window, ns) {
         return null;
     }
 
-    /* gets the persisted return URL */
+    /* gets the persisted return URL (not user specific)*/
     function getReturnUrl() {
         var storage;
         storage = _getLocalStorage();
-        if(storage["users"] && storage["users"][currentUserId]) {
-            return storage["users"][currentUserId].returnUrl;
-        }
-        return null;
+        return storage["returnUrl"] || null;
     }
 
     /* persists the return URL */
@@ -56,10 +55,8 @@ AssetShare.Storage = (function (window, ns) {
 
         if(typeof url !== "undefined") {
             storage = _getLocalStorage();
-            if(storage["users"] && storage["users"][currentUserId]) {
-                storage["users"][currentUserId].returnUrl = url;
-                _updateLocalStorage(storage);
-            }
+            storage["returnUrl"] = url;
+            _updateLocalStorage(storage);
         }
     }
 
@@ -157,13 +154,16 @@ AssetShare.Storage = (function (window, ns) {
         return paths;
     }
 
+    /* Get status if profile ready and storage can read from local storage */
+    function isReady() {
+        return localStorageEnabled && profileLoaded;
+    }
 
-
+    /* Check if browser supports local storage capabilities */
     function _localStorageCheck() {
         var storage;
 
-        if(enabled) {
-            console.log("enable checks");
+        if(localStorageEnabled) {
             return true;
         }
 
@@ -172,10 +172,11 @@ AssetShare.Storage = (function (window, ns) {
             var x = '__storage_test__';
             storage.setItem(x, x);
             storage.removeItem(x);
+            localStorageEnabled = true;
             return true;
         }
         catch(e) {
-            enabled = false;
+            localStorageEnabled = false;
             return e instanceof DOMException && (
                 // everything except Firefox
                 e.code === 22 ||
@@ -191,18 +192,6 @@ AssetShare.Storage = (function (window, ns) {
         }
     }
 
-    function _contains(searchKey, array) {
-        var objIndex = -1;
-
-        array.forEach(function (localKey, index) {
-            if (localKey[searchKey] !== undefined) {
-                objIndex = index;
-            }
-        });
-
-        return objIndex;
-    }
-
     /* Return the local storage for Asset Share Commons as a JSON object */
     function _getLocalStorage() {
         if(_localStorageCheck()) {
@@ -210,18 +199,19 @@ AssetShare.Storage = (function (window, ns) {
         }
     }
 
-    /* Set the local Storage */
+    /* Set the local Storage as a stringified JSON object */
     function _updateLocalStorage(storageUpdate) {
         if(_localStorageCheck()) {
             window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(storageUpdate));
         }
     }
 
+    /* make a new request to get current user's profile */
     function _initProfile() {
 
         return new Promise(function(resolve, reject) {
             var request = new XMLHttpRequest();
-            request.open('GET', '/libs/granite/security/currentuser.json?nocache=' + new Date().getTime());
+            request.open('GET', CURRENT_USER_URI + '?nocache=' + new Date().getTime());
             request.responseType = 'json';
             request.onload = function() {
                 if (request.status === 200) {
@@ -240,16 +230,22 @@ AssetShare.Storage = (function (window, ns) {
         });
     }
 
-    //will you be called??
+    /* dispatch event that profile was loaded sucessfully */
+    function _announceProfileLoaded(profile) {
+        var event = new CustomEvent(ns.Events.PROFILE_LOAD, {detail:profile}),
+            element = document.getElementsByTagName("body")[0];
+            profileLoaded = true;
+            element.dispatchEvent(event);
+    }
+
+    //initial call to retrieve profile
     _initProfile().then(function(response) {
         if(response.type === 'user') {
-    
            _setUserProfile(response);
-    
-            console.log("Userid: " + AssetShare.Storage.getUserProfile().name_xss);
+           profileLoaded = true;
+           _announceProfileLoaded(response);
         }
-        
-    })
+    });
 
     return {
         getReturnUrl: getReturnUrl,
@@ -258,7 +254,8 @@ AssetShare.Storage = (function (window, ns) {
         getCartAssets: getCartAssets,
         addCartAsset: addCartAsset,
         removeCartAsset: removeCartAsset,
-        clearCartAssets: clearCartAssets
+        clearCartAssets: clearCartAssets,
+        isReady: isReady
     };
 
 }(window,

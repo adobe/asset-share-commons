@@ -21,5 +21,5 @@
     jcr:primaryType="cq:ClientLibraryFolder"
     allowProxy="{Boolean}true"
     categories="[asset-share-commons.site,asset-share-commons.cart]"
-    dependencies="[asset-share-commons.common,contexthub.store.contexthub.assetsharecommonscart]"
+    dependencies="[asset-share-commons.common]"
     jsProcessor="[min:gcc,default:none]"/>

@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-var AssetShare = {};
+var AssetShare = AssetShare || {};
 
 AssetShare.Events = {};
 
@@ -24,9 +24,10 @@ AssetShare.Search = {};
 
 AssetShare.Cart = {};
 
-AssetShare.ContextHub = AssetShare.ContextHub || {};
-
 AssetShare.SemanticUI = {};
+
 AssetShare.SemanticUI.Modals = {};
 
 AssetShare.Storage = AssetShare.Storage || {};
+
+

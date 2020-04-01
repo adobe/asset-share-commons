@@ -18,7 +18,7 @@
 
 /*global jQuery: false, AssetShare: false */
 
-AssetShare.Navigation = (function ($, window, ns) {
+AssetShare.Navigation = (function ($, window, ns, storage) {
     "use strict";
 
     function setAddressBar(url) {
@@ -37,9 +37,9 @@ AssetShare.Navigation = (function ($, window, ns) {
 
     function getOrSetReturnUrl(url) {
         if (typeof url === "undefined") {
-            return ns.Storage.getReturnUrl();
+            return storage.getReturnUrl();
         } else {
-            ns.Storage.setReturnUrl(url);
+            storage.setReturnUrl(url);
         }
     }
 
@@ -54,4 +54,5 @@ AssetShare.Navigation = (function ($, window, ns) {
     };
 }(jQuery,
     window,
-    AssetShare));
+    AssetShare,
+    AssetShare.Storage));
