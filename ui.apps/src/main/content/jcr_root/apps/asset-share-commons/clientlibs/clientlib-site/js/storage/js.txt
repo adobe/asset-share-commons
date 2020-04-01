@@ -1,0 +1,4 @@
+#base=.
+
+namespace.js
+storage.js

@@ -21,8 +21,6 @@
 AssetShare.Navigation = (function ($, window, ns) {
     "use strict";
 
-    var LOCAL_STORAGE_KEY = "asset-share-commons";
-
     function setAddressBar(url) {
         var hasHistoryPush = window.history && typeof window.history.pushState === "function";
 
@@ -38,13 +36,10 @@ AssetShare.Navigation = (function ($, window, ns) {
     }
 
     function getOrSetReturnUrl(url) {
-        var storage = JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
-
         if (typeof url === "undefined") {
-            return storage.returnUrl;
+            return ns.Storage.getReturnUrl();
         } else {
-            storage.returnUrl = url;
-            window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(storage));
+            ns.Storage.setReturnUrl(url);
         }
     }
 

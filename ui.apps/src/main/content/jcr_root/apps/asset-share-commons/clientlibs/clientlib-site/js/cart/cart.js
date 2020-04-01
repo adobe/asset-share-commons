@@ -30,7 +30,8 @@ AssetShare.Cart = (function ($, ns, contextHubStore) {
             paths = [];
 
         if (enabled()) {
-            assetsInCart = contextHubStore.get();
+            //assetsInCart = contextHubStore.get();
+            assetsInCart = ns.Storage.getCartAssets();
         }
 
         if (!(assetsInCart instanceof Array)) {
@@ -63,7 +64,8 @@ AssetShare.Cart = (function ($, ns, contextHubStore) {
     function add(assetPath, licensed) {
         if (enabled()) {
             if(!contains(assetPath)) {
-                contextHubStore.add(assetPath);
+                ns.Storage.addCartAsset(assetPath);
+                //contextHubStore.add(assetPath);
 
                 $("body").trigger(ns.Events.CART_ADD, [getSize(), assetPath]);
                 $("body").trigger(ns.Events.CART_UPDATE, [getSize(), getPaths()]);
@@ -78,7 +80,8 @@ AssetShare.Cart = (function ($, ns, contextHubStore) {
 
     function remove(assetPath) {
         if (enabled() && contains(assetPath)) {
-            contextHubStore.remove(assetPath);
+            ns.Storage.removeCartAsset(assetPath);
+            //contextHubStore.remove(assetPath);
 
             $("body").trigger(ns.Events.CART_REMOVE, [getSize(), assetPath]);
             $("body").trigger(ns.Events.CART_UPDATE, [getSize(), getPaths()]);
@@ -90,7 +93,8 @@ AssetShare.Cart = (function ($, ns, contextHubStore) {
 
     function clear() {
         if (enabled() && contextHubStore.get() && contextHubStore.get().length > 0) {
-            contextHubStore.clear();
+            //contextHubStore.clear();
+            ns.Storage.clearCartAssets();
 
             $("body").trigger(ns.Events.CART_UPDATE, [getSize(), getPaths()]);
             $("body").trigger(ns.Events.CART_CLEAR, [getSize(), getPaths()]);
