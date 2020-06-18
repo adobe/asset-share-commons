@@ -64,12 +64,14 @@ import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import javax.jcr.RepositoryException;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
+import javax.jcr.RepositoryException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Component(service = ShareService.class)
 @Designate(ocd = EmailShareServiceImpl.Cfg.class)
@@ -113,16 +115,23 @@ public class EmailShareServiceImpl implements ShareService {
     }
 
     @Override
-    public final void share(final SlingHttpServletRequest request, final SlingHttpServletResponse response, final ValueMap shareParameters) throws ShareException {
+    public final void share(final SlingHttpServletRequest request,
+                            final SlingHttpServletResponse response,
+                            final ValueMap shareParameters) throws ShareException {
 
         /** Work around for regression issue introduced in AEM 6.4 **/
         SlingBindings bindings = new SlingBindings();
         //intentionally setting the second argument to 'null' since there is no SlingScript to pass in
-        bindings.setSling( new ScriptHelper(bundleContext, null, request, response));
+        bindings.setSling(new ScriptHelper(bundleContext, null, request, response));
         request.setAttribute(SlingBindings.class.getName(), bindings);
-        UserProperties userProperties = getUserProperties(request);
+
+        final UserProperties userProperties = getUserProperties(request);
 
         final EmailShare emailShare = request.adaptTo(EmailShare.class);
+
+        // These paths will be validated as they will be used to resolve to an asset
+        // These will be xss protected right before they are printed to the href attribute
+        final String[] unprotectedPaths = emailShare.getUserData().get(ASSET_PATHS, ArrayUtils.EMPTY_STRING_ARRAY);
 
         shareParameters.putAll(xssProtectUserData(emailShare.getUserData()));
 
@@ -138,12 +147,12 @@ public class EmailShareServiceImpl implements ShareService {
             shareParameters.put(EmailService.REPLY_TO, replyToAddress);
         }
 
-        share(request.adaptTo(Config.class), shareParameters, StringUtils.defaultIfBlank(emailShare.getEmailTemplatePath(), cfg.emailTemplate()));
+        share(request.adaptTo(Config.class), unprotectedPaths, shareParameters, StringUtils.defaultIfBlank(emailShare.getEmailTemplatePath(), cfg.emailTemplate()));
     }
 
-    private final void share(final Config config, final ValueMap shareParameters, final String emailTemplatePath) throws ShareException {
+    private final void share(final Config config, final String[] providedAssetPaths, final ValueMap shareParameters, final String emailTemplatePath) throws ShareException {
         final String[] emailAddresses = StringUtils.split(shareParameters.get(EMAIL_ADDRESSES, ""), ",");
-        final String[] assetPaths = Arrays.stream(shareParameters.get(ASSET_PATHS, ArrayUtils.EMPTY_STRING_ARRAY))
+        final String[] assetPaths = Arrays.stream(providedAssetPaths)
                 .filter(StringUtils::isNotBlank)
                 .map(path -> config.getResourceResolver().getResource(path))
                 .filter(Objects::nonNull)
@@ -193,7 +202,7 @@ public class EmailShareServiceImpl implements ShareService {
 
                 // Unescape the URL since externalizer also escapes, resulting in a breaking, double-escaped URLs
                 // This is required since assetDetailsResolver.getFullUrl(config, asset) performs its own escaping.
-                url =  Text.unescape(url);
+                url = Text.unescape(url);
 
                 if (isAuthor()) {
                     url = externalizer.authorLink(config.getResourceResolver(), url);
@@ -202,7 +211,7 @@ public class EmailShareServiceImpl implements ShareService {
                 }
 
                 sb.append("<li><a href=\"");
-                sb.append(url);
+                sb.append(xssAPI.getValidHref(url));
                 sb.append("\">");
                 sb.append(asset.getTitle());
                 sb.append("</a></li>");
