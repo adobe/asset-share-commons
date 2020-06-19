@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.adobe.aem.commons</groupId>
 		<artifactId>assetshare</artifactId>
-		<version>1.9.5-SNAPSHOT</version>
+		<version>1.9.6</version>
 	</parent>
 
 	<!-- ====================================================================== -->
@@ -21,7 +21,7 @@
 
 	<scm>
 		<developerConnection>scm:git:git@github.com:Adobe-Marketing-Cloud/asset-share-commons.git</developerConnection>
-		<tag>assetshare-1.9.2</tag>
+		<tag>asset-share-commons-1.9.6</tag>
 	</scm>
 
 	<dependencies>
