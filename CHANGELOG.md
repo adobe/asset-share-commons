@@ -10,11 +10,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - 0531: Release to maven central (instead of bintray)
 
+### Fixed 
+
+- 0528: Fixed issue with xss encoding mangling share paths
+
 ## [v1.9.4]
+
+### Fixed 
 
 - 0502: Fix cyclic dependency with asset rendition dispatchers
 
 ## [v1.9.2]
+
+### Fixed 
 
 - 0488: Fixed benign but overly-chatty error log messaging when the asset renditions servlet is requested.
 
