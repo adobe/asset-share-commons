@@ -71,18 +71,6 @@
                             <type>zip</type>
                             <target>/apps/asset-share-commons-packages/content/install</target>
                         </embedded>
-                        <embedded>
-                            <groupId>com.adobe.cq</groupId>
-                            <artifactId>core.wcm.components.content</artifactId>
-                            <type>zip</type>
-                            <target>/apps/asset-share-commons-vendor-packages/application/install</target>
-                        </embedded>
-                        <embedded>
-                            <groupId>com.adobe.cq</groupId>
-                            <artifactId>core.wcm.components.config</artifactId>
-                            <type>zip</type>
-                            <target>/apps/asset-share-commons-vendor-packages/content/install</target>
-                        </embedded>
                     </embeddeds>
                     <allowIndexDefinitions>true</allowIndexDefinitions>
                 </configuration>
@@ -190,16 +178,6 @@
             <groupId>com.adobe.aem.commons</groupId>
             <artifactId>assetshare.ui.content.sample</artifactId>
             <version>${project.version}</version>
-            <type>zip</type>
-        </dependency>
-        <dependency>
-            <groupId>com.adobe.cq</groupId>
-            <artifactId>core.wcm.components.content</artifactId>
-            <type>zip</type>
-        </dependency>
-        <dependency>
-            <groupId>com.adobe.cq</groupId>
-            <artifactId>core.wcm.components.config</artifactId>
             <type>zip</type>
         </dependency>
     </dependencies>
