@@ -36,14 +36,9 @@ Example `dispatcher.any` rules
 /filter {
   ...
 
-  # ContextHub Calls:
-   /0101 { /type "allow" /glob "GET /home/users/*/profile/*" }
-
-  # Current User:
-  /0102 { /type "allow" /url "/libs/granite/security/currentuser.json" }
-
-  // Asset Renditions requests
-  /0103 { /type "allow" /method "GET" /path "/content/dam" /extension "renditions" }
+  /0201 { /type "allow" /method "GET" /url "/home/users/*/profile/*" } # enable retrieving user profile
+  /0202 { /type "allow" /method "GET" /url "/home/users/*.infinity.json" } # enable retrieving user details
+  /0203 { /type "allow" /method "GET" /path "/content/dam" /extension "renditions" } # enable asset rendition serving
 }
 
 /headers {
