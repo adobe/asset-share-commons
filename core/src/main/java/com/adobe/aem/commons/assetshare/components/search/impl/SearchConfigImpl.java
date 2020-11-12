@@ -2,7 +2,10 @@ package com.adobe.aem.commons.assetshare.components.search.impl;
 
 import com.adobe.aem.commons.assetshare.components.search.SearchConfig;
 import com.adobe.aem.commons.assetshare.util.ResourceTypeVisitor;
+import com.adobe.cq.export.json.ComponentExporter;
+import com.adobe.cq.export.json.ExporterConstants;
 import com.day.cq.dam.api.DamConstants;
+import com.day.cq.replication.ListenerLogDelegator;
 import com.day.cq.search.Predicate;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -10,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Optional;
 import org.apache.sling.models.annotations.injectorspecific.OSGiService;
@@ -17,7 +21,10 @@ import org.apache.sling.models.annotations.injectorspecific.ScriptVariable;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.SlingObject;
 import org.apache.sling.models.factory.ModelFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,10 +33,13 @@ import java.util.stream.Collectors;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {SearchConfig.class},
+        adapters = {SearchConfig.class, ComponentExporter.class},
         resourceType = {SearchConfigImpl.RESOURCE_TYPE}
 )
-public class SearchConfigImpl implements SearchConfig {
+@Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
+public class SearchConfigImpl implements SearchConfig, ComponentExporter {
+    private static final Logger log = LoggerFactory.getLogger(SearchConfigImpl.class);
+
     public static final String RESOURCE_TYPE = "asset-share-commons/components/search/results";
 
     private static final int MAX_GUESS_TOTAL = 2000;
@@ -185,13 +195,22 @@ public class SearchConfigImpl implements SearchConfig {
 
         if (visitor.getResources().size() > 0) {
             return visitor.getResources().iterator().next();
-        } else {
+        } else if (page.getParent() != null) {
             return resolveSearchConfigResource(pageManager, page.getParent().getContentResource());
+        } else {
+            log.warn("Unable to locate a Search Results component resource that can represent the Search Config. It is likely the Search Results component has not been added to the Search page yet!");
+            return null;
         }
     }
 
 
     private boolean isValidResource(Resource resource) {
         return resource != null && StringUtils.startsWith(resource.getPath(), "/content/");
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }

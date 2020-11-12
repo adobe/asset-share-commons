@@ -31,6 +31,7 @@ import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
 import static com.adobe.aem.commons.assetshare.content.properties.ComputedProperty.DEFAULT_ASC_COMPUTED_PROPERTY_SERVICE_RANKING;
+import static com.day.cq.dam.api.DamConstants.DC_TITLE;
 
 @Component(
         service = ComputedProperty.class,
@@ -62,7 +63,7 @@ public class TitleImpl extends AbstractComputedProperty<String> {
     @Override
     public String get(Asset asset) {
         final ValueMap metadata = getMetadataProperties(asset);
-        final String[] dcTitles = metadata.get("dc:title", String[].class);
+        final String[] dcTitles = metadata.get(DC_TITLE, String[].class);
 
         if (dcTitles != null && dcTitles.length > 0) {
             return dcTitles[0];

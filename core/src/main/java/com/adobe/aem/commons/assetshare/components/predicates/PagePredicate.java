@@ -106,5 +106,4 @@ public interface PagePredicate extends Predicate {
      */
     @Deprecated
     Map<String, String> getParams(ParamTypes... excludeParamTypes);
-
 }

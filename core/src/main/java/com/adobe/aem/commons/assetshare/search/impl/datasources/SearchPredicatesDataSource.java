@@ -46,13 +46,13 @@ import java.util.TreeMap;
 public class SearchPredicatesDataSource extends SlingSafeMethodsServlet {
 
     @Reference
-    private DataSourceBuilder dataSourceBuilder;
+    private transient DataSourceBuilder dataSourceBuilder;
 
     @Reference(
             cardinality = ReferenceCardinality.MULTIPLE,
             policyOption = ReferencePolicyOption.GREEDY
     )
-    private volatile Collection<SearchPredicate> volatileSearchPredicates;
+    private transient Collection<SearchPredicate> volatileSearchPredicates;
 
     @Override
     protected final void doGet(final SlingHttpServletRequest request, final SlingHttpServletResponse response) {

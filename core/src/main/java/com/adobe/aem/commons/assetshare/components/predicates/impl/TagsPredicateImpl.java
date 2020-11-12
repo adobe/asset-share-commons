@@ -25,7 +25,8 @@ import com.adobe.aem.commons.assetshare.components.predicates.impl.options.TagOp
 import com.adobe.aem.commons.assetshare.configuration.Config;
 import com.adobe.aem.commons.assetshare.search.impl.predicateevaluators.PropertyValuesPredicateEvaluator;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
-import org.apache.sling.api.wrappers.ValueMapDecorator;
+import com.adobe.cq.export.json.ComponentExporter;
+import com.adobe.cq.export.json.ExporterConstants;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
 import com.adobe.cq.wcm.core.components.models.form.Options.Type;
@@ -34,25 +35,26 @@ import com.day.cq.tagging.Tag;
 import com.day.cq.tagging.TagManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
-import org.apache.sling.api.request.RequestParameter;
 import org.apache.sling.api.resource.ValueMap;
-import org.apache.sling.models.annotations.Default;
-import org.apache.sling.models.annotations.DefaultInjectionStrategy;
-import org.apache.sling.models.annotations.Model;
-import org.apache.sling.models.annotations.Required;
+import org.apache.sling.models.annotations.*;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {TagsPredicate.class},
+        adapters = {TagsPredicate.class, ComponentExporter.class},
         resourceType = {TagsPredicateImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
+@Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
 public class TagsPredicateImpl extends AbstractPredicate implements TagsPredicate {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/tags";
 
@@ -180,5 +182,11 @@ public class TagsPredicateImpl extends AbstractPredicate implements TagsPredicat
         }
 
         return valuesFromRequest;
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }

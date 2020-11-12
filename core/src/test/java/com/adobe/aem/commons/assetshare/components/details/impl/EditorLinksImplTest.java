@@ -20,14 +20,12 @@
 package com.adobe.aem.commons.assetshare.components.details.impl;
 
 import com.adobe.aem.commons.assetshare.components.details.EditorLinks;
-import com.adobe.aem.commons.assetshare.components.details.Metadata;
 import com.adobe.aem.commons.assetshare.content.AssetResolver;
 import com.adobe.aem.commons.assetshare.content.impl.AssetModelImpl;
 import com.adobe.aem.commons.assetshare.content.impl.AssetResolverImpl;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperties;
 import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedPropertiesImpl;
 import io.wcm.testing.mock.aem.junit.AemContext;
-import org.apache.sling.settings.SlingSettingsService;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

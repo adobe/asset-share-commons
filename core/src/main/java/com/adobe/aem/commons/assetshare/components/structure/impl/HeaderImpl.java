@@ -20,6 +20,8 @@
 package com.adobe.aem.commons.assetshare.components.structure.impl;
 
 import com.adobe.aem.commons.assetshare.components.structure.Header;
+import com.adobe.cq.export.json.ComponentExporter;
+import com.adobe.cq.export.json.ExporterConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.designer.Style;
@@ -27,11 +29,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.injectorspecific.ScriptVariable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,9 +42,10 @@ import java.util.List;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {Header.class},
+        adapters = {Header.class, ComponentExporter.class},
         resourceType = {HeaderImpl.RESOURCE_TYPE}
 )
+@Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
 public class HeaderImpl implements Header {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/structure/header";
 
@@ -96,8 +99,8 @@ public class HeaderImpl implements Header {
     /**
      * Return true if the header resource is null or not populated
      *
-     * @param headerResource
-     * @return
+     * @param headerResource the header content resource.
+     * @return true if header is empty
      */
     private boolean isEmptyHeader(Resource headerResource) {
         if (headerResource != null) {
@@ -114,13 +117,14 @@ public class HeaderImpl implements Header {
     @Override
     public Collection<NavigationItem> getItems() {
         if (items == null) {
-            items = new ArrayList<>();
-            createNavigation();
+            items = createNavigationItems();
         }
-        return items;
+        return new ArrayList<>(items);
     }
 
-    private void createNavigation() {
+    private List<Header.NavigationItem> createNavigationItems() {
+        List<Header.NavigationItem> navigationItems = new ArrayList<>();
+
         if (headerResource != null) {
             //get multi-value properties beneath header resource
             Resource pagesRes = headerResource.getChild(PAGES_NODE);
@@ -129,11 +133,13 @@ public class HeaderImpl implements Header {
                 while (childResources.hasNext()) {
                     NavigationItem navItem = createNavItem(childResources.next());
                     if (navItem != null) {
-                        items.add(navItem);
+                        navigationItems.add(navItem);
                     }
                 }
             }
         }
+
+        return navigationItems;
     }
 
 
@@ -214,5 +220,11 @@ public class HeaderImpl implements Header {
         } else {
             return false;
         }
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }

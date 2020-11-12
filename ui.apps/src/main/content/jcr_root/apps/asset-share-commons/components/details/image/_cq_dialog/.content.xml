@@ -101,7 +101,7 @@
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/switch"
                                             granite:class="asset-share-commons__legacy-mode"
-                                            fieldDescription="Select the rendition to use."
+                                            fieldDescription="Enable legacy mode only if you have no migrated ot the new Asset Share Commons Assets Rendition framework."
                                             fieldLabel="Legacy mode"
                                             name="./legacyMode"
                                             onText="Legacy mode activated"

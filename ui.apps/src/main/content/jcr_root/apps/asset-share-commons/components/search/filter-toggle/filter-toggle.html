@@ -17,11 +17,13 @@
  */-->
 
 <sly data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
+     data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html"
      data-sly-test.pagePredicate="${modelCache['com.adobe.aem.commons.assetshare.components.predicates.PagePredicate']}"
      data-sly-use.togglesTemplate="templates/toggles.html"
      data-sly-test.hideLabels="${properties['hideLabels']}"></sly>
 
-<div class="ui basic segment">
+<div data-sly-test.ready="${pagePredicate}"
+        class="ui basic segment">
     <div class="ui column grid"
          data-sly-test.showApplyFilterToggle="${!properties['hideApplyFilterToggle']}">
         <div class="eight wide column"
@@ -36,3 +38,4 @@
          data-sly-call="${togglesTemplate.reset @ label = properties['resetFilterLabel'], hideLabels = hideLabels, currentPage = currentPage}">
     </div>
 </div>
+<sly data-sly-call="${placeholderTemplate.placeholder @ isEmpty=!ready}"></sly>

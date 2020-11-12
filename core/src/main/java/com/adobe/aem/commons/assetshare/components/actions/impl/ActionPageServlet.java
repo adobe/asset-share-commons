@@ -51,7 +51,7 @@ import java.util.Arrays;
 public class ActionPageServlet extends SlingAllMethodsServlet implements OptingServlet {
     private static final String RESOURCE_TYPE = "asset-share-commons/components/structure/page";
 
-    private Cfg cfg;
+    private transient Cfg cfg;
 
     public final void doPost(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher(request.getResource()).forward(new GetRequest(request), response);

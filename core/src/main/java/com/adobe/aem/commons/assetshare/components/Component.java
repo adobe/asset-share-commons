@@ -19,7 +19,9 @@
 
 package com.adobe.aem.commons.assetshare.components;
 
-public interface Component {
+import com.adobe.cq.export.json.ComponentExporter;
+
+public interface Component extends ComponentExporter {
     /**
      * @return true if the component is in a valid/configured/ready state and can be rendered, else return false to indicate to the component to display the placeholder text.
      */

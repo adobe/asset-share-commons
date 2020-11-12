@@ -161,7 +161,7 @@ public class MetadataSchemaPropertiesImpl implements MetadataProperties {
 
         public MetadataSchemaResourceVisitor(Map<String, List<String>> metadata, List<String> metadataFieldResourceTypes) {
             this.metadata = metadata;
-            this.metadataFieldResourceTypes = metadataFieldResourceTypes;
+            this.metadataFieldResourceTypes = new ArrayList<>(metadataFieldResourceTypes);
         }
 
         public final Map<String, List<String>> getMetadata() {

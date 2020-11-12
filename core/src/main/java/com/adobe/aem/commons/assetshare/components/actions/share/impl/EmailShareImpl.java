@@ -20,19 +20,17 @@
 package com.adobe.aem.commons.assetshare.components.actions.share.impl;
 
 import com.adobe.aem.commons.assetshare.components.actions.share.EmailShare;
+import com.adobe.cq.export.json.ComponentExporter;
+import com.adobe.cq.export.json.ExporterConstants;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.wrappers.ValueMapDecorator;
-import org.apache.sling.models.annotations.Default;
-import org.apache.sling.models.annotations.DefaultInjectionStrategy;
-import org.apache.sling.models.annotations.Model;
-import org.apache.sling.models.annotations.Required;
+import org.apache.sling.models.annotations.*;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -41,11 +39,12 @@ import java.util.Map;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {EmailShare.class},
+        adapters = {EmailShare.class, ComponentExporter.class},
         resourceType = {EmailShareImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
-public class EmailShareImpl extends ShareImpl implements EmailShare {
+@Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
+public class EmailShareImpl extends ShareImpl implements EmailShare, ComponentExporter {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/modals/share";
 
     @Self
@@ -55,6 +54,7 @@ public class EmailShareImpl extends ShareImpl implements EmailShare {
     @ValueMapValue
     private String emailTemplatePath;
 
+    @SuppressWarnings("AEM Rules:AEM-1")
     @ValueMapValue
     @Default(values = {"email", "path", "message"})
     private List<String> allowedQueryParams;
@@ -104,5 +104,11 @@ public class EmailShareImpl extends ShareImpl implements EmailShare {
     @Override
     public String getEmailTemplatePath() {
         return emailTemplatePath;
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }

@@ -24,8 +24,16 @@ AssetShare.Navigation = (function ($, window, ns) {
     var LOCAL_STORAGE_KEY = "asset-share-commons";
 
     function setAddressBar(url) {
-        if (window.top.history && window.top.history.pushState) {
+        var hasHistoryPush = window.history && typeof window.history.pushState === "function";
+
+        if (!hasHistoryPush) {
+            return;
+        }
+
+        if (ns.Util.isSameOrigin()) {
             window.top.history.pushState({}, window.top.document.title, url);
+        } else {
+            window.history.pushState({}, window.document.title, url);
         }
     }
 

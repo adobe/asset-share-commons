@@ -20,7 +20,7 @@
 package com.adobe.aem.commons.assetshare.content.impl.datasources;
 
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
 import com.adobe.aem.commons.assetshare.util.DataSourceBuilder;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -54,14 +54,15 @@ public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
     private static final String PN_EXCLUDE_ASSETRENDITIONS = "excludeAssetRenditions";
     private static final String PN_EXCLUDE_ASSETRENDITIONDISPATCHERS = "excludeAssetRenditionDispatchers";
     private static final String PN_ALLOWED_ASSETRENDITIONDISPATCHER_TYPES = "allowedAssetRenditionTypes";
+    private static final String PN_ADD_ASSET_RENDITION_DISPATCHER_TO_LABEL = "addAssetRenditionDispatcherToLabel";
 
     @Reference
-    private DataSourceBuilder dataSourceBuilder;
+    private transient DataSourceBuilder dataSourceBuilder;
 
     @Reference
-    private AssetRenditions assetRenditions;
+    private transient AssetRenditionDispatchers assetRenditionDispatchers;
 
-    private Cfg cfg;
+    private transient Cfg cfg;
 
     @Override
     protected final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) {
@@ -78,7 +79,10 @@ public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
                 cfg.exclude_assetrendition_names(),
                 PN_EXCLUDE_ASSETRENDITIONS);
 
-        for (final AssetRenditionDispatcher assetRenditionDispatcher : assetRenditions.getAssetRenditionDispatchers()) {
+        final boolean addAssetRenditionDispatcherToLabel =
+                properties.get(PN_ADD_ASSET_RENDITION_DISPATCHER_TO_LABEL, cfg.add_assetrenditiondispatcher_to_label());
+
+        for (final AssetRenditionDispatcher assetRenditionDispatcher : assetRenditionDispatchers.getAssetRenditionDispatchers()) {
 
             if (acceptsAssetRenditionDispatcher(allowedAssetRenditionTypes,
                     excludeAssetRenditionDispatchers,
@@ -91,7 +95,7 @@ public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
                             String label = entry.getKey();
                             String value = entry.getValue();
 
-                            if (cfg.add_assetrenditiondispatcher_to_label()) {
+                            if (addAssetRenditionDispatcherToLabel) {
                                 label += " (" + assetRenditionDispatcher.getLabel() + ")";
                             }
 
@@ -140,7 +144,7 @@ public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
     }
 
     @Activate
-    protected void activate(AssetRenditionsDataSource.Cfg cfg) {
+    protected void activate(Cfg cfg) {
         this.cfg = cfg;
     }
 

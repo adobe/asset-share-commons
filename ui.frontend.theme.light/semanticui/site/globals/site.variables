@@ -1,0 +1,83 @@
+/*
+ * Asset Share Commons
+ *
+ * Copyright [2017]  Adobe
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/*******************************
+         Theme Variables
+*******************************/
+
+@import "variation.variables";
+
+/* Below is a condensed list of variables for easy updating of the theme */
+
+/* Color Palette */
+@primaryColor      : #2FCC9C;
+@secondaryColor    : #505050;
+
+/* Custom Neutrals */
+@darkGrey         : #909090;  // Brand
+@midGrey          : #D0D0D0;  // Brand
+
+/*-------------------
+    Emotive Colors
+--------------------*/
+
+/* Positive */
+@positiveColor           : @primaryColor;
+
+/* Text */
+@fontName          : 'LatoWeb';
+@fontSmoothing     : antialiased;
+@headerFont        : @fontName, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+@pageFont          : @fontName, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+@textColor         : @secondaryColor;
+
+
+/* Backgrounds */
+@pageBackground      : #F9F9F9;
+@sideBarBackground   : #FFFFFF;
+
+/* Links */
+@linkColor           : @textColor;
+@linkHoverColor      : @primaryColor;
+
+/* Buttons */
+@buttonPrimaryColor      : #2FCC9C; /* must be a value to prevent variable recursion*/
+@buttonPrimaryColorHover : saturate(darken(@buttonPrimaryColor, 5), 10, relative);
+
+/* Filters (Checkboxes,radio buttons, toggle, slider, dropdown, accordion colors)*/
+@filterPrimaryColor      : @primaryColor;
+@filterPrimaryColorFocus : saturate(darken(@filterPrimaryColor, 5), 10, relative);
+
+/* Label */
+@labelPrimaryColor       : @primaryColor;
+@labelPrimaryColorHover  : saturate(darken(@labelPrimaryColor, 5), 10, relative);
+
+/* Menu */
+@menuPrimaryColor        : @primaryColor;
+
+/* Message */
+@msgPositiveBackgroundColor : @primaryColor;
+@msgNegativeBackgroundColor : @red;
+@msgInfoBackgroundColor: @secondaryColor;
+@msgWarningBackgroundColor: @yellow;
+
+/* Resource Paths */
+
+/* For source only. Modified in gulp for dist */	
+@imagePath : '../resources/assets/images';	//Brand
+@fontPath  : '../resources/assets/fonts';	//Brand
+
