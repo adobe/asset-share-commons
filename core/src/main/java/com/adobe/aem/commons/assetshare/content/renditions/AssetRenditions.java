@@ -23,7 +23,6 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.osgi.annotation.versioning.ProviderType;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,10 +42,6 @@ public interface AssetRenditions {
     String VAR_DM_FOLDER= "${dm.folder}"; // dam:scene7Folder
     String VAR_DM_DOMAIN = "${dm.domain}"; // dam:scene7Domain
     String VAR_DM_API_SERVER = "${dm.api-server}"; // dam:scene7APIServer
-    /**
-     * @return a list of all registered AssetRenditionDispatchers in the system ordered in Descending order by service.ranking.
-     */
-    List<AssetRenditionDispatcher> getAssetRenditionDispatchers();
 
     /**
      * Creates a URL to the AssetRenditionServlet for the

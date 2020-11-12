@@ -21,25 +21,17 @@ package com.adobe.aem.commons.assetshare.search.impl;
 
 import com.adobe.aem.commons.assetshare.search.FastProperties;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
-import org.apache.sling.api.resource.ResourceResolverFactory;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.osgi.framework.Constants;
-import org.osgi.service.component.annotations.Reference;
 
 import java.util.Collection;
 import java.util.List;
 
-import static com.adobe.aem.commons.assetshare.search.impl.FastPropertiesImpl.AUTH_INFO;
-import static com.adobe.aem.commons.assetshare.search.impl.FastPropertiesImpl.DEFAULT_INDEX_DEFINITION_RULES_PATH;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.doReturn;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FastPropertiesImplTest {
@@ -49,7 +41,7 @@ public class FastPropertiesImplTest {
 
     @Before
     public void setUp() throws Exception {
-        ctx.load().json("/com/adobe/aem/commons/assetshare/search/impl/FastPropertiesImplTest.json", DEFAULT_INDEX_DEFINITION_RULES_PATH);
+        ctx.load().json(this.getClass().getResourceAsStream("FastPropertiesImplTest.json"), "/oak:index");
 
         ctx.registerInjectActivateService(new FastPropertiesImpl());
     }

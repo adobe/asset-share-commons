@@ -64,11 +64,8 @@ import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import javax.jcr.RepositoryException;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
+import javax.jcr.RepositoryException;
 import java.util.*;
 
 @Component(service = ShareService.class)
@@ -86,26 +83,26 @@ public class EmailShareServiceImpl implements ShareService {
     private static final String EMAIL_ADDRESSES = "email";
     private static final String EMAIL_ASSET_LINK_LIST_HTML = "assetLinksHTML";
 
-    private Cfg cfg;
-    private BundleContext bundleContext;
+    private transient Cfg cfg;
+    private transient BundleContext bundleContext;
 
     @Reference
-    private EmailService emailService;
+    private transient EmailService emailService;
 
     @Reference
-    private Externalizer externalizer;
+    private transient Externalizer externalizer;
 
     @Reference
-    private AssetDetailsResolver assetDetailsResolver;
+    private transient AssetDetailsResolver assetDetailsResolver;
 
     @Reference
-    private SlingSettingsService slingSettingsService;
+    private transient SlingSettingsService slingSettingsService;
 
     @Reference
-    private ModelFactory modelFactory;
+    private transient ModelFactory modelFactory;
 
     @Reference
-    private XSSAPI xssAPI;
+    private transient XSSAPI xssAPI;
 
     @Override
     public boolean accepts(final SlingHttpServletRequest request) {
@@ -311,7 +308,7 @@ public class EmailShareServiceImpl implements ShareService {
     }
 
     @Activate
-    protected final void activate(final Cfg config, final BundleContext bundleContext) throws Exception {
+    protected final void activate(final Cfg config, final BundleContext bundleContext) {
         this.cfg = config;
         this.bundleContext = bundleContext;
     }

@@ -22,10 +22,12 @@ package com.adobe.aem.commons.assetshare.content.impl;
 import com.adobe.aem.commons.assetshare.configuration.Config;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.AssetResolver;
+import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionServlet;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.DamConstants;
 import com.day.cq.dam.commons.util.DamUtil;
 import com.day.cq.wcm.api.WCMMode;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
@@ -47,6 +49,10 @@ public class AssetResolverImpl implements AssetResolver {
 
         if (suffixResource != null) {
             asset = getAssetByPath(suffixResource);
+        } else if (StringUtils.startsWith(request.getRequestPathInfo().getResourcePath(), DamConstants.MOUNTPOINT_ASSETS) &&
+                StringUtils.equals(request.getRequestPathInfo().getExtension(), AssetRenditionServlet.SERVLET_EXTENSION)) {
+            // Dont try resolving the asset from the suffix (ie. the ID) since this is a AssetRenditionsServlet request.. fall down and look for assets from resource path
+            asset = null;
         } else if (StringUtils.isNotBlank(suffix) && !StringUtils.startsWith(suffix, DamConstants.MOUNTPOINT_ASSETS)) {
             asset = getAssetById(request, suffix);
         }

@@ -20,8 +20,6 @@
 package com.adobe.aem.commons.assetshare.search.providers.impl;
 
 import com.adobe.aem.commons.assetshare.components.predicates.PagePredicate;
-import com.adobe.aem.commons.assetshare.components.predicates.SortPredicate;
-import com.adobe.aem.commons.assetshare.search.QueryParameterPostProcessor;
 import com.adobe.aem.commons.assetshare.search.SearchSafety;
 import com.adobe.aem.commons.assetshare.search.UnsafeSearchException;
 import com.adobe.aem.commons.assetshare.search.providers.QuerySearchPostProcessor;
@@ -32,12 +30,14 @@ import com.adobe.aem.commons.assetshare.search.results.Result;
 import com.adobe.aem.commons.assetshare.search.results.Results;
 import com.adobe.aem.commons.assetshare.search.results.impl.results.QueryBuilderResultsImpl;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
-import com.day.cq.search.*;
+import com.day.cq.search.PredicateConverter;
+import com.day.cq.search.PredicateGroup;
+import com.day.cq.search.Query;
+import com.day.cq.search.QueryBuilder;
 import com.day.cq.search.eval.PathPredicateEvaluator;
 import com.day.cq.search.result.Hit;
 import com.day.cq.search.result.SearchResult;
 import com.day.text.Text;
-import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestParameter;
@@ -65,22 +65,19 @@ public class QuerySearchProviderImpl implements SearchProvider {
     private static final Logger log = LoggerFactory.getLogger(QuerySearchProviderImpl.class);
 
     @Reference
-    private SearchSafety searchSafety;
+    private transient SearchSafety searchSafety;
 
     @Reference
-    private QueryBuilder queryBuilder;
+    private transient QueryBuilder queryBuilder;
 
     @Reference
-    private ModelFactory modelFactory;
+    private transient ModelFactory modelFactory;
 
     @Reference(cardinality = ReferenceCardinality.OPTIONAL)
-    private QuerySearchPreProcessor querySearchPreProcessor;
+    private transient QuerySearchPreProcessor querySearchPreProcessor;
 
     @Reference(cardinality = ReferenceCardinality.OPTIONAL)
-    private QuerySearchPostProcessor querySearchPostProcessor;
-
-    @Reference(cardinality = ReferenceCardinality.OPTIONAL)
-    private QueryParameterPostProcessor queryParametersPostProcessor;
+    private transient QuerySearchPostProcessor querySearchPostProcessor;
 
     public boolean accepts(SlingHttpServletRequest request) {
         // This is the default with the lowest service ranking
@@ -174,9 +171,6 @@ public class QuerySearchProviderImpl implements SearchProvider {
                 pagePredicate.getPredicateGroup(excludeParamTypes));
 
         params = PredicateConverter.createMap(combinedPredicateGroup);
-        if (queryParametersPostProcessor != null) {
-            params = queryParametersPostProcessor.process(request, params);
-        }
 
         return params;
     }

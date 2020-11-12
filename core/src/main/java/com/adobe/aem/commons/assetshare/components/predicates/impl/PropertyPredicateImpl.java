@@ -25,6 +25,8 @@ import com.adobe.aem.commons.assetshare.components.predicates.impl.options.Selec
 import com.adobe.aem.commons.assetshare.components.predicates.impl.options.UnselectedOptionItem;
 import com.adobe.aem.commons.assetshare.search.impl.predicateevaluators.PropertyValuesPredicateEvaluator;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
+import com.adobe.cq.export.json.ComponentExporter;
+import com.adobe.cq.export.json.ExporterConstants;
 import org.apache.sling.api.wrappers.ValueMapDecorator;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
@@ -33,13 +35,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestParameter;
 import org.apache.sling.api.resource.ValueMap;
-import org.apache.sling.models.annotations.Default;
-import org.apache.sling.models.annotations.DefaultInjectionStrategy;
-import org.apache.sling.models.annotations.Model;
-import org.apache.sling.models.annotations.Required;
+import org.apache.sling.models.annotations.*;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import java.util.ArrayList;
@@ -49,10 +49,11 @@ import java.util.Map;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {PropertyPredicate.class},
+        adapters = {PropertyPredicate.class, ComponentExporter.class},
         resourceType = {PropertyPredicateImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
+@Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
 public class PropertyPredicateImpl extends AbstractPredicate implements PropertyPredicate, Options {
 
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/property";
@@ -180,5 +181,11 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
         }
 
         return valuesFromRequest;
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
     }
 }

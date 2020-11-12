@@ -121,7 +121,10 @@ public interface Config {
     boolean isShareEnabled();
 
     /**
-     * @return true if AEM is enabled with AEM Assets Dynamic Media.
+     * @deprecated We no longer detect Dynamic Media; Return false always.
+     *
+     * @return always returns false.
      */
+    @Deprecated
     default boolean isDynamicMediaEnabled() { return false; }
 }

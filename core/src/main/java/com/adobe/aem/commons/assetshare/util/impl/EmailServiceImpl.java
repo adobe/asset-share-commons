@@ -83,24 +83,23 @@ import java.util.Map;
 )
 @Designate(ocd = EmailServiceImpl.Cfg.class)
 public final class EmailServiceImpl implements EmailService {
-
     private static final Logger log = LoggerFactory.getLogger(EmailServiceImpl.class);
+
+    @Reference
+    private transient MessageGatewayService messageGatewayService;
+
+    @Reference
+    private transient ResourceResolverFactory resourceResolverFactory;
+
     private static final String MSG_INVALID_RECIPIENTS = "Invalid Recipients";
-
-    @Reference
-    private MessageGatewayService messageGatewayService;
-
-    @Reference
-    private ResourceResolverFactory resourceResolverFactory;
 
     public static final int DEFAULT_CONNECT_TIMEOUT = 30000;
 
     public static final int DEFAULT_SOCKET_TIMEOUT = 30000;
 
-
     private static String SERVICE_NAME = "email-service";
-    private Cfg cfg;
 
+    private transient Cfg cfg;
 
     @Override
     public List<String> sendEmail(final String templatePath,
@@ -131,7 +130,6 @@ public final class EmailServiceImpl implements EmailService {
         return failureList;
     }
 
-
     @Override
     public List<InternetAddress> sendEmail(final String templatePath, final Map<String, String> emailParams,
                                            final InternetAddress... recipients) {
@@ -152,7 +150,7 @@ public final class EmailServiceImpl implements EmailService {
                 final Email email = getEmail(mailTemplate, mailType, emailParams);
                 email.setTo(Collections.singleton(address));
                 messageGateway.send(email);
-            } catch (Exception e) {
+            } catch (EmailException | IOException | MessagingException e) {
                 failureList.add(address);
                 log.error("Error sending email to [ " + address + " ]", e);
             }
@@ -192,7 +190,7 @@ public final class EmailServiceImpl implements EmailService {
                 }
 
                 messageGateway.send(email);
-            } catch (Exception e) {
+            } catch (EmailException | IOException | MessagingException e) {
                 failureList.add(address);
                 log.error("Error sending email to [ " + address + " ]", e);
             }

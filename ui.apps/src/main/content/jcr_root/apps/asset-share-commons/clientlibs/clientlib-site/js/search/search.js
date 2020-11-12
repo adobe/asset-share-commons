@@ -43,7 +43,12 @@ AssetShare.Search = (function (window, $, ns, ajax) {
     }
 
     function setAddressBar(queyParams) {
-        ns.Navigation.addressBar(window.top.location.pathname + "?" + queyParams);
+        if (ns.Util.isSameOrigin()) {
+            ns.Navigation.addressBar(window.top.location.pathname + "?" + queyParams);
+        } else {
+            ns.Navigation.addressBar(window.location.pathname + "?" + queyParams);
+        }
+
         ns.Navigation.returnUrl(window.location.pathname + "?" + queyParams);
     }
 
@@ -129,7 +134,7 @@ AssetShare.Search = (function (window, $, ns, ajax) {
     (function() {
         // ONLY EXECUTE ON THE SEARCH PAGE
         if (ns.Elements.element("form").length > 0) {
-            ns.Navigation.returnUrl(window.location.pathname);
+            ns.Navigation.returnUrl(window.location.pathname + window.location.search);
         }
     }());
 

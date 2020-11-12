@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
     adaptables = { SlingHttpServletRequest.class },
     adapters = { ModelCache.class }
 )
+// Uses same approach and principals as HTL model resolution; therefore suppressing
+@SuppressWarnings("squid:S2658")
 public class ModelCacheImpl extends AbstractHTLMap implements ModelCache {
     private static final Logger log = LoggerFactory.getLogger(ModelCacheImpl.class);
 

@@ -26,6 +26,7 @@ matrix:
 script: mvn verify -B -PanalysisCI
 after_success:
   - if [ "$POST_COVERAGE" == "true" ]; then bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN; fi
+  - mvn clean jacoco:prepare-agent test jacoco:report
 sudo: false
 cache:
   directories:

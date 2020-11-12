@@ -1,28 +1,43 @@
 {
-  "vanilla": {
-    "jcr:primaryType": "nt:unstructured",
-    "name": "jcr:content/vanilla"
-  },
-  "property-index-rule": {
-    "jcr:primaryType": "nt:unstructured",
-    "name": "jcr:content/propertyIndexRule",
-    "propertyIndex": true
-  },
-  "analyzed-index-rule": {
-    "jcr:primaryType": "nt:unstructured",
-    "name": "jcr:content/analyzedIndexRule",
-    "analyzed": true
-  },
-  "property-and-analyzed-index-rule": {
-    "jcr:primaryType": "nt:unstructured",
-    "name": "jcr:content/propertyAndAnalyzedIndexRule",
-    "analyzed": true,
-    "propertyIndex": true
-  },
-  "duplicate": {
-    "jcr:primaryType": "nt:unstructured",
-    "name": "jcr:content/propertyAndAnalyzedIndexRule",
-    "analyzed": true,
-    "propertyIndex": true
+  "damAssetLucene-99-custom-1": {
+    "jcr:primaryType": "oak:QueryIndexDefinition",
+    "type": "lucene",
+    "indexRules": {
+      "jcr:primaryType": "nt:unstructured",
+      "dam:Asset": {
+        "jcr:primaryType": "nt:unstructured",
+        "properties": {
+          "jcr:primaryType": "nt:unstructured",
+
+          "vanilla": {
+            "jcr:primaryType": "nt:unstructured",
+            "name": "jcr:content/vanilla"
+          },
+          "property-index-rule": {
+            "jcr:primaryType": "nt:unstructured",
+            "name": "jcr:content/propertyIndexRule",
+            "propertyIndex": true
+          },
+          "analyzed-index-rule": {
+            "jcr:primaryType": "nt:unstructured",
+            "name": "jcr:content/analyzedIndexRule",
+            "analyzed": true
+          },
+          "property-and-analyzed-index-rule": {
+            "jcr:primaryType": "nt:unstructured",
+            "name": "jcr:content/propertyAndAnalyzedIndexRule",
+            "analyzed": true,
+            "propertyIndex": true
+          },
+          "duplicate": {
+            "jcr:primaryType": "nt:unstructured",
+            "name": "jcr:content/propertyAndAnalyzedIndexRule",
+            "analyzed": true,
+            "propertyIndex": true
+          }
+        }
+      }
+    }
   }
 }
+
