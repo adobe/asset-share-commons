@@ -137,7 +137,7 @@ public class SearchConfigImpl implements SearchConfig, ComponentExporter {
     }
 
     @Override 
-    public boolean isOverideGuessTotal() {
+    public boolean isOverrideGuessTotal() {
         return properties.get(PN_OVERRIDE_GUESS_TOTAL, DEFAULT_OVERRIDE_GUESS_TOTAL);
     }
 
