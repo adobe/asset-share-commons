@@ -124,7 +124,7 @@ public class SearchConfigImpl implements SearchConfig {
 
     @Override 
     public boolean isOverideGuessTotal() {
-        return properties.get(PN_ORDER_BY_CASE, DEFAULT_ORDER_BY_CASE);
+        return properties.get(PN_OVERRIDE_GUESS_TOTAL, DEFAULT_OVERRIDE_GUESS_TOTAL);
     }
 
 
