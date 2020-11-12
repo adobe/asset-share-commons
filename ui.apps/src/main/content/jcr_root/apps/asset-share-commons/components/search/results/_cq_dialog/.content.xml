@@ -93,6 +93,14 @@
                                         text="Display help message as placeholder"
                                         value="100"/>
 
+                                    <override-guess-total
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                        fieldDescription="Select to override the default max guess total of 2000.  It's recommended to keep the max guess total at 2000 or less."
+                                        name="./overrideGuessTotal"
+                                        text="Override Default Max Guess Total (2000)"
+                                        value="{Boolean}true"/>
+
                                     <default-orderby
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/select"

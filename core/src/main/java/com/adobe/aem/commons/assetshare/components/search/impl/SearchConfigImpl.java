@@ -36,6 +36,7 @@ public class SearchConfigImpl implements SearchConfig {
     private static final int DEFAULT_LIMIT = 50;
 
     private static final String DEFAULT_GUESS_TOTAL = "250";
+    private static final boolean DEFAULT_OVERRIDE_GUESS_TOTAL = false;
     private static final String DEFAULT_ORDER_BY = "@jcr:score";
     private static final String DEFAULT_ORDER_BY_SORT = Predicate.SORT_DESCENDING;
     private static final boolean DEFAULT_ORDER_BY_CASE = true;
@@ -48,6 +49,7 @@ public class SearchConfigImpl implements SearchConfig {
     private String PN_ORDER_BY = "orderBy";
     private String PN_ORDER_BY_SORT = "orderBySort";
     private String PN_ORDER_BY_CASE = "orderByCase";
+    private String PN_OVERRIDE_GUESS_TOTAL = "overrideGuessTotal";
     private String PN_LIMIT = Predicate.PARAM_LIMIT;
     private String PN_PATHS = "paths";
     private String PN_LAYOUT = "layout";
@@ -109,11 +111,22 @@ public class SearchConfigImpl implements SearchConfig {
 
         try {
             int guessTotalAsNumber = Integer.parseInt(guessTotal);
-            return (guessTotalAsNumber < 1 || guessTotalAsNumber > MAX_GUESS_TOTAL) ? DEFAULT_GUESS_TOTAL : String.valueOf(guessTotalAsNumber);
+            if(isOverideGuessTotal() && guessTotalAsNumber > 1) {
+                return guessTotal;
+            }
+            else {
+                return (guessTotalAsNumber < 1 || guessTotalAsNumber > MAX_GUESS_TOTAL) ? DEFAULT_GUESS_TOTAL : String.valueOf(guessTotalAsNumber);
+            }
         } catch (NumberFormatException e) {
             return DEFAULT_GUESS_TOTAL;
         }
     }
+
+    @Override 
+    public boolean isOverideGuessTotal() {
+        return properties.get(PN_ORDER_BY_CASE, DEFAULT_ORDER_BY_CASE);
+    }
+
 
     @Override
     public String getSearchProviderId() {

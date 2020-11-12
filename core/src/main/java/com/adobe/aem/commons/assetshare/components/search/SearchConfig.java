@@ -73,6 +73,12 @@ public interface SearchConfig {
     String getGuessTotal();
 
     /**
+     * 
+     * @return true if the max guess total is overridden.
+     */
+    default boolean isOverideGuessTotal() { return false; }
+    
+    /**
      * @return the default
      */
     String getSearchProviderId();
