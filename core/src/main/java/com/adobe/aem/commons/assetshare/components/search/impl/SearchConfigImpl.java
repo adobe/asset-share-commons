@@ -121,7 +121,7 @@ public class SearchConfigImpl implements SearchConfig, ComponentExporter {
 
         try {
             int guessTotalAsNumber = Integer.parseInt(guessTotal);
-            if (isOverideGuessTotal() && guessTotalAsNumber >= -1) {
+            if (isOverrideGuessTotal() && guessTotalAsNumber >= -1) {
                  // Override allowed; Allows any values -1, 0 or greater if the override is set, as -1 and 0 set "no limit"
                 return String.valueOf(guessTotalAsNumber);
             } else if (guessTotalAsNumber < 1 || guessTotalAsNumber > MAX_GUESS_TOTAL) {

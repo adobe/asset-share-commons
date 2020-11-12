@@ -76,7 +76,7 @@ public interface SearchConfig {
      * 
      * @return true if the max guess total is overridden.
      */
-    default boolean isOverideGuessTotal() { return false; }
+    default boolean isOverrideGuessTotal() { return false; }
     
     /**
      * @return the default
