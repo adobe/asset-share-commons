@@ -1,14 +1,21 @@
 package com.adobe.aem.commons.assetshare.components.search.impl;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nonnull;
+import javax.annotation.PostConstruct;
+
 import com.adobe.aem.commons.assetshare.components.search.SearchConfig;
 import com.adobe.aem.commons.assetshare.util.ResourceTypeVisitor;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.export.json.ExporterConstants;
 import com.day.cq.dam.api.DamConstants;
-import com.day.cq.replication.ListenerLogDelegator;
 import com.day.cq.search.Predicate;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
@@ -24,13 +31,6 @@ import org.apache.sling.models.factory.ModelFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Model(
         adaptables = {SlingHttpServletRequest.class},
         adapters = {SearchConfig.class, ComponentExporter.class},
@@ -42,7 +42,6 @@ public class SearchConfigImpl implements SearchConfig, ComponentExporter {
 
     public static final String RESOURCE_TYPE = "asset-share-commons/components/search/results";
 
-    private static final int MAX_GUESS_TOTAL = 2000;
     private static final int DEFAULT_LIMIT = 50;
 
     private static final String DEFAULT_GUESS_TOTAL = "250";
@@ -119,7 +118,7 @@ public class SearchConfigImpl implements SearchConfig, ComponentExporter {
 
         try {
             int guessTotalAsNumber = Integer.parseInt(guessTotal);
-            return (guessTotalAsNumber < 1 || guessTotalAsNumber > MAX_GUESS_TOTAL) ? DEFAULT_GUESS_TOTAL : String.valueOf(guessTotalAsNumber);
+            return guessTotalAsNumber < -1 ? DEFAULT_GUESS_TOTAL : String.valueOf(guessTotalAsNumber);
         } catch (NumberFormatException e) {
             return DEFAULT_GUESS_TOTAL;
         }
