@@ -21,7 +21,8 @@
     jcr:primaryType="nt:unstructured"
     jcr:title="Search Results"
     sling:resourceType="cq/gui/components/authoring/dialog"
-    extraClientlibs="[assetshare.editor.components.search.results]">
+    extraClientlibs="[assetshare.editor.components.search.results]"
+    helpPath="https://adobe-marketing-cloud.github.io/asset-share-commons/pages/search/results/">>
     <content
         jcr:primaryType="nt:unstructured"
         sling:resourceType="granite/ui/components/coral/foundation/container">
@@ -82,15 +83,15 @@
                                         min="1"
                                         name="./limit"
                                         value="50"/>
+                                        
                                     <guess-total
                                         jcr:primaryType="nt:unstructured"
                                         sling:resourceType="granite/ui/components/coral/foundation/form/numberfield"
-                                        defaultValue="100"
-                                        fieldDescription="Describe Guess total; Set to 0 to set to true."
+                                        fieldDescription="Describe Guess total. Special values include: 0 to set to true, -1 for no limit. **WARNING: large Guess total values (or -1 for no limit) may result in severe performance issues.**"
                                         fieldLabel="Guess Total"
-                                        min="0"
+                                        min="-1"
                                         name="./guessTotal"
-                                        text="Display help message as placeholder"
+                                        step="1"
                                         value="100"/>
 
                                     <default-orderby
