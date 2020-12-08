@@ -21,11 +21,11 @@
 
 <!--/* These params MUST be loaded before the dependent Asset Share Commons JavaScripts (ie. Modals) */-->
 <input type="hidden"
-       data-sly-test="${config.shareEnabled}"
+       data-sly-test="${config.shareEnabled || config.shareEnabledCart}"
        data-asset-share-id="share-url"
        value="${config.shareActionUrl}"/>
 <input type="hidden"
-       data-sly-test="${config.downloadEnabled}"
+       data-sly-test="${config.downloadEnabled || config.downloadEnabledCart}"
        data-asset-share-id="download-url"
        value="${config.downloadActionUrl}"/>
 <input type="hidden"

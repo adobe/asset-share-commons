@@ -190,12 +190,42 @@ public class ConfigImpl implements Config {
 
     @Override
     public boolean isShareEnabled() {
-        return shareService != null && properties.get(PN_SHARE_ENABLED, false);
+        return shareService != null && compareEnablementValue(properties, PN_SHARE_ENABLED, ActionEnablements.ALWAYS);
     }
 
     @Override
     public boolean isDownloadEnabled() {
-        return properties.get(PN_DOWNLOAD_ENABLED, false);
+        return compareEnablementValue(properties, PN_DOWNLOAD_ENABLED, ActionEnablements.ALWAYS);
+    }
+
+    @Override
+    public boolean isDownloadEnabledCart() {
+        if(isCartEnabled()) {
+            return compareEnablementValue(properties, PN_DOWNLOAD_ENABLED, ActionEnablements.ALWAYS, ActionEnablements.CART);
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean isShareEnabledCart() {
+        if(isCartEnabled() && shareService != null) {
+            return compareEnablementValue(properties, PN_SHARE_ENABLED, ActionEnablements.ALWAYS, ActionEnablements.CART);
+        }
+
+        return false;
+    }
+
+    private boolean compareEnablementValue(ValueMap properties, String propertyName, ActionEnablements... validValues) {
+        String strValue = properties.get(propertyName, ActionEnablements.NEVER.value);
+        ActionEnablements enablementVal = ActionEnablements.forValue(strValue);
+        for(ActionEnablements enablement : validValues) {
+            if(enablement == enablementVal) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
@@ -265,5 +295,27 @@ public class ConfigImpl implements Config {
         }
 
         return "/";
+    }
+
+    private enum ActionEnablements {
+        ALWAYS("true"),
+        NEVER("false"),
+        CART("cart");
+
+        private String value;
+
+        ActionEnablements(String value) {
+            this.value=value;
+        }
+
+        public static ActionEnablements forValue(String value) {
+            for(ActionEnablements enablement : ActionEnablements.values()) {
+                if(enablement.value.equalsIgnoreCase(value)) {
+                    return enablement;
+                }
+            }
+
+            return ActionEnablements.NEVER;
+        }
     }
 }
