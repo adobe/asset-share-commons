@@ -117,7 +117,7 @@ public class DownloadImpl implements Download, ComponentExporter {
             this.downloadContentSize = DEFAULT_SIZE_LIMIT;
         } else {
             calculateSizes();
-        }    
+        }
     }
 
     @Override

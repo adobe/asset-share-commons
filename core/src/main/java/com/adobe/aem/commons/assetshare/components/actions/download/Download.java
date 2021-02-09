@@ -71,14 +71,20 @@ public interface Download {
     class AssetRenditionsGroup {
         private final Options options;
         private final String title;
+        private final String groupID;
 
         public AssetRenditionsGroup(String title, Options options) {
             this.title = title;
-            this.options = options;
+            this.options = options; 
+            this.groupID = title.toLowerCase().replace(" ", "_");
         }
 
         public String getTitle() {
             return title;
+        }
+        
+        public String getGroupID() {
+            return this.groupID;
         }
 
         public List<OptionItem> getItems() {

@@ -99,6 +99,11 @@ public interface Config {
      * @return the path segment of the URL to call to render the Share action.
      */
     String getShareActionUrl();
+    
+    /**
+     * @return the path segment of the URL to call to render the Share action.
+     */    
+    String getDownloadsPanelActionUrl();
 
     /**
      * @return true if the cart is enabled.
@@ -118,6 +123,11 @@ public interface Config {
     /**
      * @return true if the license action is enabled.
      */
+    boolean isOriginalDownloadEnabled();
+    
+    /**
+     * @return true if the license action is enabled.
+     */
     boolean isLicenseEnabled();
 
     /**
@@ -129,6 +139,11 @@ public interface Config {
      * @return true if the share action is enabled in the cart.
      */
     boolean isShareEnabledCart();
+   
+    /**
+     * @return true if the Downloads Panel action is enabled in the page.
+     */
+    boolean isDownloadsPanelEnabled();
 
     /**
      * @deprecated We no longer detect Dynamic Media; Return false always.
@@ -137,4 +152,8 @@ public interface Config {
      */
     @Deprecated
     default boolean isDynamicMediaEnabled() { return false; }
+
+	
+
+	
 }

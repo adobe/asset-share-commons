@@ -26,6 +26,7 @@
 
     var CONTEXT_HUB_STORE_NAME = "contexthub.assetsharecommonscart",
         KEY_ASSETS = "assets",
+        KEY_DOWNLOADS = "downloads",
 
         defaultConfig = {
             assets: []
@@ -57,6 +58,7 @@
 
             current = $.extend(true, [], this.get());
 
+
             paths.forEach(function (path) {
                 if (current.indexOf(path) === -1) {
                     dirty = true;
@@ -70,6 +72,35 @@
             } else {
                 return false;
             }
+        },
+
+                /** Add a specific set of Assets **/
+        addDownload: function (download) {
+            var current,
+                dirty = true;
+
+            current = $.extend(true, [], this.get());
+            var downloads =  [];
+
+            if(this.getItem(KEY_DOWNLOADS)){
+					downloads = this.getItem(KEY_DOWNLOADS);
+            }
+
+            var dl = {}
+
+            dl.id = download.downlaodID;
+            dl.count = download.count
+            dl.assets = current;
+
+            this.setItem(KEY_DOWNLOADS, "");
+			downloads.push(dl);
+			this.setItem(KEY_DOWNLOADS, downloads);
+
+			return true;
+        },
+
+        clearDownloads: function () {
+            this.setItem(KEY_DOWNLOADS, []);
         },
 
         /** Remove a specific set of Assets **/

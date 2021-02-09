@@ -1,0 +1,132 @@
+<!--/*
+  ~ Asset Share Commons
+  ~
+  ~ Copyright [2017]  Adobe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+ */-->
+
+<sly data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
+     data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
+	 data-sly-use.downloadsPanel="com.adobe.aem.commons.assetshare.components.actions.downloadspanel.DownloadsPanel"
+	 ></sly>
+
+<style data-sly-test="${!wccmode.disabled}">
+     .cmp-modal-downloadPanel .ui.modal {
+        position: relative !important;
+        display: block !important;;
+        top: 0 !important;;
+    }
+</style>
+
+
+<div 
+     data-asset-share-id="downloadspanel-modal"
+	 data-asset-share-update-method="replace"
+     data-asset-share-update-when="downloads-update"
+     class="ui long modal cmp-modal-downloadPanel--wrapper cmp-modal">
+    <i class="close icon"></i>
+    <div class="header">
+        ${properties['modalTitle']}
+
+
+		<span class="right-align" data-asset-share-id="refresh-downloads"><a href="">Refresh</a></span>
+
+
+		<span class="right-align" data-asset-share-id="clear-downloads"><a href="">Clear</a></span>
+    </div>
+    <div class="cmp-content scrolling content">
+
+<!-- The Modal -->
+<div id="FileDownloadsPanelModal" class="downloadsPanelModal" >
+    <!-- Modal content -->
+    <div class="modal-content" >
+        <div id="downloadsPanel" class="container">
+            <!--<span class="close">&times;</span>-->
+
+
+
+
+<div  class="ui container"> 
+        <div class="ui styled accordion" style="width:100%;" data-sly-test="${downloadsPanel.downloadStatus.size > 0}"> 
+
+			<div data-sly-list.downloadStatus="${downloadsPanel.downloadStatus}">
+            <div class="title" > 
+                <i class="dropdown icon"></i> 
+                ${downloadStatus.name}  
+				<span class="right-align">
+					Progress - ${downloadStatus.progress}%
+				</span>
+            </div> 
+			<div>
+            <div class="content"> 
+
+				<div class="download-archive" id="${downloadStatus.downloadId}" data-sly-test="${downloadStatus.status == 'SUCCESSFUL'}">
+                	<a href="${downloadStatus.url}" > Download Zip File</a><br>
+				</div>
+				File Size (in kb): ${downloadStatus.size}<br>
+				Total Assets Count: ${downloadStatus.totalCount}<br>
+				<div>Status: ${downloadStatus.status}</div><br>
+
+                <div class="accordion"> 
+                    <div class=" title"> 
+                        <i class="dropdown icon"></i> 
+                        ${properties['assetListTitle']} 
+                    </div> 
+                    <div class=" content"> 
+                        <p></p> 
+                        <div class="accordion"> 
+
+						<div data-sly-list.downloadedAsset="${downloadStatus.assets}">
+                            <div class="title"> 
+
+                               ${downloadedAsset}<br>
+                            </div> 
+
+						</div>
+                        </div> 
+                    </div> 
+                </div>
+
+			</div> 
+            </div> 
+
+			</div>
+        </div> 
+    </div> 
+        </div>
+    </div>
+
+		<p data-sly-test="${downloadsPanel.downloadStatus.size == 0}">
+            ${properties['noContentMessage']}
+        </p>
+
+
+</div>
+
+
+    </div>
+
+    <script> 
+                $('.ui.accordion').accordion(); 
+
+
+    </script> 
+</div>
+
+
+
+
+
+
+

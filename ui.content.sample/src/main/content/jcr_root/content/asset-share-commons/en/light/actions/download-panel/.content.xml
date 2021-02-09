@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="cq:Page">
+    <jcr:content
+        cq:lastModified="{Date}2020-12-09T04:12:38.378-08:00"
+        cq:lastModifiedBy="admin"
+        cq:template="/conf/asset-share-commons/settings/wcm/templates/action-template"
+        jcr:primaryType="cq:PageContent"
+        jcr:title="Download Panel"
+        sling:resourceType="asset-share-commons/components/structure/page">
+        <root
+            jcr:primaryType="nt:unstructured"
+            sling:resourceType="wcm/foundation/components/responsivegrid">
+            <responsivegrid
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="wcm/foundation/components/responsivegrid">
+                <downloadspanel
+                    jcr:created="{Date}2020-12-08T14:58:07.538-08:00"
+                    jcr:createdBy="admin"
+                    jcr:lastModified="{Date}2020-12-09T04:12:38.373-08:00"
+                    jcr:lastModifiedBy="admin"
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="asset-share-commons/components/modals/downloads-panel"
+                    assetListTitle="Downloaded Assets List:"
+                    cancelButton="Cancel"
+                    downloadButton="Download"
+                    downloadOptionsTitle="Please add assets to Cart and download"
+                    fileName="Assets"
+                    maxContentSizeMessage="Maximum content size of download exceeded."
+                    modalTitle="Downloads"
+                    noContentFileName="NO DOWNLOADABLE RENDITIONS.txt"
+                    noContentMessage="Sorry, we could not find any downloadable files for the selected assets/renditions combinations."
+                    selectAllLabel="Select all">
+                    <asset-renditions-groups jcr:primaryType="nt:unstructured">
+                        <items jcr:primaryType="nt:unstructured">
+                            <item0
+                                jcr:primaryType="nt:unstructured"
+                                assetRenditionsGroupTitle="Image renditions">
+                                <asset-renditions jcr:primaryType="nt:unstructured">
+                                    <items jcr:primaryType="nt:unstructured">
+                                        <item0
+                                            jcr:primaryType="nt:unstructured"
+                                            text="Web"
+                                            value="web"/>
+                                        <item1
+                                            jcr:primaryType="nt:unstructured"
+                                            text="Original"
+                                            value="original"/>
+                                    </items>
+                                </asset-renditions>
+                            </item0>
+                        </items>
+                    </asset-renditions-groups>
+                </downloadspanel>
+            </responsivegrid>
+        </root>
+    </jcr:content>
+</jcr:root>

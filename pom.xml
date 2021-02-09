@@ -801,6 +801,12 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
+                <groupId>com.adobe.aem</groupId>
+                <artifactId>aem-sdk-api</artifactId>
+                <version>2020.10.4362.20201013T230740Z-200924</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
                 <groupId>com.adobe.cq</groupId>
                 <artifactId>core.wcm.components.core</artifactId>
                 <version>${core.wcm.components.version}</version>
