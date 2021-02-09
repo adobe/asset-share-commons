@@ -18,120 +18,117 @@
 
 /*global ContextHub: false, jQuery: false, AssetShare: false */
 
-AssetShare.Downloads = (function ($, ns, contextHubStore,messages) {
-    "use strict";
+AssetShare.Downloads = (function($, ns, contextHubStore, messages) {
+	"use strict";
 
-    function enabled() {
-        return contextHubStore !== null && typeof contextHubStore !== "undefined";
-    }
+	function enabled() {
+		return contextHubStore !== null
+				&& typeof contextHubStore !== "undefined";
+	}
 
-    function getPaths() {
-        var assetsInCart = [],
-            paths = [];
+	function getPaths() {
+		var assetsInCart = [], paths = [];
 
-        if (enabled()) {
-            assetsInCart = contextHubStore.get();
-        }
+		if (enabled()) {
+			assetsInCart = contextHubStore.get();
+		}
 
-        if (!(assetsInCart instanceof Array)) {
-            assetsInCart = [assetsInCart];
-        }
+		if (!(assetsInCart instanceof Array)) {
+			assetsInCart = [ assetsInCart ];
+		}
 
-        assetsInCart.forEach(function (cartAssetPath) {
-            paths.push(cartAssetPath);
-        });
+		assetsInCart.forEach(function(cartAssetPath) {
+			paths.push(cartAssetPath);
+		});
 
-        return paths;
-    }
+		return paths;
+	}
 
-    function add(downloadInfo) {
-        if (enabled()) {
-			
-                contextHubStore.addDownload(downloadInfo);
-                return true;
-        }
+	function add(downloadInfo) {
+		if (enabled()) {
 
-        return false;
-    }
+			contextHubStore.addDownload(downloadInfo);
+			return true;
+		}
 
-    function clearDownloads() {
-        if (enabled()) {
-			
-                contextHubStore.clearDownloads();
-                return true;
-        }
+		return false;
+	}
 
-        return false;
-    }
+	function clearDownloads() {
+		if (enabled()) {
 
+			contextHubStore.clearDownloads();
+			return true;
+		}
 
-    function getCookie(name){
-            var nameEQ=encodeURIComponent(name)+"=";
-            var ca=document.cookie.split(';');
-            for(var i=0;i<ca.length;i++) {
-            var c=ca[i];
-            while(c.charAt(0)==='')
-                 c=c.substring(1,c.length);
-                if(c.indexOf(nameEQ)===0)
-                return decodeURIComponent(c.substring(nameEQ.length,c.length));
-        	}
-        	return null;
-    }
+		return false;
+	}
 
-    function submitDownload(formdata,formurl) {
+	function getCookie(name) {
+		var nameEQ = encodeURIComponent(name) + "=";
+		var ca = document.cookie.split(';');
+		for (var i = 0; i < ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) === '')
+				c = c.substring(1, c.length);
+			if (c.indexOf(nameEQ) === 0)
+				return decodeURIComponent(c.substring(nameEQ.length, c.length));
+		}
+		return null;
+	}
 
+	function submitDownload(formdata, formurl) {
 
-            $.ajax({
-                type: "POST",
-                url: formurl,
-                data: formdata,
-                success: function (data) {		
-                    var cookievalue = getCookie('ADC');
-                    if(data.downlaodID){
-                        add(data);
-						if(cookievalue == null || cookievalue == ""){
-                            document.cookie="ADC="+data.downlaodID;
-                    	} else {
-							document.cookie="ADC="+data.downlaodID+','+cookievalue;
-                    	}
+		$.ajax({
+			type : "POST",
+			url : formurl,
+			data : formdata,
+			success : function(data) {
+				var cookievalue = getCookie('ADC');
+				if (data.downlaodID) {
+					add(data);
+					if (cookievalue == null || cookievalue == "") {
+						document.cookie = "ADC=" + data.downlaodID;
+					} else {
+						document.cookie = "ADC=" + data.downlaodID + ','
+								+ cookievalue;
+					}
 
 					cookievalue = getCookie('ADC');
-                  	var count = cookievalue.split(',').length;
-        			ns.Elements.element("downloads-count").text(count);
-                    messages.show('download-add');
+					var count = cookievalue.split(',').length;
+					ns.Elements.element("downloads-count").text(count);
+					messages.show('download-add');
 
-                    }
+				}
 
-                },
-                error: function () {
-                    essages.show('error');
-                }
-            });
-     }
+			},
+			error : function() {
+				essages.show('error');
+			}
+		});
+	}
 
-    function clear() {
-        if (enabled() && contextHubStore.get() && contextHubStore.get().length > 0) {
-            contextHubStore.clear();
+	function clear() {
+		if (enabled() && contextHubStore.get()
+				&& contextHubStore.get().length > 0) {
+			contextHubStore.clear();
 
-            $("body").trigger(ns.Events.CART_UPDATE, [getSize(), getPaths()]);
-            $("body").trigger(ns.Events.CART_CLEAR, [getSize(), getPaths()]);
-        }
-    }
+			$("body").trigger(ns.Events.CART_UPDATE, [ getSize(), getPaths() ]);
+			$("body").trigger(ns.Events.CART_CLEAR, [ getSize(), getPaths() ]);
+		}
+	}
 
-    function getContextHubStore() {
-        return contextHubStore;
-    }
+	function getContextHubStore() {
+		return contextHubStore;
+	}
 
-    return {
-        store: getContextHubStore,
-        paths: getPaths,
-        add: add,
-        getCookie: getCookie,
-        submitDownload: submitDownload,
-        clearDownloads:clearDownloads
-    };
+	return {
+		store : getContextHubStore,
+		paths : getPaths,
+		add : add,
+		getCookie : getCookie,
+		submitDownload : submitDownload,
+		clearDownloads : clearDownloads
+	};
 
-}(jQuery,
-    AssetShare,
-    ContextHub.getStore("cart"),
-    AssetShare.Messages));
+}(jQuery, AssetShare, ContextHub.getStore("cart"), AssetShare.Messages));

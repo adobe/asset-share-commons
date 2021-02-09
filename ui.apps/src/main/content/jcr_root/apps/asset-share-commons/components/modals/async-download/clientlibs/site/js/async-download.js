@@ -18,94 +18,91 @@
 
 /*global jQuery: false, AssetShare: false*/
 
-jQuery((function(ns, downloads,semanticModal, licenseModal,messages) {
-    "use strict";
-    AssetShare.SemanticUI.Modals.AsyncDownloadModal = (function () {
-        var DOWNLOAD_URL = ns.Data.val("download-url"),
-            DOWNLOAD_MODAL_ID = "download-modal",
-            DOWNLOAD_BUTTON_ID = "download-asset";
+jQuery((function(ns, downloads, semanticModal, licenseModal, messages) {
+	"use strict";
+	AssetShare.SemanticUI.Modals.AsyncDownloadModal = (function() {
+		var DOWNLOAD_URL = ns.Data.val("download-url"), 
+			DOWNLOAD_MODAL_ID = "download-modal", 
+			DOWNLOAD_BUTTON_ID = "download-asset";
 
-        function getId() {
-            return DOWNLOAD_MODAL_ID;
-        }
+		function getId() {
+			return DOWNLOAD_MODAL_ID;
+		}
 
-        function getUrl() {
-            return DOWNLOAD_URL;
-        }
+		function getUrl() {
+			return DOWNLOAD_URL;
+		}
 
-        function getModal(formDataOrAssetPath, licensed) {
-            var formData = formDataOrAssetPath,
-                downloadModal;
+		function getModal(formDataOrAssetPath, licensed) {
+			var formData = formDataOrAssetPath, downloadModal;
 
-            if (typeof formDataOrAssetPath === 'string') {
-                formData = new ns.FormData();
-                formData.add("path", formDataOrAssetPath);
-            }
+			if (typeof formDataOrAssetPath === 'string') {
+				formData = new ns.FormData();
+				formData.add("path", formDataOrAssetPath);
+			}
 
-            downloadModal = {
-                id: DOWNLOAD_MODAL_ID,
-                url: DOWNLOAD_URL,
-                data: formData.serialize(),
-                options: {}
-            };
+			downloadModal = {
+				id : DOWNLOAD_MODAL_ID,
+				url : DOWNLOAD_URL,
+				data : formData.serialize(),
+				options : {}
+			};
 
-            if (licensed) {
-                downloadModal.options.show = function (modal) {
-                    modal.modal("attach events", ns.Elements.selector([licenseModal.id(), licenseModal.acceptId()]));
-                };
-            } else {
-                downloadModal.options.show = function (modal) {
-                    modal.modal('show');
-                };
-            }
+			if (licensed) {
+				downloadModal.options.show = function(modal) {
+					modal.modal("attach events", ns.Elements.selector([
+							licenseModal.id(), licenseModal.acceptId() ]));
+				};
+			} else {
+				downloadModal.options.show = function(modal) {
+					modal.modal('show');
+				};
+			}
 
-            return downloadModal;
-        }
+			return downloadModal;
+		}
 
-        function download(e) {
-            var path = ns.Data.attr(this, "asset"),
-                license = ns.Data.attr(this, "license"),
-                downloadModal = getModal(path, license);
+		function download(e) {
+			var path = ns.Data.attr(this, "asset"), license = ns.Data.attr(
+					this, "license"), downloadModal = getModal(path, license);
 
-            e.preventDefault();
-            e.stopPropagation();
+			e.preventDefault();
+			e.stopPropagation();
 
-            if (license && licenseModal.modal(path)) {
-                semanticModal.show([licenseModal.modal(path), downloadModal]);
-            } else {
-                semanticModal.show([downloadModal]);
-            }
-        }
+			if (license && licenseModal.modal(path)) {
+				semanticModal.show([ licenseModal.modal(path), downloadModal ]);
+			} else {
+				semanticModal.show([ downloadModal ]);
+			}
+		}
 
+		/** REGISTER EVENTS WHEN DOCUMENT IS READY * */
+		$((function registerEvents() {
+			$("body").on("click", ns.Elements.selector([ "async-download" ]),
+					download);
 
-        /** REGISTER EVENTS WHEN DOCUMENT IS READY **/
-        $((function registerEvents() {
-        	 $("body").on("click", ns.Elements.selector(["async-download"]), download);
+			$("body").on("submit", ns.Elements.selector([ "download-modal" ]),
+					function(e) {
+						var formEl = $(this);
 
-             $("body").on("submit", ns.Elements.selector(["download-modal"]), function (e) {
-                var formEl = $(this);
+						e.preventDefault();
+						e.stopPropagation();
 
-                e.preventDefault();
-                e.stopPropagation();
+						if (formEl.form('is valid')) {
+							var form = $(formEl);
+							var url = form.attr("link");
+							var formdata = form.serialize();
+							downloads.submitDownload(formdata, url);
+						}
+					});
+		}()));
 
-                if (formEl.form('is valid')) {
-                	var form = $(formEl);
-                	var url = form.attr("link");
-                	var formdata = form.serialize();
-                    downloads.submitDownload(formdata,url);
-                }
-            });
-        }()));
-
-        return {
-            id: getId,
-            url: getUrl,
-            modal: getModal,
-            download: download
-        };
-    }());
-}(AssetShare,
-    AssetShare.Downloads,
-    AssetShare.SemanticUI.Modal,
-    AssetShare.SemanticUI.Modals.LicenseModal,
-    AssetShare.Messages)));
+		return {
+			id : getId,
+			url : getUrl,
+			modal : getModal,
+			download : download
+		};
+	}());
+}(AssetShare, AssetShare.Downloads, AssetShare.SemanticUI.Modal,
+		AssetShare.SemanticUI.Modals.LicenseModal, AssetShare.Messages)));
