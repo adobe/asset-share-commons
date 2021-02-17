@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.wrappers.ValueMapDecorator;
@@ -38,7 +39,6 @@ public class AsyncDownloadImpl implements AsyncDownload {
 	public static final String ENCODING_LABEL = "encoding";
 	public static final String VIDEO_ENCODING_LABEL = "videoencoding";
 
-
 	@Reference
 	private DownloadService downloadService;
 
@@ -56,78 +56,70 @@ public class AsyncDownloadImpl implements AsyncDownload {
 		String archiveName = sdf.format(timestamp).toString() + ".zip";
 
 		for (AssetModel asset : assets) {
-			if (mimeTypeHelper.isDownloadSupportedImage(mimeTypeHelper.getMimeType(asset))) {
-				List<String> imageRenditionsList = renditionsMap.get(Constants.REQ_IMAGE_RENDITION_NAMES);
-				manifest = addImageRenditionsToManifest(asset, imageRenditionsList, manifest, archiveName);
-			}
-
-			if (mimeTypeHelper.isDownloadSupportedVideo(mimeTypeHelper.getMimeType(asset))) {
-				List<String> videoRenditionsList = renditionsMap.get(Constants.REQ_VIDEO_RENDITION_NAMES);
-				manifest = addVideoRenditionsToManifest(asset, videoRenditionsList, manifest, archiveName);
-			}
-
-			if (mimeTypeHelper.isDownloadSupportedOther(mimeTypeHelper.getMimeType(asset))) {
-				List<String> otherRenditionsList = renditionsMap.get(Constants.REQ_OTHER_RENDITION_NAMES);
-				manifest = addOtherRenditionsToManifest(asset, otherRenditionsList, manifest, archiveName);
-			}
+			manifest = addOrigianlRenditionToManifest(asset, manifest, archiveName);
+			manifest = addDynamicRenditionToManifest(asset, manifest, archiveName, renditionsMap);
 		}
 
-		// request the download and remember the ID
-		String downloadId = downloadService.download(manifest, resolver);
+		return downloadService.download(manifest, resolver);
+	}
 
-		return downloadId;
+	private DownloadManifest addDynamicRenditionToManifest(AssetModel asset, DownloadManifest manifest,
+			String archiveName, Map<String, List<String>> renditionsMap) {
+		List<String> imageRenditionsList = renditionsMap.get(Constants.REQ_IMAGE_RENDITION_NAMES);
+		List<String> videoRenditionsList = renditionsMap.get(Constants.REQ_VIDEO_RENDITION_NAMES);
+		
+		if (mimeTypeHelper.isDownloadSupportedImage(mimeTypeHelper.getMimeType(asset)) &&  (imageRenditionsList.size() > 1)) {
+			addImageRenditionsToManifest(asset, imageRenditionsList, manifest, archiveName);
+		}else if (mimeTypeHelper.isDownloadSupportedVideo(mimeTypeHelper.getMimeType(asset)) &&  (videoRenditionsList.size() > 1)) {
+			addVideoRenditionsToManifest(asset, videoRenditionsList, manifest, archiveName);
+		}
+
+		return manifest;
+	}
+
+	private DownloadManifest addOrigianlRenditionToManifest(AssetModel asset, DownloadManifest manifest,
+			String archiveName) {
+
+		Map<String, Object> originalRenditionParameters = addBasicAssetParameters(asset, archiveName);
+		manifest.addTarget(
+				apiFactory.createDownloadTarget(ASSET_LABEL, new ValueMapDecorator(originalRenditionParameters)));
+
+		return manifest;
+	}
+
+	private Map<String, Object> addBasicAssetParameters(AssetModel asset, String archiveName) {
+
+		Map<String, Object> renditionParameters = new HashMap<String, Object>();
+		renditionParameters.put(ASSET_PATH, asset.getPath());
+		renditionParameters.put(ARCHIVE_NAME, archiveName);
+
+		return renditionParameters;
 	}
 
 	private DownloadManifest addImageRenditionsToManifest(AssetModel asset, List<String> imageRenditionsList,
 			DownloadManifest manifest, String archiveName) {
 
 		for (String imageRenditionName : imageRenditionsList) {
-			Map<String, Object> imageRenditionParameters = new HashMap<String, Object>();
-			imageRenditionParameters.put(ASSET_PATH, asset.getPath());
-			imageRenditionParameters.put(ARCHIVE_NAME, archiveName);
-			if (imageRenditionName.equalsIgnoreCase(ORIGINAL_RENDITION)) {
-				manifest.addTarget(
-						apiFactory.createDownloadTarget(ASSET_LABEL, new ValueMapDecorator(imageRenditionParameters)));
-			} else {
-				imageRenditionParameters.put(IMAGE_PRESET, imageRenditionName);
-				manifest.addTarget(apiFactory.createDownloadTarget(DYNAMIC_RENDITION,
-						new ValueMapDecorator(imageRenditionParameters)));
-			}
+			Map<String, Object> imageRenditionParameters = addBasicAssetParameters(asset, archiveName);
+			imageRenditionParameters.put(IMAGE_PRESET, imageRenditionName);
+			manifest.addTarget(apiFactory.createDownloadTarget(DYNAMIC_RENDITION,
+					new ValueMapDecorator(imageRenditionParameters)));
+
 		}
 
 		return manifest;
 	}
 
-	private DownloadManifest addVideoRenditionsToManifest(AssetModel asset, List<String> imageRenditionsList,
+	private DownloadManifest addVideoRenditionsToManifest(AssetModel asset, List<String> videoRenditionsList,
 			DownloadManifest manifest, String archiveName) {
-		for (String imageRenditionName : imageRenditionsList) {
-			Map<String, Object> imageRenditionParameters = new HashMap<String, Object>();
-			imageRenditionParameters.put(ASSET_PATH, asset.getPath());
-			imageRenditionParameters.put(ARCHIVE_NAME, archiveName);
-			if (imageRenditionName.equalsIgnoreCase(ORIGINAL_RENDITION)) {
-				manifest.addTarget(
-						apiFactory.createDownloadTarget(ASSET_LABEL, new ValueMapDecorator(imageRenditionParameters)));
-			} else {
-				imageRenditionParameters.put(IMAGE_PRESET, imageRenditionName);
-				manifest.addTarget(apiFactory.createDownloadTarget(DYNAMIC_RENDITION,
-						new ValueMapDecorator(imageRenditionParameters)));
-			}
+		for (String videoRenditionName : videoRenditionsList) {
+			Map<String, Object> imageRenditionParameters = addBasicAssetParameters(asset, archiveName);
+			imageRenditionParameters.put(ENCODING_LABEL, videoRenditionName);
+			manifest.addTarget(apiFactory.createDownloadTarget(VIDEO_ENCODING_LABEL,
+					new ValueMapDecorator(imageRenditionParameters)));
+
 		}
 
-		return manifest;
-	}
-
-	private DownloadManifest addOtherRenditionsToManifest(AssetModel asset, List<String> otherRenditionsList,
-			DownloadManifest manifest, String archiveName) {
-		for (String otherRenditionName : otherRenditionsList) {
-			Map<String, Object> videorenditionParameters = new HashMap<String, Object>();
-			videorenditionParameters.put(ASSET_PATH, asset.getPath());
-			videorenditionParameters.put(ARCHIVE_NAME, archiveName);
-			if (otherRenditionName.equalsIgnoreCase(ORIGINAL_RENDITION)) {
-				manifest.addTarget(
-						apiFactory.createDownloadTarget(ASSET_LABEL, new ValueMapDecorator(videorenditionParameters)));
-			}
-		}
 		return manifest;
 	}
 
