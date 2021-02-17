@@ -34,10 +34,15 @@
 	class="ui long modal cmp-modal-downloadPanel--wrapper cmp-modal">
 	<i class="close icon"></i>
 	<div class="header">
-		${properties['modalTitle']} <span class="right-align"
-			data-asset-share-id="refresh-downloads"><a href="">Refresh</a></span>
-		<span class="right-align" data-asset-share-id="clear-downloads"><a
-			href="">Clear</a></span>
+		${properties['modalTitle']}
+
+			 <span data-sly-test="${downloadsPanel.downloadStatus.size > 0}" class="right-align"	data-asset-share-id="refresh-downloads">
+			 	<a href="">Refresh</a>
+			 </span>
+			<span class="right-align" data-asset-share-id="clear-downloads">
+				<a href="">Clear</a>
+			</span>
+
 	</div>
 	<div class="cmp-content scrolling content">
 
@@ -65,7 +70,7 @@
 											data-sly-test="${downloadStatus.status == 'SUCCESSFUL'}">
 											<a href="${downloadStatus.url}"> Download Zip File</a><br>
 										</div>
-										File Size (in kb): ${downloadStatus.size}<br> Total
+										File Size: ${downloadStatus.size}<br> Total
 										Assets Count: ${downloadStatus.totalCount}<br>
 										<div>Status: ${downloadStatus.status}</div>
 										<br>

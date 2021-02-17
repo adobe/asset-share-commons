@@ -37,8 +37,11 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -59,15 +62,9 @@ public class AsyncDownloadServlet extends SlingAllMethodsServlet {
     private static final Logger log = LoggerFactory.getLogger(AsyncDownloadServlet.class);
 
     private static final String REQ_KEY_ASSET_PATHS = "path";
-    private static final String REQ_KEY_RENDITION_NAMES = "image_renditions";
-    private static final String REQ_VIDEO_RENDITION_NAMES = "video_renditions";
-    private static final String REQ_OTHER_RENDITION_NAMES = "other_renditions";
     private static final String PN_ALLOWED_RENDITION_NAMES = "allowedRenditionNames";
-
     private static final String DOWNLOAD_COUNT = "count";
     private static final String DOWNLOAD_ID = "downlaodID";
-    private static final String DOWNLOAD_RENDITIONS_COUNT = "renditionsCount";
-    
 
     @Reference
     private ServletHelper servletHelper;
@@ -83,22 +80,22 @@ public class AsyncDownloadServlet extends SlingAllMethodsServlet {
     protected final void doPost(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
         servletHelper.addSlingBindings(request, response);
 
-        final List<String> renditionNames = getRenditionNames(request,REQ_KEY_RENDITION_NAMES);
-        final List<String> videorenditionNames = getRenditionNames(request,REQ_VIDEO_RENDITION_NAMES);
-        final List<String> otherrenditionNames = getRenditionNames(request,REQ_OTHER_RENDITION_NAMES);
         final List<AssetModel> assets = getAssets(request);
         PrintWriter printWriter = response.getWriter();
+        Map<String, List<String>> renditionsMap = new HashMap<String, List<String>>();//This is one instance of the  map you want to store in the above list.
+        renditionsMap.put(Constants.REQ_IMAGE_RENDITION_NAMES,getRenditionNames(request,Constants.REQ_IMAGE_RENDITION_NAMES));
+        renditionsMap.put(Constants.REQ_VIDEO_RENDITION_NAMES,getRenditionNames(request,Constants.REQ_VIDEO_RENDITION_NAMES));
+        renditionsMap.put(Constants.REQ_OTHER_RENDITION_NAMES,getRenditionNames(request,Constants.REQ_OTHER_RENDITION_NAMES));
 
 
         try {
         	response.setCharacterEncoding("UTF-8");
         	response.setContentType("application/json;charset=UTF-8");
-        	String downlaodID = asyncDownload.createDownload(request.getResourceResolver(),assets,renditionNames,videorenditionNames,otherrenditionNames);
+        	String downlaodID = asyncDownload.createDownload(request.getResourceResolver(),assets,renditionsMap);
         	
         	JSONObject responseObject = new JSONObject();
         	responseObject.put(DOWNLOAD_COUNT, assets.size());
         	responseObject.put(DOWNLOAD_ID, downlaodID);
-        	responseObject.put(DOWNLOAD_RENDITIONS_COUNT, renditionNames.size());
 
         	printWriter.write(responseObject.toString());
         } catch (Exception e) {
@@ -107,7 +104,6 @@ public class AsyncDownloadServlet extends SlingAllMethodsServlet {
         }
     }
     
-
     protected List<AssetModel> getAssets(final SlingHttpServletRequest request) {
         final RequestParameter[] requestParameters = request.getRequestParameters(REQ_KEY_ASSET_PATHS);
 

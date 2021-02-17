@@ -62,13 +62,16 @@ public class DownloadsPanelImpl implements DownloadsPanel {
     private String getCookie(String cookieName){
     	String cookievalue = null;
     	Cookie[] cookies = request.getCookies();
-    	for (Cookie aCookie : cookies) {
-    	    String name = aCookie.getName();
-    	    if (name.equals(cookieName)) {
-    	    	cookievalue = aCookie.getValue();
-    	        break;
-    	    }
+    	if(cookies != null){
+        	for (Cookie aCookie : cookies) {
+        	    String name = aCookie.getName();
+        	    if (name.equals(cookieName)) {
+        	    	cookievalue = aCookie.getValue();
+        	        break;
+        	    }
+        	}
     	}
+
     	return cookievalue; 
     }
     

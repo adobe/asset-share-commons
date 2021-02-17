@@ -19,45 +19,31 @@
 /*global jQuery: false, AssetShare: false, ContextHub: false*/
 
 jQuery((function($, ns, cart, contextHub) {
-    "use strict";
+	"use strict";
 
-    function updateDownlaodCountBadge() {
+	function updateDownlaodCountBadge() {
 
-        var cookievalue=readCookie('ADC');
-        if(cookievalue){
-			var count = cookievalue.split(',').length;
-        	ns.Elements.element("downloads-count").text(count);
-        }else{
+		if (ContextHub.Utils.Cookie.exists("ADC")) {
+			var cookievalue = ContextHub.Utils.Cookie.getItem("ADC");
+			if (cookievalue) {
+				var count = cookievalue.split(',').length;
+				ns.Elements.element("downloads-count").text(count);
+			} else {
+				ns.Elements.element("downloads-count").text(0);
+			}
+		} else {
 			ns.Elements.element("downloads-count").text(0);
-        }
+		}
 
-    }
+	}
 
+	// Page init
+	function init() {
+		updateDownlaodCountBadge();
+	}
 
-    // Page init
-    function init() {
-        updateDownlaodCountBadge();
-    }
+	init();
 
+	cart.store().eventing.on(contextHub.Constants.EVENT_STORE_READY, init);
 
-    function readCookie(name){
-            var nameEQ=encodeURIComponent(name)+"=";
-            var ca=document.cookie.split(';');
-            for(var i=0;i<ca.length;i++) {
-            var c=ca[i];
-            while(c.charAt(0)==='')
-                 c=c.substring(1,c.length);
-                if(c.indexOf(nameEQ)===0)
-                return decodeURIComponent(c.substring(nameEQ.length,c.length));
-        	}
-        	return null;
-    }
-
-    init();
-
-    cart.store().eventing.on(contextHub.Constants.EVENT_STORE_READY, init);
-
-}(jQuery,
-    AssetShare,
-    AssetShare.Cart,
-    ContextHub)));
+}(jQuery, AssetShare, AssetShare.Cart, ContextHub)));

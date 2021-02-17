@@ -85,8 +85,7 @@ AssetShare.Downloads = (function($, ns, contextHubStore, messages) {
 			data : formdata,
 			success : function(data) {
 				var cookievalue = getCookie('ADC');
-				if (data.downlaodID) {
-					add(data);
+				if (data.downlaodID) {					
 					if (cookievalue == null || cookievalue == "") {
 						document.cookie = "ADC=" + data.downlaodID;
 					} else {
@@ -98,12 +97,12 @@ AssetShare.Downloads = (function($, ns, contextHubStore, messages) {
 					var count = cookievalue.split(',').length;
 					ns.Elements.element("downloads-count").text(count);
 					messages.show('download-add');
-
+					add(data);
 				}
 
 			},
 			error : function() {
-				essages.show('error');
+				messages.show('error');
 			}
 		});
 	}
