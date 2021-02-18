@@ -56,7 +56,6 @@ public class AsyncDownloadImpl implements AsyncDownload {
 		String archiveName = sdf.format(timestamp).toString() + ".zip";
 
 		for (AssetModel asset : assets) {
-			manifest = addOrigianlRenditionToManifest(asset, manifest, archiveName);
 			manifest = addDynamicRenditionToManifest(asset, manifest, archiveName, renditionsMap);
 		}
 
@@ -70,26 +69,18 @@ public class AsyncDownloadImpl implements AsyncDownload {
 
 		if (mimeTypeHelper.isDownloadSupportedImage(mimeTypeHelper.getMimeType(asset))
 				&& (imageRenditionsList.size() > 1)) {
-			addImageVideoRenditionsToManifest(asset, imageRenditionsList, manifest, archiveName, IMAGE_PRESET,
-					DYNAMIC_RENDITION);
+			addRenditionsToManifest(asset, imageRenditionsList, manifest, new ManifestPayload(archiveName,IMAGE_PRESET,DYNAMIC_RENDITION));
 		} else if (mimeTypeHelper.isDownloadSupportedVideo(mimeTypeHelper.getMimeType(asset))
 				&& (videoRenditionsList.size() > 1)) {
-			addImageVideoRenditionsToManifest(asset, videoRenditionsList, manifest, archiveName, ENCODING_LABEL,
-					VIDEO_ENCODING_LABEL);
+			addRenditionsToManifest(asset, videoRenditionsList, manifest,new ManifestPayload(archiveName,ENCODING_LABEL,VIDEO_ENCODING_LABEL));
+		} else {
+			addRenditionsToManifest(asset, videoRenditionsList, manifest,new ManifestPayload(archiveName,null,null));
 		}
 
 		return manifest;
 	}
 
-	private DownloadManifest addOrigianlRenditionToManifest(AssetModel asset, DownloadManifest manifest,
-			String archiveName) {
 
-		Map<String, Object> originalRenditionParameters = addBasicAssetParameters(asset, archiveName);
-		manifest.addTarget(
-				apiFactory.createDownloadTarget(ASSET_LABEL, new ValueMapDecorator(originalRenditionParameters)));
-
-		return manifest;
-	}
 
 	private Map<String, Object> addBasicAssetParameters(AssetModel asset, String archiveName) {
 
@@ -100,14 +91,17 @@ public class AsyncDownloadImpl implements AsyncDownload {
 		return renditionParameters;
 	}
 
-	private DownloadManifest addImageVideoRenditionsToManifest(AssetModel asset, List<String> renditionsList,
-			DownloadManifest manifest, String archiveName, String type, String target) {
+	private DownloadManifest addRenditionsToManifest(AssetModel asset, List<String> renditionsList,
+			DownloadManifest manifest, ManifestPayload manifestPayload) {
 
 		for (String renditionName : renditionsList) {
-			if (!renditionName.equalsIgnoreCase(ORIGINAL_RENDITION)) {
-				Map<String, Object> renditionParameters = addBasicAssetParameters(asset, archiveName);
-				renditionParameters.put(type, renditionName);
-				manifest.addTarget(apiFactory.createDownloadTarget(target, new ValueMapDecorator(renditionParameters)));
+			Map<String, Object> renditionParameters = addBasicAssetParameters(asset, manifestPayload.getArchiveName());
+			if (renditionName.equalsIgnoreCase(ORIGINAL_RENDITION)) {
+				manifest.addTarget(
+						apiFactory.createDownloadTarget(ASSET_LABEL, new ValueMapDecorator(renditionParameters)));				
+			}else{
+				renditionParameters.put(manifestPayload.getType(), renditionName);
+				manifest.addTarget(apiFactory.createDownloadTarget(manifestPayload.getTarget(), new ValueMapDecorator(renditionParameters)));
 			}
 
 		}
