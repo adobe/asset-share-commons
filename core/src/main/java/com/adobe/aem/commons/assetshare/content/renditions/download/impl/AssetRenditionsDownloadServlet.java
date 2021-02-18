@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsDownloadOrchestrator;
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsDownloadOrchestratorManager;
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsException;
+import com.adobe.aem.commons.assetshare.util.DownloadHelper;
 import com.adobe.aem.commons.assetshare.util.ServletHelper;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -83,6 +84,9 @@ public class AssetRenditionsDownloadServlet extends SlingAllMethodsServlet imple
 
     @Reference
     private ModelFactory modelFactory;
+    
+    @Reference
+    private DownloadHelper downloadHelper;
 
     private Map<String, AssetRenditionsDownloadOrchestrator> assetRenditionsDownloadOrchestrators = new ConcurrentHashMap<>();
 
@@ -90,8 +94,8 @@ public class AssetRenditionsDownloadServlet extends SlingAllMethodsServlet imple
     protected final void doPost(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
         servletHelper.addSlingBindings(request, response);
 
-        final List<String> renditionNames = getRenditionNames(request);
-        final List<AssetModel> assets = getAssets(request);
+        final List<String> renditionNames = downloadHelper.getRenditionNames(request,REQ_KEY_RENDITION_NAMES);
+        final List<AssetModel> assets = downloadHelper.getAssets(request);
         final String id = getAssetRenditionsDownloadOrchestratorId(request);
 
         final AssetRenditionsDownloadOrchestrator orchestrator = getAssetRenditionsDownloadOrchestrator(id);
@@ -106,37 +110,6 @@ public class AssetRenditionsDownloadServlet extends SlingAllMethodsServlet imple
             orchestrator.execute(request, response, assets, renditionNames);
         } catch (AssetRenditionsException e) {
             throw new ServletException(e);
-        }
-    }
-
-    protected List<AssetModel> getAssets(final SlingHttpServletRequest request) {
-        final RequestParameter[] requestParameters = request.getRequestParameters(REQ_KEY_ASSET_PATHS);
-
-        if (requestParameters == null) { return EMPTY_LIST; }
-
-        return Arrays.stream(requestParameters)
-                .map(RequestParameter::getString)
-                .map(path -> request.getResourceResolver().getResource(path))
-                .filter(Objects::nonNull)
-                .map(resource -> modelFactory.getModelFromWrappedRequest(request, resource, AssetModel.class))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-    }
-
-    protected List<String> getRenditionNames(final SlingHttpServletRequest request) {
-        final String[] allowedRenditionNames = request.getResource().getValueMap().get(PN_ALLOWED_RENDITION_NAMES, new String[]{});
-
-        if (allowedRenditionNames == null) { return EMPTY_LIST; }
-
-        final RequestParameter[] requestParameters = request.getRequestParameters(REQ_KEY_RENDITION_NAMES);
-
-        if (requestParameters != null) {
-            return Arrays.stream(requestParameters).map(RequestParameter::getString)
-                    .filter(renditionName -> allowedRenditionNames.length == 0 || ArrayUtils.contains(allowedRenditionNames, renditionName))
-                    .distinct()
-                    .collect(Collectors.toList());
-        } else {
-            return emptyList();
         }
     }
 

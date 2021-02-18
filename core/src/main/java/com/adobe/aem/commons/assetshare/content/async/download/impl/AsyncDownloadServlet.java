@@ -21,6 +21,7 @@ package com.adobe.aem.commons.assetshare.content.async.download.impl;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.async.download.AsyncDownload;
+import com.adobe.aem.commons.assetshare.util.DownloadHelper;
 import com.adobe.aem.commons.assetshare.util.ServletHelper;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -68,6 +69,9 @@ public class AsyncDownloadServlet extends SlingAllMethodsServlet {
 
     @Reference
     private ServletHelper servletHelper;
+    
+    @Reference
+    private DownloadHelper downloadHelper;
 
     @Reference
     private ModelFactory modelFactory;
@@ -80,12 +84,12 @@ public class AsyncDownloadServlet extends SlingAllMethodsServlet {
     protected final void doPost(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
         servletHelper.addSlingBindings(request, response);
 
-        final List<AssetModel> assets = getAssets(request);
+        final List<AssetModel> assets = downloadHelper.getAssets(request);
         PrintWriter printWriter = response.getWriter();
         Map<String, List<String>> renditionsMap = new HashMap<String, List<String>>();//This is one instance of the  map you want to store in the above list.
-        renditionsMap.put(Constants.REQ_IMAGE_RENDITION_NAMES,getRenditionNames(request,Constants.REQ_IMAGE_RENDITION_NAMES));
-        renditionsMap.put(Constants.REQ_VIDEO_RENDITION_NAMES,getRenditionNames(request,Constants.REQ_VIDEO_RENDITION_NAMES));
-        renditionsMap.put(Constants.REQ_OTHER_RENDITION_NAMES,getRenditionNames(request,Constants.REQ_OTHER_RENDITION_NAMES));
+        renditionsMap.put(Constants.REQ_IMAGE_RENDITION_NAMES,downloadHelper.getRenditionNames(request,Constants.REQ_IMAGE_RENDITION_NAMES));
+        renditionsMap.put(Constants.REQ_VIDEO_RENDITION_NAMES,downloadHelper.getRenditionNames(request,Constants.REQ_VIDEO_RENDITION_NAMES));
+        renditionsMap.put(Constants.REQ_OTHER_RENDITION_NAMES,downloadHelper.getRenditionNames(request,Constants.REQ_OTHER_RENDITION_NAMES));
 
 
         try {
@@ -104,35 +108,4 @@ public class AsyncDownloadServlet extends SlingAllMethodsServlet {
         }
     }
     
-    protected List<AssetModel> getAssets(final SlingHttpServletRequest request) {
-        final RequestParameter[] requestParameters = request.getRequestParameters(REQ_KEY_ASSET_PATHS);
-
-        if (requestParameters == null) { return EMPTY_LIST; }
-
-        return Arrays.stream(requestParameters)
-                .map(RequestParameter::getString)
-                .map(path -> request.getResourceResolver().getResource(path))
-                .filter(Objects::nonNull)
-                .map(resource -> modelFactory.getModelFromWrappedRequest(request, resource, AssetModel.class))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-    }
-
-    protected List<String> getRenditionNames(final SlingHttpServletRequest request,String rendition) {
-        final String[] allowedRenditionNames = request.getResource().getValueMap().get(PN_ALLOWED_RENDITION_NAMES, new String[]{});
-
-        if (allowedRenditionNames == null) { return EMPTY_LIST; }
-
-        final RequestParameter[] requestParameters = request.getRequestParameters(rendition);
-        if (requestParameters != null) {
-            return Arrays.stream(requestParameters).map(RequestParameter::getString)
-                    .filter(renditionName -> allowedRenditionNames.length == 0 || ArrayUtils.contains(allowedRenditionNames, renditionName))
-                    .distinct()
-                    .collect(Collectors.toList());
-        } else {
-            return emptyList();
-        }
-    }
-
-
 }
