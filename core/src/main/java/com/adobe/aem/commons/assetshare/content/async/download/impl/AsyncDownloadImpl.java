@@ -67,11 +67,13 @@ public class AsyncDownloadImpl implements AsyncDownload {
 			String archiveName, Map<String, List<String>> renditionsMap) {
 		List<String> imageRenditionsList = renditionsMap.get(Constants.REQ_IMAGE_RENDITION_NAMES);
 		List<String> videoRenditionsList = renditionsMap.get(Constants.REQ_VIDEO_RENDITION_NAMES);
-		
-		if (mimeTypeHelper.isDownloadSupportedImage(mimeTypeHelper.getMimeType(asset)) &&  (imageRenditionsList.size() > 1)) {
-			addImageRenditionsToManifest(asset, imageRenditionsList, manifest, archiveName);
-		}else if (mimeTypeHelper.isDownloadSupportedVideo(mimeTypeHelper.getMimeType(asset)) && (videoRenditionsList.size() > 1)) {
-			addVideoRenditionsToManifest(asset, videoRenditionsList, manifest, archiveName);
+
+		if (mimeTypeHelper.isDownloadSupportedImage(mimeTypeHelper.getMimeType(asset))
+				&& (imageRenditionsList.size() > 1)) {
+			addImageVideoRenditionsToManifest(asset, imageRenditionsList, manifest, archiveName, IMAGE_PRESET,DYNAMIC_RENDITION);
+		} else if (mimeTypeHelper.isDownloadSupportedVideo(mimeTypeHelper.getMimeType(asset))
+				&& (videoRenditionsList.size() > 1)) {
+			addImageVideoRenditionsToManifest(asset, videoRenditionsList, manifest, archiveName, ENCODING_LABEL,VIDEO_ENCODING_LABEL);
 		}
 
 		return manifest;
@@ -96,32 +98,22 @@ public class AsyncDownloadImpl implements AsyncDownload {
 		return renditionParameters;
 	}
 
-	private DownloadManifest addImageRenditionsToManifest(AssetModel asset, List<String> imageRenditionsList,
-			DownloadManifest manifest, String archiveName) {
+	private DownloadManifest addImageVideoRenditionsToManifest(AssetModel asset, List<String> renditionsList,
+			DownloadManifest manifest, String archiveName, String type,String target) {
 
-		for (String imageRenditionName : imageRenditionsList) {
-			Map<String, Object> imageRenditionParameters = addBasicAssetParameters(asset, archiveName);
-			imageRenditionParameters.put(IMAGE_PRESET, imageRenditionName);
-			manifest.addTarget(apiFactory.createDownloadTarget(DYNAMIC_RENDITION,
-					new ValueMapDecorator(imageRenditionParameters)));
-
+		for (String renditionName : renditionsList) {
+			if(!renditionName.equalsIgnoreCase(ORIGINAL_RENDITION)){
+				Map<String, Object> renditionParameters = addBasicAssetParameters(asset, archiveName);
+				renditionParameters.put(type, renditionName);
+				manifest.addTarget(
+						apiFactory.createDownloadTarget(target, new ValueMapDecorator(renditionParameters)));
+			}
+			
 		}
 
 		return manifest;
 	}
 
-	private DownloadManifest addVideoRenditionsToManifest(AssetModel asset, List<String> videoRenditionsList,
-			DownloadManifest manifest, String archiveName) {
-		for (String videoRenditionName : videoRenditionsList) {
-			Map<String, Object> imageRenditionParameters = addBasicAssetParameters(asset, archiveName);
-			imageRenditionParameters.put(ENCODING_LABEL, videoRenditionName);
-			manifest.addTarget(apiFactory.createDownloadTarget(VIDEO_ENCODING_LABEL,
-					new ValueMapDecorator(imageRenditionParameters)));
-
-		}
-
-		return manifest;
-	}
 
 	public DownloadProgress getDownloadStatus(ResourceResolver resolver, String downloadId) throws DownloadException {
 
