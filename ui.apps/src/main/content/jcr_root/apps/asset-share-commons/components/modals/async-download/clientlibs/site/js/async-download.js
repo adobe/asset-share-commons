@@ -22,8 +22,7 @@ jQuery((function(ns, downloads, semanticModal, licenseModal, messages) {
 	"use strict";
 	AssetShare.SemanticUI.Modals.AsyncDownloadModal = (function() {
 		var DOWNLOAD_URL = ns.Data.val("download-url"), 
-			DOWNLOAD_MODAL_ID = "download-modal", 
-			DOWNLOAD_BUTTON_ID = "download-asset";
+			DOWNLOAD_MODAL_ID = "download-modal"
 
 		function getId() {
 			return DOWNLOAD_MODAL_ID;
@@ -33,22 +32,16 @@ jQuery((function(ns, downloads, semanticModal, licenseModal, messages) {
 			return DOWNLOAD_URL;
 		}
 
-
 		/** REGISTER EVENTS WHEN DOCUMENT IS READY * */
 		$((function registerEvents() {
-
 			$("body").on("submit", ns.Elements.selector([ "download-modal" ]),
 					function(e) {
 						var formEl = $(this);
-
 						e.preventDefault();
 						e.stopPropagation();
-
 						if (formEl.form('is valid')) {
 							var form = $(formEl);
-							var url = form.attr("link");
-							var formdata = form.serialize();
-							downloads.submitDownload(formdata, url);
+							downloads.submitDownload(form.serialize(), form.attr("link"));
 						}
 					});
 		}()));
