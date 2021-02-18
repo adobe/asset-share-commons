@@ -58,17 +58,15 @@ public class DownloadsPanelImpl implements DownloadsPanel {
 
 	@Override
 	public List<DownloadStatus> getDownloadStatus() {
-		if (downloadStatusList == null && downloadIds != null) {
-			downloadStatusList = new ArrayList<>();
+		downloadStatusList = new ArrayList<>();
 
-			try {
-				for (String downloadId : downloadIds) {
-					DownloadStatus downloadStatus = getDownloadStatusByID(request.getResourceResolver(), downloadId);
-					downloadStatusList.add(downloadStatus);
-				}
-			} catch (Exception e) {
-				log.error("Error while processing downloads info");
+		try {
+			for (String downloadId : downloadIds) {
+				DownloadStatus downloadStatus = getDownloadStatusByID(request.getResourceResolver(), downloadId);
+				downloadStatusList.add(downloadStatus);
 			}
+		} catch (Exception e) {
+			log.error("Error while processing downloads info");
 		}
 
 		return Collections.unmodifiableList(downloadStatusList);
@@ -90,15 +88,14 @@ public class DownloadsPanelImpl implements DownloadsPanel {
 	private DownloadArtifact getDownloadArtifact(DownloadProgress progress) {
 
 		DownloadArtifact returningArtifact = null;
-		if (null != progress) {
-			// retrieve successfully generated URIs
-			for (DownloadArtifact artifact : progress.getArtifacts()) {
-				if (artifact.getBinaryURI() != null) {
-					returningArtifact = artifact;
-					break;
-				}
+		// retrieve successfully generated URIs
+		for (DownloadArtifact artifact : progress.getArtifacts()) {
+			if (artifact.getBinaryURI() != null) {
+				returningArtifact = artifact;
+				break;
 			}
 		}
+
 		return returningArtifact;
 	}
 
