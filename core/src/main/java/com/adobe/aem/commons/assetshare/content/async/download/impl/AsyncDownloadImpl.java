@@ -70,10 +70,12 @@ public class AsyncDownloadImpl implements AsyncDownload {
 
 		if (mimeTypeHelper.isDownloadSupportedImage(mimeTypeHelper.getMimeType(asset))
 				&& (imageRenditionsList.size() > 1)) {
-			addImageVideoRenditionsToManifest(asset, imageRenditionsList, manifest, archiveName, IMAGE_PRESET,DYNAMIC_RENDITION);
+			addImageVideoRenditionsToManifest(asset, imageRenditionsList, manifest, archiveName, IMAGE_PRESET,
+					DYNAMIC_RENDITION);
 		} else if (mimeTypeHelper.isDownloadSupportedVideo(mimeTypeHelper.getMimeType(asset))
 				&& (videoRenditionsList.size() > 1)) {
-			addImageVideoRenditionsToManifest(asset, videoRenditionsList, manifest, archiveName, ENCODING_LABEL,VIDEO_ENCODING_LABEL);
+			addImageVideoRenditionsToManifest(asset, videoRenditionsList, manifest, archiveName, ENCODING_LABEL,
+					VIDEO_ENCODING_LABEL);
 		}
 
 		return manifest;
@@ -99,28 +101,23 @@ public class AsyncDownloadImpl implements AsyncDownload {
 	}
 
 	private DownloadManifest addImageVideoRenditionsToManifest(AssetModel asset, List<String> renditionsList,
-			DownloadManifest manifest, String archiveName, String type,String target) {
+			DownloadManifest manifest, String archiveName, String type, String target) {
 
 		for (String renditionName : renditionsList) {
-			if(!renditionName.equalsIgnoreCase(ORIGINAL_RENDITION)){
+			if (!renditionName.equalsIgnoreCase(ORIGINAL_RENDITION)) {
 				Map<String, Object> renditionParameters = addBasicAssetParameters(asset, archiveName);
 				renditionParameters.put(type, renditionName);
-				manifest.addTarget(
-						apiFactory.createDownloadTarget(target, new ValueMapDecorator(renditionParameters)));
+				manifest.addTarget(apiFactory.createDownloadTarget(target, new ValueMapDecorator(renditionParameters)));
 			}
-			
+
 		}
 
 		return manifest;
 	}
 
-
 	public DownloadProgress getDownloadStatus(ResourceResolver resolver, String downloadId) throws DownloadException {
-
 		Iterable<String> getDownloadIds = downloadService.getDownloadIds(resolver);
-
 		for (String downID : getDownloadIds) {
-
 			if (downloadId.equalsIgnoreCase(downID)) {
 				DownloadProgress progress = downloadService.getProgress(downloadId, resolver);
 				return progress;
@@ -128,7 +125,6 @@ public class AsyncDownloadImpl implements AsyncDownload {
 		}
 
 		return null;
-
 	}
 
 }
