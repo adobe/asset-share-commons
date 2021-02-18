@@ -26,24 +26,6 @@ AssetShare.Downloads = (function($, ns, contextHubStore, messages) {
 				&& typeof contextHubStore !== "undefined";
 	}
 
-	function getPaths() {
-		var assetsInCart = [], paths = [];
-
-		if (enabled()) {
-			assetsInCart = contextHubStore.get();
-		}
-
-		if (!(assetsInCart instanceof Array)) {
-			assetsInCart = [ assetsInCart ];
-		}
-
-		assetsInCart.forEach(function(cartAssetPath) {
-			paths.push(cartAssetPath);
-		});
-
-		return paths;
-	}
-
 	function add(downloadInfo) {
 		if (enabled()) {
 
@@ -64,19 +46,6 @@ AssetShare.Downloads = (function($, ns, contextHubStore, messages) {
 		return false;
 	}
 
-	function getCookie(name) {
-		var nameEQ = encodeURIComponent(name) + "=";
-		var ca = document.cookie.split(';');
-		for (var i = 0; i < ca.length; i++) {
-			var c = ca[i];
-			while (c.charAt(0) === '')
-				c = c.substring(1, c.length);
-			if (c.indexOf(nameEQ) === 0)
-				return decodeURIComponent(c.substring(nameEQ.length, c.length));
-		}
-		return null;
-	}
-
 	function submitDownload(formdata, formurl) {
 
 		$.ajax({
@@ -84,7 +53,7 @@ AssetShare.Downloads = (function($, ns, contextHubStore, messages) {
 			url : formurl,
 			data : formdata,
 			success : function(data) {
-				var cookievalue = getCookie('ADC');
+				var cookievalue = ContextHub.Utils.Cookie.getItem("ADC")
 				if (data.downlaodID) {					
 					if (cookievalue == null || cookievalue == "") {
 						document.cookie = "ADC=" + data.downlaodID;
@@ -93,7 +62,7 @@ AssetShare.Downloads = (function($, ns, contextHubStore, messages) {
 								+ cookievalue;
 					}
 
-					cookievalue = getCookie('ADC');
+					cookievalue = ContextHub.Utils.Cookie.getItem("ADC")
 					var count = cookievalue.split(',').length;
 					ns.Elements.element("downloads-count").text(count);
 					messages.show('download-add');
@@ -107,15 +76,6 @@ AssetShare.Downloads = (function($, ns, contextHubStore, messages) {
 		});
 	}
 
-	function clear() {
-		if (enabled() && contextHubStore.get()
-				&& contextHubStore.get().length > 0) {
-			contextHubStore.clear();
-
-			$("body").trigger(ns.Events.CART_UPDATE, [ getSize(), getPaths() ]);
-			$("body").trigger(ns.Events.CART_CLEAR, [ getSize(), getPaths() ]);
-		}
-	}
 
 	function getContextHubStore() {
 		return contextHubStore;
@@ -123,9 +83,6 @@ AssetShare.Downloads = (function($, ns, contextHubStore, messages) {
 
 	return {
 		store : getContextHubStore,
-		paths : getPaths,
-		add : add,
-		getCookie : getCookie,
 		submitDownload : submitDownload,
 		clearDownloads : clearDownloads
 	};

@@ -70,7 +70,7 @@ public class AsyncDownloadImpl implements AsyncDownload {
 		
 		if (mimeTypeHelper.isDownloadSupportedImage(mimeTypeHelper.getMimeType(asset)) &&  (imageRenditionsList.size() > 1)) {
 			addImageRenditionsToManifest(asset, imageRenditionsList, manifest, archiveName);
-		}else if (mimeTypeHelper.isDownloadSupportedVideo(mimeTypeHelper.getMimeType(asset)) &&  (videoRenditionsList.size() > 1)) {
+		}else if (mimeTypeHelper.isDownloadSupportedVideo(mimeTypeHelper.getMimeType(asset)) && (videoRenditionsList.size() > 1)) {
 			addVideoRenditionsToManifest(asset, videoRenditionsList, manifest, archiveName);
 		}
 

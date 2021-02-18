@@ -152,6 +152,11 @@ public interface Config {
      */
     @Deprecated
     default boolean isDynamicMediaEnabled() { return false; }
+    
+    /**
+     * @return the path segment of the URL to call to render the Async download action.
+     */   
+	String getAsyncDownloadActionUrl();
 
 	
 

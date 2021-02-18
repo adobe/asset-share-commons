@@ -33,53 +33,9 @@ jQuery((function(ns, downloads, semanticModal, licenseModal, messages) {
 			return DOWNLOAD_URL;
 		}
 
-		function getModal(formDataOrAssetPath, licensed) {
-			var formData = formDataOrAssetPath, downloadModal;
-
-			if (typeof formDataOrAssetPath === 'string') {
-				formData = new ns.FormData();
-				formData.add("path", formDataOrAssetPath);
-			}
-
-			downloadModal = {
-				id : DOWNLOAD_MODAL_ID,
-				url : DOWNLOAD_URL,
-				data : formData.serialize(),
-				options : {}
-			};
-
-			if (licensed) {
-				downloadModal.options.show = function(modal) {
-					modal.modal("attach events", ns.Elements.selector([
-							licenseModal.id(), licenseModal.acceptId() ]));
-				};
-			} else {
-				downloadModal.options.show = function(modal) {
-					modal.modal('show');
-				};
-			}
-
-			return downloadModal;
-		}
-
-		function download(e) {
-			var path = ns.Data.attr(this, "asset"), license = ns.Data.attr(
-					this, "license"), downloadModal = getModal(path, license);
-
-			e.preventDefault();
-			e.stopPropagation();
-
-			if (license && licenseModal.modal(path)) {
-				semanticModal.show([ licenseModal.modal(path), downloadModal ]);
-			} else {
-				semanticModal.show([ downloadModal ]);
-			}
-		}
 
 		/** REGISTER EVENTS WHEN DOCUMENT IS READY * */
 		$((function registerEvents() {
-			$("body").on("click", ns.Elements.selector([ "async-download" ]),
-					download);
 
 			$("body").on("submit", ns.Elements.selector([ "download-modal" ]),
 					function(e) {
@@ -99,9 +55,7 @@ jQuery((function(ns, downloads, semanticModal, licenseModal, messages) {
 
 		return {
 			id : getId,
-			url : getUrl,
-			modal : getModal,
-			download : download
+			url : getUrl
 		};
 	}());
 }(AssetShare, AssetShare.Downloads, AssetShare.SemanticUI.Modal,

@@ -194,6 +194,11 @@ public class ConfigImpl implements Config {
     public String getDownloadsPanelActionUrl() {
         return properties.get(PN_DOWNLOADS_PANNEL_VIEW_PATH, rootPath + "/actions/download-panel") + "." + viewSelector + HTML_EXTENSION;
     }
+    
+    @Override
+    public String getAsyncDownloadActionUrl() {
+        return properties.get(PN_DOWNLOAD_VIEW_PATH, rootPath + "/actions/async-download") + "." + viewSelector + HTML_EXTENSION;
+    }
 
     @Override
     public boolean isShareEnabled() {

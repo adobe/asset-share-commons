@@ -12,6 +12,7 @@ import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.adobe.acs.commons.util.CookieUtil;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.Cookie;
@@ -46,9 +47,8 @@ public class DownloadsPanelImpl implements DownloadsPanel {
     protected List<DownloadStatus> downloadStatus = null;
 
     @PostConstruct
-    protected void init() {
-    	  	
-    	String cookievalue = getCookie(ASC_DOWNLOAD_COOKIE);
+    protected void init() { 	
+    	String cookievalue = CookieUtil.getCookie(request, ASC_DOWNLOAD_COOKIE).getValue();
 
     	try{
     		if(cookievalue != null)
@@ -58,23 +58,7 @@ public class DownloadsPanelImpl implements DownloadsPanel {
         	log.error("Error While processing Async download ",e);
         }
     }
-    
-    private String getCookie(String cookieName){
-    	String cookievalue = null;
-    	Cookie[] cookies = request.getCookies();
-    	if(cookies != null){
-        	for (Cookie aCookie : cookies) {
-        	    String name = aCookie.getName();
-        	    if (name.equals(cookieName)) {
-        	    	cookievalue = aCookie.getValue();
-        	        break;
-        	    }
-        	}
-    	}
-
-    	return cookievalue; 
-    }
-    
+        
     @Override
     public List<DownloadStatus> getDownloadStatus() {
         if (downloadStatus == null) {
@@ -115,8 +99,6 @@ public class DownloadsPanelImpl implements DownloadsPanel {
         
         return Collections.unmodifiableList(downloadStatus);
     }
-
-
 
     public Collection<String> getPaths() {
         return new ArrayList<>(paths);
