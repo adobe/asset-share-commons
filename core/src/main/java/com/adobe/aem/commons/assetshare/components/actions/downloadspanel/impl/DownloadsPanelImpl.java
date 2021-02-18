@@ -48,11 +48,14 @@ public class DownloadsPanelImpl implements DownloadsPanel {
 
     @PostConstruct
     protected void init() { 	
-    	String cookievalue = CookieUtil.getCookie(request, ASC_DOWNLOAD_COOKIE).getValue();
 
     	try{
-    		if(cookievalue != null)
-    		downloadIds = cookievalue.split(",");
+
+    	    String requestDLs = request.getParameter("downloadIds");
+    		if(requestDLs != null){
+    			downloadIds = requestDLs.split(",");
+    		}
+    		
     	}
     	catch (Exception e) {
         	log.error("Error While processing Async download ",e);
@@ -61,7 +64,7 @@ public class DownloadsPanelImpl implements DownloadsPanel {
         
     @Override
     public List<DownloadStatus> getDownloadStatus() {
-        if (downloadStatus == null) {
+        if (downloadStatus == null  && downloadIds !=null) {
         	downloadStatus = new ArrayList<>();
         	
         	try{

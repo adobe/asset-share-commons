@@ -33,31 +33,22 @@ jQuery((function(ns, semanticModal, licenseModal, downloads) {
 			return DOWNLOAD_PANEL_URL;
 		}
 
-		function getModal(formDataOrAssetPath, licensed) {
-			var formData = formDataOrAssetPath, downloadModal;
+		function getDownloadPanel() {
 
-			if (typeof formDataOrAssetPath === 'string') {
-				formData = new ns.FormData();
-				formData.add("path", formDataOrAssetPath);
-			}
+            var data = {};
 
-			downloadModal = {
+            if (ContextHub.Utils.Cookie.exists("ADC")) {
+				data.downloadIds = ContextHub.Utils.Cookie.getItem("ADC");
+            }else{
+				data.downloadIds = '';
+            }
+
+			var downloadModal = {
 				id : DOWNLOAD_PANEL_MODAL_ID,
 				url : DOWNLOAD_PANEL_URL,
-				data : formData,
+				data : data,
 				options : {}
 			};
-
-			if (licensed) {
-				downloadModal.options.show = function(modal) {
-					modal.modal("attach events", ns.Elements.selector([
-							licenseModal.id(), licenseModal.acceptId() ]));
-				};
-			} else {
-				downloadModal.options.show = function(modal) {
-					modal.modal('show');
-				};
-			}
 
 			return downloadModal;
 		}
@@ -88,13 +79,10 @@ jQuery((function(ns, semanticModal, licenseModal, downloads) {
 		}
 
 		function showDownloadsPanel(e) {
-
-			var path = ns.Data.attr(this, "asset"), license = ns.Data.attr(
-					this, "license"), downloadModal = getModal(path, license);
-
+			var downloadPanelModal = getDownloadPanel();
 			e.preventDefault();
 			e.stopPropagation();
-			semanticModal.show([ downloadModal ]);
+			semanticModal.show([ downloadPanelModal ]);
 		}
 
 		/** REGISTER EVENTS WHEN DOCUMENT IS READY * */
@@ -113,7 +101,7 @@ jQuery((function(ns, semanticModal, licenseModal, downloads) {
 		return {
 			id : getId,
 			url : getUrl,
-			modal : getModal
+			modal : getDownloadPanel
 		};
 	}());
 }(AssetShare, AssetShare.SemanticUI.Modal,
