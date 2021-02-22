@@ -19,16 +19,19 @@
 <sly
 	data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
 	data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
-	data-sly-use.downloadsPanel="com.adobe.aem.commons.assetshare.components.actions.downloadspanel.DownloadsPanel"></sly>
+	data-sly-use.downloadsPanel="com.adobe.aem.commons.assetshare.components.actions.downloadspanel.DownloadsPanel"
+	data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html"></sly>
 
 <style data-sly-test="${!wccmode.disabled}">
-.cmp-modal-downloadPanel .ui.modal {
+.cmp-modal-downloads-panel .ui.modal {
 	position: relative !important;
 	display: block !important;;
 	top: 0 !important;;
 }
 </style>
 <div data-asset-share-id="downloadspanel-modal"
+    id="downloads-panel"
+	data-asset-share-status="${downloadsPanel.status}"
 	data-asset-share-update-method="replace"
 	data-asset-share-update-when="downloads-update"
 	class="ui long modal cmp-modal-downloadPanel--wrapper cmp-modal">
@@ -40,7 +43,7 @@
 			 	<a href="">Refresh</a>
 			 </span>
 			<span class="right-align" data-asset-share-id="clear-downloads">
-				<a href="">Clear</a>
+				<a href="">${properties['clear']}</a>
 			</span>
 
 	</div>
@@ -59,7 +62,7 @@
 								data-sly-list.downloadStatus="${downloadsPanel.downloadStatus}">
 								<div class="title">
 									<i class="dropdown icon"></i> ${downloadStatus.name} <span
-										class="right-align"> Progress -
+										class="right-align"> ${properties['progress']} -
 										${downloadStatus.progress}% </span>
 								</div>
 								<div>
@@ -70,9 +73,9 @@
 											data-sly-test="${downloadStatus.status == 'SUCCESSFUL'}">
 											<a href="${downloadStatus.url}"> Download Zip File</a><br>
 										</div>
-										File Size: ${downloadStatus.size}<br> Total
-										Assets Count: ${downloadStatus.totalCount}<br>
-										<div>Status: ${downloadStatus.status}</div>
+										${properties['fileSize']}: ${downloadStatus.size}<br> Total
+										${properties['assetsCount']}: ${downloadStatus.totalCount}<br>
+										<div>${properties['status']}: ${downloadStatus.status}</div>
 										<br>
 
 										<div class="accordion">

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:granite="http://www.adobe.com/jcr/granite/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
     jcr:primaryType="nt:unstructured"
-    jcr:title="Download Modal"
+    jcr:title="Downloads Panel Modal"
     sling:resourceType="cq/gui/components/authoring/dialog"
     extraClientlibs="[asset-share-commons.author.dialog.legacy]"
     helpPath="https://adobe-marketing-cloud.github.io/asset-share-commons/pages/actions/download/">
@@ -39,12 +39,40 @@
                                         fieldLabel="Asset List Title"
                                         name="./assetListTitle"
                                         required="{Boolean}true"/>
-                                    <download-options-title
+                                    <file-size
                                         jcr:primaryType="nt:unstructured"
                                         sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                        emptyText="Download Not  available"
-                                        fieldLabel="Download Form Title"
-                                        name="./downloadOptionsTitle"
+                                        emptyText="File Size"
+                                        fieldLabel="File Size Label"
+                                        name="./fileSize"
+                                        required="{Boolean}true"/>
+                                    <assets-count
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        emptyText="Total Assets Count"
+                                        fieldLabel="Asset Count Label"
+                                        name="./assetsCount"
+                                        required="{Boolean}true"/>
+                                    <status
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        emptyText="Status"
+                                        fieldLabel="Status Label"
+                                        name="./status"
+                                        required="{Boolean}true"/>
+                                    <clear
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        emptyText="Clear"
+                                        fieldLabel="Clear Label"
+                                        name="./clear"
+                                        required="{Boolean}true"/>
+                                    <progress
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        emptyText="Progress"
+                                        fieldLabel="Progress Label"
+                                        name="./progress"
                                         required="{Boolean}true"/>
                                 </items>
                             </column>

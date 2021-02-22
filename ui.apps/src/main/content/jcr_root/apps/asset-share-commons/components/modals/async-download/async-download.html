@@ -17,9 +17,7 @@
  */-->
 
 <sly
-	data-sly-use.download="com.adobe.aem.commons.assetshare.components.actions.download.Download"
-	data-sly-test.legacyMode="${download.legacyMode}"
-	data-sly-use.legacyTemplate="templates/legacy.html"></sly>
+	data-sly-use.download="com.adobe.aem.commons.assetshare.components.actions.download.Download"></sly>
 
 <style data-sly-test="${!wccmode.disabled}">
 .cmp-modal-download .ui.modal {
@@ -105,9 +103,3 @@
 		});
 	</script>
 </form>
-
-
-
-<!--/* Load Legacy Template */-->
-<sly data-sly-test="${legacyMode}"
-	data-sly-call="${legacyTemplate.legacy @ download=download}"></sly>
