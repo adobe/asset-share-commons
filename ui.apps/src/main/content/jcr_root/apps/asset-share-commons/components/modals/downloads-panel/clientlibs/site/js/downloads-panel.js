@@ -35,14 +35,8 @@ jQuery((function($,ns, semanticModal, licenseModal, downloads) {
 
 		function getDownloadPanel() {
 
-            var data = {};
 
-            if (ContextHub.Utils.Cookie.exists("ADC")) {
-				data.downloadIds = ContextHub.Utils.Cookie.getItem("ADC");
-            }else{
-				data.downloadIds = '';
-            }
-
+            var data = getDownloadIds();
 			var downloadModal = {
 				id : DOWNLOAD_PANEL_MODAL_ID,
 				url : DOWNLOAD_PANEL_URL,
@@ -52,6 +46,19 @@ jQuery((function($,ns, semanticModal, licenseModal, downloads) {
 
 			return downloadModal;
 		}
+
+        function getDownloadIds(){
+         	var downloadIdData = {};
+
+            if (ContextHub.Utils.Cookie.exists("ADC")) {
+				downloadIdData.downloadIds = ContextHub.Utils.Cookie.getItem("ADC");
+            }else{
+				downloadIdData.downloadIds = '';
+            }
+
+            return downloadIdData;
+
+        }
 
 		function refresh(e) {
 			e.preventDefault();
@@ -72,8 +79,9 @@ jQuery((function($,ns, semanticModal, licenseModal, downloads) {
 			return null;
 		}
 
-		function updatePanelModal() {    
-			$.post(DOWNLOAD_PANEL_URL).then(function(htmlResponse) {
+		function updatePanelModal() { 
+            var data = getDownloadIds();
+			$.post(DOWNLOAD_PANEL_URL,data).then(function(htmlResponse) {
 				ns.Elements.update(htmlResponse, 'downloads-update');
 			});
 		}
