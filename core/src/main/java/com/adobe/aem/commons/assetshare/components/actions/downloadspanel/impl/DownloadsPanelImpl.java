@@ -64,18 +64,22 @@ public class DownloadsPanelImpl implements DownloadsPanel {
 					DownloadStatus downloadStatus = getDownloadStatusByID(request.getResourceResolver(), downloadId);
 					downloadStatusList.add(downloadStatus);
 				}
-			} else {
-				if (!WCMMode.DISABLED.equals(WCMMode.fromRequest(request))) {
-					DownloadStatus downloadPlaceholderStatus = getPlaceholderDownloadStatus();
-					downloadStatusList.add(downloadPlaceholderStatus);
-				}
-
+			} else if (!WCMMode.DISABLED.equals(WCMMode.fromRequest(request))) {
+					downloadStatusList = getPlaceholderDownload();
 			}
 		} catch (Exception e) {
 			log.error("Error while processing downloads info", e);
 		}
 
 		return Collections.unmodifiableList(downloadStatusList);
+	}
+	
+	private List<DownloadStatus> getPlaceholderDownload(){
+		downloadStatusList = new ArrayList<>();
+		DownloadStatus downloadPlaceholderStatus = getPlaceholderDownloadStatus();
+		downloadStatusList.add(downloadPlaceholderStatus);
+		
+		return downloadStatusList;
 	}
 
 	private DownloadStatus getDownloadStatusByID(ResourceResolver resourceResolver, String downloadId)
