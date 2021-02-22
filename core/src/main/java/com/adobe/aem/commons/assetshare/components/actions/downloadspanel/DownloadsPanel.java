@@ -9,8 +9,6 @@ import java.util.List;
 
 @ProviderType
 public interface DownloadsPanel {
-
-    Collection<String> getPaths();
     
     default List<DownloadStatus> getDownloadStatus() {
         return Collections.EMPTY_LIST;

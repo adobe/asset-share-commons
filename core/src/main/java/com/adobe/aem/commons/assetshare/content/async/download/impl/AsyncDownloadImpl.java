@@ -56,25 +56,24 @@ public class AsyncDownloadImpl implements AsyncDownload {
 		String archiveName = sdf.format(timestamp).toString() + ".zip";
 
 		for (AssetModel asset : assets) {
-			manifest = addDynamicRenditionToManifest(asset, manifest, archiveName, renditionsMap);
+			manifest = addAssetRenditionsToManifest(asset, manifest, archiveName, renditionsMap);
 		}
 
 		return downloadService.download(manifest, resolver);
 	}
 
-	private DownloadManifest addDynamicRenditionToManifest(AssetModel asset, DownloadManifest manifest,
+	private DownloadManifest addAssetRenditionsToManifest(AssetModel asset, DownloadManifest manifest,
 			String archiveName, Map<String, List<String>> renditionsMap) {
 		List<String> imageRenditionsList = renditionsMap.get(Constants.REQ_IMAGE_RENDITION_NAMES);
 		List<String> videoRenditionsList = renditionsMap.get(Constants.REQ_VIDEO_RENDITION_NAMES);
+		List<String> otherRenditionsList = renditionsMap.get(Constants.REQ_OTHER_RENDITION_NAMES);
 
-		if (mimeTypeHelper.isDownloadSupportedImage(mimeTypeHelper.getMimeType(asset))
-				&& (imageRenditionsList.size() > 1)) {
-			addRenditionsToManifest(asset, imageRenditionsList, manifest, new ManifestPayload(archiveName,IMAGE_PRESET,DYNAMIC_RENDITION));
-		} else if (mimeTypeHelper.isDownloadSupportedVideo(mimeTypeHelper.getMimeType(asset))
-				&& (videoRenditionsList.size() > 1)) {
-			addRenditionsToManifest(asset, videoRenditionsList, manifest,new ManifestPayload(archiveName,ENCODING_LABEL,VIDEO_ENCODING_LABEL));
+		if (mimeTypeHelper.isDownloadSupportedImage(mimeTypeHelper.getMimeType(asset))) {
+			manifest = addRenditionsToManifest(asset, imageRenditionsList, manifest, new ManifestPayload(archiveName,IMAGE_PRESET,DYNAMIC_RENDITION));
+		} else if (mimeTypeHelper.isDownloadSupportedVideo(mimeTypeHelper.getMimeType(asset))) {
+			manifest = addRenditionsToManifest(asset, videoRenditionsList, manifest,new ManifestPayload(archiveName,ENCODING_LABEL,VIDEO_ENCODING_LABEL));
 		} else {
-			addRenditionsToManifest(asset, videoRenditionsList, manifest,new ManifestPayload(archiveName,null,null));
+			manifest = addRenditionsToManifest(asset, otherRenditionsList, manifest,new ManifestPayload(archiveName,null,null));
 		}
 
 		return manifest;

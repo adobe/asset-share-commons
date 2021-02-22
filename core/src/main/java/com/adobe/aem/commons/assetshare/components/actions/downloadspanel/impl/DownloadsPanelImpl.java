@@ -6,6 +6,8 @@ import com.adobe.aem.commons.assetshare.content.async.download.AsyncDownload;
 import com.adobe.cq.dam.download.api.DownloadArtifact;
 import com.adobe.cq.dam.download.api.DownloadException;
 import com.adobe.cq.dam.download.api.DownloadProgress;
+import com.day.cq.wcm.api.WCMMode;
+
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.models.annotations.Model;
@@ -14,11 +16,7 @@ import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.adobe.acs.commons.util.CookieUtil;
-
 import javax.annotation.PostConstruct;
-import javax.servlet.http.Cookie;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -61,12 +59,20 @@ public class DownloadsPanelImpl implements DownloadsPanel {
 		downloadStatusList = new ArrayList<>();
 
 		try {
-			for (String downloadId : downloadIds) {
-				DownloadStatus downloadStatus = getDownloadStatusByID(request.getResourceResolver(), downloadId);
-				downloadStatusList.add(downloadStatus);
+			if (downloadIds != null) {
+				for (String downloadId : downloadIds) {
+					DownloadStatus downloadStatus = getDownloadStatusByID(request.getResourceResolver(), downloadId);
+					downloadStatusList.add(downloadStatus);
+				}
+			} else {
+				if (!WCMMode.DISABLED.equals(WCMMode.fromRequest(request))) {
+					DownloadStatus downloadPlaceholderStatus = getPlaceholderDownloadStatus();
+					downloadStatusList.add(downloadPlaceholderStatus);
+				}
+
 			}
 		} catch (Exception e) {
-			log.error("Error while processing downloads info");
+			log.error("Error while processing downloads info", e);
 		}
 
 		return Collections.unmodifiableList(downloadStatusList);
@@ -79,10 +85,23 @@ public class DownloadsPanelImpl implements DownloadsPanel {
 		DownloadStatus downloadStatus = null;
 		DownloadArtifact downloadArtifact = getDownloadArtifact(progress);
 
-		downloadStatus = new DownloadStatus(downloadArtifact.getName(), downloadArtifact.getBinaryURI().toString(),
-				progress.getTotalSize(), downloadId, progress.getProgress(), progress.getStatus().toString(),
-				progress.getTotalCount(), downloadArtifact.getSuccesses());
+		if (downloadArtifact != null) {
+			downloadStatus = new DownloadStatus(downloadArtifact.getName(), downloadArtifact.getBinaryURI().toString(),
+					progress.getTotalSize(), downloadId, progress.getProgress(), progress.getStatus().toString(),
+					progress.getTotalCount(), downloadArtifact.getSuccesses());
+		} else {
+			downloadStatus = new DownloadStatus("Failed", "", 0, downloadId, progress.getProgress(),
+					progress.getStatus().toString(), progress.getTotalCount(), null);
+		}
+
 		return downloadStatus;
+	}
+	
+
+	public final DownloadStatus getPlaceholderDownloadStatus() {
+		DownloadStatus placeHolderDownloadStatus = null;
+		placeHolderDownloadStatus = new DownloadStatus("timestamp.zip", "", 0, "", 0, "Status", 0, null);
+		return placeHolderDownloadStatus;
 	}
 
 	private DownloadArtifact getDownloadArtifact(DownloadProgress progress) {
@@ -99,7 +118,4 @@ public class DownloadsPanelImpl implements DownloadsPanel {
 		return returningArtifact;
 	}
 
-	public Collection<String> getPaths() {
-		return new ArrayList<>(paths);
-	}
 }
