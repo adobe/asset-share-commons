@@ -39,6 +39,13 @@
                                         fieldLabel="Asset List Title"
                                         name="./assetListTitle"
                                         required="{Boolean}true"/>
+                                    <download-zip
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        emptyText="Download Zip File"
+                                        fieldLabel="Download Zip Label"
+                                        name="./downloadZip"
+                                        required="{Boolean}true"/>
                                     <file-size
                                         jcr:primaryType="nt:unstructured"
                                         sling:resourceType="granite/ui/components/coral/foundation/form/textfield"

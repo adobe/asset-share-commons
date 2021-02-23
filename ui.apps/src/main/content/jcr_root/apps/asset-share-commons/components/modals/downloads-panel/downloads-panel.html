@@ -61,7 +61,7 @@
 							<div
 								data-sly-list.downloadStatus="${downloadsPanel.downloadStatus}">
 								<div class="title">
-									<i class="dropdown icon"></i> ${downloadStatus.name} <span
+									<i class="file archive icon"></i> ${downloadStatus.name} <span
 										class="right-align"> ${properties['progress']} -
 										${downloadStatus.progress}% </span>
 								</div>
@@ -73,7 +73,7 @@
 											data-sly-test="${downloadStatus.status == 'SUCCESSFUL'}">
 											<a href="${downloadStatus.url}"> ${properties['downloadZip']}</a><br>
 										</div>
-										${properties['fileSize']}: ${downloadStatus.size}<br> Total
+										${properties['fileSize']}: ${downloadStatus.size}<br> 
 										${properties['assetsCount']}: ${downloadStatus.totalCount}<br>
 										<div>${properties['status']}: ${downloadStatus.status}</div>
 										<br>
@@ -84,18 +84,11 @@
 												${properties['assetListTitle']}
 											</div>
 											<div class=" content">
-												<p></p>
-												<div class="accordion">
-
-													<div
-														data-sly-list.downloadedAsset="${downloadStatus.assets}">
-														<div class="title">
-
-															${downloadedAsset}<br>
+													<div class="ui ordered list" data-sly-list.downloadedAsset="${downloadStatus.assets}">
+														<div class="item ">
+															<p>${downloadedAsset}<br></p>
 														</div>
-
 													</div>
-												</div>
 											</div>
 										</div>
 
