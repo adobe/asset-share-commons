@@ -53,25 +53,20 @@ AssetShare.Downloads = (function($, ns, contextHubStore, messages) {
 			url : formurl,
 			data : formdata,
 			success : function(data) {
-				var cookievalue = ContextHub.Utils.Cookie.getItem("ADC")
+                var downloadIds = sessionStorage.getItem("downloadIds");
 				if (data.downlaodID) {					
-					if (cookievalue == null || cookievalue == "") {
-						document.cookie = "ADC=" + data.downlaodID;
+					if (downloadIds == null || downloadIds == "") {
+                        sessionStorage.setItem("downloadIds", data.downlaodID);
 					} else {
-						document.cookie = "ADC=" + data.downlaodID + ','
-								+ cookievalue;
+                        sessionStorage.setItem("downloadIds", data.downlaodID + ','+downloadIds);
 					}
 
-					cookievalue = ContextHub.Utils.Cookie.getItem("ADC")
-					var count = cookievalue.split(',').length;
+					downloadIds = sessionStorage.getItem("downloadIds");
+					var count = downloadIds.split(',').length;
 					ns.Elements.element("downloads-count").text(count);
 					messages.show('download-add');
 					add(data);
 				}
-
-			},
-			error : function() {
-				messages.show('error');
 			}
 		});
 	}

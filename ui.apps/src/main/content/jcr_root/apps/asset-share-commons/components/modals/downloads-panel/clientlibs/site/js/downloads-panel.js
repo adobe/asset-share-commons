@@ -49,12 +49,7 @@ jQuery((function($,ns, semanticModal, licenseModal, downloads) {
 
         function getDownloadIds(){
          	var downloadIdData = {};
-
-            if (ContextHub.Utils.Cookie.exists("ADC")) {
-				downloadIdData.downloadIds = ContextHub.Utils.Cookie.getItem("ADC");
-            }else{
-				downloadIdData.downloadIds = '';
-            }
+            downloadIdData.downloadIds =sessionStorage.getItem("downloadIds");
 
             return downloadIdData;
 
@@ -64,19 +59,15 @@ jQuery((function($,ns, semanticModal, licenseModal, downloads) {
 			e.preventDefault();
 			e.stopPropagation();
 			updatePanelModal();
-
-			return null;
 		}
 
 		function clear(e) {
 			e.preventDefault();
 			e.stopPropagation();
-			document.cookie = "ADC=;expires = Thu, 01 Jan 1970 00:00:00 GMT";
+            sessionStorage.removeItem("downloadIds");
+            ns.Elements.element("downloads-count").text(0);
 			updatePanelModal();
-			ns.Elements.element("downloads-count").text(0);
 			downloads.clearDownloads();
-
-			return null;
 		}
 
 		function updatePanelModal() { 

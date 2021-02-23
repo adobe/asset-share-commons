@@ -18,22 +18,17 @@
 
 /*global jQuery: false, AssetShare: false, ContextHub: false*/
 
-jQuery((function($, ns, cart, contextHub) {
+jQuery((function($, ns, cart) {
 	"use strict";
 
 	function updateDownlaodCountBadge() {
-
-		if (ContextHub.Utils.Cookie.exists("ADC")) {
-			var cookievalue = ContextHub.Utils.Cookie.getItem("ADC");
-			if (cookievalue) {
-				var count = cookievalue.split(',').length;
+			var downloadIds = sessionStorage.getItem("downloadIds");
+			if (downloadIds) {
+				var count = downloadIds.split(',').length;
 				ns.Elements.element("downloads-count").text(count);
 			} else {
 				ns.Elements.element("downloads-count").text(0);
 			}
-		} else {
-			ns.Elements.element("downloads-count").text(0);
-		}
 
 	}
 
@@ -44,6 +39,4 @@ jQuery((function($, ns, cart, contextHub) {
 
 	init();
 
-	cart.store().eventing.on(contextHub.Constants.EVENT_STORE_READY, init);
-
-}(jQuery, AssetShare, AssetShare.Cart, ContextHub)));
+}(jQuery, AssetShare, AssetShare.Cart)));

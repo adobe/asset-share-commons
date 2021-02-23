@@ -71,7 +71,7 @@
 										<div class="download-archive"
 											id="${downloadStatus.downloadId}"
 											data-sly-test="${downloadStatus.status == 'SUCCESSFUL'}">
-											<a href="${downloadStatus.url}"> Download Zip File</a><br>
+											<a href="${downloadStatus.url}"> ${properties['downloadZip']}</a><br>
 										</div>
 										${properties['fileSize']}: ${downloadStatus.size}<br> Total
 										${properties['assetsCount']}: ${downloadStatus.totalCount}<br>

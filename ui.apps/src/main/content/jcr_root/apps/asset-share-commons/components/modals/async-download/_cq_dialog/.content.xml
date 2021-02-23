@@ -60,6 +60,13 @@
                                         fieldLabel="Download Button Label"
                                         name="./downloadButton"
                                         required="{Boolean}true"/>
+				    <download-original
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        emptyText="Download Original"
+                                        fieldLabel="Download Original Label"
+                                        name="./downloadOriginal"
+                                        required="{Boolean}true"/>
                                 </items>
                             </column>
                         </items>

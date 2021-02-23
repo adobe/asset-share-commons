@@ -74,6 +74,13 @@
                                         fieldLabel="Progress Label"
                                         name="./progress"
                                         required="{Boolean}true"/>
+                                    <no-content
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        emptyText="Sorry, could not find any downloadable files "
+                                        fieldLabel="No Content Message"
+                                        name="./noContentMessage"
+                                        required="{Boolean}true"/>
                                 </items>
                             </column>
                         </items>

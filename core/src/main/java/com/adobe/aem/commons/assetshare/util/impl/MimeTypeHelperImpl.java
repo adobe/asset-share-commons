@@ -32,19 +32,19 @@ public class MimeTypeHelperImpl implements MimeTypeHelper {
     
     public boolean isDownloadSupportedImage(String mimeType) {
         return Arrays.stream(cfg.CSDownloadSupportedImageMimeTypes()).anyMatch(CSDownloadSupportedImageMimeType -> {
-           return StringUtils.equals(CSDownloadSupportedImageMimeType, mimeType);
+           return StringUtils.startsWith(CSDownloadSupportedImageMimeType, mimeType);
         });
     }
     
     public boolean isDownloadSupportedVideo(String mimeType) {
         return Arrays.stream(cfg.CSDownloadSupportedVideoMimeTypes()).anyMatch(CSDownloadSupportedVideoMimeType -> {
-           return StringUtils.equals(CSDownloadSupportedVideoMimeType, mimeType);
+           return StringUtils.startsWith(CSDownloadSupportedVideoMimeType, mimeType);
         });
     }
     
     public boolean isDownloadSupportedOther(String mimeType) {
         return Arrays.stream(cfg.CSDownloadSupportedOtherMimeTypes()).anyMatch(CSDownloadSupportedOtherMimeType -> {
-           return StringUtils.equals(CSDownloadSupportedOtherMimeType, mimeType);
+           return StringUtils.startsWith(CSDownloadSupportedOtherMimeType, mimeType);
         });
     }
 
@@ -86,16 +86,7 @@ public class MimeTypeHelperImpl implements MimeTypeHelper {
 
         // Default list taken from: https://en.wikipedia.org/wiki/Comparison_of_web_browsers#Image_format_support
         String[] CSDownloadSupportedImageMimeTypes() default {
-                "image/jpg",
-                "image/jpeg",
-                "image/png",
-                "image/apng",
-                "image/gif",
-                "image/webp",
-                "image/tiff",
-                "image/svg+xml",
-                "image/bmp",
-                "image/x-xbitmap"
+                "image/"
         };
         
         @AttributeDefinition(
@@ -107,13 +98,12 @@ public class MimeTypeHelperImpl implements MimeTypeHelper {
 
         // Default list taken from: https://en.wikipedia.org/wiki/Comparison_of_web_browsers#Image_format_support
         String[] CSDownloadSupportedVideoMimeTypes() default {
-                "video/mp4",
-                "video/quicktime"
+                "video/"
         };
         
         
         @AttributeDefinition(
-                name = "Supported Video MIME Types for Download",
+                name = "Supported Application MIME Types for Download",
                 description = "List of MIME types that are considered other supported by the AEM cloud services asset compute serive."
         )
         
@@ -121,10 +111,7 @@ public class MimeTypeHelperImpl implements MimeTypeHelper {
 
         // Default list taken from: https://en.wikipedia.org/wiki/Comparison_of_web_browsers#Image_format_support
         String[] CSDownloadSupportedOtherMimeTypes() default {
-                "application/pdf",
-                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                "application/"
         };
     }
 
