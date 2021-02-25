@@ -106,9 +106,14 @@ public interface Config {
     boolean isCartEnabled();
 
     /**
-     * @return true if the download action is enabled.
+     * @return true if the download action is enabled for asset card and asset details page.
      */
     boolean isDownloadEnabled();
+
+    /**
+     * @return true if the download action is enabled in the cart.
+     */
+    boolean isDownloadEnabledCart();
 
     /**
      * @return true if the license action is enabled.
@@ -116,9 +121,14 @@ public interface Config {
     boolean isLicenseEnabled();
 
     /**
-     * @return true if the share action is enabled.
+     * @return true if the share action is enabled for asset card and asset details page.
      */
     boolean isShareEnabled();
+
+    /**
+     * @return true if the share action is enabled in the cart.
+     */
+    boolean isShareEnabledCart();
 
     /**
      * @deprecated We no longer detect Dynamic Media; Return false always.
