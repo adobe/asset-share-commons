@@ -35,11 +35,24 @@
                     <items jcr:primaryType="nt:unstructured">
                         <download-enabled
                                 jcr:primaryType="nt:unstructured"
-                                sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/select"
                                 name="./config/actions/download/enabled"
-                                value="true"
-                                uncheckedValue="false"
-                                text="Enable Downloading"/>
+                                fieldLabel="Enable Downloading">
+                            <items jcr:primaryType="nt:unstructured">
+                                <always
+                                        jcr:primaryType="nt:unstructured"
+                                        text="Always"
+                                        value="true"/>
+                                <never
+                                        jcr:primaryType="nt:unstructured"
+                                        text="Never"
+                                        value="false"/>
+                                <cart
+                                        jcr:primaryType="nt:unstructured"
+                                        text="Cart Only"
+                                        value="cart"/>
+                            </items>
+                        </download-enabled>
                         <download
                                 jcr:primaryType="nt:unstructured"
                                 sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
@@ -63,11 +76,24 @@
                                 rootPath="/content"/>
                         <share-enabled
                                 jcr:primaryType="nt:unstructured"
-                                sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/select"
                                 name="./config/actions/share/enabled"
-                                value="true"
-                                uncheckedValue="false"
-                                text="Enable Sharing"/>
+                                fieldLabel="Enable Sharing">
+                            <items jcr:primaryType="nt:unstructured">
+                                <always
+                                        jcr:primaryType="nt:unstructured"
+                                        text="Always"
+                                        value="true"/>
+                                <never
+                                        jcr:primaryType="nt:unstructured"
+                                        text="Never"
+                                        value="false"/>
+                                <cart
+                                        jcr:primaryType="nt:unstructured"
+                                        text="Cart Only"
+                                        value="cart"/>
+                            </items>
+                        </share-enabled>
                         <share
                                 jcr:primaryType="nt:unstructured"
                                 sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"

@@ -92,11 +92,11 @@
         </div>
         <div class="ui primary right labeled icon button"
         	 data-asset-share-id="share-all"
-             data-sly-test="${config.shareEnabled && cart.assets.size > 0}">
+             data-sly-test="${config.shareEnabledCart && cart.assets.size > 0}">
             ${properties['shareButton']}
              <i class="send icon"></i>
         </div>
-        <button data-sly-test="${config.downloadEnabled && cart.assets.size > 0}"
+        <button data-sly-test="${config.downloadEnabledCart && cart.assets.size > 0}"
         	    data-asset-share-id="download-all"
                 type="submit"
                 class="ui postive primary right labeled icon button">
