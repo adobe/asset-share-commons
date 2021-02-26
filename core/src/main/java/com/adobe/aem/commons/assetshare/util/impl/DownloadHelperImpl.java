@@ -35,9 +35,9 @@ public class DownloadHelperImpl implements DownloadHelper {
 
 	private static final String REQ_KEY_ASSET_PATHS = "path";
 	private static final String PN_ALLOWED_RENDITION_NAMES = "allowedRenditionNames";
-	
-    @Reference
-    private ModelFactory modelFactory;
+
+	@Reference
+	private ModelFactory modelFactory;
 
 	public List<AssetModel> getAssets(final SlingHttpServletRequest request) {
 		final RequestParameter[] requestParameters = request.getRequestParameters(REQ_KEY_ASSET_PATHS);
@@ -64,7 +64,7 @@ public class DownloadHelperImpl implements DownloadHelper {
 		if (requestParameters != null) {
 			return Arrays.stream(requestParameters).map(RequestParameter::getString)
 					.filter(renditionName -> allowedRenditionNames.length == 0
-							|| ArrayUtils.contains(allowedRenditionNames, renditionName))
+					|| ArrayUtils.contains(allowedRenditionNames, renditionName))
 					.distinct().collect(Collectors.toList());
 		} else {
 			return emptyList();

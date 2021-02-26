@@ -5,8 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.wrappers.ValueMapDecorator;
 import org.osgi.service.component.annotations.Component;
@@ -69,17 +67,18 @@ public class AsyncDownloadImpl implements AsyncDownload {
 		List<String> otherRenditionsList = renditionsMap.get(Constants.REQ_OTHER_RENDITION_NAMES);
 
 		if (mimeTypeHelper.isDownloadSupportedImage(mimeTypeHelper.getMimeType(asset))) {
-			manifest = addRenditionsToManifest(asset, imageRenditionsList, manifest, new ManifestPayload(archiveName,IMAGE_PRESET,DYNAMIC_RENDITION));
+			manifest = addRenditionsToManifest(asset, imageRenditionsList, manifest,
+					new ManifestPayload(archiveName, IMAGE_PRESET, DYNAMIC_RENDITION));
 		} else if (mimeTypeHelper.isDownloadSupportedVideo(mimeTypeHelper.getMimeType(asset))) {
-			manifest = addRenditionsToManifest(asset, videoRenditionsList, manifest,new ManifestPayload(archiveName,ENCODING_LABEL,VIDEO_ENCODING_LABEL));
+			manifest = addRenditionsToManifest(asset, videoRenditionsList, manifest,
+					new ManifestPayload(archiveName, ENCODING_LABEL, VIDEO_ENCODING_LABEL));
 		} else {
-			manifest = addRenditionsToManifest(asset, otherRenditionsList, manifest,new ManifestPayload(archiveName,null,null));
+			manifest = addRenditionsToManifest(asset, otherRenditionsList, manifest,
+					new ManifestPayload(archiveName, null, null));
 		}
 
 		return manifest;
 	}
-
-
 
 	private Map<String, Object> addBasicAssetParameters(AssetModel asset, String archiveName) {
 
@@ -97,10 +96,11 @@ public class AsyncDownloadImpl implements AsyncDownload {
 			Map<String, Object> renditionParameters = addBasicAssetParameters(asset, manifestPayload.getArchiveName());
 			if (renditionName.equalsIgnoreCase(ORIGINAL_RENDITION)) {
 				manifest.addTarget(
-						apiFactory.createDownloadTarget(ASSET_LABEL, new ValueMapDecorator(renditionParameters)));				
-			}else{
+						apiFactory.createDownloadTarget(ASSET_LABEL, new ValueMapDecorator(renditionParameters)));
+			} else {
 				renditionParameters.put(manifestPayload.getType(), renditionName);
-				manifest.addTarget(apiFactory.createDownloadTarget(manifestPayload.getTarget(), new ValueMapDecorator(renditionParameters)));
+				manifest.addTarget(apiFactory.createDownloadTarget(manifestPayload.getTarget(),
+						new ValueMapDecorator(renditionParameters)));
 			}
 
 		}

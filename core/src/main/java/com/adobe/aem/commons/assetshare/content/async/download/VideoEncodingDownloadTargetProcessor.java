@@ -32,97 +32,95 @@ import com.adobe.cq.dam.download.spi.DownloadTargetProcessor;
 
 @Component(service = DownloadTargetProcessor.class)
 public class VideoEncodingDownloadTargetProcessor implements DownloadTargetProcessor {
-    private static final Logger LOG = LoggerFactory.getLogger(VideoEncodingDownloadTargetProcessor.class);
-    private static final String PARAM_PATH = "path";
-    private static final String PARAM_RENDITIONNAME = "encoding";
-    
-    private static final String PARAM_ARCHIVENAME = "archiveName";
-    
-    private static final Map<String, Object> SERVICE_USER_AUTH_INFO = Collections.<String, Object>singletonMap(ResourceResolverFactory.SUBSERVICE, Scene7Constants.S7_ASSET_READER_SERVICE);
+	private static final Logger LOG = LoggerFactory.getLogger(VideoEncodingDownloadTargetProcessor.class);
+	private static final String PARAM_PATH = "path";
+	private static final String PARAM_RENDITIONNAME = "encoding";
 
-    @Reference
-    private ResourceResolverFactory resolverFactory;
-    
-    @Reference
-    private DownloadApiFactory apiFactory;
-    
-    @Reference
-    private MimeTypeService mimeService;
-    
-    @Reference
-    private Scene7Service scene7Service;
-    
-    @Reference
-    private S7ConfigResolver s7ConfigResolver;
-    
-    @Override
-    public Collection<DownloadFile> processTarget(DownloadTarget target, ResourceResolver resourceResolver) throws DownloadException  {
-        List<DownloadFile> answer = new ArrayList<>();
-        
-        String path = target.getParameter(PARAM_PATH, String.class);
-        String renditionName = target.getParameter(PARAM_RENDITIONNAME, String.class);
-        String archiveName = target.getParameter(PARAM_ARCHIVENAME, String.class);
-        
-        Resource assetResource = resourceResolver.getResource(path);
-        Asset asset = assetResource.adaptTo(Asset.class);
-        String domain = asset.getMetadataValue("dam:scene7Domain"); 
-        String folder = asset.getMetadataValue("dam:scene7Folder");
-       
-        Map<String, Object> fileParams = new HashMap<String, Object>();
-        
-        fileParams.put("archivePath", getArchiveFileName(asset, renditionName, asset.getMimeType()));
-        fileParams.put("archiveName", archiveName);
-        String assetName = getAssetName(asset.getName(),asset.getMimeType());
-        String assetExtension = getAssetExtension(asset.getName());
-   
-        String pathofasset = domain+"/is/content/"+folder+"/"+assetName+"-"+renditionName+assetExtension;
-        
-        URI binaryURL = null;
+	private static final String PARAM_ARCHIVENAME = "archiveName";
+
+	private static final Map<String, Object> SERVICE_USER_AUTH_INFO = Collections.<String, Object>singletonMap(ResourceResolverFactory.SUBSERVICE, Scene7Constants.S7_ASSET_READER_SERVICE);
+
+	@Reference
+	private ResourceResolverFactory resolverFactory;
+
+	@Reference
+	private DownloadApiFactory apiFactory;
+
+	@Reference
+	private MimeTypeService mimeService;
+
+	@Reference
+	private Scene7Service scene7Service;
+
+	@Reference
+	private S7ConfigResolver s7ConfigResolver;
+
+	@Override
+	public Collection<DownloadFile> processTarget(DownloadTarget target, ResourceResolver resourceResolver) throws DownloadException  {
+		List<DownloadFile> answer = new ArrayList<>();
+
+		String path = target.getParameter(PARAM_PATH, String.class);
+		String renditionName = target.getParameter(PARAM_RENDITIONNAME, String.class);
+		String archiveName = target.getParameter(PARAM_ARCHIVENAME, String.class);
+
+		Resource assetResource = resourceResolver.getResource(path);
+		Asset asset = assetResource.adaptTo(Asset.class);
+		String domain = asset.getMetadataValue("dam:scene7Domain"); 
+		String folder = asset.getMetadataValue("dam:scene7Folder");
+
+		Map<String, Object> fileParams = new HashMap<String, Object>();
+
+		fileParams.put("archivePath", getArchiveFileName(asset, renditionName, asset.getMimeType()));
+		fileParams.put("archiveName", archiveName);
+		String assetName = getAssetName(asset.getName(),asset.getMimeType());
+		String assetExtension = getAssetExtension(asset.getName());
+
+		String pathofasset = domain+"/is/content/"+folder+"/"+assetName+"-"+renditionName+assetExtension;
+
+		URI binaryURL = null;
 		try {
 			binaryURL = new URI(pathofasset);
 		} catch (URISyntaxException e) {
 			LOG.error("Exception while fetching binary URL ",e);
 		}
-		
 
-        answer.add(apiFactory.createDownloadFile(Optional.of((long) 0), binaryURL, fileParams));
-       
-     
-        return answer;
-    }
-    
-    private String getAssetExtension(String name) {
-        return name.substring(name.lastIndexOf("."),name.length());
+		answer.add(apiFactory.createDownloadFile(Optional.of((long) 0), binaryURL, fileParams));
+
+		return answer;
+	}
+
+	private String getAssetExtension(String name) {
+		return name.substring(name.lastIndexOf("."),name.length());
 	}
 
 	private String getAssetName(String filename, String mimeType){
-        return  filename.replace("."+mimeService.getExtension(mimeType), "");
-    }
-	
-    private ResourceResolver getConfigServiceResolver() throws DownloadException {
-        try {
-            return resolverFactory.getServiceResourceResolver(SERVICE_USER_AUTH_INFO);
-        } catch (LoginException e) {
-            throw new DownloadException("Unable to retrieve service user resolver", e);
-        }
-    }
-    
-    private String getArchiveFileName(Asset asset, String renditionName, String mimeType) {
-        return asset.getName()+"-"+renditionName+"."+mimeService.getExtension(mimeType);
-    }
+		return  filename.replace("."+mimeService.getExtension(mimeType), "");
+	}
 
-    @Override
-    public String getTargetType() {
-        return "videoencoding";
-    }
+	private ResourceResolver getConfigServiceResolver() throws DownloadException {
+		try {
+			return resolverFactory.getServiceResourceResolver(SERVICE_USER_AUTH_INFO);
+		} catch (LoginException e) {
+			throw new DownloadException("Unable to retrieve service user resolver", e);
+		}
+	}
 
-    @Override
-    public Map<String, Boolean> getValidParameters() {
-        Map<String, Boolean> answer = new HashMap<String, Boolean>();
-        answer.put(PARAM_PATH, true);
-        answer.put(PARAM_RENDITIONNAME, true);
-        return answer;
-    }
+	private String getArchiveFileName(Asset asset, String renditionName, String mimeType) {
+		return asset.getName()+"-"+renditionName+"."+mimeService.getExtension(mimeType);
+	}
+
+	@Override
+	public String getTargetType() {
+		return "videoencoding";
+	}
+
+	@Override
+	public Map<String, Boolean> getValidParameters() {
+		Map<String, Boolean> answer = new HashMap<String, Boolean>();
+		answer.put(PARAM_PATH, true);
+		answer.put(PARAM_RENDITIONNAME, true);
+		return answer;
+	}
 
 }
 

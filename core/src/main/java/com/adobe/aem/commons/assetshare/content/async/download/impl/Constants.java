@@ -20,9 +20,9 @@
 package com.adobe.aem.commons.assetshare.content.async.download.impl;
 
 public class Constants {
-    private Constants() { }
+	private Constants() { }
 
-    static final String REQ_IMAGE_RENDITION_NAMES = "image_renditions";
-    static final String REQ_VIDEO_RENDITION_NAMES = "video_renditions";
-    static final String REQ_OTHER_RENDITION_NAMES = "other_renditions";
+	static final String REQ_IMAGE_RENDITION_NAMES = "image_renditions";
+	static final String REQ_VIDEO_RENDITION_NAMES = "video_renditions";
+	static final String REQ_OTHER_RENDITION_NAMES = "other_renditions";
 }
