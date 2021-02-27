@@ -9,5 +9,6 @@ navigation.js
 form-data.js
 ajax.js
 contexthub.js
+downloads.js
 events.js
 util.js

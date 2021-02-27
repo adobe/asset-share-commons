@@ -18,12 +18,13 @@
 
 /*global jQuery: false, AssetShare: false*/
 
-jQuery((function($, ns, cart, semanticModal, downloadModal, licenseModal, shareModal) {
+jQuery((function($, ns, cart, semanticModal, downloadModal, licenseModal, shareModal,messages,downloads) {
     "use strict";
     AssetShare.SemanticUI.Modals.CartModal = (function () {
         var CART_URL = ns.Data.val("cart-url"),
             CART_MODAL_ID = "cart-modal",
             WHEN_CART_UPDATED = "cart-updated";
+
 
         function asFormData() {
             var formData = new ns.FormData();
@@ -34,6 +35,10 @@ jQuery((function($, ns, cart, semanticModal, downloadModal, licenseModal, shareM
 
             // Set this to prevent odd placeholder injection when running on AEM Author; This will be a NOOP
             formData.add("wcmmode", "disabled");
+            formData.add("image_renditions", "original");
+            formData.add("video_renditions", "original");
+            formData.add("other_renditions", "original");
+
 
             return formData;
         }
@@ -75,6 +80,18 @@ jQuery((function($, ns, cart, semanticModal, downloadModal, licenseModal, shareM
             semanticModal.show([downloadModal.modal(asFormData())]);
         }
 
+        function downloadOriginal(e,url) {
+            e.preventDefault();
+            e.stopPropagation();
+
+			const cart = document.querySelector('#cart');
+			if(cart)
+              url = cart.dataset.assetShareLink;
+
+            downloads.submitDownload(serialize(),url);
+
+        }
+
         function share(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -107,15 +124,20 @@ jQuery((function($, ns, cart, semanticModal, downloadModal, licenseModal, shareM
 
             $("body").on("click", ns.Elements.selector(["download-all"]), download);
 
+            $("body").on("click", ns.Elements.selector(["download-original"]), downloadOriginal);
+
             $("body").on("click", ns.Elements.selector(["share-all"]), share);
 
             $("body").on("click", ns.Elements.selector(["remove-from-cart"]), remove);
 
             $("body").on("click", ns.Elements.selector(["clear-cart"]), clear);
+
+
         }()));
 
         return {
-            show: show
+            show: show,
+            downloadOriginal:downloadOriginal
         };
     }());
 }(jQuery,
@@ -124,4 +146,6 @@ jQuery((function($, ns, cart, semanticModal, downloadModal, licenseModal, shareM
     AssetShare.SemanticUI.Modal,
     AssetShare.SemanticUI.Modals.DownloadModal,
     AssetShare.SemanticUI.Modals.LicenseModal,
-    AssetShare.SemanticUI.Modals.ShareModal)));
+    AssetShare.SemanticUI.Modals.ShareModal,
+    AssetShare.Messages,
+    AssetShare.Downloads)));

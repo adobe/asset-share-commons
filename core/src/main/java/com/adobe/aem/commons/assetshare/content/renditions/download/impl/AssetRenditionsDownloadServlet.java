@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsDownloadOrchestrator;
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsDownloadOrchestratorManager;
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsException;
+import com.adobe.aem.commons.assetshare.util.DownloadHelper;
 import com.adobe.aem.commons.assetshare.util.ServletHelper;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -80,6 +81,9 @@ public class AssetRenditionsDownloadServlet extends SlingAllMethodsServlet imple
 
     @Reference
     private ServletHelper servletHelper;
+    
+    @Reference
+    private DownloadHelper downloadHelper;
 
     @Reference
     private ModelFactory modelFactory;
@@ -90,8 +94,8 @@ public class AssetRenditionsDownloadServlet extends SlingAllMethodsServlet imple
     protected final void doPost(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
         servletHelper.addSlingBindings(request, response);
 
-        final List<String> renditionNames = getRenditionNames(request);
-        final List<AssetModel> assets = getAssets(request);
+        final List<String> renditionNames = downloadHelper.getRenditionNames(request,REQ_KEY_RENDITION_NAMES);
+        final List<AssetModel> assets = downloadHelper.getAssets(request);
         final String id = getAssetRenditionsDownloadOrchestratorId(request);
 
         final AssetRenditionsDownloadOrchestrator orchestrator = getAssetRenditionsDownloadOrchestrator(id);

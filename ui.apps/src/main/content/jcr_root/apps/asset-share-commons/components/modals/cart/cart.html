@@ -30,7 +30,9 @@
 </style>
 
 <form method="post"
-      action="${currentPage.path}.assetdownload.zip/Cart.zip"
+	  action="${currentPage.path}.assetdownload.zip/Cart.zip"
+	  id="cart"
+      data-asset-share-link="${resource.path @ selectors = 'async-download-renditions', extension = 'zip'}"
       data-asset-share-id="cart"
       data-asset-share-id="cart-modal"
       data-asset-share-update-method="replace"
@@ -96,7 +98,15 @@
             ${properties['shareButton']}
              <i class="send icon"></i>
         </div>
-        <button data-sly-test="${config.downloadEnabledCart && cart.assets.size > 0}"
+
+        <button data-sly-test="${config.originalDownloadEnabled && config.downloadEnabledCart && cart.assets.size > 0}"
+        	    data-asset-share-id="download-original"
+                type="submit"
+                class="ui postive ok primary right labeled icon button">
+            ${properties['downloadOriginal']}
+            <i class="download icon"></i>
+        </button>
+        <button data-sly-test="${!config.originalDownloadEnabled && config.downloadEnabledCart && cart.assets.size > 0}"
         	    data-asset-share-id="download-all"
                 type="submit"
                 class="ui postive primary right labeled icon button">
