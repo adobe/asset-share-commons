@@ -35,10 +35,21 @@ Example `dispatcher.any` rules
 ```
 /filter {
   ...
+   # ContextHub
+   /0201 { /type "allow" /method "GET" /path "/home/users/*" /extension '(json|png)' }
 
-  /0201 { /type "allow" /method "GET" /url "/home/users/*/profile/*" } # enable retrieving user profile
-  /0202 { /type "allow" /method "GET" /url "/home/users/*.infinity.json" } # enable retrieving user details
-  /0203 { /type "allow" /method "GET" /path "/content/dam" /extension "renditions" } # enable asset rendition serving
+   # Current user
+   # No longer needed to be added explicitly as this should be in the OOTB allow rules
+   # /0202 { /type "allow" /url "/libs/granite/security/currentuser.json" }
+
+   # ContextHub page data
+   /0202 { /type "allow" /method "GET" /path "/content/*" /selectors "pagedata" /extension "json" }
+
+   # Asset Renditions requests
+   /0203 { /type "allow" /method "GET" /path "/content/dam/*" /extension "renditions" }
+
+   # Asset Rendition downloads
+   /0204 { /type "allow" /method "POST" /path "/content/*" /extension "zip" }
 }
 
 /headers {
