@@ -76,11 +76,6 @@
                             <type>zip</type>
                             <target>/apps/asset-share-commons-packages/content/install</target>
                         </embedded>
-                        <embedded>
-                            <groupId>com.adobe.aem.commons</groupId>
-                            <artifactId>assetshare.core</artifactId>
-                            <target>/apps/asset-share-commons-packages/application/install</target>
-                        </embedded>
                     </embeddeds>
                     <allowIndexDefinitions>true</allowIndexDefinitions>
                 </configuration>
