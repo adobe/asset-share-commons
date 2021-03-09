@@ -49,7 +49,7 @@
         <bnd.version>4.2.0</bnd.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
+        <aem.sdk.api>2021.3.4997.20210303T022849Z-210225</aem.sdk.api>
         <bintray.org>asc</bintray.org>
         <bintray.repo>releases</bintray.repo>
         <bintray.package>asset-share-commons</bintray.package>
@@ -724,6 +724,12 @@
     <!-- ====================================================================== -->
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.adobe.aem</groupId>
+                <artifactId>aem-sdk-api</artifactId>
+                <version>${aem.sdk.api}</version>
+                <scope>provided</scope>
+            </dependency>
             <!-- OSGi Dependencies -->
             <dependency>
                 <groupId>org.osgi</groupId>

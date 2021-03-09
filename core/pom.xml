@@ -46,7 +46,7 @@
 Bundle-Name: Asset Share Commons - Core
 Bundle-SymbolicName: com.adobe.aem.commons.assetshare.core
 Bundle-Category: asset-share-commons
-Import-Package: javax.annotation;version=0.0.0,*
+Import-Package: javax.annotation;version=0.0.0,javax.activation;resolution:=optional;com.adobe.cq.dam.download.*;resolution:=optional,*
 -conditionalpackage: com.adobe.acs.commons.util.*,
 -exportcontents: ${packages;VERSIONED}
 -snapshot: ${tstamp;yyyyMMddHHmmssSSS}
@@ -102,6 +102,15 @@ Bundle-DocURL:
     </build>
 
     <dependencies>
+         <dependency>
+            <groupId>uk.org.lidalia</groupId>
+            <artifactId>slf4j-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.adobe.aem</groupId>
+            <artifactId>aem-sdk-api</artifactId>
+        </dependency>
         <!-- OSGi Dependencies -->
         <dependency>
             <groupId>org.osgi</groupId>
@@ -235,10 +244,6 @@ Bundle-DocURL:
         <dependency>
             <groupId>io.wcm</groupId>
             <artifactId>io.wcm.testing.aem-mock.junit4</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>uk.org.lidalia</groupId>
-            <artifactId>slf4j-test</artifactId>
         </dependency>
         <dependency>
             <groupId>org.osgi</groupId>
