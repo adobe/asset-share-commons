@@ -9,62 +9,63 @@ import java.util.List;
 
 @ProviderType
 public interface DownloadsPanel {
-    
-    default List<DownloadStatus> getDownloadStatus() {
-        return Collections.EMPTY_LIST;
-    }
 
-    class DownloadStatus {
-        private final String url;
-        private final String downloadId;
-        private final int progress;
-        private final int totalCount;
-        private final String status;
-        private final long size;
-        private final String name;
-        private final Collection<String> assets;
-        
-        public DownloadStatus(String name, String url, long size, String downloadId, int downloadprogress,String status,int totalCount,Collection<String> assets) {
-            this.name = name;
-            this.url = url;
-            this.status = status;
-            this.size = size;
-            this.progress =downloadprogress;
-            this.downloadId = downloadId;
-            this.totalCount = totalCount;
-            this.assets = assets;
+	default List<DownloadStatus> getDownloadStatus() {
+		return Collections.EMPTY_LIST;
+	}
+
+	class DownloadStatus {
+		private final String url;
+		private final String downloadId;
+		private final int progress;
+		private final int totalCount;
+		private final String status;
+		private final long size;
+		private final String name;
+		private final Collection<String> assets;
+
+		public DownloadStatus(String name, String url, long size, String downloadId, int downloadprogress,
+				String status, int totalCount, Collection<String> assets) {
+			this.name = name;
+			this.url = url;
+			this.status = status;
+			this.size = size;
+			this.progress = downloadprogress;
+			this.downloadId = downloadId;
+			this.totalCount = totalCount;
+			this.assets = assets;
 		}
 
-    	public Collection<String> getAssets() {
-            return assets;
-        }
-    	
+		public Collection<String> getAssets() {
+			return assets;
+		}
+
 		public String getName() {
-            return name;
-        }
-		
+			return name;
+		}
+
 		public int getTotalCount() {
-            return totalCount;
-        }
-		
+			return totalCount;
+		}
+
 		public String getUrl() {
-            return url;
-        }
-        
-        public String getDownloadId() {
-            return downloadId;
-        }
+			return url;
+		}
 
-        public int getProgress() {
-            return progress;
-        }
+		public String getDownloadId() {
+			return downloadId;
+		}
 
-        public String getStatus() {
-            return status;
-        }
+		public int getProgress() {
+			return progress;
+		}
 
-        public String getSize() {
-            return FileUtils.byteCountToDisplaySize(size);
-        }
-    }
+		public String getStatus() {
+			return status;
+		}
+
+		public String getSize() {
+			return FileUtils.byteCountToDisplaySize(size);
+		}
+	}
 }

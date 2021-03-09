@@ -22,13 +22,13 @@ jQuery((function($, ns, cart) {
 	"use strict";
 
 	function updateDownlaodCountBadge() {
-			var downloadIds = sessionStorage.getItem("downloadIds");
-			if (downloadIds) {
-				var count = downloadIds.split(',').length;
-				ns.Elements.element("downloads-count").text(count);
-			} else {
-				ns.Elements.element("downloads-count").text(0);
-			}
+		var downloadIds = sessionStorage.getItem("downloadIds");
+		if (downloadIds) {
+			var count = downloadIds.split(',').length;
+			ns.Elements.element("downloads-count").text(count);
+		} else {
+			ns.Elements.element("downloads-count").text(0);
+		}
 
 	}
 
