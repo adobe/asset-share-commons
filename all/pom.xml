@@ -61,6 +61,11 @@
                         </embedded>
                         <embedded>
                             <groupId>com.adobe.aem.commons</groupId>
+                            <artifactId>assetshare.core</artifactId>
+                            <target>/apps/asset-share-commons-packages/application/install</target>
+                        </embedded>
+                        <embedded>
+                            <groupId>com.adobe.aem.commons</groupId>
                             <artifactId>assetshare.ui.content</artifactId>
                             <type>zip</type>
                             <target>/apps/asset-share-commons-packages/content/install</target>
@@ -70,18 +75,6 @@
                             <artifactId>assetshare.ui.content.sample</artifactId>
                             <type>zip</type>
                             <target>/apps/asset-share-commons-packages/content/install</target>
-                        </embedded>
-                        <embedded>
-                            <groupId>com.adobe.cq</groupId>
-                            <artifactId>core.wcm.components.content</artifactId>
-                            <type>zip</type>
-                            <target>/apps/asset-share-commons-vendor-packages/application/install</target>
-                        </embedded>
-                        <embedded>
-                            <groupId>com.adobe.cq</groupId>
-                            <artifactId>core.wcm.components.config</artifactId>
-                            <type>zip</type>
-                            <target>/apps/asset-share-commons-vendor-packages/content/install</target>
                         </embedded>
                     </embeddeds>
                     <allowIndexDefinitions>true</allowIndexDefinitions>
@@ -190,16 +183,6 @@
             <groupId>com.adobe.aem.commons</groupId>
             <artifactId>assetshare.ui.content.sample</artifactId>
             <version>${project.version}</version>
-            <type>zip</type>
-        </dependency>
-        <dependency>
-            <groupId>com.adobe.cq</groupId>
-            <artifactId>core.wcm.components.content</artifactId>
-            <type>zip</type>
-        </dependency>
-        <dependency>
-            <groupId>com.adobe.cq</groupId>
-            <artifactId>core.wcm.components.config</artifactId>
             <type>zip</type>
         </dependency>
     </dependencies>
