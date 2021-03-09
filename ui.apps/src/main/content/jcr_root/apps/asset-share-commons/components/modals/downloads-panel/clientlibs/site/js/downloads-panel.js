@@ -18,12 +18,10 @@
 
 /*global jQuery: false, AssetShare: false*/
 
-jQuery((function($,ns, semanticModal, licenseModal, downloads) {
+jQuery((function($, ns, semanticModal, licenseModal, downloads) {
 	"use strict";
 	AssetShare.SemanticUI.Modals.DownloadsPanelModal = (function() {
-		var DOWNLOAD_PANEL_URL = ns.Data.val("downloads-panel-url"),
-			DOWNLOAD_PANEL_MODAL_ID = "downloadspanel-modal",
-			DOWNLOAD_PANEL_BUTTON_ID = "download-asset";
+		var DOWNLOAD_PANEL_URL = ns.Data.val("downloads-panel-url"), DOWNLOAD_PANEL_MODAL_ID = "downloadspanel-modal", DOWNLOAD_PANEL_BUTTON_ID = "download-asset";
 
 		function getId() {
 			return DOWNLOAD_PANEL_MODAL_ID;
@@ -34,26 +32,23 @@ jQuery((function($,ns, semanticModal, licenseModal, downloads) {
 		}
 
 		function getDownloadPanel() {
-
-
-            var data = getDownloadIds();
+			var data = getDownloadIds();
 			var downloadModal = {
-				id : DOWNLOAD_PANEL_MODAL_ID,
-				url : DOWNLOAD_PANEL_URL,
-				data : data,
-				options : {}
+					id : DOWNLOAD_PANEL_MODAL_ID,
+					url : DOWNLOAD_PANEL_URL,
+					data : data,
+					options : {}
 			};
 
 			return downloadModal;
 		}
 
-        function getDownloadIds(){
-         	var downloadIdData = {};
-            downloadIdData.downloadIds =sessionStorage.getItem("downloadIds");
+		function getDownloadIds() {
+			var downloadIdData = {};
+			downloadIdData.downloadIds = sessionStorage.getItem("downloadIds");
 
-            return downloadIdData;
-
-        }
+			return downloadIdData;
+		}
 
 		function refresh(e) {
 			e.preventDefault();
@@ -64,15 +59,15 @@ jQuery((function($,ns, semanticModal, licenseModal, downloads) {
 		function clear(e) {
 			e.preventDefault();
 			e.stopPropagation();
-            sessionStorage.removeItem("downloadIds");
-            ns.Elements.element("downloads-count").text(0);
+			sessionStorage.removeItem("downloadIds");
+			ns.Elements.element("downloads-count").text(0);
 			updatePanelModal();
 			downloads.clearDownloads();
 		}
 
-		function updatePanelModal() { 
-            var data = getDownloadIds();
-			$.post(DOWNLOAD_PANEL_URL,data).then(function(htmlResponse) {
+		function updatePanelModal() {
+			var data = getDownloadIds();
+			$.post(DOWNLOAD_PANEL_URL, data).then(function(htmlResponse) {
 				ns.Elements.update(htmlResponse, 'downloads-update');
 			});
 		}
@@ -83,8 +78,6 @@ jQuery((function($,ns, semanticModal, licenseModal, downloads) {
 			e.stopPropagation();
 			semanticModal.show([ downloadPanelModal ]);
 		}
-
-
 
 		/** REGISTER EVENTS WHEN DOCUMENT IS READY * */
 		$((function registerEvents() {
@@ -105,5 +98,5 @@ jQuery((function($,ns, semanticModal, licenseModal, downloads) {
 			modal : getDownloadPanel
 		};
 	}());
-}(jQuery,AssetShare, AssetShare.SemanticUI.Modal,
+}(jQuery, AssetShare, AssetShare.SemanticUI.Modal,
 		AssetShare.SemanticUI.Modals.LicenseModal, AssetShare.Downloads)));

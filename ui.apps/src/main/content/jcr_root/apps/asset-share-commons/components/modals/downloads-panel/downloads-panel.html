@@ -29,26 +29,23 @@
 	top: 0 !important;;
 }
 </style>
-<div data-asset-share-id="downloadspanel-modal"
-    id="downloads-panel"
+<div data-asset-share-id="downloadspanel-modal" id="downloads-panel"
 	data-asset-share-status="${downloadsPanel.status}"
 	data-asset-share-update-method="replace"
 	data-asset-share-update-when="downloads-update"
 	class="ui long modal cmp-modal-downloadPanel--wrapper cmp-modal">
 	<i class="close icon"></i>
 	<div class="header">
-		${properties['modalTitle']}
-
-			 <span data-sly-test="${downloadsPanel.downloadStatus.size > 0}" class="right-align"	data-asset-share-id="refresh-downloads">
-			 	<a href="">Refresh</a>
-			 </span>
-			<span class="right-align" data-asset-share-id="clear-downloads">
-				<a href="">${properties['clear']}</a>
-			</span>
+		${properties['modalTitle']} <span
+			data-sly-test="${downloadsPanel.downloadStatus.size > 0}"
+			class="right-align" data-asset-share-id="refresh-downloads"> <a
+			href="">Refresh</a>
+		</span> <span class="right-align" data-asset-share-id="clear-downloads">
+			<a href="">${properties['clear']}</a>
+		</span>
 
 	</div>
 	<div class="cmp-content scrolling content">
-
 		<!-- The Modal -->
 		<div id="FileDownloadsPanelModal" class="downloadsPanelModal">
 			<!-- Modal content -->
@@ -68,27 +65,29 @@
 								<div>
 									<div class="content">
 
-										<div class="download-archive"
+										<div data-asset-share-id="download-archive"
 											id="${downloadStatus.downloadId}"
 											data-sly-test="${downloadStatus.status == 'SUCCESSFUL'}">
-											<a href="${downloadStatus.url}"> ${properties['downloadZip']}</a><br>
+											<a href="${downloadStatus.url}">
+												${properties['downloadZip']}</a><br>
+											${properties['fileSize']}: ${downloadStatus.size}<br>
 										</div>
-										${properties['fileSize']}: ${downloadStatus.size}<br> 
 										${properties['assetsCount']}: ${downloadStatus.totalCount}<br>
-										<div>${properties['status']}: ${downloadStatus.status}</div>
-										<br>
-
+										${properties['status']}: ${downloadStatus.status}<br>
 										<div class="accordion">
 											<div class=" title">
 												<i class="dropdown icon"></i>
 												${properties['assetListTitle']}
 											</div>
 											<div class=" content">
-													<div class="ui ordered list" data-sly-list.downloadedAsset="${downloadStatus.assets}">
-														<div class="item ">
-															<p>${downloadedAsset}<br></p>
-														</div>
+												<div class="ui ordered list"
+													data-sly-list.downloadedAsset="${downloadStatus.assets}">
+													<div class="item ">
+														<p>
+															${downloadedAsset}<br>
+														</p>
 													</div>
+												</div>
 											</div>
 										</div>
 

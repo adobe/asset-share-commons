@@ -26,7 +26,9 @@ import java.util.List;
 public class DownloadsPanelImpl implements DownloadsPanel {
 
 	private static final Logger log = LoggerFactory.getLogger(DownloadsPanelImpl.class);
-	private static final String ASC_DOWNLOAD_COOKIE = "ADC";
+	
+	private static final String LABEL_PROCESSING = "Processing";
+	private static final String LABEL_TIMESTAMP_ZIP = "timestamp.zip";
 
 	@Self
 	@Required
@@ -94,7 +96,7 @@ public class DownloadsPanelImpl implements DownloadsPanel {
 					progress.getTotalSize(), downloadId, progress.getProgress(), progress.getStatus().toString(),
 					progress.getTotalCount(), downloadArtifact.getSuccesses());
 		} else {
-			downloadStatus = new DownloadStatus("Failed", "", 0, downloadId, progress.getProgress(),
+			downloadStatus = new DownloadStatus(LABEL_PROCESSING, "", 0, downloadId, progress.getProgress(),
 					progress.getStatus().toString(), progress.getTotalCount(), null);
 		}
 
@@ -104,12 +106,11 @@ public class DownloadsPanelImpl implements DownloadsPanel {
 
 	public final DownloadStatus getPlaceholderDownloadStatus() {
 		DownloadStatus placeHolderDownloadStatus = null;
-		placeHolderDownloadStatus = new DownloadStatus("timestamp.zip", "", 0, "", 0, "Status", 0, null);
+		placeHolderDownloadStatus = new DownloadStatus(LABEL_TIMESTAMP_ZIP, "", 0, "", 0, "Status", 0, null);
 		return placeHolderDownloadStatus;
 	}
 
 	private DownloadArtifact getDownloadArtifact(DownloadProgress progress) {
-
 		DownloadArtifact returningArtifact = null;
 		// retrieve successfully generated URIs
 		for (DownloadArtifact artifact : progress.getArtifacts()) {
@@ -118,7 +119,6 @@ public class DownloadsPanelImpl implements DownloadsPanel {
 				break;
 			}
 		}
-
 		return returningArtifact;
 	}
 
