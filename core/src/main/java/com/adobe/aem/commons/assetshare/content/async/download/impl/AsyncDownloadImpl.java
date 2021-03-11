@@ -49,13 +49,9 @@ public class AsyncDownloadImpl implements AsyncDownload {
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		String archiveName = sdf.format(timestamp).toString() + ".zip";
 
-		try{
-			for (AssetModel asset : assets) {
-				manifest = addAssetRenditionsToManifest(asset, manifest, archiveName);
-			}
-		}catch (Exception ex) {
-			log.error("Exception while adding assets to the manifest", ex);
-		} 
+		for (AssetModel asset : assets) {
+			manifest = addAssetRenditionsToManifest(asset, manifest, archiveName);
+		}
 
 		return downloadService.download(manifest, resolver);
 	}
