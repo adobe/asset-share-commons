@@ -36,5 +36,12 @@
        data-sly-test="${config.cartEnabled}"
        data-asset-share-id="cart-url"
        value="${config.cartActionUrl}"/>
-
+<input type="hidden"
+       data-sly-test="${config.downloadsPanelEnabled}"
+       data-asset-share-id="downloads-panel-url"
+       value="${config.downloadsPanelActionUrl}"/>
+<input type="hidden"
+       data-sly-test="${config.downloadEnabled || config.downloadEnabledCart}"
+       data-asset-share-id="async-download-url"
+       value="${config.asyncDownloadActionUrl}"/>
 </sly>

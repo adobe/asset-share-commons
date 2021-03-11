@@ -53,6 +53,13 @@
                                         value="cart"/>
                             </items>
                         </download-enabled>
+ 			<download-original
+                                 jcr:primaryType="nt:unstructured"
+                                 sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                 name="./config/actions/original-only/enabled"
+                                 text="Download Original Rendition Only And Skip Download Options"
+                                 uncheckedValue="false"
+                                 value="true"/>
                         <download
                                 jcr:primaryType="nt:unstructured"
                                 sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
@@ -115,6 +122,20 @@
                                 fieldLabel="Cart"
                                 name="./config/actions/cart/path"
                                 rootPath="/content"/>
+                               <downloads-panel-enabled
+                                    jcr:primaryType="nt:unstructured"
+                                    sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                    name="./config/actions/downloads-panel/enabled"
+                                    text="Enable Downloads Panel"
+                                    uncheckedValue="false"
+                                    value="true"/>
+                                <downloads-panel
+                                    jcr:primaryType="nt:unstructured"
+                                    sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
+                                    fieldDescription="Path to downloads panel action page."
+                                    fieldLabel="Downloads Panel"
+                                    name="./config/actions/downloads-panel/path"
+                                    rootPath="/content"/>
                     </items>
                 </fieldset>
             </items>

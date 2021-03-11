@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:granite="http://www.adobe.com/jcr/granite/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="nt:unstructured"
+    jcr:title="Download Modal"
+    sling:resourceType="cq/gui/components/authoring/dialog"
+    extraClientlibs="[asset-share-commons.author.dialog.legacy]"
+    helpPath="https://adobe-marketing-cloud.github.io/asset-share-commons/pages/actions/download/">
+    <content
+        granite:class="asset-share-commons__dialog--legacy-support"
+        jcr:primaryType="nt:unstructured"
+        sling:resourceType="granite/ui/components/coral/foundation/container">
+        <items jcr:primaryType="nt:unstructured">
+            <tabs
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="granite/ui/components/coral/foundation/tabs"
+                maxmized="{Boolean}true">
+                <items jcr:primaryType="nt:unstructured">
+                    <tab-1
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Labels"
+                        sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns"
+                        margin="{Boolean}true">
+                        <items jcr:primaryType="nt:unstructured">
+                            <column
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/container">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <modal-title
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        emptyText="Download"
+                                        fieldLabel="Modal Title"
+                                        name="./modalTitle"
+                                        required="{Boolean}true"/>
+                                    <asset-list-title
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        emptyText="Assets"
+                                        fieldLabel="Asset List Title"
+                                        name="./assetListTitle"
+                                        required="{Boolean}true"/>
+                                    <download-options-title
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        emptyText="Download options"
+                                        fieldLabel="Download Form Title"
+                                        name="./downloadOptionsTitle"
+                                        required="{Boolean}true"/>
+                                    <cancel-button
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        emptyText="Cancel"
+                                        fieldLabel="Cancel Button Label"
+                                        name="./cancelButton"
+                                        required="{Boolean}true"/>
+                                    <download-button
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        emptyText="Download"
+                                        fieldLabel="Download Button Label"
+                                        name="./downloadButton"
+                                        required="{Boolean}true"/>
+				    <download-original
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        emptyText="Download Original"
+                                        fieldLabel="Download Original Label"
+                                        name="./downloadOriginal"
+                                        required="{Boolean}true"/>
+                                </items>
+                            </column>
+                        </items>
+                    </tab-1>
+                    <tab-2
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Download Options"
+                        sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns"
+                        margin="{Boolean}true">
+                        <items jcr:primaryType="nt:unstructured">
+                            <column
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/container">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <renditions-groups
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
+                                        composite="{Boolean}true"
+                                        fieldDescription="The list of Asset Renditions Groups that will be exposed as downloadable options via this Download modal."
+                                        fieldLabel="Downloadable Renditions Groups"
+                                        renderReadOnly="{Boolean}true">
+                                        <field
+                                            granite:class="cmp-options--editor-item-multifield-composite-item coral-Well"
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/container"
+                                            name="./asset-renditions-groups/items">
+                                            <items jcr:primaryType="nt:unstructured">
+                                                <asset-renditions-group-title
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                    fieldLabel="Rendition Group Label"
+                                                    name="./assetRenditionsGroupTitle"
+                                                    required="{Boolean}false"/>
+                                                <option
+                                                    granite:class="cmp-options--editor-item-multifield-composite-item-container"
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/container">
+                                                    <items jcr:primaryType="nt:unstructured">
+                                                        <renditions
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
+                                                            composite="{Boolean}true"
+                                                            fieldDescription="Rendition label"
+                                                            fieldLabel="Renditions"
+                                                            renderReadOnly="{Boolean}true">
+                                                            <field
+                                                                granite:class="cmp-options--editor-item-multifield-composite-item coral-Well"
+                                                                jcr:primaryType="nt:unstructured"
+                                                                sling:resourceType="granite/ui/components/coral/foundation/container"
+                                                                name="./asset-renditions/items">
+                                                                <items jcr:primaryType="nt:unstructured">
+                                                                    <option
+                                                                        granite:class="cmp-options--editor-item-multifield-composite-item-container"
+                                                                        jcr:primaryType="nt:unstructured"
+                                                                        sling:resourceType="granite/ui/components/coral/foundation/container">
+                                                                        <items jcr:primaryType="nt:unstructured">
+                                                                            <selected
+                                                                                granite:class="cmp-form-option-item-active"
+                                                                                jcr:primaryType="nt:unstructured"
+                                                                                sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                                                name="./selected"
+                                                                                text="Selected"
+                                                                                uncheckedValue="false"
+                                                                                value="{Boolean}true"/>
+                                                                            <text
+                                                                                jcr:primaryType="nt:unstructured"
+                                                                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                                                fieldLabel="Rendition Label"
+                                                                                name="./text"
+                                                                                required="{Boolean}false"/>
+                                                                            <value
+                                                                                jcr:primaryType="nt:unstructured"
+                                                                                sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                                                                addAssetRenditionDispatcherToLabel="{Boolean}true"
+                                                                                emptyText="Select an asset rendition"
+                                                                                fieldDescription="Select the rendition to use."
+                                                                                fieldLabel="Rendition"
+                                                                                name="./value">
+                                                                                <datasource
+                                                                                    jcr:primaryType="nt:unstructured"
+                                                                                    sling:resourceType="asset-share-commons/data-sources/asset-renditions"/>
+                                                                            </value>
+                                                                        </items>
+                                                                    </option>
+                                                                </items>
+                                                            </field>
+                                                        </renditions>
+                                                    </items>
+                                                </option>
+                                            </items>
+                                        </field>
+                                    </renditions-groups>
+                                    <select-all-label
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        emptyText="Leave blank to hide Select All control"
+                                        fieldDescription="Enter a label to create a checkbox option for toggling the selection of all options in a Rendition Group."
+                                        fieldLabel="Select All Label"
+                                        name="./selectAllLabel"/>
+                                    <exclude-original-assets
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                        fieldDescription="Check to exclude the original renditions from the download. Checking this forces Include Renditions to be checked."
+                                        name="./excludeOriginalAssets"
+                                        text="Exclude Original Assets from ZIP File"
+                                        uncheckedValue="{Boolean}false"
+                                        value="{Boolean}true"/>
+                                    <download-file-name
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        emptyText="Assets"
+                                        fieldDescription="The name of the file that a user will download."
+                                        fieldLabel="File Name"
+                                        name="./fileName"
+                                        required="{Boolean}false"/>
+                                    <zip-file-name
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        emptyText="Assets"
+                                        fieldDescription="The name of the file that a user will download."
+                                        fieldLabel="ZIP File Name"
+                                        name="./zipFileName"
+                                        required="{Boolean}true"/>
+                                    <max-content-size-message
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        emptyText="Maximum content size of download exceeded:"
+                                        fieldDescription="Message displayed if the potential size of assets exceeds the max content size limit set by AEM's AssetDownloadServlet."
+                                        fieldLabel="Max Content Size Message"
+                                        name="./maxContentSizeMessage"/>
+                                    <no-content-file-name
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        emptyText=""
+                                        fieldDescription="Name of the file to add to the downloaded zip when no downloadable renditions can be obtained. This file will contain the text authored in the 'No Content Message' field."
+                                        fieldLabel="No Content File Name"
+                                        name="./noContentFileName"/>
+                                    <no-content-message
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        emptyText=""
+                                        fieldDescription="The message to write to the 'No Content File Name' file in the zip, when no downloadable renditions can be obtained."
+                                        fieldLabel="No Content Message"
+                                        name="./noContentMessage"/>
+                                    <legacy-mode
+                                        granite:class="asset-share-commons__legacy-mode"
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/switch"
+                                        deleteHint="{Boolean}true"
+                                        fieldDescription="Enable legacy mode only if you have no migrated ot the new Asset Share Commons Assets Rendition framework."
+                                        fieldLabel="Legacy mode"
+                                        name="./legacyMode"
+                                        offText="Not in legacy mode"
+                                        onText="Legacy mode activated"
+                                        uncheckedValue=""
+                                        value="true">
+                                        <granite:data
+                                            jcr:primaryType="nt:unstructured"
+                                            legacy-field-names="./excludeOriginalAssets,./zipFileName"
+                                            modern-field-names="./asset-renditions-groups/items,./asset-renditions-groups/items/renditionGroupsTitle,./selectAllLabel,./fileName"/>
+                                    </legacy-mode>
+                                </items>
+                            </column>
+                        </items>
+                    </tab-2>
+                </items>
+            </tabs>
+        </items>
+    </content>
+</jcr:root>
