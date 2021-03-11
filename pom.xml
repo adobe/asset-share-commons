@@ -42,6 +42,7 @@
         <vault.user>admin</vault.user>
         <vault.password>admin</vault.password>
         <package.group>asset-share-commons</package.group>
+        <aem.sdk.api>2021.3.4997.20210303T022849Z-210225</aem.sdk.api>
         <core.wcm.components.version>2.14.0</core.wcm.components.version>
         <frontend-maven-plugin.version>1.9.0</frontend-maven-plugin.version>
         <node.version>v13.7.0</node.version>
@@ -724,80 +725,10 @@
     <!-- ====================================================================== -->
     <dependencyManagement>
         <dependencies>
-            <!-- OSGi Dependencies -->
-            <dependency>
-                <groupId>org.osgi</groupId>
-                <artifactId>org.osgi.annotation.versioning</artifactId>
-                <version>1.1.0</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.osgi</groupId>
-                <artifactId>org.osgi.annotation.bundle</artifactId>
-                <version>1.0.0</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.osgi</groupId>
-                <artifactId>org.osgi.service.metatype.annotations</artifactId>
-                <version>1.4.0</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.osgi</groupId>
-                <artifactId>org.osgi.service.component.annotations</artifactId>
-                <version>1.4.0</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.osgi</groupId>
-                <artifactId>org.osgi.service.component</artifactId>
-                <version>1.4.0</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.osgi</groupId>
-                <artifactId>org.osgi.service.cm</artifactId>
-                <version>1.6.0</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.osgi</groupId>
-                <artifactId>org.osgi.service.event</artifactId>
-                <version>1.3.1</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.osgi</groupId>
-                <artifactId>org.osgi.service.log</artifactId>
-                <version>1.4.0</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.osgi</groupId>
-                <artifactId>org.osgi.resource</artifactId>
-                <version>1.0.0</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.osgi</groupId>
-                <artifactId>org.osgi.framework</artifactId>
-                <version>1.9.0</version>
-                <scope>provided</scope>
-            </dependency>
-            <!-- Logging Dependencies -->
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>1.7.21</version>
-                <scope>provided</scope>
-            </dependency>
-            <!-- Adobe AEM Dependencies -->
             <dependency>
                 <groupId>com.adobe.aem</groupId>
-                <artifactId>uber-jar</artifactId>
-                <version>6.4.3</version>
-                <classifier>apis</classifier>
+                <artifactId>aem-sdk-api</artifactId>
+                <version>${aem.sdk.api}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -806,68 +737,11 @@
                 <version>${core.wcm.components.version}</version>
                 <scope>provided</scope>
             </dependency>
-            <!-- Apache Sling Dependencies -->
-            <dependency>
-                <groupId>org.apache.sling</groupId>
-                <artifactId>org.apache.sling.models.api</artifactId>
-                <version>1.3.6</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.sling</groupId>
-                <artifactId>org.apache.sling.bnd.models</artifactId>
-                <version>1.0.0</version>
-                <scope>compile</scope>
-            </dependency>
-            <!-- Servlet API -->
-            <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>javax.servlet-api</artifactId>
-                <version>3.1.0</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>javax.servlet.jsp</groupId>
-                <artifactId>jsp-api</artifactId>
-                <version>2.1</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>javax.annotation</groupId>
-                <artifactId>javax.annotation-api</artifactId>
-                <version>1.3.2</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>javax.inject</groupId>
-                <artifactId>javax.inject</artifactId>
-                <version>1</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>javax.mail</groupId>
-                <artifactId>mail</artifactId>
-                <version>1.5.0-b01</version>
-            </dependency>
             <dependency>
                 <groupId>com.google.code.findbugs</groupId>
                 <artifactId>jsr305</artifactId>
                 <version>3.0.2</version>
                 <scope>compile</scope>
-            </dependency>
-            <!-- JCR -->
-            <dependency>
-                <groupId>javax.jcr</groupId>
-                <artifactId>jcr</artifactId>
-                <version>2.0</version>
-                <scope>provided</scope>
-            </dependency>
-            <!-- Taglibs -->
-            <dependency>
-                <groupId>com.day.cq.wcm</groupId>
-                <artifactId>cq-wcm-taglib</artifactId>
-                <version>5.7.4</version>
-                <scope>provided</scope>
             </dependency>
             <!-- Embedded dependency -->
             <dependency>
