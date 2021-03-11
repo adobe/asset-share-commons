@@ -11,8 +11,8 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 public interface DownloadHelper {
 
     /**
-     * @param mimeType the mime type to check
-     * @return true if the mime type is configured to download.
+     * @param request the SlingHttpServletRequest object to get assets 
+     * @return List of assets 
      */
     public List<AssetModel> getAssets(final SlingHttpServletRequest request);
 

@@ -23,12 +23,9 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.async.download.AsyncDownload;
 import com.adobe.aem.commons.assetshare.util.DownloadHelper;
 import com.adobe.aem.commons.assetshare.util.ServletHelper;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
-import org.apache.sling.api.request.RequestParameter;
 import org.apache.sling.api.servlets.SlingAllMethodsServlet;
-import org.apache.sling.models.factory.ModelFactory;
 import org.json.JSONObject;
 import org.osgi.service.component.annotations.*;
 import org.slf4j.Logger;
@@ -38,16 +35,7 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
-import static java.util.Collections.EMPTY_LIST;
-import static java.util.Collections.emptyList;
 
 @Component(
         service = Servlet.class,
@@ -70,9 +58,6 @@ public class AsyncDownloadServlet extends SlingAllMethodsServlet {
     
     @Reference
     private DownloadHelper downloadHelper;
-
-    @Reference
-    private ModelFactory modelFactory;
     
     @Reference
     private AsyncDownload asyncDownload;
