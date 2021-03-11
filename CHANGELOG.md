@@ -22,8 +22,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0514: Moved UI Dark theme to a dedicated front-end module
 - 0596: Updated ModelCacheImpl to use the DynamicClassLoaderManager.getDynamicClassLoader().loadClass(...) rather than Class.forName(..) 
 
- 
-
 ### Fixed
 
 - 0502: Fixed cyclic OSGi dependencies
