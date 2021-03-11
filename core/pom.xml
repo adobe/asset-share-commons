@@ -46,7 +46,19 @@
 Bundle-Name: Asset Share Commons - Core
 Bundle-SymbolicName: com.adobe.aem.commons.assetshare.core
 Bundle-Category: asset-share-commons
-Import-Package: javax.annotation;version=0.0.0,javax.activation;resolution:=optional;com.adobe.cq.dam.download.*;resolution:=optional,*
+Import-Package: javax.annotation;version=0.0.0, \
+                javax.activation;version="[1.1.1,2)", \
+                com.adobe.cq.dam.download.*;resolution:=optional, \
+                com.adobe.granite.security.user;version="[1.10.1,2)", \
+                com.adobe.granite.workflow;version="[1.1.0,2)", \
+                com.day.cq.dam.api;version="[1.28,2)", \
+                com.day.cq.wcm.commons;version="[5.8.0,6)", \
+                com.day.cq.dam.commons.util;version="[1.60,2)", \
+                com.day.cq.search;version="[1.3.0,2)", \
+                com.day.cq.search.eval;version="[1.4.0,2)", \
+                org.apache.commons.io;version="[2.6.0,4)", \
+                org.apache.commons.lang3;version="[3.9.0,4)", \
+                *
 -conditionalpackage: com.adobe.acs.commons.util.*,
 -exportcontents: ${packages;VERSIONED}
 -snapshot: ${tstamp;yyyyMMddHHmmssSSS}
@@ -102,96 +114,23 @@ Bundle-DocURL:
     </build>
 
     <dependencies>
-        <!-- OSGi Dependencies -->
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.annotation.versioning</artifactId>
+         <!-- uk.org.lidalia dependency MUST be placed above aem-sdk -->
+         <dependency>
+            <groupId>uk.org.lidalia</groupId>
+            <artifactId>slf4j-test</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.annotation.bundle</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.service.metatype.annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.service.component.annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.service.component</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.service.cm</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.service.event</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.service.log</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.framework</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.resource</artifactId>
-        </dependency>
-        <!-- Other Dependencies -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.jcr</groupId>
-            <artifactId>jcr</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.annotation</groupId>
-            <artifactId>javax.annotation-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
+            <groupId>com.adobe.aem</groupId>
+            <artifactId>aem-sdk-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.adobe.aem</groupId>
-            <artifactId>uber-jar</artifactId>
-            <classifier>apis</classifier>
-        </dependency>         
-        <dependency>
-            <groupId>com.adobe.aem</groupId>
-            <artifactId>aem-sdk-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.sling</groupId>
-            <artifactId>org.apache.sling.models.api</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.adobe.cq</groupId>
             <artifactId>core.wcm.components.core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.sling</groupId>
-            <artifactId>org.apache.sling.bnd.models</artifactId>
         </dependency>
         <!-- Embedded dependency -->
         <dependency>
@@ -208,12 +147,6 @@ Bundle-DocURL:
             <artifactId>org.apache.sling.javax.activation</artifactId>
             <version>0.1.0</version>
             <groupId>org.apache.sling</groupId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.jackrabbit</groupId>
-            <artifactId>jackrabbit-api</artifactId>
-            <version>2.17.5</version>
-            <scope>provided</scope>
         </dependency>
         <!-- Unit test dependencies -->
         <dependency>
@@ -239,10 +172,6 @@ Bundle-DocURL:
         <dependency>
             <groupId>io.wcm</groupId>
             <artifactId>io.wcm.testing.aem-mock.junit4</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>uk.org.lidalia</groupId>
-            <artifactId>slf4j-test</artifactId>
         </dependency>
         <dependency>
             <groupId>org.osgi</groupId>

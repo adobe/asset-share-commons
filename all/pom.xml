@@ -51,6 +51,10 @@
                 <configuration>
                     <group>${package.group}</group>
                     <name>asset-share-commons.all</name>
+                    <packageType>container</packageType>
+                    <properties>
+                        <cloudManagerTarget>all</cloudManagerTarget>
+                    </properties>
                     <finalName>asset-share-commons.all-${project.version}</finalName>
                     <embeddeds>
                         <embedded>
@@ -95,7 +99,7 @@
                 <executions>
                     <execution>
                         <id>auto-clean</id>
-                        <phase>install</phase>
+                        <phase>initialize</phase>
                         <goals>
                             <goal>clean</goal>
                         </goals>
