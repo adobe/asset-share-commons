@@ -24,7 +24,7 @@ import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionServlet;
 import com.adobe.aem.commons.assetshare.util.MimeTypeHelper;
 import com.adobe.aem.commons.assetshare.util.UrlUtil;
-import com.adobe.cq.commerce.common.ValueMapDecorator;
+import org.apache.sling.api.wrappers.ValueMapDecorator;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.commons.util.DamUtil;

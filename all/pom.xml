@@ -51,12 +51,21 @@
                 <configuration>
                     <group>${package.group}</group>
                     <name>asset-share-commons.all</name>
+                    <packageType>container</packageType>
+                    <properties>
+                        <cloudManagerTarget>all</cloudManagerTarget>
+                    </properties>
                     <finalName>asset-share-commons.all-${project.version}</finalName>
                     <embeddeds>
                         <embedded>
                             <groupId>com.adobe.aem.commons</groupId>
                             <artifactId>assetshare.ui.apps</artifactId>
                             <type>zip</type>
+                            <target>/apps/asset-share-commons-packages/application/install</target>
+                        </embedded>
+                        <embedded>
+                            <groupId>com.adobe.aem.commons</groupId>
+                            <artifactId>assetshare.core</artifactId>
                             <target>/apps/asset-share-commons-packages/application/install</target>
                         </embedded>
                         <embedded>
@@ -70,18 +79,6 @@
                             <artifactId>assetshare.ui.content.sample</artifactId>
                             <type>zip</type>
                             <target>/apps/asset-share-commons-packages/content/install</target>
-                        </embedded>
-                        <embedded>
-                            <groupId>com.adobe.cq</groupId>
-                            <artifactId>core.wcm.components.content</artifactId>
-                            <type>zip</type>
-                            <target>/apps/asset-share-commons-vendor-packages/application/install</target>
-                        </embedded>
-                        <embedded>
-                            <groupId>com.adobe.cq</groupId>
-                            <artifactId>core.wcm.components.config</artifactId>
-                            <type>zip</type>
-                            <target>/apps/asset-share-commons-vendor-packages/content/install</target>
                         </embedded>
                     </embeddeds>
                     <allowIndexDefinitions>true</allowIndexDefinitions>
@@ -102,7 +99,7 @@
                 <executions>
                     <execution>
                         <id>auto-clean</id>
-                        <phase>install</phase>
+                        <phase>initialize</phase>
                         <goals>
                             <goal>clean</goal>
                         </goals>
@@ -190,16 +187,6 @@
             <groupId>com.adobe.aem.commons</groupId>
             <artifactId>assetshare.ui.content.sample</artifactId>
             <version>${project.version}</version>
-            <type>zip</type>
-        </dependency>
-        <dependency>
-            <groupId>com.adobe.cq</groupId>
-            <artifactId>core.wcm.components.content</artifactId>
-            <type>zip</type>
-        </dependency>
-        <dependency>
-            <groupId>com.adobe.cq</groupId>
-            <artifactId>core.wcm.components.config</artifactId>
             <type>zip</type>
         </dependency>
     </dependencies>
