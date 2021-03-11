@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0494: Updated code to conform to Cloud Manager quality gates; Of note, removed Dynamic Media Hybrid Download component.
 - 0506: Moved Service Users, ACLs, and base content structures to use Sling Repo Init
 - 0504: Updated StaticRenditionDispatcherImpl to selectively serve static renditions from the Blob store directly or via AEM, depending on if ASC is running in the Adobe Cloud or not. 
+- 0509: Updated resolution of the Oak Index used to power the FastProperties (which in turn drive fast/slow property Touch UI data sources) to handle AEM as a Cloud Service's <Index Name>-<Product Version>-custom-<Custom Version>
 - 0514: Moved UI Dark theme to a dedicated front-end module
 
 ### Fixed
