@@ -121,20 +121,6 @@ public class AssetRenditionsDownloadServletTest {
     }
 
     @Test
-    public void getAssets() {
-        ctx.registerInjectActivateService(new AssetRenditionsDownloadServlet());
-
-        AssetRenditionsDownloadServlet servlet = (AssetRenditionsDownloadServlet) ctx.getService(Servlet.class);
-
-        ctx.request().setQueryString("path=/content/dam/test.png&path=/content/dam/test-2.png&path=/content/dam/test-3.png");
-
-        List<com.adobe.aem.commons.assetshare.content.AssetModel> actual = servlet.getAssets(ctx.request());
-
-        assertEquals(1, actual.size());
-        assertEquals("/content/dam/test.png", actual.get(0).getPath());
-    }
-
-    @Test
     public void getRenditionNames() {
         ctx.registerInjectActivateService(new AssetRenditionsDownloadServlet());
         AssetRenditionsDownloadServlet servlet = (AssetRenditionsDownloadServlet) ctx.getService(Servlet.class);
