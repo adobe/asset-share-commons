@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - 0504: Added RequireAem OSGi Service to determine if ASC is running in the Adobe Cloud or not.
 - 0511: Aligned Download Action with Asset Renditions framework in a plug-able manner.
- 
+- 0578: Make Asset Share Commons all package depend on Core Components
+
 ### Changed
 
 - 0317: Re-organized Semantic UI theme to be served from a dedicated front-end module; Updated vendor dependencies to latest versions; Optimized client-side library dependency chain
