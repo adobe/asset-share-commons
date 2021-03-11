@@ -19,9 +19,12 @@
 
 package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 
+import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRendition;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.aem.commons.assetshare.util.impl.ExtensionOverrideRequestWrapper;
 import com.day.cq.commons.PathInfo;
 import com.day.text.Text;
@@ -29,6 +32,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.request.RequestDispatcherOptions;
+import org.apache.sling.api.resource.Resource;
+import org.mozilla.javascript.commonjs.module.Require;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -48,6 +53,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static org.apache.jackrabbit.JcrConstants.NT_FILE;
+import static org.apache.jackrabbit.JcrConstants.NT_RESOURCE;
 import static org.osgi.framework.Constants.SERVICE_RANKING;
 
 @Component(
@@ -66,6 +73,9 @@ public class InternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
     private Cfg cfg;
 
     private ConcurrentHashMap<String, String> mappings;
+
+    @Reference(target="(distribution=classic)")
+    private RequireAem requireAem;
 
     @Reference
     private AssetRenditions assetRenditions;
@@ -137,6 +147,57 @@ public class InternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not serve asset rendition.");
         }
     }
+
+    @Override
+    public AssetRendition getRendition(final AssetModel assetModel, final AssetRenditionParameters parameters) {
+        throw new UnsupportedOperationException(String.format("[ %s ] is not supported by the AEM Async Asset Download Framework.",
+                this.getClass().getName()));
+
+        /*
+        // Commented out implementation for AEM as a Cloud Service as this only supports a sub-set of the original use-case.
+
+        final String expression = mappings.get(parameters.getRenditionName());
+
+        if (StringUtils.isNotBlank(expression)) {
+            final String evaluatedExpression = assetRenditions.evaluateExpression(assetModel, parameters.getRenditionName(), expression);
+            final PathInfo pathInfo = new PathInfo(assetModel.getResource().getResourceResolver(), evaluatedExpression);
+
+            // We have to manually clean up the pathInfo resourcePath due to issues with the PathInfo impl when /etc/map is in play
+            final String resourcePath = Text.unescape(cleanPathInfoRequestPath(pathInfo.getResourcePath()));
+
+            if (isBinaryNode(assetModel, resourcePath)) {
+                log.debug("Download internal redirect rendition [ {} ] for expression [ {} ] and resolved rendition name [ {} ]",
+                        resourcePath,
+                        evaluatedExpression,
+                        parameters.getRenditionName());
+
+
+                Resource resource = assetModel.getResource().getResourceResolver().resolve(resourcePath);
+
+                return new AssetRendition(resourcePath,
+                        getBinaryResourceSizeInBytes(resource),
+                        getBinaryResourceMimeType(resource));
+            }
+        }
+        return null;
+        */
+    }
+
+    private boolean isBinaryNode(AssetModel assetModel, String resourcePath) {
+        if (StringUtils.isNotBlank(resourcePath)) {
+            return false;
+        }
+
+        final Resource internalRedirectResource = assetModel.getResource().getResourceResolver().resolve(resourcePath);
+
+        if (internalRedirectResource != null && (internalRedirectResource.isResourceType(NT_RESOURCE) || internalRedirectResource.isResourceType(NT_FILE))) {
+            return true;
+        }
+
+        log.warn("Internal redirect path [ {} ]does not resolve to a binary node in the JCR, therefore the Async Asset Download framework cannot handle this request", resourcePath);
+        return false;
+    }
+
 
     protected String cleanPathInfoRequestPath(String resourcePath) {
         if (StringUtils.startsWith(resourcePath, "/")) {

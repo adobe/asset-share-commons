@@ -77,4 +77,13 @@ public class AssetModelImplTest {
 
         assertEquals(expected, actual.getUrl());
     }
+
+    @Test
+    public void getUrl_WithSimplePathResource() {
+        String expected = "/content/dam/test.png";
+        AssetModel actual = ctx.resourceResolver().getResource(expected).adaptTo(AssetModel.class);
+
+        assertNotNull(actual);
+        assertEquals(expected, actual.getUrl());
+    }
 }

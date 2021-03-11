@@ -21,13 +21,24 @@ package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ResourceUtil;
+import org.apache.sling.api.resource.ValueMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import static org.apache.jackrabbit.JcrConstants.*;
+
 public abstract class AbstractRenditionDispatcherImpl implements AssetRenditionDispatcher {
+    private static Logger log = LoggerFactory.getLogger(AbstractRenditionDispatcherImpl.class);
+
     protected static final String OSGI_PROPERTY_VALUE_DELIMITER = "=";
 
     protected ConcurrentHashMap<String, Pattern> parseMappingsAsPatterns(final String[] renditionMappings) {
@@ -59,5 +70,41 @@ public abstract class AbstractRenditionDispatcherImpl implements AssetRenditionD
                 .filter(segments -> segments.length == 2)
                 .filter(segments -> StringUtils.isNotBlank(segments[0]))
                 .filter(segments -> StringUtils.isNotBlank(segments[1]));
+    }
+
+    protected long getBinaryResourceSizeInBytes(final Resource resource) {
+        if (resource == null || ResourceUtil.isNonExistingResource(resource)) {
+            return 0L;
+        }
+
+        Node node = resource.adaptTo(Node.class);
+
+        if (node == null) {
+            return 0L;
+        }
+
+        try {
+            if (node.hasProperty(JCR_DATA)) {
+                return node.getProperty(JCR_DATA).getBinary().getSize();
+            } else if (node.hasNode(JCR_CONTENT)) {
+                node = node.getNode(JCR_CONTENT);
+                if (node.hasProperty(JCR_DATA)) {
+                    return node.getProperty(JCR_DATA).getBinary().getSize();
+                }
+            }
+        } catch (RepositoryException e) {
+            log.error("Error obtaining binary size for node [ {} ] - returning a size of 0 bytes.", resource.getPath());
+        }
+
+        return 0L;
+    }
+
+
+    protected String getBinaryResourceMimeType(final Resource resource) {
+        if (resource == null || ResourceUtil.isNonExistingResource(resource)) {
+            return null;
+        }
+
+        return resource.getValueMap().get(JCR_MIMETYPE, resource.getValueMap().get(JCR_CONTENT + "/" + JCR_MIMETYPE, String.class));
     }
 }

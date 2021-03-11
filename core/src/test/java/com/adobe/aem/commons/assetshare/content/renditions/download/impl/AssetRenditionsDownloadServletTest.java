@@ -25,6 +25,8 @@ import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionDi
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
 import com.adobe.aem.commons.assetshare.testing.MockAssetModels;
+import com.adobe.aem.commons.assetshare.testing.RequireAemMock;
+import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.aem.commons.assetshare.util.impl.ServletHelperImpl;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
@@ -36,7 +38,6 @@ import org.apache.sling.api.request.RequestDispatcherOptions;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.models.factory.ModelFactory;
 import org.apache.sling.testing.mock.sling.servlet.MockRequestDispatcherFactory;
-import org.apache.sling.testing.mock.sling.servlet.MockSlingHttpServletResponse;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -48,13 +49,11 @@ import org.osgi.framework.Constants;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -103,6 +102,8 @@ public class AssetRenditionsDownloadServletTest {
                         put ("types", new String[]{"image", "video"}).
                         put("rendition.mappings", new String[]{ "test=original" }).
                         build());
+
+        RequireAemMock.setAemDistribution(ctx, RequireAem.Distribution.CLASSIC);
 
         ctx.registerService(ModelFactory.class, modelFactory, org.osgi.framework.Constants.SERVICE_RANKING,
                 Integer.MAX_VALUE);

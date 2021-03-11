@@ -1,10 +1,7 @@
-package com.adobe.aem.commons.assetshare.content.async.download;
+package com.adobe.aem.commons.assetshare.download.async;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.sling.api.resource.ResourceResolver;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;

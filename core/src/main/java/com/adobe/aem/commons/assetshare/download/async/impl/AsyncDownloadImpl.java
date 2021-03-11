@@ -1,6 +1,5 @@
-package com.adobe.aem.commons.assetshare.content.async.download.impl;
+package com.adobe.aem.commons.assetshare.download.async.impl;
 
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -14,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
-import com.adobe.aem.commons.assetshare.content.async.download.AsyncDownload;
+import com.adobe.aem.commons.assetshare.download.async.AsyncDownload;
 import com.adobe.aem.commons.assetshare.util.MimeTypeHelper;
 import com.adobe.cq.dam.download.api.DownloadApiFactory;
 import com.adobe.cq.dam.download.api.DownloadException;

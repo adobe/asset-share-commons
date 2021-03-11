@@ -51,12 +51,12 @@ public class AssetRenditionDispatchersImpl implements AssetRenditionDispatchers 
 
     private final RankedServices<AssetRenditionDispatcher> assetRenditionDispatchers = new RankedServices<>(Order.DESCENDING);
 
-    protected void bindAssetRenditionDispatcher(AssetRenditionDispatcher service, Map<String, Object> props) {
+    public void bindAssetRenditionDispatcher(AssetRenditionDispatcher service, Map<String, Object> props) {
         log.debug("Binding AssetRenditionDispatcher [ {} ]", service.getClass().getName());
         assetRenditionDispatchers.bind(service, props);
     }
 
-    protected void unbindAssetRenditionDispatcher(AssetRenditionDispatcher service, Map<String, Object> props) {
+    public void unbindAssetRenditionDispatcher(AssetRenditionDispatcher service, Map<String, Object> props) {
         log.debug("Unbinding AssetRenditionDispatcher [ {} ]", service.getClass().getName());
         assetRenditionDispatchers.unbind(service, props);
     }

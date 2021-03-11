@@ -22,7 +22,12 @@ package com.adobe.aem.commons.assetshare.components.actions.download.impl;
 import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
 import com.adobe.aem.commons.assetshare.components.actions.AssetDownloadHelper;
 import com.adobe.aem.commons.assetshare.components.actions.download.Download;
+import com.adobe.aem.commons.assetshare.components.predicates.impl.options.CustomOptionItem;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
+import com.adobe.cq.wcm.core.components.internal.models.v1.form.OptionsImpl;
+import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.export.json.ExporterConstants;
@@ -44,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
@@ -83,6 +89,10 @@ public class DownloadImpl implements Download, ComponentExporter {
     @OSGiService
     @Required
     private ModelFactory modelFactory;
+
+    @OSGiService
+    @Required
+    private AssetRenditionDispatchers assetRenditionDispatchers;
 
     @ValueMapValue
     @Optional
@@ -135,8 +145,16 @@ public class DownloadImpl implements Download, ComponentExporter {
                         final String title = group.getParent().getValueMap().get(PN_ASSET_RENDITIONS_GROUP_TITLE, String.class);
                         final Options options = modelFactory.getModelFromWrappedRequest(request, group, Options.class);
 
-                        if (options != null) {
-                            assetRenditionsGroups.add(new AssetRenditionsGroup(title, options));
+                        // Only show service-able rendition names
+                        final List<OptionItem> sanitizedOptions = options.getItems().stream()
+                                .filter(item -> assetRenditionDispatchers.isValidAssetRenditionName(item.getValue()))
+                                .collect(Collectors.toList());
+
+
+                        if (sanitizedOptions != null && !sanitizedOptions.isEmpty()) {
+                            assetRenditionsGroups.add(new AssetRenditionsGroup(title, sanitizedOptions));
+                        } else {
+                            log.error("No rendition name options for gorup [ {} ]", title);
                         }
                     }
                 }

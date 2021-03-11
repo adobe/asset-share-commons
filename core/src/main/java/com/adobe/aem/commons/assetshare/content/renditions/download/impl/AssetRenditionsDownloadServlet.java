@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsDownloadOrchestrator;
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsDownloadOrchestratorManager;
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsException;
+import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.aem.commons.assetshare.util.ServletHelper;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -77,6 +78,9 @@ public class AssetRenditionsDownloadServlet extends SlingAllMethodsServlet imple
     private static final String PN_ASSET_RENDITIONS_DOWNLOAD_ORCHESTRATOR = "assetRenditionsDownloadOrchestratorId";
 
     private static final String DEFAULT_ASSET_RENDITIONS_DOWNLOAD_ORCHESTRATOR = AssetRenditionsZipperImpl.class.getName();
+
+    @Reference(target="(distribution=classic)")
+    private RequireAem requireAem;
 
     @Reference
     private ServletHelper servletHelper;

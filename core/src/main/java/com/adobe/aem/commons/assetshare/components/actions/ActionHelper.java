@@ -29,5 +29,7 @@ import java.util.Collection;
 public interface ActionHelper {
     Collection<AssetModel> getAssetsFromQueryParameter(final SlingHttpServletRequest request, final String parameterName);
 
+    Collection<String> getAllowedValuesFromQueryParameter(final SlingHttpServletRequest requst, final String parameterName, final String[] allowedValues);
+
     Collection<AssetModel> getPlaceholderAsset(final SlingHttpServletRequest request);
 }

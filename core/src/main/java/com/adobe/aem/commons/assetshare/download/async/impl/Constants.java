@@ -17,7 +17,7 @@
  *
  */
 
-package com.adobe.aem.commons.assetshare.content.async.download.impl;
+package com.adobe.aem.commons.assetshare.download.async.impl;
 
 public class Constants {
     private Constants() { }

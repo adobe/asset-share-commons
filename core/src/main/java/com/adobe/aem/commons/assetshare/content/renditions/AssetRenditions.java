@@ -73,4 +73,14 @@ public interface AssetRenditions {
      * @return the expression with the variables replaced with values derived from the request.
      */
     String evaluateExpression(SlingHttpServletRequest request, String expression);
+
+    /**
+     * Replaces the 'variables' in the expressions with the corresponding bits derived from the AssetModel.
+     *
+     * @param assetModel the AssetModel representing the asset whose rendition expression should be evaluated.
+     * @param renditionName the requested rendition name
+     * @param expression the expression to replace the variables in.
+     * @return the expression with the variables replaced with values derived from the request.
+     */
+    String evaluateExpression(final AssetModel assetModel, String renditionName, String expression);
 }
