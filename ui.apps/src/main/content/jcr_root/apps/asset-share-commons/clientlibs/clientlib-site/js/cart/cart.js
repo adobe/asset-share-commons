@@ -18,11 +18,11 @@
 
 /*global jQuery: false, AssetShare: false */
 
-AssetShare.Cart = (function ($, ns, storage) {
+AssetShare.Cart = (function ($, ns, storagecart) {
     "use strict";
 
     function enabled() {
-        return storage !== null && storage.isReady();
+        return storagecart && storagecart.enabled();
     }
 
     function getPaths() {
@@ -30,7 +30,7 @@ AssetShare.Cart = (function ($, ns, storage) {
             paths = [];
 
         if (enabled()) {
-            assetsInCart = storage.getCartAssets();
+            assetsInCart = storagecart.getCartAssets();
         }
 
         if (!(assetsInCart instanceof Array)) {
@@ -63,7 +63,7 @@ AssetShare.Cart = (function ($, ns, storage) {
     function add(assetPath, licensed) {
         if (enabled()) {
             if(!contains(assetPath)) {
-                storage.addCartAsset(assetPath);
+                storagecart.addCartAsset(assetPath);
 
                 $("body").trigger(ns.Events.CART_ADD, [getSize(), assetPath]);
                 $("body").trigger(ns.Events.CART_UPDATE, [getSize(), getPaths()]);
@@ -78,7 +78,7 @@ AssetShare.Cart = (function ($, ns, storage) {
 
     function remove(assetPath) {
         if (enabled() && contains(assetPath)) {
-            storage.removeCartAsset(assetPath);
+            storagecart.removeCartAsset(assetPath);
 
             $("body").trigger(ns.Events.CART_REMOVE, [getSize(), assetPath]);
             $("body").trigger(ns.Events.CART_UPDATE, [getSize(), getPaths()]);
@@ -90,7 +90,7 @@ AssetShare.Cart = (function ($, ns, storage) {
 
     function clear() {
         if (enabled()) {
-            storage.clearCartAssets();
+            storagecart.clearCartAssets();
             $("body").trigger(ns.Events.CART_UPDATE, [getSize(), getPaths()]);
             $("body").trigger(ns.Events.CART_CLEAR, [getSize(), getPaths()]);
         }
@@ -107,4 +107,4 @@ AssetShare.Cart = (function ($, ns, storage) {
 
 }(jQuery,
     AssetShare,
-    AssetShare.Storage));
+    AssetShare.StorageCart));

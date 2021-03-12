@@ -50,4 +50,4 @@ jQuery((function($, ns, cart, storage) {
 }(jQuery,
     AssetShare,
     AssetShare.Cart,
-    AssetShare.Storage)));
+    AssetShare.StorageProfile)));

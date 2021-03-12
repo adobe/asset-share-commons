@@ -3,7 +3,9 @@
 # Common Modules
 namespace.js
 events.js
-storage.js
+storage/storage.js
+storage/profile-storage.js
+storage/cart-storage.js
 messages.js
 elements.js
 data.js

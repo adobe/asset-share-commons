@@ -21,6 +21,8 @@
 AssetShare.Navigation = (function ($, window, ns, storage) {
     "use strict";
 
+    var RETURN_URL_KEY = "returnUrl";
+
     function setAddressBar(url) {
         var hasHistoryPush = window.history && typeof window.history.pushState === "function";
 
@@ -37,9 +39,10 @@ AssetShare.Navigation = (function ($, window, ns, storage) {
 
     function getOrSetReturnUrl(url) {
         if (typeof url === "undefined") {
-            return storage.getReturnUrl();
+            return storage.getObject(RETURN_URL_KEY);
         } else {
-            storage.setReturnUrl(url);
+            storage.setObject(RETURN_URL_KEY, url);
+            return url;
         }
     }
 
