@@ -1,11 +1,14 @@
 #base=js
 
-# Common Modules
+# Common Modules (order of files matters!)
+
 namespace.js
 events.js
-storage/storage.js
-storage/profile-storage.js
-storage/cart-storage.js
+stores/store.js
+stores/profile-store.js
+stores/cart-store.js
+profile.js
+cart.js
 messages.js
 elements.js
 data.js

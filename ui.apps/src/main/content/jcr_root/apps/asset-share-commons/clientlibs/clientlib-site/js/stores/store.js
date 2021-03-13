@@ -17,58 +17,21 @@
  */
 
 /*global jQuery: false, AssetShare: false */
-
-AssetShare.Storage = (function (window, ns) {
+AssetShare.Store = (function (window, ns) {
     'use strict';
 
-    var STORAGE_KEY = 'asset-share-commons',
+    var STORE_KEY = 'asset-share-commons',
         localStorageEnabled = false;
 
-    /* Check if browser supports local storage capabilities */
-    function _localStorageCheck() {
-        var storage;
-
-        if(localStorageEnabled) {
-            return true;
-        }
-
-        try {
-            storage = window.localStorage;
-            var x = '__storage_test__';
-            storage.setItem(x, x);
-            storage.removeItem(x);
-            localStorageEnabled = true;
-            return true;
-        }
-        catch(e) {
-            localStorageEnabled = false;
-            return e instanceof DOMException && (
-                // everything except Firefox
-                e.code === 22 ||
-                // Firefox
-                e.code === 1014 ||
-                // test name field too, because code might not be present
-                // everything except Firefox
-                e.name === 'QuotaExceededError' ||
-                // Firefox
-                e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
-                // acknowledge QuotaExceededError only if there's something already stored
-                (storage && storage.length !== 0);
-        }
-    }
 
     /* Return the local storage for Asset Share Commons as a JSON object */
     function _getLocalStorage() {
-        if(_localStorageCheck()) {
-            return JSON.parse(window.localStorage.getItem(STORAGE_KEY)) || {};
-        }
+        return JSON.parse(window.localStorage.getItem(STORE_KEY)) || {};
     }
 
     /* Set the local Storage as a stringified JSON object */
     function _updateLocalStorage(storageUpdate) {
-        if(_localStorageCheck()) {
-            window.localStorage.setItem(STORAGE_KEY, JSON.stringify(storageUpdate));
-        }
+        window.localStorage.setItem(STORE_KEY, JSON.stringify(storageUpdate));
     }
 
     /**

@@ -28,6 +28,6 @@ AssetShare.SemanticUI = {};
 
 AssetShare.SemanticUI.Modals = {};
 
-AssetShare.Storage = AssetShare.Storage || {};
+AssetShare.Store = AssetShare.Store || {};
 
 

@@ -18,7 +18,7 @@
 
 /*global jQuery: false, AssetShare: false */
 
-AssetShare.Navigation = (function ($, window, ns, storage) {
+AssetShare.Navigation = (function ($, window, ns, store) {
     "use strict";
 
     var RETURN_URL_KEY = "returnUrl";
@@ -39,9 +39,9 @@ AssetShare.Navigation = (function ($, window, ns, storage) {
 
     function getOrSetReturnUrl(url) {
         if (typeof url === "undefined") {
-            return storage.getObject(RETURN_URL_KEY);
+            return store.getObject(RETURN_URL_KEY);
         } else {
-            storage.setObject(RETURN_URL_KEY, url);
+            store.setObject(RETURN_URL_KEY, url);
             return url;
         }
     }
@@ -58,4 +58,4 @@ AssetShare.Navigation = (function ($, window, ns, storage) {
 }(jQuery,
     window,
     AssetShare,
-    AssetShare.Storage));
+    AssetShare.Store));

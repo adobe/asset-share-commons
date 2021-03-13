@@ -18,30 +18,23 @@
 
 /*global jQuery: false, AssetShare: false */
 
-AssetShare.Cart = (function ($, ns, storagecart) {
+AssetShare.Cart = (function ($, ns, cartStore) {
     "use strict";
 
-    function enabled() {
-        return storagecart && storagecart.enabled();
+    function isReady() {
+        if(cartStore.enabled()) {
+            return true;
+        }
+        return cartStore && cartStore.enabled();
     }
 
     function getPaths() {
-        var assetsInCart = [],
-            paths = [];
 
-        if (enabled()) {
-            assetsInCart = storagecart.getCartAssets();
+        if (isReady()) {
+            return cartStore.getCartAssets();
         }
 
-        if (!(assetsInCart instanceof Array)) {
-            assetsInCart = [assetsInCart];
-        }
-
-        assetsInCart.forEach(function (cartAssetPath) {
-            paths.push(cartAssetPath);
-        });
-
-        return paths;
+        return [];
     }
 
     function getSize() {
@@ -61,9 +54,9 @@ AssetShare.Cart = (function ($, ns, storagecart) {
     }
 
     function add(assetPath, licensed) {
-        if (enabled()) {
+        if (isReady()) {
             if(!contains(assetPath)) {
-                storagecart.addCartAsset(assetPath);
+                cartStore.addCartAsset(assetPath);
 
                 $("body").trigger(ns.Events.CART_ADD, [getSize(), assetPath]);
                 $("body").trigger(ns.Events.CART_UPDATE, [getSize(), getPaths()]);
@@ -77,8 +70,8 @@ AssetShare.Cart = (function ($, ns, storagecart) {
     }
 
     function remove(assetPath) {
-        if (enabled() && contains(assetPath)) {
-            storagecart.removeCartAsset(assetPath);
+        if (isReady() && contains(assetPath)) {
+            cartStore.removeCartAsset(assetPath);
 
             $("body").trigger(ns.Events.CART_REMOVE, [getSize(), assetPath]);
             $("body").trigger(ns.Events.CART_UPDATE, [getSize(), getPaths()]);
@@ -89,8 +82,8 @@ AssetShare.Cart = (function ($, ns, storagecart) {
     }
 
     function clear() {
-        if (enabled()) {
-            storagecart.clearCartAssets();
+        if (isReady()) {
+            cartStore.clearCartAssets();
             $("body").trigger(ns.Events.CART_UPDATE, [getSize(), getPaths()]);
             $("body").trigger(ns.Events.CART_CLEAR, [getSize(), getPaths()]);
         }
@@ -102,9 +95,10 @@ AssetShare.Cart = (function ($, ns, storagecart) {
         remove: remove,
         contains: contains,
         paths: getPaths,
-        size: getSize
+        size: getSize,
+        isReady: isReady
     };
 
 }(jQuery,
     AssetShare,
-    AssetShare.StorageCart));
+    AssetShare.Store.Cart));

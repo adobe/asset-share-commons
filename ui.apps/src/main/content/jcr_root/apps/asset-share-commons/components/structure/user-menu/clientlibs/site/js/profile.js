@@ -18,10 +18,10 @@
 
 /*global jQuery: false, AssetShare: false*/
 
-jQuery((function($, ns, cart, storage) {
+jQuery((function($, ns, cart, store) {
     "use strict";
 
-    var profile = storage.getUserProfile(),
+    var profile = store.getUserProfile(),
         ANONYMOUS_SECTION_ID = "cmp-user-menu__profile--anonymous",
         AUTHENTICATED_SECTION_ID = "cmp-user-menu__profile--authenticated",
         AUTHENTICATED_DISPLAY_NAME_ID = "cmp-user-menu__profile-display-name",
@@ -54,7 +54,7 @@ jQuery((function($, ns, cart, storage) {
     }
 
     function init() {
-        profile = storage.getUserProfile();
+        profile = store.getUserProfile();
         if (isAnonymous()) {
             showAnonymous();
         } else {
@@ -76,12 +76,12 @@ jQuery((function($, ns, cart, storage) {
 
     /* in the unlikely event that the local profile has already loaded 
     before our event listener has been registered */
-    if(storage.isReady()) {
+    if(store.isReady()) {
         init();
     }
 
 }(jQuery,
     AssetShare,
     AssetShare.Cart,
-    AssetShare.StorageProfile)));
+    AssetShare.Store.Profile)));
 

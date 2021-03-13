@@ -18,7 +18,7 @@
 
 /*global jQuery: false, AssetShare: false*/
 
-jQuery((function($, ns, cart, storage) {
+jQuery((function($, ns, cart) {
     "use strict";
 
     function updateCartCountBadge(size) {
@@ -43,11 +43,10 @@ jQuery((function($, ns, cart, storage) {
 
     /* in the unlikely event that the local profile has already loaded 
        before our event listener has been registered */
-    if(storage.isReady()) {
+    if(cart.isReady()) {
         init();
     }
 
 }(jQuery,
     AssetShare,
-    AssetShare.Cart,
-    AssetShare.StorageProfile)));
+    AssetShare.Cart)));
