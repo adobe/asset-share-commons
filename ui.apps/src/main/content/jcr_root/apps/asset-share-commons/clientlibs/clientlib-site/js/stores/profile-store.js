@@ -101,28 +101,6 @@ AssetShare.Store.Profile = (function (ns, store) {
         store.setObject(currentUserId, userObject);
     }
 
-    /**
-     * Dispatch custom event that the user profile has been loaded
-     * @param {*} profile 
-     *
-    function _announceProfileLoaded(profile) {
-        var event = new CustomEvent(ns.Events.PROFILE_LOAD, {detail:profile}),
-            element = document.getElementsByTagName('body')[0];
-            element.dispatchEvent(event);
-    }
-
-    /**
-     * Initial call to request user profile 
-     * On a successful response the profile is set with local storage
-     * and custom event is dispatched to alert dependent JavaScript objects
-     *
-    _initProfile().then(function(response) {
-        if(response.type === 'user') {
-           setUserProfile(response);
-           _announceProfileLoaded(response);
-        }
-    });*/
-
     return {
         setUserProfile: setUserProfile,
         getUserProfile: getUserProfile,

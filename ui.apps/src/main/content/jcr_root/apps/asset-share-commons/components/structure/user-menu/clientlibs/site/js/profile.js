@@ -67,10 +67,7 @@ jQuery((function($, ns, cart, store) {
         cart.clear();
     });
 
-    
-    // Add Event Listener for when profile loaded
-    var bodyElement = document.getElementsByTagName("body")[0];
-    bodyElement.addEventListener(ns.Events.PROFILE_LOAD, function(e) {
+    $("body").on(ns.Events.PROFILE_LOAD, function(e) {
         init();
     });
 

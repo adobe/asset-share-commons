@@ -115,8 +115,7 @@ jQuery((function ($, ns, messages, cart, semanticModal, licenseModal) {
 
     // Handle DOM Ready AKA Page Load
     // Add Event Listener for when profile loaded to init
-    var bodyElement = document.getElementsByTagName("body")[0];
-    bodyElement.addEventListener(ns.Events.PROFILE_LOAD, function(e) {
+    $("body").on(ns.Events.PROFILE_LOAD, function() {
         handleCartButtonsUpdate();
     });
 
