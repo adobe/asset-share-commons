@@ -10,14 +10,6 @@ plugins:
         enabled: false
       squid:S3776:
         enabled: false
-  eslint:
-    enabled: true
-    config:
-      extensions:
-      - .js
-    checks:
-      complexity:
-        enabled: false
 exclude_patterns:
 - "**/test/"
 - "**/*.png"
