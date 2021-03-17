@@ -51,6 +51,10 @@
                 <configuration>
                     <group>${package.group}</group>
                     <name>asset-share-commons.all</name>
+                    <packageType>container</packageType>
+                    <properties>
+                        <cloudManagerTarget>all</cloudManagerTarget>
+                    </properties>
                     <finalName>asset-share-commons.all-${project.version}</finalName>
                     <embeddeds>
                         <embedded>
@@ -78,6 +82,14 @@
                         </embedded>
                     </embeddeds>
                     <allowIndexDefinitions>true</allowIndexDefinitions>
+                    <dependencies>
+                        <!-- Require AEM WCM Core Components to be installed on AEM
+                             Asset Share Commons will not auto-install Core Components for you -->
+                        <dependency>
+                            <groupId>com.adobe.cq</groupId>
+                            <artifactId>core.wcm.components.content</artifactId>
+                        </dependency>
+                    </dependencies>
                 </configuration>
             </plugin>
             <plugin>
@@ -95,7 +107,7 @@
                 <executions>
                     <execution>
                         <id>auto-clean</id>
-                        <phase>install</phase>
+                        <phase>initialize</phase>
                         <goals>
                             <goal>clean</goal>
                         </goals>
@@ -183,6 +195,12 @@
             <groupId>com.adobe.aem.commons</groupId>
             <artifactId>assetshare.ui.content.sample</artifactId>
             <version>${project.version}</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>com.adobe.cq</groupId>
+            <artifactId>core.wcm.components.content</artifactId>
+            <version>${core.wcm.components.version}</version>
             <type>zip</type>
         </dependency>
     </dependencies>
