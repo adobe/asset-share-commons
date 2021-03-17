@@ -29,13 +29,13 @@ AssetShare.Store.Profile = (function (ns, store) {
      * currentUserId is set
      */
     function isReady() {
-        return currentUserId !== undefined && currentUserId.length > 0;
+        return currentUserId && currentUserId.length > 0;
     }
 
     /* Return the user profile for the current logged in user from local store */
     function getUserProfile() {
 
-        if(currentUserId === undefined) {
+        if(!currentUserId) {
             return null;
         }
 
@@ -82,7 +82,7 @@ AssetShare.Store.Profile = (function (ns, store) {
      */
     function setUserProfile(profile) {
 
-        if(typeof profile === 'undefined' || profile.type !== 'user') {
+        if(!profile || profile.type !== 'user') {
             return;
         }
 
@@ -105,8 +105,8 @@ AssetShare.Store.Profile = (function (ns, store) {
         setUserProfile: setUserProfile,
         getUserProfile: getUserProfile,
         isReady: isReady,
-        getUserStoreObject, getUserStoreObject,
-        setUserStoreObject, setUserStoreObject
+        getUserStoreObject: getUserStoreObject,
+        setUserStoreObject: setUserStoreObject
     };
 
 }(AssetShare,

@@ -55,8 +55,8 @@ AssetShare.Store = (function (window, ns) {
     }
 
     return {
-        getObject, getObject,
-        setObject, setObject
+        getObject: getObject,
+        setObject: setObject
     };
 
 }(window,
