@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0504: Updated StaticRenditionDispatcherImpl to selectively serve static renditions from the Blob store directly or via AEM, depending on if ASC is running in the Adobe Cloud or not. 
 - 0509: Updated resolution of the Oak Index used to power the FastProperties (which in turn drive fast/slow property Touch UI data sources) to handle AEM as a Cloud Service's <Index Name>-<Product Version>-custom-<Custom Version>
 - 0514: Moved UI Dark theme to a dedicated front-end module
-- 0517: Removal of ContextHub dependency in favor of a lightweight local storage solution; Customers can continue to add ContextHub if their implementation depends on other aspects of it
+- 0517: Removal of ContextHub dependency in favor of a lightweight local storage solution; Customers can continue to add ContextHub if their implementation depends on other features of it
 
 ### Fixed
 
