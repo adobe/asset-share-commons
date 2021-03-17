@@ -29,7 +29,7 @@ import org.osgi.annotation.versioning.ProviderType;
  *
  * 1. It can be used In-line in code to detect if AEM is running as Cloud Ready (AEM as a Cloud Service or local AEM as a Cloud Service SDK QuickStart Jar) or not.
  *
- * @Reference
+ * {@literal @}Reference
  * RequireAem requireAem;
  * ...
  * if ((Distribution.CLOUD_READY.equals(requireAem.getDistribution()) {
@@ -40,20 +40,20 @@ import org.osgi.annotation.versioning.ProviderType;
  *
  * 2. It can be used to allow/stop OSGi Components from starting entirely
  *
- * @Component
+ * {@literal @}Component
  * public class IOnlyWorkOnTheCloud implements Foo {
  *
- *    @Reference(target="(distribution=cloud-ready)")
+ *    {@literal @}Reference(target="(distribution=cloud-ready)")
  *    RequireAem requireAem;
  *    ...
  * }
  *
  * ... OR ...
  *
- * @Component
+ * {@literal @}Component
  * public class IOnlyWorkOnAmsOrOnPrem implements Bar {
  *
- *      @Reference(target="(distribution=classic)")
+ *      {@literal @}Reference(target="(distribution=classic)")
  *      RequireAem requireAem;
  *      ...
  *  }
