@@ -73,27 +73,24 @@ public abstract class AbstractRenditionDispatcherImpl implements AssetRenditionD
     }
 
     protected long getBinaryResourceSizeInBytes(final Resource resource) {
-        if (resource == null || ResourceUtil.isNonExistingResource(resource)) {
-            return 0L;
-        }
+        if (resource != null && !ResourceUtil.isNonExistingResource(resource)) {
 
-        Node node = resource.adaptTo(Node.class);
+            Node node = resource.adaptTo(Node.class);
 
-        if (node == null) {
-            return 0L;
-        }
-
-        try {
-            if (node.hasProperty(JCR_DATA)) {
-                return node.getProperty(JCR_DATA).getBinary().getSize();
-            } else if (node.hasNode(JCR_CONTENT)) {
-                node = node.getNode(JCR_CONTENT);
-                if (node.hasProperty(JCR_DATA)) {
+            try {
+                if (node == null) {
+                    // Do nothing, return 0L below
+                } else if (node.hasProperty(JCR_DATA)) {
                     return node.getProperty(JCR_DATA).getBinary().getSize();
+                } else if (node.hasNode(JCR_CONTENT)) {
+                    node = node.getNode(JCR_CONTENT);
+                    if (node.hasProperty(JCR_DATA)) {
+                        return node.getProperty(JCR_DATA).getBinary().getSize();
+                    }
                 }
+            } catch (RepositoryException e) {
+                log.error("Error obtaining binary size for node [ {} ] - returning a size of 0 bytes.", resource.getPath());
             }
-        } catch (RepositoryException e) {
-            log.error("Error obtaining binary size for node [ {} ] - returning a size of 0 bytes.", resource.getPath());
         }
 
         return 0L;
