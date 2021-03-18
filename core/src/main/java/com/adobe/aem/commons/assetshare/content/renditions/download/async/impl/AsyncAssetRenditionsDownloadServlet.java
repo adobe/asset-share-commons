@@ -110,7 +110,7 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
             response.getWriter().write(getResponseJson(downloadId,
                     assetModels.size(),
                     manifest.getTargetCount(),
-                    archiveName).toString());
+                    archiveName).getAsString());
 
         } catch (DownloadException e) {
             throw new ServletException("Unable to initiate download", e);
