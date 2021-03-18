@@ -744,6 +744,13 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
+                <groupId>com.adobe.cq</groupId>
+                <artifactId>core.wcm.components.content</artifactId>
+                <version>${core.wcm.components.version}</version>
+                <type>zip</type>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
                 <groupId>com.google.code.findbugs</groupId>
                 <artifactId>jsr305</artifactId>
                 <version>3.0.2</version>
@@ -838,7 +845,7 @@
         </dependencies>
     </dependencyManagement>
 
-    <!-- Adone Maven Repository -->
+    <!-- Adobe Maven Repository -->
     <repositories>
         <repository>
             <id>adobe-public-releases</id>
