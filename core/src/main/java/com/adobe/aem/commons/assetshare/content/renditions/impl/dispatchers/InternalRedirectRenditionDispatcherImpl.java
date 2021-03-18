@@ -24,7 +24,6 @@ import com.adobe.aem.commons.assetshare.content.renditions.AssetRendition;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
-import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.aem.commons.assetshare.util.impl.ExtensionOverrideRequestWrapper;
 import com.day.cq.commons.PathInfo;
 import com.day.text.Text;
@@ -33,7 +32,6 @@ import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.request.RequestDispatcherOptions;
 import org.apache.sling.api.resource.Resource;
-import org.mozilla.javascript.commonjs.module.Require;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -73,9 +71,6 @@ public class InternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
     private Cfg cfg;
 
     private ConcurrentHashMap<String, String> mappings;
-
-    @Reference(target="(distribution=classic)")
-    private RequireAem requireAem;
 
     @Reference
     private AssetRenditions assetRenditions;
