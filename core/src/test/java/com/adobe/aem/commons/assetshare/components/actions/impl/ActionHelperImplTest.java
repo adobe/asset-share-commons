@@ -21,6 +21,7 @@ package com.adobe.aem.commons.assetshare.components.actions.impl;
 
 import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.aem.commons.assetshare.content.renditions.download.impl.AssetRenditionsDownloadServlet;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
@@ -34,8 +35,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.osgi.framework.Constants;
 
+import javax.servlet.Servlet;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -80,7 +83,7 @@ public class ActionHelperImplTest {
     }
 
     @Test
-    public void testWithData() {
+    public void getAssetsFromQueryParameter() {
         final ActionHelper actionHelper = ctx.getService(ActionHelper.class);
 
         final Map<String, Object> requestParameters = new HashMap<>();
@@ -102,6 +105,32 @@ public class ActionHelperImplTest {
         assertEquals("asset-2.png", models.toArray(new AssetModel[2])[1].getName());
     }
 
+
+
+    /*@Test
+    public void getAssets() {
+        ctx.registerInjectActivateService(new AssetRenditionsDownloadServlet());
+
+        AssetRenditionsDownloadServlet servlet = (AssetRenditionsDownloadServlet) ctx.getService(Servlet.class);
+
+        ctx.request().setQueryString("path=/content/dam/test.png&path=/content/dam/test-2.png&path=/content/dam/test-3.png");
+
+        List<AssetModel> actual = servlet.getAssets(ctx.request());
+
+        assertEquals(1, actual.size());
+        assertEquals("/content/dam/test.png", actual.get(0).getPath());
+    }*/
+
+    @Test
+    public void getAllowedValuesFromQueryParameter() {
+        final ActionHelper actionHelper = ctx.getService(ActionHelper.class);
+
+        ctx.request().setQueryString("renditionName=one&renditionName=four");
+
+        List<String> actual = actionHelper.getAllowedValuesFromQueryParameter(ctx.request(), "renditionName", new String[] {"four"});
+        assertEquals(1, actual.size());
+        assertEquals("four", actual.get(0));
+    }
 
     class ResourcePath implements ArgumentMatcher<Resource> {
         private final String path;

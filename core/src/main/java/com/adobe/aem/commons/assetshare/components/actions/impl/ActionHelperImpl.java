@@ -31,10 +31,7 @@ import org.apache.sling.models.factory.ModelFactory;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.EMPTY_LIST;
@@ -47,7 +44,7 @@ public final class ActionHelperImpl implements ActionHelper {
     private ModelFactory modelFactory;
 
     @Override
-    public final Collection<AssetModel> getAssetsFromQueryParameter(final SlingHttpServletRequest request, final String parameterName) {
+    public final List<AssetModel> getAssetsFromQueryParameter(final SlingHttpServletRequest request, final String parameterName) {
         final RequestParameter[] requestParameters = request.getRequestParameters(parameterName);
 
         if (requestParameters != null) {
@@ -64,24 +61,23 @@ public final class ActionHelperImpl implements ActionHelper {
     }
 
     @Override
-    public final Collection<String> getAllowedValuesFromQueryParameter(final SlingHttpServletRequest request, final String parameterName, final String[] allowedValues) {
+    public final List<String> getAllowedValuesFromQueryParameter(final SlingHttpServletRequest request, final String parameterName, final String[] allowedValues) {
+        if (allowedValues != null) {
+            final RequestParameter[] requestParameters = request.getRequestParameters(parameterName);
 
-        if (allowedValues == null) { return EMPTY_LIST; }
-
-        final RequestParameter[] requestParameters = request.getRequestParameters(parameterName);
-
-        if (requestParameters != null) {
-            return Arrays.stream(requestParameters).map(RequestParameter::getString)
-                    .filter(renditionName -> allowedValues.length == 0 || ArrayUtils.contains(allowedValues, renditionName))
-                    .distinct()
-                    .collect(Collectors.toList());
-        } else {
-            return emptyList();
+            if (requestParameters != null) {
+                return Arrays.stream(requestParameters).map(RequestParameter::getString)
+                        .filter(renditionName -> allowedValues.length == 0 || ArrayUtils.contains(allowedValues, renditionName))
+                        .distinct()
+                        .collect(Collectors.toList());
+            }
         }
+
+        return EMPTY_LIST;
     }
 
-    public final Collection<AssetModel> getPlaceholderAsset(final SlingHttpServletRequest request) {
-        final Collection<AssetModel> assets = new ArrayList<>();
+    public final List<AssetModel> getPlaceholderAsset(final SlingHttpServletRequest request) {
+        final List<AssetModel> assets = new ArrayList<>();
 
         if (!WCMMode.DISABLED.equals(WCMMode.fromRequest(request))) {
             final Config config = request.adaptTo(Config.class);

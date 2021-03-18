@@ -33,6 +33,7 @@ import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.wrappers.ValueMapDecorator;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
 import org.apache.sling.models.annotations.Model;
+import org.apache.sling.models.annotations.Optional;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.Self;
@@ -54,6 +55,7 @@ public class AssetModelImpl implements AssetModel {
     private SlingHttpServletRequest request;
 
     @Self
+    @Optional
     private Resource resource;
 
     @OSGiService

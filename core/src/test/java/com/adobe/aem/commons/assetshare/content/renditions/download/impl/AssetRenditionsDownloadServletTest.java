@@ -19,6 +19,8 @@
 
 package com.adobe.aem.commons.assetshare.content.renditions.download.impl;
 
+import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
+import com.adobe.aem.commons.assetshare.components.actions.impl.ActionHelperImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionDispatchersImpl;
@@ -81,6 +83,9 @@ public class AssetRenditionsDownloadServletTest {
 
         MockAssetModels.mockModelFactory(ctx, modelFactory, "/content/dam/test.png");
 
+        ctx.registerService(ModelFactory.class, modelFactory, org.osgi.framework.Constants.SERVICE_RANKING,
+                Integer.MAX_VALUE);
+
         ctx.registerService(HttpClientBuilderFactory.class, httpClientBuilderFactory);
 
         ctx.registerService(AssetRenditionDispatchers.class, new AssetRenditionDispatchersImpl());
@@ -90,6 +95,8 @@ public class AssetRenditionsDownloadServletTest {
         ctx.registerInjectActivateService(new AssetRenditionStreamerImpl());
 
         ctx.registerInjectActivateService(new AssetRenditionsZipperImpl());
+
+        ctx.registerInjectActivateService(new ActionHelperImpl());
 
         ctx.registerInjectActivateService(new ServletHelperImpl());
 
@@ -104,9 +111,6 @@ public class AssetRenditionsDownloadServletTest {
                         build());
 
         RequireAemMock.setAemDistribution(ctx, RequireAem.Distribution.CLASSIC);
-
-        ctx.registerService(ModelFactory.class, modelFactory, org.osgi.framework.Constants.SERVICE_RANKING,
-                Integer.MAX_VALUE);
 
         ctx.request().setRequestDispatcherFactory(new MockRequestDispatcherFactory() {
             @Override

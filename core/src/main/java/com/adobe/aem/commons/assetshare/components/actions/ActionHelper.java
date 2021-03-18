@@ -24,12 +24,13 @@ import org.apache.sling.api.SlingHttpServletRequest;
 import org.osgi.annotation.versioning.ProviderType;
 
 import java.util.Collection;
+import java.util.List;
 
 @ProviderType
 public interface ActionHelper {
-    Collection<AssetModel> getAssetsFromQueryParameter(final SlingHttpServletRequest request, final String parameterName);
+    List<AssetModel> getAssetsFromQueryParameter(final SlingHttpServletRequest request, final String parameterName);
 
-    Collection<String> getAllowedValuesFromQueryParameter(final SlingHttpServletRequest requst, final String parameterName, final String[] allowedValues);
+    List<String> getAllowedValuesFromQueryParameter(final SlingHttpServletRequest requst, final String parameterName, final String[] allowedValues);
 
-    Collection<AssetModel> getPlaceholderAsset(final SlingHttpServletRequest request);
+    List<AssetModel> getPlaceholderAsset(final SlingHttpServletRequest request);
 }

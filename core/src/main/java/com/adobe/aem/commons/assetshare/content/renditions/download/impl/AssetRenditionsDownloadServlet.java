@@ -19,6 +19,7 @@
 
 package com.adobe.aem.commons.assetshare.content.renditions.download.impl;
 
+import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsDownloadOrchestrator;
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsDownloadOrchestratorManager;
@@ -88,14 +89,19 @@ public class AssetRenditionsDownloadServlet extends SlingAllMethodsServlet imple
     @Reference
     private ModelFactory modelFactory;
 
+    @Reference
+    private ActionHelper actionHelper;
+
     private Map<String, AssetRenditionsDownloadOrchestrator> assetRenditionsDownloadOrchestrators = new ConcurrentHashMap<>();
 
     @Override
     protected final void doPost(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
         servletHelper.addSlingBindings(request, response);
 
-        final List<String> renditionNames = getRenditionNames(request);
-        final List<AssetModel> assets = getAssets(request);
+        final List<String> renditionNames = actionHelper.getAllowedValuesFromQueryParameter(request,
+                REQ_KEY_RENDITION_NAMES,
+                request.getResource().getValueMap().get(PN_ALLOWED_RENDITION_NAMES, new String[]{}));
+        final List<AssetModel> assets = actionHelper.getAssetsFromQueryParameter(request, REQ_KEY_ASSET_PATHS);
         final String id = getAssetRenditionsDownloadOrchestratorId(request);
 
         final AssetRenditionsDownloadOrchestrator orchestrator = getAssetRenditionsDownloadOrchestrator(id);
