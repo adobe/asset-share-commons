@@ -119,37 +119,6 @@ public class AssetRenditionsDownloadServlet extends SlingAllMethodsServlet imple
         }
     }
 
-    protected List<AssetModel> getAssets(final SlingHttpServletRequest request) {
-        final RequestParameter[] requestParameters = request.getRequestParameters(REQ_KEY_ASSET_PATHS);
-
-        if (requestParameters == null) { return EMPTY_LIST; }
-
-        return Arrays.stream(requestParameters)
-                .map(RequestParameter::getString)
-                .map(path -> request.getResourceResolver().getResource(path))
-                .filter(Objects::nonNull)
-                .map(resource -> modelFactory.getModelFromWrappedRequest(request, resource, AssetModel.class))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-    }
-
-    protected List<String> getRenditionNames(final SlingHttpServletRequest request) {
-        final String[] allowedRenditionNames = request.getResource().getValueMap().get(PN_ALLOWED_RENDITION_NAMES, new String[]{});
-
-        if (allowedRenditionNames == null) { return EMPTY_LIST; }
-
-        final RequestParameter[] requestParameters = request.getRequestParameters(REQ_KEY_RENDITION_NAMES);
-
-        if (requestParameters != null) {
-            return Arrays.stream(requestParameters).map(RequestParameter::getString)
-                    .filter(renditionName -> allowedRenditionNames.length == 0 || ArrayUtils.contains(allowedRenditionNames, renditionName))
-                    .distinct()
-                    .collect(Collectors.toList());
-        } else {
-            return emptyList();
-        }
-    }
-
     private String getAssetRenditionsDownloadOrchestratorId(SlingHttpServletRequest request) {
         return request.getResource().getValueMap().get(PN_ASSET_RENDITIONS_DOWNLOAD_ORCHESTRATOR, DEFAULT_ASSET_RENDITIONS_DOWNLOAD_ORCHESTRATOR);
     }
