@@ -24,7 +24,7 @@ import com.adobe.aem.commons.assetshare.components.Component;
 public interface UserMenu extends Component {
 
     /**
-     * Deprecated: User Name should be obtained client-side via the AEM ContextHub to support caching.
+     * Deprecated: User Name should be obtained client-side to support caching.
      *
      * @return String to display for the currently logged in user. If anonymous will return null
      */
@@ -32,7 +32,7 @@ public interface UserMenu extends Component {
     String getUserName();
 
     /**
-     * Deprecated: User Profile Image should be obtained client-side via the AEM ContextHub to support caching.
+     * Deprecated: User Profile Image should be obtained client-side to support caching.
      *
      * @return String to display a user profile picture. Defaults to anonymous photo if not found.
      */
@@ -40,7 +40,7 @@ public interface UserMenu extends Component {
     String getUserProfileImg();
 
     /**
-     * Deprecated: Authenticated State should be obtained client-side via the AEM ContextHub to support caching.
+     * Deprecated: Authenticated State should be obtained client-side to support caching.
      *
      * @return true if user is logged in (not anonymous)
      */

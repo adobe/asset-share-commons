@@ -16,12 +16,12 @@
  * limitations under the License.
  */
 
-/*global jQuery: false, AssetShare: false, ContextHub: false*/
+/*global jQuery: false, AssetShare: false*/
 
-jQuery((function($, ns, cart) {
+jQuery((function($, ns, cart, store) {
     "use strict";
 
-    var profile = ContextHub.getStore("profile"),
+    var profile = store.getUserProfile(),
         ANONYMOUS_SECTION_ID = "cmp-user-menu__profile--anonymous",
         AUTHENTICATED_SECTION_ID = "cmp-user-menu__profile--authenticated",
         AUTHENTICATED_DISPLAY_NAME_ID = "cmp-user-menu__profile-display-name",
@@ -29,7 +29,7 @@ jQuery((function($, ns, cart) {
         AUTHENTICATED_PROFILE_PIC_UNAVAILABLE_ID = "cmp-user-menu__profile-pic--unavailable";
 
     function isAnonymous() {
-        var authorizableId = profile.getItem("/authorizableId");
+        var authorizableId = profile.authorizableId_xss;
         return !authorizableId || "anonymous" === authorizableId;
     }
 
@@ -44,36 +44,21 @@ jQuery((function($, ns, cart) {
     function showAuthenticated() {
         var anonymousSection = ns.Elements.element(ANONYMOUS_SECTION_ID),
             authenticatedSection = ns.Elements.element(AUTHENTICATED_SECTION_ID),
-            profilePicAvailable = ns.Elements.element(AUTHENTICATED_PROFILE_PIC_ID),
-            profilePicUnavailable = ns.Elements.element(AUTHENTICATED_PROFILE_PIC_UNAVAILABLE_ID),
-            profileImagePath = profile.getItem("/path") + "/profile/photos/primary/image.prof.thumbnail.128.128.png";
+            profilePicUnavailable = ns.Elements.element(AUTHENTICATED_PROFILE_PIC_UNAVAILABLE_ID);
 
         // Set display name
-        authenticatedSection.find(ns.Elements.selector(AUTHENTICATED_DISPLAY_NAME_ID)).text(profile.getItem("/displayName"));
-
-        // Set profile pic
-        $.get(profileImagePath, function() {
-            authenticatedSection.find(ns.Elements.selector(AUTHENTICATED_PROFILE_PIC_ID)).attr("src", profileImagePath);
-            profilePicUnavailable.hide();
-            profilePicAvailable.show();
-        }).fail(function() {
-            profilePicAvailable.hide();
-            profilePicUnavailable.show();
-        });
-
+        authenticatedSection.find(ns.Elements.selector(AUTHENTICATED_DISPLAY_NAME_ID)).text(profile["name_xss"]);
+        profilePicUnavailable.show();
         anonymousSection.hide();
         authenticatedSection.show();
     }
 
-    function init(event, eventData) {
-        if (eventData && eventData.store === "profile") {
-            // Only perform this check when the profile store is updated
-            // For some reason the event handler below triggers for all stores and not just the profile store.
-            if (isAnonymous()) {
-                showAnonymous();
-            } else {
-                showAuthenticated();
-            }
+    function init() {
+        profile = store.getUserProfile();
+        if (isAnonymous()) {
+            showAnonymous();
+        } else {
+            showAuthenticated();
         }
     }
 
@@ -82,10 +67,18 @@ jQuery((function($, ns, cart) {
         cart.clear();
     });
 
-    profile.eventing.on(ContextHub.Constants.EVENT_STORE_READY, init);
-    profile.eventing.on(ContextHub.Constants.EVENT_STORE_UPDATED, init);
+    $("body").on(ns.Events.PROFILE_LOAD, function(e) {
+        init();
+    });
+
+    /* in the unlikely event that the local profile has already loaded 
+    before our event listener has been registered */
+    if(store.isReady()) {
+        init();
+    }
 
 }(jQuery,
     AssetShare,
-    AssetShare.Cart)));
+    AssetShare.Cart,
+    AssetShare.Store.Profile)));
 
