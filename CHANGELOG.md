@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - 0504: Added RequireAem OSGi Service to determine if ASC is running in the Adobe Cloud or not.
 - 0511: Aligned Download Action with Asset Renditions framework in a plug-able manner.
- 
+- 0578: Make Asset Share Commons all package depend on Core Components
+
 ### Changed
 
 - 0317: Re-organized Semantic UI theme to be served from a dedicated front-end module; Updated vendor dependencies to latest versions; Optimized client-side library dependency chain
@@ -21,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0509: Updated resolution of the Oak Index used to power the FastProperties (which in turn drive fast/slow property Touch UI data sources) to handle AEM as a Cloud Service's <Index Name>-<Product Version>-custom-<Custom Version>
 - 0514: Moved UI Dark theme to a dedicated front-end module
 - 0596: Updated ModelCacheImpl to use the DynamicClassLoaderManager.getDynamicClassLoader().loadClass(...) rather than Class.forName(..) 
+- 0517: Removal of ContextHub dependency in favor of a lightweight local storage solution; Customers can continue to add ContextHub if their implementation depends on other features of it
 
 ### Fixed
 

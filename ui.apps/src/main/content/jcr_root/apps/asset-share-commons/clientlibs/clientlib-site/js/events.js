@@ -25,6 +25,7 @@ AssetShare.Events = {
     CART_CLEAR: "asset-share-commons.cart.clear",
     CART_ALREADY_EXISTS: "asset-share-commons.cart.exists",
 
+    PROFILE_LOAD: "asset-share-commons.storage.profile.load",
 	PAGE_LOAD: "asset-share-commons.page.load",
 
     SEARCH_BEGIN: "asset-share-commons.search.begin",
@@ -33,11 +34,3 @@ AssetShare.Events = {
 
     MODAL_SHOWN: "asset-share-commons.modal.shown"
 };
-
-jQuery((function($, ns) {
-	"use strict";
-
-	// Always trigger this event on Asset Share Commons pages
-    $("body").trigger(ns.Events.PAGE_LOAD);
-
-}(jQuery, AssetShare)));

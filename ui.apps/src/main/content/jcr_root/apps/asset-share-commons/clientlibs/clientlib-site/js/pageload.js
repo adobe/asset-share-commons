@@ -1,7 +1,7 @@
 /*
  * Asset Share Commons
  *
- * Copyright [2017]  Adobe
+ * Copyright [2020]  Adobe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,9 @@
  * limitations under the License.
  */
 
-var AssetShare = AssetShare || {};
+jQuery((function($, ns) {
+	"use strict";
+	// Always trigger this event on Asset Share Commons pages
+    $("body").trigger(ns.Events.PAGE_LOAD);
 
-AssetShare.Events = {};
-
-AssetShare.Search = {};
-
-AssetShare.Cart = {};
-
-AssetShare.SemanticUI = {};
-
-AssetShare.SemanticUI.Modals = {};
-
-AssetShare.Store = AssetShare.Store || {};
-
-
+}(jQuery, AssetShare)));

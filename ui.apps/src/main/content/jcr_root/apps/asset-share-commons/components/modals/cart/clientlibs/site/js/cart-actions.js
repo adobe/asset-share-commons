@@ -114,7 +114,10 @@ jQuery((function ($, ns, messages, cart, semanticModal, licenseModal) {
     });
 
     // Handle DOM Ready AKA Page Load
-    handleCartButtonsUpdate();
+    // Add Event Listener for when profile loaded to init
+    $("body").on(ns.Events.PROFILE_LOAD, function() {
+        handleCartButtonsUpdate();
+    });
 
 }(jQuery,
     AssetShare,
