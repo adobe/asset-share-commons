@@ -19,12 +19,15 @@
 
 package com.adobe.aem.commons.assetshare.content.renditions.download.impl;
 
+import com.adobe.aem.commons.assetshare.components.actions.impl.ActionHelperImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionDispatchersImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
 import com.adobe.aem.commons.assetshare.testing.MockAssetModels;
+import com.adobe.aem.commons.assetshare.testing.RequireAemMock;
+import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.aem.commons.assetshare.util.impl.ServletHelperImpl;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
@@ -36,7 +39,6 @@ import org.apache.sling.api.request.RequestDispatcherOptions;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.models.factory.ModelFactory;
 import org.apache.sling.testing.mock.sling.servlet.MockRequestDispatcherFactory;
-import org.apache.sling.testing.mock.sling.servlet.MockSlingHttpServletResponse;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -48,13 +50,11 @@ import org.osgi.framework.Constants;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -82,6 +82,9 @@ public class AssetRenditionsDownloadServletTest {
 
         MockAssetModels.mockModelFactory(ctx, modelFactory, "/content/dam/test.png");
 
+        ctx.registerService(ModelFactory.class, modelFactory, org.osgi.framework.Constants.SERVICE_RANKING,
+                Integer.MAX_VALUE);
+
         ctx.registerService(HttpClientBuilderFactory.class, httpClientBuilderFactory);
 
         ctx.registerService(AssetRenditionDispatchers.class, new AssetRenditionDispatchersImpl());
@@ -91,6 +94,8 @@ public class AssetRenditionsDownloadServletTest {
         ctx.registerInjectActivateService(new AssetRenditionStreamerImpl());
 
         ctx.registerInjectActivateService(new AssetRenditionsZipperImpl());
+
+        ctx.registerInjectActivateService(new ActionHelperImpl());
 
         ctx.registerInjectActivateService(new ServletHelperImpl());
 
@@ -104,8 +109,7 @@ public class AssetRenditionsDownloadServletTest {
                         put("rendition.mappings", new String[]{ "test=original" }).
                         build());
 
-        ctx.registerService(ModelFactory.class, modelFactory, org.osgi.framework.Constants.SERVICE_RANKING,
-                Integer.MAX_VALUE);
+        RequireAemMock.setAemDistribution(ctx, RequireAem.Distribution.CLASSIC);
 
         ctx.request().setRequestDispatcherFactory(new MockRequestDispatcherFactory() {
             @Override
@@ -118,33 +122,6 @@ public class AssetRenditionsDownloadServletTest {
                 return requestDispatcher;
             }
         });
-    }
-
-    @Test
-    public void getAssets() {
-        ctx.registerInjectActivateService(new AssetRenditionsDownloadServlet());
-
-        AssetRenditionsDownloadServlet servlet = (AssetRenditionsDownloadServlet) ctx.getService(Servlet.class);
-
-        ctx.request().setQueryString("path=/content/dam/test.png&path=/content/dam/test-2.png&path=/content/dam/test-3.png");
-
-        List<com.adobe.aem.commons.assetshare.content.AssetModel> actual = servlet.getAssets(ctx.request());
-
-        assertEquals(1, actual.size());
-        assertEquals("/content/dam/test.png", actual.get(0).getPath());
-    }
-
-    @Test
-    public void getRenditionNames() {
-        ctx.registerInjectActivateService(new AssetRenditionsDownloadServlet());
-        AssetRenditionsDownloadServlet servlet = (AssetRenditionsDownloadServlet) ctx.getService(Servlet.class);
-
-        ctx.currentResource("/content/allowed-rendition-names");
-        ctx.request().setQueryString("renditionName=one&renditionName=four");
-
-        List<String> actual = servlet.getRenditionNames(ctx.request());
-        assertEquals(1, actual.size());
-        assertEquals("one", actual.get(0));
     }
 
     @Test

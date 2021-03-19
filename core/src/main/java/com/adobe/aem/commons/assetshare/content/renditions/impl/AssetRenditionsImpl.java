@@ -20,6 +20,7 @@
 package com.adobe.aem.commons.assetshare.content.renditions.impl;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRendition;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import org.apache.commons.lang3.StringUtils;
@@ -74,13 +75,16 @@ public class AssetRenditionsImpl implements AssetRenditions {
     @Override
     public String evaluateExpression(final SlingHttpServletRequest request, String expression) {
         final AssetModel assetModel = request.adaptTo(AssetModel.class);
+        return evaluateExpression(assetModel, new AssetRenditionParameters(request).getRenditionName(), expression);
+    }
 
+    @Override
+    public String evaluateExpression(final AssetModel assetModel, String renditionName, String expression) {
         // Even though, the name is .path, we use url since this is the URL escaped version of the path
         final String assetPath = assetModel.getPath();
         final String assetUrl = assetModel.getUrl();
         final String assetName = assetModel.getName();
         final String assetExtension = StringUtils.substringAfterLast(assetName, ".");
-        final String renditionName = new AssetRenditionParameters(request).getRenditionName();
 
         // Dynamic Media properties
         final String dmName = assetModel.getProperties().get(PN_S7_NAME, String.class);
