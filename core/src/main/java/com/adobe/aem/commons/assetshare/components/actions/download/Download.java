@@ -69,10 +69,15 @@ public interface Download {
     }
 
     class AssetRenditionsGroup {
-        private final Options options;
+        private final List<OptionItem> options;
         private final String title;
 
         public AssetRenditionsGroup(String title, Options options) {
+            this.title = title;
+            this.options = options.getItems();
+        }
+
+        public AssetRenditionsGroup(String title, List<OptionItem> options) {
             this.title = title;
             this.options = options;
         }
@@ -82,7 +87,7 @@ public interface Download {
         }
 
         public List<OptionItem> getItems() {
-            return options.getItems();
+            return options;
         }
     }
 }

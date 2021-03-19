@@ -21,6 +21,8 @@ package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,6 +30,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public abstract class AbstractRenditionDispatcherImpl implements AssetRenditionDispatcher {
+    private static Logger log = LoggerFactory.getLogger(AbstractRenditionDispatcherImpl.class);
+
     protected static final String OSGI_PROPERTY_VALUE_DELIMITER = "=";
 
     protected ConcurrentHashMap<String, Pattern> parseMappingsAsPatterns(final String[] renditionMappings) {

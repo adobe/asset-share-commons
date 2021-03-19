@@ -19,6 +19,8 @@
 
 package com.adobe.aem.commons.assetshare.content.renditions;
 
+import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.day.cq.dam.api.Asset;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.osgi.annotation.versioning.ConsumerType;
@@ -93,4 +95,15 @@ public interface AssetRenditionDispatcher {
      * @return a list of Rendition Types this rendition Dispatcher will return;
      */
     default List<String> getTypes() { return Collections.EMPTY_LIST; }
+
+    /**
+     * Gets a AssetRendition that wraps a reference on how to get the specified asset rendition.
+     *
+     * @param assetModel the AssetModel who rendition should be gotten
+     * @param parameters the parameters specifying the rendition of the asset to be gotten
+     * @return the AssetRendition
+     */
+    default AssetRendition getRendition(AssetModel assetModel, AssetRenditionParameters parameters) {
+        throw new UnsupportedOperationException("AssetRendition are only supported by AEM as a Cloud Service");
+    }
 }

@@ -26,6 +26,8 @@ import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedProperti
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
+import com.adobe.aem.commons.assetshare.testing.RequireAemMock;
+import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.aem.commons.assetshare.util.impl.ExtensionOverrideRequestWrapper;
 import com.day.cq.dam.commons.util.DamUtil;
 import com.google.common.collect.ImmutableMap;
@@ -66,9 +68,12 @@ public class InternalRedirectRenditionDispatcherImplTest {
 
     @Before
     public void setUp() throws Exception {
+        RequireAemMock.setAemDistribution(ctx, RequireAem.Distribution.CLASSIC);
+
         ctx.load().json(getClass().getResourceAsStream("InternalRedirectRenditionDispatcherImplTest.json"), "/content/dam");
         ctx.currentResource("/content/dam/test.png");
         doReturn(DamUtil.resolveToAsset(ctx.resourceResolver().getResource("/content/dam/test.png"))).when(assetResolver).resolveAsset(ctx.request());
+
 
         ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
 
