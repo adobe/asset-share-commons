@@ -15,6 +15,6 @@ data.js
 navigation.js
 form-data.js
 ajax.js
-downloads.js
+download.js
 pageload.js
 util.js

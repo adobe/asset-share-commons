@@ -18,12 +18,13 @@
 
 /*global jQuery: false, AssetShare: false*/
 
-jQuery((function(ns, semanticModal, licenseModal) {
+jQuery((function(ns, semanticModal, licenseModal, asyncDownload) {
     "use strict";
     AssetShare.SemanticUI.Modals.DownloadModal = (function () {
         var DOWNLOAD_URL = ns.Data.val("download-url"),
             DOWNLOAD_MODAL_ID = "download-modal",
-            DOWNLOAD_BUTTON_ID = "download-asset";
+            DOWNLOAD_BUTTON_ID = "download-asset",
+            DOWNLOAD_MODE_ASYNC = "data-asset-share-mode-async";
 
         function getId() {
             return DOWNLOAD_MODAL_ID;
@@ -80,6 +81,18 @@ jQuery((function(ns, semanticModal, licenseModal) {
         /** REGISTER EVENTS WHEN DOCUMENT IS READY **/
         $((function registerEvents() {
             $("body").on("click", ns.Elements.selector([DOWNLOAD_BUTTON_ID]), download);
+
+            // intercept async download submission
+            $("body").on("submit", "[" + DOWNLOAD_MODE_ASYNC + "=\"true\"]", function (e) {
+                var formEl = $(this);
+
+                e.preventDefault();
+                e.stopPropagation();
+
+                if (formEl.form('is valid')) {
+                    asyncDownload.initializeDownload(formEl);
+                }
+            });
         }()));
 
         return {
@@ -91,4 +104,5 @@ jQuery((function(ns, semanticModal, licenseModal) {
     }());
 }(AssetShare,
     AssetShare.SemanticUI.Modal,
-    AssetShare.SemanticUI.Modals.LicenseModal)));
+    AssetShare.SemanticUI.Modals.LicenseModal,
+    AssetShare.Download)));
