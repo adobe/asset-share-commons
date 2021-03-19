@@ -107,20 +107,6 @@ public class ActionHelperImplTest {
 
 
 
-    /*@Test
-    public void getAssets() {
-        ctx.registerInjectActivateService(new AssetRenditionsDownloadServlet());
-
-        AssetRenditionsDownloadServlet servlet = (AssetRenditionsDownloadServlet) ctx.getService(Servlet.class);
-
-        ctx.request().setQueryString("path=/content/dam/test.png&path=/content/dam/test-2.png&path=/content/dam/test-3.png");
-
-        List<AssetModel> actual = servlet.getAssets(ctx.request());
-
-        assertEquals(1, actual.size());
-        assertEquals("/content/dam/test.png", actual.get(0).getPath());
-    }*/
-
     @Test
     public void getAllowedValuesFromQueryParameter() {
         final ActionHelper actionHelper = ctx.getService(ActionHelper.class);
