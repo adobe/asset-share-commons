@@ -5,6 +5,8 @@ import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatc
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.InternalRedirectRenditionDispatcherImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
+import com.adobe.aem.commons.assetshare.testing.RequireAemMock;
+import com.adobe.aem.commons.assetshare.util.RequireAem;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.junit.Before;
 import org.junit.Rule;
@@ -24,6 +26,8 @@ public class AssetRenditionDispatchersImplTest {
 
     @Before
     public void setUp() throws Exception {
+        RequireAemMock.setAemDistribution(ctx, RequireAem.Distribution.CLASSIC);
+
         ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
         ctx.registerService(AssetRenditionDispatchers.class, new AssetRenditionDispatchersImpl());
     }
@@ -36,7 +40,8 @@ public class AssetRenditionDispatchersImplTest {
 
         ctx.registerService(AssetRenditionDispatcher.class, two, Constants.SERVICE_RANKING, 90);
         ctx.registerService(AssetRenditionDispatcher.class, one, Constants.SERVICE_RANKING, 100);
-        ctx.registerService(AssetRenditionDispatcher.class, three, Constants.SERVICE_RANKING, 80, "rendition.mappings", "foo=bar,test-rendition=im real");
+        ctx.registerService(AssetRenditionDispatcher.class, three, Constants.SERVICE_RANKING, 80,
+                "rendition.mappings", new String[] {"foo=bar", "test-rendition=im real"});
 
         final AssetRenditionDispatchers assetRenditionDispatchers = ctx.getService(AssetRenditionDispatchers.class);
         final List<AssetRenditionDispatcher> actual = assetRenditionDispatchers.getAssetRenditionDispatchers();
@@ -51,7 +56,7 @@ public class AssetRenditionDispatchersImplTest {
     public void isValidAssetRenditionName() {
         AssetRenditionDispatcher one = new InternalRedirectRenditionDispatcherImpl();
 
-        ctx.registerInjectActivateService(one, Constants.SERVICE_RANKING, 80, "rendition.mappings", "test-rendition=im real");
+        ctx.registerInjectActivateService(one, Constants.SERVICE_RANKING, 80, "rendition.mappings", new String[] {"test-rendition=im real"});
 
         final AssetRenditionDispatchers assetRenditionDispatchers = ctx.getService(AssetRenditionDispatchers.class);
 

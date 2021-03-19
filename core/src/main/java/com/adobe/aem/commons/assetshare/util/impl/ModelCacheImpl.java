@@ -39,7 +39,7 @@ public class ModelCacheImpl extends AbstractHTLMap implements ModelCache {
         Class clazz = null;
 
         try {
-            clazz = Class.forName((String) key, true, dynamicClassLoaderManager.getDynamicClassLoader());
+            clazz = dynamicClassLoaderManager.getDynamicClassLoader().loadClass((String) key);
             return get(clazz);
         } catch (ClassNotFoundException e) {
             throw new IllegalArgumentException("Unable to derive a class from " + (String)key);

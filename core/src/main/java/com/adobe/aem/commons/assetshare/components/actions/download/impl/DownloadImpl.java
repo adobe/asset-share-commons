@@ -23,9 +23,11 @@ import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
 import com.adobe.aem.commons.assetshare.components.actions.AssetDownloadHelper;
 import com.adobe.aem.commons.assetshare.components.actions.download.Download;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
-import com.adobe.cq.wcm.core.components.models.form.Options;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.export.json.ExporterConstants;
+import com.adobe.cq.wcm.core.components.models.form.OptionItem;
+import com.adobe.cq.wcm.core.components.models.form.Options;
 import com.day.cq.dam.commons.util.UIHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -44,6 +46,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
@@ -68,7 +72,6 @@ public class DownloadImpl implements Download, ComponentExporter {
     protected SlingHttpServletRequest request;
 
     @ValueMapValue
-    @Optional
     @Default(values = "Assets")
     protected String zipFileName;
 
@@ -84,13 +87,15 @@ public class DownloadImpl implements Download, ComponentExporter {
     @Required
     private ModelFactory modelFactory;
 
+    @OSGiService
+    @Required
+    private AssetRenditionDispatchers assetRenditionDispatchers;
+
     @ValueMapValue
-    @Optional
     private Boolean legacyMode;
 
     @Deprecated
     @ValueMapValue
-    @Optional
     private Boolean excludeOriginalAssets;
 
     protected List<AssetRenditionsGroup> assetRenditionsGroups = null;
@@ -125,25 +130,32 @@ public class DownloadImpl implements Download, ComponentExporter {
         if (assetRenditionsGroups == null) {
             assetRenditionsGroups = new ArrayList<>();
 
-            final Resource groups = request.getResource().getChild(NN_ASSET_RENDITIONS_GROUPS + "/" + NN_ITEMS);
-
-            if (groups != null) {
-                for (Resource group : groups.getChildren()) {
-                    group = group.getChild(NN_ASSET_RENDITIONS);
-
-                    if (group != null) {
-                        final String title = group.getParent().getValueMap().get(PN_ASSET_RENDITIONS_GROUP_TITLE, String.class);
-                        final Options options = modelFactory.getModelFromWrappedRequest(request, group, Options.class);
-
-                        if (options != null) {
-                            assetRenditionsGroups.add(new AssetRenditionsGroup(title, options));
-                        }
-                    }
-                }
-            }
+            Optional.ofNullable(request.getResource().getChild(NN_ASSET_RENDITIONS_GROUPS + "/" + NN_ITEMS)).ifPresent(groups -> {
+                groups.getChildren().forEach(child -> getAssetRenditionGroup(child.getChild(NN_ASSET_RENDITIONS)).ifPresent(arg -> assetRenditionsGroups.add(arg)));
+            });
         }
 
         return Collections.unmodifiableList(assetRenditionsGroups);
+    }
+
+    private Optional<AssetRenditionsGroup> getAssetRenditionGroup(final Resource group) {
+        Optional<AssetRenditionsGroup> assetRenditionsGroup = Optional.empty();
+
+        if (group != null) {
+            final String title = group.getParent().getValueMap().get(PN_ASSET_RENDITIONS_GROUP_TITLE, String.class);
+            final Options options = modelFactory.getModelFromWrappedRequest(request, group, Options.class);
+
+            // Only show service-able rendition names
+            final Optional<List<OptionItem>> sanitizedOptions = Optional.of(options.getItems().stream()
+                    .filter(item -> assetRenditionDispatchers.isValidAssetRenditionName(item.getValue()))
+                    .collect(Collectors.toList()));
+
+            assetRenditionsGroup = sanitizedOptions
+                    .filter(so -> !so.isEmpty())
+                    .map(so -> new AssetRenditionsGroup(title, so));
+        }
+
+        return assetRenditionsGroup;
     }
 
     public Collection<AssetModel> getAssets() {

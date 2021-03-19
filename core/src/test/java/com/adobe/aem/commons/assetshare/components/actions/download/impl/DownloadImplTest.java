@@ -4,6 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionDispatchersImpl;
+import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
+import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.ExternalRedirectRenditionDispatcherImpl;
+import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.InternalRedirectRenditionDispatcherImpl;
+import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
 import com.adobe.aem.commons.assetshare.testhelpers.TestOptionsImpl;
 import com.adobe.cq.wcm.core.components.models.form.Options;
 import org.apache.commons.lang3.StringUtils;
@@ -65,6 +73,9 @@ public class DownloadImplTest {
 
 		doReturn(assetModels).when(actionHelper).getAssetsFromQueryParameter(ctx.request(), "path");
 		doReturn(1024L).when(assetDownloadHelper).getMaxContentSizeLimit();
+
+		ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
+		ctx.registerService(AssetRenditionDispatchers.class, new AssetRenditionDispatchersImpl());
 
 		ctx.registerService(ActionHelper.class, actionHelper, Constants.SERVICE_RANKING, Integer.MAX_VALUE);
 		ctx.registerService(AssetDownloadHelper.class, assetDownloadHelper, Constants.SERVICE_RANKING,
@@ -232,6 +243,14 @@ public class DownloadImplTest {
 	public void getAssetRenditionGroups() {
 		ctx.currentResource("/content/download_with_asset_rendition_groups");
 
+		ctx.registerInjectActivateService(new ExternalRedirectRenditionDispatcherImpl(),
+				"rendition.mappings", new String[] {
+						"rendition-1-1=https://adobe.com/test.png",
+						"rendition-1-2=https://adobe.com/test.png",
+						"rendition-2-1=https://adobe.com/test.png"});
+
+		assertEquals(1, ctx.getService(AssetRenditionDispatchers.class).getAssetRenditionDispatchers().size());
+
 		final Options group1Options = new TestOptionsImpl(ctx.currentResource().getChild("asset-renditions-groups/items/item0/asset-renditions/items"));
 		final Options group2Options = new TestOptionsImpl(ctx.currentResource().getChild("asset-renditions-groups/items/item1/asset-renditions/items"));
 
@@ -258,10 +277,9 @@ public class DownloadImplTest {
 		assertEquals("Group 2", actual.get(1).getTitle());
 		assertEquals("Rendition 2.1", actual.get(1).getItems().get(0).getText());
 		assertEquals("rendition-2-1", actual.get(1).getItems().get(0).getValue());
-		assertEquals("Rendition 2.2", actual.get(1).getItems().get(1).getText());
-		assertEquals("rendition-2-2", actual.get(1).getItems().get(1).getValue());
+		//assertEquals("Rendition 2.2", actual.get(1).getItems().get(1).getText());
+		//assertEquals("rendition-2-2", actual.get(1).getItems().get(1).getValue());
 	}
-
 
     private class IsSameResourceByPath implements ArgumentMatcher<Resource> {
         private final String path;
