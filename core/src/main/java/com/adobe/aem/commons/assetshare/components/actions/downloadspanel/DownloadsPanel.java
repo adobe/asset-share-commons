@@ -11,5 +11,5 @@ import java.util.List;
 
 @ProviderType
 public interface DownloadsPanel {
-	List<DownloadProgress> getDownloads() throws DownloadException;
+	List<DownloadProgress> getDownloadProgresses() throws DownloadException;
 }

@@ -23,94 +23,66 @@ Represents a logical download from Asset Share Commons.
  */-->
 
 <template data-sly-template.download="${ @ downloadProgress }"
-          data-sly-use.downloadButtonsTemplate="download-buttons.html"
-          data-sly-use.downloadArtifactTemplate="download-artifact.html">
+          data-sly-use.downloadButtonsTemplate="templates/download-buttons.html"
+          data-sly-use.downloadArtifactTemplate="templates/download-artifact.html">
 
     <div class="title">
-        <i class="file archive icon"></i> DOWNLOAD NAME?
-        <span class="right-align">${properties['progress']} -> progressLabel: ${downloadProgress.progress}%</span>
+
+        <ul>
+            <li><i class="file archive icon"></i> DOWNLOAD NAME</li>
+            <li data-sly-test="${downloadProgress.status != 'FAILURE'}">
+                <label>${properties['fileSize'] || 'File size' @ i18n}</label> ${downloadProgress.totalSize}
+            </li>
+            <li data-sly-test="${downloadProgress.status != 'FAILURE'}">
+                <label>${properties['fileSize'] || 'File size' @ i18n}</label> ${downloadProgress.totalSize}
+            </li>
+        </ul>
+
+        <span class="cmp-download__progress right-align">
+            <p data-sly-test="${downloadProgress.progress < 100}">${downloadProgress.progress}% ${properties['progress'] || 'preparing download' @ i18n}'</p>
+
+            <sly  data-sly-test="${downloadProgress.progress == 100}"
+                  data-sly-call="${downloadButtonsTemplate.downloadButtons @ downloadArtifacts = downloadProgress.artifacts}"/>
+        </span>
+
     </div>
 
     <div>
         <div class="content">
+            Status: ${downloadProgress.status}
 
             <!--/* Non-failing downloads show the downloads */-->
             <div id="TODO"
                  data-asset-share-id="download-archive"
-                 data-sly-test="${download.status != 'FAILURE'}">
-
-
-                <sly data-sly-test="${download.artifacts.size > 0}"
-                        data-sly-call="${downloadButtonsTemplate.downloadButtons @ artifacts = download.artifacts}"></sly>
-
-                <a href="TODO ZIP DOWNLOAD URL">${properties['downloadZip']} --> downloadZipLabel</a>
+                 data-sly-test="${downloadProgress.status != 'FAILURE'}">
 
                 <br>
 
-                ${properties['fileSize']} -> fileSizeLabel: ${download.totalSize}
+                ${properties['fileSize'] || 'Archive file size' @ i18n}: ${downloadProgress.totalSize}
             </div>
 
             <!--/* All downloads (success/failing) show the downloads */-->
 
             TODO ALL LABEL PROPERTIES
-            ${properties['assetsCount']}: ${download.totalCount}<br>
+            ${properties['assetsCount']}: ${downloadProgress.totalCount}<br>
             (Success/Failure count?)
 
-            ${properties['status']}: ${download.status @ i18n} -<br>
-
+            ${properties['status']}: ${downloadProgress.status @ i18n} -<br>
 
             <div class="accordion">
                 <div class=" title">
                     <i class="dropdown icon"></i> ${properties['assetListTitle']} -> assetListTitleLabel?
                 </div>
-                <div class="content">
 
-                    <sly data-sly-call="${downloadArtifactTemplate.downloadArtifact @ artifact = downloadArtifact}"></sly>
+                ${downloadProgress.artifacts.size}
 
+                <div class="content"
+                     data-sly-list.downloadArtifact="${downloadProgress.artifacts}">
+                    <sly data-sly-call="${downloadArtifactTemplate.artifact @ downloadArtifact = downloadArtifact}"></sly>
                 </div>
-            </div>
 
-
-
-
-
-
-
-</template>
-
-
-
-
-
-
-<div>
-    <div class="content">
-        <div id="${downloadStatus.downloadId}"
-             data-asset-share-id="download-archive"
-             data-sly-test="${downloadStatus.status == 'SUCCESSFUL'}">
-
-            <a href="${downloadStatus.url}">${properties['downloadZip']}</a>
-            <br>
-            ${properties['fileSize']}: ${downloadProgress.size}
-        </div>
-
-        ${properties['assetsCount']}: ${downloadProgress.totalCount}<br>
-        ${properties['status']}: ${downloadProgress.status}<br>
-
-        <div class="accordion">
-            <div class=" title">
-                <i class="dropdown icon"></i> ${properties['assetListTitle']}
-            </div>
-            <div class=" content">
-                <div class="ui ordered list"
-                     data-sly-list.downloadedAsset="${downloadProgress.assets}">
-                    <div class="item ">
-                        <p>
-                            ${downloadedAsset}
-                        </p>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
-</div>
+
+</template>

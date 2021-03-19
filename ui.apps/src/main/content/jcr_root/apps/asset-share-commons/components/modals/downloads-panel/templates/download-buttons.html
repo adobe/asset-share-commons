@@ -23,12 +23,17 @@ in the context of Asset Share Commons, there is typically only 1 zip file.
 
  */-->
 
-<template data-sly-template.downloadButtons="${ @ downloadArtifacts}">
+<template data-sly-template.downloadButtons="${ @ downloadArtifacts }">
 
-    <sly data-sly-list.artifact="${artifacts.successes}">
-        <div data-sly-test="${artifact.success.length > 0}">
+    <sly data-sly-list.downloadArtifact="${downloadArtifacts}">
+        <div data-sly-test="${downloadArtifact.successes.size > 0}">
             <!--/* At least 1 successful asset in the zip */-->
-            <a href="${artifact.binaryURI.toString}">${artifact.name}</a>
+
+            <a href="${downloadArtifact.binaryURI.toString}" class="ui positive primary right labeled icon button">
+                ${downloadArtifact.name}
+                <i class="download icon"></i>
+            </a>
+
         </div>
     </sly>
 

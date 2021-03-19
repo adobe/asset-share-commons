@@ -59,7 +59,7 @@ public class DownloadsPanelImpl implements DownloadsPanel, ComponentExporter {
 	private List<DownloadProgress> activeDownloads = null;
 
 	@Override
-	public List<DownloadProgress> getDownloads() throws DownloadException {
+	public List<DownloadProgress> getDownloadProgresses() throws DownloadException {
 		if (activeDownloads == null) {
 			activeDownloads = new ArrayList<>();
 

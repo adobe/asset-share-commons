@@ -20,6 +20,7 @@
 	data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
 	data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
 	data-sly-use.downloadsPanel="com.adobe.aem.commons.assetshare.components.actions.downloadspanel.DownloadsPanel"
+	data-sly-use.downloadTemplate="templates/download.html"
 	data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html"></sly>
 
 <style data-sly-test="${!wccmode.disabled}">
@@ -41,7 +42,7 @@
 		TESTING
 		${properties['modalTitle']}
 		<span
-			data-sly-test="${downloadsPanel.downloads.size > 0}"
+			data-sly-test="${downloadsPanel.downloadProgresses.size > 0}"
 			class="right-align"
 			data-asset-share-id="refresh-downloads">
 				<a href="#refresh">Refresh</a>
@@ -53,55 +54,20 @@
 	</div>
 
 	<div class="cmp-content scrolling content">
-		<div id="FileDownloadsPanelModal" class="downloadsPanelModal">
+		<div id="FileDownloadsPanelModal"
+			 class="downloadsPanelModal">
 			<div class="modal-content">
 				<div id="downloadsPanel" class="container">
 					<div class="ui container">
 
-
-			<div data-sly-list.dp="${downloadsPanel.downloads}">
-				<div>User: ${dp.requestingUser}</div>
-				<div>Total Count: ${dp.totalCount}</div>
-				<div>Processed Count: ${dp.processedCount}</div>
-				<div>Failure Count: ${dp.failureCount}</div>
-				<div>Success Count: ${dp.successCount}</div>
-				<div>Complete?: ${dp.complete.time}</div>
-				<div>Started: ${dp.started.time}</div>
-				<div>Finished: ${dp.finished.time}</div>
-
-
-				<!--/* Start download record */-->
-
-				<div data-sly-list.da="${dp.artifacts}">
-
-					<ul>
-						<li>Id: ${da.id}</li>
-						<li>Name: ${da.name}</li>
-						<li>mimeType: ${da.mimeType}</li>
-						<li>Link: <a href="${da.binaryURI.toString}">${da.binaryURI.toString}</a></li>
-						<li>Failure reason: ${da.failureReason}</li>
-						<li>Successes:
-							<ul data-sly-list.s="${da.successes}">
-								<li>${s}</li>
-							</ul>
-						</li>
-						<li> Failures:
-							<ul data-sly-list.failure="${da.failures}">
-								<li>${failure} : ${da.failures[failure]}</li>
-							</ul>
-						</li>
-					</ul>
+						<sly data-sly-list.downloadProgress="${downloadsPanel.downloadProgresses}">
+							<sly data-sly-call="${downloadTemplate.download @ downloadProgress = downloadProgress}"></sly>
+						</sly>
+					</div>
 				</div>
-
-				<!--/* End download record */-->
-
 			</div>
 
-
-
-
-
-			<p data-sly-test="${downloadsPanel.downloadProgress.size == 0}">${properties['noContentMessage']}</p>
+			<p data-sly-test="${downloadsPanel.downloadProgresses.size == 0}">${properties['noContentMessage']}</p>
 		</div>
 	</div>
 	<script>
