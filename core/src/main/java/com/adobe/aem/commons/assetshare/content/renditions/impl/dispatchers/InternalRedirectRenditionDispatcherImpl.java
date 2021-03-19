@@ -145,6 +145,11 @@ public class InternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
                 this.getClass().getName()));
     }
 
+    @Override
+    public boolean accepts(AssetModel assetModel, String renditionName) {
+        return getRenditionNames().contains(renditionName);
+    }
+
     protected String cleanPathInfoRequestPath(String resourcePath) {
         if (StringUtils.startsWith(resourcePath, "/")) {
             return resourcePath;
