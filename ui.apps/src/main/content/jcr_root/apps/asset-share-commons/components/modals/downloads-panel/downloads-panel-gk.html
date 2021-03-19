@@ -38,7 +38,6 @@
 
 	<i class="close icon"></i>
 	<div class="header">
-		TESTING
 		${properties['modalTitle']}
 		<span
 			data-sly-test="${downloadsPanel.downloads.size > 0}"
@@ -57,50 +56,51 @@
 			<div class="modal-content">
 				<div id="downloadsPanel" class="container">
 					<div class="ui container">
+						<div class="ui styled accordion" style="width: 100%;"
+							data-sly-test="${downloadsPanel.downloads.size > 0}">
+							<div
+								data-sly-list.downloadProgress="${downloadsPanel.downloads}">
+								<div class="title">
+									<i class="file archive icon"></i>
+										${downloadProgress.name}
+										<span class="right-align">${properties['progress']}: ${downloadProgress.progress}%</span>
+								</div>
+								<div>
+									<div class="content">
+										<div id="${downloadStatus.downloadId}"
+											data-asset-share-id="download-archive"
+											data-sly-test="${downloadStatus.status == 'SUCCESSFUL'}">
 
+											<a href="${downloadStatus.url}">${properties['downloadZip']}</a>
+											<br>
+											${properties['fileSize']}: ${downloadProgress.size}
+										</div>
 
-			<div data-sly-list.dp="${downloadsPanel.downloads}">
-				<div>User: ${dp.requestingUser}</div>
-				<div>Total Count: ${dp.totalCount}</div>
-				<div>Processed Count: ${dp.processedCount}</div>
-				<div>Failure Count: ${dp.failureCount}</div>
-				<div>Success Count: ${dp.successCount}</div>
-				<div>Complete?: ${dp.complete.time}</div>
-				<div>Started: ${dp.started.time}</div>
-				<div>Finished: ${dp.finished.time}</div>
+										${properties['assetsCount']}: ${downloadProgress.totalCount}<br>
+										${properties['status']}: ${downloadProgress.status}<br>
 
-
-				<!--/* Start download record */-->
-
-				<div data-sly-list.da="${dp.artifacts}">
-
-					<ul>
-						<li>Id: ${da.id}</li>
-						<li>Name: ${da.name}</li>
-						<li>mimeType: ${da.mimeType}</li>
-						<li>Link: <a href="${da.binaryURI.toString}">${da.binaryURI.toString}</a></li>
-						<li>Failure reason: ${da.failureReason}</li>
-						<li>Successes:
-							<ul data-sly-list.s="${da.successes}">
-								<li>${s}</li>
-							</ul>
-						</li>
-						<li> Failures:
-							<ul data-sly-list.failure="${da.failures}">
-								<li>${failure} : ${da.failures[failure]}</li>
-							</ul>
-						</li>
-					</ul>
+										<div class="accordion">
+											<div class=" title">
+												<i class="dropdown icon"></i> ${properties['assetListTitle']}
+											</div>
+											<div class=" content">
+												<div class="ui ordered list"
+													data-sly-list.downloadedAsset="${downloadProgress.assets}">
+													<div class="item ">
+														<p>
+															${downloadedAsset}
+														</p>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
-
-				<!--/* End download record */-->
-
 			</div>
-
-
-
-
-
 			<p data-sly-test="${downloadsPanel.downloadProgress.size == 0}">${properties['noContentMessage']}</p>
 		</div>
 	</div>

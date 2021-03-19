@@ -1,0 +1,116 @@
+<!--/*
+  ~ Asset Share Commons
+  ~
+  ~ Copyright [2021]  Adobe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+ */-->
+
+<!--/*
+
+Represents a logical download from Asset Share Commons.
+
+ */-->
+
+<template data-sly-template.download="${ @ downloadProgress }"
+          data-sly-use.downloadButtonsTemplate="download-buttons.html"
+          data-sly-use.downloadArtifactTemplate="download-artifact.html">
+
+    <div class="title">
+        <i class="file archive icon"></i> DOWNLOAD NAME?
+        <span class="right-align">${properties['progress']} -> progressLabel: ${downloadProgress.progress}%</span>
+    </div>
+
+    <div>
+        <div class="content">
+
+            <!--/* Non-failing downloads show the downloads */-->
+            <div id="TODO"
+                 data-asset-share-id="download-archive"
+                 data-sly-test="${download.status != 'FAILURE'}">
+
+
+                <sly data-sly-test="${download.artifacts.size > 0}"
+                        data-sly-call="${downloadButtonsTemplate.downloadButtons @ artifacts = download.artifacts}"></sly>
+
+                <a href="TODO ZIP DOWNLOAD URL">${properties['downloadZip']} --> downloadZipLabel</a>
+
+                <br>
+
+                ${properties['fileSize']} -> fileSizeLabel: ${download.totalSize}
+            </div>
+
+            <!--/* All downloads (success/failing) show the downloads */-->
+
+            TODO ALL LABEL PROPERTIES
+            ${properties['assetsCount']}: ${download.totalCount}<br>
+            (Success/Failure count?)
+
+            ${properties['status']}: ${download.status @ i18n} -<br>
+
+
+            <div class="accordion">
+                <div class=" title">
+                    <i class="dropdown icon"></i> ${properties['assetListTitle']} -> assetListTitleLabel?
+                </div>
+                <div class="content">
+
+                    <sly data-sly-call="${downloadArtifactTemplate.downloadArtifact @ artifact = downloadArtifact}"></sly>
+
+                </div>
+            </div>
+
+
+
+
+
+
+
+</template>
+
+
+
+
+
+
+<div>
+    <div class="content">
+        <div id="${downloadStatus.downloadId}"
+             data-asset-share-id="download-archive"
+             data-sly-test="${downloadStatus.status == 'SUCCESSFUL'}">
+
+            <a href="${downloadStatus.url}">${properties['downloadZip']}</a>
+            <br>
+            ${properties['fileSize']}: ${downloadProgress.size}
+        </div>
+
+        ${properties['assetsCount']}: ${downloadProgress.totalCount}<br>
+        ${properties['status']}: ${downloadProgress.status}<br>
+
+        <div class="accordion">
+            <div class=" title">
+                <i class="dropdown icon"></i> ${properties['assetListTitle']}
+            </div>
+            <div class=" content">
+                <div class="ui ordered list"
+                     data-sly-list.downloadedAsset="${downloadProgress.assets}">
+                    <div class="item ">
+                        <p>
+                            ${downloadedAsset}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
