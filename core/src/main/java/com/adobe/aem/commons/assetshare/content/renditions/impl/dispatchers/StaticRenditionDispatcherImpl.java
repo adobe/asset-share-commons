@@ -157,6 +157,11 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
         return null;
     }
 
+    @Override
+    public boolean accepts(AssetModel assetModel, String renditionName) {
+        return getRenditionNames().contains(renditionName);
+    }
+
     private Rendition findRendition(final Asset asset, final AssetRenditionParameters parameters) {
         return asset.getRendition(new PatternRenditionPicker(mappings.get(parameters.getRenditionName())));
     }
