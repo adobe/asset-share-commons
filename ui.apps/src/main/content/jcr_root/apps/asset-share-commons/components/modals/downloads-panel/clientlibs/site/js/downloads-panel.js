@@ -18,7 +18,7 @@
 
 /*global jQuery: false, AssetShare: false*/
 
-jQuery((function($, ns, semanticModal, licenseModal, downloads) {
+jQuery((function($, ns, semanticModal, downloads) {
 	"use strict";
 	AssetShare.SemanticUI.Modals.DownloadsPanelModal = (function() {
 		var DOWNLOAD_PANEL_URL = ns.Data.val("downloads-panel-url"), DOWNLOAD_PANEL_MODAL_ID = "downloadspanel-modal", DOWNLOAD_PANEL_BUTTON_ID = "download-asset";
@@ -98,5 +98,4 @@ jQuery((function($, ns, semanticModal, licenseModal, downloads) {
 			modal : getDownloadPanel
 		};
 	}());
-}(jQuery, AssetShare, AssetShare.SemanticUI.Modal,
-		AssetShare.SemanticUI.Modals.LicenseModal, AssetShare.Downloads)));
+}(jQuery, AssetShare, AssetShare.SemanticUI.Modal, AssetShare.Downloads)));

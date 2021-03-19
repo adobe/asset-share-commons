@@ -14,7 +14,7 @@ public class PlaceholderDownloadProgress implements DownloadProgress {
 
     @Override
     public Status getStatus() {
-        return Status.PARTIALLY_SUCCESSFUL;
+        return Status.PROCESSING;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class PlaceholderDownloadProgress implements DownloadProgress {
 
     @Override
     public int getProgress() {
-        return 100;
+        return 80;
     }
 
     @Override

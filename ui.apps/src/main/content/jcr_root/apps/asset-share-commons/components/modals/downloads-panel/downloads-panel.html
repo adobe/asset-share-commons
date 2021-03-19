@@ -39,15 +39,13 @@
 
 	<i class="close icon"></i>
 	<div class="header">
-		TESTING
-		${properties['modalTitle']}
+		${properties['modalTitle'] || 'Downloads' @i18n}
 		<span
 			data-sly-test="${downloadsPanel.downloadProgresses.size > 0}"
-			class="right-align"
 			data-asset-share-id="refresh-downloads">
-				<a href="#refresh">Refresh</a>
+				<a href="#refresh"><i class="refresh sync alternate icon"></i></a>
 		</span>
-		<span class="right-align"
+		<span
 			  data-asset-share-id="clear-downloads">
 			<a href="">${properties['clear']}</a>
 		</span>
@@ -60,9 +58,22 @@
 				<div id="downloadsPanel" class="container">
 					<div class="ui container">
 
-						<sly data-sly-list.downloadProgress="${downloadsPanel.downloadProgresses}">
-							<sly data-sly-call="${downloadTemplate.download @ downloadProgress = downloadProgress}"></sly>
-						</sly>
+
+						<table>
+							<thead>
+								<tr>
+									<th class="archive-name">Download file</th>
+									<th class="status">Status</th>
+									<th class="total-count">No. of assets</th>
+									<th class="file-size">File size</th>
+									<th class="action"></th>
+								</tr>
+							</thead>
+							<sly data-sly-list.downloadProgress="${downloadsPanel.downloadProgresses}">
+								<sly data-sly-call="${downloadTemplate.download @ downloadProgress = downloadProgress}"></sly>
+							</sly>
+						</table>
+
 					</div>
 				</div>
 			</div>
@@ -71,6 +82,10 @@
 		</div>
 	</div>
 	<script>
-		$('.ui.accordion').accordion();
+	if (typeof $ !== 'undefined') {
+		if (typeof $('#downloads-panel .ui.accordion').accordion !== 'undefined') {
+    		$('#downloads-panel .ui.accordion').accordion();
+    	}
+    }
 	</script>
 </div>

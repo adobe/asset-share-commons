@@ -23,22 +23,26 @@ in the context of Asset Share Commons, there is typically only 1 zip file.
 
  */-->
 
-<template data-sly-template.artifact="${ @ downloadArtifact}">
+<template data-sly-template.downloadArtifact="${ @ downloadArtifact }">
 
     <div data-sly-test="${downloadArtifact.successes.size > 0}">
-        <h5>Successful</h5>
-        <div class="ui ordered list"
-             data-sly-list.asset="${downloadArtifact.successes}">
-            <div class="item"><p>${asset}</p></div>
-        </div>
+        <hr class="artifact-list-delimiter"/>
+        <div class="artifact-list-title">${ 'Successfully added to download' @ i18n }</div>
+        <ul class="artifact-list"
+            data-sly-list.asset="${downloadArtifact.successes}">
+            <li>
+                ${asset}
+            </li>
+        </ul>
     </div>
 
     <div data-sly-test="${downloadArtifact.failures.size > 0}">
-        <h5>Failures</h5>
-        <div class="ui ordered list"
-             data-sly-list.asset="${downloadArtifact.failures}">
-            <div class="item"><p>${asset}</p></div>
-        </div>
+        <hr class="artifact-list-delimiter"/>
+        <div class="artifact-list-title">${ 'Failed to add to download' @ i18n }</div>
+        <ul class="artifact-list"
+            data-sly-list.asset="${downloadArtifact.failures}">
+            <li>${asset}</li>
+        </ul>
     </div>
 
 </template>

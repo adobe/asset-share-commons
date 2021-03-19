@@ -1,7 +1,7 @@
 /*
  * Asset Share Commons
  *
- * Copyright [2017]  Adobe
+ * Copyright [2021]  Adobe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,16 +18,50 @@
 
 /* applies to all modals */
 
-.right-align {
-    float:right;
-    padding-right:10px;
+table { width: 100%; border-collapse: collapse;}
+
+th.action, td.action,
+th.total-count, td.total-count,
+th.file-size, td.file-size
+{ text-align: right; }
+
+
+th {
+    text-transform: uppercase;
 }
 
-.ui.styled.accordion, .ui.styled.accordion .accordion{
-    box-shadow:0 1px 2px 0 rgb(34 36 38 / 15%), 0 0 0 1px rgb(34 36 38 / 15%)!important;
+td.status {
+    text-transform: uppercase;
 }
 
-.ui.modal .scrolling.content {
-    max-height: calc(70vh);
-    overflow: auto;
+.row-delimiter {
+    background-color: transparent;
+    border-width: 0;
+    border-top: solid 1px rgba(34, 36, 38, 0.15);
 }
+
+.artifact-list-title {
+    text-transform: uppercase;
+    color: #666;
+    font-size: .9rem;
+
+}
+
+.artifact-list-delimiter {
+    background-color: transparent;
+    border-width: 0;
+    border-top: solid 1px #eee;
+    margin-bottom: 1rem;
+}
+
+.artifact-list {
+   padding-left: 1.5rem;
+    color: #666;
+    font-size: .9rem;
+}
+.artifact-list li {
+   padding: .25rem; 0;
+}
+
+
+.refresh {float: right;}
