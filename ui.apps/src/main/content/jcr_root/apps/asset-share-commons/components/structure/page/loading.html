@@ -1,7 +1,7 @@
 <!--/*
   ~ Asset Share Commons
   ~
-  ~ Copyright [2017]  Adobe
+  ~ Copyright [2020]  Adobe
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,17 +15,9 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
  */-->
-
-<!--/*
-    This overlay copies the code from ../v2/page/body.html and adds additional HTL scripts to add global elements to support the site.
-*/-->
-
-<sly data-sly-include="init.html"/>
-
-<sly data-sly-use.templatedContainer="com.day.cq.wcm.foundation.TemplatedContainer"
-     data-sly-repeat.child="${templatedContainer.structureResources}"
-     data-sly-resource="${child.path @ resourceType=child.resourceType, decorationTagName='div'}"></sly>
-
-<sly data-sly-include="messages.html"/>
-<sly data-sly-include="loading.html"/>
- 
+<!--/* Localized text for use with full-screen dimmers called by javascript */-->
+<div data-asset-share-id="download-loader-text" 
+    class="ui indeterminate huge text loader">
+        ${'Preparing download' @ i18n}
+</div>
+<div class="asset-share-search-loader ui huge text loader">${'Loading' @ i18n}...</div>
