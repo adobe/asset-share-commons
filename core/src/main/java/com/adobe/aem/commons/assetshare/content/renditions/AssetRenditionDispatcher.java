@@ -106,4 +106,6 @@ public interface AssetRenditionDispatcher {
     default AssetRendition getRendition(AssetModel assetModel, AssetRenditionParameters parameters) {
         throw new UnsupportedOperationException("AssetRendition are only supported by AEM as a Cloud Service");
     }
+    
+    default boolean accepts(AssetModel asset, String renditionName) { return false; }
 }

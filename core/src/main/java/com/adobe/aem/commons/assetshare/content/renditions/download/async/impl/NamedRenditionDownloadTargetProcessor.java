@@ -81,26 +81,32 @@ public class NamedRenditionDownloadTargetProcessor implements DownloadTargetProc
 
         for (final AssetRenditionDispatcher assetRenditionDispatcher : assetRenditionDispatchers.getAssetRenditionDispatchers()) {
 
-            log.debug("Setting DownloadTarget for [ {} ] using AssetRenditionDispatcher [ {} ]", assetModel.getPath(), assetRenditionDispatcher.getName());
+            if (assetRenditionDispatcher.accepts(assetModel, renditionName)) {
+                log.debug("Setting DownloadTarget for [ {} ] using AssetRenditionDispatcher [ {} ]", assetModel.getPath(), assetRenditionDispatcher.getName());
 
-            final AssetRendition assetRendition = assetRenditionDispatcher.getRendition(assetModel, assetRenditionParameters);
+                final AssetRendition assetRendition = assetRenditionDispatcher.getRendition(assetModel, assetRenditionParameters);
 
-            if (assetRendition != null) {
-                log.debug("Obtained AssetRendition [ {} ] details for [ {} ]", assetRendition.getBinaryUri(), assetModel.getPath());
+                if (assetRendition != null) {
+                    log.debug("Obtained AssetRendition [ {} ] details for [ {} ]", assetRendition.getBinaryUri(), assetModel.getPath());
 
-                final Map<String, Object> downloadFileParameters = new HashMap<>();
+                    final Map<String, Object> downloadFileParameters = new HashMap<>();
 
-                downloadFileParameters.put(PARAM_ARCHIVE_NAME, archiveName);
-                downloadFileParameters.put(PARAM_ARCHIVE_PATH, getArchivePath(groupRenditionsByAssetFolder,
-                        true,
-                        assetModel,
-                        renditionName,
-                        assetRendition.getMimeType()));
-                downloadFiles.add(apiFactory.createDownloadFile(assetRendition.getSize(),
-                        assetRendition.getBinaryUri(),
-                        downloadFileParameters));
+                    downloadFileParameters.put(PARAM_ARCHIVE_NAME, archiveName);
+                    downloadFileParameters.put(PARAM_ARCHIVE_PATH, getArchivePath(groupRenditionsByAssetFolder,
+                            true,
+                            assetModel,
+                            renditionName,
+                            assetRendition.getMimeType()));
+                    downloadFiles.add(apiFactory.createDownloadFile(assetRendition.getSize(),
+                            assetRendition.getBinaryUri(),
+                            downloadFileParameters));
+                } else {
+                    log.debug("Unable to obtain AssetRendition details for [ {} ] from AssetDispatcher [ {} ]", assetModel.getPath(), assetRenditionDispatcher.getClass().getName());
+                }
+
+                break;
             } else {
-                log.debug("Unable to obtain AssetRendition details for [ {} ] from AssetDispatcher [ {} ]", assetModel.getPath(), assetRenditionDispatcher.getClass().getName());
+                log.debug("assetRenditionDispatcher [ {} ] does not accept AssetModel [ {} ] and renditionName [ {} ]", this.getClass().getName(), assetModel.getPath(), renditionName);
             }
         }
 

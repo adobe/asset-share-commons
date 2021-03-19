@@ -156,6 +156,11 @@ public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
         return null;
     }
 
+    @Override
+    public boolean accepts(AssetModel assetModel, String renditionName) {
+        return getRenditionNames().contains(renditionName);
+    }
+
     @Activate
     protected void activate(Cfg cfg) {
         this.cfg = cfg;
