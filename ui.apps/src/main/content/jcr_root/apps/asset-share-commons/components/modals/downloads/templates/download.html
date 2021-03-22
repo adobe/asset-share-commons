@@ -28,45 +28,45 @@ Represents a logical download from Asset Share Commons.
         <sly data-sly-list.downloadArtifact="${downloadProgress.artifacts @ begin = 0, end = 1}">
             <tbody>
                 <tr>
-                    <td colspan="5"><hr class="row-delimiter"/></td>
+                    <td colspan="5"><hr class="cmp-modal-downloads__row-delimiter"/></td>
                 </tr>
             </tbody>
-            <tbody class="ui accordion">
-                <tr class="title">
+            <tbody class="ui accordion"
+                   data-asset-share-id="downloads-entry"
+                   data-asset-share-downloads-entry="${}">
+                <tr class="ui title">
 
-                    <td>
+                    <td class="cmp-modal-downloads__col--archive-name">
                         <i class="dropdown icon"></i>
                         ${downloadArtifact.name}
                     </td>
 
-                    <td class="status">
+                    <td class="cmp-modal-downloads__col--status">
                         <sly data-sly-test="${downloadProgress.status == 'PROCESSING'}">${'Processing' @ i18n}</sly>
                         <sly data-sly-test="${downloadProgress.status == 'PARTIALLY_SUCCESSFUL'}">${'Partially Successful' @ i18n}</sly>
                         <sly data-sly-test="${downloadProgress.status == 'SUCCESSFUL'}">${'Successful' @ i18n}</sly>
                         <sly data-sly-test="${downloadProgress.status == 'FAILED'}">${'Failed' @ i18n}</sly>
                     </td>
                     <!-- Total count -->
-                    <td class="total-count">
+                    <td class="cmp-modal-downloads__col--total-count">
                         <span>
                             ${downloadProgress.totalCount}
                         </span>
                     </td>
                     <!-- File size -->
-                    <td class="file-size">
-                        <span data-sly-test="${downloadProgress.status != 'FAILED'}">
-                            ${downloadProgress.totalSize}
-                        </span>
+                    <td class="cmp-modal-downloads__col--file-size"
+                        data-asset-share-id="file-size">
+                        ${downloadProgress.totalSize || 0}
                     </td>
                     <!-- Progress/Download -->
-                    <td class="action">
+                    <td class="cmp-modal-downloads__col--action">
 
-                        <p data-sly-test="${downloadProgress.status == 'PROCESSING'}">
-                            <button onclick="event.stopPropagation()"
-                                    class="ui disabled right labeled icon button">
-                                ${downloadProgress.progress}%
-                                <i class="download icon"></i>
-                            </button>
-                        </p>
+                        <span data-sly-test="${downloadProgress.status == 'PROCESSING'}"
+                                onclick="event.stopPropagation()"
+                                class="ui disabled right labeled icon button">
+                            ${downloadProgress.progress}%
+                            <i class="download icon"></i>
+                        </span>
 
                         <a onclick="event.stopPropagation()"
                                 data-sly-test="${downloadProgress.status == 'SUCCESSFUL' || downloadProgress.status == 'PARTIALLY_SUCCESSFUL'}"
@@ -77,10 +77,10 @@ Represents a logical download from Asset Share Commons.
                         </a>
                     </td>
                 </tr>
-                <tr class="content">
-                    <td></td>
-                    <td colspan="4">
-                        <sly data-sly-call="${downloadArtifactTemplate.downloadArtifact @ downloadArtifact = downloadArtifact}"></sly>
+                <tr class="ui content">
+                    <td colspan="5">
+                        <div class="cmp-modal-downloads__artifacts"
+                                data-sly-call="${downloadArtifactTemplate.downloadArtifact @ downloadArtifact = downloadArtifact}"></div>
                     </td>
                 </tr>
             </tbody>

@@ -18,6 +18,6 @@
  */
 
 @Version("1.0.0")
-package com.adobe.aem.commons.assetshare.components.actions.downloadspanel;
+package com.adobe.aem.commons.assetshare.components.actions.downloads;
 
 import org.osgi.annotation.versioning.Version;

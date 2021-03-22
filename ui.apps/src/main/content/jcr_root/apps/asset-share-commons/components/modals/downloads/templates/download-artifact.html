@@ -25,25 +25,23 @@ in the context of Asset Share Commons, there is typically only 1 zip file.
 
 <template data-sly-template.downloadArtifact="${ @ downloadArtifact }">
 
-    <div data-sly-test="${downloadArtifact.successes.size > 0}">
-        <hr class="artifact-list-delimiter"/>
-        <div class="artifact-list-title">${ 'Successfully added to download' @ i18n }</div>
-        <ul class="artifact-list"
+    <sly data-sly-test="${downloadArtifact.successes.size > 0}">
+        <hr class="cmp-modal-downloads__artifacts-delimiter"/>
+        <div class="cmp-modal-downloads__artifacts-title">${ 'Successfully added to download' @ i18n }</div>
+        <ul class="cmp-modal-downloads__artifacts-list"
             data-sly-list.asset="${downloadArtifact.successes}">
-            <li>
-                ${asset}
-            </li>
+            <li class="cmp-modal-downloads__artifacts-item">${asset}</li>
         </ul>
-    </div>
+    </sly>
 
-    <div data-sly-test="${downloadArtifact.failures.size > 0}">
-        <hr class="artifact-list-delimiter"/>
-        <div class="artifact-list-title">${ 'Failed to add to download' @ i18n }</div>
-        <ul class="artifact-list"
+    <sly data-sly-test="${downloadArtifact.failures.size > 0}">
+        <hr class="cmp-modal-downloads__artifacts-delimiter"/>
+        <div class="cmp-modal-downloads__artifacts-title">${ 'Failed to add to download' @ i18n }</div>
+        <ul class="cmp-modal-downloads__artifacts-list"
             data-sly-list.asset="${downloadArtifact.failures}">
-            <li>${asset}</li>
+            <li class="cmp-modal-downloads__artifacts-item">${asset}</li>
         </ul>
-    </div>
+    </sly>
 
 </template>
 

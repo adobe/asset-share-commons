@@ -118,7 +118,7 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
     }
 
     private String getArchiveName(final String baseArchiveName) {
-        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_hh-mm-aa");
+        final SimpleDateFormat sdf = new SimpleDateFormat("MM-dd hh-mmaa");
         final String dateString = sdf.format(new Date());
 
         return baseArchiveName + " (" + dateString + ").zip";

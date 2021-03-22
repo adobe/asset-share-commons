@@ -1,4 +1,0 @@
-#base=js
-
-downloads-panel.js
-filesize.js

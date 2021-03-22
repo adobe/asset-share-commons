@@ -16,27 +16,31 @@
  * limitations under the License.
  */
 
-/*global jQuery: false, AssetShare: false, ContextHub: false*/
+/*global jQuery: false, AssetShare: false */
 
-jQuery((function($, ns, cart) {
+jQuery((function($, ns) {
 	"use strict";
 
-	function updateDownlaodCountBadge() {
-		var downloadIds = sessionStorage.getItem("downloadIds");
-		if (downloadIds) {
-			var count = downloadIds.split(',').length;
-			ns.Elements.element("downloads-count").text(count);
-		} else {
-			ns.Elements.element("downloads-count").text(0);
-		}
+    // TODO REMOVE default
+    var DOWNLOADS_URL = ns.Data.val("downloads-url") || '/content/asset-share-commons/en/light/actions/downloads.partial.html';
 
-	}
+    function update() {
+        var count = 0;
 
-	// Page init
-	function init() {
-		updateDownlaodCountBadge();
-	}
+        var allowedDownloadIds = [{
+                                    name: 'downloadId',
+                                    value: '137fd707-a62d-4ae9-a819-e0c405e1a8a7'
+                                  },
+                                  {
+                                     name: 'downloadId',
+                                     value: '137fd707-a62d-4ae9-a819-1234'
+                                  }];
+        $.post(DOWNLOADS_URL, allowedDownloadIds).then(function(htmlResponse) {
+            count = ns.Elements.element('downloads-modal', htmlResponse).data('asset-share-downloads-count') || 0;
+            ns.Elements.element("downloads-count").text(count);
+        });
+    }
 
-	init();
+    update();
 
-}(jQuery, AssetShare, AssetShare.Cart)));
+}(jQuery, AssetShare)));

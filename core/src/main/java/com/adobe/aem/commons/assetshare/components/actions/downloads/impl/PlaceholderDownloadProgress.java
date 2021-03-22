@@ -1,4 +1,4 @@
-package com.adobe.aem.commons.assetshare.components.actions.downloadspanel.impl;
+package com.adobe.aem.commons.assetshare.components.actions.downloads.impl;
 
 import com.adobe.cq.dam.download.api.DownloadArtifact;
 import com.adobe.cq.dam.download.api.DownloadProgress;
@@ -103,7 +103,7 @@ public class PlaceholderDownloadProgress implements DownloadProgress {
 
         @Override
         public String getName() {
-            return String.format("Assets %d (yyyy-mm-dd_hh-mm).zip", id);
+            return String.format("Assets %d (mm-dd hh-mmaa).zip", id);
         }
 
         @Override

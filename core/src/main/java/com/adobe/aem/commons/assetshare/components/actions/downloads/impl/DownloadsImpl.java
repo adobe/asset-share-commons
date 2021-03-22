@@ -1,8 +1,7 @@
-package com.adobe.aem.commons.assetshare.components.actions.downloadspanel.impl;
+package com.adobe.aem.commons.assetshare.components.actions.downloads.impl;
 
 import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
-import com.adobe.aem.commons.assetshare.components.actions.downloadspanel.DownloadsPanel;
-import com.adobe.cq.dam.download.api.DownloadArtifact;
+import com.adobe.aem.commons.assetshare.components.actions.downloads.Downloads;
 import com.adobe.cq.dam.download.api.DownloadException;
 import com.adobe.cq.dam.download.api.DownloadProgress;
 import com.adobe.cq.dam.download.api.DownloadService;
@@ -10,10 +9,8 @@ import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.export.json.ExporterConstants;
 import com.day.cq.wcm.api.WCMMode;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.request.RequestParameter;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
@@ -25,22 +22,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
-import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Model(
 		adaptables = { SlingHttpServletRequest.class },
-		adapters = { DownloadsPanel.class },
-		resourceType = DownloadsPanelImpl.RESOURCE_TYPE
+		adapters = { Downloads.class },
+		resourceType = DownloadsImpl.RESOURCE_TYPE
 )
 @Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
-public class DownloadsPanelImpl implements DownloadsPanel, ComponentExporter {
+public class DownloadsImpl implements Downloads, ComponentExporter {
 
-	private static final Logger log = LoggerFactory.getLogger(DownloadsPanelImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(DownloadsImpl.class);
 	
-	static final String RESOURCE_TYPE = "asset-share-commons/components/modals/downloads-panel";
+	static final String RESOURCE_TYPE = "asset-share-commons/components/modals/downloads";
+	private static final String REQ_PARAM_DOWNLOAD_IDS = "downloadId";
 
 	@Self
 	@Required
@@ -64,7 +61,9 @@ public class DownloadsPanelImpl implements DownloadsPanel, ComponentExporter {
 			activeDownloads = new ArrayList<>();
 
 			if (!WCMMode.EDIT.equals(WCMMode.fromRequest(request))) {
+				List allowedDownloadIds = getAllowedDownloadIds(request);
 				activeDownloads = StreamSupport.stream(downloadService.getDownloadIds(resourceResolver).spliterator(), false)
+						.filter(id -> allowedDownloadIds.contains(id))
 						.map(id -> {
 							try {
 								return downloadService.getProgress(id, resourceResolver);
@@ -78,11 +77,25 @@ public class DownloadsPanelImpl implements DownloadsPanel, ComponentExporter {
 			} else {
 				activeDownloads.add(new PlaceholderDownloadProgress());
 				activeDownloads.add(new PlaceholderDownloadProgress());
-
 			}
 		}
 
 		return Collections.unmodifiableList(activeDownloads);
+	}
+
+	/**
+	 * Collect the downloadIds the user provides to let AEM know which DownloadProgresses should be returned.
+	 * @param request the request
+	 * @return the list of downloadIds the user should be able to request access to.
+	 */
+	private List<String> getAllowedDownloadIds(final SlingHttpServletRequest request) {
+		RequestParameter[] requestParameters = request.getRequestParameters(REQ_PARAM_DOWNLOAD_IDS);
+
+		if (requestParameters != null) {
+			return Arrays.stream(requestParameters).map(rp -> rp.getString()).collect(Collectors.toList());
+		}
+
+		return Collections.emptyList();
 	}
 
 	@Nonnull
