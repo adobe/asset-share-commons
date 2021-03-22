@@ -46,7 +46,7 @@ AssetShare.Store = (function (window, ns) {
 
     /**
      * Returns an object stored at the root of the local storage
-     * @param {*} key 
+     * @param {*} key
      */
     function getObject(key, useLocalStorage = true) {
         var storage;
@@ -66,7 +66,7 @@ AssetShare.Store = (function (window, ns) {
      */
     function setObject(key, object, useLocalStorage = true) {
         var updatedStorage;
-        
+
         if(useLocalStorage) {
             updatedStorage = _getLocalStorage();
             updatedStorage[key] = object;

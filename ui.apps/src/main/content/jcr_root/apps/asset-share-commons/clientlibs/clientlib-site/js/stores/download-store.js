@@ -28,7 +28,7 @@ AssetShare.Store.Download = (function (ns, store) {
     /* adds an asset path to the cart and persists to local storage */
     function addDownloadId(downloadId) {
         var downloads = store.getObject(DOWNLOAD_KEY, false) || [];
-        
+
         if(downloads.indexOf(downloadId) < 0) {
             downloads.push(downloadId);
 
@@ -43,7 +43,7 @@ AssetShare.Store.Download = (function (ns, store) {
     function removeDownloadId(downloadId) {
         var downloads = store.getObject(DOWNLOAD_KEY, false) || [],
             index     = downloads.indexOf(downloadId);
-        
+
         if( index >= 0) {
             downloads.splice(index, 1);
 
@@ -62,7 +62,7 @@ AssetShare.Store.Download = (function (ns, store) {
     function getDownloadIds() {
         return store.getObject(DOWNLOAD_KEY, false) || [];
     }
-   
+
     return {
         getDownloadIds: getDownloadIds,
         addDownloadId: addDownloadId,
