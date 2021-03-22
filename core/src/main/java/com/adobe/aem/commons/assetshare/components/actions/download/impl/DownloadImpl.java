@@ -24,6 +24,7 @@ import com.adobe.aem.commons.assetshare.components.actions.AssetDownloadHelper;
 import com.adobe.aem.commons.assetshare.components.actions.download.Download;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
+import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.export.json.ExporterConstants;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
@@ -70,6 +71,9 @@ public class DownloadImpl implements Download, ComponentExporter {
     @Self
     @Required
     protected SlingHttpServletRequest request;
+
+    @OSGiService
+    private RequireAem requireAem;
 
     @ValueMapValue
     @Default(values = "Assets")
@@ -184,6 +188,15 @@ public class DownloadImpl implements Download, ComponentExporter {
     @Override
     public String getDownloadContentSizeLabel() {
         return UIHelper.getSizeLabel(getDownloadContentSize(), request);
+    }
+
+    @Override
+    public boolean isAsynchronous() {
+        if (RequireAem.Distribution.CLASSIC.equals(requireAem.getDistribution())) {
+            // async downloads only available in the cloud, return false
+            return false;
+        }
+        return true;
     }
 
     @Deprecated
