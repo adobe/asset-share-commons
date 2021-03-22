@@ -18,7 +18,7 @@
 
 /*global jQuery: false, AssetShare: false*/
 
-jQuery((function(ns, semanticModal, licenseModal, asyncDownload) {
+jQuery((function(ns, semanticModal, licenseModal, downloadService) {
     "use strict";
     AssetShare.SemanticUI.Modals.DownloadModal = (function () {
         var DOWNLOAD_URL = ns.Data.val("download-url"),
@@ -90,7 +90,7 @@ jQuery((function(ns, semanticModal, licenseModal, asyncDownload) {
                 e.stopPropagation();
 
                 if (formEl.form('is valid')) {
-                    asyncDownload.initializeDownload(formEl);
+                    downloadService.initializeDownload(formEl);
                 }
             });
         }()));
