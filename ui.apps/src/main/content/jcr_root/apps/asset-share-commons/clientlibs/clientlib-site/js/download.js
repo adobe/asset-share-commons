@@ -23,7 +23,7 @@
  * polling for status based on downloadId,
  * and performing the actual download once the download package is ready
  */
-AssetShare.Download = (function($, ns, messages) {
+AssetShare.Download = (function($, ns, messages, downloadStore) {
 	"use strict";
 
 	const DOWNLOAD_ID       = "downloadId",
@@ -31,6 +31,7 @@ AssetShare.Download = (function($, ns, messages) {
 		DWNL_ARTIFACTS_PN   = "artifacts",
 		BODY_SELECTOR       = "body.page",
 		LOADING_SELECTOR    = "download-loader-text",
+		POLL_ENABLED        = true,
 	    POLL_ENDPOINT       = "/content/dam.downloadbinaries.json",
 		POLL_TIMEOUT        = 1000,
 		MAX_ATTEMPTS        = 3;
@@ -47,27 +48,16 @@ AssetShare.Download = (function($, ns, messages) {
 			data : form.serialize(),
 			success : function(data) {
 				if(data[DOWNLOAD_ID]) {
-					// initiate dimmer on page
-					_showDimmer();
-
 					// initialize polling
-					_poll(data[DOWNLOAD_ID], 0);
-				}
-				
-				/*
-				var downloadIds = sessionStorage.getItem("downloadIds");
-				if (data.downloadId) {					
-					if (downloadIds == null || downloadIds == "") {
-                        sessionStorage.setItem("downloadIds", data.downloadId);
+					if(POLL_ENABLED) {
+						// initiate dimmer on page
+						_showDimmer();
+						_poll(data[DOWNLOAD_ID], 0);
 					} else {
-                        sessionStorage.setItem("downloadIds", data.downloadId + ','+ data.downloadId);
+						// track downloadid in session storage
+						_storeDownloadId(data[DOWNLOAD_ID]);
 					}
-
-					downloadIds = sessionStorage.getItem("downloadIds");
-					var count = downloadIds.split(',').length;
-					ns.Elements.element("downloads-count").text(count);
-					messages.show('download-add');
-				}*/
+				}
 			},
 			error: function(e) {
 				console.error(e.responseJSON.error);
@@ -94,7 +84,8 @@ AssetShare.Download = (function($, ns, messages) {
 					} else if (attempts >= MAX_ATTEMPTS) {
 						// max attempts reached, save downloadId to sessionStorage
 						_hideDimmer();
-						console.debug(`Max attempts reached polling of ${downloadId}`);
+						console.debug(`Max attempts reached polling of ${downloadId}, saving downloadId to session storage.`);
+						_storeDownloadId(downloadId);
 					} else {
 						_poll(downloadId, attempts);
 					}
@@ -107,6 +98,21 @@ AssetShare.Download = (function($, ns, messages) {
 			});
 		}, POLL_TIMEOUT);
 	}
+
+	/**
+	 * If polling times out or polling not enabled save the downloadId to session storage
+	 * User can then access the download archive via the downloads panel
+	 * @param {*} downloadId 
+	 */
+		 function _storeDownloadId(downloadId) {
+			if(downloadStore.addDownloadId(downloadId)) {
+				messages.show('download-add');
+				ns.Elements.element("downloads-count").text(downloadStore.getDownloadIds().length);
+			} else {
+				console.debug(`${downloadId} was not added to session storage`);
+			}
+			
+		}
 
 	/**
 	 * Show a loading dimmer during polling
@@ -140,11 +146,11 @@ AssetShare.Download = (function($, ns, messages) {
 		window.open(downloadUri, '_blank');
 
 		//remove downloadId from storage
-		// TODO
+		downloadStore.removeDownloadId(downloadId);
 	}
 
 	return {
 		initializeDownload : initializeDownload
 	};
 
-}(jQuery, AssetShare, AssetShare.Messages));
+}(jQuery, AssetShare, AssetShare.Messages, AssetShare.Store.Download));

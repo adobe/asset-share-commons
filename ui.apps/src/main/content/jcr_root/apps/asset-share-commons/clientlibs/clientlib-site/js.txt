@@ -7,6 +7,7 @@ events.js
 stores/store.js
 stores/profile-store.js
 stores/cart-store.js
+stores/download-store.js
 profile.js
 cart.js
 messages.js

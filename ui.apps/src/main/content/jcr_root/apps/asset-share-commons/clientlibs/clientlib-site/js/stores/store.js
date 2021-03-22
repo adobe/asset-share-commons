@@ -34,12 +34,28 @@ AssetShare.Store = (function (window, ns) {
         window.localStorage.setItem(STORE_KEY, JSON.stringify(storageUpdate));
     }
 
+    /* Return the local storage for Asset Share Commons as a JSON object */
+    function _getSessionStorage() {
+        return JSON.parse(window.sessionStorage.getItem(STORE_KEY)) || {};
+    }
+
+    /* Set the local Storage as a stringified JSON object */
+    function _updateSessionStorage(storageUpdate) {
+        window.sessionStorage.setItem(STORE_KEY, JSON.stringify(storageUpdate));
+    }
+
     /**
      * Returns an object stored at the root of the local storage
      * @param {*} key 
      */
-    function getObject(key) {
-        var storage = _getLocalStorage();
+    function getObject(key, useLocalStorage = true) {
+        var storage;
+        if(useLocalStorage) {
+            storage = _getLocalStorage();
+        } else {
+            storage = _getSessionStorage();
+        }
+
         return storage[key];
     }
 
@@ -48,10 +64,18 @@ AssetShare.Store = (function (window, ns) {
      * @param {*} key - key to store object under
      * @param {*} object - object to persist to local storage
      */
-    function setObject(key, object) {
-        var updatedStorage = _getLocalStorage();
-        updatedStorage[key] = object;
-        _updateLocalStorage(updatedStorage);
+    function setObject(key, object, useLocalStorage = true) {
+        var updatedStorage;
+        
+        if(useLocalStorage) {
+            updatedStorage = _getLocalStorage();
+            updatedStorage[key] = object;
+            _updateLocalStorage(updatedStorage);
+        } else {
+            updatedStorage = _getSessionStorage();
+            updatedStorage[key] = object;
+            _updateSessionStorage(updatedStorage);
+        }
     }
 
     return {
