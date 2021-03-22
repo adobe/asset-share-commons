@@ -16,100 +16,92 @@
   ~ limitations under the License.
  */-->
 
-<sly    data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
-        data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
-        data-sly-test.searchConfig="${modelCache['com.adobe.aem.commons.assetshare.components.search.SearchConfig']}"
-        data-sly-use.cart="com.adobe.aem.commons.assetshare.components.actions.cart.Cart"></sly>
+ <sly    data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
+ data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
+ data-sly-test.searchConfig="${modelCache['com.adobe.aem.commons.assetshare.components.search.SearchConfig']}"
+ data-sly-use.cart="com.adobe.aem.commons.assetshare.components.actions.cart.Cart"></sly>
 
 <style data-sly-test="${!wccmode.disabled}">
-     .cmp-modal-cart .ui.modal {
-        position: relative !important;
-        display: block !important;;
-        top: 0 !important;;
-    }
+.cmp-modal-cart .ui.modal {
+ position: relative !important;
+ display: block !important;;
+ top: 0 !important;;
+}
 </style>
 
 <form method="post"
-      action="${currentPage.path}.assetdownload.zip/Cart.zip"
-      id="cart"
-      data-asset-share-link="${resource.path @ selectors = 'async-download-renditions', extension = 'zip'}"
-      data-asset-share-id="cart"
-      data-asset-share-id="cart-modal"
-      data-asset-share-update-method="replace"
-      data-asset-share-update-when="cart-updated"
-      class="ui modal cmp-modal-cart--wrapper cmp-modal">
+action="${currentPage.path}.assetdownload.zip/Cart.zip"
+data-asset-share-id="cart"
+data-asset-share-id="cart-modal"
+data-asset-share-update-method="replace"
+data-asset-share-update-when="cart-updated"
+class="ui modal cmp-modal-cart--wrapper cmp-modal">
 
-    <input type="hidden" name="licenseCheck" value="true"/>
+<input type="hidden" name="licenseCheck" value="true"/>
 
-    <i class="close icon"></i>
+<i class="close icon"></i>
 
-    <div class="header">
-        ${properties['modalTitle']}
-    </div>
-    <div class="scrolling content"
-         data-asset-share-id="cart-items">
+<div class="header">
+ ${properties['modalTitle']}
+</div>
+<div class="scrolling content"
+  data-asset-share-id="cart-items">
 
-        <table  data-sly-test="${cart.assets.size > 0}"
-                class="ui left aligned selectable table">
-            <tbody data-sly-list.asset="${cart.assets}">
-            <tr data-asset-share-id="asset"
-                data-asset-share-asset="${asset.path}"
-                data-sly-use.assetDetails="${'com.adobe.aem.commons.assetshare.configuration.AssetDetails' @ request = slingRequest, asset = asset }">
+ <table  data-sly-test="${cart.assets.size > 0}"
+         class="ui left aligned selectable table">
+     <tbody data-sly-list.asset="${cart.assets}">
+     <tr data-asset-share-id="asset"
+         data-asset-share-asset="${asset.path}"
+         data-sly-use.assetDetails="${'com.adobe.aem.commons.assetshare.configuration.AssetDetails' @ request = slingRequest, asset = asset }">
 
-                <td class="image">
-                    <img src="${asset.properties['rendition?name=list'] || searchConfig.properties['missingImage']  @ context = 'attribute'}"
-                         alt="${asset.properties['title']}"/>
-                </td>
+         <td class="image">
+             <img src="${asset.properties['rendition?name=list'] || searchConfig.properties['missingImage']  @ context = 'attribute'}"
+                  alt="${asset.properties['title']}"/>
+         </td>
 
-                <td class="header">
-                    <a href="${assetDetails.fullUrl}">
-                        ${asset.properties['title']}
-                    </a>
-                </td>
+         <td class="header">
+             <a href="${assetDetails.fullUrl}">
+                 ${asset.properties['title']}
+             </a>
+         </td>
 
-                <td data-sly-test="${config.licenseEnabled}">${asset.properties['license'] ? 'Licensed' : 'Unlicensed' @ i18n}</td>
+         <td data-sly-test="${config.licenseEnabled}">${asset.properties['license'] ? 'Licensed' : 'Unlicensed' @ i18n}</td>
 
-                <td class="right aligned">
-                   <button class="ui button link"
-                            data-asset-share-id="remove-from-cart"
-                            data-asset-share-asset="${asset.path}">${'REMOVE' @ i18n}</button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+         <td class="right aligned">
+            <button class="ui button link"
+                     data-asset-share-id="remove-from-cart"
+                     data-asset-share-asset="${asset.path}">${'REMOVE' @ i18n}</button>
+         </td>
+     </tr>
+     </tbody>
+ </table>
 
-        <p data-sly-test="${cart.assets.size == 0}">
-            ${properties['emptyText']}
-        </p>
+ <p data-sly-test="${cart.assets.size == 0}">
+     ${properties['emptyText']}
+ </p>
 
-    </div>
-    <div class="actions">
-        <div class="ui black deny button">
-            ${properties['closeButton']}
-        </div>
-        <div class="ui black button align left"
-             data-sly-test="${cart.assets.size > 0}"
-             data-asset-share-id="clear-cart">
-            ${properties['clearButton']}
-        </div>
-        <div class="ui primary right labeled icon button"
-        	 data-asset-share-id="share-all"
-             data-sly-test="${config.shareEnabledCart && cart.assets.size > 0}">
-            ${properties['shareButton']}
-             <i class="send icon"></i>
-        </div>
-		<button data-sly-test="${config.originalDownloadEnabled
-			&& config.downloadEnabledCart && cart.assets.size>
-			0}" data-asset-share-id="download-original" type="submit" class="ui
-			postive ok primary right labeled icon button">
-			${properties['downloadButton']} <i class="download icon"></i>
-		</button>
-	    <button data-sly-test="${!config.originalDownloadEnabled && config.downloadEnabledCart && cart.assets.size > 0}"
-        	    data-asset-share-id="download-all"
-                type="submit"
-                class="ui postive primary right labeled icon button">
-            ${properties['downloadButton']}
-            <i class="download icon"></i>
-        </button>
-    </div>
+</div>
+<div class="actions">
+ <div class="ui black deny button">
+     ${properties['closeButton']}
+ </div>
+ <div class="ui black button align left"
+      data-sly-test="${cart.assets.size > 0}"
+      data-asset-share-id="clear-cart">
+     ${properties['clearButton']}
+ </div>
+ <div class="ui primary right labeled icon button"
+      data-asset-share-id="share-all"
+      data-sly-test="${config.shareEnabledCart && cart.assets.size > 0}">
+     ${properties['shareButton']}
+      <i class="send icon"></i>
+ </div>
+ <button data-sly-test="${config.downloadEnabledCart && cart.assets.size > 0}"
+         data-asset-share-id="download-all"
+         type="submit"
+         class="ui postive primary right labeled icon button">
+     ${properties['downloadButton']}
+     <i class="download icon"></i>
+ </button>
+</div>
 </form>
