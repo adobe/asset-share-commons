@@ -66,15 +66,13 @@ public class ConfigImpl implements Config {
     private static final String DEFAULT_VIEW_SELECTOR = "partial";
     private static final String PN_VIEW_SELECTOR = "config/actions/viewSelector";
 
-    private static final String PN_DOWNLOAD_ORIGINAL_ENABLED = "config/actions/original-only/enabled";
     private static final String PN_LICENSE_ENABLED = "config/actions/license/enabled";
     private static final String PN_LICENSE_AGREEMENT_VIEW_PATH = "config/actions/license/path";
 
     private static final String PN_DOWNLOAD_ENABLED = "config/actions/download/enabled";
     private static final String PN_DOWNLOAD_VIEW_PATH = "config/actions/download/path";
-    private static final String PN_DOWNLOADS_PANNEL_VIEW_PATH = "config/actions/downloads-panel/path";
+
     private static final String PN_CART_ENABLED = "config/actions/cart/enabled";
-    private static final String PN_DOWNLOAD_PANEL_ENABLED = "config/actions/downloads-panel/enabled";
     private static final String PN_CART_VIEW_PATH = "config/actions/cart/path";
 
     private static final String PN_SHARE_ENABLED = "config/actions/share/enabled";
@@ -189,16 +187,6 @@ public class ConfigImpl implements Config {
     public String getCartActionUrl() {
         return properties.get(PN_CART_VIEW_PATH, rootPath + "/actions/cart") + "." + viewSelector + HTML_EXTENSION;
     }
-    
-    @Override
-    public String getDownloadsPanelActionUrl() {
-        return properties.get(PN_DOWNLOADS_PANNEL_VIEW_PATH, rootPath + "/actions/download-panel") + "." + viewSelector + HTML_EXTENSION;
-    }
-    
-    @Override
-    public String getAsyncDownloadActionUrl() {
-        return properties.get(PN_DOWNLOAD_VIEW_PATH, rootPath + "/actions/async-download") + "." + viewSelector + HTML_EXTENSION;
-    }
 
     @Override
     public boolean isShareEnabled() {
@@ -243,16 +231,6 @@ public class ConfigImpl implements Config {
     @Override
     public boolean isCartEnabled() {
         return properties.get(PN_CART_ENABLED, false);
-    }
-    
-    @Override
-    public boolean isDownloadsPanelEnabled() {
-        return properties.get(PN_DOWNLOAD_PANEL_ENABLED, false);
-    }
-    
-    @Override
-    public boolean isOriginalDownloadEnabled() {
-        return properties.get(PN_DOWNLOAD_ORIGINAL_ENABLED, false);
     }
 
     @Override
