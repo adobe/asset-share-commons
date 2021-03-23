@@ -30,6 +30,9 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.script.SimpleBindings;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static org.apache.sling.api.scripting.SlingBindings.*;
 
 public class AssetRenditionDownloadRequest extends SlingHttpServletRequestWrapper {
@@ -50,7 +53,11 @@ public class AssetRenditionDownloadRequest extends SlingHttpServletRequestWrappe
 
         this.resource = resource;
         this.method = method;
-        this.selectors = selectors;
+        if (selectors != null) {
+            this.selectors = Arrays.copyOf(selectors, selectors.length);
+        } else {
+            this.selectors = new String[]{};
+        }
         this.extension = extension;
         this.suffix = suffix;
 
@@ -121,7 +128,7 @@ public class AssetRenditionDownloadRequest extends SlingHttpServletRequestWrappe
             @Nonnull
             @Override
             public String[] getSelectors() {
-                return selectors;
+                return Arrays.copyOf(selectors, selectors.length);
             }
 
             @CheckForNull

@@ -71,16 +71,16 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
     private static final String DOWNLOAD_ARCHIVE_NAME = PARAM_ARCHIVE_NAME;
 
     @Reference(target="(distribution=cloud-ready)")
-    private RequireAem requireAem;
+    private transient RequireAem requireAem;
 
     @Reference
-    private ActionHelper actionHelper;
+    private transient ActionHelper actionHelper;
 
     @Reference
-    private DownloadService downloadService;
+    private transient DownloadService downloadService;
 
     @Reference
-    private DownloadApiFactory apiFactory;
+    private transient DownloadApiFactory apiFactory;
 
     @Override
     protected final void doPost(final SlingHttpServletRequest request, final SlingHttpServletResponse response) throws ServletException, IOException {

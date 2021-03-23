@@ -2,6 +2,8 @@ package com.adobe.aem.commons.assetshare.components.actions.downloads.impl;
 
 import com.adobe.cq.dam.download.api.DownloadArtifact;
 import com.adobe.cq.dam.download.api.DownloadProgress;
+import com.google.common.collect.ImmutableList;
+import org.apache.http.entity.mime.MIME;
 
 import java.net.URI;
 import java.util.*;
@@ -106,7 +108,7 @@ public class PlaceholderDownloadProgress implements DownloadProgress {
 
         @Override
         public String getMimeType() {
-            return "application/zip";
+            return  "application/zip";
         }
 
         @Override
@@ -124,7 +126,7 @@ public class PlaceholderDownloadProgress implements DownloadProgress {
 
         @Override
         public Collection<String> getSuccesses() {
-            return successes;
+            return ImmutableList.copyOf(successes);
         }
 
         @Override

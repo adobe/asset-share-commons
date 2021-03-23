@@ -81,18 +81,18 @@ public class AssetRenditionsDownloadServlet extends SlingAllMethodsServlet imple
     private static final String DEFAULT_ASSET_RENDITIONS_DOWNLOAD_ORCHESTRATOR = AssetRenditionsZipperImpl.class.getName();
 
     @Reference(target="(distribution=classic)")
-    private RequireAem requireAem;
+    private transient RequireAem requireAem;
 
     @Reference
-    private ServletHelper servletHelper;
+    private transient ServletHelper servletHelper;
 
     @Reference
-    private ModelFactory modelFactory;
+    private transient ModelFactory modelFactory;
 
     @Reference
-    private ActionHelper actionHelper;
+    private transient ActionHelper actionHelper;
 
-    private Map<String, AssetRenditionsDownloadOrchestrator> assetRenditionsDownloadOrchestrators = new ConcurrentHashMap<>();
+    private transient Map<String, AssetRenditionsDownloadOrchestrator> assetRenditionsDownloadOrchestrators = new ConcurrentHashMap<>();
 
     @Override
     protected final void doPost(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
