@@ -19,11 +19,11 @@
 /*global jQuery: false, AssetShare: false*/
 
 jQuery((function($, ns, semanticModal, download) {
-	"use strict";
-	AssetShare.SemanticUI.Modals.DownloadsModal = (function() {
-		var DOWNLOADS_URL = ns.Data.val("downloads-url"),
-		    DOWNLOADS_MODAL_ID = "downloads-modal",
-		    WHEN_DOWNLOADS_UPDATED = "downloads-updated";
+    "use strict";
+    AssetShare.SemanticUI.Modals.DownloadsModal = (function() {
+        var DOWNLOADS_URL = ns.Data.val("downloads-url"),
+            DOWNLOADS_MODAL_ID = "downloads-modal",
+            WHEN_DOWNLOADS_UPDATED = "downloads-updated";
 
         /**
         * Function copied from: https://stackoverflow.com/questions/10420352/converting-file-size-in-bytes-to-human-readable-string/10420404
@@ -57,28 +57,28 @@ jQuery((function($, ns, semanticModal, download) {
             return bytes.toFixed(dp) + ' ' + units[u];
         }
 
-		function getId() {
-			return DOWNLOAD_PANEL_MODAL_ID;
-		}
+        function getId() {
+            return DOWNLOAD_PANEL_MODAL_ID;
+        }
 
-		function getUrl() {
-			return DOWNLOADS_URL;
-		}
+        function getUrl() {
+            return DOWNLOADS_URL;
+        }
 
         function getModalData() {
             return download.getDownloadIds().map((id) => { return { name: 'downloadId', value: id } });
         }
 
-		function getModal() {
+        function getModal() {
             // Returns an object describing how to get load the Downloads modal
-			return {
-					id : DOWNLOADS_MODAL_ID,
-					url : DOWNLOADS_URL,
-					data : getModalData(),
-					dataType: 'json',
-					options : {}
-			};
-		}
+            return {
+                    id : DOWNLOADS_MODAL_ID,
+                    url : DOWNLOADS_URL,
+                    data : getModalData(),
+                    dataType: 'json',
+                    options : {}
+            };
+        }
 
         function updateBadge() {
             $.post(DOWNLOADS_URL, getModalData()).then(function(htmlResponse) {
@@ -87,12 +87,12 @@ jQuery((function($, ns, semanticModal, download) {
             });
         }
 
-		function update() {
-			$.post(DOWNLOADS_URL, getModalData()).then(function(htmlResponse) {
-				ns.Elements.update(htmlResponse, WHEN_DOWNLOADS_UPDATED);
-				init();
-			});
-		}
+        function update() {
+            $.post(DOWNLOADS_URL, getModalData()).then(function(htmlResponse) {
+                ns.Elements.update(htmlResponse, WHEN_DOWNLOADS_UPDATED);
+                init();
+            });
+        }
 
         function show(e) {
             e.preventDefault();
@@ -101,21 +101,21 @@ jQuery((function($, ns, semanticModal, download) {
             semanticModal.show([getModal()]);
         }
 
-		function refresh(e) {
-			e.preventDefault();
-			e.stopPropagation();
-
-			update();
-		}
-
-		function clear(e) {
-			e.preventDefault();
-			e.stopPropagation();
-
-			download.removeAllDownloadIds();
+        function refresh(e) {
+            e.preventDefault();
+            e.stopPropagation();
 
             update();
-		}
+        }
+
+        function clear(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            download.removeAllDownloadIds();
+
+            update();
+        }
 
         function init() {
             ns.Elements.element('downloads-modal').each(function() {
@@ -129,7 +129,7 @@ jQuery((function($, ns, semanticModal, download) {
             });
         }
 
-		/** REGISTER EVENTS WHEN DOCUMENT IS READY * */
+        /** REGISTER EVENTS WHEN DOCUMENT IS READY * */
         $("body").on("click", ns.Elements.selector([ "refresh-downloads" ]), refresh);
         $("body").on("click", ns.Elements.selector([ "clear-downloads" ]), clear);
         $("body").on("click", ns.Elements.selector([ "show-downloads" ]), show);
@@ -139,11 +139,11 @@ jQuery((function($, ns, semanticModal, download) {
         init();
         updateBadge();
 
-		return {
-			show: show,
-			init: init
-		};
-	}());
+        return {
+            show: show,
+            init: init
+        };
+    }());
 }(jQuery,
     AssetShare,
     AssetShare.SemanticUI.Modal,

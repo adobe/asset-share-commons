@@ -73,8 +73,6 @@ public class PlaceholderDownloadProgress implements DownloadProgress {
         final List<DownloadArtifact> downloadArtifacts = new ArrayList<>();
 
         downloadArtifacts.add(new PlaceholderDownloadArtifact(1, 4, 1));
-        //downloadArtifacts.add(new PlaceholderDownloadArtifact(2, 2, 1));
-        //downloadArtifacts.add(new PlaceholderDownloadArtifact(3, 0, 3));
 
         return downloadArtifacts;
     }
