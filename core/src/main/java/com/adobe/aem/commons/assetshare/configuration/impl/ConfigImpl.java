@@ -262,7 +262,7 @@ public class ConfigImpl implements Config {
     public String getAssetDetailsUrl() {
         return getAssetDetailsPath() + ".html";
     }
-    
+
     @Override
     public String getRootPath() {
         return getRootPath(currentPage);
