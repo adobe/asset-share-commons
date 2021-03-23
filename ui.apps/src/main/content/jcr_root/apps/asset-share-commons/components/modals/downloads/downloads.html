@@ -24,23 +24,19 @@
         data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html"></sly>
 
 <sly data-sly-test="${!wccmode.disabled}"/>
-	<script>
-			$(function() {
-				AssetShare.SemanticUI.Modals.DownloadsModal.init();
-			});
+    <script>
+        $(function() {
+            AssetShare.SemanticUI.Modals.DownloadsModal.init();
+        });
+    </script>
 
-
-	</script>
-
-	<style>
-		.cmp-modal-downloads .ui.modal {
-			position: relative !important;
-			display: block !important;
-			top: 0 !important;
-		}
-
-
-	</style>
+    <style>
+        .cmp-modal-downloads .ui.modal {
+            position: relative !important;
+            display: block !important;
+            top: 0 !important;
+        }
+    </style>
 </sly>
 
 <div data-asset-share-id="downloads-modal"
