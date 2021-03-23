@@ -174,6 +174,11 @@ public class ConfigImpl implements Config {
     }
 
     @Override
+    public String getDownloadsActionUrl() {
+        return properties.get(PN_DOWNLOAD_VIEW_PATH, rootPath + "/actions/downloads") + "." + viewSelector + HTML_EXTENSION;
+    }
+
+    @Override
     public String getLicenseActionUrl() {
         return properties.get(PN_LICENSE_AGREEMENT_VIEW_PATH, rootPath + "/actions/license") + "." + viewSelector + HTML_EXTENSION;
     }
@@ -248,7 +253,6 @@ public class ConfigImpl implements Config {
         return properties.get(PN_ASSET_REFERENCE_BY_ID, false);
     }
 
-
     @Override
     public String getAssetDetailsPath() {
         return properties.get(PN_DEFAULT_ASSET_DETAILS_PATH, rootPath + "/details");
@@ -258,8 +262,7 @@ public class ConfigImpl implements Config {
     public String getAssetDetailsUrl() {
         return getAssetDetailsPath() + ".html";
     }
-
-
+    
     @Override
     public String getRootPath() {
         return getRootPath(currentPage);
