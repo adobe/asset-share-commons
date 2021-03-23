@@ -64,6 +64,12 @@ public interface Download {
      */
     String getDownloadContentSizeLabel();
 
+    /**
+     * 
+     * @return a boolean to indicate whether download behavior will be asynchronous (AEM as a Cloud service) or synchronous (6.x)
+     */
+    boolean isAsynchronous();
+
     default List<AssetRenditionsGroup> getAssetRenditionsGroups() {
         return Collections.EMPTY_LIST;
     }
