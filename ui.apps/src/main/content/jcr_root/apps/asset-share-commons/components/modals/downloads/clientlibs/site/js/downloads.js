@@ -25,58 +25,8 @@ jQuery((function($, ns, semanticModal, download) {
 		    DOWNLOADS_MODAL_ID = "downloads-modal",
 		    WHEN_DOWNLOADS_UPDATED = "downloads-updated";
 
-        // TODO replace
-
-        DOWNLOADS_URL = '/content/asset-share-commons/en/light/actions/downloads.partial.html';
-
-		function getId() {
-			return DOWNLOAD_PANEL_MODAL_ID;
-		}
-
-		function getUrl() {
-			return DOWNLOADS_URL;
-		}
-
-		function getModal() {
-            // Returns an object describing how to get load the Downloads modal
-			return {
-					id : DOWNLOADS_MODAL_ID,
-					url : DOWNLOADS_URL,
-					data : getDownloadModalData(),
-					dataType: 'json',
-					options : {}
-			};
-		}
-
-		function getDownloadModalData() {
-		    /*
-              var downloads = [{}]; // TODO GET FROM LOCAL STORAGE
-                return downloads.map((download) -> {
-                    download.downloadId;
-                });
-            */
-
-		    return [{
-		        name: 'downloadId',
-		        value: '137fd707-a62d-4ae9-a819-e0c405e1a8a7'
-		    },
-		   {
-                name: 'downloadId',
-                value: '137fd707-a62d-4ae9-a819-1234'
-            }];
-		}
-
-		function update() {
-			$.post(DOWNLOADS_URL, getDownloadModalData()).then(function(htmlResponse) {
-				ns.Elements.update(htmlResponse, WHEN_DOWNLOADS_UPDATED);
-				init();
-			});
-		}
-
-
         /**
         * Function copied from: https://stackoverflow.com/questions/10420352/converting-file-size-in-bytes-to-human-readable-string/10420404
-
         * Format bytes as human-readable text.
         *
         * @param bytes Number of bytes.
@@ -107,16 +57,41 @@ jQuery((function($, ns, semanticModal, download) {
             return bytes.toFixed(dp) + ' ' + units[u];
         }
 
-		function init() {
-		    ns.Elements.element('downloads-modal').each(function() {
-		        var el = $(this);
-        		el.find('.ui.accordion').accordion();
-		        el.find('[data-asset-share-id="file-size"]').each(function() {
-		            $(this).text(function() {
-                        return humanFileSize(($(this).text() || 0), true, 0)
-                    });
-                });
-		    });
+		function getId() {
+			return DOWNLOAD_PANEL_MODAL_ID;
+		}
+
+		function getUrl() {
+			return DOWNLOADS_URL;
+		}
+
+        function getModalData() {
+            return download.getDownloadIds().map((id) => { return { name: 'downloadId', value: id } });
+        }
+
+		function getModal() {
+            // Returns an object describing how to get load the Downloads modal
+			return {
+					id : DOWNLOADS_MODAL_ID,
+					url : DOWNLOADS_URL,
+					data : getModalData(),
+					dataType: 'json',
+					options : {}
+			};
+		}
+
+        function updateBadge() {
+            $.post(DOWNLOADS_URL, getModalData()).then(function(htmlResponse) {
+                var count = ns.Elements.element('downloads-modal', htmlResponse).data('asset-share-downloads-count') || 0;
+                ns.Elements.element("downloads-count").text(count);
+            });
+        }
+
+		function update() {
+			$.post(DOWNLOADS_URL, getModalData()).then(function(htmlResponse) {
+				ns.Elements.update(htmlResponse, WHEN_DOWNLOADS_UPDATED);
+				init();
+			});
 		}
 
         function show(e) {
@@ -137,31 +112,34 @@ jQuery((function($, ns, semanticModal, download) {
 			e.preventDefault();
 			e.stopPropagation();
 
-			// TODO Clear
-			sessionStorage.removeItem("downloadIds");
-			ns.Elements.element("downloads-count").text(0);
-			downloads.clearDownloads();
+			download.removeAllDownloadIds();
 
             update();
 		}
 
+        function init() {
+            ns.Elements.element('downloads-modal').each(function() {
+                var el = $(this);
+                el.find('.ui.accordion').accordion();
+                el.find('[data-asset-share-id="file-size"]').each(function() {
+                    $(this).text(function() {
+                        return humanFileSize(($(this).text() || 0), true, 0)
+                    });
+                });
+            });
+        }
+
 		/** REGISTER EVENTS WHEN DOCUMENT IS READY * */
-		$((function registerEvents() {
-			$("body").on("click", ns.Elements.selector([ "refresh-downloads" ]), refresh);
+        $("body").on("click", ns.Elements.selector([ "refresh-downloads" ]), refresh);
+        $("body").on("click", ns.Elements.selector([ "clear-downloads" ]), clear);
+        $("body").on("click", ns.Elements.selector([ "show-downloads" ]), show);
+        $("body").on(ns.Events.MODAL_SHOWN, init);
+        $("body").on(ns.Events.DOWNLOADS_UPDATE, updateBadge);
 
-			$("body").on("click", ns.Elements.selector([ "clear-downloads" ]), clear);
-
-			$("body").on("click", ns.Elements.selector([ "show-downloads" ]), show);
-
-			$("body").on(ns.Events.MODAL_SHOWN, init);
-
-		}()));
+        init();
+        updateBadge();
 
 		return {
-		/*
-			id : getId,
-			url : getUrl,
-			modal : getDownloadsModal, */
 			show: show,
 			init: init
 		};
@@ -169,4 +147,4 @@ jQuery((function($, ns, semanticModal, download) {
 }(jQuery,
     AssetShare,
     AssetShare.SemanticUI.Modal,
-    AssetShare.Download)));
+    AssetShare.Store.Download)));

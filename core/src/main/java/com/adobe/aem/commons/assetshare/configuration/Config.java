@@ -91,6 +91,11 @@ public interface Config {
     String getDownloadActionUrl();
 
     /**
+     * @return the path segment of the URL to call to render the Downloads action.
+     */
+    String getDownloadsActionUrl();
+
+    /**
      * @return the path segment of the URL to call to render the License Agreement action.
      */
     String getLicenseActionUrl();
@@ -129,6 +134,13 @@ public interface Config {
      * @return true if the share action is enabled in the cart.
      */
     boolean isShareEnabledCart();
+
+    /**
+     * Default assume AEM as a Cloud Service.
+     *
+     * @return true if targeting 6.5, false if targetting AEM as a Cloud Service
+     */
+    default boolean isAemClassic() { return false; }
 
     /**
      * @deprecated We no longer detect Dynamic Media; Return false always.

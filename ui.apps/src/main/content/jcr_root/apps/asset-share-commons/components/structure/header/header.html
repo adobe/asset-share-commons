@@ -51,12 +51,8 @@
                     </a>
                 </sly>
 
-                <!--/* Downloads Modal
-                   // TODO: cmp-mobile__downloads
-                        data-sly-test="${true}"
-
-                */-->
                 <a class="item 12 cmp-mobile__downloads"
+                        data-sly-test="${!config.aemClassic && (config.downloadEnabled || config.downloadEnabledCart)}"
                         data-asset-share-id="show-downloads">
                     <i class="big download icon"></i>
                     <div class="floating ui primary circular label"

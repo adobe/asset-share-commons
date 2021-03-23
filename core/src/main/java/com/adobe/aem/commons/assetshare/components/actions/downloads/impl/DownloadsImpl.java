@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
+import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -61,7 +62,8 @@ public class DownloadsImpl implements Downloads, ComponentExporter {
 			activeDownloads = new ArrayList<>();
 
 			if (!WCMMode.EDIT.equals(WCMMode.fromRequest(request))) {
-				List allowedDownloadIds = getAllowedDownloadIds(request);
+				final List allowedDownloadIds = getAllowedDownloadIds(request);
+				final Calendar now = Calendar.getInstance();
 				activeDownloads = StreamSupport.stream(downloadService.getDownloadIds(resourceResolver).spliterator(), false)
 						.filter(id -> allowedDownloadIds.contains(id))
 						.map(id -> {
@@ -73,9 +75,16 @@ public class DownloadsImpl implements Downloads, ComponentExporter {
 							}
 						})
 						.filter(Objects::nonNull)
+						.filter((dp) -> {
+							// Filter out any Download Progress that is older than 1 hour
+								if (dp.getFinished() == null) {
+								return true;
+							} else {
+								return Duration.between(dp.getFinished().toInstant(), now.toInstant()).abs().toHours() <= 1;
+							}
+						})
 						.collect(Collectors.toList());
 			} else {
-				activeDownloads.add(new PlaceholderDownloadProgress());
 				activeDownloads.add(new PlaceholderDownloadProgress());
 			}
 		}

@@ -14,7 +14,7 @@ public class PlaceholderDownloadProgress implements DownloadProgress {
 
     @Override
     public Status getStatus() {
-        return Status.PROCESSING;
+        return Status.SUCCESSFUL;
     }
 
     @Override
@@ -88,11 +88,11 @@ public class PlaceholderDownloadProgress implements DownloadProgress {
             this.id = id;
 
             for (int i = 0; i < numSuccesses; i++) {
-                successes.add(String.format("Example asset #%d (rendition-name).jpeg", i));
+                successes.add(String.format("Successful asset #%d (rendition-name).jpeg", i));
             }
 
             for (int i = 0; i < numFailures; i++) {
-                failures.put(String.format("Failed asset download #%d (rendition-name).jpeg", i), "Failure reason");
+                failures.put(String.format("Failed asset #%d (rendition-name).jpeg", i), "Failure reason");
             }
         }
 

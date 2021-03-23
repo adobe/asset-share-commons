@@ -34,6 +34,7 @@ AssetShare.Store.Download = (function (ns, store) {
 
             // Update local storage with new cart object
             store.setObject(DOWNLOAD_KEY, downloads, false);
+            _triggerDownloadsUpdateEvent();
             return true;
         }
         // download id already exists
@@ -49,10 +50,16 @@ AssetShare.Store.Download = (function (ns, store) {
 
             // Update local storage with new cart object
             store.setObject(DOWNLOAD_KEY, downloads, false);
+            _triggerDownloadsUpdateEvent();
             return true;
         }
         // couldn't find a downloadId to remove
         return false;
+    }
+
+    function removeAllDownloadIds() {
+        store.setObject(DOWNLOAD_KEY, [], false);
+        _triggerDownloadsUpdateEvent();
     }
 
     /**
@@ -60,13 +67,18 @@ AssetShare.Store.Download = (function (ns, store) {
      * @returns Array of downloadIds
      */
     function getDownloadIds() {
-        return store.getObject(DOWNLOAD_KEY, false) || [];
+       return (store.getObject(DOWNLOAD_KEY, false) || []);
+    }
+
+    function _triggerDownloadsUpdateEvent() {
+        $("body").trigger(ns.Events.DOWNLOADS_UPDATE);
     }
 
     return {
         getDownloadIds: getDownloadIds,
         addDownloadId: addDownloadId,
-        removeDownloadId: removeDownloadId
+        removeDownloadId: removeDownloadId,
+        removeAllDownloadIds: removeAllDownloadIds
     };
 
 }(AssetShare,

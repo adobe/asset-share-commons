@@ -25,9 +25,13 @@
        data-asset-share-id="share-url"
        value="${config.shareActionUrl}"/>
 <input type="hidden"
-       data-sly-test="${config.downloadEnabled || config.downloadEnabledCart}"
+       data-sly-test="${!config.aemClassic && (config.downloadEnabled || config.downloadEnabledCart)}"
        data-asset-share-id="download-url"
        value="${config.downloadActionUrl}"/>
+<input type="hidden"
+       data-sly-test="${config.downloadEnabled || config.downloadEnabledCart}"
+       data-asset-share-id="downloads-url"
+       value="${config.downloadsActionUrl}"/>
 <input type="hidden"
        data-sly-test="${config.licenseEnabled}"
        data-asset-share-id="license-url"
@@ -36,5 +40,4 @@
        data-sly-test="${config.cartEnabled}"
        data-asset-share-id="cart-url"
        value="${config.cartActionUrl}"/>
-
 </sly>
