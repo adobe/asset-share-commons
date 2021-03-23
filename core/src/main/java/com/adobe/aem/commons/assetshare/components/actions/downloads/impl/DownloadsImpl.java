@@ -28,88 +28,88 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Model(
-		adaptables = { SlingHttpServletRequest.class },
-		adapters = { Downloads.class },
-		resourceType = DownloadsImpl.RESOURCE_TYPE
+        adaptables = { SlingHttpServletRequest.class },
+        adapters = { Downloads.class },
+        resourceType = DownloadsImpl.RESOURCE_TYPE
 )
 @Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
 public class DownloadsImpl implements Downloads, ComponentExporter {
 
-	private static final Logger log = LoggerFactory.getLogger(DownloadsImpl.class);
-	
-	static final String RESOURCE_TYPE = "asset-share-commons/components/modals/downloads";
-	private static final String REQ_PARAM_DOWNLOAD_IDS = "downloadId";
+    private static final Logger log = LoggerFactory.getLogger(DownloadsImpl.class);
 
-	@Self
-	@Required
-	private SlingHttpServletRequest request;
+    static final String RESOURCE_TYPE = "asset-share-commons/components/modals/downloads";
+    private static final String REQ_PARAM_DOWNLOAD_IDS = "downloadId";
 
-	@SlingObject
-	@Required
-	private ResourceResolver resourceResolver;
+    @Self
+    @Required
+    private SlingHttpServletRequest request;
 
-	@OSGiService
-	private ActionHelper actionHelper;
+    @SlingObject
+    @Required
+    private ResourceResolver resourceResolver;
 
-	@OSGiService
-	private DownloadService downloadService;
+    @OSGiService
+    private ActionHelper actionHelper;
 
-	private List<DownloadProgress> activeDownloads = null;
+    @OSGiService
+    private DownloadService downloadService;
 
-	@Override
-	public List<DownloadProgress> getDownloadProgresses() throws DownloadException {
-		if (activeDownloads == null) {
-			activeDownloads = new ArrayList<>();
+    private List<DownloadProgress> activeDownloads = null;
 
-			if (!WCMMode.EDIT.equals(WCMMode.fromRequest(request))) {
-				final List allowedDownloadIds = getAllowedDownloadIds(request);
-				final Calendar now = Calendar.getInstance();
-				activeDownloads = StreamSupport.stream(downloadService.getDownloadIds(resourceResolver).spliterator(), false)
-						.filter(id -> allowedDownloadIds.contains(id))
-						.map(id -> {
-							try {
-								return downloadService.getProgress(id, resourceResolver);
-							} catch (DownloadException e) {
-								log.warn("Unable to get async DownloadProgress for downloadId [ {} ] for user [ {} ]", id, resourceResolver.getUserID(), e);
-								return null;
-							}
-						})
-						.filter(Objects::nonNull)
-						.filter((dp) -> {
-							// Filter out any Download Progress that is older than 1 hour
-								if (dp.getFinished() == null) {
-								return true;
-							} else {
-								return Duration.between(dp.getFinished().toInstant(), now.toInstant()).abs().toHours() <= 1;
-							}
-						})
-						.collect(Collectors.toList());
-			} else {
-				activeDownloads.add(new PlaceholderDownloadProgress());
-			}
-		}
+    @Override
+    public List<DownloadProgress> getDownloadProgresses() throws DownloadException {
+        if (activeDownloads == null) {
+            activeDownloads = new ArrayList<>();
 
-		return Collections.unmodifiableList(activeDownloads);
-	}
+            if (!WCMMode.EDIT.equals(WCMMode.fromRequest(request))) {
+                final List allowedDownloadIds = getAllowedDownloadIds(request);
+                final Calendar now = Calendar.getInstance();
+                activeDownloads = StreamSupport.stream(downloadService.getDownloadIds(resourceResolver).spliterator(), false)
+                        .filter(id -> allowedDownloadIds.contains(id))
+                        .map(id -> {
+                            try {
+                                return downloadService.getProgress(id, resourceResolver);
+                            } catch (DownloadException e) {
+                                log.warn("Unable to get async DownloadProgress for downloadId [ {} ] for user [ {} ]", id, resourceResolver.getUserID(), e);
+                                return null;
+                            }
+                        })
+                        .filter(Objects::nonNull)
+                        .filter((dp) -> {
+                            // Filter out any Download Progress that is older than 1 hour
+                                if (dp.getFinished() == null) {
+                                return true;
+                            } else {
+                                return Duration.between(dp.getFinished().toInstant(), now.toInstant()).abs().toHours() <= 1;
+                            }
+                        })
+                        .collect(Collectors.toList());
+            } else {
+                activeDownloads.add(new PlaceholderDownloadProgress());
+            }
+        }
 
-	/**
-	 * Collect the downloadIds the user provides to let AEM know which DownloadProgresses should be returned.
-	 * @param request the request
-	 * @return the list of downloadIds the user should be able to request access to.
-	 */
-	private List<String> getAllowedDownloadIds(final SlingHttpServletRequest request) {
-		RequestParameter[] requestParameters = request.getRequestParameters(REQ_PARAM_DOWNLOAD_IDS);
+        return Collections.unmodifiableList(activeDownloads);
+    }
 
-		if (requestParameters != null) {
-			return Arrays.stream(requestParameters).map(rp -> rp.getString()).collect(Collectors.toList());
-		}
+    /**
+     * Collect the downloadIds the user provides to let AEM know which DownloadProgresses should be returned.
+     * @param request the request
+     * @return the list of downloadIds the user should be able to request access to.
+     */
+    private List<String> getAllowedDownloadIds(final SlingHttpServletRequest request) {
+        RequestParameter[] requestParameters = request.getRequestParameters(REQ_PARAM_DOWNLOAD_IDS);
 
-		return Collections.emptyList();
-	}
+        if (requestParameters != null) {
+            return Arrays.stream(requestParameters).map(rp -> rp.getString()).collect(Collectors.toList());
+        }
 
-	@Nonnull
-	@Override
-	public String getExportedType() {
-		return RESOURCE_TYPE;
-	}
+        return Collections.emptyList();
+    }
+
+    @Nonnull
+    @Override
+    public String getExportedType() {
+        return RESOURCE_TYPE;
+    }
 }
