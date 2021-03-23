@@ -1,4 +1,5 @@
 #base=js
 
 cart-badge.js
+downloads-badge.js
 profile.js

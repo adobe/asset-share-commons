@@ -210,7 +210,7 @@
                                             fieldDescription="The name of the file that a user will download."
                                             fieldLabel="ZIP File Name"
                                             name="./zipFileName"
-                                            required="{Boolean}true"/>
+                                            required="{Boolean}false"/>
 
                                     <max-content-size-message
                                             jcr:primaryType="nt:unstructured"
