@@ -81,7 +81,12 @@
                                                     name="./showMissingRenditions"
                                                     text="Show Missing Renditions (Legacy)"
                                                     uncheckedValue="false"
-                                                    value="true"/>
+                                                    value="true">
+                                                <granite:rendercondition
+                                                        jcr:primaryType="nt:unstructured"
+                                                        sling:resourceType="asset-share-commons/authoring/renderconditions/require-aem"
+                                                        distribution="classic"/>
+                                            </show-missing-renditions>
 
                                             <renditions
                                                     jcr:primaryType="nt:unstructured"
@@ -163,6 +168,10 @@
                                                         </option>
                                                     </items>
                                                 </field>
+                                                <granite:rendercondition
+                                                        jcr:primaryType="nt:unstructured"
+                                                        sling:resourceType="asset-share-commons/authoring/renderconditions/require-aem"
+                                                        distribution="classic"/>
                                             </legacy-renditions>
 
                                             <legacy-mode
@@ -181,6 +190,11 @@
                                                         jcr:primaryType="nt:unstructured"
                                                         modern-field-names="./asset-renditions/items"
                                                         legacy-field-names="./items,./showMissingRenditions"/>
+                                                <granite:rendercondition
+                                                        jcr:primaryType="nt:unstructured"
+                                                        sling:resourceType="asset-share-commons/authoring/renderconditions/require-aem"
+                                                        distribution="classic"/>
+
                                             </legacy-mode>
                                         </items>
                                     </labels>

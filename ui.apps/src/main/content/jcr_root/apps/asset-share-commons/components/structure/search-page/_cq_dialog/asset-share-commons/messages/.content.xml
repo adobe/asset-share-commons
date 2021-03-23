@@ -74,8 +74,7 @@
                             </items>
                         </cart-add-fieldset>
 
-
-                        <!-- ARemove from Cart Message -->
+                        <!-- Remove from Cart Message -->
                         <cart-remove-fieldset
                                 jcr:primaryType="nt:unstructured"
                                 jcr:title="Asset Removed from Cart"
@@ -155,8 +154,8 @@
                                     </items>
                              <granite:rendercondition
                                      jcr:primaryType="nt:unstructured"
-                                     sling:resourceType = "asset-share-commons/authoring/renderconditions/require-aem"
-                                     distribution="classic"/>
+                                     sling:resourceType="asset-share-commons/authoring/renderconditions/require-aem"
+                                     distribution="cloud-ready"/>
                           </download-add-fieldset>
                     </items>
                 </fieldset>
