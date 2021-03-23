@@ -33,6 +33,7 @@
           action="${resource.path @ selectors = 'download-asset-renditions', extension = 'zip'}"
           target="download"
           data-asset-share-id="download-modal"
+          data-asset-share-mode-async="${download.isAsynchronous ? 'true' : ''}"
           class="ui modal cmp-modal-download--wrapper cmp-modal">
 
     <i class="close icon"></i>
