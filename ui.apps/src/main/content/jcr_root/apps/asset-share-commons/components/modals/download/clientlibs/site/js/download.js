@@ -48,27 +48,41 @@ jQuery((function(ns, semanticModal, licenseModal, downloadService) {
                 id: DOWNLOAD_MODAL_ID,
                 url: DOWNLOAD_URL,
                 data: formData.serialize(),
-                options: {}
-            };
-
-            if (licensed) {
-                downloadModal.options.show = function (modal) {
-                    modal.modal("attach events", ns.Elements.selector([licenseModal.id(), licenseModal.acceptId()]));
-                };
-            } else {
-                downloadModal.options.show = function (modal) {
-
-                     //direct download (don't show modal)
-                    if($(modal).data(DOWNLOAD_DIRECT)) {
-                        console.log("Direct download!");
-
-                        $(modal).submit().remove();
-                    } else {
-                        // regular modal
-                        modal.modal('show');
+                options: {
+                    closePrevious: function(htmlResponse, modalTracker) {
+                        console.log("IN the close " + licensed);
+                        var modal = $("<div>" + htmlResponse + "</div>").find(ns.Elements.selector(getId()));
+                        if($(modal).data(DOWNLOAD_DIRECT)) {
+                            for(var modalId of modalTracker) {
+                                if(modalId != licenseModal.id()) {
+                                    ns.Elements.element(modalId).modal('hide');
+                                }
+                            }
+                        }
+                    },
+                    show: function(modal) {
+                        // Direct download enabled
+                        if($(modal).data(DOWNLOAD_DIRECT)) {
+                            if(licensed) {
+                                // manually submit the download AFTER license approved clicked
+                                $("body").on("click", ns.Elements.selector([licenseModal.id(), licenseModal.acceptId()]), function (e) {
+                                    $(modal).submit().remove();
+                                });
+                            } else {
+                                $(modal).submit().remove();
+                            }
+                        } else { //normal download modal
+                            if(licensed) {
+                                // open download modal when license modal accepted
+                                modal.modal("attach events", ns.Elements.selector([licenseModal.id(), licenseModal.acceptId()]));
+                            } else {
+                                // regular modal
+                                modal.modal('show');
+                            }
+                        }
                     }
-                };
-            }
+                }
+            };
 
             return downloadModal;
         }

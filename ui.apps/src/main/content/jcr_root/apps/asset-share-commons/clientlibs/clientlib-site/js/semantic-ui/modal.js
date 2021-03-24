@@ -84,7 +84,6 @@ AssetShare.SemanticUI.Modal = (function ($, ns) {
             // No more modals left to load!
             return;
         }
-        
         $.post(modal.url, modal.data, function (htmlResponse) {
             modal.options = modal.options || {};
             modal.options.show = modal.options.show || function (modal) {
@@ -92,6 +91,10 @@ AssetShare.SemanticUI.Modal = (function ($, ns) {
             };
 
             if (!isOpenModal(modal.id)) {
+
+                // in cases like direct download, make sure to close previous window
+                modal.options.closePrevious ? modal.options.closePrevious(htmlResponse, tracker) : false;
+
                 modal.options.show($('<div>' + htmlResponse + "</div>").find(ns.Elements.selector(modal.id)).modal({
                     allowMultiple: false,
                     closable: true,
