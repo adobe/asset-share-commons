@@ -72,6 +72,8 @@ public class ConfigImpl implements Config {
     private static final String PN_DOWNLOAD_ENABLED = "config/actions/download/enabled";
     private static final String PN_DOWNLOAD_VIEW_PATH = "config/actions/download/path";
 
+    private static final String PN_DOWNLOADS_VIEW_PATH = "config/actions/downloads/path";
+
     private static final String PN_CART_ENABLED = "config/actions/cart/enabled";
     private static final String PN_CART_VIEW_PATH = "config/actions/cart/path";
 
@@ -175,7 +177,7 @@ public class ConfigImpl implements Config {
 
     @Override
     public String getDownloadsActionUrl() {
-        return properties.get(PN_DOWNLOAD_VIEW_PATH, rootPath + "/actions/downloads") + "." + viewSelector + HTML_EXTENSION;
+        return properties.get(PN_DOWNLOADS_VIEW_PATH, rootPath + "/actions/downloads") + "." + viewSelector + HTML_EXTENSION;
     }
 
     @Override

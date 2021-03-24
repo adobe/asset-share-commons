@@ -28,12 +28,14 @@
     }
 </style>
 
+ <!--/* hard coded for download direct property for now... */-->
 <form data-sly-test="${!legacyMode}"
           method="post"
           action="${resource.path @ selectors = 'download-asset-renditions', extension = 'zip'}"
           target="download"
           data-asset-share-id="download-modal"
           data-asset-share-mode-async="${download.isAsynchronous ? 'true' : ''}"
+          data-asset-share-download-direct="true"
           class="ui modal cmp-modal-download--wrapper cmp-modal">
 
     <i class="close icon"></i>
@@ -86,7 +88,7 @@
                 </sly>
             </div>
             </sly>
-        </div>        
+        </div>
     </div>
 
     <div class="actions cmp-footer__actions">

@@ -22,6 +22,7 @@ jQuery((function(ns, semanticModal, licenseModal, downloadService) {
     "use strict";
     AssetShare.SemanticUI.Modals.DownloadModal = (function () {
         var DOWNLOAD_URL = ns.Data.val("download-url"),
+            DOWNLOAD_DIRECT = "asset-share-download-direct",
             DOWNLOAD_MODAL_ID = "download-modal",
             DOWNLOAD_BUTTON_ID = "download-asset",
             DOWNLOAD_MODE_ASYNC = "data-asset-share-mode-async";
@@ -56,7 +57,16 @@ jQuery((function(ns, semanticModal, licenseModal, downloadService) {
                 };
             } else {
                 downloadModal.options.show = function (modal) {
-                    modal.modal('show');
+
+                     //direct download (don't show modal)
+                    if($(modal).data(DOWNLOAD_DIRECT)) {
+                        console.log("Direct download!");
+
+                        $(modal).submit().remove();
+                    } else {
+                        // regular modal
+                        modal.modal('show');
+                    }
                 };
             }
 
