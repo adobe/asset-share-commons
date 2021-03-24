@@ -50,7 +50,6 @@ jQuery((function(ns, semanticModal, licenseModal, downloadService) {
                 data: formData.serialize(),
                 options: {
                     closePrevious: function(htmlResponse, modalTracker) {
-                        console.log("IN the close " + licensed);
                         var modal = $("<div>" + htmlResponse + "</div>").find(ns.Elements.selector(getId()));
                         if($(modal).data(DOWNLOAD_DIRECT)) {
                             for(var modalId of modalTracker) {
