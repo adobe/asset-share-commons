@@ -108,6 +108,19 @@ jQuery((function($, ns, semanticModal, download) {
             update();
         }
 
+        function remove(e) {
+            e.stopPropagation();
+            e.preventDefault();
+
+            var downloadId = $(e.currentTarget).data('asset-share-download-id');
+
+            if (downloadId) {
+                download.removeDownloadId(downloadId);
+                update();
+            }
+
+        }
+
         function clear(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -120,7 +133,14 @@ jQuery((function($, ns, semanticModal, download) {
         function init() {
             ns.Elements.element('downloads-modal').each(function() {
                 var el = $(this);
-                el.find('.ui.accordion').accordion();
+                el.find('.ui.accordion').accordion({
+                    selector: {
+                        accordion: '.accordion',
+                        title: '.accordion-title',
+                        trigger: '.accordion-trigger',
+                        content: '.accordion-content'
+                    }
+                });
                 el.find('[data-asset-share-id="file-size"]').each(function() {
                     $(this).text(function() {
                         return humanFileSize(($(this).text() || 0), true, 0)
@@ -133,6 +153,7 @@ jQuery((function($, ns, semanticModal, download) {
         $("body").on("click", ns.Elements.selector([ "refresh-downloads" ]), refresh);
         $("body").on("click", ns.Elements.selector([ "clear-downloads" ]), clear);
         $("body").on("click", ns.Elements.selector([ "show-downloads" ]), show);
+        $("body").on("click", ns.Elements.selector([ "remove-from-downloads" ]), remove);
         $("body").on(ns.Events.MODAL_SHOWN, init);
         $("body").on(ns.Events.DOWNLOADS_UPDATE, updateBadge);
 

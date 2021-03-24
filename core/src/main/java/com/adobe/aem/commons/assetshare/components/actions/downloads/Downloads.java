@@ -1,5 +1,6 @@
 package com.adobe.aem.commons.assetshare.components.actions.downloads;
 
+import com.adobe.aem.commons.assetshare.content.renditions.download.async.DownloadEntry;
 import com.adobe.cq.dam.download.api.DownloadException;
 import com.adobe.cq.dam.download.api.DownloadProgress;
 import org.osgi.annotation.versioning.ProviderType;
@@ -14,8 +15,8 @@ public interface Downloads {
 	 *
 	 * - downloadId: 1 or more request parameters of this name whose values are the allowed downloadIds to include in the result.
 	 *
-	 * @return a list of the Download Progresses the user has request and also has access to.
+	 * @return a list of the DownloadEntries the user has requested and also has access to.
 	 * @throws DownloadException
 	 */
-	List<DownloadProgress> getDownloadProgresses() throws DownloadException;
+	List<DownloadEntry> getDownloads() throws DownloadException;
 }

@@ -2,6 +2,8 @@ package com.adobe.aem.commons.assetshare.components.actions.downloads.impl;
 
 import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
 import com.adobe.aem.commons.assetshare.components.actions.downloads.Downloads;
+import com.adobe.aem.commons.assetshare.content.renditions.download.async.DownloadEntry;
+import com.adobe.aem.commons.assetshare.content.renditions.download.async.impl.DownloadEntryImpl;
 import com.adobe.cq.dam.download.api.DownloadException;
 import com.adobe.cq.dam.download.api.DownloadProgress;
 import com.adobe.cq.dam.download.api.DownloadService;
@@ -54,10 +56,10 @@ public class DownloadsImpl implements Downloads, ComponentExporter {
     @OSGiService
     private DownloadService downloadService;
 
-    private List<DownloadProgress> activeDownloads = null;
+    private List<DownloadEntry> activeDownloads = null;
 
     @Override
-    public List<DownloadProgress> getDownloadProgresses() throws DownloadException {
+    public List<DownloadEntry> getDownloads() throws DownloadException {
         if (activeDownloads == null) {
             activeDownloads = new ArrayList<>();
 
@@ -68,24 +70,32 @@ public class DownloadsImpl implements Downloads, ComponentExporter {
                         .filter(id -> allowedDownloadIds.contains(id))
                         .map(id -> {
                             try {
-                                return downloadService.getProgress(id, resourceResolver);
+                                final DownloadProgress downloadProgress = downloadService.getProgress(id, resourceResolver);
+                                if (downloadProgress != null) {
+                                    return new DownloadEntryImpl(request, id, downloadProgress);
+                                } else {
+                                    return null;
+                                }
                             } catch (DownloadException e) {
                                 log.warn("Unable to get async DownloadProgress for downloadId [ {} ] for user [ {} ]", id, resourceResolver.getUserID(), e);
                                 return null;
                             }
                         })
                         .filter(Objects::nonNull)
-                        .filter((dp) -> {
+                        .filter((downloadEntry) -> {
                             // Filter out any Download Progress that is older than 1 hour
-                                if (dp.getFinished() == null) {
+                                if (downloadEntry.getFinished() == null) {
                                 return true;
                             } else {
-                                return Duration.between(dp.getFinished().toInstant(), now.toInstant()).abs().toHours() <= 1;
+                                return Duration.between(downloadEntry.getFinished().toInstant(), now.toInstant()).abs().toHours() <= 1;
                             }
                         })
                         .collect(Collectors.toList());
             } else {
-                activeDownloads.add(new PlaceholderDownloadProgress());
+                activeDownloads.add(new PlaceholderDownloadEntry(request, "01-02", DownloadProgress.Status.PROCESSING, 2));
+                activeDownloads.add(new PlaceholderDownloadEntry(request, "02-03", DownloadProgress.Status.SUCCESSFUL, 3));
+                activeDownloads.add(new PlaceholderDownloadEntry(request, "04-05", DownloadProgress.Status.PARTIALLY_SUCCESSFUL, 4));
+                activeDownloads.add(new PlaceholderDownloadEntry(request, "06-07", DownloadProgress.Status.FAILED, 2));
             }
         }
 
@@ -93,7 +103,7 @@ public class DownloadsImpl implements Downloads, ComponentExporter {
     }
 
     /**
-     * Collect the downloadIds the user provides to let AEM know which DownloadProgresses should be returned.
+     * Collect the downloadIds the user provides to let AEM know which DownloadEntries should be returned.
      * @param request the request
      * @return the list of downloadIds the user should be able to request access to.
      */

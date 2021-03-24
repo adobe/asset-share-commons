@@ -19,11 +19,8 @@
 
 package com.adobe.aem.commons.assetshare.content.renditions.download.async.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.net.URI;
+import java.util.*;
 
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRendition;
 import com.adobe.cq.dam.download.api.DownloadApiFactory;
@@ -86,12 +83,12 @@ public class NamedRenditionDownloadTargetProcessor implements DownloadTargetProc
 
                 final AssetRendition assetRendition = assetRenditionDispatcher.getRendition(assetModel, assetRenditionParameters);
 
+                final Map<String, Object> downloadFileParameters = new HashMap<>();
+                downloadFileParameters.put(PARAM_ARCHIVE_NAME, archiveName);
+
                 if (assetRendition != null) {
                     log.debug("Obtained AssetRendition [ {} ] details for [ {} ]", assetRendition.getBinaryUri(), assetModel.getPath());
 
-                    final Map<String, Object> downloadFileParameters = new HashMap<>();
-
-                    downloadFileParameters.put(PARAM_ARCHIVE_NAME, archiveName);
                     downloadFileParameters.put(PARAM_ARCHIVE_PATH, getArchivePath(groupRenditionsByAssetFolder,
                             true,
                             assetModel,
@@ -101,10 +98,23 @@ public class NamedRenditionDownloadTargetProcessor implements DownloadTargetProc
                             assetRendition.getBinaryUri(),
                             downloadFileParameters));
                 } else {
+
+                    downloadFileParameters.put(PARAM_ARCHIVE_PATH, getArchivePath(groupRenditionsByAssetFolder,
+                            true,
+                            assetModel,
+                            renditionName,
+                            null));
+
+                    downloadFiles.add(apiFactory.createDownloadFile(Optional.of(0L),
+                            URI.create("failed://to.resolve.asset.rendition.combination"),
+                            downloadFileParameters));
+
                     log.debug("Unable to obtain AssetRendition details for [ {} ] from AssetDispatcher [ {} ]", assetModel.getPath(), assetRenditionDispatcher.getClass().getName());
                 }
 
+                // Stop processing assetRenditionDispatchers once one has accepted
                 break;
+
             } else {
                 log.debug("assetRenditionDispatcher [ {} ] does not accept AssetModel [ {} ] and renditionName [ {} ]", this.getClass().getName(), assetModel.getPath(), renditionName);
             }
@@ -138,16 +148,25 @@ public class NamedRenditionDownloadTargetProcessor implements DownloadTargetProc
         final String assetNameWithoutExtension = StringUtils.substringBeforeLast(assetModel.getName(), ".");
 
         String folder = "";
-        String fileName = "";
+        String fileName;
+        String extension = "";
 
         if (groupRenditionsByAssetFolder && StringUtils.isNotBlank(assetNameWithoutExtension)) {
             folder = assetNameWithoutExtension + "/";
         }
 
+        if (StringUtils.isNotBlank(mimeType)) {
+            extension = mimeService.getExtension(mimeType);
+        }
+
+        if (StringUtils.isNotBlank(extension)) {
+            extension = "." + extension;
+        }
+
         if (includeRenditionName) {
-            fileName = StringUtils.substringBeforeLast(assetModel.getName(), ".") + " (" + renditionName + ")." + mimeService.getExtension(mimeType);
+            fileName = StringUtils.substringBeforeLast(assetModel.getName(), ".") + " (" + renditionName + ")" + extension;
         } else {
-            fileName = StringUtils.substringBeforeLast(assetModel.getName(), ".") + "." + mimeService.getExtension(mimeType);
+            fileName = StringUtils.substringBeforeLast(assetModel.getName(), ".") + extension;
         }
 
         return folder + fileName;

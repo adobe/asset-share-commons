@@ -16,30 +16,23 @@
   ~ limitations under the License.
  */-->
 
-<!--/*
+<template data-sly-template.downloadsLists="${ @ successes, failures }">
 
-Represents a download Zip file. Downloads may have multiple zip files, but
-in the context of Asset Share Commons, there is typically only 1 zip file.
-
- */-->
-
-<template data-sly-template.downloadArtifact="${ @ downloadArtifact }">
-
-    <sly data-sly-test="${downloadArtifact.successes.size > 0}">
+    <sly data-sly-test="${successes.size > 0}">
         <hr class="cmp-modal-downloads__artifacts-delimiter"/>
-        <div class="cmp-modal-downloads__artifacts-title">${ 'Successfully added to download' @ i18n }</div>
+        <div class="cmp-modal-downloads__artifacts-title">${ 'Files added to zip' @ i18n }</div>
         <ul class="cmp-modal-downloads__artifacts-list"
-            data-sly-list.asset="${downloadArtifact.successes}">
-            <li class="cmp-modal-downloads__artifacts-item">${asset}</li>
+            data-sly-list.success="${successes}">
+            <li class="cmp-modal-downloads__artifacts-item">${success}</li>
         </ul>
     </sly>
 
-    <sly data-sly-test="${downloadArtifact.failures.size > 0}">
+    <sly data-sly-test="${failures.size > 0}">
         <hr class="cmp-modal-downloads__artifacts-delimiter"/>
-        <div class="cmp-modal-downloads__artifacts-title">${ 'Failed to add to download' @ i18n }</div>
+        <div class="cmp-modal-downloads__artifacts-title">${ 'Unavailable files' @ i18n }</div>
         <ul class="cmp-modal-downloads__artifacts-list"
-            data-sly-list.asset="${downloadArtifact.failures}">
-            <li class="cmp-modal-downloads__artifacts-item">${asset}</li>
+            data-sly-list.failure="${failures}">
+            <li class="cmp-modal-downloads__artifacts-item">${failure}</li>
         </ul>
     </sly>
 
