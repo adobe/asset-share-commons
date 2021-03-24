@@ -31,7 +31,7 @@ public class PlaceholderDownloadEntry implements DownloadEntry {
             numFailures = totalFiles;
         } else if (DownloadProgress.Status.PARTIALLY_SUCCESSFUL.equals(status)) {
             numSuccesses = (totalFiles / 2);
-            numFailures = totalFiles - totalFiles;
+            numFailures = totalFiles - numSuccesses;
         } else if (DownloadProgress.Status.PROCESSING.equals(status)) {
             numSuccesses = 0;
             numFailures = 0;
@@ -75,7 +75,7 @@ public class PlaceholderDownloadEntry implements DownloadEntry {
     @Override
     public int getProgress() {
         if (DownloadProgress.Status.PROCESSING.equals(status)) {
-            return 80;
+            return 83;
         }
 
         return 100;
