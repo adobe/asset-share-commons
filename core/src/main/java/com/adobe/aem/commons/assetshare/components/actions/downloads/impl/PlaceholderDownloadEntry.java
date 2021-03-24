@@ -14,8 +14,8 @@ import java.util.*;
 public class PlaceholderDownloadEntry implements DownloadEntry {
     private final SlingHttpServletRequest request;
     private final String id;
-    private int numSuccesses;
-    private int numFailures;
+    private final int numSuccesses;
+    private final int numFailures;
     private DownloadProgress.Status status;
 
     public PlaceholderDownloadEntry(SlingHttpServletRequest request, String id, DownloadProgress.Status status, int totalFiles) {
@@ -33,6 +33,9 @@ public class PlaceholderDownloadEntry implements DownloadEntry {
             numSuccesses = (totalFiles / 2);
             numFailures = totalFiles - numSuccesses;
         } else if (DownloadProgress.Status.PROCESSING.equals(status)) {
+            numSuccesses = 0;
+            numFailures = 0;
+        } else {
             numSuccesses = 0;
             numFailures = 0;
         }
