@@ -37,7 +37,8 @@ Represents a logical download from Asset Share Commons.
             <!--/* Download archive name */-->
             <td class="cmp-modal-downloads__col--archive-name accordion-trigger"
                 data-sly-test="${download.name && download.status != 'FAILED' }">
-                <i class="dropdown icon"></i>
+                <i data-sly-test="${download.status != 'PROCESSING'}" class="dropdown icon"></i>
+                <i data-sly-test="${download.status == 'PROCESSING'}" class="icon"></i>
                 ${download.name}
             </td>
 
@@ -80,7 +81,6 @@ Represents a logical download from Asset Share Commons.
                     <i class="download icon"></i>
                 </a>
             </td>
-
 
             <!--/* Remove */-->
             <td class="cmp-modal-downloads__col--action">
