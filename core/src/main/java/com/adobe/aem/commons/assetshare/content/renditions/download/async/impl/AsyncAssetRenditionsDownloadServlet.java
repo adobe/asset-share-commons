@@ -49,7 +49,6 @@ import static com.adobe.aem.commons.assetshare.content.renditions.download.async
         property = {
                 "sling.servlet.methods=POST",
                 "sling.servlet.resourceTypes=asset-share-commons/actions/download",
-                "sling.servlet.resourceTypes=asset-share-commons/actions/share",
                 "sling.servlet.selectors=download-asset-renditions",
                 "sling.servlet.extensions=zip"
         }
@@ -65,7 +64,7 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
     private static final String REQ_KEY_RENDITION_NAMES = "renditionName";
 
     private static final String PN_ALLOWED_RENDITION_NAMES = "allowedRenditionNames";
-    private static final String PN_BASE_ARCHIVE_NAME = "zipFileName";
+    private static final String PN_BASE_ARCHIVE_NAME = "fileName";
 
     public static final String PARAM_ARCHIVE_NAME = "archiveName";
     private static final String DOWNLOAD_ARCHIVE_NAME = PARAM_ARCHIVE_NAME;

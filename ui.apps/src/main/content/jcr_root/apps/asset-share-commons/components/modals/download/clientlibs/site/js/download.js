@@ -22,6 +22,7 @@ jQuery((function(ns, semanticModal, licenseModal, downloadService) {
     "use strict";
     AssetShare.SemanticUI.Modals.DownloadModal = (function () {
         var DOWNLOAD_URL = ns.Data.val("download-url"),
+            DOWNLOAD_DIRECT = "asset-share-download-direct",
             DOWNLOAD_MODAL_ID = "download-modal",
             DOWNLOAD_BUTTON_ID = "download-asset",
             DOWNLOAD_MODE_ASYNC = "data-asset-share-mode-async";
@@ -47,18 +48,41 @@ jQuery((function(ns, semanticModal, licenseModal, downloadService) {
                 id: DOWNLOAD_MODAL_ID,
                 url: DOWNLOAD_URL,
                 data: formData.serialize(),
-                options: {}
+                options: {
+                    // Download modal's beforeShow(..) has code to ensure that any previous modals are closed before opening the download window, specifically for the case of the Direct Download
+                    beforeShow: function(htmlResponse, modalTracker) {
+                        var modal = $("<div>" + htmlResponse + "</div>").find(ns.Elements.selector(getId()));
+                        if($(modal).data(DOWNLOAD_DIRECT)) {
+                            for(var modalId of modalTracker) {
+                                if(modalId !== licenseModal.id()) {
+                                    ns.Elements.element(modalId).modal('hide');
+                                }
+                            }
+                        }
+                    },
+                    show: function(modal) {
+                        // Direct download enabled
+                        if($(modal).data(DOWNLOAD_DIRECT)) {
+                            if(licensed) {
+                                // manually submit the download AFTER license approved clicked
+                                $("body").on("click", ns.Elements.selector([licenseModal.id(), licenseModal.acceptId()]), function (e) {
+                                    $(modal).submit().remove();
+                                });
+                            } else {
+                                $(modal).submit().remove();
+                            }
+                        } else { //normal download modal
+                            if(licensed) {
+                                // open download modal when license modal accepted
+                                modal.modal("attach events", ns.Elements.selector([licenseModal.id(), licenseModal.acceptId()]));
+                            } else {
+                                // regular modal
+                                modal.modal('show');
+                            }
+                        }
+                    }
+                }
             };
-
-            if (licensed) {
-                downloadModal.options.show = function (modal) {
-                    modal.modal("attach events", ns.Elements.selector([licenseModal.id(), licenseModal.acceptId()]));
-                };
-            } else {
-                downloadModal.options.show = function (modal) {
-                    modal.modal('show');
-                };
-            }
 
             return downloadModal;
         }

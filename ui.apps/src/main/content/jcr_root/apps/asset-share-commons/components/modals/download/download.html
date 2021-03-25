@@ -34,10 +34,13 @@
           target="download"
           data-asset-share-id="download-modal"
           data-asset-share-mode-async="${download.isAsynchronous ? 'true' : ''}"
+          data-asset-share-download-direct="${properties.downloadDirect ? 'true' : ''}"
           class="ui modal cmp-modal-download--wrapper cmp-modal">
 
     <i class="close icon"></i>
-
+    <div data-sly-test="${properties.downloadDirect}" class="ui warning message">
+        <div class="header">${"Direct Downloads enabled" @ i18n}</div>
+    </div>
     <div class="header">
         ${properties['modalTitle']}
     </div>
@@ -86,7 +89,7 @@
                 </sly>
             </div>
             </sly>
-        </div>        
+        </div>
     </div>
 
     <div class="actions cmp-footer__actions">
