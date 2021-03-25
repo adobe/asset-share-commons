@@ -24,6 +24,7 @@ import com.adobe.aem.commons.assetshare.configuration.Config;
 import com.adobe.aem.commons.assetshare.configuration.impl.selectors.AlwaysUseDefaultSelectorImpl;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.util.ForcedInheritanceValueMapWrapper;
+import com.adobe.granite.contexthub.api.ContextHub;
 import com.day.cq.commons.inherit.HierarchyNodeInheritanceValueMap;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -33,6 +34,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.featureflags.Features;
 import org.apache.sling.models.annotations.Model;
@@ -107,6 +109,9 @@ public class ConfigImpl implements Config {
     @OSGiService
     @Required
     private Features features;
+
+    @OSGiService
+    private ContextHub contextHub;
 
     private Page currentPage;
 
@@ -268,6 +273,22 @@ public class ConfigImpl implements Config {
     @Override
     public String getRootPath() {
         return getRootPath(currentPage);
+    }
+
+    @Override
+    public boolean isContextHubEnabled() {
+        final HierarchyNodeInheritanceValueMap properties = new HierarchyNodeInheritanceValueMap(currentPage.getContentResource());
+
+        String path = properties.get("cq:contextHubPath", String.class);
+
+        if (StringUtils.isNotBlank(path)) {
+            Resource resource = request.getResourceResolver().getResource(path);
+            if (resource != null) {
+                return resource.isResourceType("granite/contexthub/cloudsettings/components/baseconfiguration");
+            }
+        }
+
+        return false;
     }
 
     /**

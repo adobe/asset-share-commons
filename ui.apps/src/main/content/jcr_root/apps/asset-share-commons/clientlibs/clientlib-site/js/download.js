@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*global ContextHub: false, jQuery: false, AssetShare: false */
+/*global jQuery: false, AssetShare: false */
 
 /**
  * Object to facilitate asynchronous download operations
