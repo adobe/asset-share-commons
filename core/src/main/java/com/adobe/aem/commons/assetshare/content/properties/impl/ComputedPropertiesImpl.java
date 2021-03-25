@@ -58,10 +58,10 @@ public final class ComputedPropertiesImpl implements ComputedProperties {
     private transient List<ComputedProperty> rankedComputedProperties = new CopyOnWriteArrayList();
 
     public List<ComputedProperty> getComputedProperties() {
-        if (log.isDebugEnabled()) {
-            log.debug("Returning this list of highest ranking Computed Prooerties by label");
+        if (log.isTraceEnabled()) {
+            log.debug("Returning this list of highest ranking Computed Properties by label");
             rankedComputedProperties.stream().forEach(computedProperty -> {
-                log.debug("Computed property: [ name: {} ] - [ label: {} ]", computedProperty.getName(), computedProperty.getLabel());
+                log.trace("Computed property: [ name: {} ] - [ label: {} ]", computedProperty.getName(), computedProperty.getLabel());
             });
         }
 
