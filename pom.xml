@@ -28,6 +28,7 @@
         <module>ui.frontend.theme.dark</module>
         <module>ui.apps</module>
         <module>ui.apps.structure</module>
+        <module>dispatcher</module>
         <module>ui.content</module>
         <module>ui.content.sample</module>
   </modules>
@@ -70,22 +71,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>3.0-r1585899</version>
+                <version>2.5.3</version>
                 <configuration>
                     <scmCommentPrefix>[maven-scm] :</scmCommentPrefix>
                     <preparationGoals>clean install</preparationGoals>
                     <goals>install</goals>
                     <releaseProfiles>release</releaseProfiles>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <projectVersionPolicyId>OddEvenVersionPolicy</projectVersionPolicyId>
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.release</groupId>
-                        <artifactId>maven-release-oddeven-policy</artifactId>
-                        <version>3.0-r1585899</version>
-                    </dependency>
-                </dependencies>
             </plugin>
             <!-- Maven Source Plugin -->
             <plugin>
@@ -98,6 +90,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0-M3</version>
                 <executions>
                     <execution>
                         <id>enforce-maven</id>
@@ -110,8 +103,7 @@
                                     <version>[3.3.9,)</version>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
-                                    <message>Project must be compiled
-                                        with Java 8 or higher</message>
+                                    <message>Maven must be executed with a Java 8 JRE or higher.</message>
                                     <version>1.8.0</version>
                                 </requireJavaVersion>
                             </rules>
@@ -276,12 +268,6 @@
                         <userId>${vault.user}</userId>
                         <password>${vault.password}</password>
                     </configuration>
-                </plugin>
-                <!-- Maven Enforcer Plugin -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>1.4.1</version>
                 </plugin>
                 <!-- Maven Dependency Plugin -->
                 <plugin>

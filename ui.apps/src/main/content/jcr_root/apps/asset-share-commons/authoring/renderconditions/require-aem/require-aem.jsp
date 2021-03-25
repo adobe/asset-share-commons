@@ -42,9 +42,9 @@
     if (distribution == null) {
         vote = false;
     } else if (RequireAem.Distribution.CLOUD_READY.equals(requireAem.getDistribution())) {
-        vote = RequireAem.Distribution.CLOUD_READY.equals(distribution);
+        vote = RequireAem.Distribution.CLOUD_READY.getValue().equals(distribution);
     } else if (RequireAem.Distribution.CLASSIC.equals(requireAem.getDistribution())) {
-        vote = RequireAem.Distribution.CLASSIC.equals(distribution);
+        vote = RequireAem.Distribution.CLASSIC.getValue().equals(distribution);
     }
 
     request.setAttribute(RenderCondition.class.getName(), new SimpleRenderCondition(vote));
