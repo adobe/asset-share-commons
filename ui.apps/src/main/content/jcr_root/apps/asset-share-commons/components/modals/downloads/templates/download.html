@@ -66,15 +66,13 @@ Represents a logical download from Asset Share Commons.
             <td class="cmp-modal-downloads__col--action">
 
                 <span data-sly-test="${download.status == 'PROCESSING'}"
-                        onclick="event.stopPropagation()"
                         class="ui disabled right labeled icon button">
                     ${download.progress}%
                     <i class="download icon"></i>
                 </span>
 
-                <a onclick="event.stopPropagation()"
-                   data-sly-test="${download.status == 'SUCCESSFUL' || download.status == 'PARTIALLY_SUCCESSFUL'}"
-                   href="${download.uri}"
+                <a data-sly-test="${download.status == 'SUCCESSFUL' || download.status == 'PARTIALLY_SUCCESSFUL'}"
+                   href="${download.getURI}"
                    class="ui positive primary right labeled icon button">
                     ${properties.downloadButton || 'Download' @ i18n}
                     <i class="download icon"></i>
