@@ -32,7 +32,7 @@
                                         name="./modalTitle"
                                         required="{Boolean}true"/>
 
-                                    <column-status-label
+                                    <column-status-title
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
                                             emptyText="Status"
