@@ -49,11 +49,12 @@ jQuery((function(ns, semanticModal, licenseModal, downloadService) {
                 url: DOWNLOAD_URL,
                 data: formData.serialize(),
                 options: {
-                    closePrevious: function(htmlResponse, modalTracker) {
+                    // Download modal's beforeShow(..) has code to ensure that any previous modals are closed before opening the download window, specifically for the case of the Direct Download
+                    beforeShow: function(htmlResponse, modalTracker) {
                         var modal = $("<div>" + htmlResponse + "</div>").find(ns.Elements.selector(getId()));
                         if($(modal).data(DOWNLOAD_DIRECT)) {
                             for(var modalId of modalTracker) {
-                                if(modalId != licenseModal.id()) {
+                                if(modalId !== licenseModal.id()) {
                                     ns.Elements.element(modalId).modal('hide');
                                 }
                             }
