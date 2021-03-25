@@ -61,6 +61,10 @@
                                         <datasource
                                                 jcr:primaryType="nt:unstructured"
                                                 sling:resourceType="asset-share-commons/data-sources/computed-properties"/>
+                                        <granite:rendercondition
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="asset-share-commons/authoring/renderconditions/require-aem"
+                                                distribution="classic"/>
                                     </legacy-computed-property>
 
                                     <legacy-rendition-regex
@@ -69,8 +73,12 @@
                                             name="./renditionRegex"
                                             fieldLabel="Rendition File Name Regex (Legacy)"
                                             emptyText="cq5dam\.web\.\d+\.\d+\.[a-zA-Z0-9]+"
-                                            fieldDescription="This configuration is legacy. Prefer the non-legacy mode when configuring this component. Regular expression (regex) to select a the asset rendition to use; the first matching rendition is used. This is only used if the Computed Property (above) cannot resolve an image src. This is not a regular expression (regex)."/>
-
+                                            fieldDescription="This configuration is legacy. Prefer the non-legacy mode when configuring this component. Regular expression (regex) to select a the asset rendition to use; the first matching rendition is used. This is only used if the Computed Property (above) cannot resolve an image src. This is not a regular expression (regex).">
+                                        <granite:rendercondition
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="asset-share-commons/authoring/renderconditions/require-aem"
+                                                distribution="classic"/>
+                                    </legacy-rendition-regex>
 
                                     <max-height
                                         jcr:primaryType="nt:unstructured"
@@ -88,7 +96,6 @@
                                         fieldLabel="Invalid Video Asset Message"
                                         name="./invalidFormatMsg"/>
 
-
                                     <legacy-mode
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/switch"
@@ -105,8 +112,12 @@
                                                 jcr:primaryType="nt:unstructured"
                                                 modern-field-names="./renditionName"
                                                 legacy-field-names="./computedProperty,./renditionRegex"/>
-                                    </legacy-mode>
+                                        <granite:rendercondition
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="asset-share-commons/authoring/renderconditions/require-aem"
+                                                distribution="classic"/>
 
+                                    </legacy-mode>
                                 </items>
                             </column>
                         </items>

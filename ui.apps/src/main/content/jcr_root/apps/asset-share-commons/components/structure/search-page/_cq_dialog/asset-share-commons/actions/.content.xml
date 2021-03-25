@@ -17,8 +17,10 @@
   ~ limitations under the License.
   -->
 
-<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:granite="http://www.adobe.com/jcr/granite/1.0"
-          xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+          xmlns:granite="http://www.adobe.com/jcr/granite/1.0"
+          xmlns:cq="http://www.day.com/jcr/cq/1.0"
+          xmlns:jcr="http://www.jcp.org/jcr/1.0"
           xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
           jcr:primaryType="nt:unstructured"
           jcr:title="Actions Configuration"
@@ -66,7 +68,12 @@
                                 fieldDescription="Path to downloads action page."
                                 fieldLabel="Downloads"
                                 name="./config/actions/downloads/path"
-                                rootPath="/content"/>
+                                rootPath="/content">
+                            <granite:rendercondition
+                                    jcr:primaryType="nt:unstructured"
+                                    sling:resourceType="asset-share-commons/authoring/renderconditions/require-aem"
+                                    distribution="cloud-ready"/>
+                        </downloads>
                         <license-enabled
                                 jcr:primaryType="nt:unstructured"
                                 sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
