@@ -22,8 +22,10 @@ package com.adobe.aem.commons.assetshare.components.actions.download;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
+import com.google.common.collect.ImmutableList;
 import org.osgi.annotation.versioning.ProviderType;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -85,7 +87,7 @@ public interface Download {
 
         public AssetRenditionsGroup(String title, List<OptionItem> options) {
             this.title = title;
-            this.options = options;
+            this.options = new ArrayList<>(options);
         }
 
         public String getTitle() {
@@ -93,7 +95,7 @@ public interface Download {
         }
 
         public List<OptionItem> getItems() {
-            return options;
+            return ImmutableList.copyOf(options);
         }
     }
 }
