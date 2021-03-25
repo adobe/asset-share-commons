@@ -40,7 +40,7 @@
                                             name="./statusColumnTitle"
                                             required="{Boolean}true"/>
 
-                                    <column-number-of-files-label
+                                    <column-number-of-files-title
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
                                             emptyText="No. of files"
@@ -48,7 +48,7 @@
                                             name="./numberOfFilesColumnTitle"
                                             required="{Boolean}true"/>
 
-                                    <column-download-size-label
+                                    <column-download-size-title
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
                                             emptyText="Download size"
