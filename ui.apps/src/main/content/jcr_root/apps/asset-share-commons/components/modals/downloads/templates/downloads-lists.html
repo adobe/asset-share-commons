@@ -20,7 +20,7 @@
 
     <sly data-sly-test="${successes.size > 0}">
         <hr class="cmp-modal-downloads__artifacts-delimiter"/>
-        <div class="cmp-modal-downloads__artifacts-title">${ 'Files added to zip' @ i18n }</div>
+        <div class="cmp-modal-downloads__artifacts-title">${properties['successesListTitle'] || 'Files added to zip' @ i18n }</div>
         <ul class="cmp-modal-downloads__artifacts-list"
             data-sly-list.success="${successes}">
             <li class="cmp-modal-downloads__artifacts-item">${success}</li>
@@ -29,7 +29,7 @@
 
     <sly data-sly-test="${failures.size > 0}">
         <hr class="cmp-modal-downloads__artifacts-delimiter"/>
-        <div class="cmp-modal-downloads__artifacts-title">${ 'Unavailable files' @ i18n }</div>
+        <div class="cmp-modal-downloads__artifacts-title">${properties['failuresListTitle'] || 'Unavailable files' @ i18n }</div>
         <ul class="cmp-modal-downloads__artifacts-list"
             data-sly-list.failure="${failures}">
             <li class="cmp-modal-downloads__artifacts-item">${failure}</li>
