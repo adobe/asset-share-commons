@@ -93,7 +93,7 @@ Represents a logical download from Asset Share Commons.
         </tr>
 
         <tr class="ui accordion-content"
-            data-sly-test="${download.totalCount}">
+            data-sly-test="${download.successes > 0 || download.failures > 0}">
             <td colspan="6">
                 <div class="cmp-modal-downloads__artifacts"
                      data-sly-call="${downloadsListsTemplate.downloadsLists @ successes = download.successes, failures = download.failures}"></div>
