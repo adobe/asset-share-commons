@@ -143,6 +143,13 @@ public interface Config {
     default boolean isAemClassic() { return false; }
 
     /**
+     * Checks if AEM ContextHub has been configured. If it has we can load the ContextHub JS
+     *
+     * @return true if ContextHub is enabled for this page tree.
+     */
+    default boolean isContextHubEnabled() { return false; }
+
+    /**
      * @deprecated We no longer detect Dynamic Media; Return false always.
      *
      * @return always returns false.

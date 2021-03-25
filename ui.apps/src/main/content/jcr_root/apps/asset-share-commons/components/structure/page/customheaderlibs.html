@@ -16,9 +16,12 @@
   ~ limitations under the License.
  */-->
 
+<sly
+        data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
+        data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"/>
+
 <!--/*
     Custom meta tags for Asset Share Site
-
 */-->
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,3 +35,7 @@
 <!--/* Load authoring related client libraries */-->
 <sly data-sly-test="${wcmmode.preview || wcmmode.edit}"
      data-sly-call="${clientLib.all @ categories='asset-share-commons.author'}"/>
+
+<!--/* Only load AEM ContextHub if the path has been configured */-->
+<sly data-sly-test="${config.contextHubEnabled}"
+        data-sly-resource="${'contexthub' @ resourceType='granite/contexthub/components/contexthub'}"></sly>
