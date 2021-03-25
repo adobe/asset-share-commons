@@ -283,7 +283,7 @@
                                     <download-direct-note
                                         jcr:primaryType="nt:unstructured"
                                         sling:resourceType="granite/ui/components/coral/foundation/text"
-                                        text="Note* at least ONE rendition must be checked under Download Options for direct downloads to function properly" />
+                                        text="For direct downloads to function properly, at least one rendition option should be checked." />
                                 </items>
                             </column>
                         </items>

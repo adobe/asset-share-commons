@@ -38,7 +38,9 @@
           class="ui modal cmp-modal-download--wrapper cmp-modal">
 
     <i class="close icon"></i>
-
+    <div data-sly-test="${properties.downloadDirect}" class="ui warning message">
+        <div class="header">${"Direct Downloads enabled" @ i18n}</div>
+    </div>
     <div class="header">
         ${properties['modalTitle']}
     </div>
