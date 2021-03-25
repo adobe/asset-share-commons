@@ -22,67 +22,82 @@ Represents a logical download from Asset Share Commons.
 
  */-->
 
-<template data-sly-template.download="${ @ downloadProgress }"
-          data-sly-use.downloadArtifactTemplate="templates/download-artifact.html">
+<template data-sly-template.download="${ @ download }"
+          data-sly-use.downloadsListsTemplate="templates/downloads-lists.html">
 
-        <sly data-sly-list.downloadArtifact="${downloadProgress.artifacts @ begin = 0, end = 1}">
-            <tbody>
-                <tr>
-                    <td colspan="5"><hr class="cmp-modal-downloads__row-delimiter"/></td>
-                </tr>
-            </tbody>
-            <tbody class="ui accordion"
-                   data-asset-share-id="downloads-entry"
-                   data-asset-share-downloads-entry="${}">
-                <tr class="ui title">
+    <tbody>
+        <tr>
+            <td colspan="6"><hr class="cmp-modal-downloads__row-delimiter"/></td>
+        </tr>
+    </tbody>
+    <tbody class="ui accordion"
+           data-asset-share-id="downloads-entry-${download.id}">
+        <tr class="ui accordion-title">
 
-                    <td class="cmp-modal-downloads__col--archive-name">
-                        <i class="dropdown icon"></i>
-                        ${downloadArtifact.name}
-                    </td>
+            <!--/* Download archive name */-->
+            <td class="cmp-modal-downloads__col--archive-name accordion-trigger"
+                data-sly-test="${download.name && download.status != 'FAILED' }">
+                <i data-sly-test="${download.status != 'PROCESSING'}" class="dropdown icon"></i>
+                <i data-sly-test="${download.status == 'PROCESSING'}" class="icon"></i>
+                ${download.name}
+            </td>
 
-                    <td class="cmp-modal-downloads__col--status">
-                        <sly data-sly-test="${downloadProgress.status == 'PROCESSING'}">${'Processing' @ i18n}</sly>
-                        <sly data-sly-test="${downloadProgress.status == 'PARTIALLY_SUCCESSFUL'}">${'Partially Successful' @ i18n}</sly>
-                        <sly data-sly-test="${downloadProgress.status == 'SUCCESSFUL'}">${'Successful' @ i18n}</sly>
-                        <sly data-sly-test="${downloadProgress.status == 'FAILED'}">${'Failed' @ i18n}</sly>
-                    </td>
-                    <!-- Total count -->
-                    <td class="cmp-modal-downloads__col--total-count">
-                        <span>
-                            ${downloadProgress.totalCount}
-                        </span>
-                    </td>
-                    <!-- File size -->
-                    <td class="cmp-modal-downloads__col--file-size"
-                        data-asset-share-id="file-size">
-                        ${downloadProgress.totalSize || 0}
-                    </td>
-                    <!-- Progress/Download -->
-                    <td class="cmp-modal-downloads__col--action">
+            <td class="cmp-modal-downloads__col--archive-name accordion-trigger"
+                data-sly-test="${download.status == 'FAILED' }">
+                <i class="dropdown icon"></i>
+                ${ 'FAILED DOWNLOAD' @ i18n }
+            </td>
 
-                        <span data-sly-test="${downloadProgress.status == 'PROCESSING'}"
-                                onclick="event.stopPropagation()"
-                                class="ui disabled right labeled icon button">
-                            ${downloadProgress.progress}%
-                            <i class="download icon"></i>
-                        </span>
+            <!--/* Status */-->
+            <td class="cmp-modal-downloads__col--status accordion-trigger">
+                <sly data-sly-test="${download.status == 'PROCESSING'}">${'Processing' @ i18n}</sly>
+                <sly data-sly-test="${download.status == 'PARTIALLY_SUCCESSFUL'}">${'Partially Successful' @ i18n}</sly>
+                <sly data-sly-test="${download.status == 'SUCCESSFUL'}">${'Successful' @ i18n}</sly>
+                <sly data-sly-test="${download.status == 'FAILED'}">${'Failed' @ i18n}</sly>
+            </td>
+            <!--/* Success count */-->
+            <td class="cmp-modal-downloads__col--total-count accordion-trigger">
+                ${download.successCount}
+            </td>
+            <!--/* File size */-->
+            <td class="cmp-modal-downloads__col--file-size accordion-trigger">
+                ${download.formattedTotalSize || 0}
+            </td>
+            <!--/* Progress/Download */-->
+            <td class="cmp-modal-downloads__col--action">
 
-                        <a onclick="event.stopPropagation()"
-                                data-sly-test="${downloadProgress.status == 'SUCCESSFUL' || downloadProgress.status == 'PARTIALLY_SUCCESSFUL'}"
-                           href="${downloadArtifact.binaryURI.toString}"
-                           class="ui positive primary right labeled icon button">
-                            ${'Download' @ i18n}
-                            <i class="download icon"></i>
-                        </a>
-                    </td>
-                </tr>
-                <tr class="ui content">
-                    <td colspan="5">
-                        <div class="cmp-modal-downloads__artifacts"
-                                data-sly-call="${downloadArtifactTemplate.downloadArtifact @ downloadArtifact = downloadArtifact}"></div>
-                    </td>
-                </tr>
-            </tbody>
-        </sly>
+                <span data-sly-test="${download.status == 'PROCESSING'}"
+                        onclick="event.stopPropagation()"
+                        class="ui disabled right labeled icon button">
+                    ${download.progress}%
+                    <i class="download icon"></i>
+                </span>
+
+                <a onclick="event.stopPropagation()"
+                   data-sly-test="${download.status == 'SUCCESSFUL' || download.status == 'PARTIALLY_SUCCESSFUL'}"
+                   href="${download.URI}"
+                   class="ui positive primary right labeled icon button">
+                    ${'Download' @ i18n}
+                    <i class="download icon"></i>
+                </a>
+            </td>
+
+            <!--/* Remove */-->
+            <td class="cmp-modal-downloads__col--action">
+                <button data-asset-share-id="remove-from-downloads"
+                   data-asset-share-download-id="${download.id}"
+                   class="ui right labeled icon button">
+                    <i class="trash icon"></i>
+                </button>
+            </td>
+        </tr>
+
+        <tr class="ui accordion-content"
+            data-sly-test="${download.totalCount}">
+            <td colspan="6">
+                <div class="cmp-modal-downloads__artifacts"
+                     data-sly-call="${downloadsListsTemplate.downloadsLists @ successes = download.successes, failures = download.failures}"></div>
+            </td>
+        </tr>
+    </tbody>
 </template>

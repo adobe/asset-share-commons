@@ -20,6 +20,7 @@
         data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
         data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
         data-sly-use.downloads="com.adobe.aem.commons.assetshare.components.actions.downloads.Downloads"
+        data-sly-test.hasDownloads="${downloads.downloads.size > 0}"
         data-sly-use.downloadTemplate="templates/download.html"
         data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html"></sly>
 
@@ -42,14 +43,13 @@
 <div data-asset-share-id="downloads-modal"
      data-asset-share-update-method="replace"
      data-asset-share-update-when="downloads-updated"
-     data-asset-share-downloads-count="${downloads.downloadProgresses.size}"
+     data-asset-share-downloads-count="${downloads.downloads.size}"
      class="ui long modal cmp-modal cmp-modal-downloads">
     <i class="close icon"></i>
 
     <div class="header">
         ${properties['modalTitle'] || 'Downloads' @i18n}
-        <span
-                data-sly-test="${downloads.downloadProgresses.size > 0}"
+        <span data-sly-test="${hasDownloads}"
                 data-asset-share-id="refresh-downloads">
                 <a href="#refresh"><i class="cmp-modal-downloads__refresh sync alternate icon"></i></a>
         </span>
@@ -63,24 +63,25 @@
         <div class="ui container">
 
             <table class="cmp-modal-downloads__table"
-                   data-sly-test="${downloads.downloadProgresses.size > 0}">
+                   data-sly-test="${hasDownloads}">
                 <thead class="cmp-modal-downloads__table-header">
-                <tr>
-                    <th class="cmp-modal-downloads__col--archive-name"></th>
-                    <th class="cmp-modal-downloads__col--file-status">Status</th>
-                    <th class="cmp-modal-downloads__col--total-count">No. of assets</th>
-                    <th class="cmp-modal-downloads__col--file-size">File size</th>
-                    <th class="cmp-modal-downloads__col--file-action"></th>
-                </tr>
+                    <tr>
+                        <th class="cmp-modal-downloads__col--archive-name"></th>
+                        <th class="cmp-modal-downloads__col--file-status">Status</th>
+                        <th class="cmp-modal-downloads__col--total-count">No. of files</th>
+                        <th class="cmp-modal-downloads__col--file-size">Total size</th>
+                        <th class="cmp-modal-downloads__col--file-action"></th>
+                        <th class="cmp-modal-downloads__col--file-action"></th>
+                    </tr>
                 </thead>
-                <sly data-sly-list.downloadProgress="${downloads.downloadProgresses}">
-                    <sly data-sly-call="${downloadTemplate.download @ downloadProgress = downloadProgress}"></sly>
+                <sly data-sly-list.download="${downloads.downloads}">
+                     <sly data-sly-call="${downloadTemplate.download @ download = download}"/>
                 </sly>
             </table>
 
         </div>
 
-        <p data-sly-test="${downloads.downloadProgresses.size == 0}"
+        <p data-sly-test="${!hasDownloads}"
            class="cmp-modal-downloads__empty-text">${properties['emptyText'] || "No pending downloads" @ i18n}</p>
     </div>
     <div class="actions">
@@ -88,13 +89,13 @@
             ${properties['closeButton'] || 'Close' @ i18n}
         </div>
         <div class="ui black button align left"
-             data-sly-test="${downloads.downloadProgresses.size > 0}"
+             data-sly-test="${hasDownloads}"
              data-asset-share-id="clear-downloads">
             ${properties['clearButton'] || 'Clear Downloads' @ i18n}
         </div>
     </div>
 </div>
-</div>
+
 
 
 
