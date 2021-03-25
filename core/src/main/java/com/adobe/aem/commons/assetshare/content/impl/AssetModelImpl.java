@@ -49,6 +49,7 @@ import java.util.List;
         adapters = { AssetModel.class },
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
+@SuppressWarnings("AEM Rules:AEM-16") // The Default Optional strategy is infact required
 public class AssetModelImpl implements AssetModel {
 
     @Self
