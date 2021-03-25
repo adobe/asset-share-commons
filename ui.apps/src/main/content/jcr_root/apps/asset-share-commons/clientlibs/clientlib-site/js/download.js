@@ -31,7 +31,7 @@ AssetShare.Download = (function ($, ns, messages, downloadStore) {
         DWNL_ARTIFACTS_PN = "artifacts",
         BODY_SELECTOR = "body.page",
         LOADING_SELECTOR = "download-loader-text",
-        POLL_ENABLED = true,
+        POLL_DATA_ATTRIBUTE = "asset-share-download-automatic",
         POLL_ENDPOINT = "/content/dam.downloadbinaries.json",
         POLL_TIMEOUT = 1000,
         MAX_ATTEMPTS = 3;
@@ -48,8 +48,8 @@ AssetShare.Download = (function ($, ns, messages, downloadStore) {
             data: form.serialize(),
             success: function (data) {
                 if (data[DOWNLOAD_ID]) {
-                    // initialize polling
-                    if (POLL_ENABLED) {
+                    // initialize polling if polling is configured
+                    if (form.data(POLL_DATA_ATTRIBUTE)) {
                         // initiate dimmer on page
                         _showDimmer();
                         _poll(data[DOWNLOAD_ID], 0);

@@ -30,30 +30,29 @@ Represents a logical download from Asset Share Commons.
             <td colspan="6"><hr class="cmp-modal-downloads__row-delimiter"/></td>
         </tr>
     </tbody>
-    <tbody class="ui accordion"
-           data-asset-share-id="downloads-entry-${download.id}">
+    <tbody class="ui accordion">
         <tr class="ui accordion-title">
 
             <!--/* Download archive name */-->
             <td class="cmp-modal-downloads__col--archive-name accordion-trigger"
-                data-sly-test="${download.name && download.status != 'FAILED' }">
+                data-sly-test="${download.name != null}">
                 <i data-sly-test="${download.status != 'PROCESSING'}" class="dropdown icon"></i>
                 <i data-sly-test="${download.status == 'PROCESSING'}" class="icon"></i>
                 ${download.name}
             </td>
 
             <td class="cmp-modal-downloads__col--archive-name accordion-trigger"
-                data-sly-test="${download.status == 'FAILED' }">
+                data-sly-test="${download.name == null && download.status == 'FAILED' }">
                 <i class="dropdown icon"></i>
-                ${ 'FAILED DOWNLOAD' @ i18n }
+               !!! ${ properties.failedDownloadName || 'FAILED DOWNLOAD' @ i18n }
             </td>
 
             <!--/* Status */-->
             <td class="cmp-modal-downloads__col--status accordion-trigger">
-                <sly data-sly-test="${download.status == 'PROCESSING'}">${'Processing' @ i18n}</sly>
-                <sly data-sly-test="${download.status == 'PARTIALLY_SUCCESSFUL'}">${'Partially Successful' @ i18n}</sly>
-                <sly data-sly-test="${download.status == 'SUCCESSFUL'}">${'Successful' @ i18n}</sly>
-                <sly data-sly-test="${download.status == 'FAILED'}">${'Failed' @ i18n}</sly>
+                <sly data-sly-test="${download.status == 'PROCESSING'}">${properties.processingStatus || 'Processing' @ i18n}</sly>
+                <sly data-sly-test="${download.status == 'PARTIALLY_SUCCESSFUL'}">${properties.partiallySuccessfulStatus || 'Partially Successful' @ i18n}</sly>
+                <sly data-sly-test="${download.status == 'SUCCESSFUL'}">${properties.successfulStatus || 'Successful' @ i18n}</sly>
+                <sly data-sly-test="${download.status == 'FAILED'}">${properties.failedStatus || 'Failed' @ i18n}</sly>
             </td>
             <!--/* Success count */-->
             <td class="cmp-modal-downloads__col--total-count accordion-trigger">
@@ -75,9 +74,9 @@ Represents a logical download from Asset Share Commons.
 
                 <a onclick="event.stopPropagation()"
                    data-sly-test="${download.status == 'SUCCESSFUL' || download.status == 'PARTIALLY_SUCCESSFUL'}"
-                   href="${download.URI}"
+                   href="${download.uri}"
                    class="ui positive primary right labeled icon button">
-                    ${'Download' @ i18n}
+                    ${properties.downloadButton || 'Download' @ i18n}
                     <i class="download icon"></i>
                 </a>
             </td>
@@ -93,7 +92,7 @@ Represents a logical download from Asset Share Commons.
         </tr>
 
         <tr class="ui accordion-content"
-            data-sly-test="${download.successes > 0 || download.failures > 0}">
+            data-sly-test="${download.successes.size > 0 || download.failures.size > 0}">
             <td colspan="6">
                 <div class="cmp-modal-downloads__artifacts"
                      data-sly-call="${downloadsListsTemplate.downloadsLists @ successes = download.successes, failures = download.failures}"></div>
