@@ -53,9 +53,6 @@
                 data-asset-share-id="refresh-downloads">
                 <a href="#refresh"><i class="cmp-modal-downloads__refresh sync alternate icon"></i></a>
         </span>
-        <span data-asset-share-id="clear-downloads">
-            <a href="">${properties['clear']}</a>
-        </span>
     </div>
 
     <div class="scrolling content">
@@ -67,9 +64,9 @@
                 <thead class="cmp-modal-downloads__table-header">
                     <tr>
                         <th class="cmp-modal-downloads__col--archive-name"></th>
-                        <th class="cmp-modal-downloads__col--file-status">Status</th>
-                        <th class="cmp-modal-downloads__col--total-count">No. of files</th>
-                        <th class="cmp-modal-downloads__col--file-size">Total size</th>
+                        <th class="cmp-modal-downloads__col--file-status">${ properties.statusColumnLabel || 'Status' @ i18n }</th>
+                        <th class="cmp-modal-downloads__col--total-count">${ properties.numberOfFilesColumnLabel || 'No. of files' @ i18n }</th>
+                        <th class="cmp-modal-downloads__col--file-size">${ properties.downloadSizeLabel || 'Download size' @ i18n }</th>
                         <th class="cmp-modal-downloads__col--file-action"></th>
                         <th class="cmp-modal-downloads__col--file-action"></th>
                     </tr>
@@ -82,16 +79,16 @@
         </div>
 
         <p data-sly-test="${!hasDownloads}"
-           class="cmp-modal-downloads__empty-text">${properties['emptyText'] || "No pending downloads" @ i18n}</p>
+           class="cmp-modal-downloads__empty-text">${properties['emptyText'] || "No downloads pending" @ i18n}</p>
     </div>
     <div class="actions">
         <div class="ui black deny button">
-            ${properties['closeButton'] || 'Close' @ i18n}
+            ${properties.closeButton || 'Close' @ i18n}
         </div>
         <div class="ui black button align left"
              data-sly-test="${hasDownloads}"
              data-asset-share-id="clear-downloads">
-            ${properties['clearButton'] || 'Clear Downloads' @ i18n}
+            ${properties.clearButton || 'Clear Downloads' @ i18n}
         </div>
     </div>
 </div>

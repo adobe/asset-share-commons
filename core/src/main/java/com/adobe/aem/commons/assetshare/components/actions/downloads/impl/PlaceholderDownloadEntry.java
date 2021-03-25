@@ -43,7 +43,7 @@ public class PlaceholderDownloadEntry implements DownloadEntry {
 
     @Override
     public String getId() {
-        return String.format("0000-0000-0000-%d", id);
+        return"0000-0000-0000-" + String.valueOf(id);
     }
 
     @Override
