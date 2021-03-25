@@ -49,7 +49,6 @@ import static com.adobe.aem.commons.assetshare.content.renditions.download.async
         property = {
                 "sling.servlet.methods=POST",
                 "sling.servlet.resourceTypes=asset-share-commons/actions/download",
-                "sling.servlet.resourceTypes=asset-share-commons/actions/share",
                 "sling.servlet.selectors=download-asset-renditions",
                 "sling.servlet.extensions=zip"
         }
