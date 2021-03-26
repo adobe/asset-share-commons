@@ -16,4 +16,23 @@
  * limitations under the License.
  */
 
-.cmp-modal-cart--wrapper {  }
+.cmp-modal {
+    .scrolling.content {
+        overflow-y: scroll;
+        max-height: calc(~"100vh - 400px");
+    }
+}
+
+.cmp-modal-cart {
+    .cmp-modal-cart__empty-text {
+        text-transform: uppercase;
+        text-align: center;
+        height: 100px;
+        line-height: 100px;
+
+    }
+
+    td {
+        border-width: 0 !important;
+    }
+}
