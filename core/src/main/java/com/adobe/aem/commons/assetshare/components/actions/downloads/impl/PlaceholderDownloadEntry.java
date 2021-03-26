@@ -119,7 +119,7 @@ public class PlaceholderDownloadEntry implements DownloadEntry {
 
     @Override
     public String getURI() {
-        return URI.create(String.format("/content/dam.downloadbinaries.json?downloadId=%d&artifactId=%s", id, getId())).toString();
+        return URI.create(String.format("/content/dam.downloadbinaries.json?downloadId=%s&artifactId=%s", String.valueOf(id), getId())).toString();
     }
 
     @Override
@@ -127,7 +127,7 @@ public class PlaceholderDownloadEntry implements DownloadEntry {
         final List<String> successes = new ArrayList<>();
 
         for (int i = 0; i < numSuccesses; i++) {
-            successes.add(String.format("Successful asset #%d (rendition-name).jpeg", i));
+            successes.add(String.format("Successful asset #%s (rendition-name).jpeg", String.valueOf(i)));
         }
 
         return successes;
@@ -139,7 +139,7 @@ public class PlaceholderDownloadEntry implements DownloadEntry {
         final List<String> failures = new ArrayList<>();
 
         for (int i = 0; i < numFailures; i++) {
-            failures.add(String.format("Failed asset #%d (rendition-name)", i));
+            failures.add(String.format("Failed asset #%s (rendition-name)", String.valueOf(i)));
         }
 
         return failures;

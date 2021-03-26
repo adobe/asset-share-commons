@@ -44,6 +44,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -143,14 +144,23 @@ public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
     @Override
     public AssetRendition getRendition(AssetModel assetModel, AssetRenditionParameters parameters) {
         final String expression = mappings.get(parameters.getRenditionName());
-        final String renditionRedirect = assetRenditions.evaluateExpression(assetModel, parameters.getRenditionName(), expression);
+        String renditionRedirect = assetRenditions.evaluateExpression(assetModel, parameters.getRenditionName(), expression);
 
         if (StringUtils.isNotBlank(renditionRedirect)) {
-            log.debug("Downloading External redirect rendition [ {} ] for resolved rendition name [ {} ]",
-                    renditionRedirect,
-                    parameters.getRenditionName());
+            try {
+                final String extension = getExtensionFromAscExtQueryParameter(renditionRedirect);
 
-            return new AssetRendition(renditionRedirect, 0L, null);
+                renditionRedirect = cleanURI(renditionRedirect);
+
+                log.debug("Downloading External redirect rendition [ {} ] for resolved rendition name [ {} ]",
+                        renditionRedirect,
+                        parameters.getRenditionName());
+
+                return new AssetRendition(renditionRedirect, 0L, mimeTypeService.getMimeType(extension));
+            } catch (URISyntaxException e) {
+                log.warn("Cloud not create a valid URI for rendition redirect [ {} ]", renditionRedirect);
+                return new AssetRendition(renditionRedirect, 0L, "invalid/invalid");
+            }
         }
 
         return null;
