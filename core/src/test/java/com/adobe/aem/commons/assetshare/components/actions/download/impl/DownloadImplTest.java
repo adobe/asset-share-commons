@@ -13,6 +13,8 @@ import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.Exte
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.InternalRedirectRenditionDispatcherImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
 import com.adobe.aem.commons.assetshare.testhelpers.TestOptionsImpl;
+import com.adobe.aem.commons.assetshare.testing.RequireAemMock;
+import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
@@ -73,6 +75,8 @@ public class DownloadImplTest {
 
 		doReturn(assetModels).when(actionHelper).getAssetsFromQueryParameter(ctx.request(), "path");
 		doReturn(1024L).when(assetDownloadHelper).getMaxContentSizeLimit();
+
+		RequireAemMock.setAemDistribution(ctx, RequireAem.Distribution.CLASSIC);
 
 		ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
 		ctx.registerService(AssetRenditionDispatchers.class, new AssetRenditionDispatchersImpl());

@@ -371,6 +371,11 @@
                     eventId="cart-remove"
                     style="notice"
                     text="Asset removed from cart"/>
+                <download-add
+                    jcr:primaryType="nt:unstructured"
+                    eventId="download-add"
+                    style="success"
+                    text="Download queued"/>
             </messages>
         </config>
     </jcr:content>

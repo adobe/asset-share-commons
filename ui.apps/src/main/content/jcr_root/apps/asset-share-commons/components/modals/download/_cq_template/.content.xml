@@ -25,6 +25,7 @@
           downloadOptionsTitle="Download options"
           modalTitle="Download"
           fileName="Assets"
+          archiveNameExpression="Asset Archive (${asset.count} assets)"
           selectAllLabel="Select all"
           maxContentSizeMessage="Maximum content size of download exceeded."
           noContentFileName="NO DOWNLOADABLE RENDITIONS.txt"
@@ -35,7 +36,21 @@
                 jcr:primaryType="nt:unstructured">
             <item0
                     jcr:primaryType="nt:unstructured"
-                    assetRenditionsGroupTitle="Image renditions">
+                    assetRenditionsGroupTitle="All assets">
+                <asset-renditions
+                        jcr:primaryType="nt:unstructured">
+                    <items
+                            jcr:primaryType="nt:unstructured">
+                        <item1
+                                jcr:primaryType="nt:unstructured"
+                                text="Original"
+                                value="original"/>
+                    </items>
+                </asset-renditions>
+            </item0>
+            <item0
+                    jcr:primaryType="nt:unstructured"
+                    assetRenditionsGroupTitle="Images">
                 <asset-renditions
                         jcr:primaryType="nt:unstructured">
                     <items
@@ -44,10 +59,6 @@
                                 jcr:primaryType="nt:unstructured"
                                 text="Web"
                                 value="web"/>
-                        <item1
-                                jcr:primaryType="nt:unstructured"
-                                text="Original"
-                                value="original"/>
                     </items>
                 </asset-renditions>
             </item0>

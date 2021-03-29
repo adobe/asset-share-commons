@@ -59,9 +59,10 @@ import java.util.stream.Collectors;
 @Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
 
 public class DownloadImpl implements Download, ComponentExporter {
-	
-    protected static final String RESOURCE_TYPE = "asset-share-commons/components/modals/download";
     private static final Logger log = LoggerFactory.getLogger(DownloadImpl.class);
+
+    protected static final String RESOURCE_TYPE = "asset-share-commons/components/modals/download";
+
     private static final long DEFAULT_SIZE_LIMIT = -1L;
     private static final String NN_ASSET_RENDITIONS_GROUPS = "asset-renditions-groups";
     public static final String PN_ASSET_RENDITIONS_GROUP_TITLE = "assetRenditionsGroupTitle";
@@ -73,6 +74,7 @@ public class DownloadImpl implements Download, ComponentExporter {
     protected SlingHttpServletRequest request;
 
     @OSGiService
+    @Required
     private RequireAem requireAem;
 
     @ValueMapValue
@@ -109,12 +111,12 @@ public class DownloadImpl implements Download, ComponentExporter {
     /***
      * Max content size retrieved from com.day.cq.dam.core.impl.servlet.AssetDownloadServlet
      */
-    protected Long maxContentSize;
+    protected Long maxContentSize = DEFAULT_SIZE_LIMIT;
 
     /***
      * Potential download size of current assets
      */
-    protected Long downloadContentSize;
+    protected Long downloadContentSize = DEFAULT_SIZE_LIMIT;
 
     @PostConstruct
     protected void init() {
@@ -122,11 +124,15 @@ public class DownloadImpl implements Download, ComponentExporter {
 
         if (assets.isEmpty()) {
             assets = actionHelper.getPlaceholderAsset(request);
-            this.maxContentSize = DEFAULT_SIZE_LIMIT;
-            this.downloadContentSize = DEFAULT_SIZE_LIMIT;
         } else {
-            calculateSizes();
-        }    
+            if (RequireAem.Distribution.CLASSIC.equals(requireAem.getDistribution())) {
+                try {
+                    calculateSizes();
+                } catch (NullPointerException e) {
+                    log.error("An NPE is known to be thrown by AEM in conditions where Dynamic Media is enabled and/or the asset has Dynamic Media attributes when trying to compute sizes.");
+                }
+            }
+        }
     }
 
     @Override

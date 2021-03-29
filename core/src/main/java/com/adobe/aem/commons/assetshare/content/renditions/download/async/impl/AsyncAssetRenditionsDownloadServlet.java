@@ -64,7 +64,7 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
     private static final String REQ_KEY_RENDITION_NAMES = "renditionName";
 
     private static final String PN_ALLOWED_RENDITION_NAMES = "allowedRenditionNames";
-    private static final String PN_BASE_ARCHIVE_NAME = "fileName";
+    public static final String PN_BASE_ARCHIVE_NAME_EXPRESSION = "archiveNameExpression";
 
     public static final String PARAM_ARCHIVE_NAME = "archiveName";
     private static final String DOWNLOAD_ARCHIVE_NAME = PARAM_ARCHIVE_NAME;
@@ -87,12 +87,16 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
 
         final Collection<AssetModel> assetModels = actionHelper.getAssetsFromQueryParameter(request, REQ_KEY_ASSET_PATHS);
 
-        final String baseArchiveName = componentProperties.get(PN_BASE_ARCHIVE_NAME, "Assets");
+
         final Collection<String> renditionNames = actionHelper.getAllowedValuesFromQueryParameter(request,
                 REQ_KEY_RENDITION_NAMES,
                 request.getResource().getValueMap().get(PN_ALLOWED_RENDITION_NAMES, new String[]{}));
 
-        final String archiveName = getArchiveName(baseArchiveName);
+        final String archiveName = ArchiveNameEvaluator.evaluateArchiveName(
+                componentProperties.get(PN_BASE_ARCHIVE_NAME_EXPRESSION, "Assets"),
+                assetModels,
+                renditionNames);
+
         boolean groupRenditionsByAssetFolder = assetModels.size() > 1 && renditionNames.size() > 1;
 
         DownloadManifest manifest = apiFactory.createDownloadManifest();

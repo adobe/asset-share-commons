@@ -31,20 +31,53 @@
                         <items jcr:primaryType="nt:unstructured">
                             <item0
                                 jcr:primaryType="nt:unstructured"
-                                assetRenditionsGroupTitle="Image renditions">
+                                assetRenditionsGroupTitle="All assets">
                                 <asset-renditions jcr:primaryType="nt:unstructured">
                                     <items jcr:primaryType="nt:unstructured">
                                         <item0
-                                            jcr:primaryType="nt:unstructured"
-                                            text="Web"
-                                            value="web"/>
-                                        <item1
                                             jcr:primaryType="nt:unstructured"
                                             text="Original"
                                             value="original"/>
                                     </items>
                                 </asset-renditions>
                             </item0>
+                            <item0
+                                    jcr:primaryType="nt:unstructured"
+                                    assetRenditionsGroupTitle="Images">
+                                <asset-renditions jcr:primaryType="nt:unstructured">
+                                    <items jcr:primaryType="nt:unstructured">
+                                        <item0
+                                                jcr:primaryType="nt:unstructured"
+                                                text="Web"
+                                                value="web"/>
+                                        <item1
+                                                jcr:primaryType="nt:unstructured"
+                                                text="Smart Crop (Small)"
+                                                value="smart-crop-small"/>
+                                        <item2
+                                                jcr:primaryType="nt:unstructured"
+                                                text="Grayscale"
+                                                value="grayscale"/>
+                                    </items>
+                                </asset-renditions>
+                            </item0>
+                            <item0
+                                    jcr:primaryType="nt:unstructured"
+                                    assetRenditionsGroupTitle="Videos">
+                                <asset-renditions jcr:primaryType="nt:unstructured">
+                                    <items jcr:primaryType="nt:unstructured">
+                                        <item0
+                                                jcr:primaryType="nt:unstructured"
+                                                text="MP4"
+                                                value="mp4"/>
+                                        <item1
+                                                jcr:primaryType="nt:unstructured"
+                                                text="M4V"
+                                                value="m4v"/>
+                                    </items>
+                                </asset-renditions>
+                            </item0>
+
                         </items>
                     </asset-renditions-groups>
                 </download>

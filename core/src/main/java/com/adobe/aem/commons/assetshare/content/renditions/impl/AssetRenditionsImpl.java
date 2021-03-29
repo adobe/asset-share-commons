@@ -84,28 +84,41 @@ public class AssetRenditionsImpl implements AssetRenditions {
         final String assetPath = assetModel.getPath();
         final String assetUrl = assetModel.getUrl();
         final String assetName = assetModel.getName();
-        final String assetExtension = StringUtils.substringAfterLast(assetName, ".");
 
         // Dynamic Media properties
         final String dmName = assetModel.getProperties().get(PN_S7_NAME, String.class);
         final String dmId = assetModel.getProperties().get(PN_S7_ASSET_ID, String.class);
         final String dmFile = assetModel.getProperties().get(PN_S7_FILE, String.class);
+        final String dmFileAvs = assetModel.getProperties().get(PN_S7_FILE_AVS, String.class);
         final String dmFolder = assetModel.getProperties().get(PN_S7_FOLDER, String.class);
         final String dmDomain = assetModel.getProperties().get(PN_S7_DOMAIN, String.class);
         final String dmApiServer = assetModel.getProperties().get(PN_S7_API_SERVER, String.class);
+        final String dmCompanyId = assetModel.getProperties().get(PN_S7_COMPANY_ID, String.class);
 
         expression = StringUtils.replace(expression, VAR_ASSET_PATH, assetPath);
         expression = StringUtils.replace(expression, VAR_ASSET_URL, assetUrl);
         expression = StringUtils.replace(expression, VAR_ASSET_NAME, assetName);
-        expression = StringUtils.replace(expression, VAR_ASSET_EXTENSION, assetExtension);
+        expression = StringUtils.replace(expression, VAR_ASSET_NAME_NO_EXTENSION,
+                StringUtils.substringBeforeLast(assetModel.getName(), "."));
+
+        expression = StringUtils.replace(expression, VAR_ASSET_EXTENSION,
+                StringUtils.substringAfterLast(assetName, "."));
         expression = StringUtils.replace(expression, VAR_RENDITION_NAME, renditionName);
 
         expression = StringUtils.replace(expression, VAR_DM_NAME, dmName);
         expression = StringUtils.replace(expression, VAR_DM_ID, dmId);
         expression = StringUtils.replace(expression, VAR_DM_FILE, dmFile);
+        expression = StringUtils.replace(expression, VAR_DM_FILE_AVS, dmFileAvs);
+        expression = StringUtils.replace(expression, VAR_DM_FILE_NO_COMPANY,
+                StringUtils.substringAfterLast(dmFile, "/"));
+
         expression = StringUtils.replace(expression, VAR_DM_FOLDER, dmFolder);
         expression = StringUtils.replace(expression, VAR_DM_DOMAIN, dmDomain);
         expression = StringUtils.replace(expression, VAR_DM_API_SERVER, dmApiServer);
+
+        expression = StringUtils.replace(expression, VAR_DM_COMPANY_ID, dmCompanyId);
+        expression = StringUtils.replace(expression, VAR_DM_COMPANY_NAME,
+                StringUtils.substringBeforeLast(dmFile, "/"));
 
         return expression;
     }
