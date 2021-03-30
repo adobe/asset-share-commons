@@ -74,12 +74,7 @@
                             <type>zip</type>
                             <target>/apps/asset-share-commons-packages/content/install</target>
                         </embedded>
-                        <embedded>
-                            <groupId>com.adobe.aem.commons</groupId>
-                            <artifactId>assetshare.ui.content.sample</artifactId>
-                            <type>zip</type>
-                            <target>/apps/asset-share-commons-packages/content/install</target>
-                        </embedded>
+                        <!-- Remove ui.contnet.sample from all package, as it should not be installed as part of real uses of Asset Share commons -->
                     </embeddeds>
                     <allowIndexDefinitions>true</allowIndexDefinitions>
                     <dependencies>
