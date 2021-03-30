@@ -11,6 +11,8 @@ import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.export.json.ExporterConstants;
 import com.day.cq.wcm.api.WCMMode;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestParameter;
 import org.apache.sling.api.resource.ResourceResolver;
@@ -63,7 +65,6 @@ public class DownloadsImpl implements Downloads, ComponentExporter {
         if (activeDownloads == null) {
             activeDownloads = new ArrayList<>();
 
-            if (!WCMMode.EDIT.equals(WCMMode.fromRequest(request))) {
                 final List allowedDownloadIds = getAllowedDownloadIds(request);
                 final Calendar now = Calendar.getInstance();
                 activeDownloads = StreamSupport.stream(downloadService.getDownloadIds(resourceResolver).spliterator(), false)
@@ -91,7 +92,10 @@ public class DownloadsImpl implements Downloads, ComponentExporter {
                             }
                         })
                         .collect(Collectors.toList());
-            } else {
+
+            if (StringUtils.isBlank(request.getRequestPathInfo().getSelectorString()) &&
+                    (WCMMode.EDIT.equals(WCMMode.fromRequest(request)) || WCMMode.PREVIEW.equals(WCMMode.fromRequest(request)))) {
+                // Only show this in AEM Author edit or preview mode when loaded on the Action page itself (vs. XHR'ing the list in via the .partial selector)
                 activeDownloads.add(new PlaceholderDownloadEntry(request, "01-02", DownloadProgress.Status.PROCESSING, 2));
                 activeDownloads.add(new PlaceholderDownloadEntry(request, "02-03", DownloadProgress.Status.SUCCESSFUL, 3));
                 activeDownloads.add(new PlaceholderDownloadEntry(request, "04-05", DownloadProgress.Status.PARTIALLY_SUCCESSFUL, 4));

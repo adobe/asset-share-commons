@@ -86,7 +86,7 @@ public class PlaceholderDownloadEntry implements DownloadEntry {
 
     @Override
     public String getName() {
-        return "Assets (" + id + " 12-10PM).zip";
+        return "Placeholder download " + id + ".zip";
     }
 
     @Override
