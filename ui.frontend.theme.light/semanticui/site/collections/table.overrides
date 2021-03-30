@@ -21,7 +21,7 @@
       }
 
       td {
-        border-bottom: solid 1px @grey !important;
+        border-bottom: solid 1px #ccc !important;
         text-transform: uppercase;
 
         .lowercase {

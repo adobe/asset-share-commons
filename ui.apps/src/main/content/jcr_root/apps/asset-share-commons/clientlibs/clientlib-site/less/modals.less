@@ -1,7 +1,7 @@
 /*
  * Asset Share Commons
  *
- * Copyright [2017]  Adobe
+ * Copyright [2021]  Adobe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,13 @@
  * limitations under the License.
  */
 
-.cmp-modal-cart {
-    .cmp-modal-cart__empty-text {
-        text-transform: uppercase;
-        text-align: center;
-        height: 100px;
-        line-height: 100px;
+@import (once) "variables.less";
 
-    }
+/* Contains common modal styles */
 
-    td {
-        border-width: 0 !important;
+.cmp-modal {
+    .scrolling.content {
+        overflow-y: scroll;
+        max-height: calc(~"100vh - 400px");
     }
 }
