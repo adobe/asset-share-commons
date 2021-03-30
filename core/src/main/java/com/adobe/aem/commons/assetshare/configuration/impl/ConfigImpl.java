@@ -24,6 +24,7 @@ import com.adobe.aem.commons.assetshare.configuration.Config;
 import com.adobe.aem.commons.assetshare.configuration.impl.selectors.AlwaysUseDefaultSelectorImpl;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.util.ForcedInheritanceValueMapWrapper;
+import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.granite.contexthub.api.ContextHub;
 import com.day.cq.commons.inherit.HierarchyNodeInheritanceValueMap;
 import com.day.cq.wcm.api.Page;
@@ -98,6 +99,10 @@ public class ConfigImpl implements Config {
     @OSGiService
     @Required
     private ModelFactory modelFactory;
+
+    @OSGiService
+    @Required
+    private RequireAem requireAem;
 
     @OSGiService(injectionStrategy = InjectionStrategy.OPTIONAL)
     private ShareService shareService;
@@ -289,6 +294,11 @@ public class ConfigImpl implements Config {
         }
 
         return false;
+    }
+
+    @Override
+    public boolean isAemClassic() {
+        return RequireAem.Distribution.CLASSIC.equals(requireAem.getDistribution());
     }
 
     /**
