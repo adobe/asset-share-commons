@@ -5,4 +5,4 @@
           org.apache.sling.commons.log.level="$[env:ASC_LOG_LEVEL;default=warn]"
           org.apache.sling.commons.log.names="[com.adobe.aem.commons.assetshare]"
           org.apache.sling.commons.log.additiv="true"
-          org.apache.sling.commons.log.pattern="${symbol_escape}{0,date,yyyy-MM-dd HH:mm:ss.SSS} {4} [{3}] {5}" />
+          org.apache.sling.commons.log.pattern="{0,date,yyyy-MM-dd HH:mm:ss.SSS} {4} [{3}] {5}" />
