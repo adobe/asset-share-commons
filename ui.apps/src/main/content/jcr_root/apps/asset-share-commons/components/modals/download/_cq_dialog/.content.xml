@@ -185,6 +185,33 @@
                                             emptyText="Leave blank to hide Select All control"
                                             name="./selectAllLabel"/>
 
+                                    <achive-name-expression
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Asset Archive (${asset.count} assets)"
+                                            fieldDescription="The file name expression that defines the download archive file name."
+                                            fieldLabel="Archive Name Expression"
+                                            name="./archiveNameExpression"
+                                            required="{Boolean}false">
+                                        <granite:rendercondition
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="asset-share-commons/authoring/renderconditions/require-aem"
+                                                distribution="cloud-ready"/>
+                                    </achive-name-expression>
+
+                                    <!-- AEM Classic -->
+
+                                    <achive-name-expression-note
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/hyperlink"
+                                            text="Click to see the available expression variables"
+                                            href="https://adobe-marketing-cloud.github.io/asset-share-commons/pages/actions/download#archive-name-expression">
+                                        <granite:rendercondition
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="asset-share-commons/authoring/renderconditions/require-aem"
+                                                distribution="cloud-ready"/>
+                                    </achive-name-expression-note>
+
                                     <exclude-original-assets
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
@@ -199,63 +226,22 @@
                                                 distribution="classic"/>
                                     </exclude-original-assets>
 
-                                    <achive-name-expression
+                                    <!-- ./fileName is the Classic Mode property name -->
+                                    <download-file-name
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                            emptyText="Asset Archive (${asset.count} assets)"
-                                            fieldDescription="The file name expression that defines the download archive file name."
-                                            fieldLabel="Archive Name Expression"
-                                            name="./archiveNameExpression"
-                                            required="{Boolean}false"/>
+                                            emptyText="Assets"
+                                            fieldDescription="The name of the file that a user will download."
+                                            fieldLabel="File Name"
+                                            name="./fileName"
+                                            required="{Boolean}false">
+                                        <granite:rendercondition
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="asset-share-commons/authoring/renderconditions/require-aem"
+                                                distribution="classic"/>
+                                    </download-file-name>
 
-                                    <achive-name-expression-note
-                                            jcr:primaryType="nt:unstructured"
-                                            sling:resourceType="granite/ui/components/coral/foundation/text"
-                                            text="The Asset Archive Expression supports the following expression variables:" />
-
-                                    <achive-name-expression-list
-                                            jcr:primaryType="nt:unstructured"
-                                            sling:resourceType="granite/ui/components/foundation/layouts/list">
-                                        <items jcr:primaryType="nt:unstructured">
-                                            <item0 jcr:primaryType="nt:unstructured"
-                                                   sling:resourceType="granite/ui/components/coral/foundation/text"
-                                                   text="${'${'}asset.count}}: Number of assets selected as part of this download"/>
-                                            <item1 jcr:primaryType="nt:unstructured"
-                                                   sling:resourceType="granite/ui/components/coral/foundation/text"
-                                                   text="${'${'}rendition.count}}: Number of renditions selected as part of this download"/>
-                                            <item2 jcr:primaryType="nt:unstructured"
-                                                   sling:resourceType="granite/ui/components/coral/foundation/text"
-                                                   text="${'${'}file.count}: Number of assets X number of renditions. This is not always accurate as not all assets may be able to provide all renditions."/>
-                                            <item3 jcr:primaryType="nt:unstructured"
-                                                   sling:resourceType="granite/ui/components/coral/foundation/text"
-                                                   text="${'${'}year}: The current year"/>
-                                            <item4 jcr:primaryType="nt:unstructured"
-                                                   sling:resourceType="granite/ui/components/coral/foundation/text"
-                                                   text="${'${'}month}: The current month (1-12)"/>
-                                            <item5 jcr:primaryType="nt:unstructured"
-                                                   sling:resourceType="granite/ui/components/coral/foundation/text"
-                                                   text="${'${'}month.name}: The current month's name (ex. Jan)"/>
-                                            <item6 jcr:primaryType="nt:unstructured"
-                                                   sling:resourceType="granite/ui/components/coral/foundation/text"
-                                                   text="${'${'}day}: The current day (1-31)"/>
-                                            <item7 jcr:primaryType="nt:unstructured"
-                                                   sling:resourceType="granite/ui/components/coral/foundation/text"
-                                                   text="${'${'}day.name}: The current day's name (ex. Mon)"/>
-                                            <item8 jcr:primaryType="nt:unstructured"
-                                                   sling:resourceType="granite/ui/components/coral/foundation/text"
-                                                   text="${'${'}hour.12}: The current hour (12 hour clock)"/>
-                                            <item9 jcr:primaryType="nt:unstructured"
-                                                   sling:resourceType="granite/ui/components/coral/foundation/text"
-                                                   text="${'${'}hour.24}: The current hour (24 hour clock)"/>
-                                            <item10 jcr:primaryType="nt:unstructured"
-                                                   sling:resourceType="granite/ui/components/coral/foundation/text"
-                                                   text="${'${'}minute}: The current minute"/>
-                                            <item11 jcr:primaryType="nt:unstructured"
-                                                   sling:resourceType="granite/ui/components/coral/foundation/text"
-                                                   text="${'${'}am.pm}: The current time's AM or PM designation"/>
-                                        </items>
-                                    </achive-name-expression-list>
-
+                                    <!-- ./zipFileName is the Legacy Mode property name -->
                                     <zip-file-name
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/textfield"

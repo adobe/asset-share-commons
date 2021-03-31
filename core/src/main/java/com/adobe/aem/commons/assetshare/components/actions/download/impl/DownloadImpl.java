@@ -198,15 +198,13 @@ public class DownloadImpl implements Download, ComponentExporter {
 
     @Override
     public boolean isAsynchronous() {
-        if (RequireAem.Distribution.CLASSIC.equals(requireAem.getDistribution())) {
-            // async downloads only available in the cloud, return false
-            return false;
-        }
-        return true;
+        // async downloads only available in the cloud
+        return RequireAem.Distribution.CLOUD_READY.equals(requireAem.getDistribution());
     }
 
     @Deprecated
-    protected boolean isLegacyMode() {
+    @Override
+    public boolean isLegacyMode() {
         if (legacyMode == null) {
             if (getAssetRenditionsGroups() != null && !getAssetRenditionsGroups().isEmpty()) {
                 // Is the new renditions exist, then assume modern

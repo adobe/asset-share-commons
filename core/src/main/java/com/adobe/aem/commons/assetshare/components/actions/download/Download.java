@@ -72,6 +72,9 @@ public interface Download {
      */
     boolean isAsynchronous();
 
+    @Deprecated
+    default boolean isLegacyMode() { return false; }
+
     default List<AssetRenditionsGroup> getAssetRenditionsGroups() {
         return Collections.EMPTY_LIST;
     }
