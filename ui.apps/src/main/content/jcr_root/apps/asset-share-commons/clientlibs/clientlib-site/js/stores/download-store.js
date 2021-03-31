@@ -91,17 +91,17 @@ AssetShare.Store.Download = (function (ns, store) {
     }
 
     function _triggerDownloadsAddEvent(download) {
-        $("body").trigger(ns.Events.DOWNLOADS_ADD [ download ] );
+        $("body").trigger(ns.Events.DOWNLOADS_ADD, [ download ]);
         _triggerDownloadsUpdateEvent();
     }
 
     function _triggerDownloadsRemoveEvent(downloadId) {
-        $("body").trigger(ns.Events.DOWNLOADS_REMOVE [ downloadId ] );
+        $("body").trigger(ns.Events.DOWNLOADS_REMOVE, [ downloadId ]);
         _triggerDownloadsUpdateEvent();
     }
 
     function _triggerDownloadsClearEvent(download) {
-        $("body").trigger(ns.Events.DOWNLOADS_CLEAR );
+        $("body").trigger(ns.Events.DOWNLOADS_CLEAR);
         _triggerDownloadsUpdateEvent();
     }
 
