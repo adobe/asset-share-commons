@@ -83,7 +83,7 @@ jQuery((function($, ns, semanticModal, download) {
             var downloadId = $(e.currentTarget).data('asset-share-download-id');
 
             if (downloadId) {
-                download.removeDownloadId(downloadId);
+                download.removeDownloadById(downloadId);
                 update();
             }
 
@@ -93,7 +93,7 @@ jQuery((function($, ns, semanticModal, download) {
             e.preventDefault();
             e.stopPropagation();
 
-            download.removeAllDownloadIds();
+            download.removeAllDownloads();
 
             update();
         }

@@ -21,7 +21,6 @@
         data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
         data-sly-test="${!config.aemClassic}"
         data-sly-use.downloads="com.adobe.aem.commons.assetshare.components.actions.downloads.Downloads"
-        data-sly-test.hasDownloads="${downloads.downloads.size > 0}"
         data-sly-use.downloadTemplate="templates/download.html"
         data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html">
 
@@ -50,7 +49,7 @@
 
         <div class="header">
             ${properties.modalTitle || 'Downloads' @i18n}
-            <span data-sly-test="${hasDownloads}"
+            <span data-sly-test.hasDownloads="${downloads.downloads.size > 0}"
                     data-asset-share-id="refresh-downloads">
                     <a href="#refresh"><i class="cmp-modal-downloads__refresh sync alternate icon"></i></a>
             </span>

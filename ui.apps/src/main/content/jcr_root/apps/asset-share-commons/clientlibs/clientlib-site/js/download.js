@@ -26,7 +26,7 @@
 AssetShare.Download = (function ($, ns, messages, downloadStore) {
     "use strict";
 
-    const DOWNLOAD_ID = "downloadId",
+    const DOWNLOAD_ID = "id",
         DWNL_STATUS_PN = "isComplete",
         DWNL_ARTIFACTS_PN = "artifacts",
         BODY_SELECTOR = "body.page",
@@ -47,15 +47,16 @@ AssetShare.Download = (function ($, ns, messages, downloadStore) {
             url: form.attr("action"),
             data: form.serialize(),
             success: function (data) {
+
                 if (data[DOWNLOAD_ID]) {
                     // initialize polling if polling is configured
                     if (form.data(POLL_DATA_ATTRIBUTE)) {
                         // initiate dimmer on page
                         _showDimmer();
-                        _poll(data[DOWNLOAD_ID], 0);
+                        _poll(data, 0);
                     } else {
                         // track downloadid in session storage
-                        _storeDownloadId(data[DOWNLOAD_ID]);
+                        _storeDownloadId(data);
                     }
                 }
             },
@@ -67,25 +68,25 @@ AssetShare.Download = (function ($, ns, messages, downloadStore) {
 
     /**
      * Perform polling to determine if a given downloadId is ready
-     * @param {*} downloadId
+     * @param {*} downloadData the JSON response from the Async Download Servlet
      * returns true if the download is ready
      */
-    function _poll(downloadId, attempts) {
+    function _poll(downloadData, attempts) {
         setTimeout(function () {
             $.ajax({
-                url: `${POLL_ENDPOINT}?downloadId=${downloadId}`,
+                url: `${POLL_ENDPOINT}?downloadId=${downloadData.id}`,
                 success: function (data) {
                     attempts++;
                     if (data[DWNL_STATUS_PN]) {
                         for (let artifact of data[DWNL_ARTIFACTS_PN]) {
-                            downloadArtifact(downloadId, artifact.uri);
+                            downloadArtifact(downloadData.id, artifact.uri);
                         }
                         _hideDimmer();
                     } else if (attempts >= MAX_ATTEMPTS) {
                         // max attempts reached, save downloadId to sessionStorage
                         _hideDimmer();
-                        console.debug(`Max attempts reached polling of ${downloadId}, saving downloadId to session storage.`);
-                        _storeDownloadId(downloadId);
+                        console.debug(`Max attempts reached polling of ${downloadData.Id}, saving downloadId to session storage.`);
+                        _storeDownloadId(downloadData);
                     } else {
                         _poll(downloadId, attempts);
                     }
@@ -104,11 +105,11 @@ AssetShare.Download = (function ($, ns, messages, downloadStore) {
      * User can then access the download archive via the downloads panel
      * @param {*} downloadId
      */
-    function _storeDownloadId(downloadId) {
-        if (downloadStore.addDownloadId(downloadId)) {
-            messages.show('download-add');
+    function _storeDownloadId(downloadData) {
+        if (downloadStore.addDownload(downloadData)) {
+            messages.show('download-add' [ downloadData] );
         } else {
-            console.debug(`${downloadId} was not added to session storage`);
+            console.debug(`${downloadData.id} was not added to session storage`);
         }
     }
 

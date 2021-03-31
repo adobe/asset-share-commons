@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.cq.dam.download.api.*;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -37,10 +38,7 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.adobe.aem.commons.assetshare.content.renditions.download.async.impl.NamedRenditionDownloadTargetProcessor.*;
 
@@ -50,15 +48,17 @@ import static com.adobe.aem.commons.assetshare.content.renditions.download.async
                 "sling.servlet.methods=POST",
                 "sling.servlet.resourceTypes=asset-share-commons/actions/download",
                 "sling.servlet.selectors=download-asset-renditions",
-                "sling.servlet.extensions=zip"
+                "sling.servlet.extensions=zip",
+                "sling.servlet.extensions=json"
         }
 )
 public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet {
     private static final Logger log = LoggerFactory.getLogger(AsyncAssetRenditionsDownloadServlet.class);
 
+    private static final String DOWNLOAD_ASSETS = "assets";
     private static final String DOWNLOAD_ASSET_COUNT = "assetCount";
     private static final String DOWNLOAD_RENDITION_COUNT = "renditionCount";
-    private static final String DOWNLOAD_ID = "downloadId";
+    private static final String DOWNLOAD_ID = "id";
 
     private static final String REQ_KEY_ASSET_PATHS = "path";
     private static final String REQ_KEY_RENDITION_NAMES = "renditionName";
@@ -111,7 +111,7 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(getResponseJson(downloadId,
-                    assetModels.size(),
+                    assetModels,
                     manifest.getTargetCount(),
                     archiveName).toString());
 
@@ -120,12 +120,6 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
         }
     }
 
-    private String getArchiveName(final String baseArchiveName) {
-        final SimpleDateFormat sdf = new SimpleDateFormat("MM-dd hh-mmaa");
-        final String dateString = sdf.format(new Date());
-
-        return baseArchiveName + " (" + dateString + ").zip";
-    }
 
     private void addToDownloadManifest(final AssetModel asset,
                                                    final Collection renditionNames,
@@ -149,10 +143,18 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
         });
     }
 
-    private JsonObject getResponseJson(final String downloadId, final int downloadAssetCount, final int downloadRenditionCount, final String archiveName) {
+    private JsonObject getResponseJson(final String downloadId, final Collection<AssetModel> assetModels, final int downloadRenditionCount, final String archiveName) {
         final JsonObject json = new JsonObject();
+
+        final JsonArray assetsJsonArray = new JsonArray();
+
+        assetModels.forEach(assetModel -> { assetsJsonArray.add(assetModel.getPath());});
+
+        /** This JSON is considered and API - Do not remove/change key/vales **/
+
         json.addProperty(DOWNLOAD_ID, downloadId);
-        json.addProperty(DOWNLOAD_ASSET_COUNT, downloadAssetCount);
+        json.add(DOWNLOAD_ASSETS, assetsJsonArray);
+        json.addProperty(DOWNLOAD_ASSET_COUNT, assetModels.size());
         json.addProperty(DOWNLOAD_RENDITION_COUNT, downloadRenditionCount);
         json.addProperty(DOWNLOAD_ARCHIVE_NAME, archiveName);
 

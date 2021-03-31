@@ -51,7 +51,6 @@ jQuery((function(ns, semanticModal, licenseModal, downloadService) {
                 options: {
                     // Download modal's beforeShow(..) has code to ensure that any previous modals are closed before opening the download window, specifically for the case of the Direct Download
                     beforeShow: function(htmlResponse, modalTracker) {
-                    debugger
                         var modal = $("<div>" + htmlResponse + "</div>").find(ns.Elements.selector(getId()));
                         if($(modal).data(DOWNLOAD_DIRECT)) {
                             for(var modalId of modalTracker) {

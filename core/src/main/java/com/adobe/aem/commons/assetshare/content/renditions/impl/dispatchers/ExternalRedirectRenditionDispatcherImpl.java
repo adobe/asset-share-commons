@@ -27,6 +27,7 @@ import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.util.UrlUtil;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
+import com.day.text.Text;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -158,9 +159,9 @@ public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
 
                 return new AssetRendition(renditionRedirect, 0L, mimeTypeService.getMimeType(extension));
             } catch (URISyntaxException e) {
-                log.warn("Cloud not create a valid URI for rendition redirect [ {} ]", renditionRedirect);
+                log.warn("Unable to create a valid URI for rendition redirect [ {} ]", renditionRedirect, e);
                 // Still sending to Async Download Framework so we can get a failure
-                return new AssetRendition(renditionRedirect, 0L, "invalid/invalid");
+                return new AssetRendition("failed://to.create.valid.uri.from.rendition.redirect", 0L, "invalid/uri");
             }
         }
 
