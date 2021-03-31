@@ -26,59 +26,91 @@ AssetShare.Store.Download = (function (ns, store) {
     var DOWNLOAD_KEY            = 'downloads';
 
     /* adds an asset path to the cart and persists to local storage */
-    function addDownloadId(downloadId) {
+    function addDownload(downloadData) {
         var downloads = store.getObject(DOWNLOAD_KEY, false) || [];
 
-        if(downloads.indexOf(downloadId) < 0) {
-            downloads.push(downloadId);
+        if (_getDownloadsIndexById(downloadData.id) < 0) {
+            downloads.push(downloadData);
 
             // Update local storage with new cart object
             store.setObject(DOWNLOAD_KEY, downloads, false);
-            _triggerDownloadsUpdateEvent();
+
+            _triggerDownloadsAddEvent(downloadData);
+
             return true;
         }
         // download id already exists
         return false;
     }
 
-    function removeDownloadId(downloadId) {
+    function removeDownloadById(downloadId) {
         var downloads = store.getObject(DOWNLOAD_KEY, false) || [],
-            index     = downloads.indexOf(downloadId);
+            index     = _getDownloadsIndexById(downloadId);
 
-        if( index >= 0) {
+        if (index >= 0) {
             downloads.splice(index, 1);
 
             // Update local storage with new cart object
             store.setObject(DOWNLOAD_KEY, downloads, false);
-            _triggerDownloadsUpdateEvent();
+            _triggerDownloadsAddEvent(downloadId);
+
             return true;
         }
         // couldn't find a downloadId to remove
         return false;
     }
 
-    function removeAllDownloadIds() {
+    function removeAllDownloads() {
         store.setObject(DOWNLOAD_KEY, [], false);
-        _triggerDownloadsUpdateEvent();
+
+        _triggerDownloadsClearEvent();
     }
 
     /**
-     * Returns downloadIds tracked in session storage
-     * @returns Array of downloadIds
+     * Returns downloads tracked in session storage
+     * @returns Array of downloads JSON object
      */
-    function getDownloadIds() {
+    function getDownloads() {
        return (store.getObject(DOWNLOAD_KEY, false) || []);
     }
 
-    function _triggerDownloadsUpdateEvent() {
+    /**
+     * Returns downloadIds tracked in storage
+     * @returns Array of downloadIds
+     */
+    function getDownloadIds() {
+       return getDownloads().map(download => download.id);
+    }
+
+    function _getDownloadsIndexById(downloadId) {
+        return getDownloadIds().indexOf(downloadId);
+    }
+
+    function _triggerDownloadsUpdateEvent(download, type) {
         $("body").trigger(ns.Events.DOWNLOADS_UPDATE);
     }
 
+    function _triggerDownloadsAddEvent(download) {
+        $("body").trigger(ns.Events.DOWNLOADS_ADD [ download ] );
+        _triggerDownloadsUpdateEvent();
+    }
+
+    function _triggerDownloadsRemoveEvent(downloadId) {
+        $("body").trigger(ns.Events.DOWNLOADS_REMOVE [ downloadId ] );
+        _triggerDownloadsUpdateEvent();
+    }
+
+    function _triggerDownloadsClearEvent(download) {
+        $("body").trigger(ns.Events.DOWNLOADS_CLEAR );
+        _triggerDownloadsUpdateEvent();
+    }
+
     return {
+        getDownloads: getDownloads,
         getDownloadIds: getDownloadIds,
-        addDownloadId: addDownloadId,
-        removeDownloadId: removeDownloadId,
-        removeAllDownloadIds: removeAllDownloadIds
+        addDownload: addDownload,
+        removeDownloadById: removeDownloadById,
+        removeAllDownloads: removeAllDownloads
     };
 
 }(AssetShare,
