@@ -159,9 +159,9 @@ public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
 
                 return new AssetRendition(renditionRedirect, 0L, mimeTypeService.getMimeType(extension));
             } catch (URISyntaxException e) {
-                log.warn("Cloud not create a valid URI for rendition redirect [ {} ]", renditionRedirect, e);
+                log.warn("Unable to create a valid URI for rendition redirect [ {} ]", renditionRedirect, e);
                 // Still sending to Async Download Framework so we can get a failure
-                return new AssetRendition("failed://to.create.valid.uri.from.rendition.redirect", 0L, "invalid/invalid");
+                return new AssetRendition("failed://to.create.valid.uri.from.rendition.redirect", 0L, "invalid/uri");
             }
         }
 
