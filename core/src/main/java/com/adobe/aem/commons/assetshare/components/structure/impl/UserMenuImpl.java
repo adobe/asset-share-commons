@@ -70,68 +70,6 @@ public class UserMenuImpl implements UserMenu {
     @Required
     private Style currentStyle;
 
-    private UserProperties currentUser;
-
-    @PostConstruct
-    public void init() {
-        setCurrentUser();
-    }
-
-    @Deprecated
-    private void setCurrentUser() {
-        final Authorizable auth = request.getResourceResolver().adaptTo(Authorizable.class);
-        final UserPropertiesManager upm = request.getResourceResolver().adaptTo(UserPropertiesManager.class);
-
-        if (upm != null) {
-            try {
-                currentUser = upm.getUserProperties(auth, NN_PROFILE);
-            } catch (RepositoryException e) {
-                log.warn("could not get user properties for current user.", e);
-            }
-        }
-    }
-
-    @Override
-    @Deprecated
-    public String getUserName() {
-        if (currentUser != null) {
-            try {
-                return currentUser.getDisplayName();
-            } catch (RepositoryException e) {
-                log.error("Repository Exception while trying to get display name", e);
-            }
-        }
-
-        return null;
-    }
-
-    @Override
-    @Deprecated
-    public String getUserProfileImg() {
-
-        if (currentUser != null) {
-            try {
-                Resource photos = currentUser.getResource(UserProperties.PHOTOS);
-                if (photos != null) {
-                    return photos.getPath() + PROFILE_PATH_SUFFIX;
-                }
-            } catch (RepositoryException e) {
-                log.error("Repository Exception while trying to get profile picture name", e);
-            }
-        }
-        return null;
-    }
-
-    @Override
-    @Deprecated
-    public Boolean isLoggedIn() {
-        if (currentUser != null && !ANONYMOUS.equals(currentUser.getAuthorizableID())) {
-            return true;
-        }
-
-        return false;
-    }
-
     @Override
     public boolean isReady() {
         final String logInLabel = currentStyle.get(PN_LOG_IN_LABEL, String.class);
