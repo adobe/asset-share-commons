@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [v2.0.0]
+
 ### Added
 
 - 0504: Added RequireAem OSGi Service to determine if ASC is running in the Adobe Cloud or not.
