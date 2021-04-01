@@ -18,7 +18,7 @@
     <groupId>com.adobe.aem.commons</groupId>
     <artifactId>assetshare</artifactId>
     <packaging>pom</packaging>
-    <version>2.0.1-SNAPSHOT</version>
+    <version>2.0.0-SNAPSHOT</version>
     <description>asset-share-commons</description>
 
     <url>https://github.com/Adobe-Marketing-Cloud/asset-share-commons</url>
@@ -602,6 +602,15 @@
                     <name>performRelease</name>
                 </property>
             </activation>
+
+            <distributionManagement>
+                <!-- the nexus-staging-maven-plugin only needs a snapshot repository -->
+                <snapshotRepository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                </snapshotRepository>
+            </distributionManagement>
+
             <build>
                 <!-- https://central.sonatype.org/pages/requirements.html -->
                 <plugins>
@@ -644,20 +653,6 @@
                     </plugin>
                 </plugins>
             </build>
-        </profile>
-
-        <profile>
-            <id>maven-central-release</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <distributionManagement>
-                <!-- the nexus-staging-maven-plugin only needs a snapshot repository -->
-                <snapshotRepository>
-                    <id>ossrh</id>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-                </snapshotRepository>
-            </distributionManagement>
         </profile>
 
         <profile>
