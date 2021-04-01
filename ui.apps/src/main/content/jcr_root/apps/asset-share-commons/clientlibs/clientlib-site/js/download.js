@@ -107,7 +107,7 @@ AssetShare.Download = (function ($, ns, messages, downloadStore) {
      */
     function _storeDownloadId(downloadData) {
         if (downloadStore.addDownload(downloadData)) {
-            messages.show('download-add' [ downloadData] );
+            messages.show('download-add');
         } else {
             console.debug(`${downloadData.id} was not added to session storage`);
         }
