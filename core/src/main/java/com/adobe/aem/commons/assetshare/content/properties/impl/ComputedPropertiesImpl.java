@@ -58,10 +58,10 @@ public final class ComputedPropertiesImpl implements ComputedProperties {
     private transient List<ComputedProperty> rankedComputedProperties = new CopyOnWriteArrayList();
 
     public List<ComputedProperty> getComputedProperties() {
-        if (log.isDebugEnabled()) {
-            log.debug("Returning this list of highest ranking Computed Prooerties by label");
+        if (log.isTraceEnabled()) {
+            log.trace("Returning this list of highest ranking Computed Properties by label");
             rankedComputedProperties.stream().forEach(computedProperty -> {
-                log.debug("Computed property: [ name: {} ] - [ label: {} ]", computedProperty.getName(), computedProperty.getLabel());
+                log.trace("Computed property: [ name: {} ] - [ label: {} ]", computedProperty.getName(), computedProperty.getLabel());
             });
         }
 
@@ -99,10 +99,10 @@ public final class ComputedPropertiesImpl implements ComputedProperties {
     private CopyOnWriteArrayList<ComputedProperty> getHighestRankingByLabel() {
         return new CopyOnWriteArrayList<>(allComputedProperties.values().stream()
                 .sorted(Comparator.comparing(RankedComputedProperty::getRank).reversed())
-                .peek(rankedComputedProperty -> log.debug("Computed Property by Rank: [ name: {} ] - [ rank: {} ] - [ label: {} ]",
+                .peek(rankedComputedProperty -> log.trace("Computed Property by Rank: [ name: {} ] - [ rank: {} ] - [ label: {} ]",
                         new String[]{ rankedComputedProperty.getName(), String.valueOf(rankedComputedProperty.getRank()), rankedComputedProperty.getComputedProperty().getLabel()}))
                 .filter(distinctByKey(RankedComputedProperty::getName))
-                .peek(rankedComputedProperty -> log.debug("Highest ranking Computed Property: [ name: {} ] - [ rank: {} ] - [ label: {} ]",
+                .peek(rankedComputedProperty -> log.trace("Highest ranking Computed Property: [ name: {} ] - [ rank: {} ] - [ label: {} ]",
                         new String[]{ rankedComputedProperty.getName(), String.valueOf(rankedComputedProperty.getRank()), rankedComputedProperty.getComputedProperty().getLabel()}))
                 .map(RankedComputedProperty::getComputedProperty)
                 .sorted(Comparator.comparing(ComputedProperty::getLabel))

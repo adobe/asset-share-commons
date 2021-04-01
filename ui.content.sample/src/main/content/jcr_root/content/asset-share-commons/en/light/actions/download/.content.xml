@@ -2,7 +2,7 @@
 <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
     jcr:primaryType="cq:Page">
     <jcr:content
-        cq:lastModified="{Date}2020-01-03T17:41:48.172-05:00"
+        cq:lastModified="{Date}2021-03-31T16:15:09.765-04:00"
         cq:lastModifiedBy="admin"
         cq:template="/conf/asset-share-commons/settings/wcm/templates/action-template"
         jcr:primaryType="cq:PageContent"
@@ -15,6 +15,8 @@
                 jcr:primaryType="nt:unstructured"
                 sling:resourceType="wcm/foundation/components/responsivegrid">
                 <download
+                    jcr:lastModified="{Date}2021-03-31T16:15:09.759-04:00"
+                    jcr:lastModifiedBy="admin"
                     jcr:primaryType="nt:unstructured"
                     sling:resourceType="asset-share-commons/components/modals/download"
                     assetListTitle="Assets"
@@ -31,20 +33,53 @@
                         <items jcr:primaryType="nt:unstructured">
                             <item0
                                 jcr:primaryType="nt:unstructured"
-                                assetRenditionsGroupTitle="Image renditions">
+                                assetRenditionsGroupTitle="All">
                                 <asset-renditions jcr:primaryType="nt:unstructured">
                                     <items jcr:primaryType="nt:unstructured">
                                         <item0
                                             jcr:primaryType="nt:unstructured"
-                                            text="Web"
-                                            value="web"/>
-                                        <item1
-                                            jcr:primaryType="nt:unstructured"
+                                            selected="false"
                                             text="Original"
                                             value="original"/>
                                     </items>
                                 </asset-renditions>
                             </item0>
+                            <item1
+                                jcr:primaryType="nt:unstructured"
+                                assetRenditionsGroupTitle="Images">
+                                <asset-renditions jcr:primaryType="nt:unstructured">
+                                    <items jcr:primaryType="nt:unstructured">
+                                        <item0
+                                            jcr:primaryType="nt:unstructured"
+                                            selected="false"
+                                            text="Web"
+                                            value="web"/>
+                                        <item1
+                                            jcr:primaryType="nt:unstructured"
+                                            selected="false"
+                                            text="Smart Crop (Small)"
+                                            value="smart-crop-small"/>
+                                    </items>
+                                </asset-renditions>
+                            </item1>
+                            <item2
+                                jcr:primaryType="nt:unstructured"
+                                assetRenditionsGroupTitle="Videos">
+                                <asset-renditions jcr:primaryType="nt:unstructured">
+                                    <items jcr:primaryType="nt:unstructured">
+                                        <item0
+                                            jcr:primaryType="nt:unstructured"
+                                            selected="false"
+                                            text="MP4"
+                                            value="mp4"/>
+                                        <item1
+                                            jcr:primaryType="nt:unstructured"
+                                            selected="false"
+                                            text="M4V"
+                                            value="m4v"/>
+                                    </items>
+                                </asset-renditions>
+                            </item2>
                         </items>
                     </asset-renditions-groups>
                 </download>

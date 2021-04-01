@@ -24,6 +24,8 @@ import com.adobe.aem.commons.assetshare.configuration.Config;
 import com.adobe.aem.commons.assetshare.configuration.impl.selectors.AlwaysUseDefaultSelectorImpl;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.util.ForcedInheritanceValueMapWrapper;
+import com.adobe.aem.commons.assetshare.util.RequireAem;
+import com.adobe.granite.contexthub.api.ContextHub;
 import com.day.cq.commons.inherit.HierarchyNodeInheritanceValueMap;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -33,6 +35,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.featureflags.Features;
 import org.apache.sling.models.annotations.Model;
@@ -72,6 +75,8 @@ public class ConfigImpl implements Config {
     private static final String PN_DOWNLOAD_ENABLED = "config/actions/download/enabled";
     private static final String PN_DOWNLOAD_VIEW_PATH = "config/actions/download/path";
 
+    private static final String PN_DOWNLOADS_VIEW_PATH = "config/actions/downloads/path";
+
     private static final String PN_CART_ENABLED = "config/actions/cart/enabled";
     private static final String PN_CART_VIEW_PATH = "config/actions/cart/path";
 
@@ -95,6 +100,10 @@ public class ConfigImpl implements Config {
     @Required
     private ModelFactory modelFactory;
 
+    @OSGiService
+    @Required
+    private RequireAem requireAem;
+
     @OSGiService(injectionStrategy = InjectionStrategy.OPTIONAL)
     private ShareService shareService;
 
@@ -105,6 +114,9 @@ public class ConfigImpl implements Config {
     @OSGiService
     @Required
     private Features features;
+
+    @OSGiService
+    private ContextHub contextHub;
 
     private Page currentPage;
 
@@ -171,6 +183,11 @@ public class ConfigImpl implements Config {
     @Override
     public String getDownloadActionUrl() {
         return properties.get(PN_DOWNLOAD_VIEW_PATH, rootPath + "/actions/download") + "." + viewSelector + HTML_EXTENSION;
+    }
+
+    @Override
+    public String getDownloadsActionUrl() {
+        return properties.get(PN_DOWNLOADS_VIEW_PATH, rootPath + "/actions/downloads") + "." + viewSelector + HTML_EXTENSION;
     }
 
     @Override
@@ -248,7 +265,6 @@ public class ConfigImpl implements Config {
         return properties.get(PN_ASSET_REFERENCE_BY_ID, false);
     }
 
-
     @Override
     public String getAssetDetailsPath() {
         return properties.get(PN_DEFAULT_ASSET_DETAILS_PATH, rootPath + "/details");
@@ -259,10 +275,30 @@ public class ConfigImpl implements Config {
         return getAssetDetailsPath() + ".html";
     }
 
-
     @Override
     public String getRootPath() {
         return getRootPath(currentPage);
+    }
+
+    @Override
+    public boolean isContextHubEnabled() {
+        final HierarchyNodeInheritanceValueMap properties = new HierarchyNodeInheritanceValueMap(currentPage.getContentResource());
+
+        String path = properties.get("cq:contextHubPath", String.class);
+
+        if (StringUtils.isNotBlank(path)) {
+            Resource resource = request.getResourceResolver().getResource(path);
+            if (resource != null) {
+                return resource.isResourceType("granite/contexthub/cloudsettings/components/baseconfiguration");
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean isAemClassic() {
+        return RequireAem.Distribution.CLASSIC.equals(requireAem.getDistribution());
     }
 
     /**

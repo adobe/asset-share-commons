@@ -24,14 +24,16 @@ import com.adobe.aem.commons.assetshare.content.AssetResolver;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperties;
 import com.adobe.aem.commons.assetshare.content.properties.impl.TitleImpl;
 import com.adobe.aem.commons.assetshare.util.UrlUtil;
-import org.apache.sling.api.wrappers.ValueMapDecorator;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
-import com.day.text.Text;
+import com.day.cq.dam.commons.util.DamUtil;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.api.wrappers.ValueMapDecorator;
+import org.apache.sling.models.annotations.DefaultInjectionStrategy;
 import org.apache.sling.models.annotations.Model;
+import org.apache.sling.models.annotations.Optional;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.Self;
@@ -43,14 +45,19 @@ import java.util.Iterator;
 import java.util.List;
 
 @Model(
-        adaptables = {SlingHttpServletRequest.class},
-        adapters = {AssetModel.class}
+        adaptables = { SlingHttpServletRequest.class, Resource.class },
+        adapters = { AssetModel.class },
+        defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
+@SuppressWarnings("AEM Rules:AEM-16") // The Default Optional strategy is infact required
 public class AssetModelImpl implements AssetModel {
 
     @Self
-    @Required
     private SlingHttpServletRequest request;
+
+    @Self
+    @Optional
+    private Resource resource;
 
     @OSGiService
     @Required
@@ -59,8 +66,6 @@ public class AssetModelImpl implements AssetModel {
     @OSGiService
     @Required
     private AssetResolver assetResolver;
-
-    private Resource resource;
 
     private ValueMap properties;
 
@@ -71,6 +76,8 @@ public class AssetModelImpl implements AssetModel {
     public void init() {
         if (request != null) {
             asset = assetResolver.resolveAsset(request);
+        } else if (resource != null) {
+            asset = DamUtil.resolveToAsset(resource);
         }
 
         if (asset != null) {
@@ -89,6 +96,8 @@ public class AssetModelImpl implements AssetModel {
     }
 
     public String getUrl() { return UrlUtil.escape(getPath()); }
+
+    public Asset getAsset() { return DamUtil.resolveToAsset(getResource()); }
 
     public String getAssetId() {
         return asset.getID();

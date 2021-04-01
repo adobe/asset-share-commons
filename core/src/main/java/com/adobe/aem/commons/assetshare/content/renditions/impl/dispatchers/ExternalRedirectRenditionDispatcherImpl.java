@@ -19,13 +19,19 @@
 
 package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 
+import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRendition;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.util.UrlUtil;
+import com.day.cq.dam.api.Asset;
+import com.day.cq.dam.api.Rendition;
+import com.day.text.Text;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
+import org.apache.sling.commons.mime.MimeTypeService;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -39,6 +45,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -67,6 +74,9 @@ public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
 
     @Reference
     private AssetRenditions assetRenditions;
+
+    @Reference
+    private MimeTypeService mimeTypeService;
 
     @Override
     public String getLabel() {
@@ -111,11 +121,11 @@ public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
         final AssetRenditionParameters parameters = new AssetRenditionParameters(request);
 
         final String expression = mappings.get(parameters.getRenditionName());
-        final String evaluatedExpression = assetRenditions.evaluateExpression(request, expression);
+        final String renditionRedirect = assetRenditions.evaluateExpression(request, expression);
 
-        if (StringUtils.isNotBlank(evaluatedExpression)) {
+        if (StringUtils.isNotBlank(renditionRedirect)) {
             log.debug("Serving External redirect rendition [ {} ] for resolved rendition name [ {} ]",
-                    evaluatedExpression,
+                    renditionRedirect,
                     parameters.getRenditionName());
 
             if (cfg.redirect() == HttpServletResponse.SC_MOVED_TEMPORARILY) {
@@ -124,12 +134,43 @@ public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
                 response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
             }
 
-            response.setHeader("Location", UrlUtil.escape(evaluatedExpression));
+            response.setHeader("Location", UrlUtil.escape(renditionRedirect));
 
         } else {
-            log.error("Could not convert [ {} ] into a valid URI", evaluatedExpression);
+            log.error("Could not convert [ {} ] into a valid URI", renditionRedirect);
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not serve asset rendition.");
         }
+    }
+
+    @Override
+    public AssetRendition getRendition(AssetModel assetModel, AssetRenditionParameters parameters) {
+        final String expression = mappings.get(parameters.getRenditionName());
+        String renditionRedirect = assetRenditions.evaluateExpression(assetModel, parameters.getRenditionName(), expression);
+
+        if (StringUtils.isNotBlank(renditionRedirect)) {
+            try {
+                final String extension = getExtensionFromAscExtQueryParameter(renditionRedirect);
+
+                renditionRedirect = cleanURI(renditionRedirect);
+
+                log.debug("Downloading External redirect rendition [ {} ] for resolved rendition name [ {} ]",
+                        renditionRedirect,
+                        parameters.getRenditionName());
+
+                return new AssetRendition(renditionRedirect, 0L, mimeTypeService.getMimeType(extension));
+            } catch (URISyntaxException e) {
+                log.warn("Unable to create a valid URI for rendition redirect [ {} ]", renditionRedirect, e);
+                // Still sending to Async Download Framework so we can get a failure
+                return new AssetRendition("failed://to.create.valid.uri.from.rendition.redirect", 0L, "invalid/uri");
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean accepts(AssetModel assetModel, String renditionName) {
+        return getRenditionNames().contains(renditionName);
     }
 
     @Activate

@@ -25,6 +25,12 @@ AssetShare.Events = {
     CART_CLEAR: "asset-share-commons.cart.clear",
     CART_ALREADY_EXISTS: "asset-share-commons.cart.exists",
 
+
+    DOWNLOADS_ADD: "asset-share-commons.download.add",
+    DOWNLOADS_REMOVE: "asset-share-commons.download.remove",
+    DOWNLOADS_UPDATE: "asset-share-commons.download.update",
+    DOWNLOADS_CLEAR: "asset-share-commons.download.clear",
+
     PROFILE_LOAD: "asset-share-commons.storage.profile.load",
 	PAGE_LOAD: "asset-share-commons.page.load",
 

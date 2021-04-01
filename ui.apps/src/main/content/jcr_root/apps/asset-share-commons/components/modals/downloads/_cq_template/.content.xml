@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="nt:unstructured"
+          modalTitle="Downloads"
+          statusColumnTitle="Status"
+          numberOfFilesColumnTitle="No. of files"
+          downloadSizeTitle="Download size"
+          failedDownloadName="FAILED DOWNLOAD"
+          processingStatus="Processing"
+          partiallySuccessfulStatus="Partially Successful"
+          successfulStatus="Successful"
+          failedStatus="Failed"
+          downloadButton="Download"
+          successesListTitle="Files added to zip"
+          failuresListTitle="Unavailable files"
+          emptyText="No downloads pending"
+          closeButton="Close"
+          clearButton="Clear Downloads">
+</jcr:root>

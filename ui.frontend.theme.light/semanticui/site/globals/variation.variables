@@ -140,11 +140,11 @@
 
 /* Loader */
 @variationLoaderSpeeds: false;
-@variationLoaderIndeterminate: false;
-@variationLoaderText: false;
+@variationLoaderIndeterminate: true;
+@variationLoaderText: true;
 @variationLoaderInline: false;
 @variationLoaderElastic: false;
-@variationLoaderSizes: false;
+@variationLoaderSizes: big,huge;
 
 /* Placeholder */
 @variationPlaceholderInverted: false;
@@ -383,7 +383,7 @@
 @variationDimmerDisabled: false;
 @variationDimmerLegacy: false;
 @variationDimmerAligned: false;
-@variationDimmerPage: false;
+@variationDimmerPage: true;
 @variationDimmerBlurring: false;
 @variationDimmerShades: false;
 @variationDimmerSimple: false;

@@ -3,7 +3,6 @@
     jcr:primaryType="cq:Page">
     <jcr:content
         cq:allowedTemplates="/conf/asset-share-commons/settings/wcm/templates/.*"
-        cq:contextHubPath="/conf/asset-share-commons/settings/cloudsettings/asset-share-commons/contexthub"
         cq:deviceGroups="[mobile/groups/responsive]"
         cq:lastModified="{Date}2017-10-17T09:39:30.390-04:00"
         cq:lastModifiedBy="admin"

@@ -22,8 +22,10 @@ package com.adobe.aem.commons.assetshare.components.actions.download;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
+import com.google.common.collect.ImmutableList;
 import org.osgi.annotation.versioning.ProviderType;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -64,17 +66,31 @@ public interface Download {
      */
     String getDownloadContentSizeLabel();
 
+    /**
+     * 
+     * @return a boolean to indicate whether download behavior will be asynchronous (AEM as a Cloud service) or synchronous (6.x)
+     */
+    boolean isAsynchronous();
+
+    @Deprecated
+    default boolean isLegacyMode() { return false; }
+
     default List<AssetRenditionsGroup> getAssetRenditionsGroups() {
         return Collections.EMPTY_LIST;
     }
 
     class AssetRenditionsGroup {
-        private final Options options;
+        private final List<OptionItem> options;
         private final String title;
 
         public AssetRenditionsGroup(String title, Options options) {
             this.title = title;
-            this.options = options;
+            this.options = options.getItems();
+        }
+
+        public AssetRenditionsGroup(String title, List<OptionItem> options) {
+            this.title = title;
+            this.options = new ArrayList<>(options);
         }
 
         public String getTitle() {
@@ -82,7 +98,7 @@ public interface Download {
         }
 
         public List<OptionItem> getItems() {
-            return options.getItems();
+            return ImmutableList.copyOf(options);
         }
     }
 }

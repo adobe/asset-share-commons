@@ -39,7 +39,7 @@ public class ModelCacheImpl extends AbstractHTLMap implements ModelCache {
         Class clazz = null;
 
         try {
-            clazz = Class.forName((String) key, true, dynamicClassLoaderManager.getDynamicClassLoader());
+            clazz = dynamicClassLoaderManager.getDynamicClassLoader().loadClass((String) key);
             return get(clazz);
         } catch (ClassNotFoundException e) {
             throw new IllegalArgumentException("Unable to derive a class from " + (String)key);
@@ -55,14 +55,14 @@ public class ModelCacheImpl extends AbstractHTLMap implements ModelCache {
             final T model = request.adaptTo(clazz);
             if (model != null) {
                 request.setAttribute(requestAttributeKey, model);
-                log.debug("Initial caching of model [ {} ]", clazz.getName());
+                log.trace("Initial caching of model [ {} ]", clazz.getName());
                 return model;
             } else {
                 log.debug("Could not create a model to cache for [ {} ] from the SlingHttpServletRequest", clazz.getName());
                 return null;
             }
         } else {
-            log.debug("Served model for [ {} ] from cache", clazz.getName());
+            log.trace("Served model for [ {} ] from cache", clazz.getName());
             return (T) cachedModel;
         }
     }

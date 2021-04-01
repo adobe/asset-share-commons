@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
 import com.adobe.aem.commons.assetshare.configuration.Config;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.day.cq.wcm.api.WCMMode;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestParameter;
 import org.apache.sling.api.resource.Resource;
@@ -30,8 +31,11 @@ import org.apache.sling.models.factory.ModelFactory;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.Collections.EMPTY_LIST;
+import static java.util.Collections.emptyList;
 
 @Component
 public final class ActionHelperImpl implements ActionHelper {
@@ -39,28 +43,41 @@ public final class ActionHelperImpl implements ActionHelper {
     @Reference
     private ModelFactory modelFactory;
 
-    public final Collection<AssetModel> getAssetsFromQueryParameter(final SlingHttpServletRequest request, final String parameterName) {
+    @Override
+    public final List<AssetModel> getAssetsFromQueryParameter(final SlingHttpServletRequest request, final String parameterName) {
         final RequestParameter[] requestParameters = request.getRequestParameters(parameterName);
-        final Collection<AssetModel> assets = new ArrayList<>();
 
         if (requestParameters != null) {
-            for (final RequestParameter requestParameter : requestParameters) {
-                final Resource resource = request.getResourceResolver().getResource(requestParameter.getString());
-                if (resource != null) {
-                    final AssetModel asset = modelFactory.getModelFromWrappedRequest(request, resource, AssetModel.class);
+            return Arrays.stream(requestParameters)
+                    .map(RequestParameter::getString)
+                    .map(path -> request.getResourceResolver().getResource(path))
+                    .filter(Objects::nonNull)
+                    .map(resource -> modelFactory.getModelFromWrappedRequest(request, resource, AssetModel.class))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+        }
 
-                    if (asset != null) {
-                        assets.add(asset);
-                    }
-                }
+        return EMPTY_LIST;
+    }
+
+    @Override
+    public final List<String> getAllowedValuesFromQueryParameter(final SlingHttpServletRequest request, final String parameterName, final String[] allowedValues) {
+        if (allowedValues != null) {
+            final RequestParameter[] requestParameters = request.getRequestParameters(parameterName);
+
+            if (requestParameters != null) {
+                return Arrays.stream(requestParameters).map(RequestParameter::getString)
+                        .filter(renditionName -> allowedValues.length == 0 || ArrayUtils.contains(allowedValues, renditionName))
+                        .distinct()
+                        .collect(Collectors.toList());
             }
         }
 
-        return assets;
+        return EMPTY_LIST;
     }
 
-    public final Collection<AssetModel> getPlaceholderAsset(final SlingHttpServletRequest request) {
-        final Collection<AssetModel> assets = new ArrayList<>();
+    public final List<AssetModel> getPlaceholderAsset(final SlingHttpServletRequest request) {
+        final List<AssetModel> assets = new ArrayList<>();
 
         if (!WCMMode.DISABLED.equals(WCMMode.fromRequest(request))) {
             final Config config = request.adaptTo(Config.class);

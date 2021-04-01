@@ -19,6 +19,8 @@
 
 package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 
+import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRendition;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
@@ -41,11 +43,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.osgi.framework.Constants.SERVICE_RANKING;
@@ -136,6 +134,20 @@ public class InternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not serve asset rendition.");
         }
+    }
+
+    @Override
+    public AssetRendition getRendition(final AssetModel assetModel, final AssetRenditionParameters parameters) {
+        // If this method becomes supportable by the AEM Async Asset Download framework, review the code at:
+        // https://gist.github.com/davidjgonzalez/66e481b54aafb1b900a579ee95848d8f
+        // As this might prove useful in it's implementation.
+        throw new UnsupportedOperationException(String.format("[ %s ] is not supported by the AEM Async Asset Download Framework.",
+                this.getClass().getName()));
+    }
+
+    @Override
+    public boolean accepts(AssetModel assetModel, String renditionName) {
+        return getRenditionNames().contains(renditionName);
     }
 
     protected String cleanPathInfoRequestPath(String resourcePath) {

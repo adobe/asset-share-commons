@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:ClientLibraryFolder"
+    categories="[asset-share-commons.site.semantic-ui.components,asset-share-commons.site.semantic-ui.components.modals.downloads]"
+    dependencies="[asset-share-commons.common,asset-share-commons.site.semantic-ui.modal]"
+    jsProcessor="[min:gcc,default:none]"/>

@@ -19,6 +19,8 @@
 
 package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 
+import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRendition;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
@@ -42,6 +44,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.net.URI;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
@@ -115,7 +118,7 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
         final Asset asset = DamUtil.resolveToAsset(request.getResource());
         final AssetRenditionParameters parameters = new AssetRenditionParameters(request);
 
-        final Rendition rendition = asset.getRendition(new PatternRenditionPicker(mappings.get(parameters.getRenditionName())));
+        final Rendition rendition = findRendition(asset, parameters);
 
         if (rendition != null) {
 
@@ -138,6 +141,29 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
         } else {
             throw new ServletException(String.format("Cloud not locate rendition [ %s ] for assets [ %s ]", parameters.getRenditionName(), asset.getPath()));
         }
+    }
+
+    @Override
+    public AssetRendition getRendition(final AssetModel assetModel, final AssetRenditionParameters parameters) {
+        final Rendition rendition = findRendition(assetModel.getAsset(), parameters);
+
+        if (rendition != null) {
+            log.debug("Downloading asset rendition [ {} ] for resolved rendition name [ {} ]",
+                    rendition.getPath(),
+                    parameters.getRenditionName());
+            return new AssetRendition(rendition.getPath(), rendition.getSize(), rendition.getMimeType());
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean accepts(AssetModel assetModel, String renditionName) {
+        return getRenditionNames().contains(renditionName);
+    }
+
+    private Rendition findRendition(final Asset asset, final AssetRenditionParameters parameters) {
+        return asset.getRendition(new PatternRenditionPicker(mappings.get(parameters.getRenditionName())));
     }
 
     @Activate

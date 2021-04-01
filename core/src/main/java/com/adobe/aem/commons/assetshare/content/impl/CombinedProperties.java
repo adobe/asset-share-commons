@@ -124,8 +124,8 @@ public final class CombinedProperties implements Map<String, Object> {
         if (computedProperty != null) {
             if (computedProperty.isCachable() && cachedValues.containsKey(computedPropertyParameter.getCacheId())) {
                 result = cachedValues.get(computedPropertyParameter.getCacheId());
-                if (log.isDebugEnabled()) {
-                    log.debug(String.format("Computed value [ %s -> %s ] using [ %s ] served from ComputedPropertyAccessor cache.", computedPropertyParameter.getCacheId(), result, computedProperty.getClass().getName()));
+                if (log.isTraceEnabled()) {
+                    log.trace(String.format("Computed value [ %s -> %s ] using [ %s ] served from ComputedPropertyAccessor cache.", computedPropertyParameter.getCacheId(), result, computedProperty.getClass().getName()));
                 }
             } else if (computedProperty.accepts(asset, request, computedPropertyParameter.getName())) {
                 result = computedProperty.get(asset, request, computedPropertyParameter.getParameters());
@@ -134,8 +134,8 @@ public final class CombinedProperties implements Map<String, Object> {
                     cachedValues.put(computedPropertyParameter.getCacheId(), result);
                 }
 
-                if (log.isDebugEnabled()) {
-                    log.debug(String.format("Computed value [ %s -> %s ] using [ %s ] ", computedPropertyParameter.getCacheId(), result, computedProperty.getClass().getName()));
+                if (log.isTraceEnabled()) {
+                    log.trace(String.format("Computed value [ %s -> %s ] using [ %s ] ", computedPropertyParameter.getCacheId(), result, computedProperty.getClass().getName()));
                 }
             }
         }
