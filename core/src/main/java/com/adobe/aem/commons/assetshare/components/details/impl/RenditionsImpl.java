@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.components.details.Renditions;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.Rendition;
 import com.adobe.aem.commons.assetshare.content.properties.impl.LicenseImpl;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.util.UrlUtil;
@@ -93,6 +94,10 @@ public class RenditionsImpl extends AbstractEmptyTextComponent implements Rendit
 
     @OSGiService
     @Required
+    private AssetRenditionDispatchers assetRenditionDispatchers;
+
+    @OSGiService
+    @Required
     private ModelFactory modelFactory;
 
     @ValueMapValue
@@ -145,7 +150,7 @@ public class RenditionsImpl extends AbstractEmptyTextComponent implements Rendit
 
                     AssetRenditionParameters parameters = new AssetRenditionParameters(asset, item.getValue(), true);
 
-                    if (assetRenditions.isValidAssetRenditionName(item.getValue())) {
+                    if (assetRenditionDispatchers.isValidAssetRenditionName(item.getValue())) {
                         collectedRenditions.add(new RenditionImpl(item.getText(),
                                 assetRenditions.getUrl(request, asset, parameters),
                                 StringUtils.isNotBlank(asset.getProperties().get(LicenseImpl.NAME, String.class)),
@@ -159,9 +164,8 @@ public class RenditionsImpl extends AbstractEmptyTextComponent implements Rendit
             renditions = collectedRenditions;
         }
 
-        return renditions;
+        return new ArrayList<>(renditions);
     }
-
 
     @Deprecated
     private Collection<Rendition> getLegacyRenditions(boolean includeAll) {
@@ -193,7 +197,7 @@ public class RenditionsImpl extends AbstractEmptyTextComponent implements Rendit
             renditions = collectedRenditions;
         }
 
-        return renditions;
+        return new ArrayList<>(renditions);
     }
 
     @Override
@@ -219,7 +223,7 @@ public class RenditionsImpl extends AbstractEmptyTextComponent implements Rendit
             return legacyMode;
         }
     }
-  
+
     @Nonnull
     @Override
     public String getExportedType() {

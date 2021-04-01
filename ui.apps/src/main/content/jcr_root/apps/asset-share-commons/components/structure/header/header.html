@@ -50,13 +50,23 @@
                         ${navItem.text}
                     </a>
                 </sly>
-                  <a   class="item cmp-mobile__cart"
-                       data-sly-test="${config.cartEnabled}"
-                       data-asset-share-id="show-cart">
-                        <i class="big cart icon"></i>
-                        <div class="floating ui primary circular label"
-                             data-asset-share-id="cart-count"></div>
-                    </a>
+
+                <a class="item 12 cmp-mobile__downloads"
+                        data-sly-test="${!config.aemClassic && (config.downloadEnabled || config.downloadEnabledCart)}"
+                        data-asset-share-id="show-downloads">
+                    <i class="big download icon"></i>
+                    <div class="floating ui primary circular label"
+                         data-asset-share-id="downloads-count"></div>
+                </a>
+
+                <a class="item 12 cmp-mobile__cart"
+                        data-sly-test="${config.cartEnabled}"
+                        data-asset-share-id="show-cart">
+                    <i class="big cart icon"></i>
+                    <div class="floating ui primary circular label"
+                         data-asset-share-id="cart-count"></div>
+                </a>
+
                 <a class="item cmp-siderail__toggle"
                    data-asset-share-commons-toggle="true">
                     <i class="content large icon"></i>

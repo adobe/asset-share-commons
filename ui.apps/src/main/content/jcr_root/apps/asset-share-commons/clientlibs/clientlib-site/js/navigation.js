@@ -18,25 +18,31 @@
 
 /*global jQuery: false, AssetShare: false */
 
-AssetShare.Navigation = (function ($, window, ns) {
+AssetShare.Navigation = (function ($, window, ns, store) {
     "use strict";
 
-    var LOCAL_STORAGE_KEY = "asset-share-commons";
+    var RETURN_URL_KEY = "returnUrl";
 
     function setAddressBar(url) {
-        if (window.top.history && window.top.history.pushState) {
+        var hasHistoryPush = window.history && typeof window.history.pushState === "function";
+
+        if (!hasHistoryPush) {
+            return;
+        }
+
+        if (ns.Util.isSameOrigin()) {
             window.top.history.pushState({}, window.top.document.title, url);
+        } else {
+            window.history.pushState({}, window.document.title, url);
         }
     }
 
     function getOrSetReturnUrl(url) {
-        var storage = JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
-
         if (typeof url === "undefined") {
-            return storage.returnUrl;
+            return store.getObject(RETURN_URL_KEY);
         } else {
-            storage.returnUrl = url;
-            window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(storage));
+            store.setObject(RETURN_URL_KEY, url);
+            return url;
         }
     }
 
@@ -51,4 +57,5 @@ AssetShare.Navigation = (function ($, window, ns) {
     };
 }(jQuery,
     window,
-    AssetShare));
+    AssetShare,
+    AssetShare.Store));

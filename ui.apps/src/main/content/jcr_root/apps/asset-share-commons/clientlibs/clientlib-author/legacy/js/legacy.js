@@ -56,8 +56,8 @@
             field;
 
         for (i = 0; i < fields.length; i++) {
-             fieldType = fields[i].type;
-             field = fields[i].field;
+            fieldType = fields[i].type;
+            field = fields[i].field;
 
             if (field.getValue()) {
                 return true;

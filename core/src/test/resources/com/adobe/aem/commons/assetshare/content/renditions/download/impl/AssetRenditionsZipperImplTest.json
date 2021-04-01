@@ -1,0 +1,22 @@
+{
+  "default": {
+    "jcr:primaryType": "nt:unstructured",
+    "downloadFileName": "Test Assets"
+  },
+  "dam": {
+    "jcr:primaryType": "sling:Folder",
+    "test.png": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured",
+        "metadata": {
+          "jcr:primaryType": "nt:unstructured",
+          "dc:title": "Test Asset"
+        },
+        "renditions": {
+          "jcr:primaryType": "nt:folder"
+        }
+      }
+    }
+  }
+}

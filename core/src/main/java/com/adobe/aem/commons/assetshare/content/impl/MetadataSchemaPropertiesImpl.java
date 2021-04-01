@@ -161,7 +161,7 @@ public class MetadataSchemaPropertiesImpl implements MetadataProperties {
 
         public MetadataSchemaResourceVisitor(Map<String, List<String>> metadata, List<String> metadataFieldResourceTypes) {
             this.metadata = metadata;
-            this.metadataFieldResourceTypes = metadataFieldResourceTypes;
+            this.metadataFieldResourceTypes = new ArrayList<>(metadataFieldResourceTypes);
         }
 
         public final Map<String, List<String>> getMetadata() {
@@ -194,23 +194,32 @@ public class MetadataSchemaPropertiesImpl implements MetadataProperties {
             collectMetadataProperty(fieldLabel, propertyName, metadata);
         }
 
-        private boolean isWidget(Resource resource) {
-            if (resource == null) {
+        private boolean isWidget(Resource widgetResource) {
+            if (widgetResource == null) {
                 return false;
             }
 
             if (metadataFieldResourceTypes != null && metadataFieldResourceTypes.size() > 0) {
                 // Overriding the allowed field resource types; only match these.
-                return metadataFieldResourceTypes.stream().anyMatch(metaType -> checkMetaDataType(resource, metaType));
+                return metadataFieldResourceTypes.stream().anyMatch(metaType -> checkMetaDataType(widgetResource, metaType));
             } else {
                 // Default use the Granite UI (foundation and coral) Field resourceTypes
-                return Arrays.stream(RT_FIELDS).anyMatch(resourceType -> resource.isResourceType(resourceType));
+                return Arrays.stream(RT_FIELDS).anyMatch(resourceType -> widgetResource.isResourceType(resourceType));
             }
         }
 
-        private boolean checkMetaDataType(Resource resource, String metaType) {
-            return Arrays.stream(METADATA_TYPES_PROPERTIES).anyMatch(metaTypeProperty-> resource.getValueMap().containsKey(metaTypeProperty)
-                && resource.getValueMap().get(metaTypeProperty).equals(metaType));
+        private boolean checkMetaDataType(Resource widgetResource, String metaType) {
+            final ValueMap properties = widgetResource.getValueMap();
+            for (final String propertyName : METADATA_TYPES_PROPERTIES) {
+
+                final String metaTypeCandidate = properties.get("granite:data/" + propertyName, properties.get(propertyName, String.class));
+
+                if (StringUtils.equals(metaType, metaTypeCandidate)) {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 

@@ -20,62 +20,28 @@
 package com.adobe.aem.commons.assetshare.content.renditions.impl;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRendition;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
-import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
-import org.apache.sling.commons.osgi.Order;
-import org.apache.sling.commons.osgi.RankedServices;
 import org.apache.sling.models.factory.ModelFactory;
-import org.osgi.service.component.annotations.*;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static com.day.cq.dam.scene7.api.constants.Scene7Constants.*;
 
-@Component(
-        reference = {
-                @Reference(
-                        name = "renditionResolver",
-                        bind = "bindAssetRenditionDispatcher",
-                        unbind = "unbindAssetRenditionDispatcher",
-                        service = AssetRenditionDispatcher.class,
-                        policy = ReferencePolicy.DYNAMIC,
-                        policyOption = ReferencePolicyOption.GREEDY,
-                        cardinality = ReferenceCardinality.MULTIPLE
-                )
-        }
-)
+@Component
 public class AssetRenditionsImpl implements AssetRenditions {
     private static final Logger log = LoggerFactory.getLogger(AssetRenditionsImpl.class);
 
     @Reference
     private ModelFactory modelFactory;
-
-    private final RankedServices<AssetRenditionDispatcher> assetRenditionResolvers = new RankedServices<>(Order.DESCENDING);
-
-    protected void bindAssetRenditionDispatcher(AssetRenditionDispatcher service, Map<String, Object> props) {
-        log.debug("Binding AssetRenditionDispatcher [ {} ]", service.getClass().getName());
-        assetRenditionResolvers.bind(service, props);
-    }
-
-    protected void unbindAssetRenditionDispatcher(AssetRenditionDispatcher service, Map<String, Object> props) {
-        log.debug("Unbinding AssetRenditionDispatcher [ {} ]", service.getClass().getName());
-        assetRenditionResolvers.unbind(service, props);
-    }
-
-    @Override
-    public List<AssetRenditionDispatcher> getAssetRenditionDispatchers() {
-        if (assetRenditionResolvers == null || assetRenditionResolvers.getList() == null) {
-            return Collections.EMPTY_LIST;
-        } else {
-            return ImmutableList.copyOf(assetRenditionResolvers.getList());
-        }
-    }
 
     @Override
     public String getUrl(final SlingHttpServletRequest request, final AssetModel asset, final AssetRenditionParameters parameters) {
@@ -107,45 +73,52 @@ public class AssetRenditionsImpl implements AssetRenditions {
     }
 
     @Override
-    public boolean isValidAssetRenditionName(final String name) {
-        final Optional<AssetRenditionDispatcher> found = getAssetRenditionDispatchers().stream()
-                .filter(dispatcher -> dispatcher.getRenditionNames().contains(name))
-                .findAny();
-
-        return found.isPresent();
+    public String evaluateExpression(final SlingHttpServletRequest request, String expression) {
+        final AssetModel assetModel = request.adaptTo(AssetModel.class);
+        return evaluateExpression(assetModel, new AssetRenditionParameters(request).getRenditionName(), expression);
     }
 
     @Override
-    public String evaluateExpression(final SlingHttpServletRequest request, String expression) {
-        final AssetModel assetModel = request.adaptTo(AssetModel.class);
-
+    public String evaluateExpression(final AssetModel assetModel, String renditionName, String expression) {
         // Even though, the name is .path, we use url since this is the URL escaped version of the path
         final String assetPath = assetModel.getPath();
         final String assetUrl = assetModel.getUrl();
         final String assetName = assetModel.getName();
-        final String assetExtension = StringUtils.substringAfterLast(assetName, ".");
-        final String renditionName = new AssetRenditionParameters(request).getRenditionName();
 
         // Dynamic Media properties
         final String dmName = assetModel.getProperties().get(PN_S7_NAME, String.class);
         final String dmId = assetModel.getProperties().get(PN_S7_ASSET_ID, String.class);
         final String dmFile = assetModel.getProperties().get(PN_S7_FILE, String.class);
+        final String dmFileAvs = assetModel.getProperties().get(PN_S7_FILE_AVS, String.class);
         final String dmFolder = assetModel.getProperties().get(PN_S7_FOLDER, String.class);
         final String dmDomain = assetModel.getProperties().get(PN_S7_DOMAIN, String.class);
         final String dmApiServer = assetModel.getProperties().get(PN_S7_API_SERVER, String.class);
+        final String dmCompanyId = assetModel.getProperties().get(PN_S7_COMPANY_ID, String.class);
 
         expression = StringUtils.replace(expression, VAR_ASSET_PATH, assetPath);
         expression = StringUtils.replace(expression, VAR_ASSET_URL, assetUrl);
         expression = StringUtils.replace(expression, VAR_ASSET_NAME, assetName);
-        expression = StringUtils.replace(expression, VAR_ASSET_EXTENSION, assetExtension);
+        expression = StringUtils.replace(expression, VAR_ASSET_NAME_NO_EXTENSION,
+                StringUtils.substringBeforeLast(assetModel.getName(), "."));
+
+        expression = StringUtils.replace(expression, VAR_ASSET_EXTENSION,
+                StringUtils.substringAfterLast(assetName, "."));
         expression = StringUtils.replace(expression, VAR_RENDITION_NAME, renditionName);
 
         expression = StringUtils.replace(expression, VAR_DM_NAME, dmName);
         expression = StringUtils.replace(expression, VAR_DM_ID, dmId);
         expression = StringUtils.replace(expression, VAR_DM_FILE, dmFile);
+        expression = StringUtils.replace(expression, VAR_DM_FILE_AVS, dmFileAvs);
+        expression = StringUtils.replace(expression, VAR_DM_FILE_NO_COMPANY,
+                StringUtils.substringAfterLast(dmFile, "/"));
+
         expression = StringUtils.replace(expression, VAR_DM_FOLDER, dmFolder);
         expression = StringUtils.replace(expression, VAR_DM_DOMAIN, dmDomain);
         expression = StringUtils.replace(expression, VAR_DM_API_SERVER, dmApiServer);
+
+        expression = StringUtils.replace(expression, VAR_DM_COMPANY_ID, dmCompanyId);
+        expression = StringUtils.replace(expression, VAR_DM_COMPANY_NAME,
+                StringUtils.substringBeforeLast(dmFile, "/"));
 
         return expression;
     }

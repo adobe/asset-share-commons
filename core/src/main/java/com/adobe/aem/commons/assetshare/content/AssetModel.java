@@ -19,52 +19,61 @@
 
 package com.adobe.aem.commons.assetshare.content;
 
+import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
+import com.day.cq.dam.commons.util.DamUtil;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
+import org.osgi.annotation.versioning.ProviderType;
 
 import java.util.List;
 
+@ProviderType
 public interface AssetModel {
     String OVERRIDE_RESOURCE = "overrideAsset";
 
     /**
      * @return the [dam:Asset] resource this Asset model represents.
      */
-    public Resource getResource();
+    Resource getResource();
 
     /**
      * @return the absolute JCR path to the Asset
      */
-    public String getPath();
+    String getPath();
 
     /**
      * @return the escaped Asset path for use in a URL
      */
-    default public String getUrl() { return getPath(); }
+    default String getUrl() { return getPath(); }
+
+    /**
+     * @return the underlying CQ Asset object
+     */
+    default Asset getAsset() { return DamUtil.resolveToAsset(getResource()); }
 
     /**
      * @return the Assets' Id ([dam:Asset]/jcr:contnet@jcr:uuid)
      */
-    public String getAssetId();
+    String getAssetId();
 
     /**
      * @return the node name of the Asset. This is typically the file name as well.
      */
-    public String getName();
+    String getName();
 
     /**
      * @return the title of the Asset. This invokes the "title" Computed Property. Default behavior returns the first entry of the dc:title, and if that is null the asset's node name.
      */
-    public String getTitle();
+    String getTitle();
 
     /**
      * @return a list of all Asset Renditions for this asset;
      */
-    public List<Rendition> getRenditions();
+    List<Rendition> getRenditions();
 
     /**
      * @return a ValueMap composed of a look up based on: 1) ComputedProperties, the [dam:Asset]/jcr:content/metadata ValueMap and finally the [dam:Asset] ValueMap.
      */
-    public ValueMap getProperties();
+    ValueMap getProperties();
 }

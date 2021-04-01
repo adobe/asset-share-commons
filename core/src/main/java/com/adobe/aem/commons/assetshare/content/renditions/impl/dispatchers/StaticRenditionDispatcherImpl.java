@@ -19,32 +19,33 @@
 
 package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 
+import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRendition;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.adobe.aem.commons.assetshare.content.renditions.download.impl.AssetRenditionDownloadRequest;
+import com.adobe.aem.commons.assetshare.util.ServletHelper;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.api.RenditionPicker;
 import com.day.cq.dam.commons.util.DamUtil;
-import com.google.common.io.ByteStreams;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
+import org.apache.sling.api.request.RequestDispatcherOptions;
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.scripting.SlingBindings;
+import org.osgi.service.component.annotations.*;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletException;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.net.URI;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
@@ -60,16 +61,19 @@ import static org.osgi.framework.Constants.SERVICE_RANKING;
         factory = true
 )
 public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherImpl implements AssetRenditionDispatcher {
-    private static final String OSGI_PROPERTY_VALUE_DELIMITER = "=";
-
     private static Logger log = LoggerFactory.getLogger(StaticRenditionDispatcherImpl.class);
+
+    private static final String OSGI_PROPERTY_VALUE_DELIMITER = "=";
 
     private Cfg cfg;
 
     private ConcurrentHashMap<String, Pattern> mappings;
 
-    @Reference
-    private AssetRenditions assetRenditions;
+    @Reference(
+            policy = ReferencePolicy.DYNAMIC,
+            policyOption = ReferencePolicyOption.GREEDY
+    )
+    private volatile AssetRenditions assetRenditions;
 
     @Override
     public String getLabel() {
@@ -110,23 +114,56 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
     }
 
     @Override
-    public void dispatch(SlingHttpServletRequest request, SlingHttpServletResponse response) throws IOException {
+    public void dispatch(SlingHttpServletRequest request, SlingHttpServletResponse response) throws IOException, ServletException {
         final Asset asset = DamUtil.resolveToAsset(request.getResource());
         final AssetRenditionParameters parameters = new AssetRenditionParameters(request);
 
-        final Rendition rendition = asset.getRendition(new PatternRenditionPicker(mappings.get(parameters.getRenditionName())));
+        final Rendition rendition = findRendition(asset, parameters);
 
         if (rendition != null) {
-            log.debug("Streaming rendition [ {} ] for resolved rendition name [ {} ]", rendition.getPath(), parameters.getRenditionName());
+
+            log.debug("Serving internal static rendition [ {} ] with resolved rendition name [ {} ] through internal Sling Forward",
+                    rendition.getPath(),
+                    parameters.getRenditionName());
 
             response.setHeader("Content-Type", rendition.getMimeType());
-            response.setHeader("Content-Length", String.valueOf(rendition.getSize()));
 
-            ByteStreams.copy(rendition.getStream(), response.getOutputStream());
+            request.getRequestDispatcher(rendition.adaptTo(Resource.class)).include(
+                   new AssetRenditionDownloadRequest(request,
+                           "GET",
+                           rendition.adaptTo(Resource.class),
+                           new String[]{},
+                           null,
+                           ""), response);
+
+            log.debug("Finishing the include");
 
         } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not serve static asset rendition.");
+            throw new ServletException(String.format("Cloud not locate rendition [ %s ] for assets [ %s ]", parameters.getRenditionName(), asset.getPath()));
         }
+    }
+
+    @Override
+    public AssetRendition getRendition(final AssetModel assetModel, final AssetRenditionParameters parameters) {
+        final Rendition rendition = findRendition(assetModel.getAsset(), parameters);
+
+        if (rendition != null) {
+            log.debug("Downloading asset rendition [ {} ] for resolved rendition name [ {} ]",
+                    rendition.getPath(),
+                    parameters.getRenditionName());
+            return new AssetRendition(rendition.getPath(), rendition.getSize(), rendition.getMimeType());
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean accepts(AssetModel assetModel, String renditionName) {
+        return getRenditionNames().contains(renditionName);
+    }
+
+    private Rendition findRendition(final Asset asset, final AssetRenditionParameters parameters) {
+        return asset.getRendition(new PatternRenditionPicker(mappings.get(parameters.getRenditionName())));
     }
 
     @Activate
@@ -134,7 +171,6 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
         this.cfg = cfg;
 
         this.mappings = super.parseMappingsAsPatterns(cfg.rendition_mappings());
-
     }
 
     @ObjectClassDefinition(name = "Asset Share Commons - Rendition Dispatcher - Static Renditions")

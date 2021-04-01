@@ -1,0 +1,67 @@
+
+.ui.table {
+  thead {
+
+    tr {
+      th {
+        border-bottom: solid 2px @grey !important;
+        text-transform: uppercase;
+        color: @darkGrey;
+
+        * {
+          text-transform: uppercase;
+        }
+      }
+    }
+  }
+  tbody {
+    tr {
+      &:hover {
+        cursor: pointer;
+      }
+
+      td {
+        border-bottom: solid 1px #ccc !important;
+        text-transform: uppercase;
+
+        .lowercase {
+          text-transform: lowercase !important;
+        }
+      }
+
+      td.image:not(.ui) {
+        img {
+          width: 7em;
+          max-height: 7em;
+          object-fit: cover;
+          object-position: center;
+          border-radius: @defaultBorderRadius;
+        }
+      }
+
+      td.header:not(.ui) {
+        font-weight: bold;
+        text-transform: none;
+      }
+
+      td {
+        ul.actions {
+          margin :0;
+          padding: 0;
+          li {
+            display: inline-block;
+            margin-right: 1em;
+            button {
+              font-weight: bold;
+              text-transform: uppercase;
+            }
+          }
+
+          li:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+    }
+  }
+}

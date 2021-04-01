@@ -1,0 +1,12 @@
+# Created by https://www.gitignore.io/api/eclipse,java,maven
+
+node/
+node_modules/
+npm-debug.log
+install.js
+
+# packaged css and js
+dist/
+
+# processed resources
+resources/

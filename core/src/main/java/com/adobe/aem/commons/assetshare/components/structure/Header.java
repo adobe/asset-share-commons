@@ -20,6 +20,7 @@
 package com.adobe.aem.commons.assetshare.components.structure;
 
 import com.adobe.aem.commons.assetshare.components.Component;
+import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.wcm.api.Page;
 
 import java.util.Collection;
@@ -39,7 +40,7 @@ public interface Header extends Component {
     /**
      * property in which a site title is stored.
      */
-    String PN_SITE_TITLE = "jcr:title";
+    String PN_SITE_TITLE = JcrConstants.JCR_TITLE;
 
     /**
      * Name of the node relative to the header component that stores the pages and icon items.

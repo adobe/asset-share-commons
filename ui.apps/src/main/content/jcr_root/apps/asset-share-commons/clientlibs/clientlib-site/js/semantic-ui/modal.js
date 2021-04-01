@@ -84,7 +84,6 @@ AssetShare.SemanticUI.Modal = (function ($, ns) {
             // No more modals left to load!
             return;
         }
-        
         $.post(modal.url, modal.data, function (htmlResponse) {
             modal.options = modal.options || {};
             modal.options.show = modal.options.show || function (modal) {
@@ -92,6 +91,11 @@ AssetShare.SemanticUI.Modal = (function ($, ns) {
             };
 
             if (!isOpenModal(modal.id)) {
+
+                // Provide callback if something needs to be done prior to showing the modal
+                // The existing use-case is for direct downloads; close the previous modal (ie. license, or cart)
+                if (modal.options.beforeShow) { modal.options.beforeShow(htmlResponse, tracker); }
+
                 modal.options.show($('<div>' + htmlResponse + "</div>").find(ns.Elements.selector(modal.id)).modal({
                     allowMultiple: false,
                     closable: true,

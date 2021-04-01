@@ -35,7 +35,7 @@
       data-asset-share-id="cart-modal"
       data-asset-share-update-method="replace"
       data-asset-share-update-when="cart-updated"
-      class="ui modal cmp-modal-cart--wrapper cmp-modal">
+      class="ui modal cmp-modal-cart cmp-modal">
 
     <input type="hidden" name="licenseCheck" value="true"/>
 
@@ -50,33 +50,34 @@
         <table  data-sly-test="${cart.assets.size > 0}"
                 class="ui left aligned selectable table">
             <tbody data-sly-list.asset="${cart.assets}">
-            <tr data-asset-share-id="asset"
-                data-asset-share-asset="${asset.path}"
-                data-sly-use.assetDetails="${'com.adobe.aem.commons.assetshare.configuration.AssetDetails' @ request = slingRequest, asset = asset }">
+                <tr data-asset-share-id="asset"
+                    data-asset-share-asset="${asset.path}"
+                    data-sly-use.assetDetails="${'com.adobe.aem.commons.assetshare.configuration.AssetDetails' @ request = slingRequest, asset = asset }">
 
-                <td class="image">
-                    <img src="${asset.properties['rendition?name=list'] || searchConfig.properties['missingImage']  @ context = 'attribute'}"
-                         alt="${asset.properties['title']}"/>
-                </td>
+                    <td class="image">
+                        <img src="${asset.properties['rendition?name=list'] || searchConfig.properties['missingImage']  @ context = 'attribute'}"
+                             alt="${asset.properties['title']}"/>
+                    </td>
 
-                <td class="header">
-                    <a href="${assetDetails.fullUrl}">
-                        ${asset.properties['title']}
-                    </a>
-                </td>
+                    <td class="header">
+                        <a href="${assetDetails.fullUrl}">
+                            ${asset.properties['title']}
+                        </a>
+                    </td>
 
-                <td data-sly-test="${config.licenseEnabled}">${asset.properties['license'] ? 'Licensed' : 'Unlicensed' @ i18n}</td>
+                    <td data-sly-test="${config.licenseEnabled}">${asset.properties['license'] ? 'Licensed' : 'Unlicensed' @ i18n}</td>
 
-                <td class="right aligned">
-                   <button class="ui button link"
-                            data-asset-share-id="remove-from-cart"
-                            data-asset-share-asset="${asset.path}">${'REMOVE' @ i18n}</button>
-                </td>
-            </tr>
+                    <td class="right aligned">
+                       <button class="ui button link"
+                                data-asset-share-id="remove-from-cart"
+                                data-asset-share-asset="${asset.path}">${'REMOVE' @ i18n}</button>
+                    </td>
+                </tr>
             </tbody>
         </table>
 
-        <p data-sly-test="${cart.assets.size == 0}">
+        <p class="cmp-modal-cart__empty-text"
+           data-sly-test="${cart.assets.size == 0}">
             ${properties['emptyText']}
         </p>
 
@@ -92,11 +93,11 @@
         </div>
         <div class="ui primary right labeled icon button"
         	 data-asset-share-id="share-all"
-             data-sly-test="${config.shareEnabled && cart.assets.size > 0}">
+             data-sly-test="${config.shareEnabledCart && cart.assets.size > 0}">
             ${properties['shareButton']}
-             <i class="send outline icon"></i>
+             <i class="send icon"></i>
         </div>
-        <button data-sly-test="${config.downloadEnabled && cart.assets.size > 0}"
+        <button data-sly-test="${config.downloadEnabledCart && cart.assets.size > 0}"
         	    data-asset-share-id="download-all"
                 type="submit"
                 class="ui postive primary right labeled icon button">

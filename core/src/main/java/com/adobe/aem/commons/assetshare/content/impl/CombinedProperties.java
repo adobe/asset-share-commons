@@ -124,21 +124,18 @@ public final class CombinedProperties implements Map<String, Object> {
         if (computedProperty != null) {
             if (computedProperty.isCachable() && cachedValues.containsKey(computedPropertyParameter.getCacheId())) {
                 result = cachedValues.get(computedPropertyParameter.getCacheId());
-                if (log.isDebugEnabled()) {
-                    log.debug(String.format("Computed value [ %s -> %s ] using [ %s ] served from ComputedPropertyAccessor cache.", computedPropertyParameter.getCacheId(), result, computedProperty.getClass().getName()));
+                if (log.isTraceEnabled()) {
+                    log.trace(String.format("Computed value [ %s -> %s ] using [ %s ] served from ComputedPropertyAccessor cache.", computedPropertyParameter.getCacheId(), result, computedProperty.getClass().getName()));
                 }
             } else if (computedProperty.accepts(asset, request, computedPropertyParameter.getName())) {
-                try {
-                    result = computedProperty.get(asset, request, computedPropertyParameter.getParameters());
-                    if (computedProperty.isCachable()) {
-                        cachedValues.put(computedPropertyParameter.getCacheId(), result);
-                    }
-                    if (log.isDebugEnabled()) {
-                        log.debug(String.format("Computed value [ %s -> %s ] using [ %s ] ", computedPropertyParameter.getCacheId(), result, computedProperty.getClass().getName()));
-                    }
-                } catch (Exception ex) {
-                    log.error("Exception occurred when requesting computed property [ {} ] for asset [ {} ]. Returning null.", computedPropertyParameter.getCacheId(), asset.getPath());
-                    return null;
+                result = computedProperty.get(asset, request, computedPropertyParameter.getParameters());
+
+                if (computedProperty.isCachable()) {
+                    cachedValues.put(computedPropertyParameter.getCacheId(), result);
+                }
+
+                if (log.isTraceEnabled()) {
+                    log.trace(String.format("Computed value [ %s -> %s ] using [ %s ] ", computedPropertyParameter.getCacheId(), result, computedProperty.getClass().getName()));
                 }
             }
         }

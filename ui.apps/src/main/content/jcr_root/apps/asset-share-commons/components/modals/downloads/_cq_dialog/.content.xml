@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:granite="http://www.adobe.com/jcr/granite/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="nt:unstructured"
+    jcr:title="Downloads Modal"
+    sling:resourceType="cq/gui/components/authoring/dialog"
+    extraClientlibs="[]"
+    helpPath="https://adobe-marketing-cloud.github.io/asset-share-commons/pages/actions/downloads/">
+    <content
+        jcr:primaryType="nt:unstructured"
+        sling:resourceType="granite/ui/components/coral/foundation/container">
+        <items jcr:primaryType="nt:unstructured">
+            <tabs
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="granite/ui/components/coral/foundation/tabs"
+                maxmized="{Boolean}true">
+                <items jcr:primaryType="nt:unstructured">
+                    <tab-1
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Labels"
+                        sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns"
+                        margin="{Boolean}true">
+                        <items jcr:primaryType="nt:unstructured">
+                            <column
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/container">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <modal-title
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        emptyText="Download"
+                                        fieldLabel="Modal Title"
+                                        name="./modalTitle"
+                                        required="{Boolean}true"/>
+
+                                    <column-status-title
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Status"
+                                            fieldLabel="Status Column Title"
+                                            name="./statusColumnTitle"
+                                            required="{Boolean}true"/>
+
+                                    <column-number-of-files-title
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="No. of files"
+                                            fieldLabel="Number of Files Column Title"
+                                            name="./numberOfFilesColumnTitle"
+                                            required="{Boolean}true"/>
+
+                                    <column-download-size-title
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Download size"
+                                            fieldLabel="Download Size Column Title"
+                                            name="./downloadSizeTitle"
+                                            required="{Boolean}true"/>
+
+                                    <failed-download-file-name
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="FAILED DOWNLOAD"
+                                            fieldLabel="Failed Download Name"
+                                            fieldDescription="Download name to display for failed downloads, which may not have a download file name."
+                                            name="./failedDownloadName"
+                                            required="{Boolean}true"/>
+
+                                    <status-processing
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Processing"
+                                            fieldLabel="Processing Status Label"
+                                            name="./processingStatus"
+                                            required="{Boolean}true"/>
+
+                                    <status-partially-successful
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Partially Successful"
+                                            fieldLabel="Partially Successful Status Label"
+                                            name="./partiallySuccessfulStatus"
+                                            required="{Boolean}true"/>
+
+                                    <status-successful
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Successful"
+                                            fieldLabel="Successful Status Label"
+                                            name="./successfulStatus"
+                                            required="{Boolean}true"/>
+
+                                    <status-failed
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Failed"
+                                            fieldLabel="Failed Status Label"
+                                            name="./failedStatus"
+                                            required="{Boolean}true"/>
+
+                                    <download-button
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Download"
+                                            fieldLabel="Download Button Label"
+                                            name="./downloadButton"
+                                            required="{Boolean}true"/>
+
+                                    <success-list-title
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Files added to zip"
+                                            fieldLabel="Successes List Title"
+                                            fieldDescription="Title to display about list of asset renditions added to the download zip."
+                                            name="./successesListTitle"
+                                            required="{Boolean}true"/>
+
+                                    <failure-list-title
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Unavailable files"
+                                            fieldLabel="Failures List Title"
+                                            fieldDescription="Title to display about list of asset renditions that could not be added to the download zip."
+                                            name="./failuresListTitle"
+                                            required="{Boolean}true"/>
+
+                                    <empty-text
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="No downloads pending"
+                                            fieldLabel="Empty Text"
+                                            fieldDescription="Message that displays when there are no available downloads to display."
+                                            name="./emptyText"
+                                            required="{Boolean}true"/>
+
+                                    <close-button
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Close"
+                                            fieldLabel="Close Button Label"
+                                            name="./closeButton"
+                                            required="{Boolean}true"/>
+                                    <clear-button
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Clear Downloads"
+                                            fieldLabel="Clear Button Label"
+                                            name="./clearButton"
+                                            required="{Boolean}true"/>
+                                </items>
+                            </column>
+                        </items>
+                    </tab-1>
+                </items>
+            </tabs>
+        </items>
+    </content>
+</jcr:root>

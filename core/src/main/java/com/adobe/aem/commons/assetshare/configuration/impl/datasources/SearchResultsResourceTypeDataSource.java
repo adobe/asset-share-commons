@@ -41,6 +41,11 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.day.cq.commons.jcr.JcrConstants.JCR_TITLE;
+import static com.day.cq.wcm.api.NameConstants.NT_COMPONENT;
+import static org.apache.sling.jcr.resource.api.JcrResourceConstants.SLING_RESOURCE_SUPER_TYPE_PROPERTY;
+import static org.apache.sling.jcr.resource.api.JcrResourceConstants.SLING_RESOURCE_TYPE_PROPERTY;
+
 @Component(
         service = Servlet.class,
         property = {
@@ -53,12 +58,13 @@ public class SearchResultsResourceTypeDataSource extends SlingSafeMethodsServlet
     private static final Logger log = LoggerFactory.getLogger(SearchResultsResourceTypeDataSource.class);
 
     @Reference
-    private QueryBuilder queryBuilder;
+    private transient QueryBuilder queryBuilder;
 
     @Reference
-    private DataSourceBuilder dataSourceBuilder;
+    private transient DataSourceBuilder dataSourceBuilder;
 
     @Override
+    @SuppressWarnings("CQRules:CQBP-71")
     protected final void doGet(final SlingHttpServletRequest request, final SlingHttpServletResponse response) {
 
         final ValueMap properties = request.getResource().getValueMap();
@@ -67,7 +73,7 @@ public class SearchResultsResourceTypeDataSource extends SlingSafeMethodsServlet
         final String[] resourceSuperTypes = properties.get("resourceSuperTypes", new String[]{});
 
         final Map<String, String> params = new HashMap<>();
-        params.put("type", "cq:Component");
+        params.put("type", NT_COMPONENT);
         params.put("path", "/apps");
 
         params.put("group.p.or", "true");
@@ -83,7 +89,7 @@ public class SearchResultsResourceTypeDataSource extends SlingSafeMethodsServlet
         }
 
         if (resourceTypes.length > 0) {
-            params.put("group.2_property", "sling:resourceType");
+            params.put("group.2_property", SLING_RESOURCE_TYPE_PROPERTY);
 
             for (final String resourceType : resourceTypes) {
                 params.put("group.2_property." + index++ + "_value", resourceType);
@@ -91,7 +97,7 @@ public class SearchResultsResourceTypeDataSource extends SlingSafeMethodsServlet
         }
 
         if (resourceSuperTypes.length > 0) {
-            params.put("group.3_property", "sling:resourceSuperType");
+            params.put("group.3_property", SLING_RESOURCE_SUPER_TYPE_PROPERTY);
 
             for (final String resourceSuperType : resourceSuperTypes) {
                 params.put("group.3_property." + index++ + "_value", resourceSuperType);
@@ -103,7 +109,7 @@ public class SearchResultsResourceTypeDataSource extends SlingSafeMethodsServlet
 
         for (final Hit hit : query.getResult().getHits()) {
             try {
-                data.put(hit.getProperties().get("jcr:title", hit.getTitle()), hit.getPath());
+                data.put(hit.getProperties().get(JCR_TITLE, hit.getTitle()), hit.getPath());
             } catch (RepositoryException e) {
                 log.error("Could not collect Search Results ResourceType for data source.");
             }

@@ -1,0 +1,32 @@
+#
+# This file contains the filter ACL, and can be customized.
+#
+# By default, it includes the default filter ACL.
+#
+
+$include "./default_filters.any"
+
+# Allow components JSON model
+/0100 { /type "allow" /extension "json" /selectors "model" /path "/content/*" }
+
+# Allow manifest.webmanifest files located in the content
+/0101 { /type "allow" /extension "webmanifest" /path "/content/*/manifest" }
+
+
+# ContextHub
+/0201 { /type "allow" /method "GET" /path "/home/users/*" /extension '(json|png)' }
+
+# ContextHub page data
+/0202 { /type "allow" /method "GET" /path "/content/*" /selectors "pagedata" /extension "json" }
+
+
+# Async Download Framework
+/0300 { /type "allow" /method "GET" /path "/content/dam" /selectors "downloadbinaries" /extension "json" }
+
+
+# Asset Rendition request
+/0400 { /type "allow" /method "GET" /path "/content/dam/*" /extension "renditions" }
+
+# Asset Rendition downloads
+/0401 { /type "allow" /method "POST" /path "/content/*" /selectors "download-asset-renditions" /extension "zip" }
+

@@ -69,6 +69,19 @@ AssetShare.Elements = (function (document, $, ns) {
         return selector;
     }
 
+    /**
+    * This function updates an existing DOM element with new content provided via the 'rawHtml` parameter.
+    * This works by:
+    *   1. Creating a valid DOM tree from <rawHTML> to <html> to inject
+    *   2. Finding all elements <html> to inject that match [data-asset-share-update-when=<when>], where <when> is the 2nd param
+    *   3. Each of these matched elements (should) have the following data-* on them that defines how the DOM update should occur:
+    *      - data-asset-share-id = The matching property/name value to inject the <html> into on the page's DOM
+    *      - data-asset-share-update-method = APPEND | REPLACE | ATTRIBUTE
+    *           - APPEND: appends the <html> to the existing element (ex. adding load more search results)
+    *          - REPLACE: replaces the matching DOM tree with <html> (ex. updating search filter components or downloads modal)
+    *          - ATTRIBUTE: replaces the HTML attribute specified by data-share-update-attribute with the <html>'s element's attribute value
+    *      - data-share-update-attribute = name of attribute to update with <html> elements value. This only is respected if the ...update-method = ATTRIBUTE
+    */
     function update(rawHtml, when) {
         var html = $("<div>" + rawHtml + "</div>");
 

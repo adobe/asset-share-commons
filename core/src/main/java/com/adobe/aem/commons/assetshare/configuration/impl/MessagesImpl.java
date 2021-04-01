@@ -43,7 +43,6 @@ import java.util.List;
 public class MessagesImpl implements Messages {
     private static final String MESSAGES_REL_PATH = ConfigImpl.NODE_NAME + "/messages";
     private static final String PN_MESSAGE_STYLE = "style";
-    private static final String PN_MESSAGE_LABEL = "label";
     private static final String PN_MESSAGE_TEXT = "text";
     private static final String PN_MESSAGE_EVENT_ID = "eventId";
 
@@ -81,7 +80,7 @@ public class MessagesImpl implements Messages {
             }
         }
 
-        return messages;
+        return new ArrayList<>(messages);
     }
 
     private void addToTracker(final List<String> tracker, final Resource child) {
@@ -95,9 +94,8 @@ public class MessagesImpl implements Messages {
     }
 
     private boolean isMessageEmpty(ValueMap properties) {
-        return StringUtils.isBlank(properties.get(PN_MESSAGE_STYLE, String.class)) &&
-                StringUtils.isBlank(properties.get(PN_MESSAGE_LABEL, String.class)) &&
-                StringUtils.isBlank(properties.get(PN_MESSAGE_TEXT, String.class)) &&
+        return StringUtils.isBlank(properties.get(PN_MESSAGE_STYLE, String.class)) ||
+                StringUtils.isBlank(properties.get(PN_MESSAGE_TEXT, String.class)) ||
                 StringUtils.isBlank(properties.get(PN_MESSAGE_EVENT_ID, String.class));
     }
 

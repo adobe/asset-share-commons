@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="cq:Page">
+    <jcr:content
+        cq:lastModified="{Date}2017-10-06T09:23:04.591-04:00"
+        cq:lastModifiedBy="admin"
+        cq:template="/conf/asset-share-commons/settings/wcm/templates/action-template"
+        jcr:primaryType="cq:PageContent"
+        jcr:title="Share"
+        sling:resourceType="asset-share-commons/components/structure/page">
+        <root
+            jcr:primaryType="nt:unstructured"
+            sling:resourceType="wcm/foundation/components/responsivegrid">
+            <responsivegrid
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="wcm/foundation/components/responsivegrid">
+                <share
+                    jcr:created="{Date}2017-10-06T09:23:04.588-04:00"
+                    jcr:createdBy="admin"
+                    jcr:lastModified="{Date}2017-10-06T09:23:04.588-04:00"
+                    jcr:lastModifiedBy="admin"
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="asset-share-commons/components/modals/share"
+                    allowedQueryParams="[path,email,message]"
+                    assetListTitle="Assets"
+                    cancelButton="Cancel"
+                    closeButton="Close"
+                    emailFieldLabel="E-mail Address"
+                    emailPlaceholder="Comma delimited list of e-mail addresses"
+                    emailTemplatePath="/conf/asset-share-commons/settings/notification/email/asset-share-commons/share/default.html"
+                    errorTitle="Error"
+                    errorMessage="An error occurred while attempting to send the e-mail."
+                    sendingMessage="Sending e-mail..."
+                    messageFieldLabel="Message (optional)"
+                    messagePlaceholder="Enter an optional message"
+                    modalTitle="Share"
+                    shareButton="Share"
+                    shareOptionsTitle="Share Options"
+                    subject="Check em out"
+                    successTitle="Success"
+                    successMessage="Email sent successfully"
+                    useSharerSignature="{Boolean}true"
+                    replyToSharer="{Boolean}false">
+                    <data
+                            jcr:primaryType="nt:unstructured"
+                            senderEmailAddress="assetsharecommons@gmail.com"
+                            senderName="Asset Share Commons"
+                            signature="Your digital marketing team"
+                            subject="Check out these assets!"/>
+                </share>
+            </responsivegrid>
+        </root>
+    </jcr:content>
+</jcr:root>

@@ -91,6 +91,11 @@ public interface Config {
     String getDownloadActionUrl();
 
     /**
+     * @return the path segment of the URL to call to render the Downloads action.
+     */
+    String getDownloadsActionUrl();
+
+    /**
      * @return the path segment of the URL to call to render the License Agreement action.
      */
     String getLicenseActionUrl();
@@ -106,9 +111,14 @@ public interface Config {
     boolean isCartEnabled();
 
     /**
-     * @return true if the download action is enabled.
+     * @return true if the download action is enabled for asset card and asset details page.
      */
     boolean isDownloadEnabled();
+
+    /**
+     * @return true if the download action is enabled in the cart.
+     */
+    boolean isDownloadEnabledCart();
 
     /**
      * @return true if the license action is enabled.
@@ -116,12 +126,34 @@ public interface Config {
     boolean isLicenseEnabled();
 
     /**
-     * @return true if the share action is enabled.
+     * @return true if the share action is enabled for asset card and asset details page.
      */
     boolean isShareEnabled();
 
     /**
-     * @return true if AEM is enabled with AEM Assets Dynamic Media.
+     * @return true if the share action is enabled in the cart.
      */
+    boolean isShareEnabledCart();
+
+    /**
+     * Default assume AEM as a Cloud Service.
+     *
+     * @return true if targeting 6.5, false if targetting AEM as a Cloud Service
+     */
+    default boolean isAemClassic() { return false; }
+
+    /**
+     * Checks if AEM ContextHub has been configured. If it has we can load the ContextHub JS
+     *
+     * @return true if ContextHub is enabled for this page tree.
+     */
+    default boolean isContextHubEnabled() { return false; }
+
+    /**
+     * @deprecated We no longer detect Dynamic Media; Return false always.
+     *
+     * @return always returns false.
+     */
+    @Deprecated
     default boolean isDynamicMediaEnabled() { return false; }
 }
