@@ -2,6 +2,7 @@
 layout: component-page
 title: Renditions
 component-group: "asset details"
+last-updated-version: 2.0.0
 ---
 
 Displays a series of labels representing renditions available or unavailable for a given asset.
@@ -28,16 +29,20 @@ The label for the component.
 
 Selecting will turn the rendition labels into links allowing end users to directly download individual renditions. If the asset requires a license agreement prior to download the rendition labels will render without links, even with this selected.
 
-#### Show Missing Renditions
-
-By default missing renditions for an asset are not displayed. Selecting will show a disabled rendition label for the missing rendition.
 
 #### Renditions
 
-Determines the renditions evaluated for display. 
+The list of renditions to display.
 
-* Rendition Label : The label to display to the user.
-* Rendition File Name Regex : A regular expression [pattern](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html) used to map a rendition file name to the rendition label. Renditions are looked for beneath the `renditions` folder located beneath `<dam:asset>/jcr:content/renditions`. If multiple renditions match the regular expression, then multiple renditions will appear with the same label.
+#### Renditions > Rendition Label 
+
+The human-friendly name presented to the user.
+
+#### Renditions > Rendition 
+
+The actual rendition to download when this rendition option is selected. This is a list of the available named renditions registered with your Asset Share Commons 2.x implementation. 
+
+You can [register custom asset renditions via OSGi configuration](../../development/asset-renditions).
 
 ## Technical details
 

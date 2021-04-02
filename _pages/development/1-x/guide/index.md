@@ -1,151 +1,83 @@
 ---
 layout: development-page
-title: Development Guide
+title: Development Guide 
 ---
 
-There are many ways Asset Share Commons can extended or customized to meet specific project needs. This guide outlines how to:
-
-* Create an AEM project that extends Asset Share Commons
-* Support theming in Asset Share Commons
-* Add custom placeholder assets
-* Define project-specific Asset Share Commons editable templates
-* Set up the page architecture for Asset Share Commons
-* Create a custom Computed Property
-* Create a custom search result renderer
-* Augment an existing Asset Details component
-
-The guide's narrative centers around implementing a custom requirement to show a status label for New and Updated assets. Pertinent code snippets are included below. The full code for the [sample project can be found on GitHub](https://github.com/godanny86/sample-assetshare).
-
-![Screen shot of Sample Asset Share Project](./images/main.png)
-
-## Using with Maven
-
-With any AEM project it is recommended to create a Maven Multimodule project to manage and deploy code and configurations. [ACS AEM Lazybones](https://github.com/Adobe-Consulting-Services/lazybones-aem-templates) and [Maven Archetype 10](https://helpx.adobe.com/experience-manager/using/first-arch10.html) are great tools to quickly create the project structure.
-
-### Use Maven Bundle Plugin v 3.3.0+
-
-Asset Share Commons uses the latest OSGi annotations. In the `<pluginManagement>` section of your project's **parent** pom.xml ensure that the `maven-bundle-plugin` is using a version 3.3.0 or higher.
-
-```
-<!-- parent pom.xml -->
-...
-<build>
-	<pluginManagement>
-    	<plugins>
-    	...
-       <plugin>
-       	<groupId>org.apache.felix</groupId>
-          <artifactId>maven-bundle-plugin</artifactId>
-          <version>3.3.0</version>
-       </plugin>
-       ...
-   </pluginManagement>
-</build>
-```
-
-### Add Asset Share Commons as a Dependency
-
-In the `<dependencies>` section of your project's **parent** pom.xml add this:
-
-```
-<!-- parent pom.xml -->
-<dependencies>
-	...
-	<dependency>
-		<groupId>com.adobe.aem.commons</groupId>
-  		<artifactId>assetshare.core</artifactId>
-  		<version>1.0.0</version>
-   		<scope>provided</scope>
- 	</dependency>
- 	<dependency>
-		<groupId>com.adobe.aem.commons</groupId>
-		<artifactId>assetshare.ui.apps</artifactId>
-  		<version>1.0.0</version>
-   		<scope>provided</scope>
-   		<type>content-package</type>
-	</dependency>
-	...
-<dependencies>
-```
-
-In the `<dependencies>` section of your project's OSGi bundle module (**core**) pom.xml add this:
-
-```
-<!-- core pom.xml -->
-<dependencies>
-	...
-	<dependency>
-		<groupId>com.adobe.aem.commons</groupId>
-  		<artifactId>assetshare.core</artifactId>
- 	</dependency>
-	...
-<dependencies>
-```
-
-In the `<dependencies>` section of your project's content module (**ui.apps**) pom.xml add this:
-
-```
-<!-- ui.apps pom.xml -->
-<dependencies>
-	...
-	<dependency>
-		<groupId>com.adobe.aem.commons</groupId>
-  		<artifactId>assetshare.core</artifactId>
- 	</dependency>
- 	<dependency>
-		<groupId>com.adobe.aem.commons</groupId>
-		<artifactId>assetshare.ui.apps</artifactId>
-  		<version>1.0.0</version>
-	</dependency>
-	...
-<dependencies>
-```
-
-### Add Asset Share Commons as a Sub Package
-
-In the `content-package-maven-plugin` section of your project's content module (**ui.apps**) pom.xml add this:
-
-```
-<!-- ui.apps pom.xml -->
-<plugins>
-	...
-     <plugin>
-     	<groupId>com.day.jcr.vault</groupId>
-       <artifactId>content-package-maven-plugin</artifactId>
-       <extensions>true</extensions>
-       <configuration>
-       	...
-          <subPackages>
-          	<subPackage>
-             	  <groupId>com.adobe.aem.commons</groupId>
-  				  <artifactId>assetshare.ui.apps</artifactId>
-               <filter>true</filter>
-             </subPackage>
-         </subPackages>
-         ...
-     </configuration>
-   </plugin>
-   ...
-</plugins>
-```
-
-### Example POM files
-
-1. [Parent POM](https://github.com/godanny86/sample-assetshare/blob/master/pom.xml)
-2. [ui.apps POM](https://github.com/godanny86/sample-assetshare/blob/master/ui.apps/pom.xml)
-3. [core POM](https://github.com/godanny86/sample-assetshare/blob/master/core/pom.xml)
 
 
-## Project Theme Client Library
+<div style="text-align: center;">
+    <a href="./1-x" class="button">Asset Share Commons 1.x Development Guide</a>
+</div>
 
-It is recommended to create a project specific theme to be used to style a project's Asset Share. Asset Share Commons includes two themes: Light and Dark. It is easiest to choose one of these themes to start, create a copy and then customize. A copy of the theme should be saved beneath the project's `/apps/clientlibs` folder. This client library will need to be included in the Page Design for all the templates used in the project.
+<hr/>
 
-* Light: `/apps/asset-share-commons/clientlibs/clientlib-theme/semanticui-light`
-* Dark:  `/apps/asset-share-commons/clientlibs/clientlib-theme/semanticui-dark`
 
-See the [Theming](../theming) page for more details on customizing a theme. See here for a sample [clientlib based on Dark Theme](https://github.com/godanny86/sample-assetshare/tree/master/ui.apps/src/main/content/jcr_root/apps/sample-assetshare/clientlibs/clientlib-theme/semanticui-sample). Also see **Extend Theme Styles** below for a real-world scenario in extending the theme styles.
+## Including Asset Share Commons 2.x in your AEM Maven project
 
-## Project Asset Placeholder
+Asset Share Commons should always be included as a package *dependency* in your AEM Maven project. It is *not* recommended to ever deploy Asset Share Commons source code directly, unless you plan to fork the project entirely - however this likely means you will not be able to enjoy later enhancements or bug fixes.
+
+
+### Prerequisites
+
+Ensure your AEM Maven project follows the latest [Maven project structure best practices](https://experienceleague.adobe.com/docs/experience-manager-cloud-service/implementing/developing/aem-project-content-package-structure.html). This can be create using the latest [AEM Project Archetype](https://github.com/adobe/aem-project-archetype).
+
+
+### Including Asset Share Commons application
+
+Include Asset Share Commons 2.x's `all` project as an `embedded` in your AEM Maven project's `all/pom.xml`.
+
+1. Add the Asset Share Commons `all` project as `<dependency>`.
+
+    ```
+    <dependencies>
+        ...
+        <dependency>
+            <groupId>com.adobe.aem.commons</groupId>
+            <artifactId>assetshare.all</artifactId>
+            <version>2.x.x</version>
+            <type>zip</type>
+        </dependency>
+        ...
+    </dependency>    
+    ```
+
+2. Add the `assetshare.all` as to you `all/pom.xml`'s `<embeddeds>` list.
+
+    ```
+    <plugins>
+        <plugin>
+            <groupId>org.apache.jackrabbit</groupId>
+            <artifactId>filevault-package-maven-plugin</artifactId>
+            ...
+            <configuration>
+                <allowIndexDefinitions>true</allowIndexDefinitions>
+                ...
+                <embeddeds>
+                    <embedded>
+                        <groupId>com.adobe.aem.commons</groupId>
+                        <artifactId>assetshare.all</artifactId>
+                        <type>zip</type>
+                        <target>/apps/<my-app>-packages/container/install</target>
+                    </embedded>
+                    ...
+    ```
+
+3. Optionally, include the `assetshare.core` as a dependency in your AEM project's `core/pom.xml` if you plan developing Java code against Asset Share Commons' APIs.
+
+    ```
+    <dependencies>
+        ...
+        <dependency>
+            <groupId>com.adobe.aem.commons</groupId>
+            <artifactId>assetshare.core</artifactId>
+            <version>2.x.x</version>
+            <type>zip</type>
+        </dependency>
+        ...
+    </dependency>    
+    ```
+
+## Customizing the Asset Placeholder
 
 Throughout the Asset Share Commons project a default Asset Placeholder is used if a valid dam:Asset cannot be resolved. This is quite common when authoring Asset Share Commons pages and is useful to preview how metadata/renditions will be rendered. It is recommended to create a project-specific placeholder asset to be used. The Placeholder asset functionality only occurs in the Author environment. In the Publish environment if an Asset can not be resolved a 404 error code will be thrown.
 
@@ -155,7 +87,7 @@ Since the Placeholder assets only get rendered in the Author environment it is o
 
 ***NOTE** the Placeholder Asset should not be confused with a **Not Found** thumbnail. Several components like the [Search Results component](../../search/results) and the [Image component](../../details/image) allow an author to set a Not Found thumbnail to be used if the current asset does not have a valid thumbnail. The Not Found asset **must** be in the DAM or publicly accessible (should never be beneath `/apps`).
 
-## Editable Templates
+## Customizing Editable Templates
 
 Creating project-specific editable templates is the recommended way of integrating Asset Share Commons into a project. The [ui.content](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/releases/tag/asset-share-commons.ui.content-1.0.0) package includes examples of the templates and template-types needed under `/conf/asset-share-commons/settings/wcm/`. *Note that two sets of templates are included in ui.content to support both the Light and Dark theme examples. A project implementation most likely only needs a single set. [See for project-specific templates and template types](https://github.com/godanny86/sample-assetshare/tree/master/ui.apps/src/main/content/jcr_root/conf/sample-assetshare/settings/wcm)
 
@@ -167,34 +99,37 @@ When setting up a new project it is easiest to copy the template types from `/co
 
 * Required
 * `sling:resourceType` : `asset-share-commons/components/structure/search-page`
-* example: `/conf/asset-share-commons/settings/wcm/template-types/search-page`
+* Example in `ui.content` at  `/conf/asset-share-commons/settings/wcm/template-types/search-page`
 * For Search Pages, includes page properties tab for search configuration.
 
 **Asset Details Template Type**
 
 * Required
 * `sling:resourceType` : `asset-share-commons/components/structure/details-page`
-* example: `/conf/asset-share-commons/settings/wcm/template-types/details-page`
+* Example in `ui.content` at `/conf/asset-share-commons/settings/wcm/template-types/details-page`
 * For Asset Detail pages, includes page properties tab for detail page configuration.
 
 **Empty Template Type**
 
 * Required
 * `sling:resourceType` : `asset-share-commons/components/structure/page`
-* example: `/conf/asset-share-commons/settings/wcm/template-types/empty-page`
+* Example in `ui.content` at `/conf/asset-share-commons/settings/wcm/template-types/empty-page`
 * For action modal pages, license agreement terms and conditions and any other blank content pages. 
 
 **Rail Template Type**
 
 * (Optional)
 * `sling:resourceType` : `asset-share-commons/components/structure/page`
-* example: `/conf/asset-share-commons/settings/wcm/template-types/rail-page`
+* Example in `ui.content` at `/conf/asset-share-commons/settings/wcm/template-types/rail-page`
 * For content pages with a rail that add supporting content to the Asset Share portal. 
 
 ### Templates
 
-Due to the complex structure of Editable Templates it is recommended to create each project specific Template using the Template Editor in the AEM UI. Templates found beneath `/conf/asset-share-commons/settings/wcm/templates` should be used as a reference but should NOT be copied directly into a project's `/conf` directory. A Structure policy should be created to include *Asset Share Commons - Structure* components (Header, Footer, User menu...) on each Template. Allowed Components policies should also be configured based on the template. Lastly the Page Design for each Template needs to be configured to point to a Semantic UI theme client library (preferrably a project specific one). [See for project-specific templates.](https://github.com/godanny86/sample-assetshare/tree/master/ui.apps/src/main/content/jcr_root/conf/sample-assetshare/settings/wcm)
+Due to the complex structure of Editable Templates it is recommended to create each project specific Template using the Template Editor in the AEM UI. 
 
+Templates found beneath `/conf/asset-share-commons/settings/wcm/templates` should be used as a reference but should NOT be copied directly into a project's `/conf` directory. 
+
+A Structure policy should be created to include *Asset Share Commons - Structure* components (Header, Footer, User menu...) on each Template. Allowed Components policies should also be configured based on the template. Lastly the Page Design for each Template needs to be configured to point to a Semantic UI theme client library (preferably a project specific one). [
 
 **Search Template**
 

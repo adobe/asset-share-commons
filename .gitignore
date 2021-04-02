@@ -16,6 +16,7 @@ MANIFEST.MF
 
 #Visual Studio Code
 .vscode
+.history/
 
 #gh-pages
 .sass-cache/

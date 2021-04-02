@@ -3,18 +3,25 @@ layout: component-page
 title: Download Modal
 component-group: modals
 initial-version: 1.0.0
-last-updated-version: 1.2.0
+last-updated-version: 2.0.0
 ---
+
+> For Asset Share Commons 1.x see [Download Modal](./1-x/)
+>
+> The Download Modal action has change significantly in Asset Share Commons 2.x.
 
 ![Download modal component](./images/main.png)
 
 Displays the modal used to download one or more assets.
 
 * The left portion of the modal displays the list (one or more) assets that will be downloaded as part of this operation.
-    * Multiple assets can be downloaded via the [Cart](../cart/). 
-* The original assets is included in the download zip via the **Exclude Original Assets from ZIP File** dialog configuration.
-* Users can select to include all renditions.
-* Users can select to include all (any) sub-assets.
+  * Multiple assets can be downloaded via the [Cart](../cart/). 
+
+* The right portion of the modal displays a list of [Asset Renditions](../../development/asset-renditions) to download.
+  * These options are defined and organized in the component's dialog.
+
+Note that due to AEM's flexibility in generating different renditions for assets by type and as well as folder, not all renditions presented in this dialog may be available for the selected asset (this problem becomes more difficult when multiple assets are being downloaded that may not have the same renditions). In the event a rendition is selected the asset does not have, that rendition will be skipped.
+
 
 The resulting download is a zip file (the zip file name can be authored via the dialog).
 
@@ -54,69 +61,78 @@ The text for the button that closes the modal.
 
 The text for the button that lets users download the assets.
 
-### Dialog / File
+### Dialog / Download Options (since v2.0.0)
 
-![File dialog](./images/dialog-download-options.png)
+![Download Options dialog](./images/dialog-download-options.png)
 
-#### Exclude Original Assets from ZIP File (since v1.2.0)
+#### Downloadable Renditions Groups 
+
+This defines the list of asset renditions available on the Downloads modal.
+
+#### Rendition Group Label
  
-Check to exclude original assets from the downloaded zip file. This applies for all uses of this Download modal.
+The name of the group of renditions defined below it.
 
-#### ZIP File Name
- 
-The name of the zip file to download.
+#### Renditions > Selected 
 
-#### Max Content Size Message
+Marks this rendition as selected (checked) by default. Note, this is *very* important when using [Direct Downloads](#enable-direct-downloads) as the selected rendition names are what are "directly downloaded".
 
-The message displayed to a user if the potential download size exceeds the maximum size limit of the Asset Download Servlet.
+#### Renditions > Rendition Label 
 
-## Download Size Limit (since v1.8.0)
+The human-friendly name presented to the user as the download option.
 
-![Size Limit of Download](./images/ui-size-limit.png)
+#### Renditions > Rendition 
 
-A UI warning will be presented to the user if the potential size of the download exceeds the max content size limit of the Asset Download Servlet and the download button will be disabled. The UI warning errors on the side of caution when calculating the potential download size and assumes the user will include Renditions and sub assets. More information about the Asset Download Servlet can be found below.
+The actual rendition to download when this rendition option is selected. This is a list of the available named renditions registered with your Asset Share Commons 2.x implementation. 
+
+You can [register custom asset renditions via OSGi configuration](../../development/asset-renditions).
+
+#### Select All Label
+
+The text to use to auto-generate "Select All" options per Rendition Group. If this value is not blank and a Rendition Group has more than 1 rendition option, a "Select All" checkbox will display at the top of the list using this label.
+
+#### Archive Name Expression
+
+The expression that defines the name of the download zip archive containing the asset renditions. This is an expression that can use the following placeholder "variables" to dynamically create the download file name.
+
+* `${asset.count}`: Number of assets selected as part of this download.
+* `${rendition.count}`: Number of renditions selected as part of this download.
+* `${file.count}`: Number of assets X number of renditions. This is not always accurate as not all assets may be able to provide all renditions.
+* `${year}`: The current year
+* `${month}`: The current month (1-12)
+* `${month.name}`: The current month's name (ex. Jan)
+* `${day}`: The current day (1-31)
+* `${day.name}`: The current day's name (ex. Mon)
+* `${hour.12}`: The current hour (12 hour clock)
+* `${hour.24}`: The current hour (24 hour clock)
+* `${minute}`: The current minute
+* `${am.pm}`: The current time's AM or PM designation
+
+### Dialog / Behavior
+
+![Behavior dialog](./images/dialog-behavior.png)
+
+#### Enable Direct Downloads
+
+> AEM as a Cloud Service only
+
+When Direct Downloads are enabled, the Download Modal will not display - rather, the download will start automatically based on the selected renditions (those marked as "Selected" in the Download Options tab).
+
+This option should be used when users should not have the ability to select what renditions they want, rather this list is dictated by the dialog author.
+
+#### Enable Automatic Downloads
+
+> AEM as a Cloud Service only
+
+When Automatic Downloads are enabled, Asset Share Commons will automatically attempt to start the download if it is ready within a few seconds of the download request. If the download is not ready after a few seconds, the download will be added to the Downloads list, available via the [Downloads modal](../downloads).
 
 ## Technical details
 
-* **Component**: `/apps/asset-share-commons/components/modals/download`
-* **Sling Model**: `N/A`
+* **Component**: `/apps/asset-share-commons/components/modals/downloads`
+* **Sling Model**: `com.adobe.aem.commons.assetshare.components.actions.downloads.impl.DownloadsImpl`
 
-The download functionality leverages AEM Assets `AssetDownloadServlet` servlet. To ensure this servlet is
-available, the following request path must be open (ie. not blocked via AEM Dispatcher filters).
+On AEM as a Cloud Service, this feature leverages AEM's Async Download Framework which is responsible for zipping up assets and their renditions.
 
-    HTTP POST /content/dam.assetdownload.zip/<ZIP File Name>.zip?licenseCheck=true&flatStructure=true&downloadSubassets=<true|false>&downloadRenditions=<true|false>
+On AEM 6.5.7+ a custom Async Download Framework used as AEM's Async Download Framework is only available on AEM as a Cloud Service.
 
-An ajax POST call is triggered to load the Download modal. The POST method is used to avoid a lengthy URI request calls with multiple asset path parameters. The [ActionPageServlet](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/blob/master/core/src/main/java/com/adobe/aem/commons/assetshare/components/actions/impl/ActionPageServlet.java) is used to load the modal.
-
-### Enable AssetDownloadServlet
-
-Starting in AEM 6.5 the `AssetDownloadServlet` is disabled by default in Publish instances.
-
-Asset Share Commons enables the `AssetDownloadServlet` on publish instances and sets a maximum download size of **1 GB**. It is recommended to set a max size as low as possible without affecting the day-to-day download requirements. A high value may impact performance.
-
-### Update maxcontentsize for the AssetDownloadServlet
-
-If you wish to change the default max size limit from **1GB** to a different value in production:
-
-1. Create a folder with a naming convention that targets the **publish** and **nosamplecontent** run modes, i.e: `/apps/<your-app-name>/config.publish.nosamplecontent`
-  
-  > Note* you can use another runmode to target, it just needs to be more specific than **config.publish** in order to override the configuration created by Asset Share Commons
-
-2. Create a new OSGi Configuration named `com.day.cq.dam.core.impl.servlet.AssetDownloadServlet` in the `config.publish.nosamplecontent` folder.
-
-3. Populate the `AssetDownloadServlet` config with the following (represented in XML) changing the value of `asset.download.prezip.maxcontentsize`:
-
-    ```xml
-    <?xml version="1.0" encoding="UTF-8"?>
-    <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
-      jcr:primaryType="sling:OsgiConfig"
-      asset.download.prezip.maxcontentsize="{Long}YOURVALUE"
-      enabled="{Boolean}true"/>
-    ```
-
-  > *Note `maxcontentsize` is set in bytes
-
-### Additional Documentation
-
-* [Enable Asset Download Servlet](https://helpx.adobe.com/experience-manager/6-5/assets/using/download-assets-from-aem.html#EnableAssetDownloadServlet)
-* [Security Checklist - Mitigate Denial of Service (DoS) Attacks](https://helpx.adobe.com/experience-manager/6-5/sites/administering/using/security-checklist.html#FurtherReadings)
+The available renditions should be customized by your development team using [Asset Renditions](../../development/asset-renditions) OSGi configurations.

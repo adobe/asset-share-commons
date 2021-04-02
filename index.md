@@ -5,13 +5,23 @@ layout: default
 <section>
     <div class="content">
         <header class="main">
-            <h1>Introducing Asset Share Commons</h1>
-            <p>A modern, open-source Asset Share reference implementation built on Adobe Experience Manager.</p>
+            <h1>Asset Share Commons</h1>
+            <p>A modern, open-source Asset Share reference implementation built for Adobe Experience Manager as a Cloud Service</p>
         </header>
         
         <span class="image main">
             <img src="{{ site.baseurl }}/pages/images/hero.png" alt="Asset Share Commons" />
         </span>
+
+        <hr/>
+
+        <div style="text-align: center;">
+            <h2>Asset Share Commons 2.0 is out!</h2>
+
+            <p>
+                Asset Share Commons 2.0 now supports AEM as a Cloud Service and AEM 6.5 SP7+, and requires AEM WCM Core Components 2.14.0+.
+            </p>
+        </div>
 
         <hr/>
 
