@@ -15,9 +15,9 @@
     <!-- ====================================================================== -->
     <!-- P R O J E C T  D E S C R I P T I O N                                   -->
     <!-- ====================================================================== -->
-    <artifactId>ui.apps.structure</artifactId>
+    <artifactId>assetshare.ui.apps.structure</artifactId>
     <packaging>content-package</packaging>
-    <name>asset-share-commons - UI apps repository structure</name>
+    <name>Asset Share Commons - UI Apps Structure</name>
     <description>
         Empty package that defines the structure of the Adobe Experience Manager repository the Code packages in this project deploy into.
         Any roots in the Code packages of this project should have their parent enumerated in the Filters list below.
@@ -30,6 +30,7 @@
                 <artifactId>filevault-package-maven-plugin</artifactId>
                 <extensions>true</extensions>
                 <configuration>
+                    <finalName>asset-share-commons.ui.apps.structure-${project.version}</finalName>
                     <properties>
                         <cloudManagerTarget>none</cloudManagerTarget>&gt;
                     </properties>

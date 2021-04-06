@@ -16,7 +16,7 @@
     <!-- ====================================================================== -->
     <artifactId>assetshare.dispatcher.cloud</artifactId>
     <packaging>pom</packaging>
-    <name>asset-share-commons - Dispatcher</name>
+    <name>Asset Share Commons - Dispatcher</name>
     <description>HTTP and Dispatcher configurations for Asset Share Commons</description>
 
     <!-- ====================================================================== -->

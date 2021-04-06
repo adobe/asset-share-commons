@@ -23,7 +23,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>assetshare.core</artifactId>
-    <name>asset-share-commons - Core</name>
+    <name>Asset Share Commons - Core</name>
     <description>OSGi Core bundle for Asset Share Commons</description>
     <build>
         <plugins>
