@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [v2.0.2]
+
+### Fixed
+
+- POM issues preventing a complete deployment of 2.0.0
+
 ## [v2.0.0]
 
 ### Added
