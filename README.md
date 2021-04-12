@@ -1,12 +1,13 @@
 [![Build Status](https://travis-ci.org/Adobe-Marketing-Cloud/asset-share-commons.svg?branch=develop)](https://travis-ci.org/Adobe-Marketing-Cloud/asset-share-commons)
 [![codecov](https://codecov.io/gh/Adobe-Marketing-Cloud/asset-share-commons/branch/develop/graph/badge.svg)](https://codecov.io/gh/Adobe-Marketing-Cloud/asset-share-commons)
+
 # Asset Share Commons
 
 This a content package project generated using the AEM Multimodule Lazybones template.
 
 ### Documentation
 
-[https://adobe-marketing-cloud.github.io/asset-share-commons/](https://adobe-marketing-cloud.github.io/asset-share-commons/)
+[https://opensource.adobe.com/asset-share-commons/](https://opensource.adobe.com/asset-share-commons/)
 
 ## Building
 
