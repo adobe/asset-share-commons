@@ -31,9 +31,15 @@ To use this project with the AEM Developer Tools for Eclipse, import the generat
 The CRX host and port can be specified on the command line with:
 mvn -Dcrx.host=otherhost -Dcrx.port=5502 <goals>
 
-## Dependencies
 
-* AEM 6.3 + [Service Pack 1](https://docs.adobe.com/docs/en/aem/6-3/release-notes/sp1.html)
-* The (optional) [ACS AEM Commons 3.11.0](https://github.com/Adobe-Consulting-Services/acs-aem-commons/releases/tag/acs-aem-commons-3.11.0) to enable e-mail share functionality was removed in v1.1.0.
+## Asset Share Commons 2.x Requirements
+
+* AEM as a Cloud Service 
+* AEM 6.5 SP7 or greater
+* AEM WCM Core Components 2.14.0+
+
+## Asset Share Commons 1.x Requirements
+
+* AEM 6.3.1 -> 6.5.x
 
 
