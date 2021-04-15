@@ -19,6 +19,9 @@
 
 package com.adobe.aem.commons.assetshare.components.details;
 
+import org.osgi.annotation.versioning.ConsumerType;
+
+@ConsumerType
 public interface Image extends EmptyTextComponent {
     String getSrc();
 

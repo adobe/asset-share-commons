@@ -20,11 +20,11 @@
 package com.adobe.aem.commons.assetshare.components.predicates;
 
 import com.day.cq.search.PredicateGroup;
-import org.osgi.annotation.versioning.ProviderType;
+import org.osgi.annotation.versioning.ConsumerType;
 
 import java.util.Map;
 
-@ProviderType
+@ConsumerType
 public interface HiddenPredicate extends Predicate {
     /**
      * @return a PredicateGroup that represents the HiddenPredicate configuration.

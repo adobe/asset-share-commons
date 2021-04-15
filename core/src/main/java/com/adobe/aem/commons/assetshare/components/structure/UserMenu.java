@@ -20,7 +20,9 @@
 package com.adobe.aem.commons.assetshare.components.structure;
 
 import com.adobe.aem.commons.assetshare.components.Component;
+import org.osgi.annotation.versioning.ConsumerType;
 
+@ConsumerType
 public interface UserMenu extends Component {
 
 }

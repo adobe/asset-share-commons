@@ -20,11 +20,11 @@
 package com.adobe.aem.commons.assetshare.components.predicates;
 
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
-import org.osgi.annotation.versioning.ProviderType;
+import org.osgi.annotation.versioning.ConsumerType;
 
 import java.util.List;
 
-@ProviderType
+@ConsumerType
 public interface SortPredicate extends Predicate {
     /**
      * @return the option items for this predicate.
