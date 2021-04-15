@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+#604 - Changed AEM Component Sling Model interfaces from @ProviderType to @ConsumerType for extensibility (see Github issue #604 for details)
+
 ## [v2.0.2]
 
 ### Fixed

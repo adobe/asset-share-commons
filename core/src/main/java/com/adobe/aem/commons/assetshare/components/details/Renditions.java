@@ -20,11 +20,11 @@
 package com.adobe.aem.commons.assetshare.components.details;
 
 import com.adobe.aem.commons.assetshare.content.Rendition;
-import org.osgi.annotation.versioning.ProviderType;
+import org.osgi.annotation.versioning.ConsumerType;
 
 import java.util.Collection;
 
-@ProviderType
+@ConsumerType
 public interface Renditions extends EmptyTextComponent {
     Collection<Rendition> getRenditions();
 

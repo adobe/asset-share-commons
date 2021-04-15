@@ -1,12 +1,12 @@
 package com.adobe.aem.commons.assetshare.components.search;
 
 import com.adobe.aem.commons.assetshare.components.Component;
-import org.osgi.annotation.versioning.ProviderType;
+import org.osgi.annotation.versioning.ConsumerType;
 
 /**
  * Sling Model for the Search Statistics Component.
  */
-@ProviderType
+@ConsumerType
 public interface Statistics extends Component {
     /**
      * @return the component id; unique to this instance of the component.
