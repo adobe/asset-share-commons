@@ -54,6 +54,7 @@
                         <cloudManagerTarget>all</cloudManagerTarget>
                     </properties>
                     <finalName>asset-share-commons.all-${project.version}</finalName>
+                    <allowIndexDefinitions>true</allowIndexDefinitions>
                     <embeddeds>
                         <embedded>
                             <groupId>com.adobe.aem.commons</groupId>
@@ -74,15 +75,6 @@
                         </embedded>
                         <!-- Remove ui.contnet.sample from all package, as it should not be installed as part of real uses of Asset Share commons -->
                     </embeddeds>
-                    <allowIndexDefinitions>true</allowIndexDefinitions>
-                    <dependencies>
-                        <!-- Require AEM WCM Core Components to be installed on AEM
-                             Asset Share Commons will not auto-install Core Components for you -->
-                        <dependency>
-                            <groupId>com.adobe.cq</groupId>
-                            <artifactId>core.wcm.components.content</artifactId>
-                        </dependency>
-                    </dependencies>
                 </configuration>
             </plugin>
             <plugin>
@@ -189,12 +181,6 @@
             <artifactId>assetshare.ui.content.sample</artifactId>
             <version>${project.version}</version>
             <type>zip</type>
-        </dependency>
-        <dependency>
-            <groupId>com.adobe.cq</groupId>
-            <artifactId>core.wcm.components.content</artifactId>
-            <version>${core.wcm.components.version}</version>
-            <type>zip</type>
-        </dependency>
+        </dependency>>
     </dependencies>
 </project>
