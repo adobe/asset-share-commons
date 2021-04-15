@@ -19,6 +19,9 @@
 
 package com.adobe.aem.commons.assetshare.components.details;
 
+import org.osgi.annotation.versioning.ConsumerType;
+
+@ConsumerType
 public interface Title extends EmptyTextComponent {
     /***
      * @return a string to display as the title of the asset.

@@ -1,13 +1,14 @@
 package com.adobe.aem.commons.assetshare.components.details;
 
 import org.osgi.annotation.versioning.ProviderType;
+import org.osgi.annotation.versioning.ConsumerType;
 
 /**
  *
  * Interface for Video Component
  *
  */
-@ProviderType
+@ConsumerType
 public interface Video extends EmptyTextComponent {
     /**
      * @return Returns src

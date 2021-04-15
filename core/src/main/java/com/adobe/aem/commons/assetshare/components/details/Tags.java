@@ -20,6 +20,7 @@
 package com.adobe.aem.commons.assetshare.components.details;
 
 import java.util.List;
+import org.osgi.annotation.versioning.ConsumerType;
 
 public interface Tags extends EmptyTextComponent {
     /***

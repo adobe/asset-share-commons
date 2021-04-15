@@ -20,9 +20,9 @@
 package com.adobe.aem.commons.assetshare.components.actions.share;
 
 import org.apache.sling.api.resource.ValueMap;
-import org.osgi.annotation.versioning.ProviderType;
+import org.osgi.annotation.versioning.ConsumerType;
 
-@ProviderType
+@ConsumerType
 public interface EmailShare extends Share {
 
     String PN_SIGNATURE = "signature";

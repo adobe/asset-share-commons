@@ -19,9 +19,9 @@
 
 package com.adobe.aem.commons.assetshare.components.predicates;
 
-import org.osgi.annotation.versioning.ProviderType;
+import org.osgi.annotation.versioning.ConsumerType;
 
-@ProviderType
+@ConsumerType
 public interface TagsPredicate extends PropertyPredicate {
 
     // TagsPredicate is a special case (impl details) of the PropertyPredicate.

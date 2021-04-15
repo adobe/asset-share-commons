@@ -20,7 +20,7 @@
 package com.adobe.aem.commons.assetshare.components.predicates;
 
 import com.day.cq.search.PredicateGroup;
-import org.osgi.annotation.versioning.ProviderType;
+import org.osgi.annotation.versioning.ConsumerType;
 
 import java.util.List;
 import java.util.Map;
@@ -31,7 +31,7 @@ import java.util.Map;
  * This is called PagePredicate as these values can come from multiple components across the Search page, however
  * most are sourced from the Search Results component.
  */
-@ProviderType
+@ConsumerType
 public interface PagePredicate extends Predicate {
     /**
      * The QB parameter types that getPredicateGroup(..) can build (or ask it to not build).

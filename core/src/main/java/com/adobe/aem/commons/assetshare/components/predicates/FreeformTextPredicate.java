@@ -1,10 +1,10 @@
 package com.adobe.aem.commons.assetshare.components.predicates;
 
-import org.osgi.annotation.versioning.ProviderType;
+import org.osgi.annotation.versioning.ConsumerType;
 
 import java.util.List;
 
-@ProviderType
+@ConsumerType
 public interface FreeformTextPredicate extends Predicate {
     /**
      * @return the predicate title.
