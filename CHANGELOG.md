@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - #607 - asset-share-commons.all package's dependency on Core Components breaks AEM CS deployment. Removing this hard dependency.
 
+### Changed
+
+#604 - Changed AEM Component Sling Model interfaces from @ProviderType to @ConsumerType for extensibility (see Github issue #604 for details)
+
 ## [v2.0.2]
 
 ### Fixed

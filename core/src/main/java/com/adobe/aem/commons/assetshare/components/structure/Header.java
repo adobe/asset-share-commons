@@ -22,9 +22,11 @@ package com.adobe.aem.commons.assetshare.components.structure;
 import com.adobe.aem.commons.assetshare.components.Component;
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.wcm.api.Page;
+import org.osgi.annotation.versioning.ConsumerType;
 
 import java.util.Collection;
 
+@ConsumerType
 public interface Header extends Component {
 
     /**

@@ -17,7 +17,7 @@
  *
  */
 
-@Version("1.0.0")
+@Version("1.0.1")
 package com.adobe.aem.commons.assetshare.components.actions.cart;
 
 import org.osgi.annotation.versioning.Version;

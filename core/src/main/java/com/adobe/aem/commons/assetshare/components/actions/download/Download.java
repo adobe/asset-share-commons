@@ -23,7 +23,7 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
 import com.google.common.collect.ImmutableList;
-import org.osgi.annotation.versioning.ProviderType;
+import org.osgi.annotation.versioning.ConsumerType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * The model interface that represents the Download action component.
  */
-@ProviderType
+@ConsumerType
 public interface Download {
     /**
      * @return a collection of assets that are to be downloaded.

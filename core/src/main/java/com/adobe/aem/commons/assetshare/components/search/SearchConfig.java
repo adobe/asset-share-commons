@@ -2,7 +2,7 @@ package com.adobe.aem.commons.assetshare.components.search;
 
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
-import org.osgi.annotation.versioning.ProviderType;
+import org.osgi.annotation.versioning.ConsumerType;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  *
  * This class should not take into account HTTP-provided parameters, but rather deal directly with the resource content.
  */
-@ProviderType
+@ConsumerType
 public interface SearchConfig {
     /**
      * @return the resource that represents the Search Component resource.

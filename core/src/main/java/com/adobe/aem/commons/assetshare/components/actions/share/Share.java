@@ -20,11 +20,11 @@
 package com.adobe.aem.commons.assetshare.components.actions.share;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
-import org.osgi.annotation.versioning.ProviderType;
+import org.osgi.annotation.versioning.ConsumerType;
 
 import java.util.Collection;
 
-@ProviderType
+@ConsumerType
 public interface Share {
     Collection<AssetModel> getAssets();
 
