@@ -181,6 +181,6 @@
             <artifactId>assetshare.ui.content.sample</artifactId>
             <version>${project.version}</version>
             <type>zip</type>
-        </dependency>>
+        </dependency>
     </dependencies>
 </project>
