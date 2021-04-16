@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- 0612 - Fixed issue where actions could be invoked even if the actionURL does not resolve to a valid resource.
+
 ## [v2.0.4]
 
 ### Fixed
