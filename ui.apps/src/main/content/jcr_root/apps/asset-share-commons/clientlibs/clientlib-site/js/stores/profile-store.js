@@ -19,11 +19,13 @@
 /**
  * Utility specific to storing data about the users Profile
  */
-AssetShare.Store.Profile = (function (ns, store) {
+AssetShare.Store.Profile = (function (ns, store, cookie) {
     'use strict';
 
-    var PROFILE_KEY       = 'profile',
-        currentUserId;
+    const PROFILE_KEY       = 'profile',
+          CURRENT_USER_KEY  = 'ASC_authorizableId';
+
+    let currentUserId;
 
     /**
      * currentUserId is set
@@ -89,6 +91,9 @@ AssetShare.Store.Profile = (function (ns, store) {
         //set current user
         currentUserId = profile.authorizableId_xss;
         
+        // set cookie for later use
+        cookie.setCookie(CURRENT_USER_KEY, currentUserId);
+
         var userObject = store.getObject(currentUserId);
         if(userObject) {
             //update existing profile
@@ -101,6 +106,16 @@ AssetShare.Store.Profile = (function (ns, store) {
         store.setObject(currentUserId, userObject);
     }
 
+    /**
+     * Initialize the Profile store by checking persistent cookie
+     * Allows the profile to be ready sooner
+     */
+    function _init() {
+        currentUserId = cookie.getCookie(CURRENT_USER_KEY);
+    }
+
+    _init();
+
     return {
         setUserProfile: setUserProfile,
         getUserProfile: getUserProfile,
@@ -110,4 +125,5 @@ AssetShare.Store.Profile = (function (ns, store) {
     };
 
 }(AssetShare,
-  AssetShare.Store));
+  AssetShare.Store,
+  AssetShare.Cookie));

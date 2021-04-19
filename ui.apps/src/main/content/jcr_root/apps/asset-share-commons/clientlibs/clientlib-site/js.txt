@@ -4,6 +4,7 @@
 
 namespace.js
 events.js
+cookie.js
 stores/store.js
 stores/profile-store.js
 stores/cart-store.js
