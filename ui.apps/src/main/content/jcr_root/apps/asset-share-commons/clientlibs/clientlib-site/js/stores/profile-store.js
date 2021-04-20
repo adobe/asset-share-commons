@@ -91,8 +91,8 @@ AssetShare.Store.Profile = (function (ns, store, cookie) {
         //set current user
         currentUserId = profile.authorizableId_xss;
         
-        // set cookie for later use
-        cookie.setCookie(CURRENT_USER_KEY, currentUserId);
+        // set currentUser Id for later use
+        store.setObject(CURRENT_USER_KEY, currentUserId, false);
 
         var userObject = store.getObject(currentUserId);
         if(userObject) {
@@ -107,11 +107,11 @@ AssetShare.Store.Profile = (function (ns, store, cookie) {
     }
 
     /**
-     * Initialize the Profile store by checking persistent cookie
+     * Initialize the Profile store by checking session storage for current user
      * Allows the profile store to be ready sooner
      */
     function _init() {
-        currentUserId = cookie.getCookie(CURRENT_USER_KEY);
+        currentUserId = store.getObject(CURRENT_USER_KEY, false);
     }
 
     _init();
