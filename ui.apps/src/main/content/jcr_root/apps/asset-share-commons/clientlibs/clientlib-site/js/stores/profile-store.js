@@ -125,5 +125,4 @@ AssetShare.Store.Profile = (function (ns, store, cookie) {
     };
 
 }(AssetShare,
-  AssetShare.Store,
-  AssetShare.Cookie));
+  AssetShare.Store));
