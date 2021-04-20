@@ -23,7 +23,7 @@ AssetShare.Store.Profile = (function (ns, store, cookie) {
     'use strict';
 
     const PROFILE_KEY       = 'profile',
-          CURRENT_USER_KEY  = 'ASC_authorizableId';
+          CURRENT_USER_KEY  = 'asset-share-authorizableId';
 
     let currentUserId;
 
@@ -108,7 +108,7 @@ AssetShare.Store.Profile = (function (ns, store, cookie) {
 
     /**
      * Initialize the Profile store by checking persistent cookie
-     * Allows the profile to be ready sooner
+     * Allows the profile store to be ready sooner
      */
     function _init() {
         currentUserId = cookie.getCookie(CURRENT_USER_KEY);

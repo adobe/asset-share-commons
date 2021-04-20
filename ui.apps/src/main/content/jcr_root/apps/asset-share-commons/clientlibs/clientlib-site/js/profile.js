@@ -70,7 +70,7 @@ AssetShare.Profile = (function ($, ns, profileStore) {
 
             for (const [key, value] of Object.entries(data)) {
                 // skip keys that start with jcr or sling
-                if (!key.startsWith('jcr:') || !key.startsWith('sling:')) {
+                if (!key.startsWith('jcr:') && !key.startsWith('sling:')) {
                     currentUser[key] = value;
                 }
             }
