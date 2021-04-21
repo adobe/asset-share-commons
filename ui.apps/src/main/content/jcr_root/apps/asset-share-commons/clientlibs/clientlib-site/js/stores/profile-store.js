@@ -19,7 +19,7 @@
 /**
  * Utility specific to storing data about the users Profile
  */
-AssetShare.Store.Profile = (function (ns, store, cookie) {
+AssetShare.Store.Profile = (function (ns, store) {
     'use strict';
 
     const PROFILE_KEY       = 'profile',
