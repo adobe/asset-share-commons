@@ -182,43 +182,53 @@ public class ConfigImpl implements Config {
 
     @Override
     public String getDownloadActionUrl() {
-        return properties.get(PN_DOWNLOAD_VIEW_PATH, rootPath + "/actions/download") + "." + viewSelector + HTML_EXTENSION;
+        final String path = properties.get(PN_DOWNLOAD_VIEW_PATH, rootPath + "/actions/download") + "." + viewSelector + HTML_EXTENSION;
+        return pathResolves(path) ? path : null;
     }
 
     @Override
     public String getDownloadsActionUrl() {
-        return properties.get(PN_DOWNLOADS_VIEW_PATH, rootPath + "/actions/downloads") + "." + viewSelector + HTML_EXTENSION;
+        final String path = properties.get(PN_DOWNLOADS_VIEW_PATH, rootPath + "/actions/downloads") + "." + viewSelector + HTML_EXTENSION;
+        return pathResolves(path) ? path : null;
     }
 
     @Override
     public String getLicenseActionUrl() {
-        return properties.get(PN_LICENSE_AGREEMENT_VIEW_PATH, rootPath + "/actions/license") + "." + viewSelector + HTML_EXTENSION;
+        final String path = properties.get(PN_LICENSE_AGREEMENT_VIEW_PATH, rootPath + "/actions/license") + "." + viewSelector + HTML_EXTENSION;
+        return pathResolves(path) ? path : null;
     }
 
     @Override
     public String getShareActionUrl() {
-        return properties.get(PN_SHARE_VIEW_PATH, rootPath + "/actions/share") + "." + viewSelector + HTML_EXTENSION;
+        final String path = properties.get(PN_SHARE_VIEW_PATH, rootPath + "/actions/share") + "." + viewSelector + HTML_EXTENSION;
+        return pathResolves(path) ? path : null;
     }
 
     @Override
     public String getCartActionUrl() {
-        return properties.get(PN_CART_VIEW_PATH, rootPath + "/actions/cart") + "." + viewSelector + HTML_EXTENSION;
+        final String path = properties.get(PN_CART_VIEW_PATH, rootPath + "/actions/cart") + "." + viewSelector + HTML_EXTENSION;
+        return pathResolves(path) ? path : null;
     }
 
     @Override
     public boolean isShareEnabled() {
-        return shareService != null && compareEnablementValue(properties, PN_SHARE_ENABLED, ActionEnablements.ALWAYS);
+        return shareService != null &&
+                compareEnablementValue(properties, PN_SHARE_ENABLED, ActionEnablements.ALWAYS) &&
+                getShareActionUrl() != null;
     }
 
     @Override
     public boolean isDownloadEnabled() {
-        return compareEnablementValue(properties, PN_DOWNLOAD_ENABLED, ActionEnablements.ALWAYS);
+        return compareEnablementValue(properties, PN_DOWNLOAD_ENABLED, ActionEnablements.ALWAYS) &&
+                getDownloadActionUrl() != null;
     }
 
     @Override
     public boolean isDownloadEnabledCart() {
         if(isCartEnabled()) {
-            return compareEnablementValue(properties, PN_DOWNLOAD_ENABLED, ActionEnablements.ALWAYS, ActionEnablements.CART);
+            return compareEnablementValue(properties, PN_DOWNLOAD_ENABLED, ActionEnablements.ALWAYS, ActionEnablements.CART) &&
+                    getDownloadActionUrl() != null;
+
         }
 
         return false;
@@ -227,7 +237,8 @@ public class ConfigImpl implements Config {
     @Override
     public boolean isShareEnabledCart() {
         if(isCartEnabled() && shareService != null) {
-            return compareEnablementValue(properties, PN_SHARE_ENABLED, ActionEnablements.ALWAYS, ActionEnablements.CART);
+            return compareEnablementValue(properties, PN_SHARE_ENABLED, ActionEnablements.ALWAYS, ActionEnablements.CART) &&
+                    getShareActionUrl() != null;
         }
 
         return false;
@@ -247,12 +258,14 @@ public class ConfigImpl implements Config {
 
     @Override
     public boolean isCartEnabled() {
-        return properties.get(PN_CART_ENABLED, false);
+        return properties.get(PN_CART_ENABLED, false) &&
+                getCartActionUrl() != null;
     }
 
     @Override
     public boolean isLicenseEnabled() {
-        return properties.get(PN_LICENSE_ENABLED, false);
+        return properties.get(PN_LICENSE_ENABLED, false) &&
+                getLicenseActionUrl() != null;
     }
 
     @Override
@@ -299,6 +312,11 @@ public class ConfigImpl implements Config {
     @Override
     public boolean isAemClassic() {
         return RequireAem.Distribution.CLASSIC.equals(requireAem.getDistribution());
+    }
+
+    private boolean pathResolves(final String path) {
+        final Resource resource = request.getResourceResolver().resolve(request, path);
+        return resource != null && !ResourceUtil.isNonExistingResource(resource);
     }
 
     /**
