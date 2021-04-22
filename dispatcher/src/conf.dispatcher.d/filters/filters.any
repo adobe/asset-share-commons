@@ -13,7 +13,7 @@ $include "./default_filters.any"
 /0101 { /type "allow" /extension "webmanifest" /path "/content/*/manifest" }
 
 
-# ContextHub
+# User profile retrieval (HTTP GET /home/users/ira.profile.json)
 /0201 { /type "allow" /method "GET" /path "/home/users/*" /extension '(json|png)' }
 
 # ContextHub page data

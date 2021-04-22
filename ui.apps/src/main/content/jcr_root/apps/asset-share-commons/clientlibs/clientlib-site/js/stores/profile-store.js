@@ -22,8 +22,10 @@
 AssetShare.Store.Profile = (function (ns, store) {
     'use strict';
 
-    var PROFILE_KEY       = 'profile',
-        currentUserId;
+    const PROFILE_KEY       = 'profile',
+          CURRENT_USER_KEY  = 'asset-share-authorizableId';
+
+    let currentUserId;
 
     /**
      * currentUserId is set
@@ -89,6 +91,9 @@ AssetShare.Store.Profile = (function (ns, store) {
         //set current user
         currentUserId = profile.authorizableId_xss;
         
+        // set currentUser Id for later use
+        store.setObject(CURRENT_USER_KEY, currentUserId, false);
+
         var userObject = store.getObject(currentUserId);
         if(userObject) {
             //update existing profile
@@ -100,6 +105,16 @@ AssetShare.Store.Profile = (function (ns, store) {
 
         store.setObject(currentUserId, userObject);
     }
+
+    /**
+     * Initialize the Profile store by checking session storage for current user
+     * Allows the profile store to be ready sooner
+     */
+    function _init() {
+        currentUserId = store.getObject(CURRENT_USER_KEY, false);
+    }
+
+    _init();
 
     return {
         setUserProfile: setUserProfile,
