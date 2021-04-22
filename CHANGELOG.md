@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [v2.0.6]
+
 ### Fixed
 
 - 0612 - Fixed issue where actions could be invoked even if the actionURL does not resolve to a valid resource.
