@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 - 0615 - makes an extra call beneath user's /home/profile to populate local storage with additional profile data
+- 0619 - update project URLs to point to https://opensource.adobe.com/asset-share-commons
 
 ## [v2.0.4]
 
