@@ -63,7 +63,9 @@ Represents a logical download from Asset Share Commons.
                 ${download.formattedTotalSize || 0}
             </td>
             <!--/* Progress/Download */-->
-            <td class="cmp-modal-downloads__col--action">
+            <td class="cmp-modal-downloads__col--action"
+                data-asset-share-id="download-archive"
+                data-asset-share-download-id="${download.id}">
 
                 <span data-sly-test="${download.status == 'PROCESSING'}"
                         class="ui disabled right labeled icon button">
