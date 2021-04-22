@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - 0612 - Fixed issue where actions could be invoked even if the actionURL does not resolve to a valid resource.
 
+### Changed
+
+- 0615 - makes an extra call beneath user's /home/profile to populate local storage with additional profile data
+
 ## [v2.0.4]
 
 ### Fixed
