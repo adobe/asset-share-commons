@@ -23,7 +23,7 @@
     <name>Asset Share Commons - Reactor Project</name>
     <description>asset-share-commons</description>
 
-    <url>https://github.com/Adobe-Marketing-Cloud/asset-share-commons</url>
+    <url>https://github.com/adobe/asset-share-commons</url>
     <inceptionYear>2017</inceptionYear>
     <licenses>
         <license>
@@ -42,7 +42,7 @@
             <id>asset-share-commons</id>
             <organization>Adobe</organization>
             <organizationUrl>https://www.adobe.com</organizationUrl>
-            <url>https://adobe-marketing-cloud.github.io/asset-share-commons/</url>
+            <url>https://opensource.adobe.com/asset-share-commons/</url>
         </developer>
     </developers>
 

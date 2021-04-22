@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - 0607 - asset-share-commons.all package's dependency on Core Components breaks AEM CS deployment. Removing this hard dependency.
+- 0619 - update links in project to new https://opensource.adobe.com/asset-share-commons docs
 
 ### Changed
 

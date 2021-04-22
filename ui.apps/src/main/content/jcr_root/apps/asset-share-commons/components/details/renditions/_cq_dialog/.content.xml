@@ -24,7 +24,7 @@
           jcr:title="Renditions"
           sling:resourceType="cq/gui/components/authoring/dialog"
           extraClientlibs="[asset-share-commons.author.dialog.legacy]"
-          helpPath="https://adobe-marketing-cloud.github.io/asset-share-commons/pages/details/renditions/">
+          helpPath="https://opensource.adobe.com/asset-share-commons/pages/details/renditions/">
           maximized="{Boolean}true">
     <content
             jcr:primaryType="nt:unstructured"

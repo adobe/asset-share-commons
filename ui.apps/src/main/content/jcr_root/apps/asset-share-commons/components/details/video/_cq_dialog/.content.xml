@@ -6,7 +6,7 @@
           jcr:title="Video"
           sling:resourceType="cq/gui/components/authoring/dialog"
           extraClientlibs="[asset-share-commons.author.dialog.legacy]"
-          helpPath="https://adobe-marketing-cloud.github.io/asset-share-commons/pages/details/video/">
+          helpPath="https://opensource.adobe.com/asset-share-commons/pages/details/video/">
     <content
         jcr:primaryType="nt:unstructured"
         sling:resourceType="granite/ui/components/coral/foundation/container"

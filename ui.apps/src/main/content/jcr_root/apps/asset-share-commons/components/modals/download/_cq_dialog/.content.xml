@@ -23,7 +23,7 @@
           jcr:primaryType="nt:unstructured"
           jcr:title="Download Modal"
           extraClientlibs="[asset-share-commons.author.dialog.legacy]"
-          helpPath="https://adobe-marketing-cloud.github.io/asset-share-commons/pages/actions/download/"
+          helpPath="https://opensource.adobe.com/asset-share-commons/pages/actions/download/"
           sling:resourceType="cq/gui/components/authoring/dialog">
     <content
             jcr:primaryType="nt:unstructured"
@@ -205,7 +205,7 @@
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/hyperlink"
                                             text="Click to see the available expression variables"
-                                            href="https://adobe-marketing-cloud.github.io/asset-share-commons/pages/actions/download#archive-name-expression">
+                                            href="https://opensource.adobe.com/asset-share-commons/pages/actions/download#archive-name-expression">
                                         <granite:rendercondition
                                                 jcr:primaryType="nt:unstructured"
                                                 sling:resourceType="asset-share-commons/authoring/renderconditions/require-aem"
