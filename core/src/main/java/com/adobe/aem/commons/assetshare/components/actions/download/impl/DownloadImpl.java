@@ -43,12 +43,11 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static javax.jcr.query.Query.JCR_SQL2;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
@@ -66,8 +65,11 @@ public class DownloadImpl implements Download, ComponentExporter {
     private static final long DEFAULT_SIZE_LIMIT = -1L;
     private static final String NN_ASSET_RENDITIONS_GROUPS = "asset-renditions-groups";
     public static final String PN_ASSET_RENDITIONS_GROUP_TITLE = "assetRenditionsGroupTitle";
+    public static final String PN_ARCHIVE_FILE_NAME_EXPRESSION = "archiveFileExpression";
     public static final String NN_ASSET_RENDITIONS = "asset-renditions";
     public static final String NN_ITEMS = "items";
+
+    public static final String DEFAULT_ARCHIVE_FILE_NAME_EXPRESSION = "${asset.name.no-extension}/${asset.name.no-extension} (${rendition.name})";
 
     @Self
     @Required
@@ -218,12 +220,26 @@ public class DownloadImpl implements Download, ComponentExporter {
         }
     }
 
+    public static String findExpression(Resource resource, String renditionName) {
+        // Oak will traverse this small content tree
+        final String query = "SELECT * FROM [nt:unstructured] AS c WHERE ISDESCENDANTNODE(c,'" + resource.getPath() + "') AND [renditionName] = '" + renditionName + "'";
+        final Iterator<Resource> results = resource.getResourceResolver().findResources(query, JCR_SQL2);
+
+        if (!results.hasNext()) {
+            return null;
+        }
+
+        final String expression = org.apache.commons.lang.StringUtils.stripToNull(results.next().getValueMap().get("expression", String.class));
+
+        return expression;
+    }
+
     @Deprecated
     private void calculateSizes() {
         this.maxContentSize = assetDownloadHelper.getMaxContentSizeLimit();
         log.debug("Max allowed content size (in bytes) [ {} ]", this.maxContentSize);
 
-        //check if needed to caclulate max content size
+        //check if needed to calculate max content size
         if(this.maxContentSize > 0) {
             log.debug("Max content size set, requires calculation of download  content size.");
             this.downloadContentSize = assetDownloadHelper.getAssetDownloadSize(assets, request.getResource());

@@ -119,7 +119,7 @@ public class InternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
             // We have to manually clean up the pathInfo resourcePath due to issues with the PathInfo impl when /etc/map is in play
             final String resourcePath = Text.unescape(cleanPathInfoRequestPath(pathInfo.getResourcePath()));
 
-            log.debug("Serving internal redirect rendition [ {} ] for expression [ {} ] and resolved rendition name [ {} ]",
+            log.trace("Serving internal redirect rendition [ {} ] for expression [ {} ] and resolved rendition name [ {} ]",
                     resourcePath,
                     evaluatedExpression,
                     parameters.getRenditionName());

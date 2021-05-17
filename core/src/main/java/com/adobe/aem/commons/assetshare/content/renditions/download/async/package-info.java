@@ -17,7 +17,7 @@
  *
  */
 
-@Version("1.0.0")
+@Version("1.1.0")
 package com.adobe.aem.commons.assetshare.content.renditions.download.async;
 
 import org.osgi.annotation.versioning.Version;

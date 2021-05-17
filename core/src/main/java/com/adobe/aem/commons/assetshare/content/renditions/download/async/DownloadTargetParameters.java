@@ -1,7 +1,7 @@
 /*
  * Asset Share Commons
  *
- * Copyright (C) 2019 Adobe
+ * Copyright (C) 2021 Adobe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,22 @@
  *
  */
 
-@Version("2.2.0")
-package com.adobe.aem.commons.assetshare.content.renditions;
+package com.adobe.aem.commons.assetshare.content.renditions.download.async;
 
-import org.osgi.annotation.versioning.Version;
+public enum DownloadTargetParameters {
+    ASSET_PATH("path"),
+    RENDITION_NAME("renditionName"),
+    ARCHIVE_NAME("archiveName"),
+    ARCHIVE_PATH("archivePath"),
+    DOWNLOAD_COMPONENT_PATH("downloadComponentPath");
 
+    private final String parameter;
+
+    DownloadTargetParameters(final String parameter) {
+        this.parameter = parameter;
+    }
+
+    public String toString() {
+        return parameter;
+    }
+}

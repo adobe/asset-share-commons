@@ -21,14 +21,19 @@ package com.adobe.aem.commons.assetshare.content.renditions.download.async.impl;
 
 import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.aem.commons.assetshare.util.ExpressionEvaluator;
 import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.cq.dam.download.api.*;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.servlets.SlingAllMethodsServlet;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
@@ -37,7 +42,6 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.adobe.aem.commons.assetshare.content.renditions.download.async.impl.NamedRenditionDownloadTargetProcessor.*;
@@ -60,6 +64,7 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
     private static final String DOWNLOAD_RENDITION_COUNT = "renditionCount";
     private static final String DOWNLOAD_ID = "id";
 
+    private static final String REQ_KEY_TIME_ZONE = "timezone";
     private static final String REQ_KEY_ASSET_PATHS = "path";
     private static final String REQ_KEY_RENDITION_NAMES = "renditionName";
 
@@ -67,7 +72,10 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
     public static final String PN_BASE_ARCHIVE_NAME_EXPRESSION = "archiveNameExpression";
 
     public static final String PARAM_ARCHIVE_NAME = "archiveName";
+    public static final String PARAM_RENDITION_BY_ASSET_FOLDER = "groupRenditionsByAssetFolder";
+
     private static final String DOWNLOAD_ARCHIVE_NAME = PARAM_ARCHIVE_NAME;
+    private static final String ZIP_EXTENSION = ".zip";
 
     @Reference(target="(distribution=cloud-ready)")
     private transient RequireAem requireAem;
@@ -81,19 +89,22 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
     @Reference
     private transient DownloadApiFactory apiFactory;
 
+    @Reference
+    private transient ExpressionEvaluator expressionEvaluator;
+
     @Override
     protected final void doPost(final SlingHttpServletRequest request, final SlingHttpServletResponse response) throws ServletException, IOException {
         final ValueMap componentProperties = request.getResource().getValueMap();
 
         final Collection<AssetModel> assetModels = actionHelper.getAssetsFromQueryParameter(request, REQ_KEY_ASSET_PATHS);
 
-
         final Collection<String> renditionNames = actionHelper.getAllowedValuesFromQueryParameter(request,
                 REQ_KEY_RENDITION_NAMES,
                 request.getResource().getValueMap().get(PN_ALLOWED_RENDITION_NAMES, new String[]{}));
 
-        final String archiveName = ArchiveNameEvaluator.evaluateArchiveName(
+        final String archiveName = evaluateArchiveName(
                 componentProperties.get(PN_BASE_ARCHIVE_NAME_EXPRESSION, "Assets"),
+                getLocalDateTime(request.getParameter(REQ_KEY_TIME_ZONE)),
                 assetModels,
                 renditionNames);
 
@@ -102,7 +113,7 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
         DownloadManifest manifest = apiFactory.createDownloadManifest();
 
         for (final AssetModel assetModel : assetModels) {
-            addToDownloadManifest(assetModel, renditionNames, manifest, archiveName, groupRenditionsByAssetFolder);
+            addToDownloadManifest(assetModel, renditionNames, manifest, request.getResource(), archiveName, groupRenditionsByAssetFolder);
         }
 
         try {
@@ -120,10 +131,10 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
         }
     }
 
-
     private void addToDownloadManifest(final AssetModel asset,
                                                    final Collection renditionNames,
                                                    final DownloadManifest manifest,
+                                                   final Resource downloadComponentResource,
                                                    final String archiveName,
                                                    final boolean groupRenditionsByAssetFolder) {
 
@@ -134,6 +145,7 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
             renditionParameters.put(PARAM_RENDITION_NAME, renditionName);
             renditionParameters.put(PARAM_ARCHIVE_NAME, archiveName);
             renditionParameters.put(PARAM_RENDITION_BY_ASSET_FOLDER, groupRenditionsByAssetFolder);
+            renditionParameters.put(PARAM_DOWNLOAD_COMPONENT_PATH, downloadComponentResource.getPath());
 
             final DownloadTarget downloadTarget = apiFactory.createDownloadTarget(
                     NamedRenditionDownloadTargetProcessor.TARGET_TYPE,
@@ -159,5 +171,24 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
         json.addProperty(DOWNLOAD_ARCHIVE_NAME, archiveName);
 
         return json;
+    }
+
+    private DateTime getLocalDateTime(String timeZone) {
+        DateTimeZone zone = DateTimeZone.forID(timeZone);
+        if (zone == null) {
+            zone = DateTimeZone.forID(DateTimeZone.UTC.getID());
+        }
+        return new DateTime(zone);
+    }
+
+    private String evaluateArchiveName(String expression, DateTime now, Collection<AssetModel> assetModels, Collection<String> renditionNames) {
+        expression = expressionEvaluator.evaluateAssetsRenditionsExpressions(expression, assetModels, renditionNames);
+        expression = expressionEvaluator.evaluateDateTimeExpressions(expression, now.toDate());
+
+        if (!StringUtils.endsWith(expression, ZIP_EXTENSION)) {
+            expression += ZIP_EXTENSION;
+        }
+
+        return expression;
     }
 }

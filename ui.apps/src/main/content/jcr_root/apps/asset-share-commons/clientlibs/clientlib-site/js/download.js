@@ -145,7 +145,7 @@ AssetShare.Download = (function ($, ns, messages, downloadStore) {
         window.open(downloadUri, '_blank');
 
         //remove downloadId from storage
-        downloadStore.removeDownloadId(downloadId);
+        downloadStore.removeDownloadById(downloadId);
     }
 
     return {
