@@ -3,79 +3,143 @@ layout: development-page
 title: Development Guide 
 ---
 
-
-
-<div style="text-align: center;">
-    <a href="./1-x" class="button">Asset Share Commons 1.x Development Guide</a>
-</div>
-
 <hr/>
 
-
-## Including Asset Share Commons 2.x in your AEM Maven project
+## Including Asset Share Commons 1.x in your AEM Maven project
 
 Asset Share Commons should always be included as a package *dependency* in your AEM Maven project. It is *not* recommended to ever deploy Asset Share Commons source code directly, unless you plan to fork the project entirely - however this likely means you will not be able to enjoy later enhancements or bug fixes.
-
 
 ### Prerequisites
 
 Ensure your AEM Maven project follows the latest [Maven project structure best practices](https://experienceleague.adobe.com/docs/experience-manager-cloud-service/implementing/developing/aem-project-content-package-structure.html). This can be create using the latest [AEM Project Archetype](https://github.com/adobe/aem-project-archetype).
 
 
-### Including Asset Share Commons application
+## Using with Maven
 
-Include Asset Share Commons 2.x's `all` project as an `embedded` in your AEM Maven project's `all/pom.xml`.
+With any AEM project it is recommended to create a Maven Multimodule project to manage and deploy code and configurations. [ACS AEM Lazybones](https://github.com/Adobe-Consulting-Services/lazybones-aem-templates) and [Maven Archetype 10](https://helpx.adobe.com/experience-manager/using/first-arch10.html) are great tools to quickly create the project structure.
 
-1. Add the Asset Share Commons `all` project as `<dependency>`.
+### Use Maven Bundle Plugin v 3.3.0+
 
-    ```
-    <dependencies>
-        ...
-        <dependency>
-            <groupId>com.adobe.aem.commons</groupId>
-            <artifactId>assetshare.all</artifactId>
-            <version>2.x.x</version>
-            <type>zip</type>
-        </dependency>
-        ...
-    </dependency>    
-    ```
+Asset Share Commons uses the latest OSGi annotations. In the `<pluginManagement>` section of your project's **parent** pom.xml ensure that the `maven-bundle-plugin` is using a version 3.3.0 or higher.
 
-2. Add the `assetshare.all` as to you `all/pom.xml`'s `<embeddeds>` list.
+```
+<!-- parent pom.xml -->
+...
+<build>
+	<pluginManagement>
+    	<plugins>
+    	...
+       <plugin>
+       	<groupId>org.apache.felix</groupId>
+          <artifactId>maven-bundle-plugin</artifactId>
+          <version>3.3.0</version>
+       </plugin>
+       ...
+   </pluginManagement>
+</build>
+```
 
-    ```
-    <plugins>
-        <plugin>
-            <groupId>org.apache.jackrabbit</groupId>
-            <artifactId>filevault-package-maven-plugin</artifactId>
-            ...
-            <configuration>
-                <allowIndexDefinitions>true</allowIndexDefinitions>
-                ...
-                <embeddeds>
-                    <embedded>
-                        <groupId>com.adobe.aem.commons</groupId>
-                        <artifactId>assetshare.all</artifactId>
-                        <type>zip</type>
-                        <target>/apps/<my-app>-packages/container/install</target>
-                    </embedded>
-                    ...
-    ```
+### Add Asset Share Commons as a Dependency
 
-3. Optionally, include the `assetshare.core` as a dependency in your AEM project's `core/pom.xml` if you plan developing Java code against Asset Share Commons' APIs.
+In the `<dependencies>` section of your project's **parent** pom.xml add this:
 
-    ```
-    <dependencies>
-        ...
-        <dependency>
-            <groupId>com.adobe.aem.commons</groupId>
-            <artifactId>assetshare.core</artifactId>
-            <version>2.x.x</version>
-            <type>zip</type>
-        </dependency>
-        ...
-    </dependency>    
-    ```
+```
+<!-- parent pom.xml -->
+<dependencies>
+	...
+	<dependency>
+		<groupId>com.adobe.aem.commons</groupId>
+  		<artifactId>assetshare.core</artifactId>
+  		<version>1.x.x</version>
+   		<scope>provided</scope>
+ 	</dependency>
+ 	<dependency>
+		<groupId>com.adobe.aem.commons</groupId>
+		<artifactId>assetshare.ui.apps</artifactId>
+  		<version>1.x.x</version>
+   		<scope>provided</scope>
+   		<type>content-package</type>
+	</dependency>
+	...
+<dependencies>
+```
+
+In the `<dependencies>` section of your project's OSGi bundle module (**core**) pom.xml add this:
+
+```
+<!-- core pom.xml -->
+<dependencies>
+	...
+	<dependency>
+		<groupId>com.adobe.aem.commons</groupId>
+  		<artifactId>assetshare.core</artifactId>
+ 	</dependency>
+	...
+<dependencies>
+```
+
+In the `<dependencies>` section of your project's content module (**ui.apps**) pom.xml add this:
+
+```
+<!-- ui.apps pom.xml -->
+<dependencies>
+	...
+	<dependency>
+		<groupId>com.adobe.aem.commons</groupId>
+  		<artifactId>assetshare.core</artifactId>
+ 	</dependency>
+ 	<dependency>
+		<groupId>com.adobe.aem.commons</groupId>
+		<artifactId>assetshare.ui.apps</artifactId>
+  		<version>1.x.x</version>
+	</dependency>
+	...
+<dependencies>
+```
+
+### Add Asset Share Commons as a Sub Package
+
+In the `content-package-maven-plugin` section of your project's content module (**ui.apps**) pom.xml add this:
+
+```
+<!-- ui.apps pom.xml -->
+<plugins>
+	...
+     <plugin>
+     	<groupId>com.day.jcr.vault</groupId>
+       <artifactId>content-package-maven-plugin</artifactId>
+       <extensions>true</extensions>
+       <configuration>
+       	...
+          <subPackages>
+          	<subPackage>
+             	  <groupId>com.adobe.aem.commons</groupId>
+  				  <artifactId>assetshare.ui.apps</artifactId>
+               <filter>true</filter>
+             </subPackage>
+         </subPackages>
+         ...
+     </configuration>
+   </plugin>
+   ...
+</plugins>
+```
+
+### Example POM files
+
+1. [Parent POM](https://github.com/godanny86/sample-assetshare/blob/master/pom.xml)
+2. [ui.apps POM](https://github.com/godanny86/sample-assetshare/blob/master/ui.apps/pom.xml)
+3. [core POM](https://github.com/godanny86/sample-assetshare/blob/master/core/pom.xml)
+
+## Project Theme Client Library
+
+It is recommended to create a project specific theme to be used to style a project's Asset Share. Asset Share Commons includes two themes: Light and Dark. It is easiest to choose one of these themes to start, create a copy and then customize. A copy of the theme should be saved beneath the project's `/apps/clientlibs` folder. This client library will need to be included in the Page Design for all the templates used in the project.
+
+* Light: `/apps/asset-share-commons/clientlibs/clientlib-theme/semanticui-light`
+* Dark:  `/apps/asset-share-commons/clientlibs/clientlib-theme/semanticui-dark`
+
+See the [Theming](../theming) page for more details on customizing a theme. See here for a sample [clientlib based on Dark Theme](https://github.com/godanny86/sample-assetshare/tree/master/ui.apps/src/main/content/jcr_root/apps/sample-assetshare/clientlibs/clientlib-theme/semanticui-sample). Also see **Extend Theme Styles** below for a real-world scenario in extending the theme styles.
+
 
 ## Customizing the Asset Placeholder
 
