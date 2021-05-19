@@ -135,6 +135,56 @@ Supported "variables" in the `rendition.types` field are as follows:
 Review the example XML definition at [com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.InternalRedirectRenditionDispatcherImpl-SearchResults.xml](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/blob/develop/ui.apps/src/main/content/jcr_root/apps/asset-share-commons/config/com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.InternalRedirectRenditionDispatcherImpl-SearchResults.xml)
 
 
+### External Redirect Renditions
+
+`ExternalRedirectRenditionDispatcherImpl` performs an an external HTTP 301/302 (configurable) to a newly constructed URL - the common use case is to invoke a Dynamic Media Scene 7 URL.
+
+| Label       | OSGi property | Description   |
+|-------------|---------------|---------------|
+| Name        | name          | The system name of this Rendition Dispatcher. This should be unique across all AssetRenditionDispatcher instances. This can be used to exclude all rendition mappings from uses of the Asset Renditions DataSource.
+| Label       | label         | The human-friendly name of this AssetRenditionDispatcher and may be displayed to authors. |
+| Rendition types | types     | The types of renditions this configuration will return. Ideally all renditions in this configuration apply types specified here. This is used to drive and scope the Asset Renditions displays in Authoring datasources. OOTB types are: `image` and `video` |
+| Hide renditions | hidden | Hide if this AssetRenditionDispatcher configuration is not intended to be exposed to AEM authors for selection in dialogs. |
+| Rediret | redirect | Select the type of redirect that should be made: Moved Permanently (301) or Moved Temporarily (302). Defaults to 301. |
+| Rendition mappings	| rendition.mappings | In the form: `<renditionName>=<external url expression>` |
+| Service ranking | service.ranking | Higher service rankings take precedence.
+
+
+*Rendition Mappings* are multi-value fields in the form:
+
+    <rendition-name>=<external url>
+    grayscale-preset=${dm.api-server}is/image/${dm.file}?$graycale$
+    smart-crop-medium=${dm.api-server}is/image/${dm.file}:Medium
+
+Supported "variables" in the `rendition.types` field are as follows:
+* `${asset.path}` = the asset's full, absolute path
+* `${asset.name}` = the asset's node name
+* `${asset.extension}` = the asset's extension (derived from the node name)
+* `${rendition.name}` = the rendition name provided as the key for the matched expression
+* `${dm.name}` = The asset's `dam:scene7Name` property
+* `${dm.id}` = The asset's `dam:scene7ID` property
+* `${dm.file}` = The asset's `dam:scene7File` property
+* `${dm.folder}` = The asset's `dam:scene7Folder` property
+* `${dm.domain}` = The asset's `dam:scene7Domain` property
+* `${dm.api-server}` = The asset's `dam:scene7APIServer` property
+
+
+#### Example OSGi factory configuration
+
+![Asset Renditions Search Results configuration](images/search-results-asset-renditions-config.png)
+
+
+#### Example sling:OsgiConfig definition
+
+    <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+              jcr:primaryType="sling:OsgiConfig"
+              service.ranking="-9001"
+              label="Dynamic Media renditions"
+              name="asset-share-commons-example-dynamic-media"
+              hidden="{Boolean}false"
+              redirect="301"
+              rendition.mappings="[grayscale-preset=${dm.api-server}is/image/${dm.file}?$graycale$,smart-crop-medium=${dm.api-server}is/image/${dm.file}:Medium]"
+    />
 
 
 ## Provided Asset Rendition Dispatcher Configurations
