@@ -175,7 +175,7 @@ Bundle-DocURL:
         <dependency>
             <groupId>com.adobe.aem</groupId>
             <artifactId>uber-jar</artifactId>
-            <classifier>apis</classifier>
+            <classifier>apis-with-deprecations</classifier>
         </dependency>
         <dependency>
             <groupId>org.apache.sling</groupId>

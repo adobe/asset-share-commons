@@ -25,7 +25,6 @@
         <module>all</module>
         <module>core</module>
         <module>ui.frontend.theme.light</module>
-        <module>ui.frontend.theme.dark</module>
         <module>ui.apps</module>
         <module>ui.apps.structure</module>
         <module>ui.content</module>
@@ -42,13 +41,16 @@
         <vault.user>admin</vault.user>
         <vault.password>admin</vault.password>
         <package.group>asset-share-commons</package.group>
-        <core.wcm.components.version>2.8.0</core.wcm.components.version>
+        <core.wcm.components.version>2.14.0</core.wcm.components.version>
+        <uber.jar.version>6.5.0</uber.jar.version>
         <frontend-maven-plugin.version>1.9.0</frontend-maven-plugin.version>
         <node.version>v13.7.0</node.version>
         <npm.version>6.13.1</npm.version>
         <bnd.version>4.2.0</bnd.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <acTool.version>2.8.1</acTool.version>
 
         <bintray.org>asc</bintray.org>
         <bintray.repo>releases</bintray.repo>
@@ -796,9 +798,15 @@
             <dependency>
                 <groupId>com.adobe.aem</groupId>
                 <artifactId>uber-jar</artifactId>
-                <version>6.4.3</version>
-                <classifier>apis</classifier>
+                <version>6.5.0</version>
+                <classifier>apis-with-deprecations</classifier>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.adobe.cq</groupId>
+                <artifactId>core.wcm.components.all</artifactId>
+                <version>${core.wcm.components.version}</version>
+                <type>zip</type>
             </dependency>
             <dependency>
                 <groupId>com.adobe.cq</groupId>
@@ -808,15 +816,10 @@
             <dependency>
                 <groupId>com.adobe.cq</groupId>
                 <artifactId>core.wcm.components.content</artifactId>
-                <type>zip</type>
                 <version>${core.wcm.components.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.adobe.cq</groupId>
-                <artifactId>core.wcm.components.config</artifactId>
                 <type>zip</type>
-                <version>${core.wcm.components.version}</version>
             </dependency>
+
             <!-- Apache Sling Dependencies -->
             <dependency>
                 <groupId>org.apache.sling</groupId>
@@ -892,6 +895,13 @@
                 <artifactId>org.apache.sling.javax.activation</artifactId>
                 <version>0.1.0</version>
                 <groupId>org.apache.sling</groupId>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>biz.netcentric.cq.tools.accesscontroltool</groupId>
+                <artifactId>accesscontroltool-package</artifactId>
+                <version>${acTool.version}</version>
+                <type>zip</type>
                 <scope>provided</scope>
             </dependency>
             <!-- Testing -->

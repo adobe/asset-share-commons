@@ -1,14 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:mix="http://www.jcp.org/jcr/mix/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:mix="http://www.jcp.org/jcr/mix/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
     jcr:lastModified="{Date}2018-01-12T12:35:16.957-05:00"
     jcr:lastModifiedBy="admin"
     jcr:mixinTypes="[mix:lastModified,sling:HierarchyNode]"
     jcr:primaryType="nt:unstructured"
     jcr:title="ContextHub Configuration"
-    sling:resourceType="/libs/granite/contexthub/cloudsettings/components/baseconfiguration"
+    sling:resourceType="granite/contexthub/cloudsettings/components/baseconfiguration"
     debug="{Boolean}false"
     disabled="{Boolean}false">
+    <segmentation
+        jcr:primaryType="nt:unstructured"
+        jcr:title="Segmentation"
+        sling:resourceType="/libs/granite/contexthub/cloudsettings/components/basestore"
+        enabled="{Boolean}true"
+        required="{Boolean}true"
+        storeType="aem.segmentation"/>
+    <pagedata
+        jcr:primaryType="nt:unstructured"
+        jcr:title="Page Data"
+        sling:resourceType="/libs/granite/contexthub/cloudsettings/components/basestore"
+        enabled="{Boolean}true"
+        required="{Boolean}true"
+        storeType="aem.pagedata"/>
+    <emulators
+        jcr:primaryType="nt:unstructured"
+        jcr:title="Emulators"
+        sling:resourceType="/libs/granite/contexthub/cloudsettings/components/basestore"
+        enabled="{Boolean}true"
+        required="{Boolean}true"
+        storeType="granite.emulators"/>
+    <surferinfo
+        jcr:primaryType="nt:unstructured"
+        jcr:title="Surferinfo"
+        sling:resourceType="/libs/granite/contexthub/cloudsettings/components/basestore"
+        enabled="{Boolean}true"
+        required="{Boolean}true"
+        storeType="contexthub.surferinfo"/>
+    <eventdata
+        jcr:primaryType="nt:unstructured"
+        jcr:title="Analytics Data"
+        sling:resourceType="/libs/granite/contexthub/cloudsettings/components/basestore"
+        enabled="{Boolean}true"
+        required="{Boolean}true"
+        storeType="aem.analyticsdata"/>
+    <profile
+        jcr:primaryType="nt:unstructured"
+        jcr:title="Profile"
+        sling:resourceType="/libs/granite/contexthub/cloudsettings/components/basestore"
+        enabled="{Boolean}true"
+        required="{Boolean}true"
+        storeType="granite.profile"/>
+    <geolocation
+        jcr:primaryType="nt:unstructured"
+        jcr:title="Geolocation"
+        sling:resourceType="/libs/granite/contexthub/cloudsettings/components/basestore"
+        configjson="\{&#xd;&#xa;    &quot;geocoder&quot;: {&#xd;&#xa;        &quot;enabled&quot;: true&#xd;&#xa;    }&#xd;&#xa;}"
+        enabled="{Boolean}true"
+        googleClientId="gme-adobesystemsincorporated"
+        googleCryptoKey="GT8Eznytt7Hb1u2wocDh8Jkf6FA="
+        required="{Boolean}true"
+        storeType="contexthub.geolocation"/>
     <cart/>
     <device/>
     <persona/>
+    <cache jcr:primaryType="nt:unstructured">
+        <kernel.min.js jcr:primaryType="nt:unstructured">
+            <jcr:content
+                jcr:data="{Binary}"
+                jcr:primaryType="nt:unstructured"/>
+            <cq:metadata
+                jcr:primaryType="nt:unstructured"
+                ETag="&quot;e94aa8d6768a7b2331e900e079fcc54ee9c023d4&quot;"/>
+        </kernel.min.js>
+        <ui.min.js jcr:primaryType="nt:unstructured">
+            <jcr:content
+                jcr:data="{Binary}"
+                jcr:primaryType="nt:unstructured"/>
+            <cq:metadata
+                jcr:primaryType="nt:unstructured"
+                ETag="&quot;350566579aa1dfd5a9009ea19f204bcc8234611e&quot;"/>
+        </ui.min.js>
+    </cache>
 </jcr:root>

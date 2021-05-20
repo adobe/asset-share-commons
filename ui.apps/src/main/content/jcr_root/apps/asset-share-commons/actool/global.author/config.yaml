@@ -1,0 +1,258 @@
+- DEF tenant="csmbs"
+- DEF project="assets"
+- DEF companies=[bi,bp,brill]
+
+- group_config:
+
+  - fragment-conf-users:
+
+    - name:
+      isMemberOf:
+      members:
+      path: /home/groups/${tenant}/${project}
+
+  - fragment-restricted-content-users:
+
+    - name:
+      isMemberOf:
+      members:
+      path: /home/groups/${tenant}/${project}
+
+  - fragment-deny-ui-features-users:
+
+    - name:
+      isMemberOf:
+      members:
+      path: /home/groups/${tenant}/${project}
+
+  - csm-assets-readers:
+
+    - name:
+      isMemberOf: fragment-conf-users,fragment-restricted-content-users,fragment-deny-ui-features-users
+      members:
+      path: /home/groups/${tenant}/${project}
+
+  - csm-assets-editors:
+
+    - name:
+      isMemberOf: csm-assets-readers,dam-users
+      members:
+      path: /home/groups/${tenant}/${project}
+
+  - csm-assets-all-editors:
+
+    - name: CSM Assets - All - Editors
+      isMemberOf: csm-assets-editors
+      path: /home/groups/${tenant}/${project}
+
+- FOR company IN CHILDREN OF /content/dam/${tenant}:
+  - csm-assets-${company}-readers:
+
+    - name: CSM Assets - ${company} - Readers
+      isMemberOf: csm-assets-readers
+      path: /home/groups/${tenant}/${project}/${company}
+
+  - csm-assets-${company}-editors:
+
+    - name: CSM Assets - ${company} - Editors
+      isMemberOf: csm-assets-editors
+      path: /home/groups/${tenant}/${project}/${company}
+
+- ace_config:
+
+  - fragment-conf-users:
+
+    - path: /conf
+      permission: allow
+      privileges: jcr:read
+      restrictions:
+        rep:glob: '*/wcm'
+
+    - path: /conf
+      permission: allow
+      privileges: jcr:read
+      restrictions:
+        rep:glob: '*/wcm/*'
+
+    - path: /conf
+      permission: allow
+      privileges: jcr:read
+      restrictions:
+        rep:glob: '*/sling:configs'
+
+    - path: /conf
+      permission: allow
+      privileges: jcr:read
+      restrictions:
+        rep:glob: '*/sling:configs/*'
+
+    - path: /conf
+      permission: allow
+      privileges: jcr:read
+      restrictions:
+        rep:glob: '*/dam'
+
+    - path: /conf
+      permission: allow
+      privileges: jcr:read
+      restrictions:
+        rep:glob: '*/dam/*'
+
+
+  - fragment-restricted-content-users:
+
+    - path: /
+      permission: deny
+      privileges: jcr:read
+
+    - path: /
+      permission: allow
+      privileges: jcr:read
+      restrictions:
+        rep:glob: ''
+
+    - path: /apps
+      permission: allow
+      privileges: jcr:read
+
+    - path: /apps
+      permission: deny
+      privileges: jcr:read
+      keepOrder: true
+      restrictions:
+        rep:glob: '*/config/*'
+
+    - path: /apps
+      permission: deny
+      privileges: jcr:read
+      keepOrder: true
+      restrictions:
+        rep:glob: '*/install/*'
+
+    - path: /libs
+      permission: allow
+      privileges: jcr:read
+
+    - path: /libs
+      permission: deny
+      privileges: jcr:read
+      keepOrder: true
+      restrictions:
+        rep:glob: '*/config/*'
+
+    - path: /libs
+      permission: deny
+      privileges: jcr:read
+      keepOrder: true
+      restrictions:
+        rep:glob: '*/install/*'
+
+    - path: /conf
+      permission: allow
+      privileges: jcr:read
+
+    - path: /etc
+      permission: allow
+      privileges: jcr:read
+
+    - path: /var
+      permission: allow
+      privileges: jcr:read
+
+    - path: /content
+      permission: allow
+      privileges: jcr:read
+      restrictions:
+        rep:glob: ''
+
+    - path: /content
+      permission: allow
+      privileges: jcr:read
+      restrictions:
+        rep:glob: '/jcr:*'
+
+    - path: /content/dam
+      permission: allow
+      privileges: jcr:read
+      restrictions:
+        rep:glob: ''
+
+    - path: /content/dam
+      permission: allow
+      privileges: jcr:read
+      restrictions:
+        rep:glob: '/jcr:*'
+
+    - path: /content/cq:tags
+      permission: allow
+      privileges: jcr:read
+
+  - fragment-deny-ui-features-users:
+
+    - path: /libs/cq/core/content/nav/projects
+      permission: deny
+      privileges: jcr:read
+
+    - path: /libs/cq/core/content/nav/communities
+      permission: deny
+      privileges: jcr:read
+
+    - path: /libs/cq/core/content/nav/sites
+      permission: deny
+      privileges: jcr:read
+
+    - path: /libs/cq/core/content/nav/experiencefragments
+      permission: deny
+      privileges: jcr:read
+
+    - path: /libs/cq/core/content/nav/forms
+      permission: deny
+      privileges: jcr:read
+
+    - path: /libs/cq/core/content/nav/screens
+      permission: deny
+      privileges: jcr:read
+
+    - path: /libs/cq/core/content/nav/commerce
+      permission: deny
+      privileges: jcr:read
+
+    - path: /libs/cq/core/content/nav/assets
+      permission: deny
+      privileges: jcr:read
+
+    - path: /libs/granite/ui/content/shell/start/content/cq/items/tabs/items/tools
+      permission: deny
+      privileges: jcr:read
+
+  - csm-assets-readers:
+
+    - path: /libs/cq/core/content/nav/assets
+      permission: allow
+      privileges: jcr:read
+
+    - path: /content/dam/csmbs
+      permission: allow
+      privileges: jcr:read
+      restrictions:
+        rep:glob: ''
+
+  - csm-assets-all-editors:
+
+    - path: /content/dam
+      permission: allow
+      privileges: jcr:all
+
+  - FOR company IN CHILDREN OF /content/dam/${tenant}:
+
+    - csm-assets-${company}-readers:
+
+      - path: /content/dam/csmbs/${company}
+        permission: allow
+        privileges: jcr:read
+
+    - csm-assets-${company}-editors:
+
+      - path: /content/dam/csmbs/${company}
+        permission: allow
+        privileges: jcr:all

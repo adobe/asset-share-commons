@@ -13,8 +13,7 @@
                         jcr:title="Asset Share Commons - Structure"
                         sling:resourceType="wcm/core/components/policy/policy"
                         components="[/libs/wcm/foundation/components/responsivegrid,group:Asset Share Commons - Structure]">
-                        <jcr:content
-                            jcr:primaryType="nt:unstructured"/>
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
                     </policy_10069721106623>
                     <policy_10145173992105
                         jcr:lastModified="{Date}2017-10-16T18:29:41.604-04:00"
@@ -23,8 +22,7 @@
                         jcr:title="Asset Share Commons - Search"
                         sling:resourceType="wcm/core/components/policy/policy"
                         components="[/libs/wcm/foundation/components/responsivegrid,group:Asset Share Commons - Content,group:Asset Share Commons - Search]">
-                        <jcr:content
-                            jcr:primaryType="nt:unstructured"/>
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
                     </policy_10145173992105>
                     <policy_1504902064537
                         jcr:lastModified="{Date}2017-09-12T21:36:28.974-04:00"
@@ -33,8 +31,7 @@
                         jcr:title="Asset Share Commons - Modals"
                         sling:resourceType="wcm/core/components/policy/policy"
                         components="[group:Asset Share Commons - Modals]">
-                        <jcr:content
-                            jcr:primaryType="nt:unstructured"/>
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
                     </policy_1504902064537>
                     <policy_1505268753836
                         jcr:lastModified="{Date}2017-10-16T18:45:56.972-04:00"
@@ -43,8 +40,7 @@
                         jcr:title="Asset Share Commons - Asset Details"
                         sling:resourceType="wcm/core/components/policy/policy"
                         components="[group:Asset Share Commons - Content,group:Asset Share Commons - Details]">
-                        <jcr:content
-                            jcr:primaryType="nt:unstructured"/>
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
                     </policy_1505268753836>
                     <policy_32005087383376
                         jcr:lastModified="{Date}2017-10-06T10:38:56.117-04:00"
@@ -53,8 +49,7 @@
                         jcr:title="Asset Share Commons - Content"
                         sling:resourceType="wcm/core/components/policy/policy"
                         components="[/libs/wcm/foundation/components/responsivegrid,group:Asset Share Commons - Content]">
-                        <jcr:content
-                            jcr:primaryType="nt:unstructured"/>
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
                         <cq:authoring jcr:primaryType="nt:unstructured">
                             <assetToComponentMapping jcr:primaryType="nt:unstructured">
                                 <mapping_1506985705020
@@ -81,8 +76,7 @@
                         jcr:title="Light Theme"
                         sling:resourceType="wcm/core/components/policy/policy"
                         clientlibs="asset-share-commons.semantic-ui-light">
-                        <jcr:content
-                            jcr:primaryType="nt:unstructured"/>
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
                     </policy_1505596518330>
                     <policy_1507903461206
                         jcr:lastModified="{Date}2017-10-16T18:27:13.392-04:00"
@@ -124,8 +118,7 @@
                         jcr:title="Light Theme"
                         sling:resourceType="wcm/core/components/policy/policy"
                         clientlibs="asset-share-commons.semantic-ui-light">
-                        <jcr:content
-                            jcr:primaryType="nt:unstructured"/>
+                        <jcr:content jcr:primaryType="nt:unstructured"/>
                     </policy_1505683782054>
                     <policy_1507904573557
                         jcr:lastModified="{Date}2017-10-13T10:25:05.473-04:00"

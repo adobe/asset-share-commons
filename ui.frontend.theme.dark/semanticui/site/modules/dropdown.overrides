@@ -1,7 +1,0 @@
-/*******************************
-         Theme Overrides
-*******************************/
-
-.ui.selection.dropdown > .dropdown.icon {
-	color: @primaryColor;
-}

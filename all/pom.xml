@@ -55,6 +55,11 @@
                     <embeddeds>
                         <embedded>
                             <groupId>com.adobe.aem.commons</groupId>
+                            <artifactId>assetshare.core</artifactId>
+                            <target>/apps/asset-share-commons-packages/application/install</target>
+                        </embedded>
+                        <embedded>
+                            <groupId>com.adobe.aem.commons</groupId>
                             <artifactId>assetshare.ui.apps</artifactId>
                             <type>zip</type>
                             <target>/apps/asset-share-commons-packages/application/install</target>
@@ -65,23 +70,24 @@
                             <type>zip</type>
                             <target>/apps/asset-share-commons-packages/content/install</target>
                         </embedded>
+                        <!--
                         <embedded>
                             <groupId>com.adobe.aem.commons</groupId>
                             <artifactId>assetshare.ui.content.sample</artifactId>
                             <type>zip</type>
                             <target>/apps/asset-share-commons-packages/content/install</target>
-                        </embedded>
+                        </embedded> -->
                         <embedded>
                             <groupId>com.adobe.cq</groupId>
-                            <artifactId>core.wcm.components.content</artifactId>
+                            <artifactId>core.wcm.components.all</artifactId>
                             <type>zip</type>
                             <target>/apps/asset-share-commons-vendor-packages/application/install</target>
                         </embedded>
                         <embedded>
-                            <groupId>com.adobe.cq</groupId>
-                            <artifactId>core.wcm.components.config</artifactId>
+                            <groupId>biz.netcentric.cq.tools.accesscontroltool</groupId>
+                            <artifactId>accesscontroltool-package</artifactId>
                             <type>zip</type>
-                            <target>/apps/asset-share-commons-vendor-packages/content/install</target>
+                            <target>/apps/asset-share-commons-vendor-packages/application/install</target>
                         </embedded>
                     </embeddeds>
                     <allowIndexDefinitions>true</allowIndexDefinitions>
@@ -96,6 +102,7 @@
                     <failOnError>true</failOnError>
                 </configuration>
             </plugin>
+            <!--
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>2.4.1</version>
@@ -108,7 +115,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin> -->
         </plugins>
     </build>
 
@@ -194,13 +201,19 @@
         </dependency>
         <dependency>
             <groupId>com.adobe.cq</groupId>
-            <artifactId>core.wcm.components.content</artifactId>
+            <artifactId>core.wcm.components.all</artifactId>
             <type>zip</type>
         </dependency>
+        <dependency>
+            <groupId>biz.netcentric.cq.tools.accesscontroltool</groupId>
+            <artifactId>accesscontroltool-package</artifactId>
+            <type>zip</type>
+        </dependency>
+        <!--
         <dependency>
             <groupId>com.adobe.cq</groupId>
             <artifactId>core.wcm.components.config</artifactId>
             <type>zip</type>
-        </dependency>
+        </dependency> -->
     </dependencies>
 </project>

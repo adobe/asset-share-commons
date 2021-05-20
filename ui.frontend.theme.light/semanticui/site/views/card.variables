@@ -3,7 +3,8 @@
 *******************************/
 
 /* Card */
-@width: 255px;
+/* ensure MULTIMEDIA text does not break... */
+@width: 265px;
 @contentFontSize: .9em;
 @medium: .9em;
 @groupCardMargin: (@rowSpacing / 2) auto;

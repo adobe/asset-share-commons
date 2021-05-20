@@ -79,6 +79,9 @@ jQuery((function($, ns, cart) {
 
     // Events
     $("body").on("click", ns.Elements.selector("cmp-user-menu__logout-link"), function() {
+        $("body").once(ns.Events.CART_CLEAR, function(e, size, paths) {
+            window.location.href = "/system/sling/logout?resource=" + $("body").find(".assetshare-header > .ui.secondary.menu > .item").attr("href") || '/';
+        });
         cart.clear();
     });
 

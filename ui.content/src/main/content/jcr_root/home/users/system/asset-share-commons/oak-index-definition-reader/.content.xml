@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:rep="internal"
+          jcr:primaryType="rep:SystemUser"
+          jcr:uuid="b77dce45-d88d-31df-878b-8b076a68cb48"
+          rep:authorizableId="asset-share-commons-oak-index-definition-reader-service"
+          rep:principalName="asset-share-commons-oak-index-definition-reader-service"/>

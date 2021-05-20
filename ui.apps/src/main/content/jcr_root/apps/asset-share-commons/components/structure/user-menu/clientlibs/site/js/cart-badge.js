@@ -26,7 +26,7 @@ jQuery((function($, ns, cart, contextHub) {
     }
 
     // On cart change
-    $("body").on("asset-share-commons.cart.update", function(e, size, paths) {
+    $("body").on(ns.Events.CART_UPDATE, function(e, size, paths) {
         updateCartCountBadge(size);
     });
 

@@ -21,5 +21,5 @@
     jcr:primaryType="cq:ClientLibraryFolder"
     allowProxy="{Boolean}true"
     categories="[asset-share-commons.dependencies]"
-    embed="[granite.csrf.standalone, asset-share-commons.vendor]"
+    embed="[granite.csrf.standalone,granite.utils,asset-share-commons.vendor]"
     jsProcessor="[min:gcc,default:none]"/>
