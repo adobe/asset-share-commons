@@ -32,8 +32,6 @@ import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.servlets.SlingAllMethodsServlet;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
@@ -104,7 +102,7 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
 
         final String archiveName = evaluateArchiveName(
                 componentProperties.get(PN_BASE_ARCHIVE_NAME_EXPRESSION, "Assets"),
-                getLocalDateTime(request.getParameter(REQ_KEY_TIME_ZONE)),
+                getLocalDateTime(Calendar.getInstance(), request.getParameter(REQ_KEY_TIME_ZONE)),
                 assetModels,
                 renditionNames);
 
@@ -173,17 +171,21 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
         return json;
     }
 
-    private DateTime getLocalDateTime(String timeZone) {
-        DateTimeZone zone = DateTimeZone.forID(timeZone);
-        if (zone == null) {
-            zone = DateTimeZone.forID(DateTimeZone.UTC.getID());
+    protected Calendar getLocalDateTime(Calendar now, String timeZoneId) {
+
+        if (StringUtils.isNotBlank(timeZoneId) && TimeZone.getTimeZone(timeZoneId) != null) {
+            final Calendar localCal = new GregorianCalendar(TimeZone.getTimeZone(timeZoneId));
+            localCal.setTime(now.getTime());
+
+            return localCal;
         }
-        return new DateTime(zone);
+
+        return now;
     }
 
-    private String evaluateArchiveName(String expression, DateTime now, Collection<AssetModel> assetModels, Collection<String> renditionNames) {
+    private String evaluateArchiveName(String expression, Calendar now, Collection<AssetModel> assetModels, Collection<String> renditionNames) {
         expression = expressionEvaluator.evaluateAssetsRenditionsExpressions(expression, assetModels, renditionNames);
-        expression = expressionEvaluator.evaluateDateTimeExpressions(expression, now.toDate());
+        expression = expressionEvaluator.evaluateDateTimeExpressions(expression, now);
 
         if (!StringUtils.endsWith(expression, ZIP_EXTENSION)) {
             expression += ZIP_EXTENSION;

@@ -28,6 +28,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
@@ -59,7 +60,8 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
         return expression;
     }
 
-    public String evaluateDateTimeExpressions(String expression, Date date) {
+    public String evaluateDateTimeExpressions(String expression, Calendar calendar) {
+        Date date = calendar.getTime();
 
         expression = StringUtils.replace(expression, VAR_DATE_YEAR, year.format(date));
         expression = StringUtils.replace(expression, VAR_DATE_MONTH, month.format(date));
