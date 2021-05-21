@@ -28,6 +28,9 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -38,16 +41,16 @@ import static com.day.cq.dam.scene7.api.constants.Scene7Constants.*;
 public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
     public static final String ZIP_EXTENSION = ".zip";
 
-    private static final SimpleDateFormat year = new SimpleDateFormat("yyyy");
-    private static final SimpleDateFormat month = new SimpleDateFormat("MM");
-    private static final SimpleDateFormat monthName = new SimpleDateFormat("MMM");
-    private static final SimpleDateFormat day = new SimpleDateFormat("dd");
-    private static final SimpleDateFormat dayName = new SimpleDateFormat("EEE");
+    private static final DateTimeFormatter year = DateTimeFormatter.ofPattern("yyyy");
+    private static final DateTimeFormatter month = DateTimeFormatter.ofPattern("MM");
+    private static final DateTimeFormatter monthName = DateTimeFormatter.ofPattern("MMM");
+    private static final DateTimeFormatter day = DateTimeFormatter.ofPattern("dd");
+    private static final DateTimeFormatter dayName = DateTimeFormatter.ofPattern("EEE");
 
-    private static final SimpleDateFormat hour24 = new SimpleDateFormat("HH");
-    private static final SimpleDateFormat hour12 = new SimpleDateFormat("hh");
-    private static final SimpleDateFormat minute = new SimpleDateFormat("mm");
-    private static final SimpleDateFormat ampm = new SimpleDateFormat("a");
+    private static final DateTimeFormatter hour24 = DateTimeFormatter.ofPattern("HH");
+    private static final DateTimeFormatter hour12 = DateTimeFormatter.ofPattern("hh");
+    private static final DateTimeFormatter minute = DateTimeFormatter.ofPattern("mm");
+    private static final DateTimeFormatter ampm = DateTimeFormatter.ofPattern("a");
 
     @Reference
     private MimeTypeService mimeTypeService;
@@ -60,18 +63,19 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
         return expression;
     }
 
-    public String evaluateDateTimeExpressions(String expression, Calendar calendar) {
-        Date date = calendar.getTime();
+    public String evaluateDateTimeExpressions(String expression, ZonedDateTime zonedDateTime) {
 
-        expression = StringUtils.replace(expression, VAR_DATE_YEAR, year.format(date));
-        expression = StringUtils.replace(expression, VAR_DATE_MONTH, month.format(date));
-        expression = StringUtils.replace(expression, VAR_DATE_MONTH_NAME, monthName.format(date));
-        expression = StringUtils.replace(expression, VAR_DATE_DAY, day.format(date));
-        expression = StringUtils.replace(expression, VAR_DATE_DAY_NAME, dayName.format(date));
-        expression = StringUtils.replace(expression, VAR_TIME_HOUR_24, hour24.format(date));
-        expression = StringUtils.replace(expression, VAR_TIME_HOUR_12, hour12.format(date));
-        expression = StringUtils.replace(expression, VAR_TIME_MINUTE, minute.format(date));
-        expression = StringUtils.replace(expression, VAR_TIME_AM_PM, ampm.format(date));
+        LocalDateTime ldt = zonedDateTime.toLocalDateTime();
+
+        expression = StringUtils.replace(expression, VAR_DATE_YEAR, zonedDateTime.format(year));
+        expression = StringUtils.replace(expression, VAR_DATE_MONTH, zonedDateTime.format(month));
+        expression = StringUtils.replace(expression, VAR_DATE_MONTH_NAME, zonedDateTime.format(monthName));
+        expression = StringUtils.replace(expression, VAR_DATE_DAY, zonedDateTime.format(day));
+        expression = StringUtils.replace(expression, VAR_DATE_DAY_NAME,zonedDateTime.format(dayName));
+        expression = StringUtils.replace(expression, VAR_TIME_HOUR_24, zonedDateTime.format(hour24));
+        expression = StringUtils.replace(expression, VAR_TIME_HOUR_12, zonedDateTime.format(hour12));;
+        expression = StringUtils.replace(expression, VAR_TIME_MINUTE, zonedDateTime.format(minute));
+        expression = StringUtils.replace(expression, VAR_TIME_AM_PM, zonedDateTime.format(ampm));
 
         return expression;
     }

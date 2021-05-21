@@ -27,6 +27,8 @@ import org.joda.time.DateTime;
 import org.osgi.annotation.versioning.ProviderType;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -69,7 +71,7 @@ public interface ExpressionEvaluator {
 
     String evaluateAssetsRenditionsExpressions(String expression, Collection<AssetModel> assetModels, Collection<String> renditionNames);
 
-    String evaluateDateTimeExpressions(String expression, Calendar calendar);
+    String evaluateDateTimeExpressions(String expression, ZonedDateTime zonedDateTime);
 
     String evaluateDynamicMediaExpression(String expression, AssetModel assetModel);
 

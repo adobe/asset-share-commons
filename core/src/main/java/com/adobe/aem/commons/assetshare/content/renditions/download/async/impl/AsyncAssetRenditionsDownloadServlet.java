@@ -40,6 +40,11 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.zone.ZoneRulesException;
 import java.util.*;
 
 import static com.adobe.aem.commons.assetshare.content.renditions.download.async.impl.NamedRenditionDownloadTargetProcessor.*;
@@ -102,7 +107,7 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
 
         final String archiveName = evaluateArchiveName(
                 componentProperties.get(PN_BASE_ARCHIVE_NAME_EXPRESSION, "Assets"),
-                getLocalDateTime(Calendar.getInstance(), request.getParameter(REQ_KEY_TIME_ZONE)),
+                getZonedNowDateTime(ZonedDateTime.now(ZoneId.of("UTC")), request.getParameter(REQ_KEY_TIME_ZONE)),
                 assetModels,
                 renditionNames);
 
@@ -171,19 +176,21 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
         return json;
     }
 
-    protected Calendar getLocalDateTime(Calendar now, String timeZoneId) {
+    protected ZonedDateTime getZonedNowDateTime(ZonedDateTime utcNow, String timeZoneId) {
 
-        if (StringUtils.isNotBlank(timeZoneId) && TimeZone.getTimeZone(timeZoneId) != null) {
-            final Calendar localCal = new GregorianCalendar(TimeZone.getTimeZone(timeZoneId));
-            localCal.setTime(now.getTime());
-
-            return localCal;
+        timeZoneId = "America/Los_Angeles";
+        if (StringUtils.isNotBlank(timeZoneId)) {
+            try {
+                return utcNow.withZoneSameInstant(ZoneId.of(timeZoneId));
+            } catch (ZoneRulesException e) {
+                log.warn("Time Zone Id [ {} ] invalid. Falling back to UTC [ {} ]", utcNow.getZone().getId());
+            }
         }
 
-        return now;
+        return utcNow;
     }
 
-    private String evaluateArchiveName(String expression, Calendar now, Collection<AssetModel> assetModels, Collection<String> renditionNames) {
+    private String evaluateArchiveName(String expression, ZonedDateTime now, Collection<AssetModel> assetModels, Collection<String> renditionNames) {
         expression = expressionEvaluator.evaluateAssetsRenditionsExpressions(expression, assetModels, renditionNames);
         expression = expressionEvaluator.evaluateDateTimeExpressions(expression, now);
 
