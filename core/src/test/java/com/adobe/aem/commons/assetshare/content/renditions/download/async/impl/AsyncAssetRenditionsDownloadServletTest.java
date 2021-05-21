@@ -23,17 +23,25 @@ public class AsyncAssetRenditionsDownloadServletTest {
 
         ZonedDateTime est = servlet.getZonedNowDateTime(now, "America/New_York");
 
-        assertEquals(3, est.getHour());
+        assertEquals("America/New_York", est.getZone().getId());
+        assertEquals(2021, est.getYear());
+        assertEquals(5, est.getMonthValue());
         assertEquals(6, est.getDayOfMonth());
+        assertEquals(3, est.getHour());
+        assertEquals(0, est.getMinute());
     }
 
     @Test
     public void getLocalDateTime_PST() {
 
-        ZonedDateTime now = ZonedDateTime.of(2021, 5, 6, 6, 0, 0, 0, ZoneId.of("UTC"));
+        ZonedDateTime now = ZonedDateTime.of(2021, 2, 6, 6, 58, 0, 0, ZoneId.of("UTC"));
         ZonedDateTime pst = servlet.getZonedNowDateTime(now, "America/Los_Angeles");
 
-        assertEquals(23, pst.getHour());
+        assertEquals("America/Los_Angeles", pst.getZone().getId());
+        assertEquals(2021, pst.getYear());
+        assertEquals(2, pst.getMonthValue());
         assertEquals(5, pst.getDayOfMonth());
+        assertEquals(22, pst.getHour());
+        assertEquals(58, pst.getMinute());
     }
 }

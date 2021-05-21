@@ -177,8 +177,6 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
     }
 
     protected ZonedDateTime getZonedNowDateTime(ZonedDateTime utcNow, String timeZoneId) {
-
-        timeZoneId = "America/Los_Angeles";
         if (StringUtils.isNotBlank(timeZoneId)) {
             try {
                 return utcNow.withZoneSameInstant(ZoneId.of(timeZoneId));
