@@ -220,20 +220,6 @@ public class DownloadImpl implements Download, ComponentExporter {
         }
     }
 
-    public static String findExpression(Resource resource, String renditionName) {
-        // Oak will traverse this small content tree
-        final String query = "SELECT * FROM [nt:unstructured] AS c WHERE ISDESCENDANTNODE(c,'" + resource.getPath() + "') AND [renditionName] = '" + renditionName + "'";
-        final Iterator<Resource> results = resource.getResourceResolver().findResources(query, JCR_SQL2);
-
-        if (!results.hasNext()) {
-            return null;
-        }
-
-        final String expression = org.apache.commons.lang.StringUtils.stripToNull(results.next().getValueMap().get("expression", String.class));
-
-        return expression;
-    }
-
     @Deprecated
     private void calculateSizes() {
         this.maxContentSize = assetDownloadHelper.getMaxContentSizeLimit();
