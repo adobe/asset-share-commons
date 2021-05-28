@@ -45,18 +45,21 @@
       isMemberOf: csm-assets-editors
       path: /home/groups/${tenant}/${project}
 
-- FOR company IN CHILDREN OF /content/dam/${tenant}:
-  - csm-assets-${company}-readers:
+  - FOR company IN CHILDREN OF /content/dam/${tenant}:
+    # only create groups for sling:OrderedFolder and sling:Folder types
+    - IF ${endsWith(company.primaryType,'Folder')}:
 
-    - name: CSM Assets - ${company} - Readers
-      isMemberOf: csm-assets-readers
-      path: /home/groups/${tenant}/${project}/${company}
+      - csm-assets-${company.name}-readers:
 
-  - csm-assets-${company}-editors:
+        - name: CSM Assets - ${company.title} - Readers
+          isMemberOf: csm-assets-readers
+          path: /home/groups/${tenant}/${project}/${company.name}
 
-    - name: CSM Assets - ${company} - Editors
-      isMemberOf: csm-assets-editors
-      path: /home/groups/${tenant}/${project}/${company}
+      - csm-assets-${company.name}-editors:
+
+        - name: CSM Assets - ${company.title} - Editors
+          isMemberOf: csm-assets-editors
+          path: /home/groups/${tenant}/${project}/${company.name}
 
 - ace_config:
 
@@ -245,14 +248,16 @@
 
   - FOR company IN CHILDREN OF /content/dam/${tenant}:
 
-    - csm-assets-${company}-readers:
+    - IF ${endsWith(company.primaryType,'Folder')}:
 
-      - path: /content/dam/csmbs/${company}
-        permission: allow
-        privileges: jcr:read
+      - csm-assets-${company.name}-readers:
 
-    - csm-assets-${company}-editors:
+        - path: /content/dam/csmbs/${company.name}
+          permission: allow
+          privileges: jcr:read
 
-      - path: /content/dam/csmbs/${company}
-        permission: allow
-        privileges: jcr:all
+      - csm-assets-${company.name}-editors:
+
+        - path: /content/dam/csmbs/${company.name}
+          permission: allow
+          privileges: jcr:all
