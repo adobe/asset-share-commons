@@ -1,0 +1,25 @@
+<div class="loginContainer" data-sly-use.model="com.adobe.aem.commons.assetshare.content.model.Login">
+	<form class="coral-Form coral-Form--vertical form-signin" action="login.html/j_security_check" method="post">
+        <h2 class="form-signin-heading" data-sly-test.loginTitle="${model.loginTitle != '' ? model.loginTitle : 'Asset Share Portal'}">${loginTitle}</h2>
+        <div class="username">
+            <sly data-sly-test.username="${model.loginLabel != '' ? model.loginLabel : 'Username'}"></sly> 
+            <input type="text" id="inputEmail" name="j_username" class="coral-Form-field coral-Textfield" placeholder="${model.loginLabel}" required="" autofocus=""> 
+        </div>
+        <div class="password">
+			<sly data-sly-test.password="${model.passwordLabel != '' ? model.passwordLabel : 'Password'}"></sly> 
+            <input type="password" id="inputPassword" name="j_password" class="coral-Form-field coral-Textfield" placeholder="${model.passwordLabel}" required="">
+        </div>
+        <div class="loginBtn">        
+            <button class="btn btn-primary" type="submit" data-sly-test.buttonName="${model.loginButtonLabel != '' ? model.loginButtonLabel : 'Login'}">
+                ${buttonName}
+            </button>
+        </div>
+        <input type="hidden" name="resource" value="${model.HomePage}.html">
+        <input type="hidden" name="_charset_" value="UTF-8">    
+	</form>
+    <div class="errorMsgDiv" data-sly-test="${model.reason && model.reason!='unknown'}">
+            <span data-sly-test="${model.reason == 'invalid_login'}">${model.invalidLoginLabel}</span>
+            <span data-sly-test="${model.reason == 'session_timeout'}">${model.sessionTimedOutLabel}</span>
+    </div>
+
+</div>

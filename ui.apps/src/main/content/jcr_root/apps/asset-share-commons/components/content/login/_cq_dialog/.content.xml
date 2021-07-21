@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="nt:unstructured"
+    jcr:title="Login"
+    sling:resourceType="cq/gui/components/authoring/dialog">
+    <content
+        jcr:primaryType="nt:unstructured"
+        sling:resourceType="granite/ui/components/coral/foundation/tabs">
+        <items jcr:primaryType="nt:unstructured">
+            <header
+                jcr:primaryType="nt:unstructured"
+                jcr:title="Login"
+                sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns">
+                <items jcr:primaryType="nt:unstructured">
+                    <column
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/foundation/container">
+                        <items jcr:primaryType="nt:unstructured">
+                            <loginTitle
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                fieldLabel="Login Title"
+                                name="./loginTitle"
+                                required="false"/>
+                            <loginLabel
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                fieldLabel="Login Label"
+                                name="./loginLabel"
+                                required="true"/>
+                            <passwordLabel
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                fieldLabel="Password Label"
+                                name="./passwordLabel"
+                                required="true"/>
+                            <loginButtonLabel
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                fieldLabel="Login Button Label"
+                                name="./loginButtonLabel"
+                                required="false"/>
+                            <invalidLoginLabel
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                fieldLabel="invalid Login Label"
+                                name="./invalidLoginLabel"
+                                required="false"/>
+                            <sessionTimedOutLabel
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                fieldLabel="session TimedOut Label"
+                                name="./sessionTimedOutLabel"
+                                required="false"/>
+                        </items>
+                    </column>
+                </items>
+            </header>
+        </items>
+    </content>
+</jcr:root>

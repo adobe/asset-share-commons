@@ -1,0 +1,48 @@
+.username{
+    line-height:6rem;
+}
+
+
+.errorMsgDiv {
+  margin-bottom: 18px;
+}
+
+.errorMsgDiv > span {
+    display: inline-block;
+    color: red;
+    font-size: 16px;
+    height: 30px;
+    padding-top: 15px;
+}
+
+.loginContainer{
+	position: relative;
+    width: 60%;
+    left: 10%;
+}
+
+.coral-Form-field {
+    width: 280px;
+    border-radius: 25px;
+    height: 40px;
+    padding: 10px;
+}
+
+.btn-primary {
+    color: #fff;    
+    background-color: #29408B;
+    border-color: #29408B;
+    padding: 6px 30px;
+    border-radius: 16px; 
+    font-weight: bold;
+    font-size: 14px;
+    width: 142px;
+    border: 3px solid transparent;   
+    cursor: pointer; 
+    text-transform: uppercase;  
+}
+.loginBtn {
+    line-height:5.5rem;
+}
+
+

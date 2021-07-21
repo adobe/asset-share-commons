@@ -147,7 +147,7 @@
                         sling:resourceType="wcm/core/components/policy/policy"
                         greeting="Hello, "
                         logInLabel="Log In"
-                        logInLink="#"
+                        logInLink="/content/asset-share-commons/login"
                         logOutLabel="Log Out"
                         logOutLink="#"
                         showLabels="true">
