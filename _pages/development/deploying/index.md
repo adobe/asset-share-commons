@@ -62,7 +62,7 @@ Include Asset Share Commons 2.x's `all` project as an `embedded` in your AEM Mav
             <groupId>com.adobe.aem.commons</groupId>
             <artifactId>assetshare.core</artifactId>
             <version>2.x.x</version>
-            <type>zip</type>
+            <type>jar</type>
         </dependency>
         ...
     </dependency>    
