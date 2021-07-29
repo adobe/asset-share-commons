@@ -20,7 +20,7 @@
 
 <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
           jcr:primaryType="sling:OsgiConfig"
-          service.ranking="-10001"
+          service.ranking="{Integer}-10001"
           label="Static Image Renditions"
           name="asset-share-commons-static-image-renditions"
           types="[image]"

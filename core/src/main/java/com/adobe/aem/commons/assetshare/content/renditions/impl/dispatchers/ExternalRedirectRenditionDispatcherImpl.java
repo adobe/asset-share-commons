@@ -29,10 +29,7 @@ import org.apache.sling.api.SlingHttpServletResponse;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.metatype.annotations.AttributeDefinition;
-import org.osgi.service.metatype.annotations.Designate;
-import org.osgi.service.metatype.annotations.ObjectClassDefinition;
-import org.osgi.service.metatype.annotations.Option;
+import org.osgi.service.metatype.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -164,7 +161,8 @@ public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
 
         @AttributeDefinition(
                 name = "Hide renditions",
-                description = "Hide if this AssetRenditionDispatcher configuration is not intended to be exposed to AEM authors for selection in dialogs."
+                description = "Hide if this AssetRenditionDispatcher configuration is not intended to be exposed to AEM authors for selection in dialogs.",
+                type = AttributeType.BOOLEAN
         )
         boolean hidden() default false;
 
@@ -186,7 +184,8 @@ public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
 
         @AttributeDefinition(
                 name = "Service ranking",
-                description = "The larger the number, the higher the precedence."
+                description = "The larger the number, the higher the precedence.",
+                type = AttributeType.INTEGER
         )
         int service_ranking() default 0;
     }

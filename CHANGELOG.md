@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- 0630 - AssetRenditionDispatcher configs are not ranked by service.ranking
+
+## [v1.9.6]
+
 ### Changed
 
 - 0531: Release to maven central (instead of bintray)
