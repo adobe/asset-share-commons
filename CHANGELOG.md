@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - 0607 - asset-share-commons.all package's dependency on Core Components breaks AEM CS deployment. Removing this hard dependency.
+- 0630 - AssetRenditionDispatcher configs are not ranked by service.ranking 
 
 ### Changed
 

@@ -1,0 +1,11 @@
+{
+  "service.ranking:Integer": -5001,
+  "label": "Dynamic Media Image Examples",
+  "name": "asset-share-commons-dynamic-media-images-examples",
+  "rendition.mappings": [
+    "smart-crop-small=${dm.domain}/is/image/${dm.file}:Small?extension=jpeg",
+    "smart-crop-medium=${dm.domain}/is/image/${dm.file}:Medium?extension=jpeg",
+    "smart-crop-large=${dm.domain}/is/image/${dm.file}:Large?extension=jpeg",
+    "grayscale=${dm.domain}/is/image/${dm.file}?$grayscale$&amp;extension=jpeg"
+  ]
+}
