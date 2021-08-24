@@ -44,5 +44,5 @@ public interface DownloadEntry {
 
     String getURI();
 
-
+    default boolean isArchive() { return true; }
 }

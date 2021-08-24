@@ -124,4 +124,9 @@ public class DownloadEntryImpl implements DownloadEntry {
             return null;
         }
     }
+
+    @Override
+    public boolean isArchive() {
+        return (getSuccessCount() + getFailureCount()) > 0;
+    }
 }
