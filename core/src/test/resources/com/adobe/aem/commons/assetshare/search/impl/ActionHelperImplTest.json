@@ -22,5 +22,17 @@
         "jcr:primaryType": "nt:unstructured"
       }
     }
+  },
+  "asset 3.png": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:content": {
+      "jcr:primaryType": "nt:unstructured",
+      "metadata": {
+        "jcr:primaryType": "nt:unstructured"
+      },
+      "renditions": {
+        "jcr:primaryType": "nt:unstructured"
+      }
+    }
   }
 }

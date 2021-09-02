@@ -20,6 +20,8 @@
 package com.adobe.aem.commons.assetshare.content.renditions;
 
 import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 /**
@@ -39,6 +41,8 @@ public class AssetRendition {
     }
 
     public AssetRendition(String uri, Long size, String mimeType) {
+        uri = URLEncoder.encode(uri, StandardCharsets.UTF_8).replace("+", "%20");
+
         setBinaryUri(URI.create(uri));
         setSize(size);
         setMimeType(mimeType);

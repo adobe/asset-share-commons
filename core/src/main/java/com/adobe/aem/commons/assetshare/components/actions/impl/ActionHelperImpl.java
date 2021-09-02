@@ -22,20 +22,27 @@ package com.adobe.aem.commons.assetshare.components.actions.impl;
 import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
 import com.adobe.aem.commons.assetshare.configuration.Config;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.aem.commons.assetshare.util.UrlUtil;
 import com.day.cq.wcm.api.WCMMode;
+import com.day.text.Text;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestParameter;
-import org.apache.sling.api.resource.Resource;
 import org.apache.sling.models.factory.ModelFactory;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
-import java.util.*;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.EMPTY_LIST;
-import static java.util.Collections.emptyList;
 
 @Component
 public final class ActionHelperImpl implements ActionHelper {
@@ -49,7 +56,10 @@ public final class ActionHelperImpl implements ActionHelper {
 
         if (requestParameters != null) {
             return Arrays.stream(requestParameters)
+                    .filter(Objects::nonNull)
                     .map(RequestParameter::getString)
+                    .filter(StringUtils::isNotBlank)
+                    .map(path -> Text.unescape(path))
                     .map(path -> request.getResourceResolver().getResource(path))
                     .filter(Objects::nonNull)
                     .map(resource -> modelFactory.getModelFromWrappedRequest(request, resource, AssetModel.class))

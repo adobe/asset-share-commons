@@ -6,11 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [v2.1.0]
+
 ### Fixed
 
 - 0630 - AssetRenditionDispatcher configs are not ranked by service.ranking 
 - 0635 - Fixed removeDownloadById(..) call to use correct function name
 - 0638 - Fixed Core Component Teaser imageDelegate to use ASC image component proxy
+- 0639 - Assets with spaces/unusual characters in path break when downloading. Also fixes issue w/ showing single file downloads in Downloads component.
 
 ## [v2.0.6]
 
