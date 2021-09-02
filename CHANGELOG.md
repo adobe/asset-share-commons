@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- 0630 - AssetRenditionDispatcher configs are not ranked by service.ranking 
+
 ## [v2.0.6]
 
 ### Fixed
