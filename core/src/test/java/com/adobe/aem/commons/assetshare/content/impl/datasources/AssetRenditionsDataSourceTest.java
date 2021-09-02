@@ -25,17 +25,23 @@ import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionDi
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
 import com.adobe.aem.commons.assetshare.util.DataSourceBuilder;
+import com.adobe.aem.commons.assetshare.util.ExpressionEvaluator;
 import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.aem.commons.assetshare.util.impl.DataSourceBuilderImpl;
+import com.adobe.aem.commons.assetshare.util.impl.ExpressionEvaluatorImpl;
 import com.adobe.aem.commons.assetshare.util.impl.RequireAemImpl;
 import com.adobe.granite.ui.components.ds.DataSource;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.commons.mime.MimeTypeService;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.osgi.framework.Constants;
 
 import javax.servlet.Servlet;
@@ -47,17 +53,23 @@ import java.util.Map;
 
 import static org.junit.Assert.assertArrayEquals;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AssetRenditionsDataSourceTest {
 
     @Rule
     public AemContext ctx = new AemContext();
+
+    @Mock
+    private MimeTypeService mimeTypeService;
 
     @Before
     public void setUp() throws Exception {
         ctx.load().json("/com/adobe/aem/commons/assetshare/content/impl/AssetRenditionsDataSourceTest.json", "/apps/dialog");
 
         ctx.registerService(RequireAem.class, new RequireAemImpl());
-        ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
+        ctx.registerService(MimeTypeService.class, mimeTypeService);
+        ctx.registerService(ExpressionEvaluator.class, new ExpressionEvaluatorImpl());
+        ctx.registerInjectActivateService(new AssetRenditionsImpl());
         ctx.registerService(AssetRenditionDispatchers.class, new AssetRenditionDispatchersImpl());
         ctx.registerService(DataSourceBuilder.class, new DataSourceBuilderImpl());
 
@@ -106,7 +118,7 @@ public class AssetRenditionsDataSourceTest {
     }
 
     @Test
-    public void doGet_ExcludeAssetRenditionDispatcherssViaOsgiConfig() throws ServletException, IOException {
+    public void doGet_ExcludeAssetRenditionDispatchersViaOsgiConfig() throws ServletException, IOException {
         String[] expected = new String[]{"c", "d"};
 
         ctx.currentResource("/apps/dialog/default");

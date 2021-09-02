@@ -1,0 +1,12 @@
+{
+  "service.ranking:Integer": -20001,
+  "label": "Static Video Renditions",
+  "name": "asset-share-commons-static-video-renditions",
+  "types": [
+    "video"
+  ],
+  "rendition.mappings": [
+    "m4v=^cq5dam\\.video\\..+\\.m4v",
+    "mp4=^cq5dam\\.video\\..+\\.mp4"
+  ]
+}
