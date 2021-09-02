@@ -27,13 +27,16 @@ import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatc
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
 import com.adobe.aem.commons.assetshare.testing.RequireAemMock;
+import com.adobe.aem.commons.assetshare.util.ExpressionEvaluator;
 import com.adobe.aem.commons.assetshare.util.RequireAem;
+import com.adobe.aem.commons.assetshare.util.impl.ExpressionEvaluatorImpl;
 import com.adobe.aem.commons.assetshare.util.impl.ExtensionOverrideRequestWrapper;
 import com.day.cq.dam.commons.util.DamUtil;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.sling.api.request.RequestDispatcherOptions;
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.commons.mime.MimeTypeService;
 import org.apache.sling.testing.mock.sling.servlet.MockRequestDispatcherFactory;
 import org.apache.sling.testing.mock.sling.servlet.MockSlingHttpServletResponse;
 import org.junit.Before;
@@ -66,6 +69,9 @@ public class InternalRedirectRenditionDispatcherImplTest {
     @Mock
     private AssetResolver assetResolver;
 
+    @Mock
+    private MimeTypeService mimeTypeService;
+
     @Before
     public void setUp() throws Exception {
         RequireAemMock.setAemDistribution(ctx, RequireAem.Distribution.CLASSIC);
@@ -74,8 +80,9 @@ public class InternalRedirectRenditionDispatcherImplTest {
         ctx.currentResource("/content/dam/test.png");
         doReturn(DamUtil.resolveToAsset(ctx.resourceResolver().getResource("/content/dam/test.png"))).when(assetResolver).resolveAsset(ctx.request());
 
-
-        ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
+        ctx.registerService(MimeTypeService.class, mimeTypeService);
+        ctx.registerService(ExpressionEvaluator.class, new ExpressionEvaluatorImpl());
+        ctx.registerInjectActivateService(new AssetRenditionsImpl());
 
         ctx.registerService(AssetResolver.class, assetResolver);
 

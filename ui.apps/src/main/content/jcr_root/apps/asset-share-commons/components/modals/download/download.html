@@ -37,6 +37,8 @@
           data-asset-share-download-direct="${properties.downloadDirect ? 'true' : ''}"
           data-asset-share-download-automatic="${properties.automaticDownload ? 'true' : ''}"
           class="ui modal cmp-modal-download--wrapper cmp-modal">
+    <input id="asset-share-commons__download-modal--timezone" type="hidden" name="timezone" value=""/>
+    <script>document.getElementById('asset-share-commons__download-modal--timezone').value = Intl.DateTimeFormat().resolvedOptions().timeZone;</script>
 
     <i class="close icon"></i>
     <div data-sly-test="${properties.downloadDirect}" class="ui warning message">

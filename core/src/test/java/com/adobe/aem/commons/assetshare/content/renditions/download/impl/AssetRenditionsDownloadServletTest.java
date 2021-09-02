@@ -27,7 +27,9 @@ import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsI
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
 import com.adobe.aem.commons.assetshare.testing.MockAssetModels;
 import com.adobe.aem.commons.assetshare.testing.RequireAemMock;
+import com.adobe.aem.commons.assetshare.util.ExpressionEvaluator;
 import com.adobe.aem.commons.assetshare.util.RequireAem;
+import com.adobe.aem.commons.assetshare.util.impl.ExpressionEvaluatorImpl;
 import com.adobe.aem.commons.assetshare.util.impl.ServletHelperImpl;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
@@ -37,6 +39,7 @@ import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.request.RequestDispatcherOptions;
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.commons.mime.MimeTypeService;
 import org.apache.sling.models.factory.ModelFactory;
 import org.apache.sling.testing.mock.sling.servlet.MockRequestDispatcherFactory;
 import org.junit.Before;
@@ -72,6 +75,9 @@ public class AssetRenditionsDownloadServletTest {
     @Mock
     private RequestDispatcher requestDispatcher;
 
+    @Mock
+    private MimeTypeService mimeTypeService;
+
     @Before
     public void setUp() {
         ctx.load().json(getClass().getResourceAsStream("AssetRenditionsDownloadServletTest.json"), "/content");
@@ -89,7 +95,9 @@ public class AssetRenditionsDownloadServletTest {
 
         ctx.registerService(AssetRenditionDispatchers.class, new AssetRenditionDispatchersImpl());
 
-        ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
+        ctx.registerService(MimeTypeService.class, mimeTypeService);
+        ctx.registerService(ExpressionEvaluator.class, new ExpressionEvaluatorImpl());
+        ctx.registerInjectActivateService(new AssetRenditionsImpl());
 
         ctx.registerInjectActivateService(new AssetRenditionStreamerImpl());
 

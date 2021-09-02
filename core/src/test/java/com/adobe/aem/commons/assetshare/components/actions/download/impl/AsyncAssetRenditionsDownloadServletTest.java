@@ -4,6 +4,7 @@ import com.adobe.aem.commons.assetshare.components.actions.impl.ActionHelperImpl
 import com.adobe.aem.commons.assetshare.content.renditions.download.async.impl.AsyncAssetRenditionsDownloadServlet;
 import com.adobe.aem.commons.assetshare.testing.RequireAemMock;
 import com.adobe.aem.commons.assetshare.util.RequireAem;
+import com.adobe.aem.commons.assetshare.util.impl.ExpressionEvaluatorImpl;
 import com.adobe.cq.dam.download.api.DownloadApiFactory;
 import com.adobe.cq.dam.download.api.DownloadService;
 import io.wcm.testing.mock.aem.junit.AemContext;
@@ -27,6 +28,8 @@ public class AsyncAssetRenditionsDownloadServletTest {
     @Before
     public void setUp() throws Exception {
         ctx.registerInjectActivateService(new ActionHelperImpl());
+        ctx.registerInjectActivateService(new ExpressionEvaluatorImpl());
+
         ctx.registerService(DownloadService.class, mock(DownloadService.class));
         ctx.registerService(DownloadApiFactory.class, mock(DownloadApiFactory.class));
     }

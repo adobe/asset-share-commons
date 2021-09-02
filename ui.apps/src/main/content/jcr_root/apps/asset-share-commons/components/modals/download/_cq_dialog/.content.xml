@@ -199,18 +199,43 @@
                                                 distribution="cloud-ready"/>
                                     </achive-name-expression>
 
-                                    <!-- AEM Classic -->
-
                                     <achive-name-expression-note
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/hyperlink"
-                                            text="Click to see the available expression variables"
+                                            text="Click to see the available expression variables Archive Name Expression"
                                             href="https://opensource.adobe.com/asset-share-commons/pages/actions/download#archive-name-expression">
                                         <granite:rendercondition
                                                 jcr:primaryType="nt:unstructured"
                                                 sling:resourceType="asset-share-commons/authoring/renderconditions/require-aem"
                                                 distribution="cloud-ready"/>
                                     </achive-name-expression-note>
+
+                                    <achive-file-expression
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="${asset.name.no-extension}/${asset.name.no-extension} (${rendition.name})"
+                                            fieldDescription="The file name expression (excluding the '.extension') that defines the name format of the files in the archive. "
+                                            fieldLabel="File Path Expression"
+                                            name="./archiveFileExpression"
+                                            required="{Boolean}false">
+                                        <granite:rendercondition
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="asset-share-commons/authoring/renderconditions/require-aem"
+                                                distribution="cloud-ready"/>
+                                    </achive-file-expression>
+
+                                    <achive-file-name-expression-note
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/hyperlink"
+                                            text="Click to see the available expression variables for Archive File Name Expression"
+                                            href="https://opensource.adobe.com/asset-share-commons/pages/actions/download#archive-file-name-expression">
+                                        <granite:rendercondition
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="asset-share-commons/authoring/renderconditions/require-aem"
+                                                distribution="cloud-ready"/>
+                                    </achive-file-name-expression-note>
+
+                                    <!-- AEM Classic -->
 
                                     <exclude-original-assets
                                             jcr:primaryType="nt:unstructured"

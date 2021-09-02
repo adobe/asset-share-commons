@@ -36,14 +36,15 @@ Represents a logical download from Asset Share Commons.
             <!--/* Download archive name */-->
             <td class="cmp-modal-downloads__col--archive-name accordion-trigger"
                 data-sly-test="${download.name != null}">
-                <i data-sly-test="${download.status != 'PROCESSING'}" class="dropdown icon"></i>
+                <i data-sly-test="${download.status != 'PROCESSING'}" class="${download.archive ? 'dropdown' : ''} icon"></i>
                 <i data-sly-test="${download.status == 'PROCESSING'}" class="icon"></i>
                 ${download.name}
             </td>
 
             <td class="cmp-modal-downloads__col--archive-name accordion-trigger"
                 data-sly-test="${download.name == null && download.status == 'FAILED' }">
-                <i class="dropdown icon"></i>
+                <i class="${download.archive ? 'dropdown' : ''} icon"></i>
+
                 ${ properties.failedDownloadName || 'FAILED DOWNLOAD' @ i18n }
             </td>
 
@@ -56,7 +57,7 @@ Represents a logical download from Asset Share Commons.
             </td>
             <!--/* Success count */-->
             <td class="cmp-modal-downloads__col--total-count accordion-trigger">
-                ${download.successCount}
+                ${download.archive ? download.successCount : '1'}
             </td>
             <!--/* File size */-->
             <td class="cmp-modal-downloads__col--file-size accordion-trigger">

@@ -63,6 +63,9 @@ public class ActionHelperImplTest {
     @Mock
     AssetModel asset2;
 
+    @Mock
+    AssetModel asset3;
+
     @Before
     public void setup() {
         ctx.load().json("/com/adobe/aem/commons/assetshare/search/impl/ActionHelperImplTest.json", "/content/dam");
@@ -77,6 +80,10 @@ public class ActionHelperImplTest {
                 argThat(new ResourcePath("/content/dam/asset-2.png")),
                 eq(AssetModel.class));
 
+        doReturn("asset 3.png").when(asset3).getName();
+        doReturn(asset3).when(modelFactory).getModelFromWrappedRequest(eq(ctx.request()),
+                argThat(new ResourcePath("/content/dam/asset 3.png")),
+                eq(AssetModel.class));
         ctx.registerService(ModelFactory.class, modelFactory, Constants.SERVICE_RANKING, Integer.MAX_VALUE);
 
         ctx.registerInjectActivateService(new ActionHelperImpl());
@@ -89,7 +96,8 @@ public class ActionHelperImplTest {
         final Map<String, Object> requestParameters = new HashMap<>();
         final String[] assets = {
                 "/content/dam/asset-1.png",
-                "/content/dam/asset-2.png"
+                "/content/dam/asset-2.png",
+                "/content/dam/asset%203.png"
         };
 
         requestParameters.put(ASSETS_REQUEST_PARAMETER_NAME, assets);
@@ -100,12 +108,11 @@ public class ActionHelperImplTest {
                 actionHelper.getAssetsFromQueryParameter(ctx.request(), ASSETS_REQUEST_PARAMETER_NAME);
 
         assertNotNull(models);
-        assertEquals(2, models.size());
+        assertEquals(3, models.size());
         assertEquals("asset-1.png", models.toArray(new AssetModel[2])[0].getName());
         assertEquals("asset-2.png", models.toArray(new AssetModel[2])[1].getName());
+        assertEquals("asset 3.png", models.toArray(new AssetModel[2])[2].getName());
     }
-
-
 
     @Test
     public void getAllowedValuesFromQueryParameter() {
