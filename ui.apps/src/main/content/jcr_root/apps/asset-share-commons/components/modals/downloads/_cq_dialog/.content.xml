@@ -4,7 +4,7 @@
     jcr:title="Downloads Modal"
     sling:resourceType="cq/gui/components/authoring/dialog"
     extraClientlibs="[]"
-    helpPath="https://adobe-marketing-cloud.github.io/asset-share-commons/pages/actions/downloads/">
+    helpPath="https://opensource.adobe.com/asset-share-commons/pages/actions/downloads/">
     <content
         jcr:primaryType="nt:unstructured"
         sling:resourceType="granite/ui/components/coral/foundation/container">

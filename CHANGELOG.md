@@ -4,12 +4,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- 0630 - AssetRenditionDispatcher configs are not ranked by service.ranking 
+
+## [v2.0.6]
+
+### Fixed
+
+- 0612 - Fixed issue where actions could be invoked even if the actionURL does not resolve to a valid resource.
+- 0638 - Fixed Core Component Teaser imageDelegate to use ASC image component proxy
+
+### Changed
+
+- 0615 - makes an extra call beneath user's /home/profile to populate local storage with additional profile data
+- 0619 - update project URLs to point to https://opensource.adobe.com/asset-share-commons
+
 ## [v2.0.4]
 
 ### Fixed
 
 - 0607 - asset-share-commons.all package's dependency on Core Components breaks AEM CS deployment. Removing this hard dependency.
-- 0630 - AssetRenditionDispatcher configs are not ranked by service.ranking 
+- 0619 - update links in project to new https://opensource.adobe.com/asset-share-commons docs
 
 ### Changed
 
