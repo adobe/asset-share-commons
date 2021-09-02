@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRendition;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.adobe.aem.commons.assetshare.util.ExpressionEvaluator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.models.factory.ModelFactory;
@@ -42,6 +43,9 @@ public class AssetRenditionsImpl implements AssetRenditions {
 
     @Reference
     private ModelFactory modelFactory;
+
+    @Reference
+    private ExpressionEvaluator expressionEvaluator;
 
     @Override
     public String getUrl(final SlingHttpServletRequest request, final AssetModel asset, final AssetRenditionParameters parameters) {
@@ -80,45 +84,9 @@ public class AssetRenditionsImpl implements AssetRenditions {
 
     @Override
     public String evaluateExpression(final AssetModel assetModel, String renditionName, String expression) {
-        // Even though, the name is .path, we use url since this is the URL escaped version of the path
-        final String assetPath = assetModel.getPath();
-        final String assetUrl = assetModel.getUrl();
-        final String assetName = assetModel.getName();
-
-        // Dynamic Media properties
-        final String dmName = assetModel.getProperties().get(PN_S7_NAME, String.class);
-        final String dmId = assetModel.getProperties().get(PN_S7_ASSET_ID, String.class);
-        final String dmFile = assetModel.getProperties().get(PN_S7_FILE, String.class);
-        final String dmFileAvs = assetModel.getProperties().get(PN_S7_FILE_AVS, String.class);
-        final String dmFolder = assetModel.getProperties().get(PN_S7_FOLDER, String.class);
-        final String dmDomain = assetModel.getProperties().get(PN_S7_DOMAIN, String.class);
-        final String dmApiServer = assetModel.getProperties().get(PN_S7_API_SERVER, String.class);
-        final String dmCompanyId = assetModel.getProperties().get(PN_S7_COMPANY_ID, String.class);
-
-        expression = StringUtils.replace(expression, VAR_ASSET_PATH, assetPath);
-        expression = StringUtils.replace(expression, VAR_ASSET_URL, assetUrl);
-        expression = StringUtils.replace(expression, VAR_ASSET_NAME, assetName);
-        expression = StringUtils.replace(expression, VAR_ASSET_NAME_NO_EXTENSION,
-                StringUtils.substringBeforeLast(assetModel.getName(), "."));
-
-        expression = StringUtils.replace(expression, VAR_ASSET_EXTENSION,
-                StringUtils.substringAfterLast(assetName, "."));
-        expression = StringUtils.replace(expression, VAR_RENDITION_NAME, renditionName);
-
-        expression = StringUtils.replace(expression, VAR_DM_NAME, dmName);
-        expression = StringUtils.replace(expression, VAR_DM_ID, dmId);
-        expression = StringUtils.replace(expression, VAR_DM_FILE, dmFile);
-        expression = StringUtils.replace(expression, VAR_DM_FILE_AVS, dmFileAvs);
-        expression = StringUtils.replace(expression, VAR_DM_FILE_NO_COMPANY,
-                StringUtils.substringAfterLast(dmFile, "/"));
-
-        expression = StringUtils.replace(expression, VAR_DM_FOLDER, dmFolder);
-        expression = StringUtils.replace(expression, VAR_DM_DOMAIN, dmDomain);
-        expression = StringUtils.replace(expression, VAR_DM_API_SERVER, dmApiServer);
-
-        expression = StringUtils.replace(expression, VAR_DM_COMPANY_ID, dmCompanyId);
-        expression = StringUtils.replace(expression, VAR_DM_COMPANY_NAME,
-                StringUtils.substringBeforeLast(dmFile, "/"));
+        expression = expressionEvaluator.evaluateAssetExpression(expression, assetModel);
+        expression = expressionEvaluator.evaluateRenditionExpression(expression, renditionName);
+        expression = expressionEvaluator.evaluateDynamicMediaExpression(expression, assetModel);
 
         return expression;
     }
