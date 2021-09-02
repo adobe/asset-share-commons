@@ -19,6 +19,10 @@
 
 package com.adobe.aem.commons.assetshare.content.renditions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -28,6 +32,7 @@ import java.util.Optional;
  * Defines information on how to get an asset rendition using AEM's Async Download Framework
  */
 public class AssetRendition {
+    private static final Logger log = LoggerFactory.getLogger(AssetRendition.class);
     public static AssetRendition UNAVAILABLE_ASSET_RENDITION = new AssetRendition(URI.create("failed://to.resolve.asset.rendition"), 0L, "unavailable/unavailable");
 
     private URI binaryUri;
@@ -41,7 +46,13 @@ public class AssetRendition {
     }
 
     public AssetRendition(String uri, Long size, String mimeType) {
-        uri = URLEncoder.encode(uri, StandardCharsets.UTF_8).replace("+", "%20");
+        try {
+            uri = URLEncoder.encode(uri, "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            log.warn("Unable to encode String URI [ {} ] using UTF-8. Continuing using URI unencoded...", uri);
+        }
+
+        uri = uri.replace("+", "%20");
 
         setBinaryUri(URI.create(uri));
         setSize(size);
