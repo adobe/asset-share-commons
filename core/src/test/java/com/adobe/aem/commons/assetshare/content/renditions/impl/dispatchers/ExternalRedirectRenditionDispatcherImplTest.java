@@ -26,9 +26,12 @@ import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedProperti
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
+import com.adobe.aem.commons.assetshare.util.ExpressionEvaluator;
+import com.adobe.aem.commons.assetshare.util.impl.ExpressionEvaluatorImpl;
 import com.day.cq.dam.commons.util.DamUtil;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
+import org.apache.sling.commons.mime.MimeTypeService;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -55,13 +58,18 @@ public class ExternalRedirectRenditionDispatcherImplTest {
     @Mock
     private AssetResolver assetResolver;
 
+    @Mock
+    private MimeTypeService mimeTypeService;
+
     @Before
     public void setUp() throws Exception {
         ctx.load().json(getClass().getResourceAsStream("ExternalRedirectRenditionDispatcherImplTest.json"), "/content/dam");
         ctx.currentResource("/content/dam/test.png");
         doReturn(DamUtil.resolveToAsset(ctx.resourceResolver().getResource("/content/dam/test.png"))).when(assetResolver).resolveAsset(ctx.request());
 
-        ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
+        ctx.registerService(MimeTypeService.class, mimeTypeService);
+        ctx.registerService(ExpressionEvaluator.class, new ExpressionEvaluatorImpl());
+        ctx.registerInjectActivateService(new AssetRenditionsImpl());
 
         ctx.registerService(AssetResolver.class, assetResolver);
 

@@ -1,0 +1,8 @@
+{
+  "service.ranking:Integer": -100001,
+  "label": "Original Rendition",
+  "name": "asset-share-commons-original-renditions",
+  "rendition.mappings": [
+    "original=^original$"
+  ]
+}

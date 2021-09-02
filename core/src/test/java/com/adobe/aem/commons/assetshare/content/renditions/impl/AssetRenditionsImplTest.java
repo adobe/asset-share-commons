@@ -26,12 +26,16 @@ import com.adobe.aem.commons.assetshare.content.properties.ComputedProperties;
 import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedPropertiesImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.adobe.aem.commons.assetshare.util.ExpressionEvaluator;
+import com.adobe.aem.commons.assetshare.util.impl.ExpressionEvaluatorImpl;
 import com.day.cq.dam.commons.util.DamUtil;
 import io.wcm.testing.mock.aem.junit.AemContext;
+import org.apache.sling.commons.mime.MimeTypeService;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.HashMap;
@@ -47,6 +51,9 @@ public class AssetRenditionsImplTest {
     @Rule
     public AemContext ctx = new AemContext();
 
+    @Mock
+    private MimeTypeService mimeTypeService;
+
     private AssetModel testAssetModel;
 
     @Before
@@ -58,10 +65,13 @@ public class AssetRenditionsImplTest {
         doReturn(DamUtil.resolveToAsset(ctx.resourceResolver().getResource("/content/dam/test.png"))).when(assetResolver).resolveAsset(ctx.request());
         ctx.registerService(AssetResolver.class, assetResolver);
 
+        ctx.registerService(mimeTypeService);
+        ctx.registerService(ExpressionEvaluator.class, new ExpressionEvaluatorImpl());
+
         ctx.registerService(ComputedProperties.class, new ComputedPropertiesImpl());
         ctx.addModelsForClasses(AssetModelImpl.class);
 
-        ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
+        ctx.registerInjectActivateService(new AssetRenditionsImpl());
 
         testAssetModel = ctx.request().adaptTo(AssetModel.class);
     }
