@@ -6,11 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- 0630 - AssetRenditionDispatcher configs are not ranked by service.ranking 
+
 ## [v2.0.6]
 
 ### Fixed
 
 - 0612 - Fixed issue where actions could be invoked even if the actionURL does not resolve to a valid resource.
+- 0638 - Fixed Core Component Teaser imageDelegate to use ASC image component proxy
 
 ### Changed
 

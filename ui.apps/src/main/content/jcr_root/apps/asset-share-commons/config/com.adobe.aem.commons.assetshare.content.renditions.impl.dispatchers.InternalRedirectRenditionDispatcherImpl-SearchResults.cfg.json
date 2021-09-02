@@ -1,0 +1,10 @@
+{
+  "service.ranking:Integer": -9001,
+  "label": "Search Results",
+  "name": "asset-share-commons-search-results",
+  "hidden:Boolean": true,
+  "rendition.mappings": [
+    "card=${asset.path}.thumb.319.319.jpg",
+    "list=${asset.path}.thumb.140.140.jpg"
+  ]
+}
