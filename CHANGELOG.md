@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [v2.1.2]
+
+### Fixed
+
+- 0644 - Fixed invalid reference to donwnloadId
+
 ## [v2.1.0]
 
 ### Fixed
