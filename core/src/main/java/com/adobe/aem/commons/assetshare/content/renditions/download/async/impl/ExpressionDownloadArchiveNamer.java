@@ -26,7 +26,7 @@ import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.download.async.DownloadArchiveNamer;
 import com.adobe.aem.commons.assetshare.content.renditions.download.async.DownloadTargetParameters;
 import com.adobe.cq.dam.download.api.DownloadTarget;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.commons.mime.MimeTypeService;
@@ -72,7 +72,7 @@ public class ExpressionDownloadArchiveNamer implements DownloadArchiveNamer {
         final String expression = downloadComponentResource.getValueMap().get(DownloadImpl.PN_ARCHIVE_FILE_NAME_EXPRESSION, DownloadImpl.DEFAULT_ARCHIVE_FILE_NAME_EXPRESSION);
 
         if (StringUtils.isNotBlank(expression)) {
-            return assetRenditions.evaluateExpression(assetModel, renditionName, expression) + extension;
+           return assetRenditions.evaluateExpression(assetModel, renditionName, expression) + StringUtils.defaultIfBlank(extension, "");
         } else {
             return null;
         }
