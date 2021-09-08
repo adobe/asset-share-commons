@@ -26,7 +26,7 @@ import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.download.async.DownloadArchiveNamer;
 import com.adobe.aem.commons.assetshare.content.renditions.download.async.DownloadTargetParameters;
 import com.adobe.cq.dam.download.api.DownloadTarget;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.commons.mime.MimeTypeService;

@@ -36,6 +36,7 @@ import com.adobe.aem.commons.assetshare.configuration.AssetDetailsResolver;
 import com.adobe.aem.commons.assetshare.configuration.Config;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.util.EmailService;
+import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.granite.security.user.UserProperties;
 import com.adobe.granite.security.user.UserPropertiesManager;
 import com.day.cq.commons.Externalizer;
@@ -53,7 +54,6 @@ import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.models.factory.ModelFactory;
 import org.apache.sling.scripting.core.ScriptHelper;
-import org.apache.sling.settings.SlingSettingsService;
 import org.apache.sling.xss.XSSAPI;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -96,7 +96,7 @@ public class EmailShareServiceImpl implements ShareService {
     private transient AssetDetailsResolver assetDetailsResolver;
 
     @Reference
-    private transient SlingSettingsService slingSettingsService;
+    private transient RequireAem requireAem;
 
     @Reference
     private transient ModelFactory modelFactory;
@@ -192,7 +192,7 @@ public class EmailShareServiceImpl implements ShareService {
                 // This is required since assetDetailsResolver.getFullUrl(config, asset) performs its own escaping.
                 url =  Text.unescape(url);
 
-                if (isAuthor()) {
+                if (RequireAem.ServiceType.AUTHOR.equals(requireAem.getServiceType())) {
                     url = externalizer.authorLink(config.getResourceResolver(), url);
                 } else {
                     url = externalizer.externalLink(config.getResourceResolver(), cfg.externalizerDomain(), url);
@@ -209,10 +209,6 @@ public class EmailShareServiceImpl implements ShareService {
         sb.append("</ul>");
 
         return sb.toString();
-    }
-
-    public boolean isAuthor() {
-        return slingSettingsService.getRunModes().contains("author");
     }
 
     private String getSignature(final EmailShare emailShare, final UserProperties userProperties) throws ShareException {
