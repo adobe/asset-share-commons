@@ -25,6 +25,7 @@ import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditi
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.jackrabbit.vault.packaging.JcrPackage;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.ValueMap;
@@ -85,7 +86,7 @@ public class AssetRenditionsZipperImpl implements AssetRenditionsDownloadOrchest
         final String filename = StringUtils.defaultIfBlank(getFileName(request.getResource().getValueMap()), DEFAULT_FILE_ATTACHMENT_NAME);
 
         response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
-        response.setContentType("application/zip");
+        response.setContentType(JcrPackage.MIME_TYPE);
 
         final ZipOutputStream zipOutputStream = new ZipOutputStream(response.getOutputStream());
 

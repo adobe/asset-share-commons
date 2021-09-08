@@ -21,6 +21,7 @@ package com.adobe.aem.commons.assetshare.components.details.impl;
 
 import com.adobe.aem.commons.assetshare.components.details.EditorLinks;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.export.json.ExporterConstants;
 import org.apache.commons.lang3.StringUtils;
@@ -33,7 +34,7 @@ import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
-import org.apache.sling.settings.SlingSettingsService;
+import org.mozilla.javascript.commonjs.module.Require;
 
 import javax.annotation.Nonnull;
 
@@ -60,7 +61,7 @@ public class EditorLinksImpl extends AbstractEmptyTextComponent implements Edito
 
     @OSGiService
     @Required
-    private SlingSettingsService slingSettingsService;
+    private transient RequireAem requireAem;
 
     @ValueMapValue
     private String assetDetailsLinkLabel;
@@ -87,7 +88,7 @@ public class EditorLinksImpl extends AbstractEmptyTextComponent implements Edito
     public boolean isReady() {
         final ResourceResolver resourceResolver = request.getResourceResolver();
 
-        final boolean publishInstance = !slingSettingsService.getRunModes().contains("author");
+        final boolean publishInstance = RequireAem.ServiceType.PUBLISH.equals(requireAem.getServiceType());
         final boolean missingLabels = StringUtils.isBlank(assetDetailsLinkLabel) && StringUtils.isBlank(assetFolderLinkLabel);
         final boolean missingTargetResources = resourceResolver.resolve(request, ASSET_DETAILS_PREFIX + asset.getPath()) == null ||
                 resourceResolver.resolve(request, ASSET_FOLDER_PREFIX + asset.getPath()) == null;

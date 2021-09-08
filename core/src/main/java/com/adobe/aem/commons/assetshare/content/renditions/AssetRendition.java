@@ -19,10 +19,7 @@
 
 package com.adobe.aem.commons.assetshare.content.renditions;
 
-import com.adobe.aem.commons.assetshare.util.UrlUtil;
-import com.day.text.Text;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.client.utils.URIUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +32,7 @@ import java.util.Optional;
  */
 public class AssetRendition {
     private static final Logger log = LoggerFactory.getLogger(AssetRendition.class);
-    public static AssetRendition UNAVAILABLE_ASSET_RENDITION = new AssetRendition(URI.create("failed://to.resolve.asset.rendition"), 0L, "unavailable/unavailable");
+    public static final AssetRendition UNAVAILABLE_ASSET_RENDITION = new AssetRendition(URI.create("failed://to.resolve.asset.rendition"), 0L, "unavailable/unavailable");
 
     private URI binaryUri;
     private Optional<Long> size; // in Bytes

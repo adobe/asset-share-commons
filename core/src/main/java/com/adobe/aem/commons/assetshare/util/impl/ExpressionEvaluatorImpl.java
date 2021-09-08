@@ -27,13 +27,9 @@ import org.apache.sling.commons.mime.MimeTypeService;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 
 import static com.day.cq.dam.scene7.api.constants.Scene7Constants.*;
 
@@ -64,8 +60,6 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
     }
 
     public String evaluateDateTimeExpressions(String expression, ZonedDateTime zonedDateTime) {
-
-        LocalDateTime ldt = zonedDateTime.toLocalDateTime();
 
         expression = StringUtils.replace(expression, VAR_DATE_YEAR, zonedDateTime.format(year));
         expression = StringUtils.replace(expression, VAR_DATE_MONTH, zonedDateTime.format(month));

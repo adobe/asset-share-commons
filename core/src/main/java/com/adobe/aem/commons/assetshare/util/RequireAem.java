@@ -75,8 +75,25 @@ public interface RequireAem {
         }
     }
 
+    enum ServiceType {
+        AUTHOR("author"),
+        PUBLISH("publish");
+
+        private String value;
+
+        ServiceType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
     /**
      * @return the running AEM's environments distribution type.
      */
     Distribution getDistribution();
+
+    ServiceType getServiceType();
 }

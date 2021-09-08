@@ -24,6 +24,7 @@ package com.adobe.aem.commons.assetshare.util.impl;
 import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.granite.license.ProductInfo;
 import com.adobe.granite.license.ProductInfoProvider;
+import org.apache.commons.lang3.StringUtils;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.framework.Version;
@@ -31,6 +32,9 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.metatype.annotations.AttributeDefinition;
+import org.osgi.service.metatype.annotations.Designate;
+import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,13 +43,19 @@ import java.util.Hashtable;
 
 @Component(
         immediate = true,
-        service = {}
+        service = {},
+        property = {
+                "service=" + RequireAemImpl.PUBLISH_SERVICE_VALUE
+        }
 )
+@Designate(ocd = RequireAemImpl.Config.class)
 public class RequireAemImpl implements RequireAem {
     private static final Logger log = LoggerFactory.getLogger(RequireAemImpl.class);
 
     static final String PN_DISTRIBUTION = "distribution";
     static final String PN_VERSION = "version";
+
+    protected static final String PUBLISH_SERVICE_VALUE = "publish";
 
     // This is the first Major/Minor GA Version of AEM as a Cloud Service
     private static final Version originalCloudServiceVersion = new Version(2019, 12,   0);
@@ -56,6 +66,20 @@ public class RequireAemImpl implements RequireAem {
     private ProductInfo productInfo;
     private ServiceRegistration<?> serviceRegistration;
 
+    private RequireAemImpl.Config config;
+
+    @ObjectClassDefinition(
+            name = "Asset Share Commons - AEM Service",
+            description = "Describes the AEM Service being operated on."
+    )
+    @interface Config {
+        @AttributeDefinition(
+                name = "Service name",
+                description = "Defines the which AEN service the application is running under. Allowed values are: author or publish. Defaults to: publish."
+        )
+        String service() default PUBLISH_SERVICE_VALUE;
+    }
+
     @Override
     public Distribution getDistribution() {
         if (productInfo.getVersion().compareTo(originalCloudServiceVersion) > 0) {
@@ -65,8 +89,19 @@ public class RequireAemImpl implements RequireAem {
         }
     }
 
+    @Override
+    public ServiceType getServiceType() {
+        if (StringUtils.equalsIgnoreCase(PUBLISH_SERVICE_VALUE, config.service())) {
+            return ServiceType.PUBLISH;
+        } else {
+            return ServiceType.AUTHOR;
+        }
+    }
+
     @Activate
-    protected void activate(final BundleContext bundleContext) {
+    protected void activate(final RequireAemImpl.Config config, final BundleContext bundleContext) {
+        this.config = config;
+
         productInfo = productInfoProvider.getProductInfo();
 
         @SuppressWarnings("squid:java:S1149")

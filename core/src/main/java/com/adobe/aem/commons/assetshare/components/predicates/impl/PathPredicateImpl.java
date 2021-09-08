@@ -32,7 +32,7 @@ import org.apache.sling.api.wrappers.ValueMapDecorator;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
 import com.day.cq.search.eval.PathPredicateEvaluator;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestParameter;
 import org.apache.sling.api.resource.ResourceUtil;
