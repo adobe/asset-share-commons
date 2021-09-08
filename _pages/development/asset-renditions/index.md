@@ -168,12 +168,6 @@ Supported "variables" in the `rendition.types` field are as follows:
 * `${dm.domain}` = The asset's `dam:scene7Domain` property
 * `${dm.api-server}` = The asset's `dam:scene7APIServer` property
 
-
-#### Example OSGi factory configuration
-
-![Asset Renditions Search Results configuration](images/search-results-asset-renditions-config.png)
-
-
 #### Example sling:OsgiConfig definition
 
     <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
