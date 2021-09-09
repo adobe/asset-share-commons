@@ -61,7 +61,13 @@ AssetShare.Download = (function ($, ns, messages, downloadStore) {
                 }
             },
             error: function (e) {
-                console.error(e.responseJSON.error);
+                if (e.responseJSON && e.responseJSON.error) {
+                    console.error(e.responseJSON.error);
+                }  else if (e.responseText) {
+                    console.error(e.responseText);
+                } else {
+                    console.log("Error polling assets download end-point for status.")
+                }
             }
         });
     }
@@ -89,7 +95,8 @@ AssetShare.Download = (function ($, ns, messages, downloadStore) {
                         console.debug(`Max attempts reached polling of ${downloadData.id}, saving downloadId to session storage.`);
                         _storeDownloadId(downloadData);
                     } else {
-                        _poll(downloadData.id, attempts);
+                        // Pass the downloadData object back in
+                        _poll(downloadData, attempts);
                     }
                 },
                 error: function (e) {
@@ -110,7 +117,7 @@ AssetShare.Download = (function ($, ns, messages, downloadStore) {
         if (downloadStore.addDownload(downloadData)) {
             messages.show('download-add');
         } else {
-            console.debug(`${downloadData.id} was not added to session storage`);
+            console.info(`${downloadData.id} was not added to session storage`);
         }
     }
 
