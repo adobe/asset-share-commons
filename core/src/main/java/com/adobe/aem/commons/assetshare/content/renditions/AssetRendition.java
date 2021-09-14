@@ -19,13 +19,13 @@
 
 package com.adobe.aem.commons.assetshare.content.renditions;
 
+import com.adobe.aem.commons.assetshare.util.UrlUtil;
+import com.day.text.Text;
+import org.apache.http.client.utils.URIUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 /**
@@ -46,13 +46,8 @@ public class AssetRendition {
     }
 
     public AssetRendition(String uri, Long size, String mimeType) {
-        try {
-            uri = URLEncoder.encode(uri, "UTF-8");
-        } catch (UnsupportedEncodingException ex) {
-            log.warn("Unable to encode String URI [ {} ] using UTF-8. Continuing using URI unencoded...", uri);
-        }
 
-        uri = uri.replace("+", "%20");
+        uri = UrlUtil.escape(uri, true);
 
         setBinaryUri(URI.create(uri));
         setSize(size);
