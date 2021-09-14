@@ -58,9 +58,9 @@
                             <site-title-legacy
                                     jcr:primaryType="nt:unstructured"
                                     sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                    fieldDescription="Please use the Site Title field defined above."
+                                    fieldDescription="Do not use this field. Please use the Site Title field defined above."
                                     fieldLabel="Site Title (Legacy field)"
-                                    emptyText="Please use the Site Title field above."
+                                    emptyText="Do not use this field. Please use the Site Title field above."
                                     disabled="{Boolean}false"
                                     name="./jcr:title"/>
                         </items>
