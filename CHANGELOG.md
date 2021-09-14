@@ -6,10 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [v2.1.6]
+
 ### Fixed 
 
 - 0643 - Site title shows up the component policy title if not authored on header component policy
-
+- 0639 - Correct issue introduced in 2.1.0 via #639 where URLs were being over-escaped breaking External Redirect Disaptching 
+ 
 ## [v2.1.4]
 
 ### Fixed
@@ -21,7 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- 0644 - Fixed invalid reference to donwnloadId
+- 0644 - Fixed invalid reference to downloadId
 
 ## [v2.1.0]
 
