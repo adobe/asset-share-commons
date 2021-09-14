@@ -21,16 +21,14 @@ package com.adobe.aem.commons.assetshare.util;
 
 import com.day.text.Text;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 
 public class UrlUtil {
+    private static final Logger log = LoggerFactory.getLogger(UrlUtil.class);
 
     /**
      * This variant is the default behavior and prevents double escaping.
@@ -77,6 +75,7 @@ public class UrlUtil {
 
         } catch (MalformedURLException e) {
             // Treat as internal path
+            log.debug("Could not evaluate unescaped string [ {} ] as a URL. Falling back to escape as path.", e);
             return escapePath(tmp);
         }
     }
