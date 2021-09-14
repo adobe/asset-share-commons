@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed 
+
+- 0643 - Site title shows up the component policy title if not authored on header component policy
+
 ## [v2.1.4]
 
 ### Fixed
