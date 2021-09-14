@@ -17,7 +17,7 @@
  *
  */
 
-@Version("2.0.1")
+@Version("2.0.2")
 package com.adobe.aem.commons.assetshare.components.structure;
 
 import org.osgi.annotation.versioning.Version;
