@@ -146,6 +146,8 @@ public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
 
         if (StringUtils.isNotBlank(renditionRedirect)) {
             try {
+                renditionRedirect = UrlUtil.escape(renditionRedirect, true);
+
                 final String extension = getExtensionFromAscExtQueryParameter(renditionRedirect);
 
                 renditionRedirect = cleanURI(renditionRedirect);

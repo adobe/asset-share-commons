@@ -185,4 +185,27 @@ public class ExternalRedirectRenditionDispatcherImplTest {
         assertEquals(302, ctx.response().getStatus());
         assertEquals("/content/dam/test%20with%20spaces.png.test.500.500.png", ctx.response().getHeader("Location"));
     }
+
+
+    @Test
+    public void dispatch_WithHostAndSpacesInPath() throws IOException, ServletException {
+        ctx.registerInjectActivateService(new ExternalRedirectRenditionDispatcherImpl(),
+                ImmutableMap.<String, Object>builder().
+                        put("rendition.mappings", new String[]{
+                                "testing=https://test.com${asset.path}.test.500.500.${asset.extension}"}).
+                        put("redirect", 302).
+                        build());
+
+        final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
+
+        doReturn(DamUtil.resolveToAsset(ctx.resourceResolver().getResource("/content/dam/test with spaces.png"))).when(assetResolver).resolveAsset(ctx.request());
+        ctx.currentResource("/content/dam/test with spaces.png");
+        ctx.requestPathInfo().setExtension("rendition");
+        ctx.requestPathInfo().setSuffix("testing/download/asset.rendition");
+
+        assetRenditionDispatcher.dispatch(ctx.request(), ctx.response());
+
+        assertEquals(302, ctx.response().getStatus());
+        assertEquals("https://test.com/content/dam/test%20with%20spaces.png.test.500.500.png", ctx.response().getHeader("Location"));
+    }
 }
