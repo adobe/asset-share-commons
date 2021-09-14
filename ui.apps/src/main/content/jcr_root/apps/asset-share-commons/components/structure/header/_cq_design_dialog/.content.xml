@@ -61,7 +61,7 @@
                                     fieldDescription="Please use the Site Title field defined above."
                                     fieldLabel="Site Title (Legacy field)"
                                     emptyText="Please use the Site Title field above."
-                                    disabled="{Boolean}true"
+                                    disabled="{Boolean}false"
                                     name="./jcr:title"/>
                         </items>
                     </branding>
