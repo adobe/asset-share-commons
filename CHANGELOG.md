@@ -6,13 +6,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [v2.1.6]
+## [v2.1.10]
+
+### Fixed
+
+- 0652 - Fixed over-escaping of static rendition paths (stemming from #639)
+- 0653 - 6.5 only - Bundle does not start on 6.5.9
+- 0654 - 6.5 only - ExternalRenditionDispatcher expression evaluation does not resolve to correct asset resource
+- 0655 - 6.5 only - Erring HTTP POST is made on all page loads
+
+## [v2.1.8]
 
 ### Fixed 
 
 - 0643 - Site title shows up the component policy title if not authored on header component policy
-- 0639 - Correct issue introduced in 2.1.0 via #639 where URLs were being over-escaped breaking External Redirect Disaptching 
- 
+
+## [v2.1.6]
+
+### Fixed
+
+- 0639 - Fixed regression introduced in #639 that over-escaped URLs
+
 ## [v2.1.4]
 
 ### Fixed

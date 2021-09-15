@@ -78,7 +78,6 @@ public class InternalRedirectRenditionDispatcherImplTest {
 
         ctx.load().json(getClass().getResourceAsStream("InternalRedirectRenditionDispatcherImplTest.json"), "/content/dam");
         ctx.currentResource("/content/dam/test.png");
-        doReturn(DamUtil.resolveToAsset(ctx.resourceResolver().getResource("/content/dam/test.png"))).when(assetResolver).resolveAsset(ctx.request());
 
         ctx.registerService(MimeTypeService.class, mimeTypeService);
         ctx.registerService(ExpressionEvaluator.class, new ExpressionEvaluatorImpl());
@@ -206,7 +205,6 @@ public class InternalRedirectRenditionDispatcherImplTest {
 
         final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
 
-        doReturn(DamUtil.resolveToAsset(ctx.resourceResolver().getResource("/content/dam/test with spaces.png"))).when(assetResolver).resolveAsset(ctx.request());
         ctx.currentResource("/content/dam/test with spaces.png");
         ctx.requestPathInfo().setExtension("rendition");
         ctx.requestPathInfo().setSuffix("testing/download/asset.rendition");

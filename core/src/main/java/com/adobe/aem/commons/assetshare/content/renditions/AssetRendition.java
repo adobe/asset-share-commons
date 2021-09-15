@@ -21,11 +21,13 @@ package com.adobe.aem.commons.assetshare.content.renditions;
 
 import com.adobe.aem.commons.assetshare.util.UrlUtil;
 import com.day.text.Text;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Optional;
 
 /**
@@ -40,16 +42,21 @@ public class AssetRendition {
     private String mimeType;
 
     public AssetRendition(URI uri, Long size, String mimeType) {
-        setBinaryUri(uri);
-        setSize(size);
-        setMimeType(mimeType);
+        this(uri.toString(), size, mimeType);
+
     }
 
     public AssetRendition(String uri, Long size, String mimeType) {
+        URI cleanURI = null;
 
-        uri = UrlUtil.escape(uri, true);
+        try {
+            cleanURI = cleanURI(uri.toString());
+        } catch (URISyntaxException e) {
+            log.warn("Unable to clean the URI [ {} ], using it as is.", uri, e);
+            cleanURI = URI.create(uri);
+        }
 
-        setBinaryUri(URI.create(uri));
+        setBinaryUri(cleanURI);
         setSize(size);
         setMimeType(mimeType);
     }
@@ -84,6 +91,12 @@ public class AssetRendition {
         this.mimeType = mimeType;
     }
 
+    private URI cleanURI(String uri) throws URISyntaxException {
+        uri  = StringUtils.replace(uri, " ", "%20");
+        uri  = StringUtils.replace(uri, "/_jcr_content", "/jcr:content");
+
+        return new URI(uri);
+    }
 }
 
 
