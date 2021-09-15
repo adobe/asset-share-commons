@@ -49,17 +49,21 @@ jQuery((function($, ns, semanticModal, download) {
         }
 
         function updateBadge() {
-            $.post(DOWNLOADS_URL, getModalData()).then(function(htmlResponse) {
-                var count = ns.Elements.element('downloads-modal', htmlResponse).data('asset-share-downloads-count') || 0;
-                ns.Elements.element("downloads-count").text(count);
-            });
+            if (DOWNLOADS_URL) {
+                $.post(DOWNLOADS_URL, getModalData()).then(function(htmlResponse) {
+                    var count = ns.Elements.element('downloads-modal', htmlResponse).data('asset-share-downloads-count') || 0;
+                    ns.Elements.element("downloads-count").text(count);
+                });
+            }
         }
 
         function update() {
-            $.post(DOWNLOADS_URL, getModalData()).then(function(htmlResponse) {
-                ns.Elements.update(htmlResponse, WHEN_DOWNLOADS_UPDATED);
-                init();
-            });
+            if (DOWNLOADS_URL) {
+                $.post(DOWNLOADS_URL, getModalData()).then(function(htmlResponse) {
+                    ns.Elements.update(htmlResponse, WHEN_DOWNLOADS_UPDATED);
+                    init();
+                });
+            }
         }
 
         function show(e) {
