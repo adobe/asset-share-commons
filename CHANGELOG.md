@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- 0652 - Fixed over-escaping of static rendition paths.
+- 0653 - 6.5 only - Bundle does not start on 6.5.9
+- 0654 - 6.5 only - ExternalRenditionDispatcher expression evaluation does not resolve to correct asset resource
+- 0655 - 6.5 only - Erring HTTP POST is made on all page loads
+
 ## [v2.1.8]
 
 ### Fixed 
