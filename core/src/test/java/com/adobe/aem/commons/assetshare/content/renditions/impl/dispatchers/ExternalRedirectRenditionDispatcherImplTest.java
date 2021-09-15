@@ -65,7 +65,6 @@ public class ExternalRedirectRenditionDispatcherImplTest {
     public void setUp() throws Exception {
         ctx.load().json(getClass().getResourceAsStream("ExternalRedirectRenditionDispatcherImplTest.json"), "/content/dam");
         ctx.currentResource("/content/dam/test.png");
-        doReturn(DamUtil.resolveToAsset(ctx.resourceResolver().getResource("/content/dam/test.png"))).when(assetResolver).resolveAsset(ctx.request());
 
         ctx.registerService(MimeTypeService.class, mimeTypeService);
         ctx.registerService(ExpressionEvaluator.class, new ExpressionEvaluatorImpl());
@@ -161,7 +160,6 @@ public class ExternalRedirectRenditionDispatcherImplTest {
         assetRenditionDispatcher.dispatch(ctx.request(), ctx.response());
 
         assertEquals(301, ctx.response().getStatus());
-        //assertEquals("http://test.scene7.com/is/image/testing/test?%24greyscale%24", ctx.response().getHeader("Location"));
     }
 
     @Test
@@ -175,7 +173,6 @@ public class ExternalRedirectRenditionDispatcherImplTest {
 
         final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
 
-        doReturn(DamUtil.resolveToAsset(ctx.resourceResolver().getResource("/content/dam/test with spaces.png"))).when(assetResolver).resolveAsset(ctx.request());
         ctx.currentResource("/content/dam/test with spaces.png");
         ctx.requestPathInfo().setExtension("rendition");
         ctx.requestPathInfo().setSuffix("testing/download/asset.rendition");
@@ -198,7 +195,6 @@ public class ExternalRedirectRenditionDispatcherImplTest {
 
         final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
 
-        doReturn(DamUtil.resolveToAsset(ctx.resourceResolver().getResource("/content/dam/test with spaces.png"))).when(assetResolver).resolveAsset(ctx.request());
         ctx.currentResource("/content/dam/test with spaces.png");
         ctx.requestPathInfo().setExtension("rendition");
         ctx.requestPathInfo().setSuffix("testing/download/asset.rendition");
