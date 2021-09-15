@@ -16,14 +16,17 @@ public class AssetRenditionTest {
         assetRendition = new AssetRendition("/content/dam/test asset.jpg", 123L, "image/jpeg");
         assertEquals("/content/dam/test%20asset.jpg", assetRendition.getBinaryUri().toString());
 
+        assetRendition = new AssetRendition("/content/dam/test asset.jpg/jcr:content/renditions.cq5dam.web.1.2.png", 123L, "image/jpeg");
+        assertEquals("/content/dam/test%20asset.jpg/jcr:content/renditions.cq5dam.web.1.2.png", assetRendition.getBinaryUri().toString());
+
         assetRendition = new AssetRendition("/content/dam/test+with+plus.jpg", 123L, "image/jpeg");
-        assertEquals("/content/dam/test%2bwith%2bplus.jpg", assetRendition.getBinaryUri().toString());
+        assertEquals("/content/dam/test+with+plus.jpg", assetRendition.getBinaryUri().toString());
 
         assetRendition = new AssetRendition("https://test.com/content/dam/test asset.jpg", 123L, "image/jpeg");
         assertEquals("https://test.com/content/dam/test%20asset.jpg", assetRendition.getBinaryUri().toString());
 
         assetRendition = new AssetRendition("https://smartimaging.scene7.com/is/image/DynamicMediaNA/test (test):Medium", 123L, "image/jpeg");
-        assertEquals("https://smartimaging.scene7.com/is/image/DynamicMediaNA/test%20(test)%3aMedium", assetRendition.getBinaryUri().toString());
+        assertEquals("https://smartimaging.scene7.com/is/image/DynamicMediaNA/test%20(test):Medium", assetRendition.getBinaryUri().toString());
 
         assetRendition = new AssetRendition("https://smartimaging.scene7.com/is/image/DynamicMediaNA/test (test)?$grayscale$", 123L, "image/jpeg");
         assertEquals("https://smartimaging.scene7.com/is/image/DynamicMediaNA/test%20(test)?$grayscale$", assetRendition.getBinaryUri().toString());
