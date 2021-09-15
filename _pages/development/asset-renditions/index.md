@@ -168,18 +168,25 @@ Supported "variables" in the `rendition.types` field are as follows:
 * `${dm.domain}` = The asset's `dam:scene7Domain` property
 * `${dm.api-server}` = The asset's `dam:scene7APIServer` property
 
-#### Example sling:OsgiConfig definition
+#### Example OSGi Configuration definition (using the modern .cfg.json syntax)
 
-    <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
-              jcr:primaryType="sling:OsgiConfig"
-              service.ranking="-9001"
-              label="Dynamic Media renditions"
-              name="asset-share-commons-example-dynamic-media"
-              hidden="{Boolean}false"
-              redirect="301"
-              rendition.mappings="[grayscale-preset=${dm.api-server}is/image/${dm.file}?$graycale$,smart-crop-medium=${dm.api-server}is/image/${dm.file}:Medium]"
-    />
+   {
+       "service.ranking": -9001,
+       label: "Dynamic Media renditions",
+       name: "asset-share-commons-example-dynamic-media",
+       hidden: false,
+       redirect: 301,
+       "rendition.mappings": [ 
 
+         "grayscale-preset=${dm.api-server}is/image/${dm.file}?$graycale$",
+         "smart-crop-medium=${dm.api-server}is/image/${dm.file}:Medium",
+         "cmyk-preset=${dm.api-server}is/image/${dm.file}?$cmyk$?extension=png",
+         "foo=http://foo.com/render?name=${asset.name}&format=tiff&extension=tif
+
+       ]
+   }
+
+Note that the last 2 mappings `cmyk-preset` and `foo` have an `extension` query parameter set. This is a specially named query parameter ASC will itercept and will use as the extension of the downloaded file. This is helpfulp when no variables can be used to determine the file type at the "end of the" external request (such as Dynamic Media). 
 
 ## Provided Asset Rendition Dispatcher Configurations
 
