@@ -21,10 +21,13 @@ package com.adobe.aem.commons.assetshare.content.renditions;
 
 import com.adobe.acs.commons.util.PathInfoUtil;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.aem.commons.assetshare.content.properties.impl.AssetTypeImpl;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.commons.util.DamUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ResourceResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,6 +52,7 @@ public final class AssetRenditionParameters {
     public static final String CACHE_FILENAME = "asset.rendition";
 
     private final Asset asset;
+    private final String assetType;
     private final String renditionName;
     private final String fileName;
     private final List<String> otherParameters;
@@ -71,6 +75,8 @@ public final class AssetRenditionParameters {
         } else if (!CACHE_FILENAME.equals(PathInfoUtil.getLastSuffixSegment(request))) {
             throw new IllegalArgumentException(String.format("Request's last suffix segment must be [ %s ]", CACHE_FILENAME));
         }
+
+        this.assetType = getTypeFromAsset(this.asset, request.getResourceResolver());
 
         // Build the download filename (for Content-Disposition) from the asset node name and rendition name.
         this.fileName = buildFileName(asset, renditionName);
@@ -103,6 +109,8 @@ public final class AssetRenditionParameters {
         }
 
         this.asset = DamUtil.resolveToAsset(assetModel.getResource());
+        this.assetType = getAssetTypeFromAssetModel(assetModel);
+
         this.renditionName = renditionName;
         this.fileName = buildFileName(asset, renditionName);
         this.otherParameters = new ArrayList<>(otherParameters);
@@ -142,5 +150,25 @@ public final class AssetRenditionParameters {
         }
 
         return fileName;
+    }
+
+    private String getTypeFromAsset(Asset asset, ResourceResolver resourceResolver) {
+        Resource assetRes = resourceResolver.getResource(asset.getPath());
+        if(assetRes!=null) {
+            AssetModel assetModel = assetRes.adaptTo(AssetModel.class);
+            if(assetModel!=null) {
+                return getAssetTypeFromAssetModel(assetModel);
+            }
+        }
+
+        return StringUtils.EMPTY;
+    }
+
+    private String getAssetTypeFromAssetModel(AssetModel assetModel) {
+        return StringUtils.lowerCase(assetModel.getProperties().get(AssetTypeImpl.NAME, ""));
+    }
+
+    public String getAssetType() {
+        return assetType;
     }
 }
