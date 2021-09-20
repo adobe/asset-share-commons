@@ -142,8 +142,10 @@ public class InternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
         // If this method becomes supportable by the AEM Async Asset Download framework, review the code at:
         // https://gist.github.com/davidjgonzalez/66e481b54aafb1b900a579ee95848d8f
         // As this might prove useful in it's implementation.
-        throw new UnsupportedOperationException(String.format("[ %s ] is not supported by the AEM Async Asset Download Framework.",
-                this.getClass().getName()));
+
+        log.warn("[ {} ] is not supported by the AEM Async Asset Download Framework.", this.getClass().getName());
+
+        return null;
     }
 
     @Override
