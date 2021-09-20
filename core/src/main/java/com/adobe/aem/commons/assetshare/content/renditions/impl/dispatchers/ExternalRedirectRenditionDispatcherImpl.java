@@ -65,6 +65,8 @@ import static org.osgi.framework.Constants.SERVICE_RANKING;
 public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDispatcherImpl implements AssetRenditionDispatcher {
     private static Logger log = LoggerFactory.getLogger(ExternalRedirectRenditionDispatcherImpl.class);
 
+    private static Long PLACEHOLDER_SIZE_IN_BYTES = 104857600L; // 100MB
+
     private Cfg cfg;
 
     private ConcurrentHashMap<String, String> mappings;
@@ -156,7 +158,7 @@ public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
                         renditionRedirect,
                         parameters.getRenditionName());
 
-                return new AssetRendition(renditionRedirect, 0L, mimeTypeService.getMimeType(extension));
+                return new AssetRendition(renditionRedirect, PLACEHOLDER_SIZE_IN_BYTES, mimeTypeService.getMimeType(extension));
             } catch (URISyntaxException e) {
                 log.warn("Unable to create a valid URI for rendition redirect [ {} ]", renditionRedirect, e);
                 // Still sending to Async Download Framework so we can get a failure
