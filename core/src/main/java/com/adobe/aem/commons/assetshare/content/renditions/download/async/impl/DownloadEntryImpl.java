@@ -88,8 +88,15 @@ public class DownloadEntryImpl implements DownloadEntry {
         return downloadProgress.getTotalCount();
     }
 
+    /**
+     * Note that this size is the sum of the PROVIDED sizes, and not the size of the resulting ZIP
+     * (especially in the case of external URIs downloads where the size is unknown beforehand)
+     *
+     * @return the sum of all PROVIDED (the ones you set, this is not computed by the framework) sizes of processed DownloadFiles in bytes
+     */
     @Override
     public long getTotalSize() {
+        //
         return downloadProgress.getTotalSize();
     }
 
