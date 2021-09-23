@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [v2.1.12]
+
+### Fixed
+
+- 0662 - Changed the placeholder asset size for external renditions (ie. Dynamic Media) from 0 to 100MB to prevent Oak exceptions.
+- 0662 - Commented out the Download Size column from the Downloads component until we have an API that allows up to consistently and accurately report the download zip size 
+ 
 ## [v2.1.10]
 
 ### Fixed
