@@ -30,6 +30,8 @@ Asset Share Commons should be included as a package dependency in *YOUR* project
 
 A `ui.content.sample` AEM content package is provided with a "build out" of an asset share experience, however this package is *ONLY* a sample, and should not be installed on production, but rather used to make it easy to try Asset Share Commons out.  You can copy structures from this project to your project's `ui.content` packages as it makes sense for your use cases, however never depend on anything in `ui.content.sample` directly.
 
+A more detailed guide to [creating a new project can be found here](../new-project).
+
 ## Asset Share Commons 1.x
 
 * [AEM 6.5](https://helpx.adobe.com/experience-manager/6-5/release-notes.html)
