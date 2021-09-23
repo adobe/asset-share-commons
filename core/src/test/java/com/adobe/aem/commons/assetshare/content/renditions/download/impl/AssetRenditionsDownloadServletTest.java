@@ -117,7 +117,7 @@ public class AssetRenditionsDownloadServletTest {
                         put("rendition.mappings", new String[]{ "test=original" }).
                         build());
 
-        RequireAemMock.setAemDistribution(ctx, RequireAem.Distribution.CLASSIC);
+        RequireAemMock.setAemDistribution(ctx, RequireAem.Distribution.CLASSIC, RequireAem.ServiceType.AUTHOR);
 
         ctx.request().setRequestDispatcherFactory(new MockRequestDispatcherFactory() {
             @Override
