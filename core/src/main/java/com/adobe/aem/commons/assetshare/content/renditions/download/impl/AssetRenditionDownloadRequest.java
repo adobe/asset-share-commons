@@ -25,12 +25,10 @@ import org.apache.sling.api.request.RequestPathInfo;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.api.wrappers.SlingHttpServletRequestWrapper;
+import org.apache.sling.servlethelpers.MockRequestPathInfo;
+import org.apache.sling.servlethelpers.MockSlingHttpServletRequest;
 
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
 import javax.script.SimpleBindings;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.apache.sling.api.scripting.SlingBindings.*;
@@ -106,42 +104,14 @@ public class AssetRenditionDownloadRequest extends SlingHttpServletRequestWrappe
 
     @Override
     public RequestPathInfo getRequestPathInfo() {
-        return new RequestPathInfo() {
-            @Nonnull
-            @Override
-            public String getResourcePath() {
-                return getResource().getPath();
-            }
+        MockSlingHttpServletRequest request = new MockSlingHttpServletRequest(this.getResourceResolver());
+        MockRequestPathInfo requestPathInfo = (MockRequestPathInfo) request.getRequestPathInfo();
 
-            @CheckForNull
-            @Override
-            public String getExtension() {
-                return extension;
-            }
+        requestPathInfo.setResourcePath(getResource().getPath());
+        requestPathInfo.setSelectorString( StringUtils.join(selectors, "."));
+        requestPathInfo.setExtension(extension);
+        requestPathInfo.setSuffix(suffix);
 
-            @CheckForNull
-            @Override
-            public String getSelectorString() {
-                return StringUtils.join(selectors, ".");
-            }
-
-            @Nonnull
-            @Override
-            public String[] getSelectors() {
-                return Arrays.copyOf(selectors, selectors.length);
-            }
-
-            @CheckForNull
-            @Override
-            public String getSuffix() {
-                return suffix;
-            }
-
-            @CheckForNull
-            @Override
-            public Resource getSuffixResource() {
-                return getResource().getResourceResolver().getResource(getSuffix());
-            }
-        };
+        return requestPathInfo;
     }
 }
