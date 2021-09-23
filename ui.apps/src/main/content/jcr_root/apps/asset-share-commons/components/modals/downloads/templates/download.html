@@ -59,10 +59,15 @@ Represents a logical download from Asset Share Commons.
             <td class="cmp-modal-downloads__col--total-count accordion-trigger">
                 ${download.archive ? download.successCount : '1'}
             </td>
-            <!--/* File size */-->
+
+            <!--/* File size
+                   Hiding file size as this is not necessarily accurate and can be very confusing when it's not.
+                   This is especially the case for external URIs whose sizes are not known BEFORE they are retrieved.
             <td class="cmp-modal-downloads__col--file-size accordion-trigger">
                 ${download.formattedTotalSize || 0}
             </td>
+            */-->
+
             <!--/* Progress/Download */-->
             <td class="cmp-modal-downloads__col--action"
                 data-asset-share-id="download-archive"
