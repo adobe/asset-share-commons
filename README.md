@@ -27,10 +27,10 @@ From the root directory, run ``mvn -PautoInstallPackage-all clean install`` to b
 
 To use this project with the AEM Developer Tools for Eclipse, import the generated Maven projects via the Import:Maven:Existing Maven Projects wizard. Then enable the Content Package facet on the _content_ project by right-clicking on the project, then select Configure, then Convert to Content Package... In the resulting dialog, select _src/main/content_ as the Content Sync Root.
 
-## Specifying CRX Host/Port
+## Specifying AEM Host/Port
 
-The CRX host and port can be specified on the command line with:
-mvn -Dcrx.host=otherhost -Dcrx.port=5502 <goals>
+The AEM host and port can be specified on the command line with:
+mvn -Daem.host=otherhost -Daem.port=5502 <goals>
 
 
 ## Asset Share Commons 2.x Requirements
