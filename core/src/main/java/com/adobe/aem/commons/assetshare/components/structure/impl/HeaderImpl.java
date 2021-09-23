@@ -22,6 +22,7 @@ package com.adobe.aem.commons.assetshare.components.structure.impl;
 import com.adobe.aem.commons.assetshare.components.structure.Header;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.export.json.ExporterConstants;
+import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.designer.Style;
@@ -198,6 +199,11 @@ public class HeaderImpl implements Header {
     public String getSiteTitle() {
         if (siteTitle == null) {
             siteTitle = getHeaderProperty(PN_SITE_TITLE);
+        }
+
+        // Check old property name for backwards compatibility
+        if (siteTitle == null) {
+            siteTitle = getHeaderProperty(JcrConstants.JCR_TITLE);
         }
 
         return siteTitle;

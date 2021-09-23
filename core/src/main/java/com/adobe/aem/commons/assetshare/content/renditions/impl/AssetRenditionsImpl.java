@@ -78,7 +78,7 @@ public class AssetRenditionsImpl implements AssetRenditions {
 
     @Override
     public String evaluateExpression(final SlingHttpServletRequest request, String expression) {
-        final AssetModel assetModel = request.adaptTo(AssetModel.class);
+        final AssetModel assetModel = modelFactory.createModel(request.getResource(), AssetModel.class);
         return evaluateExpression(assetModel, new AssetRenditionParameters(request).getRenditionName(), expression);
     }
 

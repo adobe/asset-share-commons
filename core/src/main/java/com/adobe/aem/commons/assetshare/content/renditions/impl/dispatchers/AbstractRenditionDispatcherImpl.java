@@ -92,7 +92,8 @@ public abstract class AbstractRenditionDispatcherImpl implements AssetRenditionD
                 .filter(nvp -> !QUERY_PARAM_SUGGESTED_EXTENSION.equals(nvp.getName()))
                 .forEach(nvp -> newURI.addParameter(nvp.getName(), nvp.getValue()));;
 
+        // Common pattern in DM URLS; This escaping probably is not necessary, but keeping for
+        // now as it would take a closer look to remove (and it breaks tests)
         return StringUtils.replace(newURI.toString(), "%24", "$");
     }
-
 }

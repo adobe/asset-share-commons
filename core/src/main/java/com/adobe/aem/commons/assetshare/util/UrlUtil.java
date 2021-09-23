@@ -21,16 +21,14 @@ package com.adobe.aem.commons.assetshare.util;
 
 import com.day.text.Text;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 
 public class UrlUtil {
+    private static final Logger log = LoggerFactory.getLogger(UrlUtil.class);
 
     /**
      * This variant is the default behavior and prevents double escaping.
@@ -64,21 +62,25 @@ public class UrlUtil {
         // URL cannot handle spaces, so convert them to %20; escapePath(..) will handle converting them back for later escaping
         tmp = StringUtils.replace(tmp, " ", "%20");
 
-        try {
-            final URL url = new URL(tmp);
-            String path = escapePath(url.getPath());
+        if (!isPath(unescaped)) {
+            try {
+                final URL url = new URL(tmp);
+                String path = escapePath(url.getPath());
 
-            if (StringUtils.isNotBlank(url.getQuery())) {
-                path += "?" + url.getQuery();
+                if (StringUtils.isNotBlank(url.getQuery())) {
+                    path += "?" + url.getQuery();
+                }
+
+                // Reconstruct the URL using the escaped path
+                return new URL(url.getProtocol(), url.getHost(), url.getPort(), path).toString();
+
+            } catch (MalformedURLException e) {
+                // Treat as internal path
+                log.debug("Could not evaluate unescaped string [ {} ] as a URL. Falling back to escape as path.", unescaped, e);
             }
-
-            // Reconstruct the URL using the escaped path
-            return new URL(url.getProtocol(), url.getHost(), url.getPort(), path).toString();
-
-        } catch (MalformedURLException e) {
-            // Treat as internal path
-            return escapePath(tmp);
         }
+
+        return escapePath(tmp);
     }
 
     /**
@@ -117,5 +119,21 @@ public class UrlUtil {
         path = StringUtils.replace(path, "/jcr:content", "/_jcr_content");
         path = Text.escapePath(path);
         return path;
+    }
+
+    /**
+     * @param candidate the candidate URI to path to check
+     * @return true if it looks like a path, and false it looks like a URL
+     */
+    private static boolean isPath(String candidate) {
+        if (StringUtils.isNotBlank(candidate)) {
+            if (candidate.matches("^[a-zA-Z0-9]+://.+")) {
+                return false;
+            } else if (StringUtils.startsWith(candidate, "//")) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

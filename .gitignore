@@ -33,3 +33,7 @@ ui.tests/node_modules/
 
 #VS Code
 .history
+
+# Maven
+*.asc
+*.versionsBackup

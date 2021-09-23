@@ -42,7 +42,7 @@ public interface Header extends Component {
     /**
      * property in which a site title is stored.
      */
-    String PN_SITE_TITLE = JcrConstants.JCR_TITLE;
+    String PN_SITE_TITLE = "title";
 
     /**
      * Name of the node relative to the header component that stores the pages and icon items.

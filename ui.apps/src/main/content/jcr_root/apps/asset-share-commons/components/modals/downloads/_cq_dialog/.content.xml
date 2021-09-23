@@ -48,13 +48,15 @@
                                             name="./numberOfFilesColumnTitle"
                                             required="{Boolean}true"/>
 
+                                    <!-- Hiding until the Download size can be accurately computed -->
                                     <column-download-size-title
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
                                             emptyText="Download size"
                                             fieldLabel="Download Size Column Title"
                                             name="./downloadSizeTitle"
-                                            required="{Boolean}true"/>
+                                            renderHidden="{Boolean}true"
+                                            required="{Boolean}false"/>
 
                                     <failed-download-file-name
                                             jcr:primaryType="nt:unstructured"

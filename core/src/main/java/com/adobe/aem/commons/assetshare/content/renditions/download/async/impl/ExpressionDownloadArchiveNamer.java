@@ -72,7 +72,7 @@ public class ExpressionDownloadArchiveNamer implements DownloadArchiveNamer {
         final String expression = downloadComponentResource.getValueMap().get(DownloadImpl.PN_ARCHIVE_FILE_NAME_EXPRESSION, DownloadImpl.DEFAULT_ARCHIVE_FILE_NAME_EXPRESSION);
 
         if (StringUtils.isNotBlank(expression)) {
-            return assetRenditions.evaluateExpression(assetModel, renditionName, expression) + extension;
+           return assetRenditions.evaluateExpression(assetModel, renditionName, expression) + StringUtils.defaultIfBlank(extension, "");
         } else {
             return null;
         }

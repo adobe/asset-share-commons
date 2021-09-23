@@ -6,6 +6,47 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [v2.1.12]
+
+### Fixed
+
+- 0662 - Changed the placeholder asset size for external renditions (ie. Dynamic Media) from 0 to 100MB to prevent Oak exceptions.
+- 0662 - Commented out the Download Size column from the Downloads component until we have an API that allows up to consistently and accurately report the download zip size 
+ 
+## [v2.1.10]
+
+### Fixed
+
+- 0652 - Fixed over-escaping of static rendition paths (stemming from #639)
+- 0653 - 6.5 only - Bundle does not start on 6.5.9
+- 0654 - 6.5 only - ExternalRenditionDispatcher expression evaluation does not resolve to correct asset resource
+- 0655 - 6.5 only - Erring HTTP POST is made on all page loads
+
+## [v2.1.8]
+
+### Fixed 
+
+- 0643 - Site title shows up the component policy title if not authored on header component policy
+
+## [v2.1.6]
+
+### Fixed
+
+- 0639 - Fixed regression introduced in #639 that over-escaped URLs
+
+## [v2.1.4]
+
+### Fixed
+
+- 0644 - Actually fixed invalid reference to donwnloadId (full fix as not in v2.1.2)
+
+
+## [v2.1.2]
+
+### Fixed
+
+- 0644 - Fixed invalid reference to downloadId
+
 ## [v2.1.0]
 
 ### Fixed

@@ -25,9 +25,6 @@ import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatc
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.util.UrlUtil;
-import com.day.cq.dam.api.Asset;
-import com.day.cq.dam.api.Rendition;
-import com.day.text.Text;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -64,6 +61,8 @@ import static org.osgi.framework.Constants.SERVICE_RANKING;
 )
 public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDispatcherImpl implements AssetRenditionDispatcher {
     private static Logger log = LoggerFactory.getLogger(ExternalRedirectRenditionDispatcherImpl.class);
+
+    private static Long PLACEHOLDER_SIZE_IN_BYTES = 104857600L; // 100MB
 
     private Cfg cfg;
 
@@ -146,6 +145,8 @@ public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
 
         if (StringUtils.isNotBlank(renditionRedirect)) {
             try {
+                renditionRedirect = UrlUtil.escape(renditionRedirect, true);
+
                 final String extension = getExtensionFromAscExtQueryParameter(renditionRedirect);
 
                 renditionRedirect = cleanURI(renditionRedirect);
@@ -154,7 +155,7 @@ public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
                         renditionRedirect,
                         parameters.getRenditionName());
 
-                return new AssetRendition(renditionRedirect, 0L, mimeTypeService.getMimeType(extension));
+                return new AssetRendition(renditionRedirect, PLACEHOLDER_SIZE_IN_BYTES, mimeTypeService.getMimeType(extension));
             } catch (URISyntaxException e) {
                 log.warn("Unable to create a valid URI for rendition redirect [ {} ]", renditionRedirect, e);
                 // Still sending to Async Download Framework so we can get a failure
