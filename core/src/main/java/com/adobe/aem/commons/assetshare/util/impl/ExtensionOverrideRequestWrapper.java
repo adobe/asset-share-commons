@@ -21,9 +21,8 @@ package com.adobe.aem.commons.assetshare.util.impl;
 
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestPathInfo;
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.wrappers.SlingHttpServletRequestWrapper;
-import org.apache.sling.servlethelpers.MockRequestPathInfo;
-import org.apache.sling.servlethelpers.MockSlingHttpServletRequest;
 
 /**
  * SlingHttpServletRequest Wrapper that allows the force setting (or removal) of the original requests extension.
@@ -44,15 +43,40 @@ public class ExtensionOverrideRequestWrapper extends SlingHttpServletRequestWrap
 
     @Override
     public RequestPathInfo getRequestPathInfo() {
-        MockSlingHttpServletRequest request = new MockSlingHttpServletRequest(this.getResourceResolver());
-        MockRequestPathInfo requestPathInfo = (MockRequestPathInfo) request.getRequestPathInfo();
+        return new RequestPathInfoWrapper(super.getRequestPathInfo(), extension);
+    }
 
-        requestPathInfo.setResourcePath(this.getRequestPathInfo().getResourcePath());
-        requestPathInfo.setSelectorString(this.getRequestPathInfo().getSelectorString());
-        requestPathInfo.setSuffix(this.getRequestPathInfo().getSuffix());
+    private class RequestPathInfoWrapper implements RequestPathInfo {
+        private final RequestPathInfo requestPathInfo;
+        private final String extension;
 
-        requestPathInfo.setExtension(extension);
+        public RequestPathInfoWrapper(RequestPathInfo requestPathInfo, String extension) {
+            this.requestPathInfo = requestPathInfo;
+            this.extension = extension;
+        }
 
-        return requestPathInfo;
+        public String getResourcePath() {
+            return requestPathInfo.getResourcePath();
+        }
+
+        public String getExtension() {
+            return extension;
+        }
+
+        public String getSelectorString() {
+            return requestPathInfo.getSelectorString();
+        }
+
+        public String[] getSelectors() {
+            return requestPathInfo.getSelectors();
+        }
+
+        public String getSuffix() {
+            return requestPathInfo.getSuffix();
+        }
+
+        public Resource getSuffixResource() {
+            return requestPathInfo.getSuffixResource();
+        }
     }
 }

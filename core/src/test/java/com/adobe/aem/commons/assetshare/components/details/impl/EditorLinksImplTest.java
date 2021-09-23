@@ -25,8 +25,6 @@ import com.adobe.aem.commons.assetshare.content.impl.AssetModelImpl;
 import com.adobe.aem.commons.assetshare.content.impl.AssetResolverImpl;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperties;
 import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedPropertiesImpl;
-import com.adobe.aem.commons.assetshare.testing.RequireAemMock;
-import com.adobe.aem.commons.assetshare.util.RequireAem;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.junit.Before;
 import org.junit.Rule;
@@ -51,7 +49,7 @@ public class EditorLinksImplTest {
         ctx.registerService(AssetResolver.class, new AssetResolverImpl());
 
         ctx.addModelsForClasses(AssetModelImpl.class);
-        RequireAemMock.setAemDistribution(ctx, RequireAem.Distribution.CLOUD_READY, RequireAem.ServiceType.AUTHOR);
+        ctx.runMode("author");
     }
 
     @Test

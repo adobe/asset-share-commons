@@ -74,7 +74,7 @@ public class InternalRedirectRenditionDispatcherImplTest {
 
     @Before
     public void setUp() throws Exception {
-        RequireAemMock.setAemDistribution(ctx, RequireAem.Distribution.CLASSIC, RequireAem.ServiceType.AUTHOR);
+        RequireAemMock.setAemDistribution(ctx, RequireAem.Distribution.CLASSIC);
 
         ctx.load().json(getClass().getResourceAsStream("InternalRedirectRenditionDispatcherImplTest.json"), "/content/dam");
         ctx.currentResource("/content/dam/test.png");

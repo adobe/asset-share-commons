@@ -76,7 +76,7 @@ public class DownloadImplTest {
 		doReturn(assetModels).when(actionHelper).getAssetsFromQueryParameter(ctx.request(), "path");
 		doReturn(1024L).when(assetDownloadHelper).getMaxContentSizeLimit();
 
-		RequireAemMock.setAemDistribution(ctx, RequireAem.Distribution.CLASSIC, RequireAem.ServiceType.AUTHOR);
+		RequireAemMock.setAemDistribution(ctx, RequireAem.Distribution.CLASSIC);
 
 		ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
 		ctx.registerService(AssetRenditionDispatchers.class, new AssetRenditionDispatchersImpl());
