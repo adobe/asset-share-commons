@@ -72,7 +72,7 @@ public class RequireAemImpl implements RequireAem {
     @interface Config {
         @AttributeDefinition(
                 name = "Service name",
-                description = "Defines the which AEN service the application is running under. Allowed values are: author or publish. Defaults to: publish."
+                description = "Defines the which AEM service (author or publish) the application is running under. Allowed values are: author or publish. Defaults to: publish."
         )
         String service() default PUBLISH_SERVICE_VALUE;
     }
