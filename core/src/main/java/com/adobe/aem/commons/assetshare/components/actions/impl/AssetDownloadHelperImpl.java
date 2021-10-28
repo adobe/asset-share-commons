@@ -4,7 +4,7 @@ import com.adobe.aem.commons.assetshare.components.actions.AssetDownloadHelper;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.day.cq.dam.api.jobs.AssetDownloadService;
 import org.apache.sling.api.resource.Resource;
-import org.apache.sling.commons.osgi.PropertiesUtil;
+import org.osgi.util.converter.Converters;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
@@ -39,7 +39,7 @@ public class AssetDownloadHelperImpl implements AssetDownloadHelper {
             final Dictionary<String, Object> osgiConfigurationProperties = getAssetDownloadServletProperties();
            
             if (osgiConfigurationProperties != null) {
-                return PropertiesUtil.toLong(osgiConfigurationProperties.get(MAX_SIZE_PROPERTY), DEFAULT_SIZE_LIMIT);
+                return Converters.standardConverter().convert(osgiConfigurationProperties.get(MAX_SIZE_PROPERTY)).defaultValue(DEFAULT_SIZE_LIMIT).to(Long.class);
             } else{
                 log.debug("No OSGi configuration properties could be found for service.pid [ {} ]", ASSET_DOWNLOAD_SERVLET_PID);
             }
@@ -79,7 +79,6 @@ public class AssetDownloadHelperImpl implements AssetDownloadHelper {
                 true,
                 true,
                 true,
-                null,
                 null,
                 null,
                 "assets.zip", // downloadName doesn't matter

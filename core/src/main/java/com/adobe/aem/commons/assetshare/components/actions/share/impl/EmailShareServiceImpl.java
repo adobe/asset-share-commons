@@ -211,6 +211,7 @@ public class EmailShareServiceImpl implements ShareService {
         return sb.toString();
     }
 
+
     private String getSignature(final EmailShare emailShare, final UserProperties userProperties) throws ShareException {
         boolean useSharerDisplayNameAsSignature = emailShare.getProperties().get(EmailShareImpl.PN_USE_SHARER_NAME_AS_SIGNATURE, false);
 
