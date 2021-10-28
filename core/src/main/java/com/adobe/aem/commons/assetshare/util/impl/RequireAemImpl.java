@@ -25,6 +25,7 @@ import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.granite.license.ProductInfo;
 import com.adobe.granite.license.ProductInfoProvider;
 import org.apache.commons.lang3.StringUtils;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.framework.Version;
@@ -53,20 +54,16 @@ public class RequireAemImpl implements RequireAem {
     private static final Logger log = LoggerFactory.getLogger(RequireAemImpl.class);
 
     static final String PN_DISTRIBUTION = "distribution";
-    static final String PN_VERSION = "version";
 
     protected static final String PUBLISH_SERVICE_VALUE = "publish";
+    protected static final String CLOUD_READY_DISTRIBUTION_VALUE = "publish";
 
-    // This is the first Major/Minor GA Version of AEM as a Cloud Service
-    private static final Version originalCloudServiceVersion = new Version(2019, 12,   0);
-
-    @Reference
-    private ProductInfoProvider productInfoProvider;
-
-    private ProductInfo productInfo;
     private ServiceRegistration<?> serviceRegistration;
 
     private RequireAemImpl.Config config;
+
+    private Distribution distribution;
+
 
     @ObjectClassDefinition(
             name = "Asset Share Commons - AEM Service",
@@ -82,7 +79,7 @@ public class RequireAemImpl implements RequireAem {
 
     @Override
     public Distribution getDistribution() {
-        if (productInfo.getVersion().compareTo(originalCloudServiceVersion) > 0) {
+        if (Distribution.CLOUD_READY.equals(distribution)) {
             return Distribution.CLOUD_READY;
         } else {
             return Distribution.CLASSIC;
@@ -102,33 +99,36 @@ public class RequireAemImpl implements RequireAem {
     protected void activate(final RequireAemImpl.Config config, final BundleContext bundleContext) {
         this.config = config;
 
-        productInfo = productInfoProvider.getProductInfo();
-
         @SuppressWarnings("squid:java:S1149")
         final Dictionary<String, Object> properties = new Hashtable<>();
 
-        String distribution;
-        String version = productInfo.getShortVersion();
-
-        if (Distribution.CLOUD_READY.equals(getDistribution())) {
-            distribution = Distribution.CLOUD_READY.getValue();
+        if (isCloudService(bundleContext)) {
+            this.distribution = Distribution.CLOUD_READY;
         } else {
-            distribution =  Distribution.CLASSIC.getValue();
+            this.distribution = Distribution.CLASSIC;
         }
 
-        properties.put(PN_DISTRIBUTION, distribution);
-        properties.put(PN_VERSION, version);
+        properties.put(PN_DISTRIBUTION, this.distribution.getValue());
 
         serviceRegistration = bundleContext.registerService(RequireAem.class.getName(), this, properties);
 
-        log.info("Registering [ RequireAem.class ] as an OSGi Service with OSGi properties [ distribution = {}, version = {} ] so it can be used to enable/disable other OSGi Components",
-                properties.get(PN_DISTRIBUTION), properties.get(PN_VERSION));
+        log.info("Registering [ RequireAem.class ] as an OSGi Service with OSGi properties [ distribution = {}, serviceType = {} ] so it can be used to enable/disable other OSGi Components",
+                properties.get(PN_DISTRIBUTION), config.service());
+    }
+
+    protected boolean isCloudService(BundleContext bundleContext) {
+        // This bundle is only available in AEM as a Cloud Service and the AEM as a Cloud Service SDK
+        final Bundle bundle = bundleContext.getBundle("com.adobe.granite.analyzer.cloudservices.CloudservicesAnalysis");
+
+        if (bundle != null && bundle.getState() == Bundle.ACTIVE) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Deactivate
     protected void deactivate() {
-        productInfo = null;
-
         if (serviceRegistration != null) {
             serviceRegistration.unregister();
             serviceRegistration = null;

@@ -76,7 +76,7 @@ public class UrlUtil {
 
             } catch (MalformedURLException e) {
                 // Treat as internal path
-                log.debug("Could not evaluate unescaped string [ {} ] as a URL. Falling back to escape as path.", unescaped, e);
+                log.warn("Could not evaluate unescaped string [ {} ] as a URL. Falling back to escape as path.", unescaped, e);
             }
         }
 
