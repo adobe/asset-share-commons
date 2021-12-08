@@ -170,7 +170,7 @@ public class AssetRenditionsZipperImpl implements AssetRenditionsDownloadOrchest
                                      final String responseContentType, final Set<String> zipEntryFileNames) {
         final String extension = mimeTypeService.getExtension(responseContentType);
 
-        final Map<String, String> variables = new HashMap<>();
+        final Map<String, String> variables = new LinkedHashMap<>();
 
         variables.put(VAR_ASSET_FILE_NAME, asset.getName());
         variables.put(VAR_ASSET_NAME, StringUtils.substringBeforeLast(asset.getName(), "."));
