@@ -40,7 +40,7 @@ import java.util.HashMap;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {FulltextPredicate.class, ComponentExporter.class},
+        adapters = FulltextPredicate.class,
         resourceType = {FulltextPredicateImpl.RESOURCE_TYPE}
 )
 @Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)

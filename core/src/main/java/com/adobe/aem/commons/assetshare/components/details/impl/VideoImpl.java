@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
  */
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {Video.class, ComponentExporter.class},
+        adapters = Video.class,
         resourceType = {VideoImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL)
 @Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)

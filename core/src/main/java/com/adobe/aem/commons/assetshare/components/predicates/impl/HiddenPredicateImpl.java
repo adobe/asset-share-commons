@@ -45,7 +45,7 @@ import java.util.*;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {HiddenPredicate.class, ComponentExporter.class},
+        adapters = HiddenPredicate.class,
         resourceType = {HiddenPredicateImpl.RESOURCE_TYPE}
 )
 @Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)

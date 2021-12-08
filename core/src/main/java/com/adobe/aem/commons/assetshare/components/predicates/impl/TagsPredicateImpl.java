@@ -50,7 +50,7 @@ import java.util.Locale;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {TagsPredicate.class, ComponentExporter.class},
+        adapters = TagsPredicate.class,
         resourceType = {TagsPredicateImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )

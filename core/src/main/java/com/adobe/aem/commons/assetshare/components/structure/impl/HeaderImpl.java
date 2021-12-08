@@ -43,7 +43,7 @@ import java.util.List;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {Header.class, ComponentExporter.class},
+        adapters = Header.class,
         resourceType = {HeaderImpl.RESOURCE_TYPE}
 )
 @Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)

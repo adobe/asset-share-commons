@@ -36,7 +36,7 @@ import javax.annotation.Nonnull;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {ActionButtons.class, ComponentExporter.class},
+        adapters = ActionButtons.class,
         resourceType = ActionButtonsImpl.RESOURCE_TYPE,
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )

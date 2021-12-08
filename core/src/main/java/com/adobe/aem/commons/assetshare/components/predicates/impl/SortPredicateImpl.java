@@ -49,7 +49,7 @@ import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {SortPredicate.class, ComponentExporter.class},
+        adapters = SortPredicate.class,
         resourceType = {SortPredicateImpl.RESOURCE_TYPE}
 )
 @Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)

@@ -39,7 +39,7 @@ import java.util.Map;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {EmailShare.class, ComponentExporter.class},
+        adapters = EmailShare.class,
         resourceType = {EmailShareImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )

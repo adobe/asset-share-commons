@@ -38,7 +38,7 @@ import java.util.Collection;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {Cart.class, ComponentExporter.class},
+        adapters = Cart.class,
         resourceType = {CartImpl.RESOURCE_TYPE}
 )
 @Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)

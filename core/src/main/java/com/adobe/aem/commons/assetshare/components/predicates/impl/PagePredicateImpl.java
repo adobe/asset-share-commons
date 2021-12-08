@@ -60,7 +60,7 @@ import java.util.Map;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {PagePredicate.class, ComponentExporter.class},
+        adapters = PagePredicate.class,
         resourceType = {PagePredicateImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )

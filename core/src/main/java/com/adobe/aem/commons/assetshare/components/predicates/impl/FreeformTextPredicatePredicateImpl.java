@@ -45,7 +45,7 @@ import static java.util.Collections.EMPTY_LIST;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {FreeformTextPredicate.class, ComponentExporter.class},
+        adapters = FreeformTextPredicate.class,
         resourceType = {FreeformTextPredicatePredicateImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )

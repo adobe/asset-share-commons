@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {SearchConfig.class, ComponentExporter.class},
+        adapters = SearchConfig.class,
         resourceType = {SearchConfigImpl.RESOURCE_TYPE}
 )
 @Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)

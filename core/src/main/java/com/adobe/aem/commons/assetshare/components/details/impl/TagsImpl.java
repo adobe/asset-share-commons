@@ -45,7 +45,7 @@ import java.util.*;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {Tags.class, ComponentExporter.class},
+        adapters = Tags.class,
         resourceType = {TagsImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )

@@ -49,7 +49,7 @@ import java.util.Map;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {PropertyPredicate.class, ComponentExporter.class},
+        adapters = PropertyPredicate.class,
         resourceType = {PropertyPredicateImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )

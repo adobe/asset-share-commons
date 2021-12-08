@@ -43,7 +43,7 @@ import javax.jcr.RepositoryException;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {UserMenu.class, ComponentExporter.class},
+        adapters = UserMenu.class,
         resourceType = UserMenuImpl.RESOURCE_TYPE
 )
 @Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)

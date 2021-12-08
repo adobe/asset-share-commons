@@ -51,7 +51,7 @@ import static javax.jcr.query.Query.JCR_SQL2;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {Download.class, ComponentExporter.class},
+        adapters = Download.class,
         resourceType = {DownloadImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )

@@ -16,7 +16,7 @@ import javax.annotation.PostConstruct;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {Statistics.class, ComponentExporter.class},
+        adapters = Statistics.class,
         resourceType = {StatisticsImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )

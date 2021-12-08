@@ -39,7 +39,7 @@ import javax.annotation.Nonnull;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {EditorLinks.class, ComponentExporter.class},
+        adapters = EditorLinks.class,
         resourceType = {EditorLinksImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )

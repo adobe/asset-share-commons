@@ -51,7 +51,7 @@ import java.util.Map;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {PathPredicate.class, ComponentExporter.class},
+        adapters = PathPredicate.class,
         resourceType = {PathPredicateImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )

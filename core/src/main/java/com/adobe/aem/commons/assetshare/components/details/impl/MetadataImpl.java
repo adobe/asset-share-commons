@@ -47,7 +47,7 @@ import java.util.Locale;
 
 @Model(
         adaptables = SlingHttpServletRequest.class,
-        adapters = {Metadata.class, ComponentExporter.class},
+        adapters = Metadata.class,
         resourceType = {MetadataImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )

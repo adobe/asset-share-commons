@@ -58,7 +58,7 @@ import java.util.regex.Pattern;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {Renditions.class, ComponentExporter.class},
+        adapters = Renditions.class,
         resourceType = {RenditionsImpl.RESOURCE_TYPE}
 )
 @Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
