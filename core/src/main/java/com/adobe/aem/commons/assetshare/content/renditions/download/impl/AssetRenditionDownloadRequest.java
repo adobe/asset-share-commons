@@ -19,17 +19,20 @@
 
 package com.adobe.aem.commons.assetshare.content.renditions.download.impl;
 
-import org.apache.commons.lang3.StringUtils;
+import com.adobe.aem.commons.assetshare.util.impl.proxies.RequestPathInfoWrapper;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestPathInfo;
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.api.wrappers.SlingHttpServletRequestWrapper;
-import org.apache.sling.servlethelpers.MockRequestPathInfo;
-import org.apache.sling.servlethelpers.MockSlingHttpServletRequest;
+import org.apache.sling.api.wrappers.ValueMapDecorator;
 
 import javax.script.SimpleBindings;
+import java.lang.reflect.Proxy;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.apache.sling.api.scripting.SlingBindings.*;
 
@@ -38,6 +41,7 @@ public class AssetRenditionDownloadRequest extends SlingHttpServletRequestWrappe
     private final String[] selectors;
     private final String extension;
     private final String method;
+    private final SlingHttpServletRequest wrappedRequest;
     private Resource resource;
     private final SlingBindings bindings;
 
@@ -48,6 +52,8 @@ public class AssetRenditionDownloadRequest extends SlingHttpServletRequestWrappe
                                          final String extension,
                                          final String suffix) {
         super(wrappedRequest);
+
+        this.wrappedRequest = wrappedRequest;
 
         this.resource = resource;
         this.method = method;
@@ -104,14 +110,26 @@ public class AssetRenditionDownloadRequest extends SlingHttpServletRequestWrappe
 
     @Override
     public RequestPathInfo getRequestPathInfo() {
-        MockSlingHttpServletRequest request = new MockSlingHttpServletRequest(this.getResourceResolver());
-        MockRequestPathInfo requestPathInfo = (MockRequestPathInfo) request.getRequestPathInfo();
+        Map<String, Object> overrides = new HashMap<>();
+        overrides.put("selectors", selectors);
+        overrides.put("suffix", suffix);
+        overrides.put("extension", this.extension);
 
-        requestPathInfo.setResourcePath(getResource().getPath());
-        requestPathInfo.setSelectorString( StringUtils.join(selectors, "."));
-        requestPathInfo.setExtension(extension);
-        requestPathInfo.setSuffix(suffix);
-
-        return requestPathInfo;
+        return getWrappedRequestPathInfo(wrappedRequest.getRequestPathInfo(), new ValueMapDecorator(overrides), resource);
     }
+
+    private RequestPathInfo getWrappedRequestPathInfo( RequestPathInfo requestPathInfo, ValueMap requestPathInfoOverrides, Resource resource) {
+
+        final RequestPathInfoWrapper requestPathInfoWrapper = RequestPathInfoWrapper.createRequestPathInfoWrapper(requestPathInfo, requestPathInfoOverrides, resource);
+
+        RequestPathInfo wrappedRequestInfo = (RequestPathInfo) Proxy.newProxyInstance(
+                AssetRenditionDownloadRequest.WrappedRequestPathInfoWrapper.class.getClassLoader(),
+                new Class[]{RequestPathInfo.class, AssetRenditionDownloadRequest.WrappedRequestPathInfoWrapper.class},
+                requestPathInfoWrapper);
+
+        return wrappedRequestInfo;
+    }
+
+    public interface WrappedRequestPathInfoWrapper {}
+
 }
