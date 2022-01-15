@@ -1,0 +1,27 @@
+{
+  "dam": {
+    "test.png": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured",
+        "metadata": {
+          "jcr:primaryType": "nt:unstructured"
+        },
+        "renditions": {
+          "jcr:primaryType": "nt:unstructured",
+          "cq5dam.web.1280.1280.png": {
+            "jcr:primaryType": "nt:file",
+            "jcr:content": {
+              "jcr:primaryType": "oak:Resource",
+              "jcr:mimeType": "image/png"
+            }
+          }
+        }
+      }
+    }
+  },
+  "download-component": {
+    "jcr:primaryType": "nt:unstructured",
+    "archiveFileExpression": "${asset.name.no-extension}/${asset.name.no-extension} (${rendition.name})"
+  }
+}
