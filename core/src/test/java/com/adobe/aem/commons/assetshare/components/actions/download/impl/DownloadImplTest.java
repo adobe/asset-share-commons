@@ -4,14 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionDispatchersImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.ExternalRedirectRenditionDispatcherImpl;
-import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.InternalRedirectRenditionDispatcherImpl;
-import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
 import com.adobe.aem.commons.assetshare.testhelpers.TestOptionsImpl;
 import com.adobe.aem.commons.assetshare.testing.RequireAemMock;
 import com.adobe.aem.commons.assetshare.util.RequireAem;
@@ -76,7 +73,7 @@ public class DownloadImplTest {
 		doReturn(assetModels).when(actionHelper).getAssetsFromQueryParameter(ctx.request(), "path");
 		doReturn(1024L).when(assetDownloadHelper).getMaxContentSizeLimit();
 
-		RequireAemMock.setAemDistribution(ctx, RequireAem.Distribution.CLASSIC);
+		RequireAemMock.setAem(ctx, RequireAem.Distribution.CLASSIC, RequireAem.ServiceType.PUBLISH);
 
 		ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
 		ctx.registerService(AssetRenditionDispatchers.class, new AssetRenditionDispatchersImpl());

@@ -36,7 +36,7 @@ public class AsyncAssetRenditionsDownloadServletTest {
 
     @Test
     public void activateInCloudReady() {
-        RequireAemMock.setAemDistribution(ctx, RequireAem.Distribution.CLOUD_READY);
+        RequireAemMock.setAem(ctx, RequireAem.Distribution.CLOUD_READY, RequireAem.ServiceType.PUBLISH);
 
         ctx.registerInjectActivateService(new AsyncAssetRenditionsDownloadServlet());
 
@@ -47,7 +47,7 @@ public class AsyncAssetRenditionsDownloadServletTest {
 
     @Test(expected = org.apache.sling.testing.mock.osgi.ReferenceViolationException.class)
     public void activateInClassic() {
-        RequireAemMock.setAemDistribution(ctx, RequireAem.Distribution.CLASSIC);
+        RequireAemMock.setAem(ctx, RequireAem.Distribution.CLASSIC, RequireAem.ServiceType.PUBLISH);
 
         ctx.registerInjectActivateService(new AsyncAssetRenditionsDownloadServlet());
 
