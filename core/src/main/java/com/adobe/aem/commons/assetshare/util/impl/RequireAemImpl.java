@@ -22,17 +22,13 @@
 package com.adobe.aem.commons.assetshare.util.impl;
 
 import com.adobe.aem.commons.assetshare.util.RequireAem;
-import com.adobe.granite.license.ProductInfo;
-import com.adobe.granite.license.ProductInfoProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
-import org.osgi.framework.Version;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
@@ -54,17 +50,13 @@ public class RequireAemImpl implements RequireAem {
     private static final Logger log = LoggerFactory.getLogger(RequireAemImpl.class);
 
     static final String PN_DISTRIBUTION = "distribution";
-
     protected static final String PUBLISH_SERVICE_VALUE = "publish";
-    protected static final String CLOUD_READY_DISTRIBUTION_VALUE = "publish";
 
     private ServiceRegistration<?> serviceRegistration;
 
     private RequireAemImpl.Config config;
 
     private Distribution distribution;
-
-
     @ObjectClassDefinition(
             name = "Asset Share Commons - AEM Service",
             description = "Describes the AEM Service being operated on."

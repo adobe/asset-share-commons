@@ -51,12 +51,16 @@ public class EditorLinksImplTest {
         ctx.registerService(AssetResolver.class, new AssetResolverImpl());
 
         ctx.addModelsForClasses(AssetModelImpl.class);
-        RequireAemMock.setAemDistribution(ctx, RequireAem.Distribution.CLOUD_READY, RequireAem.ServiceType.AUTHOR);
+        RequireAemMock.setAem(ctx, RequireAem.Distribution.CLOUD_READY, RequireAem.ServiceType.AUTHOR);
     }
 
     @Test
     public void getAssetDetailsEditorPath() {
         final String expected = "/assetdetails.html/content/dam/test.png";
+
+        RequireAemMock.setAem(ctx,
+                RequireAem.Distribution.CLOUD_READY,
+                RequireAem.ServiceType.AUTHOR);
 
         ctx.currentResource("/content/editor-links");
         final EditorLinks editorLinks = ctx.request().adaptTo(EditorLinks.class);
@@ -67,6 +71,11 @@ public class EditorLinksImplTest {
     @Test
     public void getAssetFolderEditorPath() {
         final String expected = "/assets.html/content/dam/test.png";
+
+        RequireAemMock.setAem(ctx,
+                RequireAem.Distribution.CLOUD_READY,
+                RequireAem.ServiceType.AUTHOR);
+
         ctx.currentResource("/content/editor-links");
         final EditorLinks editorLinks = ctx.request().adaptTo(EditorLinks.class);
 
@@ -75,6 +84,10 @@ public class EditorLinksImplTest {
 
     @Test
     public void isEmpty() {
+        RequireAemMock.setAem(ctx,
+                RequireAem.Distribution.CLOUD_READY,
+                RequireAem.ServiceType.AUTHOR);
+
         ctx.currentResource("/content/empty");
         final EditorLinks editorLinks = ctx.request().adaptTo(EditorLinks.class);
         assertTrue(editorLinks.isEmpty());
@@ -82,6 +95,10 @@ public class EditorLinksImplTest {
 
     @Test
     public void isEmpty_NotEmpty() {
+        RequireAemMock.setAem(ctx,
+                RequireAem.Distribution.CLOUD_READY,
+                RequireAem.ServiceType.AUTHOR);
+
         ctx.currentResource("/content/editor-links");
         final EditorLinks editorLinks = ctx.request().adaptTo(EditorLinks.class);
         assertFalse(editorLinks.isEmpty());
@@ -89,6 +106,10 @@ public class EditorLinksImplTest {
 
     @Test
     public void isReady() {
+        RequireAemMock.setAem(ctx,
+                RequireAem.Distribution.CLOUD_READY,
+                RequireAem.ServiceType.AUTHOR);
+
         ctx.currentResource("/content/editor-links");
         final EditorLinks editorLinks = ctx.request().adaptTo(EditorLinks.class);
         assertTrue(editorLinks.isReady());
@@ -96,6 +117,10 @@ public class EditorLinksImplTest {
 
     @Test
     public void isReady_NotReady() {
+        RequireAemMock.setAem(ctx,
+                RequireAem.Distribution.CLOUD_READY,
+                RequireAem.ServiceType.AUTHOR);
+
         ctx.currentResource("/content/empty");
         final EditorLinks editorLinks = ctx.request().adaptTo(EditorLinks.class);
         assertFalse(editorLinks.isReady());
@@ -103,6 +128,10 @@ public class EditorLinksImplTest {
 
     @Test
     public void isReady_NotReadyDueToRunmode() {
+        RequireAemMock.setAem(ctx,
+                RequireAem.Distribution.CLOUD_READY,
+                RequireAem.ServiceType.PUBLISH);
+
         ctx.runMode("publish");
         ctx.currentResource("/content/empty");
         final EditorLinks editorLinks = ctx.request().adaptTo(EditorLinks.class);
