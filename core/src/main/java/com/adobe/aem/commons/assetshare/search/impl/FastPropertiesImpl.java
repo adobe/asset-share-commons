@@ -21,7 +21,7 @@ package com.adobe.aem.commons.assetshare.search.impl;
 
 import com.adobe.aem.commons.assetshare.search.FastProperties;
 import com.adobe.aem.commons.assetshare.util.impl.OakIndexResolver;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.*;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;

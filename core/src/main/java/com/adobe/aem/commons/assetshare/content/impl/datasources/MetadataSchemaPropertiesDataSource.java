@@ -21,7 +21,7 @@ package com.adobe.aem.commons.assetshare.content.impl.datasources;
 
 import com.adobe.aem.commons.assetshare.content.MetadataProperties;
 import com.adobe.aem.commons.assetshare.util.DataSourceBuilder;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.ValueMap;

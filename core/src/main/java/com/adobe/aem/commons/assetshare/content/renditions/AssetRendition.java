@@ -19,10 +19,7 @@
 
 package com.adobe.aem.commons.assetshare.content.renditions;
 
-import com.adobe.aem.commons.assetshare.util.UrlUtil;
-import com.day.text.Text;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.client.utils.URIUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +40,6 @@ public class AssetRendition {
 
     public AssetRendition(URI uri, Long size, String mimeType) {
         this(uri.toString(), size, mimeType);
-
     }
 
     public AssetRendition(String uri, Long size, String mimeType) {
