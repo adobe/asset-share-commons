@@ -121,6 +121,7 @@ public class DownloadImpl implements Download, ComponentExporter {
     protected Long downloadContentSize = DEFAULT_SIZE_LIMIT;
 
     @PostConstruct
+    @SuppressWarnings("squid:S1696") // Suppress catching NPE warning due to this being a function of AEM's API
     protected void init() {
         assets = actionHelper.getAssetsFromQueryParameter(request, "path");
 

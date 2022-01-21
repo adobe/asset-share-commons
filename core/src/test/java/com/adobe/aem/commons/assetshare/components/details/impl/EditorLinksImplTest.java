@@ -50,9 +50,8 @@ public class EditorLinksImplTest {
         ctx.registerService(ComputedProperties.class, new ComputedPropertiesImpl());
         ctx.registerService(AssetResolver.class, new AssetResolverImpl());
 
-
         ctx.addModelsForClasses(AssetModelImpl.class);
-        ctx.runMode("author");
+        RequireAemMock.setAem(ctx, RequireAem.Distribution.CLOUD_READY, RequireAem.ServiceType.AUTHOR);
     }
 
     @Test

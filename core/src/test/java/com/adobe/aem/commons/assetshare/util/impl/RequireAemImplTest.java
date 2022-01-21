@@ -23,47 +23,29 @@
 package com.adobe.aem.commons.assetshare.util.impl;
 
 import com.adobe.aem.commons.assetshare.util.RequireAem;
-import com.adobe.granite.license.ProductInfo;
-import com.adobe.granite.license.ProductInfoProvider;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.osgi.framework.Version;
+import org.osgi.framework.BundleContext;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
 
-@RunWith(MockitoJUnitRunner.class)
 public class RequireAemImplTest {
-
-    @Mock
-    ProductInfoProvider productInfoProvider;
-
-    @Mock
-    ProductInfo productInfo;
 
     @Rule
     public final AemContext ctx = new AemContext();
 
     private void setUpAsCloudReady() {
-        doReturn(new Version("2020.2.2239.20200214T010959Z")).when(productInfo).getVersion();
-        doReturn("2020.2.2239.20200214T010959Z").when(productInfo).getShortVersion();
+        final RequireAemImpl requireAemImpl = spy(new RequireAemImpl());
+        doReturn(true).when(requireAemImpl).isCloudService(any(BundleContext.class));
 
-        doReturn(productInfo).when(productInfoProvider).getProductInfo();
-
-        ctx.registerService(ProductInfoProvider.class, productInfoProvider);
-        ctx.registerInjectActivateService(new RequireAemImpl());
+        ctx.registerInjectActivateService(requireAemImpl);
     }
 
     private void setUpAsNotCloudReady() {
-        doReturn(new Version("6.5.4")).when(productInfo).getVersion();
-        doReturn("6.5.4").when(productInfo).getShortVersion();
-        doReturn(productInfo).when(productInfoProvider).getProductInfo();
-
-        ctx.registerService(ProductInfoProvider.class, productInfoProvider);
         ctx.registerInjectActivateService(new RequireAemImpl());
     }
 
