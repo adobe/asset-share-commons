@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "fomantic-ui-less": "^2.8.3",
-    "jquery": "^3.4.1"
+    "jquery": "^3.5.0"
   },
   "browserslist": [
     "last 2 version",
