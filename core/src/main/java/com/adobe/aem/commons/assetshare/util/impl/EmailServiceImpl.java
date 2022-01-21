@@ -225,6 +225,8 @@ public final class EmailServiceImpl implements EmailService {
         return failureList;
     }
 
+    // Suppress warning as this calls an AEM method which requires the StrLookup. When the AEM API is updated, this invocation can be updated.
+    @SuppressWarnings("squid:CallToDeprecatedMethod")
     private Email getEmail(final MailTemplate mailTemplate,
                            final Class<? extends Email> mailType,
                            final Map<String, String> params) throws EmailException, MessagingException, IOException {
