@@ -4,12 +4,10 @@ import io.wcm.testing.mock.aem.junit.AemContext;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class AsyncAssetRenditionsDownloadServletTest {
     @Rule

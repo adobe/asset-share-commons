@@ -2,19 +2,17 @@ package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
-import org.junit.Before;
 import org.junit.Test;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.AbstractRenditionDispatcherImpl.QUERY_PARAM_SUGGESTED_EXTENSION;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class AbstractRenditionDispatcherImplTest {
 

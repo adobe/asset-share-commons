@@ -24,7 +24,8 @@ import com.adobe.aem.commons.assetshare.search.results.Results;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.wrappers.ValueMapDecorator;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
 
 public abstract class AbstractResultsImpl implements Results {
     protected List<Result> results;

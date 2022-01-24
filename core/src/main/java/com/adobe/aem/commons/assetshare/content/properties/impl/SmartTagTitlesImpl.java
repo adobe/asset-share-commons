@@ -19,9 +19,9 @@
 
 package com.adobe.aem.commons.assetshare.content.properties.impl;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
+import com.adobe.aem.commons.assetshare.content.properties.AbstractComputedProperty;
+import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
+import com.day.cq.dam.api.Asset;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
@@ -32,9 +32,12 @@ import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
-import com.adobe.aem.commons.assetshare.content.properties.AbstractComputedProperty;
-import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
-import com.day.cq.dam.api.Asset;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.adobe.aem.commons.assetshare.content.properties.ComputedProperty.DEFAULT_ASC_COMPUTED_PROPERTY_SERVICE_RANKING;
 

@@ -23,7 +23,6 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.osgi.annotation.versioning.ProviderType;
 
-import java.util.Collection;
 import java.util.List;
 
 @ProviderType
