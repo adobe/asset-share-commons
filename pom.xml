@@ -784,7 +784,7 @@
             <dependency>
                 <groupId>com.adobe.aem</groupId>
                 <artifactId>aem-sdk-api</artifactId>
-                <version>[2021,)</version>
+                <version>${aem.sdk.api}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
