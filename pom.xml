@@ -68,12 +68,12 @@
         <vault.user>admin</vault.user>
         <vault.password>admin</vault.password>
         <package.group>asset-share-commons</package.group>
-        <aem.sdk.api>2021.3.4997.20210303T022849Z-210225</aem.sdk.api>
-        <core.wcm.components.version>2.14.0</core.wcm.components.version>
+        <aem.sdk.api>[2022,)</aem.sdk.api>
+        <core.wcm.components.version>2.17.14</core.wcm.components.version>
         <frontend-maven-plugin.version>1.9.0</frontend-maven-plugin.version>
         <node.version>v13.7.0</node.version>
         <npm.version>6.13.1</npm.version>
-        <bnd.version>4.2.0</bnd.version>
+        <bnd.version>6.1.0</bnd.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -248,6 +248,7 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
                     <version>2.22.1</version>
+
                 </plugin>
                 <!-- Maven Deploy Plugin -->
                 <plugin>
