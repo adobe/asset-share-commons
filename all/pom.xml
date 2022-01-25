@@ -68,11 +68,6 @@
                             <target>/apps/asset-share-commons-packages/application/install</target>
                         </embedded>
                         <embedded>
-                            <groupId>org.apache.sling</groupId>
-                            <artifactId>org.apache.sling.servlet-helpers</artifactId>
-                            <target>/apps/asset-share-commons-vendor-packages/application/install</target>
-                        </embedded>
-                        <embedded>
                             <groupId>com.adobe.aem.commons</groupId>
                             <artifactId>assetshare.ui.content</artifactId>
                             <type>zip</type>
@@ -187,13 +182,6 @@
             <artifactId>assetshare.ui.content.sample</artifactId>
             <version>${project.version}</version>
             <type>zip</type>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.sling</groupId>
-            <artifactId>org.apache.sling.servlet-helpers</artifactId>
-            <version>1.4.2</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
