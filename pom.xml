@@ -810,7 +810,8 @@
             <dependency>
                 <groupId>com.adobe.acs</groupId>
                 <artifactId>acs-aem-commons-bundle</artifactId>
-                <version>5.1.2</version>
+                <!-- Be careful updating this too much as newer versions of ACS Commons has deps on other non-AEM API deps -->
+                <version>4.3.4</version>
                 <scope>compile</scope>
             </dependency>
             <!-- JDK 11 -->
