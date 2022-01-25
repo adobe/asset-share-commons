@@ -193,7 +193,7 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
 
     @Override
     public boolean isFiltering(final Predicate predicate, final EvaluationContext evaluationContext) {
-        return getPredicateEvaluator(predicate).isFiltering(buildPredicate(predicate), evaluationContext);
+        throw new UnsupportedOperationException("isFiltering(..) is deprecated.");
     }
 
     @Override
