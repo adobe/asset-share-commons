@@ -43,6 +43,7 @@
                         <configuration>
                             <bnd><![CDATA[
 Bundle-Name: Asset Share Commons - Core
+Bundle-Description: Asset Share Commons Core OSGi bundle containing AEM server-side logic
 Bundle-SymbolicName: com.adobe.aem.commons.assetshare.core
 Bundle-Category: asset-share-commons
 Import-Package: javax.annotation;version=0.0.0, \
