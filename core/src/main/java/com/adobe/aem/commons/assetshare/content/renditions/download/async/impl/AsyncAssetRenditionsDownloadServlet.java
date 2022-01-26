@@ -119,7 +119,7 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
         boolean groupRenditionsByAssetFolder = assetModels.size() > 1 && renditionNames.size() > 1;
 
         log.debug("Requested assets to download: [ {} ]", StringUtils.join(assetModels.stream().map(AssetModel::getPath).toArray()), ", ");
-        log.debug("Requested renditions to download: [ {} ]", StringUtils.join(renditionNames, ", ");
+        log.debug("Requested renditions to download: [ {} ]", StringUtils.join(renditionNames, ", "));
         log.debug("Archive name: [ {} ]", archiveName);
         log.debug("Group renditions nby folder: [ {} ]", groupRenditionsByAssetFolder);
 
