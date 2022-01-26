@@ -49,6 +49,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * This DownloadTargetProcessor can be reviewed/explored via the Explain Download console on AEM Author:
+ *   https://aem.author:4502/libs/dam/content/download/explaindownload.html
+ */
 @Component
 public class NamedRenditionDownloadTargetProcessor implements DownloadTargetProcessor {
     private static final Logger log = LoggerFactory.getLogger(NamedRenditionDownloadTargetProcessor.class);

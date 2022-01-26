@@ -154,6 +154,14 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
             renditionParameters.put(PARAM_RENDITION_BY_ASSET_FOLDER, groupRenditionsByAssetFolder);
             renditionParameters.put(PARAM_DOWNLOAD_COMPONENT_PATH, downloadComponentResource.getPath());
 
+            if (log.isDebugEnabled()) {
+                log.debug("Download Target rendition parameters for [ {} ]", TARGET_TYPE);
+
+                renditionParameters.entrySet().stream().forEach(renditionParameter -> {
+                    log.debug(" + Rendition parameter: [ {} ] -> [ {} ]", renditionParameter.getKey(), renditionParameter.getValue());
+                });
+            }
+
             final DownloadTarget downloadTarget = apiFactory.createDownloadTarget(
                     NamedRenditionDownloadTargetProcessor.TARGET_TYPE,
                     renditionParameters);
@@ -169,7 +177,7 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
 
         assetModels.forEach(assetModel -> { assetsJsonArray.add(assetModel.getPath());});
 
-        /** This JSON is considered and API - Do not remove/change key/vales **/
+        /** This JSON is considered an API - Do not remove/change key/vales **/
 
         json.addProperty(DOWNLOAD_ID, downloadId);
         json.add(DOWNLOAD_ASSETS, assetsJsonArray);
