@@ -22,13 +22,16 @@
 package com.adobe.aem.commons.assetshare.util.impl;
 
 import com.adobe.aem.commons.assetshare.util.RequireAem;
+import com.adobe.cq.dam.download.api.DownloadService;
 import org.apache.commons.lang3.StringUtils;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
@@ -68,6 +71,12 @@ public class RequireAemImpl implements RequireAem {
         )
         String service() default PUBLISH_SERVICE_VALUE;
     }
+
+    @Reference(
+            policyOption = ReferencePolicyOption.GREEDY,
+            cardinality = ReferenceCardinality.OPTIONAL
+    )
+    private transient DownloadService aemCsOnlyService;
 
     @Override
     public Distribution getDistribution() {
@@ -109,14 +118,7 @@ public class RequireAemImpl implements RequireAem {
     }
 
     protected boolean isCloudService(BundleContext bundleContext) {
-        // This bundle is only available in AEM as a Cloud Service and the AEM as a Cloud Service SDK
-        final Bundle bundle = bundleContext.getBundle("com.adobe.granite.analyzer.cloudservices.CloudservicesAnalysis");
-
-        if (bundle != null && bundle.getState() == Bundle.ACTIVE) {
-            return true;
-        } else {
-            return false;
-        }
+        return aemCsOnlyService != null;
     }
 
     @Deactivate
