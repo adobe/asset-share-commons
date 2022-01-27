@@ -38,6 +38,7 @@ import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.servlets.SlingAllMethodsServlet;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,7 +85,10 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
     private static final String DOWNLOAD_ARCHIVE_NAME = PARAM_ARCHIVE_NAME;
     private static final String ZIP_EXTENSION = ".zip";
 
-    @Reference(target="(distribution=cloud-ready)")
+    @Reference(
+            target="(distribution=cloud-ready)",
+            cardinality = ReferenceCardinality.MANDATORY
+    )
     private transient RequireAem requireAem;
 
     @Reference
