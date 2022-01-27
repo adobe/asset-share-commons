@@ -36,9 +36,9 @@ import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.servlets.SlingAllMethodsServlet;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,10 +85,7 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
     private static final String DOWNLOAD_ARCHIVE_NAME = PARAM_ARCHIVE_NAME;
     private static final String ZIP_EXTENSION = ".zip";
 
-    @Reference(
-            target="(distribution=cloud-ready)",
-            cardinality = ReferenceCardinality.MANDATORY
-    )
+    @Reference(target="(distribution=cloud-ready)")
     private transient RequireAem requireAem;
 
     @Reference
@@ -228,5 +225,15 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
         }
 
         return expression;
+    }
+
+    @Activate
+    protected void activate() {
+        if (requireAem != null) {
+            log.debug("Activating AsyncAssetRenditionsDownloadServlet withe RequireAem configurations: [ distribution = {} ] and [ serviceType = {} ]",
+                    requireAem.getDistribution().getValue(), requireAem.getServiceType().getValue());
+        } else {
+            log.error("Activating AsyncAssetRenditionsDownloadServlet with injected requireAEM service as null");
+        }
     }
 }

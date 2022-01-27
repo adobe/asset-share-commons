@@ -128,6 +128,14 @@ public class DownloadImpl implements Download, ComponentExporter {
     @PostConstruct
     @SuppressWarnings("squid:S1696") // Suppress catching NPE warning due to this being a function of AEM's API
     protected void init() {
+
+        if (requireAem != null) {
+            log.debug("Initing DownloadImpl withe RequireAem configurations: [ distribution = {} ] and [ serviceType = {} ]",
+                    requireAem.getDistribution().getValue(), requireAem.getServiceType().getValue());
+        } else {
+            log.error("Initing DownloadImpl with injected requireAEM service as null");
+        }
+
         assets = actionHelper.getAssetsFromQueryParameter(request, "path");
 
         if (assets.isEmpty()) {
