@@ -53,6 +53,8 @@ public class RequireAemImpl implements RequireAem {
     private static final Logger log = LoggerFactory.getLogger(RequireAemImpl.class);
 
     static final String PN_DISTRIBUTION = "distribution";
+    static final String PN_SERVICE = "service";
+
     protected static final String PUBLISH_SERVICE_VALUE = "publish";
 
     private ServiceRegistration<?> serviceRegistration;
@@ -110,11 +112,12 @@ public class RequireAemImpl implements RequireAem {
         }
 
         properties.put(PN_DISTRIBUTION, this.distribution.getValue());
+        properties.put(PN_SERVICE, config.service());
 
         serviceRegistration = bundleContext.registerService(RequireAem.class.getName(), this, properties);
 
         log.info("Registering [ RequireAem.class ] as an OSGi Service with OSGi properties [ distribution = {}, serviceType = {} ] so it can be used to enable/disable other OSGi Components",
-                properties.get(PN_DISTRIBUTION), config.service());
+                properties.get(PN_DISTRIBUTION), properties.get(PN_SERVICE));
     }
 
     protected boolean isCloudService(BundleContext bundleContext) {
