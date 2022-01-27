@@ -53,7 +53,7 @@ public class RequireAemImpl implements RequireAem {
     private static final Logger log = LoggerFactory.getLogger(RequireAemImpl.class);
 
     static final String PN_DISTRIBUTION = "distribution";
-    static final String PN_SERVICE = "service";
+    static final String PN_SERVICE_TYPE = "serviceType";
 
     protected static final String PUBLISH_SERVICE_VALUE = "publish";
 
@@ -68,10 +68,10 @@ public class RequireAemImpl implements RequireAem {
     )
     @interface Config {
         @AttributeDefinition(
-                name = "Service name",
-                description = "Defines the which AEM service (author or publish) the application is running under. Allowed values are: author or publish. Defaults to: publish."
+                name = "Service type name",
+                description = "Defines the which AEM service type (author or publish) the application is running under. Allowed values are: author or publish. Defaults to: publish."
         )
-        String service() default PUBLISH_SERVICE_VALUE;
+        String service_type() default PUBLISH_SERVICE_VALUE;
     }
 
     @Reference(
@@ -91,7 +91,7 @@ public class RequireAemImpl implements RequireAem {
 
     @Override
     public ServiceType getServiceType() {
-        if (StringUtils.equalsIgnoreCase(PUBLISH_SERVICE_VALUE, config.service())) {
+        if (StringUtils.equalsIgnoreCase(PUBLISH_SERVICE_VALUE, config.service_type())) {
             return ServiceType.PUBLISH;
         } else {
             return ServiceType.AUTHOR;
@@ -112,12 +112,12 @@ public class RequireAemImpl implements RequireAem {
         }
 
         properties.put(PN_DISTRIBUTION, this.distribution.getValue());
-        properties.put(PN_SERVICE, config.service());
+        properties.put(PN_SERVICE_TYPE, this.config.service_type());
 
         serviceRegistration = bundleContext.registerService(RequireAem.class.getName(), this, properties);
 
         log.info("Registering [ RequireAem.class ] as an OSGi Service with OSGi properties [ distribution = {}, serviceType = {} ] so it can be used to enable/disable other OSGi Components",
-                properties.get(PN_DISTRIBUTION), properties.get(PN_SERVICE));
+                properties.get(PN_DISTRIBUTION), properties.get(PN_SERVICE_TYPE));
     }
 
     protected boolean isCloudService(BundleContext bundleContext) {
