@@ -31,7 +31,6 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
@@ -74,10 +73,7 @@ public class RequireAemImpl implements RequireAem {
         String service_type() default PUBLISH_SERVICE_VALUE;
     }
 
-    @Reference(
-            policyOption = ReferencePolicyOption.GREEDY,
-            cardinality = ReferenceCardinality.OPTIONAL
-    )
+    @Reference(cardinality = ReferenceCardinality.OPTIONAL)
     private transient DownloadService aemCsOnlyService;
 
     @Override
@@ -105,7 +101,7 @@ public class RequireAemImpl implements RequireAem {
         @SuppressWarnings("squid:java:S1149")
         final Dictionary<String, Object> properties = new Hashtable<>();
 
-        if (isCloudService(bundleContext)) {
+        if (isCloudService()) {
             this.distribution = Distribution.CLOUD_READY;
         } else {
             this.distribution = Distribution.CLASSIC;
@@ -120,7 +116,7 @@ public class RequireAemImpl implements RequireAem {
                 properties.get(PN_DISTRIBUTION), properties.get(PN_SERVICE_TYPE));
     }
 
-    protected boolean isCloudService(BundleContext bundleContext) {
+    protected boolean isCloudService() {
         return aemCsOnlyService != null;
     }
 
