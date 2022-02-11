@@ -22,15 +22,12 @@
 package com.adobe.aem.commons.assetshare.util.impl;
 
 import com.adobe.aem.commons.assetshare.util.RequireAem;
-import com.adobe.cq.dam.download.api.DownloadService;
 import org.apache.commons.lang3.StringUtils;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
@@ -40,11 +37,13 @@ import org.slf4j.LoggerFactory;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+import static com.adobe.aem.commons.assetshare.util.impl.RequireAemImpl.PN_SERVICE_TYPE;
+
 @Component(
         immediate = true,
         service = {},
         property = {
-                "service=" + RequireAemImpl.PUBLISH_SERVICE_TYPE_VALUE
+                PN_SERVICE_TYPE + "=" + RequireAemImpl.PUBLISH_SERVICE_TYPE_VALUE
         }
 )
 @Designate(ocd = RequireAemImpl.Config.class)
@@ -52,7 +51,7 @@ public class RequireAemImpl implements RequireAem {
     private static final Logger log = LoggerFactory.getLogger(RequireAemImpl.class);
 
     static final String PN_DISTRIBUTION = "distribution";
-    static final String PN_SERVICE_TYPE = "serviceType";
+    static final String PN_SERVICE_TYPE = "service.type";
 
     protected static final String PUBLISH_SERVICE_TYPE_VALUE = "publish";
 
@@ -72,9 +71,6 @@ public class RequireAemImpl implements RequireAem {
         )
         String service_type() default PUBLISH_SERVICE_TYPE_VALUE;
     }
-
-    @Reference(cardinality = ReferenceCardinality.OPTIONAL)
-    private transient DownloadService aemCsOnlyService;
 
     @Override
     public Distribution getDistribution() {
@@ -101,7 +97,7 @@ public class RequireAemImpl implements RequireAem {
         @SuppressWarnings("squid:java:S1149")
         final Dictionary<String, Object> properties = new Hashtable<>();
 
-        if (isCloudService()) {
+        if (isCloudService(bundleContext)) {
             this.distribution = Distribution.CLOUD_READY;
         } else {
             this.distribution = Distribution.CLASSIC;
@@ -116,8 +112,8 @@ public class RequireAemImpl implements RequireAem {
                 properties.get(PN_DISTRIBUTION), properties.get(PN_SERVICE_TYPE));
     }
 
-    protected boolean isCloudService() {
-        return aemCsOnlyService != null;
+    protected boolean isCloudService(BundleContext bundleContext) {
+        return bundleContext.getServiceReference("com.adobe.cq.dam.download.api.DownloadService") != null;
     }
 
     @Deactivate
