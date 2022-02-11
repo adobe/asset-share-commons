@@ -44,7 +44,7 @@ import java.util.Hashtable;
         immediate = true,
         service = {},
         property = {
-                "service=" + RequireAemImpl.PUBLISH_SERVICE_VALUE
+                "service=" + RequireAemImpl.PUBLISH_SERVICE_TYPE_VALUE
         }
 )
 @Designate(ocd = RequireAemImpl.Config.class)
@@ -54,7 +54,7 @@ public class RequireAemImpl implements RequireAem {
     static final String PN_DISTRIBUTION = "distribution";
     static final String PN_SERVICE_TYPE = "serviceType";
 
-    protected static final String PUBLISH_SERVICE_VALUE = "publish";
+    protected static final String PUBLISH_SERVICE_TYPE_VALUE = "publish";
 
     private ServiceRegistration<?> serviceRegistration;
 
@@ -70,7 +70,7 @@ public class RequireAemImpl implements RequireAem {
                 name = "Service type name",
                 description = "Defines the which AEM service type (author or publish) the application is running under. Allowed values are: author or publish. Defaults to: publish."
         )
-        String service_type() default PUBLISH_SERVICE_VALUE;
+        String service_type() default PUBLISH_SERVICE_TYPE_VALUE;
     }
 
     @Reference(cardinality = ReferenceCardinality.OPTIONAL)
@@ -87,7 +87,7 @@ public class RequireAemImpl implements RequireAem {
 
     @Override
     public ServiceType getServiceType() {
-        if (StringUtils.equalsIgnoreCase(PUBLISH_SERVICE_VALUE, config.service_type())) {
+        if (StringUtils.equalsIgnoreCase(PUBLISH_SERVICE_TYPE_VALUE, config.service_type())) {
             return ServiceType.PUBLISH;
         } else {
             return ServiceType.AUTHOR;
