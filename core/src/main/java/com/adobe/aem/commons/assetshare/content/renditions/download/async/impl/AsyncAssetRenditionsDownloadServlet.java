@@ -119,10 +119,12 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
 
         boolean groupRenditionsByAssetFolder = assetModels.size() > 1 && renditionNames.size() > 1;
 
-        log.debug("Requested assets to download: [ {} ]", StringUtils.join(assetModels.stream().map(AssetModel::getPath).toArray()), ", ");
-        log.debug("Requested renditions to download: [ {} ]", StringUtils.join(renditionNames, ", "));
-        log.debug("Archive name: [ {} ]", archiveName);
-        log.debug("Group renditions nby folder: [ {} ]", groupRenditionsByAssetFolder);
+        if (log.isDebugEnabled()) {
+            log.debug("Requested assets to download: [ {} ]", StringUtils.join(assetModels.stream().map(AssetModel::getPath).toArray()), ", ");
+            log.debug("Requested renditions to download: [ {} ]", StringUtils.join(renditionNames, ", "));
+            log.debug("Archive name: [ {} ]", archiveName);
+            log.debug("Group renditions by folder: [ {} ]", groupRenditionsByAssetFolder);
+        }
 
         DownloadManifest manifest = apiFactory.createDownloadManifest();
 
@@ -131,7 +133,7 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
         }
 
         try {
-            log.debug("Invoking AME Download Framework with Download Manifest");
+            log.debug("Invoking AEM Download Framework with Download Manifest");
 
             final String downloadId = downloadService.download(manifest, request.getResourceResolver());
 
@@ -156,11 +158,10 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
                                                    final String archiveName,
                                                    final boolean groupRenditionsByAssetFolder) {
 
-
         log.debug("Adding Download to Manifest for [ {} ]", asset.getPath());
 
         renditionNames.forEach(renditionName -> {
-            log.debug(" + Adding Download Rendition to Manifest for [ {} ]", renditionName);
+            log.debug("Adding Download Rendition to Manifest for [ {} ]", renditionName);
 
             final Map<String, Object> renditionParameters = new HashMap();
 
@@ -171,10 +172,10 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
             renditionParameters.put(PARAM_DOWNLOAD_COMPONENT_PATH, downloadComponentResource.getPath());
 
             if (log.isDebugEnabled()) {
-                log.debug(" + Download Target rendition parameters for [ {} ]", TARGET_TYPE);
+                log.debug("Download Target rendition [ {} ] parameters for [ {} ]", renditionName, TARGET_TYPE);
 
                 renditionParameters.entrySet().stream().forEach(renditionParameter -> {
-                    log.debug("   + Rendition parameter: [ {} ] -> [ {} ]", renditionParameter.getKey(), renditionParameter.getValue());
+                    log.debug("Rendition [ {} ] parameter: [ {} ] -> [ {} ]", renditionName, renditionParameter.getKey(), renditionParameter.getValue());
                 });
             }
 
