@@ -36,7 +36,6 @@ import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.servlets.SlingAllMethodsServlet;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
@@ -226,15 +225,5 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
         }
 
         return expression;
-    }
-
-    @Activate
-    protected void activate() {
-        if (requireAem != null) {
-            log.debug("Activating AsyncAssetRenditionsDownloadServlet withe RequireAem configurations: [ distribution = {} ] and [ serviceType = {} ]",
-                    requireAem.getDistribution().getValue(), requireAem.getServiceType().getValue());
-        } else {
-            log.error("Activating AsyncAssetRenditionsDownloadServlet with injected requireAEM service as null");
-        }
     }
 }
