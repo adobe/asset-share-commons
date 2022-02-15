@@ -21,7 +21,6 @@ package com.adobe.aem.commons.assetshare.components.actions.impl;
 
 import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
-import com.adobe.aem.commons.assetshare.content.renditions.download.impl.AssetRenditionsDownloadServlet;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
@@ -35,7 +34,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.osgi.framework.Constants;
 
-import javax.servlet.Servlet;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;

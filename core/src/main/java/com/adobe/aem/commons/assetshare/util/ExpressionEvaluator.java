@@ -22,17 +22,10 @@ package com.adobe.aem.commons.assetshare.util;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRendition;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
 import org.osgi.annotation.versioning.ProviderType;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 @ProviderType
 public interface ExpressionEvaluator {
