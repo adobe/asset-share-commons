@@ -1,5 +1,6 @@
-[![Build Status](https://travis-ci.org/Adobe-Marketing-Cloud/asset-share-commons.svg?branch=develop)](https://travis-ci.org/Adobe-Marketing-Cloud/asset-share-commons)
-[![codecov](https://codecov.io/gh/Adobe-Marketing-Cloud/asset-share-commons/branch/develop/graph/badge.svg)](https://codecov.io/gh/Adobe-Marketing-Cloud/asset-share-commons)
+![Maven CI](https://github.com/adobe/asset-share-commons/actions/workflows/maven.yml/badge.svg)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.adobe.aem.commons/assetshare/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adobe.aem.commons/assetshare)
+[![codecov](https://codecov.io/gh/adobe/asset-share-commons/branch/develop/graph/badge.svg)](https://codecov.io/gh/Adobe-Marketing-Cloud/asset-share-commons)
 
 # Asset Share Commons
 
