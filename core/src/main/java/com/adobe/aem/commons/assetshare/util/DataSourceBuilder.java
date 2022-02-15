@@ -21,7 +21,6 @@ package com.adobe.aem.commons.assetshare.util;
 
 import org.apache.sling.api.SlingHttpServletRequest;
 
-import java.util.Comparator;
 import java.util.Map;
 
 public interface DataSourceBuilder {

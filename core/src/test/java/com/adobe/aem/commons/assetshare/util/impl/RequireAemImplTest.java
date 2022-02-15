@@ -23,14 +23,13 @@
 package com.adobe.aem.commons.assetshare.util.impl;
 
 import com.adobe.aem.commons.assetshare.util.RequireAem;
+import com.adobe.cq.dam.download.api.DownloadService;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.junit.Rule;
 import org.junit.Test;
-import org.osgi.framework.BundleContext;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
 public class RequireAemImplTest {
@@ -40,7 +39,8 @@ public class RequireAemImplTest {
 
     private void setUpAsCloudReady() {
         final RequireAemImpl requireAemImpl = spy(new RequireAemImpl());
-        doReturn(true).when(requireAemImpl).isCloudService(any(BundleContext.class));
+
+        ctx.registerService(DownloadService.class, mock(DownloadService.class));
 
         ctx.registerInjectActivateService(requireAemImpl);
     }

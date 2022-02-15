@@ -3,11 +3,7 @@ package com.adobe.aem.commons.assetshare.testing;
 import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
-
-import static org.mockito.Mockito.*;
 
 public class RequireAemMock {
     public static void setAem(AemContext ctx, RequireAem.Distribution distribution, RequireAem.ServiceType serviceType) {

@@ -35,7 +35,14 @@ import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
 import javax.jcr.query.Row;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -186,7 +193,7 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
 
     @Override
     public boolean isFiltering(final Predicate predicate, final EvaluationContext evaluationContext) {
-        return getPredicateEvaluator(predicate).isFiltering(buildPredicate(predicate), evaluationContext);
+        throw new UnsupportedOperationException("isFiltering(..) is deprecated.");
     }
 
     @Override

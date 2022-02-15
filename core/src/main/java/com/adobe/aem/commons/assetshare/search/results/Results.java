@@ -24,7 +24,6 @@ import org.apache.sling.api.resource.ValueMap;
 import org.osgi.annotation.versioning.ProviderType;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Interface that describes a result set; This is a common interface for results from any search provider.

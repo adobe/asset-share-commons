@@ -19,7 +19,6 @@
 
 package com.adobe.aem.commons.assetshare.search;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.osgi.annotation.versioning.ProviderType;
 
 import java.util.Collection;
