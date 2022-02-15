@@ -32,7 +32,7 @@ import java.util.Optional;
  */
 public class AssetRendition {
     private static final Logger log = LoggerFactory.getLogger(AssetRendition.class);
-    public static AssetRendition UNAVAILABLE_ASSET_RENDITION = new AssetRendition(URI.create("failed://to.resolve.asset.rendition"), 0L, "unavailable/unavailable");
+    public static final AssetRendition UNAVAILABLE_ASSET_RENDITION = new AssetRendition(URI.create("failed://to.resolve.asset.rendition"), 0L, "unavailable/unavailable");
 
     private URI binaryUri;
     private Optional<Long> size; // in Bytes

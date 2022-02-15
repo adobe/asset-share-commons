@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- 0677 - Fixed critical cloud manager errors
+
+
 ## [v2.1.12]
 
 ### Fixed

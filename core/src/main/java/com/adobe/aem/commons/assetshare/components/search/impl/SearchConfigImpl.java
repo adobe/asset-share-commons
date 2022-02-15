@@ -5,7 +5,6 @@ import com.adobe.aem.commons.assetshare.util.ResourceTypeVisitor;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.export.json.ExporterConstants;
 import com.day.cq.dam.api.DamConstants;
-import com.day.cq.replication.ListenerLogDelegator;
 import com.day.cq.search.Predicate;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -26,7 +25,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

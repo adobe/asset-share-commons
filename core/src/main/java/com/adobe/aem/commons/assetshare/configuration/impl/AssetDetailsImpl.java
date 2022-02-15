@@ -25,7 +25,6 @@ import com.adobe.aem.commons.assetshare.configuration.Config;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.properties.impl.UrlImpl;
 import com.adobe.aem.commons.assetshare.util.UrlUtil;
-import com.day.text.Text;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;

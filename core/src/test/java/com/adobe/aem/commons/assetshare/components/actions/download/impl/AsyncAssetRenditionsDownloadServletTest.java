@@ -16,7 +16,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.servlet.Servlet;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)

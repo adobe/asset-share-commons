@@ -1,9 +1,8 @@
 package com.adobe.aem.commons.assetshare.content.renditions;
 
-import com.adobe.aem.commons.assetshare.util.UrlUtil;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class AssetRenditionTest {
 

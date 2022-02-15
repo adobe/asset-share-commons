@@ -31,7 +31,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FastPropertiesImplTest {
