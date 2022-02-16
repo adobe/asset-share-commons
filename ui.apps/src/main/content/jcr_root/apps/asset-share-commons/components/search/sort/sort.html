@@ -59,8 +59,8 @@
 		<i class="dropdown icon"></i>
 		<div class="text">${predicate.orderBySortLabel}</div>
 		<div class="menu">
-			<div class="item ${predicate.ascending ? 'selected' : ''}" data-value="asc">${properties['ascendingLabel']}</div>
-			<div class="item ${predicate.ascending ? '' : 'selected'}" data-value="desc">${properties['descendingLabel']}</div>
+			<div class="item ${predicate.ascending ? 'selected' : ''}" data-value="asc">${properties['ascendingLabel'] || 'Ascending' @ i18n}</div>
+			<div class="item ${predicate.ascending ? '' : 'selected'}" data-value="desc">${properties['descendingLabel'] || 'Descending' @ i18n}</div>
 		</div>
 	</div>
 

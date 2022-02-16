@@ -24,7 +24,7 @@
      data-sly-test.ready="${renditions.ready}">
 
     <div class="ui basic segment">
-        <h4 class="ui header" data-sly-test="${!properties['hideLabel']}">${properties['label']}</h4>
+        <h4 class="ui header" data-sly-test="${!properties['hideLabel']}">${properties['label'] || 'Renditions' @ i18n}</h4>
 
         <div class="ui labels"
              data-sly-list.rendition="${renditions.renditions}">

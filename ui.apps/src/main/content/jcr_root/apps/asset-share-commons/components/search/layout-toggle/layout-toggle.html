@@ -21,18 +21,18 @@
 		value="card"
 		data-asset-share-id="switch-layout">
 	<i class="big grid layout icon cmp-button__icon"
-	   title="${properties['cardLabel']}"></i>
+	   title="${properties['cardLabel'] || 'Card Toggle' @ i18n}"></i>
 	<span 	class="cmp-button__label"
 			data-sly-test.showLabels="${properties['showLabels']}"
-	      	data-sly-text="${properties['cardLabel']}"></span>
+	      	data-sly-text="${properties['cardLabel'] || 'Card Toggle' @ i18n}"></span>
 </button>
 
 <button class="ui icon button plain cmp-button ${properties['showLabels'] ? 'cmp-button--labeled' : ''}"
 		value="list"
 		data-asset-share-id="switch-layout">
 	<i class="big list layout icon cmp-button__icon"
-	   title="${properties['listLabel']}"></i>
+	   title="${properties['listLabel'] || 'List Toggle' @ i18n}"></i>
 	<span 	class="cmp-button__label"
 			data-sly-test="${showLabels}"
-	      	data-sly-text="${properties['listLabel']}"></span>
+	      	data-sly-text="${properties['listLabel'] || 'List Toggle' @ i18n}"></span>
 </button>

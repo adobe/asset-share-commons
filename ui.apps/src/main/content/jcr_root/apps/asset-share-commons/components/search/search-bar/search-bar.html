@@ -22,7 +22,7 @@
 
 	<div class="ui fluid big left icon input ${properties['hideButton'] ? '' : 'action'}">
 		<input type="${predicate.type}"
-			   placeholder="${properties['placeholder']}"
+			   placeholder="${properties['placeholder'] || 'What are you looking for?' @ i18n}"
 			   name="${predicate.name}"
 			   id="${predicate.id}"
 			   value="${predicate.initialValue}"
@@ -30,7 +30,7 @@
 		<i class="search icon"></i>
 		<button class="ui primary button ${properties['hideButton'] ? 'hidden' : ''}" 
 				form="${predicate.formId}">
-		        ${properties['buttonLabel']}
+		        ${properties['buttonLabel'] || 'Search' @ i18n}
 		</button>
 	</div>
 

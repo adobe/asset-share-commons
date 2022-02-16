@@ -32,7 +32,7 @@
      class="ui long modal cmp-modal-license--wrapper cmp-modal">
     <i class="close icon"></i>
     <div class="header">
-        ${properties['modalTitle']}
+        ${properties['modalTitle'] || 'License Agreement' @ i18n}
     </div>
     <div class="cmp-content image scrolling content">
         <div class="ui medium image">
@@ -48,11 +48,11 @@
 
     <div class="actions">
         <div class="ui deny button">
-            ${properties['rejectButtonText']}
+            ${properties['rejectButtonText'] || 'Reject' @ i18n}
         </div>
         <div class="ui positive right labeled icon button"
              data-asset-share-id="license-accept">
-            ${properties['acceptButtonText']}
+            ${properties['acceptButtonText'] || 'Accept Terms' @ i18n}
             <i class="checkmark icon"></i>
         </div>
     </div>
