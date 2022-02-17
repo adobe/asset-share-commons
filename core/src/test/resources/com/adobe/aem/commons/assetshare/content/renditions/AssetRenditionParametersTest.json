@@ -4,8 +4,7 @@
     "jcr:content": {
       "jcr:primaryType": "nt:unstructured",
       "metadata": {
-        "jcr:primaryType": "nt:unstructured",
-        "dc:format": "image/png"
+        "jcr:primaryType": "nt:unstructured"
       },
       "renditions": {
         "jcr:primaryType": "nt:unstructured"
