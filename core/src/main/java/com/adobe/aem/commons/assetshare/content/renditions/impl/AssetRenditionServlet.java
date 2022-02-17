@@ -109,7 +109,8 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
                 StringUtils.isBlank(parameters.getRenditionName())) {
             return false;
         } else {
-            return assetRenditionDispatcher.getRenditionNames().contains(parameters.getRenditionName());
+            return assetRenditionDispatcher.getRenditionNames().contains(parameters.getRenditionName()) &&
+                    (assetRenditionDispatcher.getTypes().isEmpty() || assetRenditionDispatcher.getTypes().contains(parameters.getAssetType()));
         }
     }
 

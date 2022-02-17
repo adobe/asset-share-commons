@@ -23,6 +23,8 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.AssetResolver;
 import com.adobe.aem.commons.assetshare.content.impl.AssetModelImpl;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperties;
+import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
+import com.adobe.aem.commons.assetshare.content.properties.impl.AssetTypeImpl;
 import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedPropertiesImpl;
 import com.day.cq.dam.commons.util.DamUtil;
 import io.wcm.testing.mock.aem.junit.AemContext;
@@ -53,7 +55,8 @@ public class AssetRenditionParametersTest {
         doReturn(DamUtil.resolveToAsset(ctx.resourceResolver().getResource("/content/dam/test.png"))).when(assetResolver).resolveAsset(ctx.request());
         ctx.registerService(AssetResolver.class, assetResolver);
 
-        ctx.registerService(ComputedProperties.class, new ComputedPropertiesImpl());
+        ctx.registerInjectActivateService(new AssetTypeImpl());
+        ctx.registerInjectActivateService(new ComputedPropertiesImpl());
         ctx.addModelsForClasses(AssetModelImpl.class);
 
         testAssetModel = ctx.request().adaptTo(AssetModel.class);
@@ -65,6 +68,7 @@ public class AssetRenditionParametersTest {
 
         assertEquals("t.estin.g", actual.getRenditionName());
         assertEquals("test.t.estin.g.png", actual.getFileName());
+        assertEquals("image", actual.getAssetType());
         assertFalse(actual.isDownload());
         assertTrue(actual.getParameters().isEmpty());
     }
@@ -75,6 +79,7 @@ public class AssetRenditionParametersTest {
 
         assertEquals("testing", actual.getRenditionName());
         assertEquals("test.testing.png", actual.getFileName());
+        assertEquals("image", actual.getAssetType());
         assertTrue(actual.isDownload());
         assertEquals(1, actual.getParameters().size());
         assertEquals("download", actual.getParameters().get(0));
@@ -86,6 +91,7 @@ public class AssetRenditionParametersTest {
 
         assertEquals("testing", actual.getRenditionName());
         assertEquals("test.testing.png", actual.getFileName());
+        assertEquals("image", actual.getAssetType());
         assertTrue(actual.isDownload());
         assertEquals(3, actual.getParameters().size());
         assertEquals("param1", actual.getParameters().get(0));
@@ -102,6 +108,7 @@ public class AssetRenditionParametersTest {
 
         assertEquals("testing", actual.getRenditionName());
         assertEquals("test.testing.png", actual.getFileName());
+        assertEquals("image", actual.getAssetType());
         assertTrue(actual.isDownload());
         assertEquals(3, actual.getParameters().size());
         assertEquals("download", actual.getParameters().get(0));
