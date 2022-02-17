@@ -45,12 +45,12 @@
         <div class="header">${"Direct Downloads enabled" @ i18n}</div>
     </div>
     <div class="header">
-        ${properties['modalTitle'] || 'Download' @ i18n}
+        ${properties['modalTitle'] @ i18n}
     </div>
 
     <div class="image scrolling content cmp-content">
         <div class="ui medium image">
-            <h3 class="ui header">${properties['assetListTitle'] || 'Assets' @ i18n}</h3>
+            <h3 class="ui header">${properties['assetListTitle'] @ i18n}</h3>
 
             <div class="ui list" data-sly-list.asset="${download.assets}">
                 <div class="item">
@@ -63,7 +63,7 @@
         </div>
 
         <div class="description ui form">
-            <h3 class="ui header">${properties['downloadOptionsTitle'] || 'Download options' @ i18n}</h3>
+            <h3 class="ui header">${properties['downloadOptionsTitle'] @ i18n}</h3>
 
             <sly data-sly-list.asset="${download.assets}">
                 <input type="hidden" name="path"  value="${asset.url}"/>
@@ -78,7 +78,7 @@
                 <sly data-sly-test="${properties.selectAllLabel && assetRenditionsGroup.items.size > 1}">
                     <div class="ui checkbox cmp-modal-download__asset-rendition-group-option">
                         <input type="checkbox" onchange="$(this).closest('.cmp-modal-download__asset-rendition-group').find('input[type=\'checkbox\']').prop('checked', $(this).prop('checked'));">
-                        <label>${properties.selectAllLabel || 'Select all' @ i18n}</label>
+                        <label>${properties.selectAllLabel @ i18n}</label>
                     </div>
                     <br/>
                 </sly>
@@ -97,10 +97,10 @@
 
     <div class="actions cmp-footer__actions">
         <div class="ui deny button">
-            ${properties['cancelButton'] || 'Cancel' @ i18n}
+            ${properties['cancelButton'] @ i18n}
         </div>
         <button type="submit" class="ui positive primary right labeled icon button ${isMaxSize ? 'disabled': ''}">
-            ${properties['downloadButton'] || 'Download' @ i18n}
+            ${properties['downloadButton'] @ i18n}
             <i class="download icon"></i>
         </button>
     </div>

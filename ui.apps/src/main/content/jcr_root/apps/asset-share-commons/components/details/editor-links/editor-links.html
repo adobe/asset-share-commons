@@ -23,14 +23,14 @@
      data-sly-test.ready="${editorLinks.ready}">
 
     <h4 class="ui header"
-        data-sly-test="${!properties['hideLabel']}">${properties['label'] || 'AEM Editor Links' @ i18n}</h4>
+        data-sly-test="${!properties['hideLabel']}">${properties['label'] @ i18n}</h4>
 
     <ul>
         <li data-sly-test.assetDetailsLinkLabel="${properties['assetDetailsLinkLabel']}">
-            <a href="${editorLinks.assetDetailsEditorPath}" target="_blank">${assetDetailsLinkLabel || 'Open asset in AEM Assets Editor' @ i18n}</a>
+            <a href="${editorLinks.assetDetailsEditorPath}" target="_blank">${assetDetailsLinkLabel @ i18n}</a>
         </li>
         <li data-sly-test.assetFolderLinkLabel="${properties['assetFolderLinkLabel']}">
-            <a href="${editorLinks.assetFolderEditorPath}" target="_blank">${assetFolderLinkLabel || 'Open asset\'s folder in AEM Assets Editor' @ i18n}</a>
+            <a href="${editorLinks.assetFolderEditorPath}" target="_blank">${assetFolderLinkLabel @ i18n}</a>
         </li>
     </ul>
 

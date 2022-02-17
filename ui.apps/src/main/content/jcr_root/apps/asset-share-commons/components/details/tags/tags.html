@@ -23,7 +23,7 @@
      data-sly-test.ready="${field.ready}">
 
     <div class="ui basic segment">
-        <h4 class="ui header" data-sly-test="${!properties['hideLabel']}">${properties['label'] || 'Tags' @ i18n}</h4>
+        <h4 class="ui header" data-sly-test="${!properties['hideLabel']}">${properties['label'] @ i18n}</h4>
 
         <p data-sly-test.empty="${field.tagTitles.size == 0}">${properties['emptyText'] @ i18n}</p>
 

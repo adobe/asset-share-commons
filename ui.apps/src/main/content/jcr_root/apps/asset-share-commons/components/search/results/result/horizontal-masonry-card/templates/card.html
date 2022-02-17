@@ -73,6 +73,6 @@
 
 <template data-sly-template.noResults="${@ search = search, config = config }">
     <h1 class="ui center aligned header">
-        ${properties['noResultsText'] || 'Your search did not match any assets.' @ i18n}
+        ${properties['noResultsText'] @ i18n}
     </h1>
 </template>

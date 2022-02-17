@@ -21,7 +21,7 @@
             form="${pagePredicate.formId}"
             class="ui icon fluid button ${hideLabels ? '' : 'labeled'}">
         <i class=" filter icon"></i>
-        <span data-sly-test="${!hideLabels}">${properties['applyFilterLabel'] || 'Apply' @ i18n}</span>
+        <span data-sly-test="${!hideLabels}">${properties['applyFilterLabel'] @ i18n}</span>
     </button>
 </template>
 
@@ -29,6 +29,6 @@
     <a class="ui icon fluid button ${hideLabels ? '' : 'labeled'}"
        href="${currentPage.path @ extension = 'html'}">
         <i class="undo icon"></i>
-        <span data-sly-test="${!hideLabels}">${properties['resetFilterLabel'] || 'Reset' @ i18n}</span>
+        <span data-sly-test="${!hideLabels}">${properties['resetFilterLabel'] @ i18n}</span>
     </a>
 </template>

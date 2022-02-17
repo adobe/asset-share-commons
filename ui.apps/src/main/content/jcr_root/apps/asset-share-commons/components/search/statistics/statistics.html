@@ -28,7 +28,7 @@
 				${component.runningTotal}
 			</div>
 			<div class="label">
-				${properties['runningTotalLabel'] || 'Displayed' @ i18n}
+				${properties['runningTotalLabel'] @ i18n}
 			</div>
 		</div>
 
@@ -37,7 +37,7 @@
 				${component.total}${component.hasMore ? '+' : '' @ i18n}
 			</div>
 			<div class="label">
-				${properties['totalLabel'] || 'Total' @ i18n}
+				${properties['totalLabel'] @ i18n}
 			</div>
 		</div>
 
@@ -47,7 +47,7 @@
 				${component.timeTaken}
 			</div>
 			<div class="label">
-				${properties['timeTakenLabel'] || 'Milliseconds' @ i18n}
+				${properties['timeTakenLabel'] @ i18n}
 			</div>
 		</div>
 	</div>
