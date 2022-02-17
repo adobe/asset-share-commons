@@ -61,7 +61,7 @@
         <sly data-sly-test="${search.results.more}">
             <br/><br/>
             <button data-asset-share-id="${properties['infiniteLoadMore'] ? 'infinite-load-more' : 'load-more'}"
-                    class="fluid ui button">${properties['loadMoreLabel'] || 'Load more' @ i18n}</button>
+                    class="fluid ui button">${properties['loadMoreLabel'] @ i18n}</button>
         </sly>
     </div>
 </template>
