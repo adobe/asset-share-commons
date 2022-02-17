@@ -23,14 +23,14 @@
      data-sly-test.ready="${editorLinks.ready}">
 
     <h4 class="ui header"
-        data-sly-test="${!properties['hideLabel']}">${properties['label']}</h4>
+        data-sly-test="${!properties['hideLabel']}">${properties['label'] @ i18n}</h4>
 
     <ul>
         <li data-sly-test.assetDetailsLinkLabel="${properties['assetDetailsLinkLabel']}">
-            <a href="${editorLinks.assetDetailsEditorPath}" target="_blank">${assetDetailsLinkLabel}</a>
+            <a href="${editorLinks.assetDetailsEditorPath}" target="_blank">${assetDetailsLinkLabel @ i18n}</a>
         </li>
         <li data-sly-test.assetFolderLinkLabel="${properties['assetFolderLinkLabel']}">
-            <a href="${editorLinks.assetFolderEditorPath}" target="_blank">${assetFolderLinkLabel}</a>
+            <a href="${editorLinks.assetFolderEditorPath}" target="_blank">${assetFolderLinkLabel @ i18n}</a>
         </li>
     </ul>
 

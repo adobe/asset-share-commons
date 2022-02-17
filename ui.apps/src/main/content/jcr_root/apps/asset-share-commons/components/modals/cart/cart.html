@@ -42,7 +42,7 @@
     <i class="close icon"></i>
 
     <div class="header">
-        ${properties['modalTitle']}
+        ${properties['modalTitle'] @ i18n}
     </div>
     <div class="scrolling content"
          data-asset-share-id="cart-items">
@@ -78,30 +78,30 @@
 
         <p class="cmp-modal-cart__empty-text"
            data-sly-test="${cart.assets.size == 0}">
-            ${properties['emptyText']}
+            ${properties['emptyText'] @ i18n}
         </p>
 
     </div>
     <div class="actions">
         <div class="ui black deny button">
-            ${properties['closeButton']}
+            ${properties['closeButton'] @ i18n}
         </div>
         <div class="ui black button align left"
              data-sly-test="${cart.assets.size > 0}"
              data-asset-share-id="clear-cart">
-            ${properties['clearButton']}
+            ${properties['clearButton'] @ i18n}
         </div>
         <div class="ui primary right labeled icon button"
         	 data-asset-share-id="share-all"
              data-sly-test="${config.shareEnabledCart && cart.assets.size > 0}">
-            ${properties['shareButton']}
+            ${properties['shareButton'] @ i18n}
              <i class="send icon"></i>
         </div>
         <button data-sly-test="${config.downloadEnabledCart && cart.assets.size > 0}"
         	    data-asset-share-id="download-all"
                 type="submit"
                 class="ui postive primary right labeled icon button">
-            ${properties['downloadButton']}
+            ${properties['downloadButton'] @ i18n}
             <i class="download icon"></i>
         </button>
     </div>

@@ -24,7 +24,7 @@
         <a class="ui left cmp-user__action"
            href="${currentStyle['logInLink']}"
            data-sly-test="${!loggedIn}">
-            ${currentStyle['logInLabel']}
+            ${currentStyle['logInLabel'] @ i18n}
         </a>
     </span>
 
@@ -43,14 +43,14 @@
            data-asset-share-id="cmp-user-menu__profile-pic--unavailable"></i>
 
         <div class="cmp-user__message">
-            ${currentStyle['greeting']} <span data-asset-share-id="cmp-user-menu__profile-display-name"></span>
+            ${currentStyle['greeting'] @ i18n} <span data-asset-share-id="cmp-user-menu__profile-display-name"></span>
 
             <br/>
 
             <a class="cmp-user__action"
                href="${currentStyle['logOutLink']}"
                data-asset-share-id="cmp-user-menu__logout-link">
-                ${currentStyle['logOutLabel']}
+                ${currentStyle['logOutLabel'] @ i18n}
             </a>
         </div>
     </span>
