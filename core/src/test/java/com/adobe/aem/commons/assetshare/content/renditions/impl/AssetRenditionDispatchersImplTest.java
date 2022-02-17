@@ -26,7 +26,7 @@ public class AssetRenditionDispatchersImplTest {
 
     @Before
     public void setUp() throws Exception {
-        RequireAemMock.setAemDistribution(ctx, RequireAem.Distribution.CLASSIC);
+        RequireAemMock.setAem(ctx, RequireAem.Distribution.CLASSIC, RequireAem.ServiceType.PUBLISH);
 
         ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
         ctx.registerService(AssetRenditionDispatchers.class, new AssetRenditionDispatchersImpl());

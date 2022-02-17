@@ -21,7 +21,6 @@ package com.adobe.aem.commons.assetshare.content.renditions.download.impl;
 
 import com.adobe.aem.commons.assetshare.components.actions.impl.ActionHelperImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionDispatchersImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
@@ -54,7 +53,6 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -117,7 +115,7 @@ public class AssetRenditionsDownloadServletTest {
                         put("rendition.mappings", new String[]{ "test=original" }).
                         build());
 
-        RequireAemMock.setAemDistribution(ctx, RequireAem.Distribution.CLASSIC);
+        RequireAemMock.setAem(ctx, RequireAem.Distribution.CLASSIC, RequireAem.ServiceType.PUBLISH);
 
         ctx.request().setRequestDispatcherFactory(new MockRequestDispatcherFactory() {
             @Override

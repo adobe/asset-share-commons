@@ -20,7 +20,6 @@
 package com.adobe.aem.commons.assetshare.content.renditions;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
-import com.day.cq.dam.api.Asset;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.osgi.annotation.versioning.ConsumerType;
@@ -106,6 +105,14 @@ public interface AssetRenditionDispatcher {
     default AssetRendition getRendition(AssetModel assetModel, AssetRenditionParameters parameters) {
         throw new UnsupportedOperationException("AssetRendition are only supported by AEM as a Cloud Service");
     }
-    
+
+    /**
+     * Checks if the implementing AssetRenditionDispatcher should accept and dispatch this asset/rendition name combo.
+     * The first, highest service ranking, accepting AssetRenditionDispatcher in the chain will be used.
+     *
+     * @param asset the asset to dispatch
+     * @param renditionName the renditionName of the asset to dispatcher
+     * @return true if the implementing AssetRenditionDispatcher should be responsible for dispatching this asset/renditionName combo.
+     */
     default boolean accepts(AssetModel asset, String renditionName) { return false; }
 }

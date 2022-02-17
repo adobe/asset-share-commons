@@ -22,8 +22,8 @@ package com.adobe.aem.commons.assetshare.search.impl.datasources;
 import com.adobe.aem.commons.assetshare.content.MetadataProperties;
 import com.adobe.aem.commons.assetshare.search.FastProperties;
 import com.adobe.aem.commons.assetshare.util.DataSourceBuilder;
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.ValueMap;
@@ -33,7 +33,11 @@ import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Reference;
 
 import javax.servlet.Servlet;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Component(
         service = Servlet.class,

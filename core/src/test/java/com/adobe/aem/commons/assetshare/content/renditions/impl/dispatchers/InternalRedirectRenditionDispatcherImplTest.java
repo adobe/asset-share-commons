@@ -24,14 +24,12 @@ import com.adobe.aem.commons.assetshare.content.impl.AssetModelImpl;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperties;
 import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedPropertiesImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
 import com.adobe.aem.commons.assetshare.testing.RequireAemMock;
 import com.adobe.aem.commons.assetshare.util.ExpressionEvaluator;
 import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.aem.commons.assetshare.util.impl.ExpressionEvaluatorImpl;
 import com.adobe.aem.commons.assetshare.util.impl.ExtensionOverrideRequestWrapper;
-import com.day.cq.dam.commons.util.DamUtil;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.sling.api.request.RequestDispatcherOptions;
@@ -74,7 +72,7 @@ public class InternalRedirectRenditionDispatcherImplTest {
 
     @Before
     public void setUp() throws Exception {
-        RequireAemMock.setAemDistribution(ctx, RequireAem.Distribution.CLASSIC);
+        RequireAemMock.setAem(ctx, RequireAem.Distribution.CLASSIC, RequireAem.ServiceType.PUBLISH);
 
         ctx.load().json(getClass().getResourceAsStream("InternalRedirectRenditionDispatcherImplTest.json"), "/content/dam");
         ctx.currentResource("/content/dam/test.png");

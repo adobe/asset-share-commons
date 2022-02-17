@@ -25,6 +25,7 @@ import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditi
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.jackrabbit.vault.packaging.JcrPackage;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.ValueMap;
@@ -40,7 +41,11 @@ import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -85,7 +90,7 @@ public class AssetRenditionsZipperImpl implements AssetRenditionsDownloadOrchest
         final String filename = StringUtils.defaultIfBlank(getFileName(request.getResource().getValueMap()), DEFAULT_FILE_ATTACHMENT_NAME);
 
         response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
-        response.setContentType("application/zip");
+        response.setContentType(JcrPackage.MIME_TYPE);
 
         final ZipOutputStream zipOutputStream = new ZipOutputStream(response.getOutputStream());
 
@@ -170,7 +175,7 @@ public class AssetRenditionsZipperImpl implements AssetRenditionsDownloadOrchest
                                      final String responseContentType, final Set<String> zipEntryFileNames) {
         final String extension = mimeTypeService.getExtension(responseContentType);
 
-        final Map<String, String> variables = new HashMap<>();
+        final Map<String, String> variables = new LinkedHashMap<>();
 
         variables.put(VAR_ASSET_FILE_NAME, asset.getName());
         variables.put(VAR_ASSET_NAME, StringUtils.substringBeforeLast(asset.getName(), "."));

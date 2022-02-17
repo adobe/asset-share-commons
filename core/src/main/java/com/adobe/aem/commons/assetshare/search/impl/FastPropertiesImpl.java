@@ -21,8 +21,12 @@ package com.adobe.aem.commons.assetshare.search.impl;
 
 import com.adobe.aem.commons.assetshare.search.FastProperties;
 import com.adobe.aem.commons.assetshare.util.impl.OakIndexResolver;
-import org.apache.commons.lang.StringUtils;
-import org.apache.sling.api.resource.*;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.sling.api.resource.LoginException;
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.resource.ResourceResolverFactory;
+import org.apache.sling.api.resource.ValueMap;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -32,7 +36,15 @@ import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Component(service = FastProperties.class)
 @Designate(ocd = FastPropertiesImpl.Cfg.class)

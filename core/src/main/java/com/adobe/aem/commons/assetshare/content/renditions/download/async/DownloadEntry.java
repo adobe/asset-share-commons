@@ -1,7 +1,6 @@
 package com.adobe.aem.commons.assetshare.content.renditions.download.async;
 
 import com.adobe.cq.dam.download.api.DownloadProgress;
-import com.day.cq.dam.commons.util.UIHelper;
 import org.osgi.annotation.versioning.ProviderType;
 
 import java.util.Calendar;

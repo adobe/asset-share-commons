@@ -19,10 +19,11 @@
 
 package com.adobe.aem.commons.assetshare.content.renditions.download.async.impl;
 
-import java.net.URI;
-import java.util.*;
-
+import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRendition;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.download.async.DownloadArchiveNamer;
 import com.adobe.aem.commons.assetshare.content.renditions.download.async.DownloadTargetParameters;
 import com.adobe.cq.dam.download.api.DownloadApiFactory;
@@ -40,11 +41,18 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.adobe.aem.commons.assetshare.content.AssetModel;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
+/**
+ * This DownloadTargetProcessor can be reviewed/explored via the Explain Download console on AEM Author:
+ *   https://aem.author:4502/libs/dam/content/download/explaindownload.html
+ */
 @Component
 public class NamedRenditionDownloadTargetProcessor implements DownloadTargetProcessor {
     private static final Logger log = LoggerFactory.getLogger(NamedRenditionDownloadTargetProcessor.class);

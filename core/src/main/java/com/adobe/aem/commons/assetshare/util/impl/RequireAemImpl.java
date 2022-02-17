@@ -22,78 +22,102 @@
 package com.adobe.aem.commons.assetshare.util.impl;
 
 import com.adobe.aem.commons.assetshare.util.RequireAem;
-import com.adobe.granite.license.ProductInfo;
-import com.adobe.granite.license.ProductInfoProvider;
+import org.apache.commons.lang3.StringUtils;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
-import org.osgi.framework.Version;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.metatype.annotations.AttributeDefinition;
+import org.osgi.service.metatype.annotations.Designate;
+import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+import static com.adobe.aem.commons.assetshare.util.impl.RequireAemImpl.PN_SERVICE_TYPE;
+
 @Component(
         immediate = true,
-        service = {}
+        service = {},
+        property = {
+                PN_SERVICE_TYPE + "=" + RequireAemImpl.PUBLISH_SERVICE_TYPE_VALUE
+        }
 )
+@Designate(ocd = RequireAemImpl.Config.class)
 public class RequireAemImpl implements RequireAem {
     private static final Logger log = LoggerFactory.getLogger(RequireAemImpl.class);
 
     static final String PN_DISTRIBUTION = "distribution";
-    static final String PN_VERSION = "version";
+    static final String PN_SERVICE_TYPE = "service.type";
 
-    // This is the first Major/Minor GA Version of AEM as a Cloud Service
-    private static final Version originalCloudServiceVersion = new Version(2019, 12,   0);
+    protected static final String PUBLISH_SERVICE_TYPE_VALUE = "publish";
 
-    @Reference
-    private ProductInfoProvider productInfoProvider;
-
-    private ProductInfo productInfo;
     private ServiceRegistration<?> serviceRegistration;
+
+    private RequireAemImpl.Config config;
+
+    private Distribution distribution;
+    @ObjectClassDefinition(
+            name = "Asset Share Commons - AEM Service",
+            description = "Describes the AEM Service being operated on."
+    )
+    @interface Config {
+        @AttributeDefinition(
+                name = "Service type name",
+                description = "Defines the which AEM service type (author or publish) the application is running under. Allowed values are: author or publish. Defaults to: publish."
+        )
+        String service_type() default PUBLISH_SERVICE_TYPE_VALUE;
+    }
 
     @Override
     public Distribution getDistribution() {
-        if (productInfo.getVersion().compareTo(originalCloudServiceVersion) > 0) {
+        if (Distribution.CLOUD_READY.equals(distribution)) {
             return Distribution.CLOUD_READY;
         } else {
             return Distribution.CLASSIC;
         }
     }
 
+    @Override
+    public ServiceType getServiceType() {
+        if (StringUtils.equalsIgnoreCase(PUBLISH_SERVICE_TYPE_VALUE, config.service_type())) {
+            return ServiceType.PUBLISH;
+        } else {
+            return ServiceType.AUTHOR;
+        }
+    }
+
     @Activate
-    protected void activate(final BundleContext bundleContext) {
-        productInfo = productInfoProvider.getProductInfo();
+    protected void activate(final RequireAemImpl.Config config, final BundleContext bundleContext) {
+        this.config = config;
 
         @SuppressWarnings("squid:java:S1149")
         final Dictionary<String, Object> properties = new Hashtable<>();
 
-        String distribution;
-        String version = productInfo.getShortVersion();
-
-        if (Distribution.CLOUD_READY.equals(getDistribution())) {
-            distribution = Distribution.CLOUD_READY.getValue();
+        if (isCloudService(bundleContext)) {
+            this.distribution = Distribution.CLOUD_READY;
         } else {
-            distribution =  Distribution.CLASSIC.getValue();
+            this.distribution = Distribution.CLASSIC;
         }
 
-        properties.put(PN_DISTRIBUTION, distribution);
-        properties.put(PN_VERSION, version);
+        properties.put(PN_DISTRIBUTION, this.distribution.getValue());
+        properties.put(PN_SERVICE_TYPE, this.config.service_type());
 
         serviceRegistration = bundleContext.registerService(RequireAem.class.getName(), this, properties);
 
-        log.info("Registering [ RequireAem.class ] as an OSGi Service with OSGi properties [ distribution = {}, version = {} ] so it can be used to enable/disable other OSGi Components",
-                properties.get(PN_DISTRIBUTION), properties.get(PN_VERSION));
+        log.info("Registering [ RequireAem.class ] as an OSGi Service with OSGi properties [ distribution = {}, serviceType = {} ] so it can be used to enable/disable other OSGi Components",
+                properties.get(PN_DISTRIBUTION), properties.get(PN_SERVICE_TYPE));
+    }
+
+    protected boolean isCloudService(BundleContext bundleContext) {
+        return bundleContext.getServiceReference("com.adobe.cq.dam.download.api.DownloadService") != null;
     }
 
     @Deactivate
     protected void deactivate() {
-        productInfo = null;
-
         if (serviceRegistration != null) {
             serviceRegistration.unregister();
             serviceRegistration = null;

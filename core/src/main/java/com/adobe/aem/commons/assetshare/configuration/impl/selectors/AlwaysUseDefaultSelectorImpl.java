@@ -23,7 +23,6 @@ import com.adobe.aem.commons.assetshare.configuration.AssetDetailsSelector;
 import com.adobe.aem.commons.assetshare.configuration.Config;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import org.apache.commons.lang3.StringUtils;
-import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.metatype.annotations.AttributeDefinition;

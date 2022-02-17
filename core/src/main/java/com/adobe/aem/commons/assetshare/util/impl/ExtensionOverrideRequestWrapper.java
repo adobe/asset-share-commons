@@ -19,10 +19,15 @@
 
 package com.adobe.aem.commons.assetshare.util.impl;
 
+import com.adobe.aem.commons.assetshare.util.impl.proxies.RequestPathInfoWrapper;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestPathInfo;
-import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.wrappers.SlingHttpServletRequestWrapper;
+import org.apache.sling.api.wrappers.ValueMapDecorator;
+
+import java.lang.reflect.Proxy;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * SlingHttpServletRequest Wrapper that allows the force setting (or removal) of the original requests extension.
@@ -41,42 +46,22 @@ public class ExtensionOverrideRequestWrapper extends SlingHttpServletRequestWrap
         this.extension = extension;
     }
 
-    @Override
     public RequestPathInfo getRequestPathInfo() {
-        return new RequestPathInfoWrapper(super.getRequestPathInfo(), extension);
+        Map<String, Object> overrides = new HashMap<>();
+        overrides.put("extension", this.extension);
+
+        final RequestPathInfoWrapper requestPathInfoWrapper = RequestPathInfoWrapper.createRequestPathInfoWrapper(super.getRequestPathInfo(), new ValueMapDecorator(overrides), super.getResource());
+
+        RequestPathInfo wrappedRequestInfo = (RequestPathInfo) Proxy.newProxyInstance(
+                ExtensionOverrideRequestWrapper.WrappedRequestPathInfoWrapper.class.getClassLoader(),
+                new Class[] { RequestPathInfo.class, ExtensionOverrideRequestWrapper.WrappedRequestPathInfoWrapper.class  },
+                requestPathInfoWrapper);
+
+        return wrappedRequestInfo;
     }
 
-    private class RequestPathInfoWrapper implements RequestPathInfo {
-        private final RequestPathInfo requestPathInfo;
-        private final String extension;
 
-        public RequestPathInfoWrapper(RequestPathInfo requestPathInfo, String extension) {
-            this.requestPathInfo = requestPathInfo;
-            this.extension = extension;
-        }
-
-        public String getResourcePath() {
-            return requestPathInfo.getResourcePath();
-        }
-
-        public String getExtension() {
-            return extension;
-        }
-
-        public String getSelectorString() {
-            return requestPathInfo.getSelectorString();
-        }
-
-        public String[] getSelectors() {
-            return requestPathInfo.getSelectors();
-        }
-
-        public String getSuffix() {
-            return requestPathInfo.getSuffix();
-        }
-
-        public Resource getSuffixResource() {
-            return requestPathInfo.getSuffixResource();
-        }
+    public interface WrappedRequestPathInfoWrapper {
     }
+
 }

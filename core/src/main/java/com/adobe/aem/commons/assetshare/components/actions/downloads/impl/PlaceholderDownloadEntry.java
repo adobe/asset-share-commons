@@ -1,15 +1,15 @@
 package com.adobe.aem.commons.assetshare.components.actions.downloads.impl;
 
 import com.adobe.aem.commons.assetshare.content.renditions.download.async.DownloadEntry;
-import com.adobe.aem.commons.assetshare.search.results.Results;
-import com.adobe.aem.commons.assetshare.util.RequireAem;
-import com.adobe.cq.dam.download.api.DownloadArtifact;
 import com.adobe.cq.dam.download.api.DownloadProgress;
 import com.day.cq.dam.commons.util.UIHelper;
 import org.apache.sling.api.SlingHttpServletRequest;
 
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.List;
 
 public class PlaceholderDownloadEntry implements DownloadEntry {
     private final SlingHttpServletRequest request;

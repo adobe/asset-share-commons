@@ -1,21 +1,19 @@
 package com.adobe.aem.commons.assetshare.components.actions.download.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
+import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
+import com.adobe.aem.commons.assetshare.components.actions.AssetDownloadHelper;
+import com.adobe.aem.commons.assetshare.components.actions.download.Download;
+import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionDispatchersImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.ExternalRedirectRenditionDispatcherImpl;
-import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.InternalRedirectRenditionDispatcherImpl;
-import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
 import com.adobe.aem.commons.assetshare.testhelpers.TestOptionsImpl;
 import com.adobe.aem.commons.assetshare.testing.RequireAemMock;
 import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
+import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.models.factory.ModelFactory;
@@ -27,16 +25,12 @@ import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.osgi.framework.Constants;
-import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
-import com.adobe.aem.commons.assetshare.components.actions.AssetDownloadHelper;
-import com.adobe.aem.commons.assetshare.components.actions.download.Download;
-import com.adobe.aem.commons.assetshare.content.AssetModel;
 
-import io.wcm.testing.mock.aem.junit.AemContext;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
@@ -76,7 +70,7 @@ public class DownloadImplTest {
 		doReturn(assetModels).when(actionHelper).getAssetsFromQueryParameter(ctx.request(), "path");
 		doReturn(1024L).when(assetDownloadHelper).getMaxContentSizeLimit();
 
-		RequireAemMock.setAemDistribution(ctx, RequireAem.Distribution.CLASSIC);
+		RequireAemMock.setAem(ctx, RequireAem.Distribution.CLASSIC, RequireAem.ServiceType.PUBLISH);
 
 		ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
 		ctx.registerService(AssetRenditionDispatchers.class, new AssetRenditionDispatchersImpl());

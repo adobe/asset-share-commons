@@ -28,7 +28,6 @@ import com.adobe.aem.commons.assetshare.content.properties.impl.AssetTypeImpl;
 import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedPropertiesImpl;
 import com.day.cq.dam.commons.util.DamUtil;
 import io.wcm.testing.mock.aem.junit.AemContext;
-import org.apache.sling.models.factory.ModelFactory;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

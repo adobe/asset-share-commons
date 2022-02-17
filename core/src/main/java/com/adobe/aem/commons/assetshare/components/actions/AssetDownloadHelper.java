@@ -1,11 +1,10 @@
 package com.adobe.aem.commons.assetshare.components.actions;
 
-import java.util.Collection;
-
 import com.adobe.aem.commons.assetshare.content.AssetModel;
-
 import org.apache.sling.api.resource.Resource;
 import org.osgi.annotation.versioning.ProviderType;
+
+import java.util.Collection;
 
 @ProviderType
 public interface AssetDownloadHelper {

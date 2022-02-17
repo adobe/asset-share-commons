@@ -20,7 +20,6 @@
 package com.adobe.aem.commons.assetshare.content.impl.datasources;
 
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionDispatchersImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
