@@ -25,10 +25,10 @@
 
     <div class="ui basic segment">
         <h4 class="ui header"
-            data-sly-test="${!properties['hideLabel']}">${properties['label']}</h4>
+            data-sly-test="${!properties['hideLabel']}">${properties['label'] @ i18n}</h4>
 
         <sly data-sly-test.emptyValue="${field.empty}">
-            <p>${properties['emptyText']}</p>
+            <p>${properties['emptyText'] @ i18n}</p>
         </sly>
 
         <sly data-sly-test.emptyValue="${!field.empty}">
