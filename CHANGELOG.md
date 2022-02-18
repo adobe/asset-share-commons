@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - 0677 - Fixed critical cloud manager errors
-
+- 0668 - Search bar component placeholder text not displaying until focused on light and dark themes
 
 ## [v2.1.12]
 
