@@ -22,7 +22,6 @@ import com.adobe.aem.commons.assetshare.util.MimeTypeHelper;
 import com.adobe.aem.commons.assetshare.util.UrlUtil;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
-import org.apache.commons.lang3.StringUtils;
 import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;

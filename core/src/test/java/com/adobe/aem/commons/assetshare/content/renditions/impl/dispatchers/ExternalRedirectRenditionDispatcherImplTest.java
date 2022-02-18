@@ -24,11 +24,9 @@ import com.adobe.aem.commons.assetshare.content.impl.AssetModelImpl;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperties;
 import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedPropertiesImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
 import com.adobe.aem.commons.assetshare.util.ExpressionEvaluator;
 import com.adobe.aem.commons.assetshare.util.impl.ExpressionEvaluatorImpl;
-import com.day.cq.dam.commons.util.DamUtil;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.sling.commons.mime.MimeTypeService;
@@ -47,7 +45,6 @@ import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.doReturn;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ExternalRedirectRenditionDispatcherImplTest {

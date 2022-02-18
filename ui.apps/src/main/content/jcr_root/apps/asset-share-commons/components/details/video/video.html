@@ -23,7 +23,7 @@
 
 <h4 class="ui header center aligned" 
     data-sly-test="${!video.isVideoAsset}"> 
-	${properties['invalidFormatMsg']}
+	${properties['invalidFormatMsg'] @ i18n}
 </h4>
 	<sly data-sly-test="${video.isVideoAsset}">
 		<sly data-sly-test="${properties.computedProperty =='thumbnail'}">

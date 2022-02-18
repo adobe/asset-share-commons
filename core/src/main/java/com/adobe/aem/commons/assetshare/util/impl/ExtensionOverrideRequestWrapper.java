@@ -19,11 +19,15 @@
 
 package com.adobe.aem.commons.assetshare.util.impl;
 
+import com.adobe.aem.commons.assetshare.util.impl.proxies.RequestPathInfoWrapper;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestPathInfo;
 import org.apache.sling.api.wrappers.SlingHttpServletRequestWrapper;
-import org.apache.sling.servlethelpers.MockRequestPathInfo;
-import org.apache.sling.servlethelpers.MockSlingHttpServletRequest;
+import org.apache.sling.api.wrappers.ValueMapDecorator;
+
+import java.lang.reflect.Proxy;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * SlingHttpServletRequest Wrapper that allows the force setting (or removal) of the original requests extension.
@@ -42,17 +46,22 @@ public class ExtensionOverrideRequestWrapper extends SlingHttpServletRequestWrap
         this.extension = extension;
     }
 
-    @Override
     public RequestPathInfo getRequestPathInfo() {
-        MockSlingHttpServletRequest request = new MockSlingHttpServletRequest(this.getResourceResolver());
-        MockRequestPathInfo requestPathInfo = (MockRequestPathInfo) request.getRequestPathInfo();
+        Map<String, Object> overrides = new HashMap<>();
+        overrides.put("extension", this.extension);
 
-        requestPathInfo.setResourcePath(this.getRequestPathInfo().getResourcePath());
-        requestPathInfo.setSelectorString(this.getRequestPathInfo().getSelectorString());
-        requestPathInfo.setSuffix(this.getRequestPathInfo().getSuffix());
+        final RequestPathInfoWrapper requestPathInfoWrapper = RequestPathInfoWrapper.createRequestPathInfoWrapper(super.getRequestPathInfo(), new ValueMapDecorator(overrides), super.getResource());
 
-        requestPathInfo.setExtension(extension);
+        RequestPathInfo wrappedRequestInfo = (RequestPathInfo) Proxy.newProxyInstance(
+                ExtensionOverrideRequestWrapper.WrappedRequestPathInfoWrapper.class.getClassLoader(),
+                new Class[] { RequestPathInfo.class, ExtensionOverrideRequestWrapper.WrappedRequestPathInfoWrapper.class  },
+                requestPathInfoWrapper);
 
-        return requestPathInfo;
+        return wrappedRequestInfo;
     }
+
+
+    public interface WrappedRequestPathInfoWrapper {
+    }
+
 }

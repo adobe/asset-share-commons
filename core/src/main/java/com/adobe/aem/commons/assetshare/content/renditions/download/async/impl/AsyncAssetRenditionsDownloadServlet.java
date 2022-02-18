@@ -23,7 +23,11 @@ import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.util.ExpressionEvaluator;
 import com.adobe.aem.commons.assetshare.util.RequireAem;
-import com.adobe.cq.dam.download.api.*;
+import com.adobe.cq.dam.download.api.DownloadApiFactory;
+import com.adobe.cq.dam.download.api.DownloadException;
+import com.adobe.cq.dam.download.api.DownloadManifest;
+import com.adobe.cq.dam.download.api.DownloadService;
+import com.adobe.cq.dam.download.api.DownloadTarget;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.apache.commons.lang3.StringUtils;
@@ -40,12 +44,12 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.zone.ZoneRulesException;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.adobe.aem.commons.assetshare.content.renditions.download.async.impl.NamedRenditionDownloadTargetProcessor.*;
 
@@ -97,6 +101,7 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
 
     @Override
     protected final void doPost(final SlingHttpServletRequest request, final SlingHttpServletResponse response) throws ServletException, IOException {
+        log.debug("Entering AsyncAssetRenditionsDownloadServlet.doPost(..)");
         final ValueMap componentProperties = request.getResource().getValueMap();
 
         final Collection<AssetModel> assetModels = actionHelper.getAssetsFromQueryParameter(request, REQ_KEY_ASSET_PATHS);
@@ -113,6 +118,13 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
 
         boolean groupRenditionsByAssetFolder = assetModels.size() > 1 && renditionNames.size() > 1;
 
+        if (log.isDebugEnabled()) {
+            log.debug("Requested assets to download: [ {} ]", StringUtils.join(assetModels.stream().map(AssetModel::getPath).toArray()), ", ");
+            log.debug("Requested renditions to download: [ {} ]", StringUtils.join(renditionNames, ", "));
+            log.debug("Archive name: [ {} ]", archiveName);
+            log.debug("Group renditions by folder: [ {} ]", groupRenditionsByAssetFolder);
+        }
+
         DownloadManifest manifest = apiFactory.createDownloadManifest();
 
         for (final AssetModel assetModel : assetModels) {
@@ -120,7 +132,11 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
         }
 
         try {
+            log.debug("Invoking AEM Download Framework with Download Manifest");
+
             final String downloadId = downloadService.download(manifest, request.getResourceResolver());
+
+            log.debug("AEM Download Framework Download Id: [ {} ]", downloadId);
 
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json;charset=UTF-8");
@@ -141,7 +157,11 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
                                                    final String archiveName,
                                                    final boolean groupRenditionsByAssetFolder) {
 
+        log.debug("Adding Download to Manifest for [ {} ]", asset.getPath());
+
         renditionNames.forEach(renditionName -> {
+            log.debug("Adding Download Rendition to Manifest for [ {} ]", renditionName);
+
             final Map<String, Object> renditionParameters = new HashMap();
 
             renditionParameters.put(PARAM_ASSET_PATH, asset.getPath());
@@ -149,6 +169,14 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
             renditionParameters.put(PARAM_ARCHIVE_NAME, archiveName);
             renditionParameters.put(PARAM_RENDITION_BY_ASSET_FOLDER, groupRenditionsByAssetFolder);
             renditionParameters.put(PARAM_DOWNLOAD_COMPONENT_PATH, downloadComponentResource.getPath());
+
+            if (log.isDebugEnabled()) {
+                log.debug("Download Target rendition [ {} ] parameters for [ {} ]", renditionName, TARGET_TYPE);
+
+                renditionParameters.entrySet().stream().forEach(renditionParameter -> {
+                    log.debug("Rendition [ {} ] parameter: [ {} ] -> [ {} ]", renditionName, renditionParameter.getKey(), renditionParameter.getValue());
+                });
+            }
 
             final DownloadTarget downloadTarget = apiFactory.createDownloadTarget(
                     NamedRenditionDownloadTargetProcessor.TARGET_TYPE,
@@ -165,7 +193,7 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
 
         assetModels.forEach(assetModel -> { assetsJsonArray.add(assetModel.getPath());});
 
-        /** This JSON is considered and API - Do not remove/change key/vales **/
+        /** This JSON is considered an API - Do not remove/change key/vales **/
 
         json.addProperty(DOWNLOAD_ID, downloadId);
         json.add(DOWNLOAD_ASSETS, assetsJsonArray);

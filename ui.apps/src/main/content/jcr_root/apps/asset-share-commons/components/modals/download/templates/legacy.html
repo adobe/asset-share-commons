@@ -37,17 +37,17 @@
 
         <div data-sly-test.isMaxSize="${download.maxContentSize > 0 && download.maxContentSize < download.downloadContentSize}"
              class="ui attached warning message cmp-message">
-            ${properties['maxContentSizeMessage']}
+            ${properties['maxContentSizeMessage'] @ i18n}
             <br/>
             <label>${"Limit" @ i18n}:</label> <span class="detail">${download.maxContentSizeLabel}</span> |
             <label>${"Current Size" @ i18n}:</label> <span class="detail">${download.downloadContentSizeLabel}</span>
         </div>
         <div class="header">
-            ${properties['modalTitle']}
+            ${properties['modalTitle'] @ i18n}
         </div>
         <div class="image scrolling content cmp-content">
             <div class="ui medium image">
-                <div class="ui header">${properties['assetListTitle']}</div>
+                <div class="ui header">${properties['assetListTitle'] @ i18n}</div>
 
                 <div class="ui list" data-sly-list.asset="${download.assets}">
                     <div class="item">
@@ -60,7 +60,7 @@
 
             </div>
             <div class="description ui form">
-                <div class="ui header">${properties['downloadOptionsTitle']}</div>
+                <div class="ui header">${properties['downloadOptionsTitle'] @ i18n}</div>
 
                 <sly data-sly-list.asset="${download.assets}">
                     <input type="hidden" name="path"  value="${asset.url}"/>
@@ -86,10 +86,10 @@
         </div>
         <div class="actions cmp-footer__actions">
             <div class="ui deny button">
-                ${properties['cancelButton']}
+                ${properties['cancelButton'] @ i18n}
             </div>
             <button type="submit" class="ui positive primary right labeled icon button ${isMaxSize ? 'disabled': ''}">
-                ${properties['downloadButton']}
+                ${properties['downloadButton'] @ i18n}
                 <i class="download icon"></i>
             </button>
         </div>

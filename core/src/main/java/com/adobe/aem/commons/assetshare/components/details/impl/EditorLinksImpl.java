@@ -34,7 +34,6 @@ import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
-import org.mozilla.javascript.commonjs.module.Require;
 
 import javax.annotation.Nonnull;
 

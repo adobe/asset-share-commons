@@ -36,12 +36,12 @@
 	<i class="close icon"></i>
 
 	<div class="header">
-		${properties['modalTitle']}
+		${properties['modalTitle'] @ i18n}
 	</div>
 
 	<!--/* Loading */-->
 	<div class="cmp-content--loading ui inverted dimmer ">
-		<div class="ui text loader">${properties['sendingMessage']}.</div>
+		<div class="ui text loader">${properties['sendingMessage'] @ i18n}.</div>
 	</div>
 
 	<div class="content scrolling">
@@ -49,20 +49,20 @@
 		<!--/* Messages after AJAX request */-->
 		<div data-asset-share-id="share-success"
 			 class="cmp-content--success">
-			<h3>${properties['successTitle']}</h3>
-			<p>${properties['successMessage']}</p>
+			<h3>${properties['successTitle'] @ i18n}</h3>
+			<p>${properties['successMessage'] @ i18n}</p>
 		</div>
 		 <div data-asset-share-id="share-error"
 			  class="cmp-content--error">
-			<h3>${properties['errorTitle']}</h3>
-			<p>${properties['errorMessage']}</p>
+			<h3>${properties['errorTitle'] @ i18n}</h3>
+			<p>${properties['errorMessage'] @ i18n}</p>
 		</div>
 		
 		<!--/* Email Share Form  */-->
 		<div class="ui grid cmp-content--form"
 			 data-asset-share-id="share-content">
 			<div class="four wide column">
-				<div class="ui header">${properties['assetListTitle']}</div>
+				<div class="ui header">${properties['assetListTitle'] @ i18n}</div>
 
 				<div class="ui list" data-sly-list.asset="${share.assets}">
 					<div class="item">
@@ -75,22 +75,22 @@
 			</div>
 
 			<div class="eleven wide column">
-				<div class="ui header">${properties['shareOptionsTitle']}</div>
+				<div class="ui header">${properties['shareOptionsTitle'] @ i18n}</div>
 	
 				<sly data-sly-list.asset="${share.assets}">
 					<input type="hidden" name="path" value="${asset.path}" />
 				</sly>
 
 				<div class="field">
-					<label>${properties['emailFieldLabel']}</label>
+					<label>${properties['emailFieldLabel'] @ i18n}</label>
 					<input type="email" multiple name="email" required
-						   placeholder="${properties['emailPlaceholder']}"/>
+						   placeholder="${properties['emailPlaceholder'] @ i18n}"/>
 				</div>
 
 				<div class="field">
-					<label>${properties['messageFieldLabel']}</label>
+					<label>${properties['messageFieldLabel'] @ i18n}</label>
 					<textarea rows="2" name="message"
-							placeholder="${properties['messagePlaceholder']}"></textarea>
+							placeholder="${properties['messagePlaceholder'] @ i18n}"></textarea>
 				</div>
 			</div>
 		</div>
@@ -98,18 +98,18 @@
 	
 	<!--/* Default actions */-->
 	<div class="cmp-footer__actions actions">
-		<div class="ui deny button">${properties['cancelButton']}</div>
+		<div class="ui deny button">${properties['cancelButton'] @ i18n}</div>
 		<button data-asset-share-id="submit-share"
 				type="submit"
 				class="ui primary submit right labeled icon button">
-			${properties['shareButton']}
+			${properties['shareButton'] @ i18n}
 			<i class="send icon"></i>
 		</button>
 	</div>
 	
 	<!--/* After request actions */-->
 	<div class="cmp-footer__actions--completed actions">
-		<div class="ui deny button">${properties['closeButton']}</div>
+		<div class="ui deny button">${properties['closeButton'] @ i18n}</div>
 	</div>
 </form>
 
