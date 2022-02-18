@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - 0677 - Fixed critical cloud manager errors
 - 0668 - Search bar component placeholder text not displaying until focused on light and dark themes
+- 0620 - Fixed issue with Javadoc syntax that caused warnings
 
 ## [v2.1.12]
 

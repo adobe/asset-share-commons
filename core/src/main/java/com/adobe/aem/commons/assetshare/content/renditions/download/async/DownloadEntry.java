@@ -35,10 +35,19 @@ public interface DownloadEntry {
 
     /** These methods information about the first artifact of the DownloadProgress **/
 
+    /**
+     * @return the name
+     */
     String getName();
 
+    /**
+     * @return a collection of the successful downloads
+     */
     Collection<String> getSuccesses();
 
+    /**
+     * @return a collection of the failing downloads
+     */
     Collection<String> getFailures();
 
     String getURI();
