@@ -23,7 +23,6 @@ package com.adobe.aem.commons.assetshare.util.impl;
 
 import com.adobe.aem.commons.assetshare.util.RequireAem;
 import org.apache.commons.lang3.StringUtils;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
@@ -38,11 +37,13 @@ import org.slf4j.LoggerFactory;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+import static com.adobe.aem.commons.assetshare.util.impl.RequireAemImpl.PN_SERVICE_TYPE;
+
 @Component(
         immediate = true,
         service = {},
         property = {
-                "service=" + RequireAemImpl.PUBLISH_SERVICE_VALUE
+                PN_SERVICE_TYPE + "=" + RequireAemImpl.PUBLISH_SERVICE_TYPE_VALUE
         }
 )
 @Designate(ocd = RequireAemImpl.Config.class)
@@ -50,7 +51,9 @@ public class RequireAemImpl implements RequireAem {
     private static final Logger log = LoggerFactory.getLogger(RequireAemImpl.class);
 
     static final String PN_DISTRIBUTION = "distribution";
-    protected static final String PUBLISH_SERVICE_VALUE = "publish";
+    static final String PN_SERVICE_TYPE = "service.type";
+
+    protected static final String PUBLISH_SERVICE_TYPE_VALUE = "publish";
 
     private ServiceRegistration<?> serviceRegistration;
 
@@ -63,10 +66,10 @@ public class RequireAemImpl implements RequireAem {
     )
     @interface Config {
         @AttributeDefinition(
-                name = "Service name",
-                description = "Defines the which AEM service (author or publish) the application is running under. Allowed values are: author or publish. Defaults to: publish."
+                name = "Service type name",
+                description = "Defines the which AEM service type (author or publish) the application is running under. Allowed values are: author or publish. Defaults to: publish."
         )
-        String service() default PUBLISH_SERVICE_VALUE;
+        String service_type() default PUBLISH_SERVICE_TYPE_VALUE;
     }
 
     @Override
@@ -80,7 +83,7 @@ public class RequireAemImpl implements RequireAem {
 
     @Override
     public ServiceType getServiceType() {
-        if (StringUtils.equalsIgnoreCase(PUBLISH_SERVICE_VALUE, config.service())) {
+        if (StringUtils.equalsIgnoreCase(PUBLISH_SERVICE_TYPE_VALUE, config.service_type())) {
             return ServiceType.PUBLISH;
         } else {
             return ServiceType.AUTHOR;
@@ -101,22 +104,16 @@ public class RequireAemImpl implements RequireAem {
         }
 
         properties.put(PN_DISTRIBUTION, this.distribution.getValue());
+        properties.put(PN_SERVICE_TYPE, this.config.service_type());
 
         serviceRegistration = bundleContext.registerService(RequireAem.class.getName(), this, properties);
 
         log.info("Registering [ RequireAem.class ] as an OSGi Service with OSGi properties [ distribution = {}, serviceType = {} ] so it can be used to enable/disable other OSGi Components",
-                properties.get(PN_DISTRIBUTION), config.service());
+                properties.get(PN_DISTRIBUTION), properties.get(PN_SERVICE_TYPE));
     }
 
     protected boolean isCloudService(BundleContext bundleContext) {
-        // This bundle is only available in AEM as a Cloud Service and the AEM as a Cloud Service SDK
-        final Bundle bundle = bundleContext.getBundle("com.adobe.granite.analyzer.cloudservices.CloudservicesAnalysis");
-
-        if (bundle != null && bundle.getState() == Bundle.ACTIVE) {
-            return true;
-        } else {
-            return false;
-        }
+        return bundleContext.getServiceReference("com.adobe.cq.dam.download.api.DownloadService") != null;
     }
 
     @Deactivate

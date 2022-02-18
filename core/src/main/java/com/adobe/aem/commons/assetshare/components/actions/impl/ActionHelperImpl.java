@@ -22,7 +22,6 @@ package com.adobe.aem.commons.assetshare.components.actions.impl;
 import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
 import com.adobe.aem.commons.assetshare.configuration.Config;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
-import com.adobe.aem.commons.assetshare.util.UrlUtil;
 import com.day.cq.wcm.api.WCMMode;
 import com.day.text.Text;
 import org.apache.commons.lang3.ArrayUtils;
@@ -33,9 +32,6 @@ import org.apache.sling.models.factory.ModelFactory;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
-import java.net.URLDecoder;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

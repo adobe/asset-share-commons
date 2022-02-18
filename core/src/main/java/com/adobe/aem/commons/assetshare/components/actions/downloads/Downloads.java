@@ -2,7 +2,6 @@ package com.adobe.aem.commons.assetshare.components.actions.downloads;
 
 import com.adobe.aem.commons.assetshare.content.renditions.download.async.DownloadEntry;
 import com.adobe.cq.dam.download.api.DownloadException;
-import com.adobe.cq.dam.download.api.DownloadProgress;
 import org.osgi.annotation.versioning.ConsumerType;
 
 import java.util.List;

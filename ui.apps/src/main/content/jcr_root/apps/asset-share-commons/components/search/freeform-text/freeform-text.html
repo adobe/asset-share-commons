@@ -61,7 +61,7 @@
 
 				<div class="field">
                         <textarea type="text"
-                                  placeholder="${properties['placeholder']}"
+                                  placeholder="${properties['placeholder'] @ i18n}"
                                   minlength="${predicate.inputValidationMinLength}"
                                   maxlength="${predicate.inputValidationMaxLength}"
                                   pattern="${predicate.inputValidationPattern}"
@@ -75,7 +75,7 @@
                                   data-sly-test.isTextArea="${predicate.rows > 1}">${predicate.initialValue}</textarea>
 
                         <input type="text"
-                               placeholder="${properties['placeholder']}"
+                               placeholder="${properties['placeholder'] @ i18n}"
                                minlength="${predicate.inputValidationMinLength}"
                                maxlength="${predicate.inputValidationMaxLength}"
                                pattern="${predicate.inputValidationPattern}"

@@ -41,7 +41,11 @@ import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -171,7 +175,7 @@ public class AssetRenditionsZipperImpl implements AssetRenditionsDownloadOrchest
                                      final String responseContentType, final Set<String> zipEntryFileNames) {
         final String extension = mimeTypeService.getExtension(responseContentType);
 
-        final Map<String, String> variables = new HashMap<>();
+        final Map<String, String> variables = new LinkedHashMap<>();
 
         variables.put(VAR_ASSET_FILE_NAME, asset.getName());
         variables.put(VAR_ASSET_NAME, StringUtils.substringBeforeLast(asset.getName(), "."));

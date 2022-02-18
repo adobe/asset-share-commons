@@ -24,7 +24,7 @@
             <div class="ui input left icon">
                 <i class="calendar icon"></i>
                 <input type="text"
-                       placeholder="${properties['startPlaceholder']}"
+                       placeholder="${properties['startPlaceholder'] @ i18n}"
                        name="${predicate.group}.${predicate.lowerBoundName}"
                        value="${predicate.initialLowerBound}"
                        form="${predicate.formId}"
@@ -38,7 +38,7 @@
             <div class="ui input left icon">
                 <i class="calendar icon"></i>
                 <input type="text"
-                       placeholder="${properties['endPlaceholder']}"
+                       placeholder="${properties['endPlaceholder'] @ i18n}"
                        name="${predicate.group}.${predicate.upperBoundName}"
                        value="${predicate.initialUpperBound}"
                        form="${predicate.formId}"

@@ -17,7 +17,7 @@
   "devDependencies": {
     "aem-clientlib-generator": "^1.4.3",
     "autoprefixer": "^9.2.1",
-    "browserslist": "^4.2.1",
+    "browserslist": "^4.16.5",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.0.4",
     "css-loader": "^3.4.2",
@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "fomantic-ui-less": "^2.8.3",
-    "jquery": "^3.4.1"
+    "jquery": "^3.5.0"
   },
   "browserslist": [
     "last 2 version",

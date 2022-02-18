@@ -26,13 +26,15 @@ import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditi
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsException;
 import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.aem.commons.assetshare.util.ServletHelper;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
-import org.apache.sling.api.request.RequestParameter;
 import org.apache.sling.api.servlets.SlingAllMethodsServlet;
 import org.apache.sling.models.factory.ModelFactory;
-import org.osgi.service.component.annotations.*;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,15 +42,9 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
-
-import static java.util.Collections.EMPTY_LIST;
-import static java.util.Collections.emptyList;
 
 @Component(
         service = Servlet.class,
