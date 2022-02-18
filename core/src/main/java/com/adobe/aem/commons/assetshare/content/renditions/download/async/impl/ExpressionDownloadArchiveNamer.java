@@ -65,7 +65,7 @@ public class ExpressionDownloadArchiveNamer implements DownloadArchiveNamer {
 
         String extension = null;
 
-        if (extension == null && StringUtils.isNotBlank(assetRendition.getMimeType())) {
+        if (StringUtils.isNotBlank(assetRendition.getMimeType())) {
             extension = resolveDownloadExtension(assetModel, assetRendition);
         }
 
