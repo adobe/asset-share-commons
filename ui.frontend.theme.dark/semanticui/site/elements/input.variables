@@ -1,3 +1,4 @@
 @focusBorderColor: @primaryColor;
 @focusBoxShadow: none;
 @border: @borderWidth solid @fullBlack;
+@placeholderColor: @placeholderFocusColor;
