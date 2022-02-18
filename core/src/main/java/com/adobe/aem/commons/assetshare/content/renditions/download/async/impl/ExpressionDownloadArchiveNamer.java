@@ -63,16 +63,16 @@ public class ExpressionDownloadArchiveNamer implements DownloadArchiveNamer {
             return null;
         }
 
-        String extension = null;
+        // Attempt to use custom extension logic if implemented first
+        String extension = resolveDownloadExtension(assetModel, assetRendition);
 
-        if (StringUtils.isNotBlank(assetRendition.getMimeType())) {
-            extension = resolveDownloadExtension(assetModel, assetRendition);
-        }
-
-        if (extension == null) {
+        // If extension is null that means the custom extension logic doesnt exist or its deferring to default behavior provided by Sling
+        // Since Sling requires a mimeType to derive and extension, make sure its not blank
+        if (extension == null && StringUtils.isNotBlank(assetRendition.getMimeType())) {
             extension = mimeTypeService.getExtension(assetRendition.getMimeType());
         }
 
+        // Add extension's dot if necessary
         if (StringUtils.isNotBlank(extension) && !StringUtils.startsWith(extension, ".")) {
             extension = "." + extension;
         }
@@ -88,7 +88,7 @@ public class ExpressionDownloadArchiveNamer implements DownloadArchiveNamer {
         }
     }
 
-    private synchronized String resolveDownloadExtension(AssetModel assetModel, AssetRendition assetRendition) {
+    private String resolveDownloadExtension(AssetModel assetModel, AssetRendition assetRendition) {
         if (downloadExtensionResolver != null) {
             return downloadExtensionResolver.resolve(assetModel, assetRendition);
         } else {
