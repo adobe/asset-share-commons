@@ -3,23 +3,15 @@ package com.adobe.aem.commons.assetshare.content.renditions.download.async.impl;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.impl.AssetModelImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRendition;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.download.DownloadExtensionResolver;
 import com.adobe.aem.commons.assetshare.content.renditions.download.async.DownloadArchiveNamer;
 import com.adobe.aem.commons.assetshare.content.renditions.download.async.DownloadTargetParameters;
-import com.adobe.aem.commons.assetshare.content.renditions.download.impl.AssetRenditionStreamerImpl;
-import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionDispatchersImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
-import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
 import com.adobe.aem.commons.assetshare.testing.MockAssetModels;
 import com.adobe.aem.commons.assetshare.util.ExpressionEvaluator;
 import com.adobe.aem.commons.assetshare.util.impl.ExpressionEvaluatorImpl;
 import com.adobe.cq.dam.download.api.DownloadTarget;
-import com.google.common.collect.ImmutableMap;
-import com.scene7.ipsapi.Asset;
 import io.wcm.testing.mock.aem.junit.AemContext;
-import org.apache.http.osgi.services.HttpClientBuilderFactory;
 import org.apache.sling.commons.mime.MimeTypeService;
 import org.apache.sling.models.factory.ModelFactory;
 import org.junit.Before;
@@ -28,9 +20,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.osgi.framework.Constants;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -58,7 +49,6 @@ public class ExpressionDownloadArchiveNamerTest {
                 Integer.MAX_VALUE);
 
 
-        when(mimeTypeService.getExtension("image/png")).thenReturn("png");
         ctx.registerService(MimeTypeService.class, mimeTypeService);
         ctx.registerService(ExpressionEvaluator.class, new ExpressionEvaluatorImpl());
 
