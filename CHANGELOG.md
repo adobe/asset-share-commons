@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- 0670 - Added hook for custom code to determine downlaod file extension instead of relying on the Sling MimeType service
+
 ### Fixed
 
 - 0677 - Fixed critical cloud manager errors
