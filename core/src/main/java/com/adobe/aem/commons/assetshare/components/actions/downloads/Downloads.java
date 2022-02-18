@@ -15,7 +15,7 @@ public interface Downloads {
 	 * - downloadId: 1 or more request parameters of this name whose values are the allowed downloadIds to include in the result.
 	 *
 	 * @return a list of the DownloadEntries the user has requested and also has access to.
-	 * @throws DownloadException
+	 * @throws DownloadException if unable to get a list of downloads, likely due to an issue getting the DownloadProgress
 	 */
 	List<DownloadEntry> getDownloads() throws DownloadException;
 }
