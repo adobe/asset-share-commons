@@ -10,13 +10,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- 0670 - Added hook for custom code to determine downlaod file extension instead of relying on the Sling MimeType service
+- 0670 - Added hook for custom code to determine download file extension instead of relying on the Sling MimeType service
+- 0690 - Added @  i18n to all dialog properties displayed in HTML files
 
 ### Fixed
 
 - 0677 - Fixed critical cloud manager errors
 - 0668 - Search bar component placeholder text not displaying until focused on light and dark themes
 - 0620 - Fixed issue with Javadoc syntax that caused warnings
+- 0673 - Fixed flaky unit tests
 
 ## [v2.1.12]
 
