@@ -128,19 +128,19 @@ A status provider in the Page Editor will notify if required components (the Sea
 
 ## Technical details
 
-* **Component**: `/apps/asset-share-commons/components/search/tags`
-* **Sling Model**: `com.adobe.aem.commons.assetshare.search.predicates.impl.TagsPredicateImpl`
+* **Component**: `/apps/asset-share-commons/components/structure/search-page`
+  * **sling:resourceSuperType**: `/apps/asset-share-commons/components/structure/page`
+    * **sling:resourceSuperType**: `core/wcm/components/page/v2/page`   
+* **Sling Model**: `N/A` however it does rely heavily on `com.adobe.aem.commons.assetshare.configuration.Config` Sling Model to read configuration properties.
 
-This filter implements a wrapped version of AEM Query Builder's [JcrPropertyPredicateEvaluator](https://docs.adobe.com/docs/en/aem/6-3/develop/ref/javadoc/com/day/cq/search/eval/JcrPropertyPredicateEvaluator.html). 
-The Asset Share Commons' provided predicate wrapper (`com.adobe.aem.commons.assetshare.search.impl.predicateevaluators.PropertyValuesPredicateEvaluator`) allows for the values to be provided as comma-delimited values to be transformed into `#_value` parameters for evaluation by AEM's JcrPropertyPredicateEvaluator; 
+The Search Page is important and contains specific structure Asset Share Commons expects to function. The considerations include:
 
-Example generated Query Builder predicate output: 
+* The __Page Properties__ that configure the search experience.
+* Setting of URLs to load actions (modals)
+  * [/apps/asset-share-commons/components/structure/page/init.html](https://github.com/adobe/asset-share-commons/blob/master/ui.apps/src/main/content/jcr_root/apps/asset-share-commons/components/structure/page/init.html)
+* Include of the pop-up messages
+  *  [/apps/asset-share-commons/components/structure/page/messages.html](https://github.com/adobe/asset-share-commons/blob/master/ui.apps/src/main/content/jcr_root/apps/asset-share-commons/components/structure/page/messages.html) 
+* Light-weight script for loading async search results
+  * [/apps/asset-share-commons/components/structure/page/results.html](https://github.com/adobe/asset-share-commons/blob/master/ui.apps/src/main/content/jcr_root/apps/asset-share-commons/components/structure/page/results.html)
 
-```
-1_group.propertyvalues.property=./jcr:content/metadata/cq:tags
-1_group.propertyvalues.operation=equals
-1_group.propertyvalues.1_values=we-retail:activity/surfing
-1_group.propertyvalues.2_values=we-retail:activity/swimming
-```      
-
-
+Review the complete [page component implementation](https://github.com/adobe/asset-share-commons/tree/master/ui.apps/src/main/content/jcr_root/apps/asset-share-commons/components/structure/page).
