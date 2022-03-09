@@ -34,6 +34,9 @@ ui.tests/node_modules/
 #VS Code
 .history
 
+#Jenv
+.java-version
+
 # Maven
 *.asc
 *.versionsBackup
