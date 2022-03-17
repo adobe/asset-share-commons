@@ -28,6 +28,8 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
@@ -58,6 +60,11 @@ public class RequireAemImpl implements RequireAem {
     private ServiceRegistration<?> serviceRegistration;
 
     private RequireAemImpl.Config config;
+
+    @Reference(
+            cardinality = ReferenceCardinality.OPTIONAL
+    )
+    private volatile RequireAemCanary requireAemCanary;
 
     private Distribution distribution;
     @ObjectClassDefinition(
@@ -113,7 +120,7 @@ public class RequireAemImpl implements RequireAem {
     }
 
     protected boolean isCloudService(BundleContext bundleContext) {
-        return bundleContext.getServiceReference("com.adobe.cq.dam.download.api.DownloadService") != null;
+        return requireAemCanary != null;
     }
 
     @Deactivate
