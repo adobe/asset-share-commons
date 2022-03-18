@@ -30,6 +30,8 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
@@ -62,7 +64,9 @@ public class RequireAemImpl implements RequireAem {
     private RequireAemImpl.Config config;
 
     @Reference(
-            cardinality = ReferenceCardinality.OPTIONAL
+            cardinality = ReferenceCardinality.OPTIONAL,
+            policy = ReferencePolicy.STATIC,
+            policyOption = ReferencePolicyOption.GREEDY
     )
     private volatile RequireAemCanary requireAemCanary;
 
@@ -104,7 +108,7 @@ public class RequireAemImpl implements RequireAem {
         @SuppressWarnings("squid:java:S1149")
         final Dictionary<String, Object> properties = new Hashtable<>();
 
-        if (isCloudService(bundleContext)) {
+        if (isCloudService()) {
             this.distribution = Distribution.CLOUD_READY;
         } else {
             this.distribution = Distribution.CLASSIC;
@@ -119,7 +123,7 @@ public class RequireAemImpl implements RequireAem {
                 properties.get(PN_DISTRIBUTION), properties.get(PN_SERVICE_TYPE));
     }
 
-    protected boolean isCloudService(BundleContext bundleContext) {
+    protected boolean isCloudService() {
         return requireAemCanary != null;
     }
 
