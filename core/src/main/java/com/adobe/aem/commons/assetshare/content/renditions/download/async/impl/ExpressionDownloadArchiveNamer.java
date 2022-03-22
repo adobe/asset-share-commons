@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.components.actions.download.impl.Downloa
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRendition;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.adobe.aem.commons.assetshare.content.renditions.download.DownloadExtensionResolver;
 import com.adobe.aem.commons.assetshare.content.renditions.download.async.DownloadArchiveNamer;
 import com.adobe.aem.commons.assetshare.content.renditions.download.async.DownloadTargetParameters;
 import com.adobe.cq.dam.download.api.DownloadTarget;
@@ -30,8 +31,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.commons.mime.MimeTypeService;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.*;
 
 import static org.osgi.framework.Constants.SERVICE_RANKING;
 
@@ -47,6 +47,12 @@ public class ExpressionDownloadArchiveNamer implements DownloadArchiveNamer {
     @Reference
     private MimeTypeService mimeTypeService;
 
+    @Reference(policy = ReferencePolicy.DYNAMIC,
+            policyOption = ReferencePolicyOption.GREEDY,
+            cardinality = ReferenceCardinality.OPTIONAL
+    )
+    private volatile DownloadExtensionResolver downloadExtensionResolver;
+
     @Override
     public String getArchiveFilePath(final AssetModel assetModel, final AssetRendition assetRendition, final DownloadTarget downloadTarget) {
         final ResourceResolver resourceResolver = assetModel.getResource().getResourceResolver();
@@ -57,13 +63,17 @@ public class ExpressionDownloadArchiveNamer implements DownloadArchiveNamer {
             return null;
         }
 
-        String extension = "";
+        // Attempt to use custom extension logic if implemented first
+        String extension = resolveDownloadExtension(assetModel, assetRendition);
 
-        if (StringUtils.isNotBlank(assetRendition.getMimeType())) {
+        // If extension is null that means the custom extension logic doesnt exist or its deferring to default behavior provided by Sling
+        // Since Sling requires a mimeType to derive and extension, make sure its not blank
+        if (extension == null && StringUtils.isNotBlank(assetRendition.getMimeType())) {
             extension = mimeTypeService.getExtension(assetRendition.getMimeType());
         }
 
-        if (StringUtils.isNotBlank(extension)) {
+        // Add extension's dot if necessary
+        if (StringUtils.isNotBlank(extension) && !StringUtils.startsWith(extension, ".")) {
             extension = "." + extension;
         }
 
@@ -73,6 +83,14 @@ public class ExpressionDownloadArchiveNamer implements DownloadArchiveNamer {
 
         if (StringUtils.isNotBlank(expression)) {
            return assetRenditions.evaluateExpression(assetModel, renditionName, expression) + StringUtils.defaultIfBlank(extension, "");
+        } else {
+            return null;
+        }
+    }
+
+    private String resolveDownloadExtension(AssetModel assetModel, AssetRendition assetRendition) {
+        if (downloadExtensionResolver != null) {
+            return downloadExtensionResolver.resolve(assetModel, assetRendition);
         } else {
             return null;
         }
