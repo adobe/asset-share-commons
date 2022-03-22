@@ -41,6 +41,7 @@ public class RequireAemImplTest {
         final RequireAemImpl requireAemImpl = spy(new RequireAemImpl());
 
         ctx.registerService(DownloadService.class, mock(DownloadService.class));
+        ctx.registerService(RequireAemCanary.class, mock(RequireAemCanary.class));
 
         ctx.registerInjectActivateService(requireAemImpl);
     }

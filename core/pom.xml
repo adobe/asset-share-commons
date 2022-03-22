@@ -94,7 +94,6 @@ Bundle-DocURL:
                 <artifactId>bnd-baseline-maven-plugin</artifactId>
                 <configuration>
                     <failOnMissing>false</failOnMissing>
-                    <continueOnError>true</continueOnError>
                 </configuration>
                 <executions>
                     <execution>
