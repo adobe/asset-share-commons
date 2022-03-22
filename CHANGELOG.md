@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [v2.2.2]
+
 ### Fixed
 
 - 0709 - Fixed issue with RequireAem selected Cloud vs. Classic. Moved the "thing to check" into an OSGi service, allowing the "thing to check" to be able to become active at any time, resulting in a re-activating of RequireAem.
