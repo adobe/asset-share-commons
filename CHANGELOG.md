@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- 0715 - Added ability to use asset property values in external rendition URL expressions.
+
 ## [v2.2.2]
 
 ### Fixed
