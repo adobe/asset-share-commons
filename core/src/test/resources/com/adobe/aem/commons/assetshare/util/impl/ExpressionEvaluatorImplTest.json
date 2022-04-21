@@ -1,0 +1,25 @@
+{
+  "dam": {
+    "test.png": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcrContentProperty": "jcr-content-property-value",
+        "metadata": {
+          "jcr:primaryType": "nt:unstructured",
+          "metadataProperty": "metadata-property-value"
+        },
+        "renditions": {
+          "jcr:primaryType": "nt:unstructured",
+          "cq5dam.web.1280.1280.png": {
+            "jcr:primaryType": "nt:file",
+            "jcr:content": {
+              "jcr:primaryType": "oak:Resource",
+              "jcr:mimeType": "image/png"
+            }
+          }
+        }
+      }
+    }
+  }
+}

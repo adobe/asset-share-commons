@@ -73,4 +73,6 @@ public interface ExpressionEvaluator {
     String evaluateRenditionExpression(String expression, String renditionName);
 
     String evaluateRenditionExpression(String expression, AssetRendition assetRendition);
+
+    default String evaluateProperties(String expression, AssetModel assetModel) { return expression; }
 }
