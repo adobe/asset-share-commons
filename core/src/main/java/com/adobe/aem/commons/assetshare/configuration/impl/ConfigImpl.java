@@ -297,7 +297,7 @@ public class ConfigImpl implements Config {
     public boolean isContextHubEnabled() {
         final HierarchyNodeInheritanceValueMap properties = new HierarchyNodeInheritanceValueMap(currentPage.getContentResource());
 
-        String path = properties.get("cq:contextHubPath", String.class);
+        String path = properties.getInherited("cq:contextHubPath", String.class);
 
         if (StringUtils.isNotBlank(path)) {
             Resource resource = request.getResourceResolver().getResource(path);
