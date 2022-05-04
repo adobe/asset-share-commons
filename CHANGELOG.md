@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- 0724 - ContextHub enabled check does not take into account properties on parent pages
+
 ## [v2.2.2]
 
 ### Fixed
