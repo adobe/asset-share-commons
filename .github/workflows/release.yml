@@ -17,14 +17,10 @@ jobs:
           java-version: 1.8
 
       - name: Verify build
-        uses: qcastel/github-actions-maven-cmd@master
-        with:
-          maven-args: "clean verify"
+        run: mvn clean verify
           
       - name: Prepare release
-        uses: qcastel/github-actions-maven-cmd@master
-        with:
-          maven-args: "--batch-mode  release:prepare -DtagFormat=asset-share-commons-@{project.version} -DreleaseVersion=10.10.10 -DpushChanges=false -DdryRun=true"          
+        run: mvn --batch-mode  release:prepare -DtagFormat=asset-share-commons-@{project.version} -DreleaseVersion=10.10.10 -DpushChanges=false -DdryRun=true
           
       # Runs a single command using the runners shell
       - name: Done!
