@@ -18,9 +18,20 @@ jobs:
 
       - name: Verify build
         run: mvn clean verify
-          
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v1
+        env:
+         GPG_PRIVATE_KEY: ${{ secrets.OSSRH_GPG_PRIVATE_KEY }}
+         PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
+        
       - name: Prepare release
-        run: mvn --batch-mode  release:prepare -DtagNameFormat=asset-share-commons-@{project.version} -DreleaseVersion=10.10.10 -DpushChanges=false -DdryRun=true
+        uses: qcastel/github-actions-maven-release@master
+        with:
+          ssh-private-key: ${{ secrets.OSSRH_PRIVATE_KEY }}
+          ssh-passphrase: ${{ secrets.OSSRH_PASSPHRASE }}
+          release-branch-name: "release"
+          skip-perform: true
           
       # Runs a single command using the runners shell
       - name: Done!
