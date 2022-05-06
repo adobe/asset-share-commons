@@ -2,8 +2,10 @@ name: Release to Nexus Repository
 
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:
+    branches: [ release ]
+  pull_request_target:
+    branches: [ release ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
