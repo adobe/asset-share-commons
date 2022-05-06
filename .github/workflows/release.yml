@@ -20,7 +20,7 @@ jobs:
         run: mvn clean verify
           
       - name: Prepare release
-        run: mvn --batch-mode  release:prepare -DtagFormat=asset-share-commons-@{project.version} -DreleaseVersion=10.10.10 -DpushChanges=false -DdryRun=true
+        run: mvn --batch-mode  release:prepare -DtagNameFormat=asset-share-commons-@{project.version} -DreleaseVersion=10.10.10 -DpushChanges=false -DdryRun=true
           
       # Runs a single command using the runners shell
       - name: Done!
