@@ -140,28 +140,24 @@ Bundle-DocURL:
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.adobe.cq</groupId>
             <artifactId>core.wcm.components.core</artifactId>
         </dependency>
-        <!-- Embedded dependency -->
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <version>3.1.1</version>
-        </dependency>
         <dependency>
             <groupId>com.adobe.acs</groupId>
             <artifactId>acs-aem-commons-bundle</artifactId>
+            <scope>provided</scope><!-- should not transitively be exposed -->
         </dependency>
         <!-- JDK 11 -->
         <dependency>
             <artifactId>org.apache.sling.javax.activation</artifactId>
-            <version>0.1.0</version>
             <groupId>org.apache.sling</groupId>
+            <version>0.1.0</version>
         </dependency>
-        <!-- Unit test dependencies -->
+        <!-- Test dependencies -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -202,6 +198,7 @@ Bundle-DocURL:
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.framework</artifactId>
             <version>6.0.3</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
