@@ -67,7 +67,8 @@ Import-Package: javax.annotation;version=0.0.0, \
                 org.joda.time.format;version="[2.9.1,3)", \
                 *
 -conditionalpackage: com.adobe.acs.commons.util.*,
--exportcontents: ${packages;VERSIONED}
+# export all versioned packages except for the conditional ones
+-exportcontents: ${removeall;${packages;VERSIONED};${packages;CONDITIONAL}}
 -snapshot: ${tstamp;yyyyMMddHHmmssSSS}
 Bundle-DocURL:
 -plugin org.apache.sling.caconfig.bndplugin.ConfigurationClassScannerPlugin
