@@ -95,6 +95,11 @@ Bundle-DocURL:
                 <artifactId>bnd-baseline-maven-plugin</artifactId>
                 <configuration>
                     <failOnMissing>false</failOnMissing>
+                    <diffpackages>
+                        <diffpackage>!com.adobe.acs.commons.util.*</diffpackage> <!-- was mistakenly being exported by 2.2.2 (and earlier, compare with https://github.com/adobe/asset-share-commons/issues/734) -->
+                        <diffpackage>*</diffpackage>
+                    </diffpackages>
+                    <fullReport>true</fullReport>
                 </configuration>
                 <executions>
                     <execution>
