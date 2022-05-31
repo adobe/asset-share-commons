@@ -62,6 +62,14 @@
                             <type>zip</type>
                             <target>/apps/asset-share-commons-packages/application/install</target>
                         </embedded>
+                        <!--
+                        <embedded>
+                            <groupId>com.adobe.aem.commons</groupId>
+                            <artifactId>assetshare.ui.config</artifactId>
+                            <type>zip</type>
+                            <target>/apps/asset-share-commons-packages/container/install</target>
+                        </embedded>
+                        -->
                         <embedded>
                             <groupId>com.adobe.aem.commons</groupId>
                             <artifactId>assetshare.core</artifactId>
@@ -171,15 +179,17 @@
             <version>${project.version}</version>
             <type>zip</type>
         </dependency>
+        <!--
         <dependency>
             <groupId>com.adobe.aem.commons</groupId>
-            <artifactId>assetshare.ui.content</artifactId>
+            <artifactId>assetshare.ui.config</artifactId>
             <version>${project.version}</version>
             <type>zip</type>
         </dependency>
+        -->
         <dependency>
             <groupId>com.adobe.aem.commons</groupId>
-            <artifactId>assetshare.ui.content.sample</artifactId>
+            <artifactId>assetshare.ui.content</artifactId>
             <version>${project.version}</version>
             <type>zip</type>
         </dependency>

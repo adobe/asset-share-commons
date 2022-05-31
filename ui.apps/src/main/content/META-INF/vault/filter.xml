@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <workspaceFilter version="1.0">
-    <filter root="/apps/asset-share-commons"/>
+    <!-- Enumerate all folders under /apps/asset-share-commons in this package, since there is now overlap from ui.config /apps/asset-share-commons/osgiconfig -->
+    <filter root="/apps/asset-share-commons/authoring"/>
+    <filter root="/apps/asset-share-commons/clientlibs"/>
+    <filter root="/apps/asset-share-commons/components"/>
+    <filter root="/apps/asset-share-commons/resources"/>
 </workspaceFilter>

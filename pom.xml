@@ -49,6 +49,7 @@
     <modules>
         <module>all</module>
         <module>core</module>
+        <!--<module>ui.config</module>-->
         <module>ui.frontend.theme.light</module>
         <module>ui.frontend.theme.dark</module>
         <module>ui.apps</module>
@@ -770,6 +771,7 @@
             <id>autoInstallPackage-all</id>
             <modules>
                 <module>core</module>
+                <!--<module>ui.config</module>-->
                 <module>ui.apps</module>
                 <module>ui.content</module>
             </modules>
@@ -895,7 +897,7 @@
         </dependencies>
     </dependencyManagement>
 
-    <!-- Adobe Maven Repository -->
+    <!-- Adobe Maven Repository
     <repositories>
         <repository>
             <id>adobe-public-releases</id>
@@ -925,5 +927,5 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
+-->
 </project>
