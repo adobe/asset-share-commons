@@ -52,7 +52,7 @@
                     <finalName>asset-share-commons.ui.content-${project.version}</finalName>
                     <packageType>content</packageType>
                     <allowIndexDefinitions>true</allowIndexDefinitions>
-                    <accessControlHandling>merge</accessControlHandling>
+                    <!--<accessControlHandling>merge</accessControlHandling>-->
                     <properties>
                         <cloudManagerTarget>none</cloudManagerTarget>&gt;
                     </properties>

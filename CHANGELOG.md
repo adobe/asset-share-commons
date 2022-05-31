@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- 0738 - Broke out OSGi configurations into ui.config project.
+
 ## [v2.2.2]
 
 ### Fixed

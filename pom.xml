@@ -294,6 +294,11 @@
                     <configuration>
                         <filterSource>src/main/content/META-INF/vault/filter.xml</filterSource>
                         <validatorsSettings>
+                            <jackrabbit-filter>
+                                <options>
+                                    <validRoots>/,/var,/tmp,/content,/content/dam,/home,/home/users,/home/users/system,/home/groups,/conf,/conf/global</validRoots>
+                                </options>
+                            </jackrabbit-filter>
                             <jackrabbit-docviewparser>
                                 <options>
                                     <allowUndeclaredPrefixInFileName>true</allowUndeclaredPrefixInFileName>

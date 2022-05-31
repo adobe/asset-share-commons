@@ -37,6 +37,7 @@
                     <filters>
                         <!-- /apps root -->
                         <filter><root>/apps</root></filter>
+                        <filter><root>/apps/asset-share-commons</root></filter>
                     </filters>
                 </configuration>
             </plugin>

@@ -49,6 +49,9 @@
                 <artifactId>filevault-package-maven-plugin</artifactId>
                 <extensions>true</extensions>
                 <configuration>
+                    <group>${package.group}</group>
+                    <name>asset-share-commons.ui.config</name>
+                    <finalName>asset-share-commons.ui.config-${project.version}</finalName>
                     <packageType>container</packageType>
                     <properties>
                         <cloudManagerTarget>none</cloudManagerTarget>&gt;
