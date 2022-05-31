@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
-- 0738 - Broke out OSGi configurations into ui.config project.
+- 0738 - Broke out OSGi configurations into ui.config project
+- 0733 - Updated Maven plugins, and moved ACLs to Repo Init scripts
 
 ## [v2.2.2]
 
