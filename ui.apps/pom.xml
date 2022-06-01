@@ -53,7 +53,6 @@
                     <name>asset-share-commons.ui.apps</name>
                     <finalName>asset-share-commons.ui.apps-${project.version}</finalName>
                     <packageType>application</packageType>
-                    <!--<accessControlHandling>merge</accessControlHandling>-->
                     <properties>
                         <cloudManagerTarget>none</cloudManagerTarget>&gt;
                     </properties>

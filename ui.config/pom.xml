@@ -64,15 +64,6 @@
                     </repositoryStructurePackages>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>com.day.jcr.vault</groupId>
-                <artifactId>content-package-maven-plugin</artifactId>
-                <extensions>true</extensions>
-                <configuration>
-                    <verbose>true</verbose>
-                    <failOnError>true</failOnError>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 
