@@ -796,7 +796,7 @@
             <id>autoInstallPackage-all</id>
             <modules>
                 <module>core</module>
-                <module>ui.config</module>
+                <!--<module>ui.config</module>-->
                 <module>ui.apps</module>
                 <module>ui.content</module>
             </modules>

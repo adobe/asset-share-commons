@@ -52,6 +52,7 @@
                     <name>asset-share-commons.ui.content.sample</name>
                     <finalName>asset-share-commons.ui.content.sample-${project.version}</finalName>
                     <packageType>content</packageType>
+                    <accessControlHandling>merge</accessControlHandling>
                     <properties>
                         <cloudManagerTarget>none</cloudManagerTarget>&gt;
                     </properties>
