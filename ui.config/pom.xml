@@ -73,11 +73,6 @@
     <dependencies>
         <dependency>
             <groupId>com.adobe.aem.commons</groupId>
-            <artifactId>assetshare.core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.adobe.aem.commons</groupId>
             <artifactId>assetshare.ui.apps.structure</artifactId>
             <version>${project.version}</version>
             <type>zip</type>
