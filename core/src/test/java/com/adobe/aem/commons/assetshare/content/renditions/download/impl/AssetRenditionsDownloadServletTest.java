@@ -140,9 +140,7 @@ public class AssetRenditionsDownloadServletTest {
             return null; // void method, return null
         }).when(requestDispatcher).include(any(SlingHttpServletRequest.class), any(SlingHttpServletResponse.class));
 
-        ctx.registerInjectActivateService(new AssetRenditionsDownloadServlet());
-
-        AssetRenditionsDownloadServlet servlet = (AssetRenditionsDownloadServlet) ctx.getService(Servlet.class);
+        AssetRenditionsDownloadServlet servlet = ctx.registerInjectActivateService(new AssetRenditionsDownloadServlet());
 
         ctx.currentResource("/content/download-servlet");
         ctx.request().setMethod("POST");
@@ -159,9 +157,7 @@ public class AssetRenditionsDownloadServletTest {
 
     @Test
     public void doPost_EmptyRenditionName() throws ServletException, IOException {
-        ctx.registerInjectActivateService(new AssetRenditionsDownloadServlet());
-
-        AssetRenditionsDownloadServlet servlet = (AssetRenditionsDownloadServlet) ctx.getService(Servlet.class);
+        AssetRenditionsDownloadServlet servlet = ctx.registerInjectActivateService(new AssetRenditionsDownloadServlet());
 
         ctx.currentResource("/content/download-servlet");
         ctx.request().setMethod("POST");
@@ -178,9 +174,7 @@ public class AssetRenditionsDownloadServletTest {
 
     @Test
     public void doPost_InvalidAssetPath() throws ServletException, IOException {
-        ctx.registerInjectActivateService(new AssetRenditionsDownloadServlet());
-
-        AssetRenditionsDownloadServlet servlet = (AssetRenditionsDownloadServlet) ctx.getService(Servlet.class);
+        AssetRenditionsDownloadServlet servlet = ctx.registerInjectActivateService(new AssetRenditionsDownloadServlet());
 
         ctx.currentResource("/content/download-servlet");
         ctx.request().setMethod("POST");
