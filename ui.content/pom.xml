@@ -52,6 +52,7 @@
                     <finalName>asset-share-commons.ui.content-${project.version}</finalName>
                     <packageType>content</packageType>
                     <allowIndexDefinitions>true</allowIndexDefinitions>
+                    <accessControlHandling>merge</accessControlHandling>
                     <properties>
                         <cloudManagerTarget>none</cloudManagerTarget>&gt;
                     </properties>
@@ -64,15 +65,6 @@
                     </dependencies>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>com.day.jcr.vault</groupId>
-                <artifactId>content-package-maven-plugin</artifactId>
-                <extensions>true</extensions>
-                <configuration>
-                    <verbose>true</verbose>
-                    <failOnError>true</failOnError>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 
@@ -80,11 +72,6 @@
     <!-- D E P E N D E N C I E S                                                -->
     <!-- ====================================================================== -->
     <dependencies>
-        <dependency>
-            <groupId>com.adobe.aem.commons</groupId>
-            <artifactId>assetshare.core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <dependency>
             <groupId>com.adobe.aem.commons</groupId>
             <artifactId>assetshare.ui.apps</artifactId>
