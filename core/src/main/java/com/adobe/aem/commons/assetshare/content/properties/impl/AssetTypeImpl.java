@@ -90,41 +90,42 @@ public class AssetTypeImpl extends AbstractComputedProperty<String> {
      */
     @Override
     public String get(Asset asset) {
-        final ResourceResolver resourceResolver = asset.adaptTo(Resource.class).getResourceResolver();
-        final String dcFormat = StringUtils.defaultIfBlank(asset.getMimeType(), "");
+        final String mimeType = StringUtils.defaultIfBlank(asset.getMimeType(), "");
+        String assetType = getAssetTypeFromMimetypeConfiguration(mimeType);
 
-        String displayMimeType = null;
-        final String ext = StringUtils.defaultIfBlank(dcFormat.substring(dcFormat.lastIndexOf('/') + 1, dcFormat.length()), "");
+        if (StringUtils.isBlank(assetType)) {
+            if (mimeType.startsWith("image")) {
+                assetType = cfg.imageLabel();
+            } else if (mimeType.startsWith("text")) {
+                assetType = cfg.documentLabel();
+            } else if (mimeType.startsWith("video")) {
+                assetType = cfg.videoLabel();
+            } else if (mimeType.startsWith("audio")) {
+                assetType = cfg.audioLabel();
+            } else if (mimeType.startsWith("application")) {
+                final String ext = StringUtils.defaultIfBlank(mimeType.substring(mimeType.lastIndexOf('/') + 1, mimeType.length()), "");
+                int indexOne = ext.lastIndexOf('.');
+                int indexTwo = ext.lastIndexOf('-');
+                int lastWordIdx = (indexOne > indexTwo) ? indexOne : indexTwo;
+
+                assetType = ext.substring(lastWordIdx + 1).toUpperCase();
+            }
+        }
+        return StringUtils.defaultIfBlank(assetType, cfg.unknownLabel());
+    }
+
+    private String getAssetTypeFromMimetypeConfiguration(String mimeType) {
+        final String ext = StringUtils.defaultIfBlank(mimeType.substring(mimeType.lastIndexOf('/') + 1, mimeType.length()), "");
         Map<String, Object> authInfo = Collections.singletonMap(ResourceResolverFactory.SUBSERVICE, (Object) SERVICE_NAME);
         try (ResourceResolver serviceResourceResolver = resourceResolverFactory.getServiceResourceResolver(authInfo)) {
             final Resource lookedupResource = serviceResourceResolver.getResource(MIMETYPE_LOOKUP_RESOURCE_PATH);
             if (lookedupResource == null) {
                 throw new IllegalStateException("Service resource resolver " + serviceResourceResolver + " does not have access to system resource " + MIMETYPE_LOOKUP_RESOURCE_PATH);
             }
-            displayMimeType = UIHelper.lookupMimeType(ext, lookedupResource, true);
+            return UIHelper.lookupMimeType(ext, lookedupResource, true);
         } catch (LoginException e) {
             throw new IllegalStateException("Service resource resolver with subservice name " + SERVICE_NAME + " does not allow login", e);
         }
-
-        if (StringUtils.isBlank(displayMimeType)) {
-            if (dcFormat.startsWith("image")) {
-                displayMimeType = cfg.imageLabel();
-            } else if (dcFormat.startsWith("text")) {
-                displayMimeType = cfg.documentLabel();
-            } else if (dcFormat.startsWith("video")) {
-                displayMimeType = cfg.videoLabel();
-            } else if (dcFormat.startsWith("audio")) {
-                displayMimeType = cfg.audioLabel();
-            } else if (dcFormat.startsWith("application")) {
-                int indexOne = ext.lastIndexOf('.');
-                int indexTwo = ext.lastIndexOf('-');
-                int lastWordIdx = (indexOne > indexTwo) ? indexOne : indexTwo;
-
-                displayMimeType = ext.substring(lastWordIdx + 1).toUpperCase();
-            }
-        }
-
-        return StringUtils.defaultIfBlank(displayMimeType, cfg.unknownLabel());
     }
 
     @Activate
