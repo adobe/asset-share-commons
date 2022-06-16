@@ -11,9 +11,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - 0738 - Broke out OSGi configurations into ui.config project
 
+### Added
+
+- 0715 - Added ability to use asset property values in external rendition URL expression
+
 ### Fixed
 
-- 0724 - ContextHub enabled check does not take into account properties on parent pages
+- 0724 - ContextHub enabled check does not take into account properties on parent pages 
 
 ## [v2.2.2]
 
