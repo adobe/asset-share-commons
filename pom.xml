@@ -240,6 +240,7 @@
                     <configuration>
                         <parallel>methods</parallel>
                         <threadCount>5</threadCount>
+                        <trimStackTrace>false</trimStackTrace>
                     </configuration>
                 </plugin>
                 <!-- Maven Failsafe Plugin -->
@@ -501,6 +502,15 @@
                     <artifactId>nexus-staging-maven-plugin</artifactId>
                     <version>1.6.8</version>
                 </plugin>
+                <!-- checks for vulnerabilities in dependencies -->
+                <plugin>
+                    <groupId>org.owasp</groupId>
+                    <artifactId>dependency-check-maven</artifactId>
+                    <version>7.1.0</version>
+                    <configuration>
+                        <failBuildOnAnyVulnerability>true</failBuildOnAnyVulnerability>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
@@ -736,6 +746,18 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <plugin>
+                        <!-- checks for vulnerabilities in dependencies -->
+                        <groupId>org.owasp</groupId>
+                        <artifactId>dependency-check-maven</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
@@ -785,6 +807,18 @@
                                 <phase>package</phase>
                                 <goals>
                                     <goal>checkstyle</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <!-- checks for vulnerabilities in dependencies -->
+                        <groupId>org.owasp</groupId>
+                        <artifactId>dependency-check-maven</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>check</goal>
                                 </goals>
                             </execution>
                         </executions>
@@ -876,20 +910,20 @@
             <dependency>
                 <groupId>org.apache.sling</groupId>
                 <artifactId>org.apache.sling.testing.osgi-mock.junit4</artifactId>
-                <version>3.1.2</version>
+                <version>3.1.4</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.sling</groupId>
                 <artifactId>org.apache.sling.testing.sling-mock.junit4</artifactId>
-                <!-- Bumping this to 2.4.0 changes behavior in how servlet.service(..) is processed, which breaks all servlet tests -->
-                <version>2.3.18</version>
+                <!-- upgrading to newer version not supported due to https://issues.apache.org/jira/browse/SLING-11362 -->
+                <version>3.1.2</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>io.wcm</groupId>
                 <artifactId>io.wcm.testing.aem-mock.junit4</artifactId>
-                <version>4.0.2</version>
+                <version>5.0.0</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
