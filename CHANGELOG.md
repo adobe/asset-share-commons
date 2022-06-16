@@ -6,11 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-### Fixed 
-
-- 0716 - Fixes issue with mimeTypeLookup node not being accessible to everyone on publish
-
-
 ## [v2.2.2]
 
 ### Fixed
