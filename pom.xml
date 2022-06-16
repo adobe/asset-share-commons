@@ -69,7 +69,8 @@
         <vault.user>admin</vault.user>
         <vault.password>admin</vault.password>
         <package.group>asset-share-commons</package.group>
-        <aem.sdk.api>[2022,)</aem.sdk.api>
+        <!-- Increasing past 2022.3 breaks OSGi wiring on 6.5 -->
+        <aem.sdk.api>[2022.3,2022.4)</aem.sdk.api>
         <core.wcm.components.version>2.17.14</core.wcm.components.version>
         <frontend-maven-plugin.version>1.9.0</frontend-maven-plugin.version>
         <node.version>v13.7.0</node.version>
