@@ -71,8 +71,8 @@
         <aem.sdk.api>[2022,)</aem.sdk.api>
         <core.wcm.components.version>2.17.14</core.wcm.components.version>
         <frontend-maven-plugin.version>1.9.0</frontend-maven-plugin.version>
-        <node.version>v13.7.0</node.version>
-        <npm.version>6.13.1</npm.version>
+        <node.version>v16.15.0</node.version>
+        <npm.version>8.5.5</npm.version>
         <bnd.version>6.1.0</bnd.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -165,7 +165,7 @@
                 <plugin>
                     <groupId>com.github.eirslett</groupId>
                     <artifactId>frontend-maven-plugin</artifactId>
-                    <version>1.7.6</version>
+                    <version>1.12.1</version>
                     <configuration>
                         <nodeVersion>${node.version}</nodeVersion>
                         <npmVersion>${npm.version}</npmVersion>
