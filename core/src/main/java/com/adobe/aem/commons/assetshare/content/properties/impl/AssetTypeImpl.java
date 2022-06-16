@@ -19,15 +19,16 @@
 
 package com.adobe.aem.commons.assetshare.content.properties.impl;
 
-import com.adobe.aem.commons.assetshare.content.properties.AbstractComputedProperty;
-import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
-import com.day.cq.dam.api.Asset;
-import com.day.cq.dam.commons.util.UIHelper;
+import static com.adobe.aem.commons.assetshare.content.properties.ComputedProperty.DEFAULT_ASC_COMPUTED_PROPERTY_SERVICE_RANKING;
+
+import java.util.Collections;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.sling.api.resource.LoginException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
-import org.apache.sling.api.resource.ResourceUtil;
-import org.apache.sling.commons.mime.MimeTypeService;
+import org.apache.sling.api.resource.ResourceResolverFactory;
 import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -36,7 +37,10 @@ import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
-import static com.adobe.aem.commons.assetshare.content.properties.ComputedProperty.DEFAULT_ASC_COMPUTED_PROPERTY_SERVICE_RANKING;
+import com.adobe.aem.commons.assetshare.content.properties.AbstractComputedProperty;
+import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
+import com.day.cq.dam.api.Asset;
+import com.day.cq.dam.commons.util.UIHelper;
 
 @Component(
         service = ComputedProperty.class,
@@ -55,10 +59,13 @@ public class AssetTypeImpl extends AbstractComputedProperty<String> {
     public static final String AUDIO_LABEL = "AUDIO";
     public static final String UNKNOWN_LABEL = "";
 
+    private static final String SERVICE_NAME = "mimetype-service";
+    private static final String MIMETYPE_LOOKUP_RESOURCE_PATH = "/mnt/overlay/dam/gui/content/assets/jcr:content/mimeTypeLookup";
+    
     private Cfg cfg;
 
     @Reference
-    private MimeTypeService mimeTypeService;
+    private transient ResourceResolverFactory resourceResolverFactory;
 
     @Override
     public String getName() {
@@ -75,39 +82,50 @@ public class AssetTypeImpl extends AbstractComputedProperty<String> {
         return cfg.types();
     }
 
+    /**
+     * Tries to derive the high-level asset type from the low-level mime type of the asset.
+     * It leverages the configuration below {@code /apps/dam/gui/content/assets/jcr:content/mimeTypeLookup} or {@code /libs/dam/gui/content/assets/jcr:content/mimeTypeLookup}
+     * for the classification.
+     * @return the computed type (one of {@link #IMAGE_LABEL}, {@link #DOCUMENT_LABEL}, {@link #VIDEO_LABEL}, {@link #AUDIO_LABEL} or {@link #UNKNOWN_LABEL})
+     */
     @Override
     public String get(Asset asset) {
-        final ResourceResolver resourceResolver = asset.adaptTo(Resource.class).getResourceResolver();
-        final String dcFormat = StringUtils.defaultIfBlank(asset.getMimeType(), "");
+        final String mimeType = StringUtils.defaultIfBlank(asset.getMimeType(), "");
+        String assetType = getAssetTypeFromMimetypeConfiguration(mimeType);
 
-        final String ext = StringUtils.defaultIfBlank(dcFormat.substring(dcFormat.lastIndexOf('/') + 1, dcFormat.length()), "");
-        final Resource lookedupResource = resourceResolver.getResource("/mnt/overlay/dam/gui/content/assets/jcr:content/mimeTypeLookup");
-
-        String displayMimeType = null;
-
-        if (lookedupResource != null && !ResourceUtil.isNonExistingResource(lookedupResource)) {
-            displayMimeType = UIHelper.lookupMimeType(ext, lookedupResource, true);
-        }
-
-        if (StringUtils.isBlank(displayMimeType)) {
-            if (dcFormat.startsWith("image")) {
-                displayMimeType = cfg.imageLabel();
-            } else if (dcFormat.startsWith("text")) {
-                displayMimeType = cfg.documentLabel();
-            } else if (dcFormat.startsWith("video")) {
-                displayMimeType = cfg.videoLabel();
-            } else if (dcFormat.startsWith("audio")) {
-                displayMimeType = cfg.audioLabel();
-            } else if (dcFormat.startsWith("application")) {
+        if (StringUtils.isBlank(assetType)) {
+            if (mimeType.startsWith("image")) {
+                assetType = cfg.imageLabel();
+            } else if (mimeType.startsWith("text")) {
+                assetType = cfg.documentLabel();
+            } else if (mimeType.startsWith("video")) {
+                assetType = cfg.videoLabel();
+            } else if (mimeType.startsWith("audio")) {
+                assetType = cfg.audioLabel();
+            } else if (mimeType.startsWith("application")) {
+                final String ext = StringUtils.defaultIfBlank(mimeType.substring(mimeType.lastIndexOf('/') + 1, mimeType.length()), "");
                 int indexOne = ext.lastIndexOf('.');
                 int indexTwo = ext.lastIndexOf('-');
                 int lastWordIdx = (indexOne > indexTwo) ? indexOne : indexTwo;
 
-                displayMimeType = ext.substring(lastWordIdx + 1).toUpperCase();
+                assetType = ext.substring(lastWordIdx + 1).toUpperCase();
             }
         }
+        return StringUtils.defaultIfBlank(assetType, cfg.unknownLabel());
+    }
 
-        return StringUtils.defaultIfBlank(displayMimeType, cfg.unknownLabel());
+    private String getAssetTypeFromMimetypeConfiguration(String mimeType) {
+        final String ext = StringUtils.defaultIfBlank(mimeType.substring(mimeType.lastIndexOf('/') + 1, mimeType.length()), "");
+        Map<String, Object> authInfo = Collections.singletonMap(ResourceResolverFactory.SUBSERVICE, (Object) SERVICE_NAME);
+        try (ResourceResolver serviceResourceResolver = resourceResolverFactory.getServiceResourceResolver(authInfo)) {
+            final Resource lookedupResource = serviceResourceResolver.getResource(MIMETYPE_LOOKUP_RESOURCE_PATH);
+            if (lookedupResource == null) {
+                throw new IllegalStateException("Service resource resolver " + serviceResourceResolver + " does not have access to system resource " + MIMETYPE_LOOKUP_RESOURCE_PATH);
+            }
+            return UIHelper.lookupMimeType(ext, lookedupResource, true);
+        } catch (LoginException e) {
+            throw new IllegalStateException("Service resource resolver with subservice name " + SERVICE_NAME + " does not allow login", e);
+        }
     }
 
     @Activate
