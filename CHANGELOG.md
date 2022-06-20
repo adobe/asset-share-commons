@@ -7,9 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 
+### Changed
+
+- 0738 - Broke out OSGi configurations into ui.config project
+
 ### Added
 
-- 0715 - Added ability to use asset property values in external rendition URL expressions 
+- 0715 - Added ability to use asset property values in external rendition URL expression
 
 ### Fixed
 
