@@ -39,10 +39,14 @@
             <img src="${asset.properties['thumbnail']}"/>
         </div>
         <div class="description cmp-content__iframe--wrapper">
+
+            data-sly-test="${wcmmode.preview || wcmmode.edit}"
+
             <iframe data-sly-test="${asset.properties['license']}"
+                    data-sly-test.licenseUrl="${wcmmode.edit ? (asset.properties['license'] + '?wcmmode=disabled') : asset.properties['license'] }"
                     style="border: solid 1px #ccc"
                     width="100%" height="100%" scrolling="auto"
-                    src="${asset.properties['license']}?wcmmode=disabled"></iframe>
+                    src="${licenseUrl}"></iframe>
         </div>
     </div>
 
