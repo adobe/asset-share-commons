@@ -84,7 +84,6 @@ public class AssetRenditionsImpl implements AssetRenditions {
         expression = expressionEvaluator.evaluateAssetExpression(expression, assetModel);
         expression = expressionEvaluator.evaluateRenditionExpression(expression, renditionName);
         expression = expressionEvaluator.evaluateDynamicMediaExpression(expression, assetModel);
-        expression = expressionEvaluator.evaluateProperties(expression, assetModel);
 
         return expression;
     }

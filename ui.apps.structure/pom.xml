@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.adobe.aem.commons</groupId>
         <artifactId>assetshare</artifactId>
-        <version>2.3.0-SNAPSHOT</version>
+        <version>2.2.3-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -37,7 +37,6 @@
                     <filters>
                         <!-- /apps root -->
                         <filter><root>/apps</root></filter>
-                        <filter><root>/apps/asset-share-commons</root></filter>
                     </filters>
                 </configuration>
             </plugin>

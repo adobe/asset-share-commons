@@ -102,9 +102,11 @@ public class AssetRenditionsDataSourceTest {
         String[] expected = new String[]{"a", "b", "c", "d"};
 
         ctx.currentResource("/apps/dialog/default");
-        final Servlet servlet = ctx.registerInjectActivateService(new AssetRenditionsDataSource(),
+        ctx.registerInjectActivateService(new AssetRenditionsDataSource(),
                 "sling.servlet.resourceTypes", "asset-share-commons/data-sources/asset-renditions",
                 "sling.servlet.methods", "GET");
+
+        final Servlet servlet = ctx.getService(Servlet.class);
 
         servlet.service(ctx.request(), ctx.response());
 
@@ -119,10 +121,12 @@ public class AssetRenditionsDataSourceTest {
         String[] expected = new String[]{"c", "d"};
 
         ctx.currentResource("/apps/dialog/default");
-        final Servlet servlet = ctx.registerInjectActivateService(new AssetRenditionsDataSource(),
+        ctx.registerInjectActivateService(new AssetRenditionsDataSource(),
                 "sling.servlet.resourceTypes", "asset-share-commons/data-sources/asset-renditions",
                 "sling.servlet.methods", "GET",
                 "exclude.assetrenditiondispatcher.names", "one");
+
+        final Servlet servlet = ctx.getService(Servlet.class);
 
         servlet.service(ctx.request(), ctx.response());
 
@@ -137,10 +141,12 @@ public class AssetRenditionsDataSourceTest {
         String[] expected = new String[]{"a", "c", "d"};
 
         ctx.currentResource("/apps/dialog/default");
-        final Servlet servlet = ctx.registerInjectActivateService(new AssetRenditionsDataSource(),
+        ctx.registerInjectActivateService(new AssetRenditionsDataSource(),
                 "sling.servlet.resourceTypes", "asset-share-commons/data-sources/asset-renditions",
                 "sling.servlet.methods", "GET",
                 "exclude.assetrendition.names", "b");
+
+        final Servlet servlet = ctx.getService(Servlet.class);
 
         servlet.service(ctx.request(), ctx.response());
 
@@ -155,9 +161,11 @@ public class AssetRenditionsDataSourceTest {
         String[] expected = new String[]{"c", "d"};
 
         ctx.currentResource("/apps/dialog/exclude-assetrenditiondispatchers");
-        final Servlet servlet = ctx.registerInjectActivateService(new AssetRenditionsDataSource(),
+        ctx.registerInjectActivateService(new AssetRenditionsDataSource(),
                 "sling.servlet.resourceTypes", "asset-share-commons/data-sources/asset-renditions",
                 "sling.servlet.methods", "GET");
+
+        final Servlet servlet = ctx.getService(Servlet.class);
 
         servlet.service(ctx.request(), ctx.response());
 
@@ -172,9 +180,11 @@ public class AssetRenditionsDataSourceTest {
         String[] expected = new String[]{"a", "c", "d"};
 
         ctx.currentResource("/apps/dialog/exclude-assetrenditions");
-        final Servlet servlet = ctx.registerInjectActivateService(new AssetRenditionsDataSource(),
+        ctx.registerInjectActivateService(new AssetRenditionsDataSource(),
                 "sling.servlet.resourceTypes", "asset-share-commons/data-sources/asset-renditions",
                 "sling.servlet.methods", "GET");
+
+        final Servlet servlet = ctx.getService(Servlet.class);
 
         servlet.service(ctx.request(), ctx.response());
 
@@ -197,7 +207,7 @@ public class AssetRenditionsDataSourceTest {
         final String[] expectedValues = new String[]{"a", "b", "c", "d"};
 
         ctx.currentResource("/apps/dialog/default");
-        final Servlet servlet = ctx.registerInjectActivateService(new AssetRenditionsDataSource(),
+        ctx.registerInjectActivateService(new AssetRenditionsDataSource(),
                 "sling.servlet.resourceTypes", "asset-share-commons/data-sources/asset-renditions",
                 "add.assetrenditiondispatcher.to.label", true,
                 "sling.servlet.methods", "GET");
@@ -214,6 +224,9 @@ public class AssetRenditionsDataSourceTest {
                                 "c=preferred value for c"}).
                         build());
 
+
+        final Servlet servlet = ctx.getService(Servlet.class);
+
         servlet.service(ctx.request(), ctx.response());
 
         final DataSource sds = (DataSource) ctx.request().getAttribute(DataSource.class.getName());
@@ -228,7 +241,7 @@ public class AssetRenditionsDataSourceTest {
         final String[] expectedValues = new String[]{"a", "b", "c", "d"};
 
         ctx.currentResource("/apps/dialog/default");
-        final Servlet servlet = ctx.registerInjectActivateService(new AssetRenditionsDataSource(),
+        ctx.registerInjectActivateService(new AssetRenditionsDataSource(),
                 "sling.servlet.resourceTypes", "asset-share-commons/data-sources/asset-renditions",
                 "sling.servlet.methods", "GET");
 
@@ -244,6 +257,9 @@ public class AssetRenditionsDataSourceTest {
                                 "f=value"}).
                         build());
 
+
+        final Servlet servlet = ctx.getService(Servlet.class);
+
         servlet.service(ctx.request(), ctx.response());
 
         final DataSource sds = (DataSource) ctx.request().getAttribute(DataSource.class.getName());
@@ -257,7 +273,7 @@ public class AssetRenditionsDataSourceTest {
         final String[] expectedValues = new String[]{"a", "b", "e", "f"};
 
         ctx.currentResource("/apps/dialog/allowed-assetrendition-types");
-        final Servlet servlet = ctx.registerInjectActivateService(new AssetRenditionsDataSource(),
+        ctx.registerInjectActivateService(new AssetRenditionsDataSource(),
                 "sling.servlet.resourceTypes", "asset-share-commons/data-sources/asset-renditions",
                 "sling.servlet.methods", "GET");
 
@@ -272,6 +288,9 @@ public class AssetRenditionsDataSourceTest {
                                 "e=value",
                                 "f=value"}).
                         build());
+
+
+        final Servlet servlet = ctx.getService(Servlet.class);
 
         servlet.service(ctx.request(), ctx.response());
 

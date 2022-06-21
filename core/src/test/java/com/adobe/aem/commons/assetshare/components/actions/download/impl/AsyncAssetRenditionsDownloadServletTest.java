@@ -1,14 +1,5 @@
 package com.adobe.aem.commons.assetshare.components.actions.download.impl;
 
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
-
 import com.adobe.aem.commons.assetshare.components.actions.impl.ActionHelperImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.download.async.impl.AsyncAssetRenditionsDownloadServlet;
 import com.adobe.aem.commons.assetshare.testing.RequireAemMock;
@@ -16,8 +7,17 @@ import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.aem.commons.assetshare.util.impl.ExpressionEvaluatorImpl;
 import com.adobe.cq.dam.download.api.DownloadApiFactory;
 import com.adobe.cq.dam.download.api.DownloadService;
-
 import io.wcm.testing.mock.aem.junit.AemContext;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import javax.servlet.Servlet;
+
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AsyncAssetRenditionsDownloadServletTest {
@@ -38,7 +38,9 @@ public class AsyncAssetRenditionsDownloadServletTest {
     public void activateInCloudReady() {
         RequireAemMock.setAem(ctx, RequireAem.Distribution.CLOUD_READY, RequireAem.ServiceType.PUBLISH);
 
-        AsyncAssetRenditionsDownloadServlet servlet = ctx.registerInjectActivateService(new AsyncAssetRenditionsDownloadServlet());
+        ctx.registerInjectActivateService(new AsyncAssetRenditionsDownloadServlet());
+
+        AsyncAssetRenditionsDownloadServlet servlet = (AsyncAssetRenditionsDownloadServlet) ctx.getService(Servlet.class);
 
         assertNotNull(servlet);
     }
@@ -49,5 +51,6 @@ public class AsyncAssetRenditionsDownloadServletTest {
 
         ctx.registerInjectActivateService(new AsyncAssetRenditionsDownloadServlet());
 
+        ctx.getService(Servlet.class);
     }
 }
