@@ -17,8 +17,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- 0724 - ContextHub enabled check does not take into account properties on parent pages 
-
+- 0724 - ContextHub enabled check does not take into account properties on parent pages
+- 0752 - Fix issue with AEM Dispatcher blocking license URL due to additional wcmmode=disable query parameter 
+ 
 ## [v2.2.2]
 
 ### Fixed
