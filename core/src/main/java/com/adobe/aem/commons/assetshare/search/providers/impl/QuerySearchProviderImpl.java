@@ -157,7 +157,7 @@ public class QuerySearchProviderImpl implements SearchProvider {
         // Copy over query params
 
         for (final Map.Entry<String, RequestParameter[]> entry : request.getRequestParameterMap().entrySet()) {
-            params.put(entry.getKey(), entry.getValue()[0].getString());
+            params.put(entry.getKey(), entry.getValue()[0].getString().trim());
         }
 
         // Remove common junk params

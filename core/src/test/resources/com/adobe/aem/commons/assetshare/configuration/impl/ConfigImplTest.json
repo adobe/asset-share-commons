@@ -1,0 +1,53 @@
+{
+  "no-contexthub": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent"
+    },
+    "subpage": {
+      "jcr:primaryType": "cq:Page",
+      "jcr:content": {
+        "jcr:primaryType": "cq:PageContent"
+      }
+    }
+  },
+  "invalid-contexthub": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "cq:contextHubPath": "/content/contexthub/invalid"
+    },
+    "subpage": {
+      "jcr:primaryType": "cq:Page",
+      "jcr:content": {
+        "jcr:primaryType": "cq:PageContent"
+      }
+    }
+  },
+  "valid-contexthub": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "cq:contextHubPath": "/content/contexthub/valid"
+    },
+    "subpage": {
+      "jcr:primaryType": "cq:Page",
+      "jcr:content": {
+        "jcr:primaryType": "cq:PageContent"
+      }
+    }
+  },
+  "contexthub": {
+    "jcr:primaryType": "nt:folder",
+    "invalid": {
+      "jcr:primaryType": "nt:unstructured",
+      "sling:resourceType": "invalid/resource/type"
+    },
+    "valid": {
+      "jcr:primaryType": "nt:unstructured",
+      "sling:resourceType": "granite/contexthub/cloudsettings/components/baseconfiguration"
+    }
+  }
+}
+
+
