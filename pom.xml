@@ -18,7 +18,7 @@
     <groupId>com.adobe.aem.commons</groupId>
     <artifactId>assetshare</artifactId>
     <packaging>pom</packaging>
-    <version>2.2.3-SNAPSHOT</version>
+    <version>2.3.0-SNAPSHOT</version>
 
     <name>Asset Share Commons - Reactor Project</name>
     <description>asset-share-commons</description>
@@ -49,6 +49,7 @@
     <modules>
         <module>all</module>
         <module>core</module>
+        <module>ui.config</module>
         <module>ui.frontend.theme.light</module>
         <module>ui.frontend.theme.dark</module>
         <module>ui.apps</module>
@@ -68,20 +69,23 @@
         <vault.user>admin</vault.user>
         <vault.password>admin</vault.password>
         <package.group>asset-share-commons</package.group>
-        <aem.sdk.api>[2022,)</aem.sdk.api>
+        <!-- Increasing past 2022.3 breaks OSGi wiring on 6.5 -->
+        <aem.sdk.api>[2022.3,2022.4)</aem.sdk.api>
         <core.wcm.components.version>2.17.14</core.wcm.components.version>
         <frontend-maven-plugin.version>1.9.0</frontend-maven-plugin.version>
         <node.version>v13.7.0</node.version>
         <npm.version>6.13.1</npm.version>
-        <bnd.version>6.1.0</bnd.version>
+        <bnd.version>6.2.0</bnd.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>${maven.compiler.target}</maven.compiler.source>
     </properties>
 
     <scm>
-        <connection>scm:git:git@github.com:Adobe-Marketing-Cloud/asset-share-commons.git</connection>
-        <developerConnection>scm:git:git@github.com:Adobe-Marketing-Cloud/asset-share-commons.git</developerConnection>
-        <url>https://github.com/Adobe-Marketing-Cloud/asset-share-commons/tree/master</url>
+        <connection>scm:git:https://github.com/adobe/asset-share-commons.git</connection>
+        <developerConnection>scm:git:https://github.com/adobe/asset-share-commons.git</developerConnection>
+        <url>https://github.com/adobe/asset-share-commons/tree/main</url>
         <tag>HEAD</tag>
     </scm>
 
@@ -101,7 +105,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>3.0-r1585899</version>
+                <version>3.0.0-M5</version>
                 <configuration>
                     <scmCommentPrefix>[maven-scm] :</scmCommentPrefix>
                     <preparationGoals>clean install</preparationGoals>
@@ -114,7 +118,7 @@
                     <dependency>
                         <groupId>org.apache.maven.release</groupId>
                         <artifactId>maven-release-oddeven-policy</artifactId>
-                        <version>3.0-r1585899</version>
+                        <version>3.0.0-M5</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -122,14 +126,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>3.2.1</version>
                 <inherited>true</inherited>
             </plugin>
             <!-- Maven Enforcer Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.0.0-M3</version>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <id>enforce-maven</id>
@@ -150,22 +154,13 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Maven Compiler Plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>com.github.eirslett</groupId>
                     <artifactId>frontend-maven-plugin</artifactId>
-                    <version>1.7.6</version>
+                    <version>1.12.1</version>
                     <configuration>
                         <nodeVersion>${node.version}</nodeVersion>
                         <npmVersion>${npm.version}</npmVersion>
@@ -189,13 +184,18 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.1.2</version>
+                    <version>3.2.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>3.3.0</version>
                 </plugin>
                 <!-- Maven Clean Plugin -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
-                    <version>3.0.0</version>
+                    <version>3.2.0</version>
                 </plugin>
                 <!-- BND Maven Plugin -->
                 <plugin>
@@ -212,13 +212,13 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
-                    <version>3.0.2</version>
+                    <version>3.2.0</version>
                 </plugin>
                 <!-- Maven Compiler Plugin -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.6.1</version>
+                    <version>3.10.1</version>
                 </plugin>
                 <!-- Maven Installer Plugin -->
                 <plugin>
@@ -230,25 +230,25 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.21.0</version>
+                    <version>2.22.2</version>
                     <dependencies>
                         <dependency>
                             <groupId>org.apache.maven.surefire</groupId>
                             <artifactId>surefire-junit47</artifactId>
-                            <version>2.21.0</version>
+                            <version>2.22.2</version>
                         </dependency>
                     </dependencies>
                     <configuration>
                         <parallel>methods</parallel>
                         <threadCount>5</threadCount>
+                        <trimStackTrace>false</trimStackTrace>
                     </configuration>
                 </plugin>
                 <!-- Maven Failsafe Plugin -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>2.22.1</version>
-
+                    <version>2.22.2</version>
                 </plugin>
                 <!-- Maven Deploy Plugin -->
                 <plugin>
@@ -260,7 +260,7 @@
                 <plugin>
                     <groupId>org.apache.sling</groupId>
                     <artifactId>sling-maven-plugin</artifactId>
-                    <version>2.4.0</version>
+                    <version>2.4.2</version>
                     <configuration>
                         <slingUrl>http://${aem.host}:${aem.port}/system/console</slingUrl>
                         <deploymentMethod>WebConsole</deploymentMethod>
@@ -270,7 +270,7 @@
                 <plugin>
                     <groupId>org.apache.sling</groupId>
                     <artifactId>htl-maven-plugin</artifactId>
-                    <version>1.3.4-1.4.0</version>
+                    <version>2.0.4-1.4.0</version>
                     <configuration>
                         <failOnWarnings>true</failOnWarnings>
                         <allowedExpressionOptions>
@@ -292,16 +292,40 @@
                 <plugin>
                     <groupId>org.apache.jackrabbit</groupId>
                     <artifactId>filevault-package-maven-plugin</artifactId>
-                    <version>1.0.3</version>
+                    <version>1.3.0</version>
                     <configuration>
                         <filterSource>src/main/content/META-INF/vault/filter.xml</filterSource>
+                        <validatorsSettings>
+                            <jackrabbit-filter>
+                                <options>
+                                    <validRoots>/,/var,/tmp,/content,/content/dam,/home,/home/users,/home/users/system,/home/groups,/conf,/conf/global</validRoots>
+                                </options>
+                            </jackrabbit-filter>
+                            <jackrabbit-docviewparser>
+                                <options>
+                                    <allowUndeclaredPrefixInFileName>true</allowUndeclaredPrefixInFileName>
+                                </options>
+                            </jackrabbit-docviewparser>
+                            <jackrabbit-nodetypes>
+                                <options>
+                                    <cnds>tccl:aem.cnd</cnds>
+                                </options>
+                            </jackrabbit-nodetypes>
+                        </validatorsSettings>
                     </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>biz.netcentric.aem</groupId>
+                            <artifactId>aem-nodetypes</artifactId>
+                            <version>6.5.7.0</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
                 <!-- Content Package Plugin -->
                 <plugin>
                     <groupId>com.day.jcr.vault</groupId>
                     <artifactId>content-package-maven-plugin</artifactId>
-                    <version>1.0.2</version>
+                    <version>1.0.4</version>
                     <configuration>
                         <targetURL>http://${aem.host}:${aem.port}/crx/packmgr/service.jsp</targetURL>
                         <failOnError>true</failOnError>
@@ -313,13 +337,13 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
-                    <version>3.0.0</version>
+                    <version>3.3.0</version>
                 </plugin>
                 <!-- Build Helper Maven Plugin -->
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>
-                    <version>3.0.0</version>
+                    <version>3.3.0</version>
                 </plugin>
                 <!--This plugin's configuration is used to store Eclipse
                     m2e settings only. It has no influence on the Maven build itself. -->
@@ -391,10 +415,9 @@
                 <!-- Maven Javadoc Plugin -->
                 <plugin>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.1.1</version>
+                    <version>3.4.0</version>
                     <configuration>
                         <encoding>${project.build.sourceEncoding}</encoding>
-                        <source>8</source>
                         <excludePackageNames>
                             *.impl
                         </excludePackageNames>
@@ -404,7 +427,7 @@
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.8.4</version>
+                    <version>0.8.8</version>
                     <executions>
                         <execution>
                             <id>default-prepare-agent</id>
@@ -417,7 +440,7 @@
                 <!-- Maven PMD Plugin -->
                 <plugin>
                     <artifactId>maven-pmd-plugin</artifactId>
-                    <version>3.2</version>
+                    <version>3.16.0</version>
                     <configuration>
                         <linkXRef>false</linkXRef>
                         <rulesets>
@@ -433,17 +456,17 @@
                         </dependency>
                     </dependencies>
                 </plugin>
-                <!-- Maven Findbugs Plugin -->
+                <!-- Spotbugs Maven Plugin -->
                 <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>findbugs-maven-plugin</artifactId>
-                    <version>3.0.5</version>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId>
+                    <version>4.7.0.0</version>
                 </plugin>
                 <!-- Maven Checkstyle Plugin -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>2.12.1</version>
+                    <version>3.1.2</version>
                     <configuration>
                         <linkXRef>false</linkXRef>
                         <configLocation>acs/checkstyle/checks.xml</configLocation>
@@ -469,11 +492,25 @@
                     <artifactId>jslint-maven-plugin</artifactId>
                     <version>1.0.1</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>3.0.1</version>
+                </plugin>
                 <!-- Maven Central / OSS Sonatype release plugin -->
                 <plugin>
                     <groupId>org.sonatype.plugins</groupId>
                     <artifactId>nexus-staging-maven-plugin</artifactId>
                     <version>1.6.8</version>
+                </plugin>
+                <!-- checks for vulnerabilities in dependencies -->
+                <plugin>
+                    <groupId>org.owasp</groupId>
+                    <artifactId>dependency-check-maven</artifactId>
+                    <version>7.1.0</version>
+                    <configuration>
+                        <failBuildOnAnyVulnerability>true</failBuildOnAnyVulnerability>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -600,47 +637,13 @@
         <profile>
             <id>release</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
                 <property>
                     <name>performRelease</name>
                 </property>
             </activation>
-
-            <distributionManagement>
-                <!-- the nexus-staging-maven-plugin only needs a snapshot repository -->
-                <snapshotRepository>
-                    <id>ossrh</id>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-                </snapshotRepository>
-            </distributionManagement>
-
             <build>
                 <!-- https://central.sonatype.org/pages/requirements.html -->
                 <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>attach-sources</id>
-                                <goals>
-                                    <goal>jar-no-fork</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>attach-javadocs</id>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
@@ -651,8 +654,26 @@
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
+                                <configuration>
+                                    <gpgArguments>
+                                        <arg>--pinentry-mode</arg>
+                                        <arg>loopback</arg>
+                                    </gpgArguments>
+                                </configuration>
                             </execution>
                         </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.8</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <!-- manually release in https://oss.sonatype.org/#stagingRepositories after the Maven release build -->
+                            <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
@@ -688,8 +709,8 @@
                         </executions>
                     </plugin>
                     <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>findbugs-maven-plugin</artifactId>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs-maven-plugin</artifactId>
                         <executions>
                             <execution>
                                 <phase>package</phase>
@@ -706,6 +727,18 @@
                                 <phase>package</phase>
                                 <goals>
                                     <goal>checkstyle</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <!-- checks for vulnerabilities in dependencies -->
+                        <groupId>org.owasp</groupId>
+                        <artifactId>dependency-check-maven</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>check</goal>
                                 </goals>
                             </execution>
                         </executions>
@@ -741,13 +774,13 @@
                         </executions>
                     </plugin>
                     <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>findbugs-maven-plugin</artifactId>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs-maven-plugin</artifactId>
                         <executions>
                             <execution>
                                 <phase>package</phase>
                                 <goals>
-                                    <goal>findbugs</goal>
+                                    <goal>spotbugs</goal>
                                 </goals>
                             </execution>
                         </executions>
@@ -763,6 +796,18 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <plugin>
+                        <!-- checks for vulnerabilities in dependencies -->
+                        <groupId>org.owasp</groupId>
+                        <artifactId>dependency-check-maven</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
@@ -770,6 +815,7 @@
             <id>autoInstallPackage-all</id>
             <modules>
                 <module>core</module>
+                <!--<module>ui.config</module>-->
                 <module>ui.apps</module>
                 <module>ui.content</module>
             </modules>
@@ -849,20 +895,20 @@
             <dependency>
                 <groupId>org.apache.sling</groupId>
                 <artifactId>org.apache.sling.testing.osgi-mock.junit4</artifactId>
-                <version>3.1.2</version>
+                <version>3.1.4</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.sling</groupId>
                 <artifactId>org.apache.sling.testing.sling-mock.junit4</artifactId>
-                <!-- Bumping this to 2.4.0 changes behavior in how servlet.service(..) is processed, which breaks all servlet tests -->
-                <version>2.3.18</version>
+                <!-- upgrading to newer version not supported due to https://issues.apache.org/jira/browse/SLING-11362 -->
+                <version>3.1.2</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>io.wcm</groupId>
                 <artifactId>io.wcm.testing.aem-mock.junit4</artifactId>
-                <version>4.0.2</version>
+                <version>5.0.0</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -926,4 +972,16 @@
         </pluginRepository>
     </pluginRepositories>
 
+    <!-- Properties defined in .github/workflows/settings.xml and used by the Github Actions release action -->
+    <distributionManagement>
+        <repository>
+            <id>${releaseRepository-Id}</id>
+            <url>${releaseRepository-URL}</url>
+        </repository>
+        <snapshotRepository>
+            <id>${snapshotRepository-Id}</id>
+            <url>${snapshotRepository-URL}</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

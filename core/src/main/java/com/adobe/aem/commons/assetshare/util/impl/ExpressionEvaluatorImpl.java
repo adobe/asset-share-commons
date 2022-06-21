@@ -30,6 +30,8 @@ import org.osgi.service.component.annotations.Reference;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.day.cq.dam.scene7.api.constants.Scene7Constants.*;
 
@@ -132,6 +134,20 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
         expression = StringUtils.replace(expression, VAR_RENDITION_EXTENSION, renditionExtension);
 
         return expression;
+    }
 
+    public String evaluateProperties(String expression, AssetModel assetModel) {
+        final Pattern p = Pattern.compile("\\$\\{prop\\@([^}]+)\\}");
+        final Matcher m = p.matcher(expression);
+
+        while (m.find()) {
+            final String replaceString = m.group(0);
+            final String propertyPath = m.group(1);
+            final String value = assetModel.getProperties().get(propertyPath, StringUtils.EMPTY);
+
+            expression = expression.replace(replaceString, value);
+        }
+
+        return expression;
     }
 }

@@ -25,7 +25,6 @@ import com.adobe.aem.commons.assetshare.configuration.impl.selectors.AlwaysUseDe
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.util.ForcedInheritanceValueMapWrapper;
 import com.adobe.aem.commons.assetshare.util.RequireAem;
-import com.adobe.granite.contexthub.api.ContextHub;
 import com.day.cq.commons.inherit.HierarchyNodeInheritanceValueMap;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -37,7 +36,6 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
-import org.apache.sling.featureflags.Features;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.InjectionStrategy;
@@ -110,13 +108,6 @@ public class ConfigImpl implements Config {
     @SlingObject
     @Required
     private Resource requestResource;
-
-    @OSGiService
-    @Required
-    private Features features;
-
-    @OSGiService
-    private ContextHub contextHub;
 
     private Page currentPage;
 
@@ -297,7 +288,7 @@ public class ConfigImpl implements Config {
     public boolean isContextHubEnabled() {
         final HierarchyNodeInheritanceValueMap properties = new HierarchyNodeInheritanceValueMap(currentPage.getContentResource());
 
-        String path = properties.get("cq:contextHubPath", String.class);
+        String path = properties.getInherited("cq:contextHubPath", String.class);
 
         if (StringUtils.isNotBlank(path)) {
             Resource resource = request.getResourceResolver().getResource(path);
