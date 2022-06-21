@@ -6,22 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [v2.3.0]
-
-### Changed
-
-- 0738 - Broke out OSGi configurations into ui.config project
-- 0756 - Upgraded moment JS to  2.29.3 to avoid CodeQL errors
-
-### Added
-
-- 0715 - Added ability to use asset property values in external rendition URL expression
-
-### Fixed
-
-- 0724 - ContextHub enabled check does not take into account properties on parent pages
-- 0752 - Fix issue with AEM Dispatcher blocking license URL due to additional wcmmode=disable query parameter 
- 
 ## [v2.2.2]
 
 ### Fixed

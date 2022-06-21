@@ -119,14 +119,14 @@ public class AssetRenditionServletTest {
                                 "testing2=^cq5dam\\.web\\..*"}).
                         build());
 
-        Servlet servlet = ctx.registerInjectActivateService(new AssetRenditionServlet());
+        ctx.registerInjectActivateService(new AssetRenditionServlet());
 
         ctx.request().setMethod("GET");
         ctx.requestPathInfo().setResourcePath("/content/dam/test.png");
         ctx.requestPathInfo().setExtension("renditions");
         ctx.requestPathInfo().setSuffix("testing2/asset.rendition");
 
-        servlet.service(ctx.request(), ctx.response());
+        ctx.getService(Servlet.class).service(ctx.request(), ctx.response());
 
         Mockito.verify(assetRenditionDispatcher, Mockito.times(1)).dispatch(ctx.request(), ctx.response());
     }
@@ -142,14 +142,14 @@ public class AssetRenditionServletTest {
                                 "testing=value doesnt matter"}).
                         build());
 
-        Servlet servlet = ctx.registerInjectActivateService(new AssetRenditionServlet());
+        ctx.registerInjectActivateService(new AssetRenditionServlet());
 
         ctx.request().setMethod("GET");
         ctx.requestPathInfo().setResourcePath("/content/dam/test.png");
         ctx.requestPathInfo().setExtension("renditions");
         ctx.requestPathInfo().setSuffix("testing/download/dont-allow-this-parameter/asset.rendition");
 
-        servlet.service(ctx.request(), ctx.response());
+        ctx.getService(Servlet.class).service(ctx.request(), ctx.response());
 
         assertEquals(400, ctx.response().getStatus());
         Mockito.verify(assetRenditionDispatcher, Mockito.times(0)).dispatch(ctx.request(), ctx.response());
