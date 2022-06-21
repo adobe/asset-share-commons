@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public abstract class AbstractRenditionDispatcherImpl implements AssetRenditionDispatcher {
-    private static Logger log = LoggerFactory.getLogger(AbstractRenditionDispatcherImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(AbstractRenditionDispatcherImpl.class);
 
     protected static final String OSGI_PROPERTY_VALUE_DELIMITER = "=";
     public static final String QUERY_PARAM_SUGGESTED_EXTENSION = "extension";

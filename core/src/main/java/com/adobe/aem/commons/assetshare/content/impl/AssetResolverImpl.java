@@ -85,7 +85,9 @@ public class AssetResolverImpl implements AssetResolver {
             try {
                 return DamUtil.getAssetFromID(request.getResourceResolver(), id);
             } catch (RepositoryException e) {
-                log.error("Error attempting to resolve asset via ID [ " + id + " ]", e);
+                if (log.isErrorEnabled()) {
+                    log.error("Error attempting to resolve asset via ID [ " + id + " ]", e);
+                }
             }
         }
         return null;
@@ -102,7 +104,9 @@ public class AssetResolverImpl implements AssetResolver {
     }
 
     public Asset resolvePlaceholderAsset(final Config config) {
-        log.debug("Attempting to construct a placeholder AssetModel for [ {} ]", config.getRootPath());
+        if (log.isDebugEnabled()) {
+            log.debug("Attempting to construct a placeholder AssetModel for [ {} ]", config.getRootPath());
+        }
 
         final AssetModel placeholder = config.getPlaceholderAsset();
 

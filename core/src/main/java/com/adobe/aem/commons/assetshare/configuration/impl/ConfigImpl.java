@@ -334,7 +334,9 @@ public class ConfigImpl implements Config {
         } while (page != null);
 
         if (currentPage != null) {
-            log.warn("Could not find a valid Asset Share Commons root page for [ {} ]. Check to ensure a parent page sling:resourceSuperTypes one of [ {} ]", currentPage.getPath(), StringUtils.join(rootResourceTypes, ","));
+            if (log.isWarnEnabled()) {
+                log.warn("Could not find a valid Asset Share Commons root page for [ {} ]. Check to ensure a parent page sling:resourceSuperTypes one of [ {} ]", currentPage.getPath(), StringUtils.join(rootResourceTypes, ","));
+            }
         } else {
             log.warn("Could not find a valid Asset Share Commons root page for because the current page could not be resolved.");
         }

@@ -152,7 +152,9 @@ public final class EmailServiceImpl implements EmailService {
                 messageGateway.send(email);
             } catch (EmailException | IOException | MessagingException e) {
                 failureList.add(address);
-                log.error("Error sending email to [ " + address + " ]", e);
+                if (log.isErrorEnabled()) {
+                    log.error("Error sending email to [ " + address + " ]", e);
+                }
             }
         }
 
@@ -192,7 +194,9 @@ public final class EmailServiceImpl implements EmailService {
                 messageGateway.send(email);
             } catch (EmailException | IOException | MessagingException e) {
                 failureList.add(address);
-                log.error("Error sending email to [ " + address + " ]", e);
+                if (log.isErrorEnabled()) {
+                    log.error("Error sending email to [ " + address + " ]", e);
+                }
             }
         }
 
@@ -279,8 +283,10 @@ public final class EmailServiceImpl implements EmailService {
                         + templatePath + " ] could not resolve to a valid template");
             }
         } catch (LoginException e) {
-            log.error("Unable to obtain an administrative resource resolver to get the Mail Template at [ "
-                    + templatePath + " ]", e);
+            if (log.isErrorEnabled()) {
+                log.error("Unable to obtain an administrative resource resolver to get the Mail Template at [ "
+                        + templatePath + " ]", e);
+            }
         } finally {
             if (resourceResolver != null) {
                 resourceResolver.close();
