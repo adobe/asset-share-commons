@@ -40,12 +40,12 @@
         </div>
         <div class="description cmp-content__iframe--wrapper">
             
-            <iframe data-sly-test="${wcmmode.edit && asset.properties['license']}"
+            <iframe data-sly-test="${!wcmmode.disabled && asset.properties['license']}"
                     style="border: solid 1px #ccc"
                     width="100%" height="100%" scrolling="auto"
                     src="${asset.properties['license']}?wcmmode=disabled"></iframe>
 
-            <iframe data-sly-test="${!wcmmode.edit && asset.properties['license']}"
+            <iframe data-sly-test="${wcmmode.disabled && asset.properties['license']}"
                     style="border: solid 1px #ccc"
                     width="100%" height="100%" scrolling="auto"
                     src="${asset.properties['license']}"></iframe>
