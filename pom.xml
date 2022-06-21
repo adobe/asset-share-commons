@@ -83,9 +83,9 @@
     </properties>
 
     <scm>
-        <connection>scm:git:git@github.com:Adobe-Marketing-Cloud/asset-share-commons.git</connection>
-        <developerConnection>scm:git:git@github.com:Adobe-Marketing-Cloud/asset-share-commons.git</developerConnection>
-        <url>https://github.com/Adobe-Marketing-Cloud/asset-share-commons/tree/master</url>
+        <connection>scm:git:https://github.com/adobe/asset-share-commons.git</connection>
+        <developerConnection>scm:git:https://github.com/adobe/asset-share-commons.git</developerConnection>
+        <url>https://github.com/adobe/asset-share-commons/tree/main</url>
         <tag>HEAD</tag>
     </scm>
 
@@ -637,47 +637,13 @@
         <profile>
             <id>release</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
                 <property>
                     <name>performRelease</name>
                 </property>
             </activation>
-
-            <distributionManagement>
-                <!-- the nexus-staging-maven-plugin only needs a snapshot repository -->
-                <snapshotRepository>
-                    <id>ossrh</id>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-                </snapshotRepository>
-            </distributionManagement>
-
             <build>
                 <!-- https://central.sonatype.org/pages/requirements.html -->
                 <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>attach-sources</id>
-                                <goals>
-                                    <goal>jar-no-fork</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>attach-javadocs</id>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
@@ -688,8 +654,26 @@
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
+                                <configuration>
+                                    <gpgArguments>
+                                        <arg>--pinentry-mode</arg>
+                                        <arg>loopback</arg>
+                                    </gpgArguments>
+                                </configuration>
                             </execution>
                         </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.8</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <!-- manually release in https://oss.sonatype.org/#stagingRepositories after the Maven release build -->
+                            <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
@@ -988,4 +972,16 @@
         </pluginRepository>
     </pluginRepositories>
 
+    <!-- Properties defined in .github/workflows/settings.xml and used by the Github Actions release action -->
+    <distributionManagement>
+        <repository>
+            <id>${releaseRepository-Id}</id>
+            <url>${releaseRepository-URL}</url>
+        </repository>
+        <snapshotRepository>
+            <id>${snapshotRepository-Id}</id>
+            <url>${snapshotRepository-URL}</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
