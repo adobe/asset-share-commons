@@ -47,15 +47,11 @@
             <plugin>
                 <groupId>org.apache.jackrabbit</groupId>
                 <artifactId>filevault-package-maven-plugin</artifactId>
-                <extensions>true</extensions>
                 <configuration>
                     <group>${package.group}</group>
                     <name>asset-share-commons.ui.apps</name>
                     <finalName>asset-share-commons.ui.apps-${project.version}</finalName>
                     <packageType>application</packageType>
-                    <properties>
-                        <cloudManagerTarget>none</cloudManagerTarget>&gt;
-                    </properties>
                     <repositoryStructurePackages>
                         <repositoryStructurePackage>
                             <groupId>com.adobe.aem.commons</groupId>
@@ -67,13 +63,7 @@
             <plugin>
                 <groupId>com.day.jcr.vault</groupId>
                 <artifactId>content-package-maven-plugin</artifactId>
-                <extensions>true</extensions>
-                <configuration>
-                    <verbose>true</verbose>
-                    <failOnError>true</failOnError>
-                </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.sling</groupId>
                 <artifactId>htl-maven-plugin</artifactId>
@@ -85,11 +75,6 @@
     <!-- D E P E N D E N C I E S                                                -->
     <!-- ====================================================================== -->
     <dependencies>
-        <dependency>
-            <groupId>com.adobe.aem.commons</groupId>
-            <artifactId>assetshare.core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <dependency>
             <groupId>com.adobe.aem.commons</groupId>
             <artifactId>assetshare.ui.apps.structure</artifactId>
@@ -108,9 +93,6 @@
             <version>${project.version}</version>
             <type>pom</type>
         </dependency>
-        <dependency>
-            <groupId>com.adobe.aem</groupId>
-            <artifactId>aem-sdk-api</artifactId>
-        </dependency>
+
     </dependencies>
 </project>

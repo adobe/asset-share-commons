@@ -36,7 +36,7 @@ mvn -Daem.host=otherhost -Daem.port=5502 <goals>
 
 ## Asset Share Commons 2.x Requirements
 
-* AEM as a Cloud Service 
+* AEM as a Cloud Service 2022.5.7493 or newer
 * AEM 6.5 SP7 or greater
 * AEM WCM Core Components 2.14.0+
 

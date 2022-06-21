@@ -22,9 +22,9 @@
         <version>2.3.5-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>assetshare.core</artifactId>
-    <name>Asset Share Commons - Core</name>
-    <description>OSGi Core bundle for Asset Share Commons</description>
+    <artifactId>assetshare.core.cloud</artifactId>
+    <name>Asset Share Commons - Core Cloud Fragment</name>
+    <description>OSGi Core bundle fragment for Asset Share Commons (only AEMaaCS)</description>
     <build>
         <plugins>
             <plugin>
@@ -36,24 +36,17 @@
                 <artifactId>bnd-maven-plugin</artifactId>
                 <configuration>
                     <bnd><![CDATA[
-Bundle-Name: Asset Share Commons - Core
-Bundle-Description: Asset Share Commons Core OSGi bundle containing AEM server-side logic
-Bundle-SymbolicName: com.adobe.aem.commons.assetshare.core
-# conditionalpackage is too coarse, as it will drag in all transitive deps of arbitrary classes in one package, only embed specific classes
--includeresource: @acs-aem-commons-bundle-[0-9.]*.jar!/com/adobe/acs/commons/util/(BufferedSlingHttpServletResponse|PathInfoUtil|ParameterUtil).*,\
-                            ]]></bnd>
+Bundle-Name: Asset Share Commons - Core Fragment (for AEMaaCS)
+Bundle-Description: Asset Share Commons Core OSGi bundle fragment containing AEM server-side logic requiring AEMaaCS
+Fragment-Host: com.adobe.aem.commons.assetshare.core
+                                ]]></bnd>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>biz.aQute.bnd</groupId>
                 <artifactId>bnd-baseline-maven-plugin</artifactId>
                 <configuration>
-                    <diffpackages>
-                        <diffpackage>!com.adobe.acs.commons.util.*</diffpackage> <!-- was mistakenly being exported by 2.2.2 (and earlier, compare with https://github.com/adobe/asset-share-commons/issues/734) -->
-                        <diffpackage>!com.adobe.aem.commons.assetshare.components.actions.downloads</diffpackage><!-- moved to fragment -->
-                        <diffpackage>!com.adobe.aem.commons.assetshare.content.renditions.download.async</diffpackage><!-- moved to fragment -->
-                        <diffpackage>*</diffpackage>
-                    </diffpackages>
+                    <failOnMissing>false</failOnMissing>
                 </configuration>
             </plugin>
             <plugin>
@@ -63,25 +56,12 @@ Bundle-SymbolicName: com.adobe.aem.commons.assetshare.core
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>default-jar</id>
-                        <configuration>
-                            <archive>
-                                <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-                            </archive>
-                        </configuration>
-                    </execution>
-                    <!-- tests are reused from assetshare.core.cloud, therefore create a dedicated artifact, https://maven.apache.org/plugins/maven-jar-plugin/examples/create-test-jar.html -->
-                    <execution>
-                        <id>generate-test-jar</id>
-                        <goals>
-                          <goal>test-jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <configuration>
+                    <archive>
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                    </archive>
+                </configuration>
             </plugin>
-            <!-- tests are reused from assetshare.core.cloud, therefore create a dedicated artifact, https://maven.apache.org/plugins/maven-jar-plugin/examples/create-test-jar.html -->
         </plugins>
     </build>
 
@@ -93,34 +73,10 @@ Bundle-SymbolicName: com.adobe.aem.commons.assetshare.core
             <scope>provided</scope><!-- should not transitively be exposed -->
         </dependency>
         <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.annotation.versioning</artifactId>
+            <groupId>com.adobe.aem.commons</groupId>
+            <artifactId>assetshare.core</artifactId>
+            <version>${project.version}</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.service.component.annotations</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.service.metatype.annotations</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.framework</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.adobe.cq</groupId>
-            <artifactId>core.wcm.components.core</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.adobe.acs</groupId>
-            <artifactId>acs-aem-commons-bundle</artifactId>
-            <scope>provided</scope><!-- should not transitively be exposed -->
         </dependency>
         <!-- JDK 11 -->
         <dependency>
@@ -129,6 +85,14 @@ Bundle-SymbolicName: com.adobe.aem.commons.assetshare.core
             <scope>provided</scope>
         </dependency>
         <!-- Start Test dependencies -->
+        <dependency>
+            <groupId>com.adobe.aem.commons</groupId>
+            <artifactId>assetshare.core</artifactId>
+            <version>${project.version}</version>
+            <classifier>tests</classifier>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -171,10 +135,10 @@ Bundle-SymbolicName: com.adobe.aem.commons.assetshare.core
             <scope>test</scope>
         </dependency>
         <!-- End Test dependencies -->
-        <!-- the uber-jar should be the last dependency, as other dependencies should take precedence in case of package clashes -->
+        <!-- the aem-sdk-api should be the last dependency, as other dependencies should take precedence in case of package clashes -->
         <dependency>
             <groupId>com.adobe.aem</groupId>
-            <artifactId>uber-jar</artifactId>
+            <artifactId>aem-sdk-api</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>

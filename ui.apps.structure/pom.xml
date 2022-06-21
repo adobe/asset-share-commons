@@ -28,12 +28,7 @@
             <plugin>
                 <groupId>org.apache.jackrabbit</groupId>
                 <artifactId>filevault-package-maven-plugin</artifactId>
-                <extensions>true</extensions>
                 <configuration>
-                    <finalName>asset-share-commons.ui.apps.structure-${project.version}</finalName>
-                    <properties>
-                        <cloudManagerTarget>none</cloudManagerTarget>&gt;
-                    </properties>
                     <filters>
                         <!-- /apps root -->
                         <filter><root>/apps</root></filter>
