@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 - 0738 - Broke out OSGi configurations into ui.config project
+- 0756 - Upgraded moment JS to  2.29.3 to avoid CodeQL errors
 
 ### Added
 
