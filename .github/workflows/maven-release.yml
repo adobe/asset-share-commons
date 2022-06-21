@@ -63,8 +63,8 @@ jobs:
       - name: Deploy to Central Repository
         env:
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-          SONATYPE_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          SONATYPE_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           X_GITHUB_USERNAME: ${{ secrets.ADOBE_BOT_GITHUB_USERNAME  }}
           X_GITHUB_PASSWORD: ${{ secrets.ADOBE_BOT_GITHUB_PASSWORD }}
         run: mvn -B -Prelease,ossrh -s ./.github/workflows/settings.xml clean release:prepare release:perform -DreleaseVersion=${{ github.event.inputs.releaseVersion }} -DdryRun=${{ github.event.inputs.dryRun }}
