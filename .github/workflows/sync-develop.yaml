@@ -14,7 +14,7 @@
 # limitations under the License.
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-name: Update Changelog
+name: Sync Develop
 
 concurrency: ci-asset-share-commons
 
@@ -23,44 +23,22 @@ on:
   workflow_call:
 
 jobs:
-  Changelog:
+  sync:
     runs-on: ubuntu-latest
     if: github.repository == 'adobe/asset-share-commons' && github.ref == 'refs/heads/main'
     steps:
+
       - name: Checkout code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          ref: main
-
-      - name: Generate Changelog
-        uses: heinrichreimer/github-changelog-generator-action@v2.3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          headerLabel: "# 📑 Changelog"
-          breakingLabel: '### 💥 Breaking'
-          enhancementLabel: '### 🚀 Enhancements'
-          bugsLabel: '### 🐛 Bug fixes'
-          securityLabel: '### 🛡️ Security'
-          issuesLabel: '### 📁 Other issues'
-          prLabel: '### 📁 Other pull requests'
-          addSections: '{"documentation":{"prefix":"### 📖 Documentation","labels":["documentation"]},"tests":{"prefix":"### ✅ Testing","labels":["tests"]}}'
-          issues: false
-          issuesWoLabels: false
-          pullRequests: true
-          prWoLabels: true
-          author: true
-          unreleased: true
-          compareLink: true
-          stripGeneratorNotice: true
-          verbose: true
-          base: CHANGELOG_ORIG.md
-          sinceTag: asset-share-commons-2.3.0
-
-      - name: Commit Changelog
+          ref: 'develop'
+        
+      - name: Merge Main
         run: |
           git config user.name "GitHub Actions"
           git config user.email noreply@github.com
-          git add CHANGELOG.md
-          git commit -m 'Update Changelog.'
+          git merge origin/main -m "Merge branch 'main' to 'develop'."
           git push
+          
+
