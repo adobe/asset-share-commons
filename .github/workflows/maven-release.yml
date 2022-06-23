@@ -23,16 +23,20 @@ on:
       releaseVersion:
         description: 'Release version (major.minor.patch)'
         required: false
-        default: ''
       dryRun:
         description: 'Dry Run? (false to do an actual release)'
         required: true
-        default: 'true'
+        type: boolean
+        default: true
 jobs:
-  release:
+  tag:
     runs-on: ubuntu-latest
     # Only release from `main` branch
     if: github.repository == 'adobe/asset-share-commons' && github.ref == 'refs/heads/main'
+    
+    outputs:
+      version: ${{ steps.store-version.outputs.version }}
+    
     steps:
       # Check out Git repository
       - uses: actions/checkout@v3
@@ -45,7 +49,114 @@ jobs:
           java-version: 8
           cache: maven
 
-      # Import GPG key from env variable into keychain
+      - name: Initialize mandatory git config
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email noreply@github.com
+
+      - name: Tag DryRun with Maven
+        if: github.event.inputs.dryRun
+        run: mvn -B release:clean release:prepare -DreleaseVersion=${{ github.event.inputs.version }} -DdryRun=true
+      
+      - name: Tag with Maven
+        if: !github.event.inputs.dryRun
+        run: mvn -B release:clean release:prepare -DreleaseVersion=${{ github.event.inputs.version }}
+
+      - name: Store Version
+        id: store-version
+        run: echo "::set-output name=version::$(grep ^scm.tag= release.properties | sed -e 's/scm.tag=asset-share-commons-//g')"
+
+  github-release:
+    needs: tag
+    runs-on: ubuntu-latest
+    if: !github.event.inputs.dryRun
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Work around for https://github.com/heinrichreimer/action-github-changelog-generator/issues/21
+          ref: asset-share-commons-${{ needs.tag.outputs.version }}
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 11
+          cache: maven
+
+      - name: Maven Verify
+        run: mvn -U clean verify
+
+      - name: Generate Release Changelog
+        id: generate-release-changelog
+        uses: heinrichreimer/github-changelog-generator-action@v2.3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          breakingLabel: '### 💥 Breaking'
+          enhancementLabel: '### 🚀 Enhancements'
+          bugsLabel: '### 🐛 Bug fixes'
+          securityLabel: '### 🛡️ Security'
+          issuesLabel: '### 📁 Other issues'
+          prLabel: '### 📁 Other pull requests'
+          addSections: '{"documentation":{"prefix":"### 📖 Documentation","labels":["documentation"]},"tests":{"prefix":"### ✅ Testing","labels":["tests"]}}'
+          issues: false
+          issuesWoLabels: false
+          pullRequests: true
+          prWoLabels: true
+          author: true
+          compareLink: true
+          onlyLastTag: true
+          stripHeaders: true
+          stripGeneratorNotice: true
+
+      - name: Create Release
+        id: create-release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: asset-share-commons-${{ needs.tag.outputs.version }}
+          release_name: asset-share-commons-${{ needs.tag.outputs.version }}
+          body: ${{ steps.generate-release-changelog.outputs.changelog }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Artifacts
+        id: upload-release-artifacts
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: asset-share-commons-${{ needs.tag.outputs.version }}
+          files: |
+            all/target/assetshare.all-*.zip
+            ui.content.sample/target/assetshare.ui.content.sample-*.zip
+
+  maven-central-deploy:
+    needs: tag
+    runs-on: ubuntu-latest
+    if: !github.event.inputs.dryRun
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Work around for https://github.com/heinrichreimer/action-github-changelog-generator/issues/21
+          ref: asset-share-commons-${{ needs.tag.outputs.version }}
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 8
+          cache: maven
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_CENTRAL_TOKEN
+          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
       - name: Import GPG key
         env:
           GPG_SECRET_KEYS: ${{ secrets.GPG_SECRET_KEYS }}
@@ -53,18 +164,18 @@ jobs:
         run: |
           echo $GPG_SECRET_KEYS | base64 --decode | gpg --import --no-tty --batch --yes
           echo $GPG_OWNERTRUST | base64 --decode | gpg --import-ownertrust --no-tty --batch --yes
-      - name: Configure git user for release commits
+
+      # Keeping these separate in case multiple builds are needed.
+      - name: Build
+        run: mvn clean deploy -DskipRemoteStaging=true -Dmaven.test.skip -Prelease
         env:
-          X_GITHUB_USERNAME: ${{ secrets.ADOBE_BOT_GITHUB_USERNAME  }}
-        run: |
-          git config user.email "Grp-opensourceoffice@adobe.com"
-          git config user.name "${X_GITHUB_USERNAME}"
-      # Build and deploy to OSSRH, which will automatically sync to Central Repository
-      - name: Deploy to Central Repository
+          MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          MAVEN_CENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Deploy to Central
+        run: mvn nexus-staging:deploy-staged -DautoReleaseAfterClose=true
         env:
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
-          X_GITHUB_USERNAME: ${{ secrets.ADOBE_BOT_GITHUB_USERNAME  }}
-          X_GITHUB_PASSWORD: ${{ secrets.ADOBE_BOT_GITHUB_PASSWORD }}
-        run: mvn -B -Prelease,ossrh -s ./.github/workflows/settings.xml clean release:prepare release:perform -DreleaseVersion=${{ github.event.inputs.releaseVersion }} -DdryRun=${{ github.event.inputs.dryRun }}
+          MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          MAVEN_CENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
