@@ -66,7 +66,7 @@ jobs:
         run: echo "::set-output name=version::$(grep ^scm.tag= release.properties | sed -e 's/scm.tag=asset-share-commons-//g')"
 
   Github_Release:
-    needs: tag
+    needs: Tag
     runs-on: ubuntu-latest
     if: ${{ !inputs.dryRun }}
     
@@ -75,7 +75,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0 # Work around for https://github.com/heinrichreimer/action-github-changelog-generator/issues/21
-          ref: asset-share-commons-${{ needs.tag.outputs.version }}
+          ref: asset-share-commons-${{ needs.Tag.outputs.version }}
 
       - name: Setup JDK
         uses: actions/setup-java@v3
@@ -115,8 +115,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: asset-share-commons-${{ needs.tag.outputs.version }}
-          release_name: asset-share-commons-${{ needs.tag.outputs.version }}
+          tag_name: asset-share-commons-${{ needs.Tag.outputs.version }}
+          release_name: asset-share-commons-${{ needs.Tag.outputs.version }}
           body: ${{ steps.generate-release-changelog.outputs.changelog }}
           draft: false
           prerelease: false
@@ -127,13 +127,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: asset-share-commons-${{ needs.tag.outputs.version }}
+          tag_name: asset-share-commons-${{ needs.Tag.outputs.version }}
           files: |
             all/target/asset-share-commons.all-*.zip
             ui.content.sample/target/asset-share-commons.ui.content.sample-*.zip
 
   Maven_Central_Deploy:
-    needs: tag
+    needs: Tag
     runs-on: ubuntu-latest
     if: ${{ !inputs.dryRun }}
     
@@ -141,7 +141,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          ref: asset-share-commons-${{ needs.tag.outputs.version }}
+          ref: asset-share-commons-${{ needs.Tag.outputs.version }}
 
       - name: Setup JDK
         uses: actions/setup-java@v3
@@ -179,7 +179,7 @@ jobs:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
   Changelog:
-    needs: tag
+    needs: Tag
     if: ${{ !inputs.dryRun }}
     uses: ./.github/workflows/changelog.yaml
 
