@@ -184,6 +184,6 @@ jobs:
     uses: ./.github/workflows/changelog.yaml
 
   Sync_develop:
-    needs: changelog
+    needs: Changelog
     if: ${{ !inputs.dryRun }}
     uses: ./.github/workflows/sync-develop.yaml
