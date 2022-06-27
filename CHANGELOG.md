@@ -1,10 +1,22 @@
-# Changelog
-All notable changes to this project will be documented in this file.
+# 📑 Changelog
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
-and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+## [Unreleased](https://github.com/adobe/asset-share-commons/tree/HEAD)
 
-## [Unreleased]
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.3.2...HEAD)
+
+### 📁 Other pull requests
+
+- \#737 - PMD fixes [\#762](https://github.com/adobe/asset-share-commons/pull/762) ([davidjgonzalez](https://github.com/davidjgonzalez))
+- Github Workflow Automation [\#760](https://github.com/adobe/asset-share-commons/pull/760) ([bstopp](https://github.com/bstopp))
+- v2.3.1-SNAPSHOT [\#759](https://github.com/adobe/asset-share-commons/pull/759) ([davidjgonzalez](https://github.com/davidjgonzalez))
+
+## [asset-share-commons-2.3.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.3.2) (2022-06-27)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.3.0...asset-share-commons-2.3.2)
+
+# History
+
+This is the manually curated Changelog prior to automation.
 
 ## [v2.3.0]
 
@@ -371,3 +383,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 0029: Resolve issue with WARN in logs over missing ACS Commons EmailService dependency. 
 - 0053: Fixed issue with broken log in and log out links
 - 0056: Updated pom.xml to include ui.content as a module. Updated ui.content/pom.xml so only gets built with profile of 'autoInstallPackage-all' and 'autoInstallPackagePublish-all'
+
+
