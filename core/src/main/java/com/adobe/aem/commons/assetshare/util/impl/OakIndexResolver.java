@@ -37,10 +37,14 @@ public class OakIndexResolver {
                     final Version version = getOakIndexVersion(oakIndexRootName, oakIndex.getName());
 
                     if (version != null) {
-                        log.debug("Resolved Oak Index [ {} ] -> [ {} ]", oakIndex.getPath(), version.toString());
+                        if (log.isDebugEnabled()) {
+                            log.debug("Resolved Oak Index [ {} ] -> [ {} ]", oakIndex.getPath(), version);
+                        }
                         map.put(version, oakIndex.getName());
                     } else {
-                        log.warn("Unable to parse version for Oak Index [ {} ]", oakIndex.getPath());
+                        if (log.isWarnEnabled()) {
+                            log.warn("Unable to parse version for Oak Index [ {} ]", oakIndex.getPath());
+                        }
                     }
                 }
         );

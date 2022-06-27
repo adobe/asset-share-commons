@@ -59,7 +59,9 @@ public final class CombinedProperties implements Map<String, Object> {
                               final SlingHttpServletRequest request,
                               final Asset asset) {
 
-        log.trace("Constructing CombinedProperties for [ {} ]", asset.getPath());
+        if (log.isTraceEnabled()) {
+            log.trace("Constructing CombinedProperties for [ {} ]", asset.getPath());
+        }
 
         this.request = request;
         this.asset = asset;
@@ -86,10 +88,10 @@ public final class CombinedProperties implements Map<String, Object> {
 
         final ComputedProperty computedProperty = computedProperties.get(computedPropertyParameter.getName());
 
-        if (computedProperty != null) {
-            if (cachedValues.containsKey(computedPropertyParameter.getCacheId()) || computedProperty.accepts(asset, request, computedPropertyParameter.getName())) {
-                result = true;
-            }
+        if (computedProperty != null &&
+                (cachedValues.containsKey(computedPropertyParameter.getCacheId()) ||
+                        computedProperty.accepts(asset, request, computedPropertyParameter.getName()))) {
+            result = true;
         }
 
         if (!result) {
@@ -116,7 +118,9 @@ public final class CombinedProperties implements Map<String, Object> {
 
         final ComputedPropertyParameter computedPropertyParameter = new ComputedPropertyParameter((String) key);
 
-        log.trace("Getting value for key [ {} ] from CombinedProperties", computedPropertyParameter.getCacheId());
+        if (log.isTraceEnabled()) {
+            log.trace("Getting value for key [ {} ] from CombinedProperties", computedPropertyParameter.getCacheId());
+        }
 
         if (computedPropertyParameter.getName() == null) {
             return null;
@@ -220,9 +224,13 @@ public final class CombinedProperties implements Map<String, Object> {
             final String key = computedProperty.getName();
             if (!result.containsKey(key)) {
                 result.put(key, computedProperty);
-                log.trace("Registered ComputedProperty [ {} ] with key [ {} ]", computedProperty.getClass().getName(), key);
+                if (log.isTraceEnabled()) {
+                    log.trace("Registered ComputedProperty [ {} ] with key [ {} ]", computedProperty.getClass().getName(), key);
+                }
             } else {
-                log.debug("ComputedProperty [ {} ] with key [ {} ] already provided by a better ranked implementation", computedProperty.getClass().getName(), key);
+                if (log.isDebugEnabled()) {
+                    log.debug("ComputedProperty [ {} ] with key [ {} ] already provided by a better ranked implementation", computedProperty.getClass().getName(), key);
+                }
             }
         }
 

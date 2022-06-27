@@ -259,7 +259,9 @@ public class EmailShareServiceImpl implements ShareService {
             return upm.getUserProperties(authorizable, "profile");
         }
         catch (RepositoryException ex) {
-            log.warn("Cannot get user profile properties of user '{}'", resolver.getUserID());
+            if (log.isWarnEnabled()) {
+                log.warn("Cannot get user profile properties of user '{}'", resolver.getUserID());
+            }
             return null;
         }
     }

@@ -121,13 +121,19 @@ public class AssetRenditionsDataSource extends SlingSafeMethodsServlet {
             // then check to see if there is at least one type in common between the AssetRenditionDispatcher and the DataSource.
             // If there IS at least one type in common, then continue checking the other criteria, if either of these
             // When assetRenditionDispatcher's types is empty, the is the equivalent of saying that it applies to ALL types, or in other words, it ALWAYS matches.
-            log.debug("Skip adding AssetRenditionDispatcher factory [ {} ] to Data Source as it does not have any allowed types", assetRenditionDispatcher.getName());
+            if (log.isDebugEnabled()) {
+                log.debug("Skip adding AssetRenditionDispatcher factory [ {} ] to Data Source as it does not have any allowed types", assetRenditionDispatcher.getName());
+            }
             return false;
         }  else if (assetRenditionDispatcher.isHidden()) {
-            log.debug("Skip adding AssetRenditionDispatcher factory [ {} ] to Data Source as it has been marked as hidden via configuration", assetRenditionDispatcher.getName());
+            if (log.isDebugEnabled()) {
+                log.debug("Skip adding AssetRenditionDispatcher factory [ {} ] to Data Source as it has been marked as hidden via configuration", assetRenditionDispatcher.getName());
+            }
             return false;
         } else if (excludeAssetRenditionDispatchers.contains(assetRenditionDispatcher.getName())) {
-            log.debug("Skip adding AssetRenditionDispatcher factory [ {} ] to Data Source as it has been excluded via configuration", assetRenditionDispatcher.getName());
+            if (log.isDebugEnabled()) {
+                log.debug("Skip adding AssetRenditionDispatcher factory [ {} ] to Data Source as it has been excluded via configuration", assetRenditionDispatcher.getName());
+            }
             return false;
         }
 

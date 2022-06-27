@@ -66,7 +66,7 @@ import static org.osgi.framework.Constants.SERVICE_RANKING;
         factory = true
 )
 public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherImpl implements AssetRenditionDispatcher {
-    private static Logger log = LoggerFactory.getLogger(StaticRenditionDispatcherImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(StaticRenditionDispatcherImpl.class);
 
     private static final String OSGI_PROPERTY_VALUE_DELIMITER = "=";
 
@@ -126,10 +126,11 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
         final Rendition rendition = findRendition(asset, parameters);
 
         if (rendition != null) {
-
-            log.debug("Serving internal static rendition [ {} ] with resolved rendition name [ {} ] through internal Sling Forward",
-                    rendition.getPath(),
-                    parameters.getRenditionName());
+            if (log.isDebugEnabled()) {
+                log.debug("Serving internal static rendition [ {} ] with resolved rendition name [ {} ] through internal Sling Forward",
+                        rendition.getPath(),
+                        parameters.getRenditionName());
+            }
 
             response.setHeader("Content-Type", rendition.getMimeType());
 
@@ -153,9 +154,11 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
         final Rendition rendition = findRendition(assetModel.getAsset(), parameters);
 
         if (rendition != null) {
-            log.debug("Downloading asset rendition [ {} ] for resolved rendition name [ {} ]",
-                    rendition.getPath(),
-                    parameters.getRenditionName());
+            if (log.isDebugEnabled()) {
+                log.debug("Downloading asset rendition [ {} ] for resolved rendition name [ {} ]",
+                        rendition.getPath(),
+                        parameters.getRenditionName());
+            }
             return new AssetRendition(rendition.getPath(), rendition.getSize(), rendition.getMimeType());
         }
 

@@ -91,7 +91,9 @@ public class NamedRenditionDownloadTargetProcessor implements DownloadTargetProc
         for (final AssetRenditionDispatcher assetRenditionDispatcher : assetRenditionDispatchers.getAssetRenditionDispatchers()) {
 
             if (assetRenditionDispatcher.accepts(assetModel, renditionName)) {
-                log.debug("Setting DownloadTarget for [ {} ] using AssetRenditionDispatcher [ {} ]", assetModel.getPath(), assetRenditionDispatcher.getName());
+                if (log.isDebugEnabled()) {
+                    log.debug("Setting DownloadTarget for [ {} ] using AssetRenditionDispatcher [ {} ]", assetModel.getPath(), assetRenditionDispatcher.getName());
+                }
 
                 final AssetRendition assetRendition = assetRenditionDispatcher.getRendition(assetModel, assetRenditionParameters);
 
@@ -99,7 +101,9 @@ public class NamedRenditionDownloadTargetProcessor implements DownloadTargetProc
                 downloadFileParameters.put(PARAM_ARCHIVE_NAME, archiveName);
 
                 if (assetRendition != null) {
-                    log.debug("Obtained AssetRendition [ {} ] details for [ {} ]", assetRendition.getBinaryUri(), assetModel.getPath());
+                    if (log.isDebugEnabled()) {
+                        log.debug("Obtained AssetRendition [ {} ] details for [ {} ]", assetRendition.getBinaryUri(), assetModel.getPath());
+                    }
 
                     downloadFileParameters.put(PARAM_ARCHIVE_PATH, downloadArchiveNamer.getArchiveFilePath(assetModel, assetRendition, target));
                     downloadFiles.add(apiFactory.createDownloadFile(assetRendition.getSize(),
@@ -112,14 +116,18 @@ public class NamedRenditionDownloadTargetProcessor implements DownloadTargetProc
                             URI.create("failed://to.resolve.asset.rendition.combination"),
                             downloadFileParameters));
 
-                    log.debug("Unable to obtain AssetRendition details for [ {} ] from AssetDispatcher [ {} ]", assetModel.getPath(), assetRenditionDispatcher.getClass().getName());
+                    if (log.isDebugEnabled()) {
+                        log.debug("Unable to obtain AssetRendition details for [ {} ] from AssetDispatcher [ {} ]", assetModel.getPath(), assetRenditionDispatcher.getClass().getName());
+                    }
                 }
 
                 // Stop processing assetRenditionDispatchers once one has accepted
                 break;
 
             } else {
-                log.debug("assetRenditionDispatcher [ {} ] does not accept AssetModel [ {} ] and renditionName [ {} ]", this.getClass().getName(), assetModel.getPath(), renditionName);
+                if (log.isDebugEnabled()) {
+                    log.debug("assetRenditionDispatcher [ {} ] does not accept AssetModel [ {} ] and renditionName [ {} ]", this.getClass().getName(), assetModel.getPath(), renditionName);
+                }
             }
         }
 

@@ -55,14 +55,20 @@ public class ModelCacheImpl extends AbstractHTLMap implements ModelCache {
             final T model = request.adaptTo(clazz);
             if (model != null) {
                 request.setAttribute(requestAttributeKey, model);
-                log.trace("Initial caching of model [ {} ]", clazz.getName());
+                if (log.isTraceEnabled()) {
+                    log.trace("Initial caching of model [ {} ]", clazz.getName());
+                }
                 return model;
             } else {
-                log.debug("Could not create a model to cache for [ {} ] from the SlingHttpServletRequest", clazz.getName());
+                if (log.isDebugEnabled()) {
+                    log.debug("Could not create a model to cache for [ {} ] from the SlingHttpServletRequest", clazz.getName());
+                }
                 return null;
             }
         } else {
-            log.trace("Served model for [ {} ] from cache", clazz.getName());
+            if (log.isTraceEnabled()) {
+                log.trace("Served model for [ {} ] from cache", clazz.getName());
+            }
             return (T) cachedModel;
         }
     }

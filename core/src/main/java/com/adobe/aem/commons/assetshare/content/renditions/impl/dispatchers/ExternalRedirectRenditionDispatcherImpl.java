@@ -64,7 +64,7 @@ import static org.osgi.framework.Constants.SERVICE_RANKING;
         factory = true
 )
 public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDispatcherImpl implements AssetRenditionDispatcher {
-    private static Logger log = LoggerFactory.getLogger(ExternalRedirectRenditionDispatcherImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(ExternalRedirectRenditionDispatcherImpl.class);
 
     private static Long PLACEHOLDER_SIZE_IN_BYTES = 104857600L; // 100MB
 
@@ -124,9 +124,11 @@ public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
         final String renditionRedirect = assetRenditions.evaluateExpression(request, expression);
 
         if (StringUtils.isNotBlank(renditionRedirect)) {
-            log.debug("Serving External redirect rendition [ {} ] for resolved rendition name [ {} ]",
-                    renditionRedirect,
-                    parameters.getRenditionName());
+            if (log.isDebugEnabled()) {
+                log.debug("Serving External redirect rendition [ {} ] for resolved rendition name [ {} ]",
+                        renditionRedirect,
+                        parameters.getRenditionName());
+            }
 
             if (cfg.redirect() == HttpServletResponse.SC_MOVED_TEMPORARILY) {
                 response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
@@ -155,9 +157,11 @@ public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
 
                 renditionRedirect = cleanURI(renditionRedirect);
 
-                log.debug("Downloading External redirect rendition [ {} ] for resolved rendition name [ {} ]",
-                        renditionRedirect,
-                        parameters.getRenditionName());
+                if (log.isDebugEnabled()) {
+                    log.debug("Downloading External redirect rendition [ {} ] for resolved rendition name [ {} ]",
+                            renditionRedirect,
+                            parameters.getRenditionName());
+                }
 
                 return new AssetRendition(renditionRedirect, PLACEHOLDER_SIZE_IN_BYTES, mimeTypeService.getMimeType(extension));
             } catch (URISyntaxException e) {
