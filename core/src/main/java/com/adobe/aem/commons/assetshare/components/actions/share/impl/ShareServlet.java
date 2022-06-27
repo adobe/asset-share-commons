@@ -85,7 +85,9 @@ public class ShareServlet extends SlingAllMethodsServlet {
                                 new ValueMapDecorator(new HashMap<String, Object>(request.getParameterMap())));
                         counter.incrementAndGet();
                     } catch (ShareException e) {
-                        log.error("Failed to not share assets using [ {} ]", shareService.getClass().getName(), e);
+                        if (log.isErrorEnabled()) {
+                            log.error("Failed to not share assets using [ {} ]", shareService.getClass().getName(), e);
+                        }
                     }
                 });
 

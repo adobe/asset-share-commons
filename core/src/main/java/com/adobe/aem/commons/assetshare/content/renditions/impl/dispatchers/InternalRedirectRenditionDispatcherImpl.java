@@ -64,7 +64,7 @@ import static org.osgi.framework.Constants.SERVICE_RANKING;
         factory = true
 )
 public class InternalRedirectRenditionDispatcherImpl extends AbstractRenditionDispatcherImpl implements AssetRenditionDispatcher {
-    private static Logger log = LoggerFactory.getLogger(InternalRedirectRenditionDispatcherImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(InternalRedirectRenditionDispatcherImpl.class);
 
     private Cfg cfg;
 
@@ -124,10 +124,12 @@ public class InternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
             // We have to manually clean up the pathInfo resourcePath due to issues with the PathInfo impl when /etc/map is in play
             final String resourcePath = Text.unescape(cleanPathInfoRequestPath(pathInfo.getResourcePath()));
 
-            log.trace("Serving internal redirect rendition [ {} ] for expression [ {} ] and resolved rendition name [ {} ]",
-                    resourcePath,
-                    evaluatedExpression,
-                    parameters.getRenditionName());
+            if (log.isTraceEnabled()) {
+                log.trace("Serving internal redirect rendition [ {} ] for expression [ {} ] and resolved rendition name [ {} ]",
+                        resourcePath,
+                        evaluatedExpression,
+                        parameters.getRenditionName());
+            }
 
             final RequestDispatcherOptions options = new RequestDispatcherOptions();
 
@@ -147,7 +149,9 @@ public class InternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
         // https://gist.github.com/davidjgonzalez/66e481b54aafb1b900a579ee95848d8f
         // As this might prove useful in it's implementation.
 
-        log.warn("[ {} ] is not supported by the AEM Async Asset Download Framework.", this.getClass().getName());
+        if (log.isWarnEnabled()) {
+            log.warn("[ {} ] is not supported by the AEM Async Asset Download Framework.", this.getClass().getName());
+        }
 
         return null;
     }

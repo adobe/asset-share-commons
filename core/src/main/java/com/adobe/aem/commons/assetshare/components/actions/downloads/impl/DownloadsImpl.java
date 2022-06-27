@@ -81,7 +81,9 @@ public class DownloadsImpl implements Downloads, ComponentExporter {
                                     return null;
                                 }
                             } catch (DownloadException e) {
-                                log.warn("Unable to get async DownloadProgress for downloadId [ {} ] for user [ {} ]", id, resourceResolver.getUserID(), e);
+                                if (log.isWarnEnabled()) {
+                                    log.warn("Unable to get async DownloadProgress for downloadId [ {} ] for user [ {} ]", id, resourceResolver.getUserID(), e);
+                                }
                                 return null;
                             }
                         })

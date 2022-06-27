@@ -130,8 +130,10 @@ public class DownloadImpl implements Download, ComponentExporter {
     protected void init() {
 
         if (requireAem != null) {
-            log.debug("Initing DownloadImpl withe RequireAem configurations: [ distribution = {} ] and [ serviceType = {} ]",
-                    requireAem.getDistribution().getValue(), requireAem.getServiceType().getValue());
+            if (log.isDebugEnabled()) {
+                log.debug("Initing DownloadImpl withe RequireAem configurations: [ distribution = {} ] and [ serviceType = {} ]",
+                        requireAem.getDistribution().getValue(), requireAem.getServiceType().getValue());
+            }
         } else {
             log.error("Initing DownloadImpl with injected requireAEM service as null");
         }

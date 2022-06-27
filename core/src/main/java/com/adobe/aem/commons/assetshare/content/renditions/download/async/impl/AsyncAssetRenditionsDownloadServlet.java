@@ -119,7 +119,7 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
         boolean groupRenditionsByAssetFolder = assetModels.size() > 1 && renditionNames.size() > 1;
 
         if (log.isDebugEnabled()) {
-            log.debug("Requested assets to download: [ {} ]", StringUtils.join(assetModels.stream().map(AssetModel::getPath).toArray()), ", ");
+            log.debug("Requested assets to download: [ {} ]", StringUtils.join(assetModels.stream().map(AssetModel::getPath).toArray(), ", "));
             log.debug("Requested renditions to download: [ {} ]", StringUtils.join(renditionNames, ", "));
             log.debug("Archive name: [ {} ]", archiveName);
             log.debug("Group renditions by folder: [ {} ]", groupRenditionsByAssetFolder);
@@ -157,7 +157,9 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
                                                    final String archiveName,
                                                    final boolean groupRenditionsByAssetFolder) {
 
-        log.debug("Adding Download to Manifest for [ {} ]", asset.getPath());
+        if (log.isDebugEnabled()) {
+            log.debug("Adding Download to Manifest for [ {} ]", asset.getPath());
+        }
 
         renditionNames.forEach(renditionName -> {
             log.debug("Adding Download Rendition to Manifest for [ {} ]", renditionName);
@@ -209,7 +211,9 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
             try {
                 return utcNow.withZoneSameInstant(ZoneId.of(timeZoneId));
             } catch (ZoneRulesException e) {
-                log.warn("Time Zone Id [ {} ] invalid. Falling back to UTC [ {} ]", utcNow.getZone().getId());
+                if (log.isWarnEnabled()) {
+                    log.warn("Time Zone Id [ {} ] invalid. Falling back to UTC.", utcNow.getZone().getId());
+                }
             }
         }
 

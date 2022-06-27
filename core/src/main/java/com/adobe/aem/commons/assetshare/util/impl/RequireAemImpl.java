@@ -119,8 +119,10 @@ public class RequireAemImpl implements RequireAem {
 
         serviceRegistration = bundleContext.registerService(RequireAem.class.getName(), this, properties);
 
-        log.info("Registering [ RequireAem.class ] as an OSGi Service with OSGi properties [ distribution = {}, serviceType = {} ] so it can be used to enable/disable other OSGi Components",
-                properties.get(PN_DISTRIBUTION), properties.get(PN_SERVICE_TYPE));
+        if (log.isInfoEnabled()) {
+            log.info("Registering [ RequireAem.class ] as an OSGi Service with OSGi properties [ distribution = {}, serviceType = {} ] so it can be used to enable/disable other OSGi Components",
+                    properties.get(PN_DISTRIBUTION), properties.get(PN_SERVICE_TYPE));
+        }
     }
 
     protected boolean isCloudService() {
