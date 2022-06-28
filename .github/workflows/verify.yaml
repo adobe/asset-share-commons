@@ -43,7 +43,7 @@ jobs:
         run: mvn -U clean verify
 
       - name: Upload CodeCov
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3
         with:
           file: ./target/site/jacoco/jacoco.xml
           flags: unittests
