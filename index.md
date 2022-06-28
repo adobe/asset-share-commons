@@ -16,7 +16,7 @@ layout: default
         <hr/>
 
         <div style="text-align: center;">
-            <h2>Asset Share Commons version 2.2.2 is out!</h2>
+            <h2>Asset Share Commons version 2.3.2 is out!</h2>
 
             <p>
                 Asset Share Commons 2.0 now supports AEM as a Cloud Service and AEM 6.5 SP7+, and requires AEM WCM Core Components 2.14.0+.
