@@ -75,7 +75,7 @@
         <frontend-maven-plugin.version>1.9.0</frontend-maven-plugin.version>
         <node.version>v13.7.0</node.version>
         <npm.version>6.13.1</npm.version>
-        <bnd.version>6.2.0</bnd.version>
+        <bnd.version>6.3.1</bnd.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -134,7 +134,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>enforce-maven</id>
@@ -502,7 +502,7 @@
                 <plugin>
                     <groupId>org.sonatype.plugins</groupId>
                     <artifactId>nexus-staging-maven-plugin</artifactId>
-                    <version>1.6.8</version>
+                    <version>1.6.13</version>
                 </plugin>
                 <!-- checks for vulnerabilities in dependencies -->
                 <plugin>
@@ -870,7 +870,7 @@
             <!-- JDK 11 -->
             <dependency>
                 <artifactId>org.apache.sling.javax.activation</artifactId>
-                <version>0.1.0</version>
+                <version>0.3.0</version>
                 <groupId>org.apache.sling</groupId>
                 <scope>provided</scope>
             </dependency>
@@ -896,7 +896,7 @@
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
-                <version>3.2.4</version>
+                <version>4.6.1</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
