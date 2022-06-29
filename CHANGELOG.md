@@ -2,17 +2,32 @@
 
 ## [Unreleased](https://github.com/adobe/asset-share-commons/tree/HEAD)
 
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.3.2...HEAD)
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.3.4...HEAD)
 
 ### 📁 Other pull requests
 
-- \#737 - PMD fixes [\#762](https://github.com/adobe/asset-share-commons/pull/762) ([davidjgonzalez](https://github.com/davidjgonzalez))
-- Github Workflow Automation [\#760](https://github.com/adobe/asset-share-commons/pull/760) ([bstopp](https://github.com/bstopp))
-- v2.3.1-SNAPSHOT [\#759](https://github.com/adobe/asset-share-commons/pull/759) ([davidjgonzalez](https://github.com/davidjgonzalez))
+- Remove pre 2.3.0 OSGi configuration [\#771](https://github.com/adobe/asset-share-commons/pull/771) ([kwin](https://github.com/kwin))
+- Bump maven-enforcer-plugin from 3.0.0 to 3.1.0 [\#768](https://github.com/adobe/asset-share-commons/pull/768) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump org.apache.sling.javax.activation from 0.1.0 to 0.3.0 [\#767](https://github.com/adobe/asset-share-commons/pull/767) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump bnd.version from 6.2.0 to 6.3.1 [\#766](https://github.com/adobe/asset-share-commons/pull/766) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump mockito-core from 3.2.4 to 4.6.1 [\#765](https://github.com/adobe/asset-share-commons/pull/765) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump nexus-staging-maven-plugin from 1.6.8 to 1.6.13 [\#764](https://github.com/adobe/asset-share-commons/pull/764) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump codecov/codecov-action from 1 to 3 [\#763](https://github.com/adobe/asset-share-commons/pull/763) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [asset-share-commons-2.3.4](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.3.4) (2022-06-29)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.3.2...asset-share-commons-2.3.4)
 
 ## [asset-share-commons-2.3.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.3.2) (2022-06-27)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.3.0...asset-share-commons-2.3.2)
+
+### 📁 Other pull requests
+
+- v2.3.2 Release [\#769](https://github.com/adobe/asset-share-commons/pull/769) ([davidjgonzalez](https://github.com/davidjgonzalez))
+- \#737 - PMD fixes [\#762](https://github.com/adobe/asset-share-commons/pull/762) ([davidjgonzalez](https://github.com/davidjgonzalez))
+- Github Workflow Automation [\#760](https://github.com/adobe/asset-share-commons/pull/760) ([bstopp](https://github.com/bstopp))
+- v2.3.1-SNAPSHOT [\#759](https://github.com/adobe/asset-share-commons/pull/759) ([davidjgonzalez](https://github.com/davidjgonzalez))
 
 # History
 
