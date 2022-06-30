@@ -30,7 +30,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup JDK
         uses: actions/setup-java@v3
@@ -40,10 +40,9 @@ jobs:
           cache: maven
 
       - name: Build & Test with Maven
-        run: mvn -U clean verify
+        run: mvn -U clean verify -Pjacoco-report
 
       - name: Upload CodeCov
         uses: codecov/codecov-action@v3
         with:
-          file: ./target/site/jacoco/jacoco.xml
           flags: unittests
