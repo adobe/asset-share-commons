@@ -21,9 +21,17 @@
 /* Copied from: https://github.com/Adobe-Consulting-Services/acs-aem-commons/blob/master/bundle/src/main/java/com/adobe/acs/commons/util/impl/RequireAemImpl.java */
 package com.adobe.aem.commons.assetshare.util.impl;
 
+import com.adobe.cq.dam.download.api.DownloadService;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * This OSGi Service/Component will only exist on AEM as a Cloud Service/SDK since this is where the Download Service exists.
  */
-public interface RequireAemCanary {
-    // marker interface only
+@Component(
+        service = { RequireAemCanary.class }
+)
+public class RequireAemCanaryImpl implements RequireAemCanary {
+    @Reference
+    DownloadService downloadService;
 }

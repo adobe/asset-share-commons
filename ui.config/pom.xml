@@ -47,15 +47,11 @@
             <plugin>
                 <groupId>org.apache.jackrabbit</groupId>
                 <artifactId>filevault-package-maven-plugin</artifactId>
-                <extensions>true</extensions>
                 <configuration>
                     <group>${package.group}</group>
                     <name>asset-share-commons.ui.config</name>
                     <finalName>asset-share-commons.ui.config-${project.version}</finalName>
                     <packageType>container</packageType>
-                    <properties>
-                        <cloudManagerTarget>none</cloudManagerTarget>&gt;
-                    </properties>
                     <repositoryStructurePackages>
                         <repositoryStructurePackage>
                             <groupId>com.adobe.aem.commons</groupId>
@@ -63,6 +59,10 @@
                         </repositoryStructurePackage>
                     </repositoryStructurePackages>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.day.jcr.vault</groupId>
+                <artifactId>content-package-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
