@@ -164,12 +164,6 @@ Bundle-SymbolicName: com.adobe.aem.commons.assetshare.core
             <artifactId>org.osgi.util.converter</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- uk.org.lidalia dependency MUST be placed above aem-sdk -->
-         <dependency>
-            <groupId>uk.org.lidalia</groupId>
-            <artifactId>slf4j-test</artifactId>
-            <scope>test</scope>
-        </dependency>
         <!-- End Test dependencies -->
         <!-- the uber-jar should be the last dependency, as other dependencies should take precedence in case of package clashes -->
         <dependency>
