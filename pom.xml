@@ -938,7 +938,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
             <dependency>
                 <groupId>com.google.code.findbugs</groupId>
                 <artifactId>jsr305</artifactId>
-                <version>3.0.0</version><!-- cannot use newer version due to https://github.com/amaembo/jsr-305/issues/31, todo: switch to Jetbrains annotation -->
+                <version>3.0.2</version><!-- cannot use newer version due to https://github.com/amaembo/jsr-305/issues/31, todo: switch to Jetbrains annotation -->
                 <scope>compile</scope>
             </dependency>
             <!-- Embedded dependency -->
