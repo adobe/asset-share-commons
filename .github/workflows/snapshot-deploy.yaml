@@ -53,7 +53,7 @@ jobs:
       
       # Keeping these separate in case multiple builds are needed.
       - name: Build 
-        run: mvn clean deploy -DskipRemoteStaging=true -Prelease,jacoco-report
+        run: mvn clean deploy -DskipRemoteStaging=true -Pcloud,release,jacoco-report
         env:
           MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           MAVEN_CENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
