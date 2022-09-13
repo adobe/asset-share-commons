@@ -55,11 +55,11 @@ jobs:
 
       - name: Tag DryRun with Maven
         if: ${{ inputs.dryRun }}
-        run: mvn -B release:clean release:prepare -DreleaseVersion=${{ inputs.version }} -DdryRun=true
+        run: mvn -B release:clean release:prepare -DreleaseVersion=${{ inputs.version }} -DdryRun=true -Pcloud
       
       - name: Tag with Maven
         if: ${{ !inputs.dryRun }}
-        run: mvn -B release:clean release:prepare -DreleaseVersion=${{ inputs.version }}
+        run: mvn -B release:clean release:prepare -DreleaseVersion=${{ inputs.version }} -Pcloud
 
       - name: Store Version
         id: store-version
@@ -165,7 +165,7 @@ jobs:
 
       # Keeping these separate in case multiple builds are needed.
       - name: Build
-        run: mvn clean deploy -DskipRemoteStaging=true -Dmaven.test.skip -Prelease
+        run: mvn clean deploy -DskipRemoteStaging=true -Dmaven.test.skip -Prelease,cloud
         env:
           MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           MAVEN_CENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
