@@ -19,11 +19,12 @@
 
 package com.adobe.aem.commons.assetshare.components.actions;
 
-import com.adobe.aem.commons.assetshare.content.AssetModel;
+import java.util.List;
+
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.osgi.annotation.versioning.ProviderType;
 
-import java.util.List;
+import com.adobe.aem.commons.assetshare.content.AssetModel;
 
 @ProviderType
 public interface ActionHelper {

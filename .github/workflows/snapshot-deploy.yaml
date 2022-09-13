@@ -53,7 +53,7 @@ jobs:
       
       # Keeping these separate in case multiple builds are needed.
       - name: Build 
-        run: mvn clean deploy -DskipRemoteStaging=true -Prelease
+        run: mvn clean deploy -DskipRemoteStaging=true -Prelease,jacoco-report
         env:
           MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           MAVEN_CENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
@@ -69,5 +69,4 @@ jobs:
       - name: Upload CodeCov
         uses: codecov/codecov-action@v3
         with:
-          file: ./target/site/jacoco/jacoco.xml
           flags: unittests

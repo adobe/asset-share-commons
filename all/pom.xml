@@ -45,53 +45,56 @@
             <plugin>
                 <groupId>org.apache.jackrabbit</groupId>
                 <artifactId>filevault-package-maven-plugin</artifactId>
-                <extensions>true</extensions>
-                <configuration>
-                    <group>${package.group}</group>
-                    <name>asset-share-commons.all</name>
-                    <packageType>container</packageType>
-                    <properties>
-                        <cloudManagerTarget>all</cloudManagerTarget>
-                    </properties>
-                    <finalName>asset-share-commons.all-${project.version}</finalName>
-                    <allowIndexDefinitions>true</allowIndexDefinitions>
-                    <embeddeds>
-                        <embedded>
-                            <groupId>com.adobe.aem.commons</groupId>
-                            <artifactId>assetshare.ui.apps</artifactId>
-                            <type>zip</type>
-                            <target>/apps/asset-share-commons-packages/application/install</target>
-                        </embedded>
-                        <embedded>
-                            <groupId>com.adobe.aem.commons</groupId>
-                            <artifactId>assetshare.ui.config</artifactId>
-                            <type>zip</type>
-                            <target>/apps/asset-share-commons-packages/container/install</target>
-                        </embedded>
-                        <embedded>
-                            <groupId>com.adobe.aem.commons</groupId>
-                            <artifactId>assetshare.core</artifactId>
-                            <target>/apps/asset-share-commons-packages/application/install</target>
-                        </embedded>
-                        <embedded>
-                            <groupId>com.adobe.aem.commons</groupId>
-                            <artifactId>assetshare.ui.content</artifactId>
-                            <type>zip</type>
-                            <target>/apps/asset-share-commons-packages/content/install</target>
-                        </embedded>
-
-                        <!-- Remove ui.content.sample from all package, as it should not be installed as part of real uses of Asset Share commons -->
-                    </embeddeds>
-                </configuration>
+                <executions>
+                    <execution>
+                        <id>default-generate-metadata</id>
+                        <configuration>
+                            <group>${package.group}</group>
+                            <name>asset-share-commons.all</name>
+                            <packageType>container</packageType>
+                            <properties>
+                                <cloudManagerTarget>all</cloudManagerTarget>
+                            </properties>
+                            <embeddeds>
+                                <embedded>
+                                    <groupId>com.adobe.aem.commons</groupId>
+                                    <artifactId>assetshare.ui.apps</artifactId>
+                                    <type>zip</type>
+                                    <target>/apps/asset-share-commons-packages/application/install</target>
+                                </embedded>
+                                <embedded>
+                                    <groupId>com.adobe.aem.commons</groupId>
+                                    <artifactId>assetshare.ui.config</artifactId>
+                                    <type>zip</type>
+                                    <target>/apps/asset-share-commons-packages/container/install</target>
+                                </embedded>
+                                <embedded>
+                                    <groupId>com.adobe.aem.commons</groupId>
+                                    <artifactId>assetshare.core</artifactId>
+                                    <target>/apps/asset-share-commons-packages/application/install</target>
+                                </embedded>
+                                <embedded>
+                                    <groupId>com.adobe.aem.commons</groupId>
+                                    <artifactId>assetshare.ui.content</artifactId>
+                                    <type>zip</type>
+                                    <target>/apps/asset-share-commons-packages/content/install</target>
+                                </embedded>
+        
+                                <!-- Remove ui.content.sample from all package, as it should not be installed as part of real uses of Asset Share commons -->
+                            </embeddeds>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>default-package</id>
+                        <configuration>
+                            <finalName>asset-share-commons.all-${project.version}</finalName>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>com.day.jcr.vault</groupId>
                 <artifactId>content-package-maven-plugin</artifactId>
-                <extensions>true</extensions>
-                <configuration>
-                    <verbose>true</verbose>
-                    <failOnError>true</failOnError>
-                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
@@ -112,6 +115,107 @@
     <!-- P R O F I L E S                                                        -->
     <!-- ====================================================================== -->
     <profiles>
+        <profile>
+            <id>cloud</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <contentPackageFile>${project.build.directory}/${project.build.finalName}-cloud.zip</contentPackageFile>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.jackrabbit</groupId>
+                        <artifactId>filevault-package-maven-plugin</artifactId>
+                        <inherited>false</inherited>
+                        <executions>
+                            <execution>
+                                <id>generate-metadata-cloud</id>
+                                <goals>
+                                    <goal>generate-metadata</goal>
+                                </goals>
+                                <configuration>
+                                    <classifier>cloud</classifier>
+                                    <group>${package.group}</group>
+                                    <name>asset-share-commons.all-cloud</name>
+                                    <packageType>container</packageType>
+                                    <properties>
+                                        <cloudManagerTarget>all</cloudManagerTarget>
+                                    </properties>
+                                    <embeddeds>
+                                        <embedded>
+                                            <groupId>com.adobe.aem.commons</groupId>
+                                            <artifactId>assetshare.ui.apps</artifactId>
+                                            <type>zip</type>
+                                            <target>/apps/asset-share-commons-packages/application/install</target>
+                                        </embedded>
+                                        <embedded>
+                                            <groupId>com.adobe.aem.commons</groupId>
+                                            <artifactId>assetshare.ui.config</artifactId>
+                                            <type>zip</type>
+                                            <target>/apps/asset-share-commons-packages/container/install</target>
+                                        </embedded>
+                                        <embedded>
+                                            <artifactId>assetshare.core</artifactId>
+                                            <target>/apps/asset-share-commons-packages/application/install</target>
+                                        </embedded>
+                                        <embedded>
+                                            <artifactId>assetshare.core.cloud</artifactId>
+                                            <target>/apps/asset-share-commons-packages/application/install</target>
+                                        </embedded>
+                                        <embedded>
+                                            <groupId>com.adobe.aem.commons</groupId>
+                                            <artifactId>assetshare.ui.content</artifactId>
+                                            <type>zip</type>
+                                            <target>/apps/asset-share-commons-packages/content/install</target>
+                                        </embedded>
+                                        <!-- Remove ui.content.sample from all package, as it should not be installed as part of real uses of Asset Share commons -->
+                                     </embeddeds>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>package-cloud</id>
+                                <goals>
+                                    <goal>package</goal>
+                                </goals>
+                                <configuration>
+                                    <classifier>cloud</classifier>
+                                    <finalName>asset-share-commons.all-cloud-${project.version}</finalName>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>default-validate-package</id>
+                                <configuration>
+                                    <classifier>cloud</classifier>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.adobe.aem</groupId>
+                        <artifactId>aemanalyser-maven-plugin</artifactId>
+                        <version>1.4.10</version> <!-- Make sure to use the latest release -->
+                        <executions>
+                            <execution>
+                                <id>aem-analyser</id>
+                                <goals>
+                                    <goal>project-analyse</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>com.adobe.aem.commons</groupId>
+                    <artifactId>assetshare.core.cloud</artifactId>
+                    <version>${project.version}</version>
+                    <type>jar</type>
+                </dependency>
+            </dependencies>
+        </profile>
         <profile>
             <id>autoInstallSinglePackage</id>
             <activation>

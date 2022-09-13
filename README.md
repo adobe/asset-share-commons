@@ -1,4 +1,4 @@
-![Maven CI](https://github.com/adobe/asset-share-commons/actions/workflows/maven.yml/badge.svg)
+[![Maven CI](https://github.com/adobe/asset-share-commons/actions/workflows/verify.yaml/badge.svg)](https://github.com/adobe/asset-share-commons/actions/workflows/verify.yaml)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.adobe.aem.commons/assetshare/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adobe.aem.commons/assetshare)
 [![codecov](https://codecov.io/gh/adobe/asset-share-commons/branch/develop/graph/badge.svg)](https://codecov.io/gh/Adobe-Marketing-Cloud/asset-share-commons)
 
@@ -36,7 +36,7 @@ mvn -Daem.host=otherhost -Daem.port=5502 <goals>
 
 ## Asset Share Commons 2.x Requirements
 
-* AEM as a Cloud Service 
+* AEM as a Cloud Service 2022.5.7493 or newer
 * AEM 6.5 SP7 or greater
 * AEM WCM Core Components 2.14.0+
 
