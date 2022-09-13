@@ -957,7 +957,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
             <!-- JDK 11 -->
             <dependency>
                 <artifactId>org.apache.sling.javax.activation</artifactId>
-                <version>0.3.0</version>
+                <version>0.1.0</version>
                 <groupId>org.apache.sling</groupId>
                 <scope>provided</scope>
             </dependency>
