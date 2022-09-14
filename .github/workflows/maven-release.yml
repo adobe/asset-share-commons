@@ -23,7 +23,7 @@ on:
         description: 'Release version (major.minor.patch)'
         required: false
       dryRun:
-        description: 'Dry Run? (false to do an actual release)'
+        description: 'Dry Run? (uncheck to perform a release)'
         required: true
         type: boolean
         default: true
@@ -55,11 +55,11 @@ jobs:
 
       - name: Tag DryRun with Maven
         if: ${{ inputs.dryRun }}
-        run: mvn -B release:clean release:prepare -DreleaseVersion=${{ inputs.version }} -DdryRun=true -Pcloud
+        run: mvn -B release:clean release:prepare -DreleaseVersion=${{ inputs.releaseVersion }} -DdryRun=true -Pcloud
       
       - name: Tag with Maven
         if: ${{ !inputs.dryRun }}
-        run: mvn -B release:clean release:prepare -DreleaseVersion=${{ inputs.version }} -Pcloud
+        run: mvn -B release:clean release:prepare -DreleaseVersion=${{ inputs.releaseVersion }} -Pcloud
 
       - name: Store Version
         id: store-version
