@@ -13,7 +13,7 @@ For example:
 mvn -B archetype:generate \
  -D archetypeGroupId=com.adobe.aem \
  -D archetypeArtifactId=aem-project-archetype \
- -D archetypeVersion=30 \
+ -D archetypeVersion=37 \
  -D appTitle="My Asset Share" \
  -D appId="my-asset-share" \
  -D groupId="com.myassetshare"
@@ -23,30 +23,105 @@ mvn -B archetype:generate \
 
 In the `<dependencies>` section of your project's **parent** pom.xml (root of the project) add the following dependencies:
 
+### When deploying to AEM as a Cloud Service
+
 ```
 <!-- parent pom.xml -->
 <dependencies>
-	...
-	<dependency>
+   ...
+   <dependency>
     <groupId>com.adobe.aem.commons</groupId>
     <artifactId>assetshare.all</artifactId>
     <version>2.x.x</version>
+    <classifier>cloud</classifier>
     <type>zip</type>
   </dependency>
-  <!-- optional dependency to code against Asset Share Commons APIs -->
- 	<dependency>
+
+  <!-- Optional dependency to code against Asset Share Commons APIs -->
+  <dependency>
     <groupId>com.adobe.aem.commons</groupId>
     <artifactId>assetshare.core</artifactId>
     <version>2.x.x</version>
     <type>jar</type>
   </dependency>
-	...
+  <dependency>
+    <groupId>com.adobe.aem.commons</groupId>
+    <artifactId>assetshare.core.cloud</artifactId>    
+    <version>2.x.x</version>
+    <type>jar</type>
+  </dependency>
+  ...
+<dependencies>
+```
+
+### When deploying to AEM 6.5.x
+
+```
+<!-- parent pom.xml -->
+<dependencies>
+   ...
+   <dependency>
+    <groupId>com.adobe.aem.commons</groupId>
+    <artifactId>assetshare.all</artifactId>
+    <version>2.x.x</version>
+    <type>zip</type>
+  </dependency>
+
+  <!-- Optional dependency to code against Asset Share Commons APIs -->
+  <dependency>
+    <groupId>com.adobe.aem.commons</groupId>
+    <artifactId>assetshare.core</artifactId>
+    <version>2.x.x</version>
+    <type>jar</type>
+  </dependency>
+  ...
 <dependencies>
 ```
 
 ## Embed Asset Share Commons in All module
 
 Include Asset Share Commons 2.x's `all` project as an `embedded` in your AEM Maven project's `all/pom.xml`.
+
+### When deploying to AEM as a Cloud Service
+
+1. Add the Asset Share Commons `all` project with `cloud` classifier as a `<dependency>`.
+
+    ```
+    <dependencies>
+        ...
+        <dependency>
+            <groupId>com.adobe.aem.commons</groupId>
+            <artifactId>assetshare.all</artifactId>
+	    <classifier>cloud</classifier>
+            <type>zip</type>
+        </dependency>
+        ...
+    </dependency>    
+    ```
+
+2. Add the `assetshare.all` dependency with `cloud` classifier to your `all/pom.xml`'s `<embeddeds>` list as a `container`.
+
+    ```
+    <plugins>
+        <plugin>
+            <groupId>org.apache.jackrabbit</groupId>
+            <artifactId>filevault-package-maven-plugin</artifactId>
+            ...
+            <configuration>
+                <allowIndexDefinitions>true</allowIndexDefinitions>
+                ...
+                <embeddeds>
+                    <embedded>
+                        <groupId>com.adobe.aem.commons</groupId>
+                        <artifactId>assetshare.all</artifactId>
+			<classifier>cloud</classifier>
+                        <type>zip</type>
+                        <target>/apps/<my-app>-packages/container/install</target>
+                    </embedded>
+                    ...
+    ```
+    
+### When deploying to AEM 6.5.x
 
 1. Add the Asset Share Commons `all` project as `<dependency>`.
 
@@ -81,11 +156,33 @@ Include Asset Share Commons 2.x's `all` project as an `embedded` in your AEM Mav
                         <target>/apps/<my-app>-packages/container/install</target>
                     </embedded>
                     ...
-    ```
+    ```    
 
-### (Optional) Custom development using Asset Share Commons APIs
+## (Optional) Custom development using Asset Share Commons APIs
 
 1. Optionally, include the `assetshare.core` as a dependency in your AEM project's `core/pom.xml` if you plan developing Java code against Asset Share Commons' APIs.
+
+### When deploying to AEM as a Cloud Service
+
+    ```
+    <dependencies>
+        ...
+        <dependency>
+            <groupId>com.adobe.aem.commons</groupId>
+            <artifactId>assetshare.core</artifactId>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.adobe.aem.commons</groupId>
+            <artifactId>assetshare.core.cloud</artifactId>
+            <type>jar</type>
+        </dependency>	
+        ...
+    </dependency>    
+    ```
+    
+
+### When deploying to AEM 6.5.x
 
     ```
     <dependencies>
@@ -97,8 +194,7 @@ Include Asset Share Commons 2.x's `all` project as an `embedded` in your AEM Mav
         </dependency>
         ...
     </dependency>    
-    ```
-
+    ```    
 
 ## Update Dispatcher module
 
