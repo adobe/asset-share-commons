@@ -165,7 +165,7 @@ jobs:
 
       # Keeping these separate in case multiple builds are needed.
       - name: Build
-        run: mvn clean deploy -DskipRemoteStaging=true -Dmaven.test.skip -Pcloud,release
+        run: mvn clean deploy -DskipRemoteStaging=true -Pcloud,release
         env:
           MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           MAVEN_CENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
