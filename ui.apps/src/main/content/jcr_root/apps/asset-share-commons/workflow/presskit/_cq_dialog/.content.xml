@@ -1,0 +1,63 @@
+<jcr:root jcr:primaryType="nt:unstructured" jcr:title="Asset Share Commons - Presskit generator"
+          helpPath="https://opensource.adobe.com/asset-share-commons/press-kit.html"
+          sling:resourceType="cq/gui/components/authoring/dialog" xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0">
+    <content jcr:primaryType="nt:unstructured" sling:resourceType="granite/ui/components/coral/foundation/tabs">
+        <items jcr:primaryType="nt:unstructured">
+            <common jcr:primaryType="nt:unstructured" cq:hideOnEdit="true"/>
+            <process jcr:primaryType="nt:unstructured" cq:hideOnEdit="true"/>
+            <processcommon jcr:primaryType="nt:unstructured" jcr:title="Common" sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns">
+                <items jcr:primaryType="nt:unstructured">
+                    <column jcr:primaryType="nt:unstructured" sling:resourceType="granite/ui/components/coral/foundation/container">
+                        <items jcr:primaryType="nt:unstructured">
+                            <basic jcr:primaryType="nt:unstructured" sling:resourceType="granite/ui/components/coral/foundation/form/fieldset">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <title jcr:primaryType="nt:unstructured" sling:resourceType="granite/ui/components/coral/foundation/form/textfield" disabled="false" fieldLabel="Title" name="./jcr:title"/>
+                                    <description jcr:primaryType="nt:unstructured" sling:resourceType="granite/ui/components/coral/foundation/form/textarea" disabled="false" fieldLabel="Description" name="./jcr:description"/>
+                                </items>
+                            </basic>
+                            <advanced jcr:primaryType="nt:unstructured" jcr:title="Advanced Settings" sling:resourceType="granite/ui/components/coral/foundation/form/fieldset">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <advance jcr:primaryType="nt:unstructured" sling:resourceType="granite/ui/components/coral/foundation/form/checkbox" fieldDescription="Check if your handler will advance to the next step." fieldLabel="Handler Advance" name="./metaData/PROCESS_AUTO_ADVANCE" text="Handler Advance" value="true"/>
+                                </items>
+                            </advanced>
+                        </items>
+                    </column>
+                </items>
+            </processcommon>
+            <processargs jcr:primaryType="nt:unstructured" jcr:title="Arguments" sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns">
+                <items jcr:primaryType="nt:unstructured">
+                    <column jcr:primaryType="nt:unstructured" sling:resourceType="granite/ui/components/coral/foundation/container">
+                        <items jcr:primaryType="nt:unstructured">
+                            <arguments jcr:primaryType="nt:unstructured" jcr:title="Press kit generator configuration" sling:resourceType="granite/ui/components/coral/foundation/form/fieldset">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <template-path jcr:primaryType="nt:unstructured" sling:resourceType="granite/ui/components/coral/foundation/form/pathfield" fieldLabel="Page template path" root="/conf" required="{Boolean}true" name="./metaData/PAGE_TEMPLATE_PATH"/>
+
+                                    <hero-resource-type jcr:primaryType="nt:unstructured"
+                                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                        fieldLabel="Press kit Hero component resource type"
+                                                        required="{Boolean}true" name="./metaData/HERO_COMPONENT_RESOURCE_TYPE"/>
+
+                                    <hero-property-name jcr:primaryType="nt:unstructured"
+                                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                        fieldLabel="Press kit Hero component asset reference property"
+                                                        required="{Boolean}true" name="./metaData/HERO_COMPONENT_PROPERTY_NAME"/>
+
+                                    <presskit-resource-type jcr:primaryType="nt:unstructured"
+                                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                        fieldLabel="Press kit component resource type"
+                                                        required="{Boolean}true" name="./metaData/PRESS_KIT_COMPONENT_RESOURCE_TYPE"/>
+
+                                    <presskit-property-name jcr:primaryType="nt:unstructured"
+                                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                        fieldLabel="Press kit component assets reference property"
+                                                        required="{Boolean}true" name="./metaData/PRESS_KIT_COMPONENT_PROPERTY_NAME"/>
+                                </items>
+                            </arguments>
+                        </items>
+                    </column>
+                </items>
+            </processargs>
+            <workflow-process jcr:primaryType="nt:unstructured" sling:resourceType="granite/ui/components/coral/foundation/form/hidden" cq:hideOnEdit="true" name="./metaData/PROCESS" value="com.adobe.aem.commons.assetshare.workflow.impl.PressKitWorkflowProcess"/>
+        </items>
+    </content>
+</jcr:root>
