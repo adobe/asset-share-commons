@@ -18,7 +18,7 @@
     <groupId>com.adobe.aem.commons</groupId>
     <artifactId>assetshare</artifactId>
     <packaging>pom</packaging>
-    <version>2.3.5-SNAPSHOT</version>
+    <version>2.4.1-SNAPSHOT</version>
 
     <name>Asset Share Commons - Reactor Project</name>
     <description>asset-share-commons</description>
@@ -213,7 +213,6 @@ Bundle-Category: asset-share-commons
 -snapshot: ${tstamp;yyyyMMddHHmmssSSS}
 Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
 -plugin org.apache.sling.caconfig.bndplugin.ConfigurationClassScannerPlugin
--plugin org.apache.sling.bnd.models.ModelsScannerPlugin
                         </bnd>
                     </configuration>
                     <executions>
