@@ -213,7 +213,6 @@ Bundle-Category: asset-share-commons
 -snapshot: ${tstamp;yyyyMMddHHmmssSSS}
 Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
 -plugin org.apache.sling.caconfig.bndplugin.ConfigurationClassScannerPlugin
--plugin org.apache.sling.bnd.models.ModelsScannerPlugin
                         </bnd>
                     </configuration>
                     <executions>
