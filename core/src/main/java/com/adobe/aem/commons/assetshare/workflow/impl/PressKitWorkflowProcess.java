@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@Component(service = WorkflowLauncher.class, property = {
+@Component(service = WorkflowProcess.class, property = {
         "workflow.label" + "=Press Kit workflow",
 })
 public class PressKitWorkflowProcess implements WorkflowProcess {
@@ -59,7 +59,7 @@ public class PressKitWorkflowProcess implements WorkflowProcess {
             updatePage(page, heroResourceType, heroProperty, getHeroPropertyValue(resourceResolver, payload));
             updatePage(page, pressKitResourceType, pressKitProperty, new String[]{payload});
             persistData(workItem, workflowSession, "PRESS_KIT_PAGE_PATH", page.getPath());
-        } catch (WCMException | PersistenceException e) {
+        } catch (WCMException | PersistenceException | RepositoryException e) {
             throw new WorkflowException(e);
         }
     }
@@ -124,6 +124,8 @@ public class PressKitWorkflowProcess implements WorkflowProcess {
                 leakingResourceResolver.close();
             }
         }
+        return  null;
+
     }
 
 

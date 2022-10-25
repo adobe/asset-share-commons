@@ -11,4 +11,5 @@
     <filter root="/apps/asset-share-commons/clientlibs"/>
     <filter root="/apps/asset-share-commons/components"/>
     <filter root="/apps/asset-share-commons/resources"/>
+    <filter root="/apps/asset-share-commons/workflow"/>
 </workspaceFilter>
