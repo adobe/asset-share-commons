@@ -2,11 +2,7 @@
 
 ## [asset-share-commons-2.4.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.4.0) (2022-09-14)
 
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.3.6...asset-share-commons-2.4.0)
-
-## [asset-share-commons-2.3.6](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.3.6) (2022-09-13)
-
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.3.4...asset-share-commons-2.3.6)
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.3.4...asset-share-commons-2.4.0)
 
 ### 📁 Other pull requests
 
