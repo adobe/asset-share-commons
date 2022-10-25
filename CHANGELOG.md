@@ -1,5 +1,18 @@
 # 📑 Changelog
 
+## [Unreleased](https://github.com/adobe/asset-share-commons/tree/HEAD)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.4.1...HEAD)
+
+### 📁 Other pull requests
+
+- Set final name of content packages for both [\#830](https://github.com/adobe/asset-share-commons/pull/830) ([kwin](https://github.com/kwin))
+- Also load DS components and Sling Models from fragment bundles [\#829](https://github.com/adobe/asset-share-commons/pull/829) ([kwin](https://github.com/kwin))
+
+## [asset-share-commons-2.4.1](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.4.1) (2022-10-25)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.4.0...asset-share-commons-2.4.1)
+
 ## [asset-share-commons-2.4.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.4.0) (2022-09-14)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.3.4...asset-share-commons-2.4.0)
