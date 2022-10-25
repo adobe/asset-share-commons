@@ -39,6 +39,8 @@
 Bundle-Name: Asset Share Commons - Core
 Bundle-Description: Asset Share Commons Core OSGi bundle containing AEM server-side logic
 Bundle-SymbolicName: com.adobe.aem.commons.assetshare.core
+# also detect scr descriptors from bundle fragments (https://docs.osgi.org/specification/osgi.cmpn/8.0.0/service.component.html#d0e30931)
+Service-Component: OSGI-INF/*.xml
 # conditionalpackage is too coarse, as it will drag in all transitive deps of arbitrary classes in one package, only embed specific classes
 -includeresource: @acs-aem-commons-bundle-[0-9.]*.jar!/com/adobe/acs/commons/util/(BufferedSlingHttpServletResponse|PathInfoUtil|ParameterUtil).*,\
                             ]]></bnd>
