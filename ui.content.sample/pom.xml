@@ -39,6 +39,7 @@
     <!-- B U I L D   D E F I N I T I O N                                        -->
     <!-- ====================================================================== -->
     <build>
+        <finalName>asset-share-commons.ui.content.sample-${project.version}</finalName>
         <plugins>
             <!-- ====================================================================== -->
             <!-- V A U L T   P A C K A G E   P L U G I N S                              -->
@@ -49,7 +50,6 @@
                 <configuration>
                     <group>${package.group}</group>
                     <name>asset-share-commons.ui.content.sample</name>
-                    <finalName>asset-share-commons.ui.content.sample-${project.version}</finalName>
                     <packageType>content</packageType>
                     <dependencies>
                         <dependency>
