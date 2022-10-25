@@ -41,6 +41,13 @@ Bundle-Description: Asset Share Commons Core OSGi bundle containing AEM server-s
 Bundle-SymbolicName: com.adobe.aem.commons.assetshare.core
 # also detect scr descriptors from bundle fragments (https://docs.osgi.org/specification/osgi.cmpn/8.0.0/service.component.html#d0e30931)
 Service-Component: OSGI-INF/*.xml
+# reference packages from both fragment and this bundle: https://sling.apache.org/documentation/bundles/models.html#bundle-manifest-configuration
+Sling-Model-Packages: com.adobe.aem.commons.assetshare.components,\
+com.adobe.aem.commons.assetshare.configuration.impl,\
+com.adobe.aem.commons.assetshare.content.impl,\
+com.adobe.aem.commons.assetshare.search.impl,\
+com.adobe.aem.commons.assetshare.search.results.impl.result,\
+com.adobe.aem.commons.assetshare.util.impl
 # conditionalpackage is too coarse, as it will drag in all transitive deps of arbitrary classes in one package, only embed specific classes
 -includeresource: @acs-aem-commons-bundle-[0-9.]*.jar!/com/adobe/acs/commons/util/(BufferedSlingHttpServletResponse|PathInfoUtil|ParameterUtil).*,\
                             ]]></bnd>
