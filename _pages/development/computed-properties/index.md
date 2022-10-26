@@ -22,6 +22,15 @@ For example the size of an asset is stored in the metadata property `jcr:content
 * **Name:** path/encoded
 * **Return type:** `String`
 
+**Asset Rendition** - Displays the URL for the named [Asset Rendition](https://opensource.adobe.com/asset-share-commons/pages/development/asset-renditions/).
+
+* **Label:** Asset Rendition
+* **Name:** rendition
+* **Parameters:**
+  ** `name` specifies the Asset Rendition name to generate the URL for.
+* **Return type:** `String`
+* **HTL example: `${asset.properties['rendition?name=web']}`
+
 **Asset Type** - Displays a short string based on the `jcr:content/metadata/dam:MIMEtype`.
 
 * **Label:** Asset Type
