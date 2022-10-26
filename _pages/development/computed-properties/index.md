@@ -27,7 +27,7 @@ For example the size of an asset is stored in the metadata property `jcr:content
 * **Label:** Asset Rendition
 * **Name:** rendition
 * **Parameters:**
-  ** `name` specifies the Asset Rendition name to generate the URL for.
+  * `name` specifies the Asset Rendition name to generate the URL for.
 * **Return type:** `String`
 * **HTL example:** `${asset.properties['rendition?name=web']}`
 
