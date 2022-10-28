@@ -20,7 +20,7 @@ on:
   workflow_dispatch:
     inputs:
       releaseVersion:
-        description: 'Release version (major.minor.patch)'
+        description: 'Release version (major.minor.patch - patch should be even number)'
         required: false
       dryRun:
         description: 'Dry Run? (uncheck to perform a release)'

@@ -22,4 +22,5 @@
     allowProxy="{Boolean}true"
     categories="[asset-share-commons.base]"
     embed="[core.wcm.components.image.v1,asset-share-commons.site,asset-share-commons.site.components]"
-    dependencies="[asset-share-commons.dependencies]"/>
+    dependencies="[asset-share-commons.dependencies]"
+    jsProcessor="[min:gcc;languageIn=ECMASCRIPT_2015;languageOut=ECMASCRIPT_2015,default:none]"/>
