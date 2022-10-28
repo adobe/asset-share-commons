@@ -17,11 +17,24 @@
   ~ limitations under the License.
   ~
   -->
-
-<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
-          xmlns:cq="http://www.day.com/jcr/cq/1.0"
-          xmlns:jcr="http://www.jcp.org/jcr/1.0"
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
           cq:dialogMode="floating"
           cq:inherit="{Boolean}true"
           jcr:primaryType="cq:EditConfig">
+    <cq:formParameters
+            jcr:description="A process to generate a press kit from a set of asset"
+            jcr:primaryType="nt:unstructured"
+            jcr:title="Press kit generator"
+
+            PROCESS="com.adobe.aem.commons.assetshare.workflow.impl.PressKitWorkflowProcess"
+            PROCESS_AUTO_ADVANCE="true"
+
+            HERO_COMPONENT_PROPERTY_NAME="fileReference"
+            HERO_COMPONENT_RESOURCE_TYPE="asset-share-commons/components/content/image"
+            PAGE_TEMPLATE_PATH="/conf/asset-share-commons/settings/wcm/templates/presskit-template"
+            PRESS_KIT_COMPONENT_PROPERTY_NAME="paths"
+            PRESS_KIT_COMPONENT_RESOURCE_TYPE="asset-share-commons/components/presskit"
+
+            ROOT_PAGE_PATH="/content/press-kit"
+    />
 </jcr:root>
