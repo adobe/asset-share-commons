@@ -1,4 +1,4 @@
-\<!--/*
+<!--/*
   ~ Asset Share Commons
   ~
   ~ Copyright [2022]  Adobe
@@ -15,15 +15,52 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
  */-->
-
 <sly data-sly-use.pressKit="com.adobe.aem.commons.assetshare.components.presskit.PressKit"
      data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html"
-     data-sly-test.ready="${actionButtons.ready}">
+     data-sly-test.ready="${pressKit.ready}">
 
-    <ul datal-sly-list="${pressKit.assets}">
-        <li>
-            <img src="${item.path}" alt="${item.name}"/>
-            <p>${item.name}</p>
+
+    <style>
+
+    .cmp-press-kit__asset-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 20px;
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .cmp-press-kit__asset-item {
+        padding: 1rem;
+        margin: 0;
+        height: 100%;
+    }
+
+    .cmp-press-kit__asset {
+        padding: 1.5rem;
+        height: 100%;
+        box-shadow: 0px 0px 10px 0 rgba(0,0,0,0.15);
+    }
+
+    .cmp-press-kit__asset-image {
+        max-height: 300px;
+        width: 100%;
+        max-width: 100%;
+        object-fit: cover;
+    }
+
+
+    </style>
+
+
+    <ul class="cmp-press-kit__asset-list" data-sly-list.asset="${pressKit.assets}">
+        <li class="cmp-press-kit__asset-item">
+            <div class="cmp-press-kit__asset">
+                <img class="cmp-press-kit__asset-image" src="${asset.properties['rendition?name=card']}" alt="${asset.name}"/>
+                <p class="cmp-press-kit__asset-name">${asset.name}</p>
+                <a class="cmp-press-kit__asset-download-button" href="${asset.path}">Download</a>
+            </div>
         </li>
     </ul>
 
