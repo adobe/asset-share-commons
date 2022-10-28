@@ -2,9 +2,11 @@ package com.adobe.aem.commons.assetshare.components.presskit.impl;
 
 import com.adobe.aem.commons.assetshare.components.presskit.PressKit;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.day.cq.dam.commons.util.DamUtil;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.models.annotations.Model;
+import org.apache.sling.models.annotations.Optional;
 import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
@@ -27,33 +29,48 @@ public class PressKitImpl implements PressKit {
     private SlingHttpServletRequest request;
 
     @ValueMapValue
+    @Optional
     private List<String> paths;
 
     @ValueMapValue
+    @Optional
     private String displayResourceType;
 
     @OSGiService
     private ModelFactory modelFactory;
 
+    List<AssetModel> assets;
+
     @Override
     public List<AssetModel> getAssets() {
-        final List<AssetModel> assets = new ArrayList<>();
+        if (assets != null) {
+            return assets;
+        }
+
+        assets = new ArrayList<>();
         // Return a list of AssetModels from the paths using isAssetPath, isAssetFolderPath and isAssetCollectionPath
 
         for (final String path : paths) {
             final Resource resource = request.getResourceResolver().getResource(path);
             if (resource != null) {
+                /*
                 if (isAssetPath(resource)) {
                     assets.addAll(getAssetsFromAssetPath(resource));
                 } else if (isAssetFolderPath(resource)) {
-                    assets.addAll(getAssetsFromAssetFolderPath(resource));
+
                 } else if (isAssetCollectionPath(resource)) {
                     assets.addAll(getAssetsFromAssetCollectionPath(resource));
-                }
+                }*/
+                assets.addAll(getAssetsFromAssetFolderPath(resource));
             }
         }
 
         return assets;
+    }
+
+    @Override
+    public boolean isReady() {
+        return getAssets().size() > 0;
     }
 
     private Collection<? extends AssetModel> getAssetsFromAssetCollectionPath(Resource resource) {
@@ -87,7 +104,7 @@ public class PressKitImpl implements PressKit {
     }
 
     private boolean isAssetPath(Resource resource) {
-        return resource != null && modelFactory.createModel(resource, AssetModel.class) != null;
+        return resource != null && DamUtil.isAsset(resource);
     }
 
     private boolean isAssetFolderPath(Resource resource) {
