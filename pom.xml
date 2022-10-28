@@ -427,7 +427,6 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                                         </versionRange>
                                         <goals>
                                             <goal>copy-dependencies</goal>
-                                            <goal>unpack</goal>
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
