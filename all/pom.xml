@@ -38,6 +38,7 @@
     <!-- B U I L D   D E F I N I T I O N                                        -->
     <!-- ====================================================================== -->
     <build>
+        <finalName>asset-share-commons.all-${project.version}</finalName>
         <plugins>
             <!-- ====================================================================== -->
             <!-- V A U L T   P A C K A G E   P L U G I N S                              -->
@@ -79,15 +80,7 @@
                                     <type>zip</type>
                                     <target>/apps/asset-share-commons-packages/content/install</target>
                                 </embedded>
-        
-                                <!-- Remove ui.content.sample from all package, as it should not be installed as part of real uses of Asset Share commons -->
                             </embeddeds>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>default-package</id>
-                        <configuration>
-                            <finalName>asset-share-commons.all-${project.version}</finalName>
                         </configuration>
                     </execution>
                 </executions>
@@ -120,10 +113,8 @@
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
-            <properties>
-                <contentPackageFile>${project.build.directory}/${project.build.finalName}-cloud.zip</contentPackageFile>
-            </properties>
             <build>
+                <finalName>asset-share-commons.all-cloud-${project.version}</finalName>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.jackrabbit</groupId>
@@ -181,7 +172,6 @@
                                 </goals>
                                 <configuration>
                                     <classifier>cloud</classifier>
-                                    <finalName>asset-share-commons.all-cloud-${project.version}</finalName>
                                 </configuration>
                             </execution>
                             <execution>
