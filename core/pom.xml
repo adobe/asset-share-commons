@@ -26,6 +26,19 @@
     <name>Asset Share Commons - Core</name>
     <description>OSGi Core bundle for Asset Share Commons</description>
     <build>
+        <pluginManagement>
+            <plugins>
+                <!-- Maven Javadoc Plugin -->
+                <plugin>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <configuration>
+                        <excludePackageNames>
+                            *.impl,com.adobe.acs.commons.util
+                        </excludePackageNames>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.sling</groupId>
