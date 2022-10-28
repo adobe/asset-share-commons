@@ -10,4 +10,6 @@ import java.util.List;
 public interface PressKit {
 
     List<AssetModel> getAssets();
+
+    boolean isReady();
 }
