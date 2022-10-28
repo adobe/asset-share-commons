@@ -63,8 +63,7 @@ jobs:
 
       - name: Store Version
         id: store-version
-        run: echo "::set-output name=version::$(grep ^scm.tag= release.properties | sed -e 's/scm.tag=asset-share-commons-//g')"
-
+        run: echo "version=$(grep ^scm.tag= release.properties | sed -e 's/scm.tag=asset-share-commons-//g')" >> $GITHUB_OUTPUT
   Github_Release:
     needs: Tag
     runs-on: ubuntu-latest
