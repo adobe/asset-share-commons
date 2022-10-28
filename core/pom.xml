@@ -56,14 +56,6 @@ com.adobe.aem.commons.assetshare.util.impl
             <plugin>
                 <groupId>biz.aQute.bnd</groupId>
                 <artifactId>bnd-baseline-maven-plugin</artifactId>
-                <configuration>
-                    <diffpackages>
-                        <diffpackage>!com.adobe.acs.commons.util.*</diffpackage> <!-- was mistakenly being exported by 2.2.2 (and earlier, compare with https://github.com/adobe/asset-share-commons/issues/734) -->
-                        <diffpackage>!com.adobe.aem.commons.assetshare.components.actions.downloads</diffpackage><!-- moved to fragment -->
-                        <diffpackage>!com.adobe.aem.commons.assetshare.content.renditions.download.async</diffpackage><!-- moved to fragment -->
-                        <diffpackage>*</diffpackage>
-                    </diffpackages>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
