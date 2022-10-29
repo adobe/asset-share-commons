@@ -114,7 +114,6 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <build>
-                <finalName>asset-share-commons.all-cloud-${project.version}</finalName>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.jackrabbit</groupId>
@@ -194,6 +193,13 @@
                                 </goals>
                             </execution>
                         </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.day.jcr.vault</groupId>
+                        <artifactId>content-package-maven-plugin</artifactId>
+                        <configuration>
+                            <packageFile>${project.build.directory}/${project.build.finalName}-cloud.zip</packageFile>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
