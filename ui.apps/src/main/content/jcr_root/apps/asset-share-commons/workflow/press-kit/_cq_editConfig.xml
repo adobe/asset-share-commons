@@ -22,19 +22,20 @@
           cq:inherit="{Boolean}true"
           jcr:primaryType="cq:EditConfig">
     <cq:formParameters
-            jcr:description="A process to generate a press kit from a set of asset"
+            jcr:description="An AEM workflow process to generate a press kit from a set of assets."
             jcr:primaryType="nt:unstructured"
-            jcr:title="Press kit generator"
+            jcr:title="Press kit"
 
             PROCESS="com.adobe.aem.commons.assetshare.workflow.impl.PressKitWorkflowProcess"
             PROCESS_AUTO_ADVANCE="true"
 
-            HERO_COMPONENT_PROPERTY_NAME="fileReference"
-            HERO_COMPONENT_RESOURCE_TYPE="asset-share-commons/components/content/image"
-            PAGE_TEMPLATE_PATH="/conf/asset-share-commons/settings/wcm/templates/presskit-template"
+            BANNER_COMPONENT_IMAGE_PROPERTY_NAME="fileReference"
+            BANNER_COMPONENT_TEXT_PROPERTY_NAME="jcr:title"
+            BANNER_COMPONENT_RESOURCE_TYPE="asset-share-commons/components/content/image"
+            PRESS_KIT_PAGE_TEMPLATE_PATH="/conf/asset-share-commons/settings/wcm/templates/press-kit-template"
             PRESS_KIT_COMPONENT_PROPERTY_NAME="paths"
-            PRESS_KIT_COMPONENT_RESOURCE_TYPE="asset-share-commons/components/presskit"
+            PRESS_KIT_COMPONENT_RESOURCE_TYPE="asset-share-commons/components/press-kit"
 
-            ROOT_PAGE_PATH="/content/press-kit"
+            ROOT_PAGE_PATH="/content/press-kits"
     />
 </jcr:root>

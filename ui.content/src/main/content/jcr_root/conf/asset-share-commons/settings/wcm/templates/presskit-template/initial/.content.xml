@@ -4,7 +4,7 @@
     <jcr:content
         cq:lastModified="{Date}2022-10-25T14:51:47.107-04:00"
         cq:lastModifiedBy="admin"
-        cq:template="/conf/asset-share-commons/settings/wcm/templates/presskit-template"
+        cq:template="/conf/asset-share-commons/settings/wcm/templates/press-kit-template"
         jcr:primaryType="cq:PageContent"
         sling:resourceType="asset-share-commons/components/structure/page">
         <root
@@ -20,13 +20,13 @@
                     jcr:lastModifiedBy="admin"
                     jcr:primaryType="nt:unstructured"
                     sling:resourceType="asset-share-commons/components/content/image"/>
-                <presskit
+                <press-kit
                     jcr:created="{Date}2022-10-25T14:39:47.837-04:00"
                     jcr:createdBy="admin"
                     jcr:lastModified="{Date}2022-10-25T14:51:47.104-04:00"
                     jcr:lastModifiedBy="admin"
                     jcr:primaryType="nt:unstructured"
-                    sling:resourceType="asset-share-commons/components/presskit"
+                    sling:resourceType="asset-share-commons/components/press-kit"
                     displayResourceType="foo/bar"
                     paths="/content/dam/asset-share-commons/en/public/pictures"/>
             </responsivegrid>

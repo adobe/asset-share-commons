@@ -5,7 +5,7 @@
         cq:deviceGroups="[mobile/groups/responsive]"
         cq:lastModified="{Date}2017-10-06T10:38:42.542-04:00"
         cq:lastModifiedBy="admin"
-        cq:template="/conf/asset-share-commons/settings/wcm/templates/presskit-template"
+        cq:template="/conf/asset-share-commons/settings/wcm/templates/press-kit-template"
         jcr:primaryType="cq:PageContent"
         sling:resourceType="asset-share-commons/components/structure/page">
         <root

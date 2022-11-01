@@ -52,34 +52,43 @@
                                                    fieldLabel="Press kit root path"
                                                    rootPath="/content"
                                                    required="{Boolean}true"
+                                                    emptyText="Defaults to: /content/press-kits"
                                                    name="./metaData/ROOT_PATH_PATH"/>
 
                                     <template-path jcr:primaryType="nt:unstructured"
                                                    sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
-                                                   fieldLabel="Page template path"
+                                                   fieldLabel="Press kit page template path"
                                                    rootPath="/conf"
                                                    required="{Boolean}true"
-                                                   name="./metaData/PAGE_TEMPLATE_PATH"/>
+                                                   name="./metaData/PRESS_KIT_PAGE_TEMPLATE_PATH"/>
 
-                                    <hero-resource-type jcr:primaryType="nt:unstructured"
+                                    <banner-resource-type jcr:primaryType="nt:unstructured"
                                                         sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                                        fieldLabel="Press kit Hero component resource type"
+                                                        fieldLabel="Press kit banner component resource type"
                                                         required="{Boolean}true"
-                                                        name="./metaData/HERO_COMPONENT_RESOURCE_TYPE"/>
+                                                        name="./metaData/BANNER_COMPONENT_RESOURCE_TYPE"/>
 
-                                    <hero-property-name jcr:primaryType="nt:unstructured"
+                                    <banner-image-property-name jcr:primaryType="nt:unstructured"
                                                         sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                                                        fieldLabel="Press kit Hero component asset reference property"
+                                                        fieldLabel="Press kit banner component asset reference property"
+                                                        emptyText="Defaults to: fileReference"
                                                         required="{Boolean}true"
-                                                        name="./metaData/HERO_COMPONENT_PROPERTY_NAME"/>
+                                                        name="./metaData/BANNER_COMPONENT_IMAGE_PROPERTY_NAME"/>
 
-                                    <presskit-resource-type jcr:primaryType="nt:unstructured"
+                                    <banner-text-property-name jcr:primaryType="nt:unstructured"
+                                                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                                fieldLabel="Press kit Hero component asset reference property"
+                                                                required="{Boolean}true"
+                                                                emptyText="Defaults to: jcr:title"
+                                                                name="./metaData/BANNER_COMPONENT_TEXT_PROPERTY_NAME"/>
+
+                                    <press-kit-resource-type jcr:primaryType="nt:unstructured"
                                                             sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
                                                             fieldLabel="Press kit component resource type"
                                                             required="{Boolean}true"
                                                             name="./metaData/PRESS_KIT_COMPONENT_RESOURCE_TYPE"/>
 
-                                    <presskit-property-name jcr:primaryType="nt:unstructured"
+                                    <press-kit-property-name jcr:primaryType="nt:unstructured"
                                                             sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
                                                             fieldLabel="Press kit component assets reference property"
                                                             required="{Boolean}true"
@@ -95,13 +104,7 @@
                               cq:hideOnEdit="true"
                               name="./metaData/PROCESS"
                               value="com.adobe.aem.commons.assetshare.workflow.impl.PressKitWorkflowProcess"/>
-            <!--
-            <auto-advance jcr:primaryType="nt:unstructured"
-                              sling:resourceType="granite/ui/components/coral/foundation/form/hidden"
-                              cq:hideOnEdit="true"
-                              name="./metaData/PROCESS_AUTO_ADVANCE"
-                              value="{Boolean}true"/>
-                              -->
+
         </items>
     </content>
 </jcr:root>
