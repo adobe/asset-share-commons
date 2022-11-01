@@ -26,10 +26,75 @@
     <name>Asset Share Commons - Core</name>
     <description>OSGi Core bundle for Asset Share Commons</description>
     <build>
+        <pluginManagement>
+            <plugins>
+                <!-- Maven Javadoc Plugin -->
+                <plugin>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <configuration>
+                        <excludePackageNames>
+                            *.impl,com.adobe.acs.commons.util
+                        </excludePackageNames>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.sling</groupId>
                 <artifactId>sling-maven-plugin</artifactId>
+            </plugin>
+            <!-- copy some Java source files from ACS AEM Commons for embedding them here -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.adobe.acs</groupId>
+                                    <artifactId>acs-aem-commons-bundle</artifactId>
+                                    <version>5.3.0</version>
+                                    <classifier>sources</classifier>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${project.build.directory}/generated-sources/acs-aem-commons</outputDirectory>
+                                    <includes>com/adobe/acs/commons/util/Buffered*.java,
+                                        java,com/adobe/acs/commons/util/Servlet*.java,
+                                        java,com/adobe/acs/commons/util/PathInfoUtil*.java,
+                                        java,com/adobe/acs/commons/util/ParameterUtil*.java</includes>
+                                </artifactItem>
+                            </artifactItems>
+                            <includes>**/*.java</includes>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources/acs-aem-commons</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>biz.aQute.bnd</groupId>
@@ -48,22 +113,12 @@ com.adobe.aem.commons.assetshare.content.impl,\
 com.adobe.aem.commons.assetshare.search.impl,\
 com.adobe.aem.commons.assetshare.search.results.impl.result,\
 com.adobe.aem.commons.assetshare.util.impl
-# conditionalpackage is too coarse, as it will drag in all transitive deps of arbitrary classes in one package, only embed specific classes
--includeresource: @acs-aem-commons-bundle-[0-9.]*.jar!/com/adobe/acs/commons/util/(BufferedSlingHttpServletResponse|PathInfoUtil|ParameterUtil).*,\
-                            ]]></bnd>
+                     ]]></bnd>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>biz.aQute.bnd</groupId>
                 <artifactId>bnd-baseline-maven-plugin</artifactId>
-                <configuration>
-                    <diffpackages>
-                        <diffpackage>!com.adobe.acs.commons.util.*</diffpackage> <!-- was mistakenly being exported by 2.2.2 (and earlier, compare with https://github.com/adobe/asset-share-commons/issues/734) -->
-                        <diffpackage>!com.adobe.aem.commons.assetshare.components.actions.downloads</diffpackage><!-- moved to fragment -->
-                        <diffpackage>!com.adobe.aem.commons.assetshare.content.renditions.download.async</diffpackage><!-- moved to fragment -->
-                        <diffpackage>*</diffpackage>
-                    </diffpackages>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -125,11 +180,6 @@ com.adobe.aem.commons.assetshare.util.impl
             <groupId>com.adobe.cq</groupId>
             <artifactId>core.wcm.components.core</artifactId>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.adobe.acs</groupId>
-            <artifactId>acs-aem-commons-bundle</artifactId>
-            <scope>provided</scope><!-- should not transitively be exposed -->
         </dependency>
         <!-- JDK 11 -->
         <dependency>

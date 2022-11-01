@@ -22,4 +22,4 @@
     allowProxy="{Boolean}true"
     categories="[asset-share-commons.dependencies]"
     embed="[granite.csrf.standalone, asset-share-commons.vendor]"
-    jsProcessor="[min:gcc,default:none]"/>
+    jsProcessor="[min:gcc;languageIn=ECMASCRIPT_2015;languageOut=ECMASCRIPT_2015,default:none]"/>

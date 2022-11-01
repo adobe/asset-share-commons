@@ -2,16 +2,41 @@
 
 ## [Unreleased](https://github.com/adobe/asset-share-commons/tree/HEAD)
 
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.4.1...HEAD)
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.4.4...HEAD)
 
 ### 📁 Other pull requests
 
-- Set final name of content packages for both [\#830](https://github.com/adobe/asset-share-commons/pull/830) ([kwin](https://github.com/kwin))
-- Also load DS components and Sling Models from fragment bundles [\#829](https://github.com/adobe/asset-share-commons/pull/829) ([kwin](https://github.com/kwin))
+- Bump minimist and mkdirp in /ui.frontend.theme.light [\#840](https://github.com/adobe/asset-share-commons/pull/840) ([dependabot[bot]](https://github.com/apps/dependabot))
+- exclude embedded ACS AEM Commons classes from javadoc [\#839](https://github.com/adobe/asset-share-commons/pull/839) ([kwin](https://github.com/kwin))
+- Minify only when necessary [\#838](https://github.com/adobe/asset-share-commons/pull/838) ([kwin](https://github.com/kwin))
+- reenable full baselining after release of 2.4.0 [\#836](https://github.com/adobe/asset-share-commons/pull/836) ([kwin](https://github.com/kwin))
+- Embed ACS AEM Commons sources and recompile [\#835](https://github.com/adobe/asset-share-commons/pull/835) ([kwin](https://github.com/kwin))
+- Bump ansi-regex in /ui.frontend.theme.light [\#832](https://github.com/adobe/asset-share-commons/pull/832) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump ansi-regex in /ui.frontend.theme.dark [\#831](https://github.com/adobe/asset-share-commons/pull/831) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump spotbugs-maven-plugin from 4.7.0.0 to 4.7.2.1 [\#824](https://github.com/adobe/asset-share-commons/pull/824) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump maven-checkstyle-plugin from 3.1.2 to 3.2.0 [\#821](https://github.com/adobe/asset-share-commons/pull/821) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump sling-maven-plugin from 2.4.2 to 3.0.2 [\#815](https://github.com/adobe/asset-share-commons/pull/815) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump minimist from 1.2.0 to 1.2.6 in /ui.frontend.theme.dark [\#811](https://github.com/adobe/asset-share-commons/pull/811) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump terser from 4.6.3 to 4.8.1 in /ui.frontend.theme.dark [\#796](https://github.com/adobe/asset-share-commons/pull/796) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump terser from 4.6.3 to 4.8.1 in /ui.frontend.theme.light [\#795](https://github.com/adobe/asset-share-commons/pull/795) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [asset-share-commons-2.4.4](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.4.4) (2022-10-28)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.4.2...asset-share-commons-2.4.4)
+
+## [asset-share-commons-2.4.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.4.2) (2022-10-25)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.4.1...asset-share-commons-2.4.2)
 
 ## [asset-share-commons-2.4.1](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.4.1) (2022-10-25)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.4.0...asset-share-commons-2.4.1)
+
+### 📁 Other pull requests
+
+- v.2.4.1 Release [\#833](https://github.com/adobe/asset-share-commons/pull/833) ([davidjgonzalez](https://github.com/davidjgonzalez))
+- Set final name of content packages for both [\#830](https://github.com/adobe/asset-share-commons/pull/830) ([kwin](https://github.com/kwin))
+- Also load DS components and Sling Models from fragment bundles [\#829](https://github.com/adobe/asset-share-commons/pull/829) ([kwin](https://github.com/kwin))
 
 ## [asset-share-commons-2.4.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.4.0) (2022-09-14)
 

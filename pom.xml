@@ -301,7 +301,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                 <plugin>
                     <groupId>org.apache.sling</groupId>
                     <artifactId>sling-maven-plugin</artifactId>
-                    <version>2.4.2</version>
+                    <version>3.0.2</version>
                     <configuration>
                         <slingUrl>http://${aem.host}:${aem.port}/system/console</slingUrl>
                         <deploymentMethod>WebConsole</deploymentMethod>
@@ -427,7 +427,6 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                                         </versionRange>
                                         <goals>
                                             <goal>copy-dependencies</goal>
-                                            <goal>unpack</goal>
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
@@ -499,13 +498,13 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                 <plugin>
                     <groupId>com.github.spotbugs</groupId>
                     <artifactId>spotbugs-maven-plugin</artifactId>
-                    <version>4.7.0.0</version>
+                    <version>4.7.2.1</version>
                 </plugin>
                 <!-- Maven Checkstyle Plugin -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>3.1.2</version>
+                    <version>3.2.0</version>
                     <configuration>
                         <linkXRef>false</linkXRef>
                         <configLocation>acs/checkstyle/checks.xml</configLocation>
@@ -939,19 +938,6 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                 <artifactId>jsr305</artifactId>
                 <version>3.0.0</version><!-- cannot use newer version due to https://github.com/amaembo/jsr-305/issues/31, todo: switch to Jetbrains annotation -->
                 <scope>compile</scope>
-            </dependency>
-            <!-- Embedded dependency -->
-            <dependency>
-                <groupId>com.adobe.acs</groupId>
-                <artifactId>acs-aem-commons-bundle</artifactId>
-                <version>5.3.0</version>
-                <scope>compile</scope>
-                <exclusions>
-                    <exclusion>
-                        <groupId>*</groupId>
-                        <artifactId>*</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
             <!-- JDK 11 -->
             <dependency>
