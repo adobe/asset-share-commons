@@ -17,13 +17,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.day.cq.commons.jcr.JcrConstants.JCR_CONTENT;
+
 @Model(
         adaptables = {SlingHttpServletRequest.class},
         adapters = {PressKit.class},
         resourceType = {PressKitImpl.RESOURCE_TYPE}
 )
 public class PressKitImpl implements PressKit {
-    public static final String RESOURCE_TYPE = "asset-share-commons/components/presskit";
+    public static final String RESOURCE_TYPE = "asset-share-commons/components/press-kit";
 
     @Self
     private SlingHttpServletRequest request;
@@ -89,7 +91,7 @@ public class PressKitImpl implements PressKit {
     private Collection<? extends AssetModel> getAssetsFromAssetFolderPath(Resource resource) {
         final List<AssetModel> results = new ArrayList<>();
         resource.getChildren().forEach(child -> {
-            if (!"jcr:content".equals(child.getName()) && (isAssetPath(child))) {
+            if (!JCR_CONTENT.equals(child.getName()) && (isAssetPath(child))) {
                 results.addAll(getAssetsFromAssetPath(child));
             }
         });
@@ -107,11 +109,5 @@ public class PressKitImpl implements PressKit {
         return resource != null && DamUtil.isAsset(resource);
     }
 
-    private boolean isAssetFolderPath(Resource resource) {
-        return resource != null && (resource.isResourceType("sling:Folder") || resource.isResourceType("sling:OrderedFolder") || resource.isResourceType("nt:folder"));
-    }
 
-    private boolean isAssetCollectionPath(Resource resource) {
-        return resource != null && resource.adaptTo(ResourceCollection.class) != null;
-    }
 }

@@ -22,6 +22,11 @@
 
     <style>
 
+    .basicpage {
+        max-width: 1200px;
+        margin: 0 auto;
+     }
+
     .cmp-press-kit__asset-list {
         margin: 0;
         padding: 0;
@@ -41,24 +46,48 @@
         padding: 1.5rem;
         height: 100%;
         box-shadow: 0px 0px 10px 0 rgba(0,0,0,0.15);
+        position: relative;
     }
 
     .cmp-press-kit__asset-image {
-        max-height: 300px;
+        max-height: 200px;
         width: 100%;
-        max-width: 100%;
         object-fit: cover;
     }
 
+    .cmp-press-kit__asset-download-button {
+        margin-top: 2rem;
+        padding: .5rem 1rem;
+        background-color: blue;
+        border-radius: 5px;
+        color: white;
+        display: inline-block;
+        bottom: 1rem;
+    }
+
+    .cmp-press-kit__asset-download-button:hover {
+        color: white;
+        font-weight: bold
+    }
 
     </style>
+
+
 
 
     <ul class="cmp-press-kit__asset-list" data-sly-list.asset="${pressKit.assets}">
         <li class="cmp-press-kit__asset-item">
             <div class="cmp-press-kit__asset">
                 <img class="cmp-press-kit__asset-image" src="${asset.properties['rendition?name=card']}" alt="${asset.name}"/>
-                <p class="cmp-press-kit__asset-name">${asset.name}</p>
+                <p class="cmp-press-kit__asset-name">${asset.title}</p>
+
+                <ul>
+                    <li>File name: ${asset.name}</li>
+                    <li>Description: ${asset.description}</li>
+                    <li>File format: ${asset.properties['dc:format']}</li>
+                    <li>File size: ??? NPE</li>
+                </ul>
+
                 <a class="cmp-press-kit__asset-download-button" href="${asset.path}">Download</a>
             </div>
         </li>

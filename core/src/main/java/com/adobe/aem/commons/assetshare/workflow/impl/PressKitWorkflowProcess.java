@@ -15,6 +15,7 @@ import com.day.cq.search.result.SearchResult;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.WCMException;
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.ModifiableValueMap;
 import org.apache.sling.api.resource.PersistenceException;
@@ -34,8 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.day.cq.commons.jcr.JcrConstants.JCR_CONTENT;
-import static com.day.cq.commons.jcr.JcrConstants.JCR_TITLE;
+import static com.day.cq.commons.jcr.JcrConstants.*;
 import static com.day.cq.dam.api.DamConstants.NT_DAM_ASSET;
 import static org.apache.sling.jcr.resource.api.JcrResourceConstants.NT_SLING_ORDERED_FOLDER;
 import static org.apache.sling.jcr.resource.api.JcrResourceConstants.SLING_RESOURCE_TYPE_PROPERTY;
@@ -46,53 +46,96 @@ import static org.apache.sling.jcr.resource.api.JcrResourceConstants.SLING_RESOU
 public class PressKitWorkflowProcess implements WorkflowProcess {
     private static final Logger log = LoggerFactory.getLogger(PressKitWorkflowProcess.class);
 
+    private static final String FOLDER_PROPERTY_PRESS_KIT_NAME = "pressKitName";
+    private static final String FOLDER_PROPERTY_PRESS_KIT_BANNER_IMAGE = "pressKitBannerImage";
+    private static final String FOLDER_PROPERTY_PRESS_KIT_ID = "pressKitId";
+    private static final String WORKFLOW_PRESS_KIT_PAGE_TEMPLATE_PATH = "PRESS_KIT_PAGE_TEMPLATE_PATH";
+    private static final String WORKFLOW_PRESS_KIT_COMPONENT_RESOURCE_TYPE = "PRESS_KIT_COMPONENT_RESOURCE_TYPE";
+    private static final String WORKFLOW_PRESS_KIT_COMPONENT_PROPERTY_NAME = "PRESS_KIT_COMPONENT_PROPERTY_NAME";
+    private static final String WORKFLOW_BANNER_COMPONENT_RESOURCE_TYPE = "BANNER_COMPONENT_RESOURCE_TYPE";
+    private static final String WORKFLOW_BANNER_COMPONENT_IMAGE_PROPERTY_NAME = "BANNER_COMPONENT_IMAGE_PROPERTY_NAME";
+    private static final String WORKFLOW_BANNER_COMPONENT_TEXT_PROPERTY_NAME = "BANNER_COMPONENT_TEXT_PROPERTY_NAME";
+    private static final String WORKFLOW_ROOT_PAGE_PATH = "ROOT_PAGE_PATH";
+
+    private static final String WORKFLOW_PRESS_KIT_PAGE_ID = "PRESS_KIT_PAGE_ID";
+    private static final String WORKFLOW_PRESS_KIT_FOLDER_PATH = "PRESS_KIT_FOLDER_PATH";
+
+
     @Reference
     private QueryBuilder queryBuilder;
 
     @Override
     public void execute(WorkItem workItem, WorkflowSession workflowSession, MetaDataMap metaDataMap) throws WorkflowException {
-        log.error("IN PressKitWorkflowProcess");
-        ResourceResolver resourceResolver = workflowSession.adaptTo(ResourceResolver.class);
-        String payload = workItem.getWorkflowData().getPayload().toString();
+        final ResourceResolver resourceResolver = workflowSession.adaptTo(ResourceResolver.class);
+        final String payload = workItem.getWorkflowData().getPayload().toString();
 
-        String templatePath = metaDataMap.get("PAGE_TEMPLATE_PATH", String.class);
-        log.debug("templatePath: {}", templatePath);
-        String pressKitResourceType = metaDataMap.get("PRESS_KIT_COMPONENT_RESOURCE_TYPE", String.class);
-        log.debug("pressKitResourceType: {}", pressKitResourceType);
-        String pressKitProperty = metaDataMap.get("PRESS_KIT_COMPONENT_PROPERTY_NAME", String.class);
-        log.debug("pressKitProperty: {}", pressKitProperty);
-
-        String heroResourceType = metaDataMap.get("HERO_COMPONENT_RESOURCE_TYPE", String.class);
-        String heroProperty = metaDataMap.get("HERO_COMPONENT_PROPERTY_NAME", String.class);
-        String rootPagePath = metaDataMap.get("ROOT_PAGE_PATH", "/content/press-kit");
-
-
-        Resource payloadResource = resourceResolver.getResource(payload);
-
-        if (payloadResource.getChild(JCR_CONTENT) != null) {
-            payloadResource = payloadResource.getChild(JCR_CONTENT);
+        if (!StringUtils.startsWith(payload, "/content/dam/") || resourceResolver.getResource(payload) == null || !resourceResolver.getResource(payload).isResourceType("nt:folder")) {
+            throw new WorkflowException(String.format("Payload [ %s ] is not a valid DAM asset folder.", payload));
         }
 
-        String pageTitle = payloadResource.getValueMap().get(JCR_TITLE, resourceResolver.getResource(payload).getName());
-        String pageName = payloadResource.getValueMap().get("pressKitId", UUID.randomUUID().toString());
+        String templatePath = metaDataMap.get(WORKFLOW_PRESS_KIT_PAGE_TEMPLATE_PATH, String.class);
+        String pressKitResourceType = metaDataMap.get(WORKFLOW_PRESS_KIT_COMPONENT_RESOURCE_TYPE, String.class);
+        String pressKitProperty = metaDataMap.get(WORKFLOW_PRESS_KIT_COMPONENT_PROPERTY_NAME, String.class);
+        String bannerResourceType = metaDataMap.get(WORKFLOW_BANNER_COMPONENT_RESOURCE_TYPE, String.class);
+        String bannerImageProperty = metaDataMap.get(WORKFLOW_BANNER_COMPONENT_IMAGE_PROPERTY_NAME, "fileReference");
+        String bannerTextProperty = metaDataMap.get(WORKFLOW_BANNER_COMPONENT_TEXT_PROPERTY_NAME, "jcr:title");
+        String rootPagePath = metaDataMap.get(WORKFLOW_ROOT_PAGE_PATH, "/content/press-kits");
+
+        Resource payloadResource = resourceResolver.getResource(payload);
+        if (payloadResource.getChild(JCR_CONTENT) != null) {
+            payloadResource = payloadResource.getChild(JCR_CONTENT);
+            if (payloadResource.getChild("metadata") == null) {
+                try {
+                    resourceResolver.create(payloadResource, "metadata", ImmutableMap.of(JCR_PRIMARYTYPE, NT_UNSTRUCTURED));
+                } catch (PersistenceException e) {
+                    throw new WorkflowException(String.format("Could not create missing metadata node for asset folder [ {} ].", payloadResource.getPath()), e);
+                }
+            }
+        } else {
+            throw new WorkflowException(String.format("Asset folder [ %s ] does not have jcr:content node.", payload));
+        }
+
+        // Get Asset Folder properties
+        final String pressKitId = payloadResource.getValueMap().get("metadata/" + FOLDER_PROPERTY_PRESS_KIT_ID,
+                StringUtils.removeEnd(rootPagePath, "/") + "/" + new SimpleDateFormat("yyyy/MM").format(new Date()) + "/" + UUID.randomUUID());
+        final String pressKitName = payloadResource.getValueMap().get("metadata/" + FOLDER_PROPERTY_PRESS_KIT_NAME, payloadResource.getValueMap().get(JCR_TITLE, resourceResolver.getResource(payload).getName()));
+        final String pressKitBannerImage = payloadResource.getValueMap().get("metadata/" + FOLDER_PROPERTY_PRESS_KIT_BANNER_IMAGE, "banner.*");
+
 
         try {
-            Page page = createPage(resourceResolver, rootPagePath, pageName, pageTitle, templatePath);
-            log.debug("page: {}", page.getPath());
-            updatePage(page, heroResourceType, heroProperty, getHeroPropertyValue(resourceResolver, payload));
-            updatePage(page, pressKitResourceType, pressKitProperty, payload);
-            payloadResource.adaptTo(ModifiableValueMap.class).put("pressKitId", page.getName());
-            persistData(workItem, workflowSession, "PRESS_KIT_PAGE_PATH", page.getPath());
+            // Get or create the press kit page
+            Page page = getOrCreatePressKitPage(resourceResolver, pressKitId, templatePath, pressKitName);
+
+            // Update the Banner component on the page
+
+            // Update the image reference
+            updateComponentOnPage(page, bannerResourceType, bannerImageProperty, getBannerImagePropertyValue(resourceResolver, payload, pressKitBannerImage));
+
+            // Update the text reference
+            updateComponentOnPage(page, bannerResourceType, bannerTextProperty, pressKitName);
+
+            // Update the Press Kit component on the page
+            updateComponentOnPage(page, pressKitResourceType, pressKitProperty, payload);
+
+            // Save the page
+            payloadResource.adaptTo(ModifiableValueMap.class).put(FOLDER_PROPERTY_PRESS_KIT_ID, page.getPath());
+
+            resourceResolver.commit();
+
+            // Save data for other workflows steps in the future that might need this info
+            persistData(workItem, workflowSession, WORKFLOW_PRESS_KIT_PAGE_ID, page.getPath());
+            persistData(workItem, workflowSession, WORKFLOW_PRESS_KIT_FOLDER_PATH, payload);
+
         } catch (WCMException | PersistenceException | RepositoryException e) {
-            throw new WorkflowException(e);
+            throw new WorkflowException(String.format("Could not build Press Kit page for [ %s ]", payload), e);
         }
     }
 
-    private String getHeroPropertyValue(ResourceResolver resourceResolver, String payload) throws RepositoryException {
+    private String getBannerImagePropertyValue(ResourceResolver resourceResolver, String payload, String bannerImageName) throws RepositoryException {
         Map<String, String> params = new HashMap<>();
         params.put("path", payload);
         params.put("type", NT_DAM_ASSET);
-        params.put("nodename", "hero.*");
+        params.put("nodename", bannerImageName);
         params.put("p.limit", "1");
 
         Query query = queryBuilder.createQuery(PredicateGroup.create(params), resourceResolver.adaptTo(Session.class));
@@ -105,13 +148,12 @@ public class PressKitWorkflowProcess implements WorkflowProcess {
         return null;
     }
 
-    private void updatePage(Page page, String resourceType, String propertyName, String propertyValue) throws PersistenceException, RepositoryException {
-        Resource resource = findResourceByResourceType(page, resourceType);
+    private void updateComponentOnPage(Page page, String resourceType, String propertyName, String propertyValue) throws PersistenceException, RepositoryException {
+        final Resource resource = findResourceByResourceType(page, resourceType);
 
         if (resource != null) {
             final ModifiableValueMap properties = resource.adaptTo(ModifiableValueMap.class);
             properties.put(propertyName, propertyValue);
-            resource.getResourceResolver().commit();
         }
     }
 
@@ -123,7 +165,6 @@ public class PressKitWorkflowProcess implements WorkflowProcess {
         map.put("path.self", "true");
         map.put("property", SLING_RESOURCE_TYPE_PROPERTY);
         map.put("property.value", resourceType);
-        map.put("p.offset", "0");
         map.put("p.limit", "1");
 
         final Query query = queryBuilder.createQuery(PredicateGroup.create(map), resourceResolver.adaptTo(Session.class));
@@ -138,22 +179,16 @@ public class PressKitWorkflowProcess implements WorkflowProcess {
     }
 
 
-    private Page createPage(ResourceResolver resourceResolver,
-                            String rootPagePath, String pageName, String pageTitle, String templatePath) throws WCMException, RepositoryException {
-
-        // Create as string from today's date in the format YYYY/MM
-        final String date = new SimpleDateFormat("yyyy/MM").format(new Date());
-
-        final String path = StringUtils.removeEnd(rootPagePath, "/") + "/" + date;
-
-        Node node = JcrUtil.createPath(path, NT_SLING_ORDERED_FOLDER, NT_SLING_ORDERED_FOLDER, resourceResolver.adaptTo(Session.class), false);
-
+    private Page getOrCreatePressKitPage(ResourceResolver resourceResolver, String pressKitId, String templatePath, String pageTitle) throws RepositoryException, WCMException {
         final PageManager pageManager = resourceResolver.adaptTo(PageManager.class);
-        final Page page = pageManager.create(node.getPath(), pageName, templatePath, pageTitle, false);
 
-        return page;
+        if (pageManager.getPage(pressKitId) != null) {
+            return pageManager.getPage(pressKitId);
+        } else {
+            final Node node = JcrUtil.createPath(StringUtils.substringBeforeLast(pressKitId, "/"), NT_SLING_ORDERED_FOLDER, NT_SLING_ORDERED_FOLDER, resourceResolver.adaptTo(Session.class), false);
+            return pageManager.create(node.getPath(), StringUtils.substringAfterLast(pressKitId, "/"), templatePath, pageTitle, false);
+        }
     }
-
 
     private <T> boolean persistData(WorkItem workItem, WorkflowSession workflowSession, String key, T val) {
         WorkflowData data = workItem.getWorkflow().getWorkflowData();
@@ -163,11 +198,8 @@ public class PressKitWorkflowProcess implements WorkflowProcess {
 
         data.getMetaDataMap().put(key, val);
         workflowSession.updateWorkflowData(workItem.getWorkflow(), data);
-
         return true;
     }
-
-
 }
 
 
