@@ -96,7 +96,9 @@ public class PressKitImpl implements PressKit {
             }
         });
 
-        return results;
+        String pressKitBannerImage = resource.getValueMap().get("jcr:content/metadata/pressKitBannerImage", String.class);
+
+        return filterAssets(results, pressKitBannerImage);
     }
 
     private Collection<? extends AssetModel> getAssetsFromAssetPath(Resource resource) {
@@ -109,5 +111,22 @@ public class PressKitImpl implements PressKit {
         return resource != null && DamUtil.isAsset(resource);
     }
 
+    // Filter assets to remove bannerImage
+    private Collection<? extends AssetModel> filterAssets(Collection<? extends AssetModel> assets, String bannerImage) {
+        if (bannerImage == null) {
+            return assets;
+        }
+
+        String bannerImageRegex = bannerImage.replaceAll("\\.", "\\\\.").replaceAll("\\*", ".*");
+
+        final List<AssetModel> results = new ArrayList<>();
+        assets.forEach(asset -> {
+            // Regex match asset.getName() with bannerImage
+            if (!asset.getName().matches(bannerImageRegex)) {
+                results.add(asset);
+            }
+        });
+        return results;
+    }
 
 }

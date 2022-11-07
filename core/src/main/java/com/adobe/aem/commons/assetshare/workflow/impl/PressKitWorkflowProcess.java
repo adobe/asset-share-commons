@@ -35,10 +35,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.adobe.aem.commons.assetshare.util.DamUtil.isAssetFolder;
 import static com.day.cq.commons.jcr.JcrConstants.*;
 import static com.day.cq.dam.api.DamConstants.NT_DAM_ASSET;
-import static org.apache.sling.jcr.resource.api.JcrResourceConstants.NT_SLING_ORDERED_FOLDER;
-import static org.apache.sling.jcr.resource.api.JcrResourceConstants.SLING_RESOURCE_TYPE_PROPERTY;
+import static org.apache.sling.jcr.resource.api.JcrResourceConstants.*;
 
 @Component(service = WorkflowProcess.class, property = {
         "process.label=Press Kit generator",
@@ -57,8 +57,8 @@ public class PressKitWorkflowProcess implements WorkflowProcess {
     private static final String WORKFLOW_BANNER_COMPONENT_TEXT_PROPERTY_NAME = "BANNER_COMPONENT_TEXT_PROPERTY_NAME";
     private static final String WORKFLOW_ROOT_PAGE_PATH = "ROOT_PAGE_PATH";
 
-    private static final String WORKFLOW_PRESS_KIT_PAGE_ID = "PRESS_KIT_PAGE_ID";
-    private static final String WORKFLOW_PRESS_KIT_FOLDER_PATH = "PRESS_KIT_FOLDER_PATH";
+    public static final String WORKFLOW_PRESS_KIT_PAGE_ID = "PRESS_KIT_PAGE_ID";
+    public static final String WORKFLOW_PRESS_KIT_FOLDER_PATH = "PRESS_KIT_FOLDER_PATH";
 
 
     @Reference
@@ -69,7 +69,7 @@ public class PressKitWorkflowProcess implements WorkflowProcess {
         final ResourceResolver resourceResolver = workflowSession.adaptTo(ResourceResolver.class);
         final String payload = workItem.getWorkflowData().getPayload().toString();
 
-        if (!StringUtils.startsWith(payload, "/content/dam/") || resourceResolver.getResource(payload) == null || !resourceResolver.getResource(payload).isResourceType("nt:folder")) {
+        if (!isAssetFolder(resourceResolver, payload)) {
             throw new WorkflowException(String.format("Payload [ %s ] is not a valid DAM asset folder.", payload));
         }
 
@@ -106,6 +106,9 @@ public class PressKitWorkflowProcess implements WorkflowProcess {
             // Get or create the press kit page
             Page page = getOrCreatePressKitPage(resourceResolver, pressKitId, templatePath, pressKitName);
 
+            // Save the page
+            payloadResource.getChild("metadata").adaptTo(ModifiableValueMap.class).put(FOLDER_PROPERTY_PRESS_KIT_ID, page.getPath());
+
             // Update the Banner component on the page
 
             // Update the image reference
@@ -117,8 +120,6 @@ public class PressKitWorkflowProcess implements WorkflowProcess {
             // Update the Press Kit component on the page
             updateComponentOnPage(page, pressKitResourceType, pressKitProperty, payload);
 
-            // Save the page
-            payloadResource.adaptTo(ModifiableValueMap.class).put(FOLDER_PROPERTY_PRESS_KIT_ID, page.getPath());
 
             resourceResolver.commit();
 
@@ -175,19 +176,21 @@ public class PressKitWorkflowProcess implements WorkflowProcess {
         } else {
             return null;
         }
-
     }
 
 
     private Page getOrCreatePressKitPage(ResourceResolver resourceResolver, String pressKitId, String templatePath, String pageTitle) throws RepositoryException, WCMException {
         final PageManager pageManager = resourceResolver.adaptTo(PageManager.class);
 
-        if (pageManager.getPage(pressKitId) != null) {
-            return pageManager.getPage(pressKitId);
+        Page page = pageManager.getPage(pressKitId);
+        if (page != null) {
+            page.getContentResource().adaptTo(ModifiableValueMap.class).put("jcr:title", pageTitle);
         } else {
             final Node node = JcrUtil.createPath(StringUtils.substringBeforeLast(pressKitId, "/"), NT_SLING_ORDERED_FOLDER, NT_SLING_ORDERED_FOLDER, resourceResolver.adaptTo(Session.class), false);
-            return pageManager.create(node.getPath(), StringUtils.substringAfterLast(pressKitId, "/"), templatePath, pageTitle, false);
+            page = pageManager.create(node.getPath(), StringUtils.substringAfterLast(pressKitId, "/"), templatePath, pageTitle, true);
         }
+
+        return page;
     }
 
     private <T> boolean persistData(WorkItem workItem, WorkflowSession workflowSession, String key, T val) {

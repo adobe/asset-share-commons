@@ -22,10 +22,8 @@ package com.adobe.aem.commons.assetshare.content.properties.impl;
 import com.adobe.aem.commons.assetshare.content.properties.AbstractComputedProperty;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
 import com.day.cq.dam.api.Asset;
-import com.day.cq.dam.api.DamConstants;
-import com.day.cq.dam.commons.util.UIHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
-import org.apache.sling.api.resource.ValueMap;
 import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -41,10 +39,10 @@ import static com.adobe.aem.commons.assetshare.content.properties.ComputedProper
                 Constants.SERVICE_RANKING + "=" + DEFAULT_ASC_COMPUTED_PROPERTY_SERVICE_RANKING
         }
 )
-@Designate(ocd = FileSizeImpl.Cfg.class)
-public class FileSizeImpl extends AbstractComputedProperty<String> {
-    public static final String LABEL = "File Size";
-    public static final String NAME = "fileSize";
+@Designate(ocd = FileExtensionImpl.Cfg.class)
+public class FileExtensionImpl extends AbstractComputedProperty<String> {
+    public static final String LABEL = "File Extension";
+    public static final String NAME = "fileExtension";
     private Cfg cfg;
 
     @Override
@@ -64,23 +62,7 @@ public class FileSizeImpl extends AbstractComputedProperty<String> {
 
     @Override
     public String get(Asset asset, SlingHttpServletRequest request) {
-        final ValueMap metadata = getMetadataProperties(asset);
-
-        Long bytes = metadata.get(DamConstants.DAM_SIZE, Long.class);
-
-        if (bytes == null) {
-            if (asset.getOriginal() != null) {
-                bytes = asset.getOriginal().getSize();
-            } else {
-                bytes = 0l;
-            }
-        }
-
-        if (request != null) {
-            return UIHelper.getSizeLabel(bytes, request);
-        } else {
-            return UIHelper.getSizeLabel(bytes);
-        }
+        return StringUtils.substringAfterLast(asset.getName(), ".");
     }
 
     @Activate
@@ -88,7 +70,7 @@ public class FileSizeImpl extends AbstractComputedProperty<String> {
         this.cfg = cfg;
     }
 
-    @ObjectClassDefinition(name = "Asset Share Commons - Computed Property - File Size")
+    @ObjectClassDefinition(name = "Asset Share Commons - Computed Property - File Extension")
     public @interface Cfg {
         @AttributeDefinition(
                 name = "Label",
