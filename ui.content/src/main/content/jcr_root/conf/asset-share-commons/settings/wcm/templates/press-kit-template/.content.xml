@@ -2,8 +2,6 @@
 <jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
     jcr:primaryType="cq:Template">
     <jcr:content
-        cq:lastModified="{Date}2022-10-25T14:51:47.107-04:00"
-        cq:lastModifiedBy="admin"
         cq:templateType="/conf/asset-share-commons/settings/wcm/template-types/press-kit-page"
         jcr:primaryType="cq:PageContent"
         jcr:title="Press Kit Template"

@@ -1,4 +1,4 @@
-<jcr:root jcr:primaryType="nt:unstructured" jcr:title="Asset Share Commons - Presskit generator"
+<jcr:root jcr:primaryType="nt:unstructured" jcr:title="Press kit generator (Asset Share Commons)"
           helpPath="https://opensource.adobe.com/asset-share-commons/press-kit.html"
           sling:resourceType="cq/gui/components/authoring/dialog" xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
           xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
