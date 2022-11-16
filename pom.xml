@@ -461,7 +461,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                 <!-- Maven Javadoc Plugin -->
                 <plugin>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.4.0</version>
+                    <version>3.4.1</version>
                     <configuration>
                         <encoding>${project.build.sourceEncoding}</encoding>
                         <excludePackageNames>
