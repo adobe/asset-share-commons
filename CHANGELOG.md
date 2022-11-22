@@ -2,10 +2,32 @@
 
 ## [Unreleased](https://github.com/adobe/asset-share-commons/tree/HEAD)
 
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.4.4...HEAD)
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.4.6...HEAD)
+
+### 🐛 Bug fixes
+
+- Upgrade Moderniznr to 3.6.0 [\#857](https://github.com/adobe/asset-share-commons/pull/857) ([davidjgonzalez](https://github.com/davidjgonzalez))
 
 ### 📁 Other pull requests
 
+- Bump loader-utils, html-webpack-plugin and webpack-cli in /ui.frontend.theme.dark [\#851](https://github.com/adobe/asset-share-commons/pull/851) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump loader-utils, html-webpack-plugin and webpack-cli in /ui.frontend.theme.light [\#850](https://github.com/adobe/asset-share-commons/pull/850) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump mockito-core from 4.6.1 to 4.8.1 [\#847](https://github.com/adobe/asset-share-commons/pull/847) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump aemanalyser-maven-plugin from 1.4.10 to 1.4.20 [\#846](https://github.com/adobe/asset-share-commons/pull/846) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump maven-javadoc-plugin from 3.4.0 to 3.4.1 [\#844](https://github.com/adobe/asset-share-commons/pull/844) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Replace deprecated set-output command with \>\> $GITHUB\_OUTPUT [\#842](https://github.com/adobe/asset-share-commons/pull/842) ([davidjgonzalez](https://github.com/davidjgonzalez))
+
+## [asset-share-commons-2.4.6](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.4.6) (2022-11-22)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.4.4...asset-share-commons-2.4.6)
+
+## [asset-share-commons-2.4.4](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.4.4) (2022-10-28)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.4.2...asset-share-commons-2.4.4)
+
+### 📁 Other pull requests
+
+- v2.4.4 release [\#841](https://github.com/adobe/asset-share-commons/pull/841) ([davidjgonzalez](https://github.com/davidjgonzalez))
 - Bump minimist and mkdirp in /ui.frontend.theme.light [\#840](https://github.com/adobe/asset-share-commons/pull/840) ([dependabot[bot]](https://github.com/apps/dependabot))
 - exclude embedded ACS AEM Commons classes from javadoc [\#839](https://github.com/adobe/asset-share-commons/pull/839) ([kwin](https://github.com/kwin))
 - Minify only when necessary [\#838](https://github.com/adobe/asset-share-commons/pull/838) ([kwin](https://github.com/kwin))
@@ -19,10 +41,6 @@
 - Bump minimist from 1.2.0 to 1.2.6 in /ui.frontend.theme.dark [\#811](https://github.com/adobe/asset-share-commons/pull/811) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump terser from 4.6.3 to 4.8.1 in /ui.frontend.theme.dark [\#796](https://github.com/adobe/asset-share-commons/pull/796) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump terser from 4.6.3 to 4.8.1 in /ui.frontend.theme.light [\#795](https://github.com/adobe/asset-share-commons/pull/795) ([dependabot[bot]](https://github.com/apps/dependabot))
-
-## [asset-share-commons-2.4.4](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.4.4) (2022-10-28)
-
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.4.2...asset-share-commons-2.4.4)
 
 ## [asset-share-commons-2.4.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.4.2) (2022-10-25)
 
