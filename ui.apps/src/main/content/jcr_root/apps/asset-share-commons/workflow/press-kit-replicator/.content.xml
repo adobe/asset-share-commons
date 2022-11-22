@@ -23,5 +23,5 @@
           jcr:title="Press kit replication"
           allowedParents="[*/parsys]"
           componentGroup="DAM Workflow"
-          abbreviation="PK"
+          cq:icon="experienceExport"
           sling:resourceSuperType="cq/workflow/components/model/process"/>

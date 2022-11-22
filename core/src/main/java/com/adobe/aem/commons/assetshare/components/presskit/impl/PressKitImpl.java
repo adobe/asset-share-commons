@@ -55,15 +55,11 @@ public class PressKitImpl implements PressKit {
         for (final String path : paths) {
             final Resource resource = request.getResourceResolver().getResource(path);
             if (resource != null) {
-                /*
                 if (isAssetPath(resource)) {
                     assets.addAll(getAssetsFromAssetPath(resource));
-                } else if (isAssetFolderPath(resource)) {
-
-                } else if (isAssetCollectionPath(resource)) {
-                    assets.addAll(getAssetsFromAssetCollectionPath(resource));
-                }*/
-                assets.addAll(getAssetsFromAssetFolderPath(resource));
+                } else if (com.adobe.aem.commons.assetshare.util.DamUtil.isAssetFolder(resource.getResourceResolver(), resource.getPath())) {
+                    assets.addAll(getAssetsFromAssetFolderPath(resource));
+                }
             }
         }
 
@@ -73,19 +69,6 @@ public class PressKitImpl implements PressKit {
     @Override
     public boolean isReady() {
         return getAssets().size() > 0;
-    }
-
-    private Collection<? extends AssetModel> getAssetsFromAssetCollectionPath(Resource resource) {
-        final List<AssetModel> results = new ArrayList<>();
-        final ResourceCollection collection = resource.adaptTo(ResourceCollection.class);
-        if (collection != null) {
-            collection.getResources().forEachRemaining(r -> {
-                if (isAssetPath(r)) {
-                    results.addAll(getAssetsFromAssetPath(r));
-                }
-            });
-        }
-        return results;
     }
 
     private Collection<? extends AssetModel> getAssetsFromAssetFolderPath(Resource resource) {

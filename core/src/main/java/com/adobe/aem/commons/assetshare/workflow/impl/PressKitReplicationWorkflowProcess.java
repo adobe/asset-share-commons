@@ -9,7 +9,6 @@ import com.adobe.granite.workflow.metadata.MetaDataMap;
 import com.day.cq.dam.commons.util.DamUtil;
 import com.day.cq.replication.ReplicationActionType;
 import com.day.cq.replication.ReplicationException;
-import com.day.cq.replication.ReplicationStatus;
 import com.day.cq.replication.Replicator;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -25,8 +24,8 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.Session;
 import java.util.*;
 
-import static com.adobe.aem.commons.assetshare.workflow.impl.PressKitWorkflowProcess.WORKFLOW_PRESS_KIT_FOLDER_PATH;
-import static com.adobe.aem.commons.assetshare.workflow.impl.PressKitWorkflowProcess.WORKFLOW_PRESS_KIT_PAGE_ID;
+import static com.adobe.aem.commons.assetshare.workflow.impl.PressKitCreatorWorkflowProcess.WORKFLOW_PRESS_KIT_FOLDER_PATH;
+import static com.adobe.aem.commons.assetshare.workflow.impl.PressKitCreatorWorkflowProcess.WORKFLOW_PRESS_KIT_PAGE_ID;
 
 @Component(service = WorkflowProcess.class, property = {
         "process.label=Press Kit activator",
