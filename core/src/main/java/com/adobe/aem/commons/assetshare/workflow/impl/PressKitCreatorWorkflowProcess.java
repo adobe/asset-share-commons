@@ -43,8 +43,8 @@ import static org.apache.sling.jcr.resource.api.JcrResourceConstants.*;
 @Component(service = WorkflowProcess.class, property = {
         "process.label=Press Kit generator",
 })
-public class PressKitWorkflowProcess implements WorkflowProcess {
-    private static final Logger log = LoggerFactory.getLogger(PressKitWorkflowProcess.class);
+public class PressKitCreatorWorkflowProcess implements WorkflowProcess {
+    private static final Logger log = LoggerFactory.getLogger(PressKitCreatorWorkflowProcess.class);
 
     private static final String FOLDER_PROPERTY_PRESS_KIT_NAME = "pressKitName";
     private static final String FOLDER_PROPERTY_PRESS_KIT_BANNER_IMAGE = "pressKitBannerImage";

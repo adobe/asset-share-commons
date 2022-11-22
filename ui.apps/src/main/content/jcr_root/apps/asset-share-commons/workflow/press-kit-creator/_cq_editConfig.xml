@@ -22,11 +22,11 @@
           cq:inherit="{Boolean}true"
           jcr:primaryType="cq:EditConfig">
     <cq:formParameters
-            jcr:description="An AEM workflow process to generate a press kit from a set of assets."
+            jcr:description="An AEM workflow process to create a press kit from a set of assets."
             jcr:primaryType="nt:unstructured"
-            jcr:title="Press kit"
+            jcr:title="Press kit creator"
 
-            PROCESS="com.adobe.aem.commons.assetshare.workflow.impl.PressKitWorkflowProcess"
+            PROCESS="com.adobe.aem.commons.assetshare.workflow.impl.PressKitCreatorWorkflowProcess"
             PROCESS_AUTO_ADVANCE="true"
 
             BANNER_COMPONENT_IMAGE_PROPERTY_NAME="fileReference"

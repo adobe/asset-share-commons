@@ -44,15 +44,15 @@
                     <column jcr:primaryType="nt:unstructured"
                             sling:resourceType="granite/ui/components/coral/foundation/container">
                         <items jcr:primaryType="nt:unstructured">
-                            <arguments jcr:primaryType="nt:unstructured" jcr:title="Press kit generator configuration"
+                            <arguments jcr:primaryType="nt:unstructured" jcr:title="Press kit creator configuration"
                                        sling:resourceType="granite/ui/components/coral/foundation/form/fieldset">
                                 <items jcr:primaryType="nt:unstructured">
                                     <root-page-path jcr:primaryType="nt:unstructured"
                                                    sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
-                                                   fieldLabel="Press kit root path"
+                                                   fieldLabel="Press kit pages root path"
                                                    rootPath="/content"
                                                    required="{Boolean}true"
-                                                    emptyText="Defaults to: /content/press-kits"
+                                                   emptyText="Defaults to: /content/press-kits"
                                                    name="./metaData/ROOT_PATH_PATH"/>
 
                                     <template-path jcr:primaryType="nt:unstructured"
@@ -103,7 +103,7 @@
                               sling:resourceType="granite/ui/components/coral/foundation/form/hidden"
                               cq:hideOnEdit="true"
                               name="./metaData/PROCESS"
-                              value="com.adobe.aem.commons.assetshare.workflow.impl.PressKitWorkflowProcess"/>
+                              value="com.adobe.aem.commons.assetshare.workflow.impl.PressKitCreatorWorkflowProcess"/>
 
         </items>
     </content>

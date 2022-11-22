@@ -18,8 +18,8 @@
   -->
 
 <jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
-          cq:icon="button"
           jcr:primaryType="cq:Component"
           jcr:title="Press kit"
           jcr:description="Displays the assets that are part of the press kit."
+          cq:icon="experience"
           componentGroup="Asset Share Commons - Press Kit"/>
