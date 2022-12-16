@@ -66,13 +66,17 @@ The text for the button that lets users download all assets in the cart.
 
 An ajax POST call is triggered to load the Cart modal. The POST method is used to avoid a lengthy URI request calls with multiple asset path parameters. The [ActionPageServlet](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/blob/master/core/src/main/java/com/adobe/aem/commons/assetshare/components/actions/impl/ActionPageServlet.java) is used to load the Cart modal and all other modals.
 
-#### ContextHub
+#### ContextHub (Asset Share Commons v1.x.x only)
+
+The Cart in Asset Share Commons v1.x.x. relied on Context Hub. In version v2.x.x of Asset Share Commons, the dependency on Context Hub was removed, and the cart in now persisted directly in browser storage, removing the need to load Context Hub soley to use the Cart. Context Hub can still be used in conjenctiong with Asset Share Commons, simply [specify a Context Hub configuration on root page's Personalization tab](https://experienceleague.adobe.com/docs/experience-manager-learn/sites/page-authoring/page-properties-feature-video-understand.html).
+
+##### Asset Share Commons v1.x.x only
 
 The Cart in Asset Share Commons runs on a custom ContextHub store (`/apps/asset-share-commons/clientlibs/clientlib-contexthub/cart`).
 
 In order for the cart to function correctly this cart must be loaded via the page hierarchy. 
 A simple ContextHub configuration exposing this store is provided at `/etc/cloudsettings/asset-share-commons/contexthub`,
-and can be set on the [Search page's Page Properties' Personalization tab](../search/#page-properties).
+and can be set on the [Search page's Page Properties' Personalization tab]([../search/#page-properties](https://experienceleague.adobe.com/docs/experience-manager-learn/sites/page-authoring/page-properties-feature-video-understand.html?lang=en)).
 
  
 
