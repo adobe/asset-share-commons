@@ -1,0 +1,231 @@
+<!--/*
+  ~ Asset Share Commons
+  ~
+  ~ Copyright [2022]  Adobe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+ */-->
+<sly data-sly-use.pressKit="com.adobe.aem.commons.assetshare.components.assetkit.AssetKit"
+     data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html"
+     data-sly-test.ready="${pressKit.ready}">
+
+
+    <style>
+
+    .basicpage {
+        max-width: 1200px;
+        margin: 0 auto;
+     }
+
+    .cmp-assets-kit__assets-kit-size {
+        text-align: right;
+    }
+
+     .cmp-image {
+        position: relative;
+     }
+
+     .cmp-image__title {
+        text-align: center;
+        font-size: 4rem;
+        margin: 2rem 0;
+        display: block;
+     }
+
+    .cmp-assets-kit__asset-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 40px;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .cmp-assets-kit__asset-item {
+        margin: 0;
+        height: 100%;
+    }
+
+    .cmp-assets-kit__asset {
+        padding: 1.5rem;
+        height: 100%;
+        box-shadow: 0px 0px 10px 0 rgba(0,0,0,0.15);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cmp-assets-kit__asset-content {
+        display: block;
+    }
+
+    .cmp-assets-kit__asset-actions {
+        margin-top: auto;
+        padding-top: 1rem;
+    }
+
+
+    .cmp-assets-kit__asset-badge {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        padding: 1rem 1.25rem;
+        background-color: #333;
+        border-radius: 5px;
+        color: #ffffff;
+        text-transform: uppercase;
+    }
+
+/*
+    .cmp-assets-kit__asset-badge--IMAGE {
+       background-color: #FFBE86;
+       color: black;
+    }
+
+    .cmp-assets-kit__asset-badge--PRESENTATION {
+       background-color: #ffe156;
+       color: black;
+    }
+
+    .cmp-assets-kit__asset-badge--MULTIMEDIA {
+       background-color: #3777FF;
+       color: white;
+    }
+
+    .cmp-assets-kit__asset-badge--DOCUMENT {
+       background-color: #FFE9CE;
+       color: black;
+    }
+*/
+
+    .cmp-assets-kit__asset-image {
+        max-height: 200px;
+        object-fit: cover;
+        margin: 0 auto 2rem auto;
+        display: block;
+        width: 100%;
+        height: 250px;
+        object-position: center;
+    }
+
+    .cmp-assets-kit__asset-download-button {
+        margin-top: auto;
+        padding: .5rem 1rem;
+        background-color: #8bb2c6;
+        border-radius: 5px;
+        color: white;
+        display: inline-block;
+        bottom: 1rem;
+    }
+
+    .cmp-assets-kit__asset-download-button:hover {
+        color: white;
+        font-weight: bold
+    }
+
+    .cmp-assets-kit__asset-title {
+        font-weight: bold;
+        font-size: 1.25rem;
+    }
+
+    table.cmp-assets-kit__metadata {
+        background-color: #f7f7f7;
+        width: 100%;
+        border-radius: 5px;
+        border: solid 1px #e1e1e1;
+        margin-bottom: .5rem;
+    }
+
+    .cmp-assets-kit__metadata-description hr {
+        border: 0;
+        border-bottom: solid 1px #e1e1e1;
+        margin-top: .5rem;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .cmp-assets-kit__metadata .cmp-assets-kit__metadata-entry {
+    }
+
+    .cmp-assets-kit__metadata td {
+        padding: .5rem 1rem;
+    }
+
+    .cmp-assets-kit__metadata-entry-title {
+        white-space: nowrap;
+        vertical-align: top;
+    }
+
+    .cmp-assets-kit__metadata-entry-value {
+        vertical-align: top;
+        width: 100%;
+        word-break: break-word;
+        margin-left: 0;
+        padding-left: 0 !important;
+    }
+
+    .cmp-assets-kit__metadata-format.cmp-assets-kit__metadata-entry-value {
+        text-transform: uppercase;
+    }
+
+    </style>
+
+    <p class="cmp-assets-kit__assets-kit-size">
+        Kit contains ${pressKit.assets.size} assets.
+    </p>
+
+    <ul class="cmp-assets-kit__asset-list" data-sly-list.asset="${pressKit.assets}">
+        <li class="cmp-assets-kit__asset-item">
+            <div class="cmp-assets-kit__asset cmp-assets-kit__asset--${asset.properties['type']}" >
+                <div class="cmp-assets-kit__asset-content">
+                    <div class="cmp-assets-kit__asset-badge cmp-assets-kit__asset-badge--${asset.properties['type']}">${asset.properties['type']}</div>
+                    <img class="cmp-assets-kit__asset-image" src="${asset.properties['rendition?name=card']}" alt="${asset.name}"/>
+                    <p class="cmp-assets-kit__asset-title">${asset.title}</p>
+
+
+                    <table class="cmp-assets-kit__metadata">
+                        <tr class="cmp-assets-kit__metadata-entry"
+                            data-sly-test="${asset.properties['dc:description']}">
+                            <td colspan="2" class="cmp-assets-kit__metadata-item cmp-assets-kit__metadata-description">
+                                ${asset.properties['dc:description']}
+                                <hr/>
+                            </td>
+                        </tr>
+                        <tr class="cmp-assets-kit__metadata-entry"
+                            data-sly-test="${asset.name}">
+                            <td class="cmp-assets-kit__metadata-description cmp-assets-kit__metadata-entry-title">File name:</td>
+                            <td class="cmp-assets-kit__metadata-description cmp-assets-kit__metadata-entry-value">${asset.name}</td>
+                        </tr>
+
+                        <tr>
+                            <td class="cmp-assets-kit__metadata-format cmp-assets-kit__metadata-entry-title">Format:</td>
+                            <td class="cmp-assets-kit__metadata-format cmp-assets-kit__metadata-entry-value">${asset.properties['fileExtension']}</td>
+                        </tr>
+
+                        <tr>
+                            <td class="cmp-assets-kit__metadata-format cmp-assets-kit__metadata-entry-title">Size:</td>
+                            <td class="cmp-assets-kit__metadata-format cmp-assets-kit__metadata-entry-value">${asset.properties['fileSize']}</td>
+                        </tr>
+
+                    </table>
+                </div>
+
+                <div class="cmp-assets-kit__asset-actions">
+                    <a class="cmp-assets-kit__asset-download-button" href="${asset.path}">Download</a>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+</sly>
+<sly data-sly-call="${placeholderTemplate.placeholder @ isEmpty=!ready}"></sly>
