@@ -1,0 +1,90 @@
+{
+  "test.png": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:content": {
+      "jcr:primaryType": "nt:unstructured"
+    }
+  },
+  "ntFolder": {
+    "jcr:primaryType": "nt:folder",
+    "jcr:content": {
+      "jcr:primaryType": "nt:unstructured"
+    },
+    "test-1.png": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured"
+      }
+    },
+    "test-2.png": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured"
+      }
+    }
+  },
+  "folder": {
+    "jcr:primaryType": "sling:OrderedFolder",
+    "jcr:content": {
+      "jcr:primaryType": "nt:unstructured"
+    },
+    "test-3.png": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured"
+      }
+    },
+    "test-4.png": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured"
+      }
+    }
+  },
+  "orderedFolder": {
+    "jcr:primaryType": "sling:OrderedFolder",
+    "jcr:content": {
+      "jcr:primaryType": "nt:unstructured"
+    },
+    "test-5.png": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured"
+      }
+    },
+    "test-6.png": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured"
+      }
+    }
+  },
+  "collections": {
+    "jcr:primaryType": "nt:unstructured",
+    "my-collection": {
+      "jcr:primaryType": "nt:unstructured",
+      "sling:resourceType": "dam/collection",
+      "sling:resourceSuperType": "sling/collection",
+      "sling:members": {
+        "jcr:primaryType": "nt:unstructured",
+        "sling:resources": [
+          "/content/dam/ntFolder/test-1.png",
+          "/content/dam/folder/test-3.png",
+          "/content/dam/orderedFolder/test-6.png"
+        ],
+        "test-1.png": {
+          "jcr:primaryType": "nt:unstructured",
+          "sling:resource": "/content/dam/ntFolder/test-1.png"
+        },
+        "test-3.png": {
+          "jcr:primaryType": "nt:unstructured",
+          "sling:resource": "/content/dam/folder/test-3.png"
+        },
+        "test-6.png": {
+          "jcr:primaryType": "nt:unstructured",
+          "sling:resource": "/content/dam/orderedFolder/test-6.png"
+        }
+      }
+    }
+  }
+}

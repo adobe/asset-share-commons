@@ -1,0 +1,106 @@
+<jcr:root jcr:primaryType="nt:unstructured" jcr:title="Assets kit creator (Asset Share Commons)"
+          helpPath="https://opensource.adobe.com/asset-share-commons/assets-kit.html"
+          sling:resourceType="cq/gui/components/authoring/dialog" xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+          xmlns:granite="http://www.adobe.com/jcr/granite/1.0"
+          xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+          xmlns:nt="http://www.jcp.org/jcr/nt/1.0">
+    <content jcr:primaryType="nt:unstructured" sling:resourceType="granite/ui/components/coral/foundation/tabs">
+        <items jcr:primaryType="nt:unstructured">
+            <common jcr:primaryType="nt:unstructured" cq:hideOnEdit="true"/>
+            <process jcr:primaryType="nt:unstructured" cq:hideOnEdit="true"/>
+            <processcommon jcr:primaryType="nt:unstructured" jcr:title="Common"
+                           sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns">
+                <items jcr:primaryType="nt:unstructured">
+                    <column jcr:primaryType="nt:unstructured"
+                            sling:resourceType="granite/ui/components/coral/foundation/container">
+                        <items jcr:primaryType="nt:unstructured">
+                            <basic jcr:primaryType="nt:unstructured"
+                                   sling:resourceType="granite/ui/components/coral/foundation/form/fieldset">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <title jcr:primaryType="nt:unstructured"
+                                           sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                           disabled="false" fieldLabel="Title" name="./jcr:title"/>
+                                    <description jcr:primaryType="nt:unstructured"
+                                                 sling:resourceType="granite/ui/components/coral/foundation/form/textarea"
+                                                 disabled="false" fieldLabel="Description" name="./jcr:description"/>
+                                </items>
+                            </basic>
+                            <advanced jcr:primaryType="nt:unstructured" jcr:title="Advanced Settings"
+                                      sling:resourceType="granite/ui/components/coral/foundation/form/fieldset">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <advance jcr:primaryType="nt:unstructured"
+                                             sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                             fieldDescription="Check if your handler will advance to the next step."
+                                             fieldLabel="Handler Advance" name="./metaData/PROCESS_AUTO_ADVANCE"
+                                             text="Handler Advance" value="true"/>
+                                </items>
+                            </advanced>
+                        </items>
+                    </column>
+                </items>
+            </processcommon>
+            <processargs jcr:primaryType="nt:unstructured" jcr:title="Arguments"
+                         sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns">
+                <items jcr:primaryType="nt:unstructured">
+                    <column jcr:primaryType="nt:unstructured"
+                            sling:resourceType="granite/ui/components/coral/foundation/container">
+                        <items jcr:primaryType="nt:unstructured">
+                            <arguments jcr:primaryType="nt:unstructured" jcr:title="Assets kit configuration"
+                                       sling:resourceType="granite/ui/components/coral/foundation/form/fieldset">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <root-page-path jcr:primaryType="nt:unstructured"
+                                                   sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
+                                                   fieldLabel="Assets kit pages root path"
+                                                   rootPath="/content"
+                                                   required="{Boolean}true"
+                                                   emptyText="Defaults to: /content/assets-kits"
+                                                   name="./metaData/ROOT_PATH_PATH"/>
+
+                                    <template-path jcr:primaryType="nt:unstructured"
+                                                   sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
+                                                   fieldLabel="Assets kit page template path"
+                                                   rootPath="/conf"
+                                                   required="{Boolean}true"
+                                                   name="./metaData/ASSETS_KIT_PAGE_TEMPLATE_PATH"/>
+
+                                    <track-and-update jcr:primaryType="nt:unstructured"
+                                                      sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                      uncheckedValuestring="{Boolean}false"
+                                                      value="{Boolean}true"
+                                                      checked="{Boolean}true"
+                                                      text="Select to link an asset kit to the payload."
+                                                      name="./metaData/TRACK_AND_UPDATE"/>
+
+                                    <component-updaters
+                                            jcr:primaryType="nt:unstructured"
+                                            fieldLabel="Component updaters"
+                                            fieldDescription="Select which component updaters should be used when processing the assets kit page.."
+                                            required="{Boolean}true"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/multifield">
+                                        <field
+                                                jcr:primaryType="nt:unstructured"
+                                                name="./metaData/COMPONENT_UPDATER_IDS"
+                                                emptyText="Select at least one component updater"
+                                                required="{Boolean}true"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/select">
+                                            <datasource
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="asset-share-commons/data-sources/assets-kit/component-updaters"/>
+                                        </field>
+                                    </component-updaters>
+
+                                </items>
+                            </arguments>
+                        </items>
+                    </column>
+                </items>
+            </processargs>
+            <workflow-process jcr:primaryType="nt:unstructured"
+                              sling:resourceType="granite/ui/components/coral/foundation/form/hidden"
+                              cq:hideOnEdit="true"
+                              name="./metaData/PROCESS"
+                              value="com.adobe.aem.commons.assetshare.workflow.assetkit.impl.AssetKitCreatorWorkflowProcess"/>
+
+        </items>
+    </content>
+</jcr:root>
