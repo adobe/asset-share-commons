@@ -22,14 +22,14 @@
           cq:inherit="{Boolean}true"
           jcr:primaryType="cq:EditConfig">
     <cq:formParameters
-            jcr:description="An AEM workflow process to create a assets kit from a set of assets."
+            jcr:description="An AEM workflow process to create a asset kit from a set of assets."
             jcr:primaryType="nt:unstructured"
-            jcr:title="Assets kit creation"
+            jcr:title="Asset kit creation"
 
             PROCESS="com.adobe.aem.commons.assetshare.workflow.assetkit.impl.AssetKitCreatorWorkflowProcess"
             PROCESS_AUTO_ADVANCE="true"
 
-            ROOT_PAGE_PATH="/content/assets-kits"
+            ROOT_PAGE_PATH="/content/asset-kits"
             TRACK_AND_UPDATE="{Boolean}true"
     />
 </jcr:root>
