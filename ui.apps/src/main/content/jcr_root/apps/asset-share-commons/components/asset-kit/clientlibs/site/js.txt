@@ -1,4 +1,1 @@
 #base=js
-
-cart.js
-cart-actions.js

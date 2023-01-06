@@ -20,5 +20,5 @@
 <jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
           jcr:primaryType="cq:ClientLibraryFolder"
           jsProcessor="[min:gcc,default:none]"
-          categories="[asset-share-commons.site.semantic-ui.components,asset-share-commons.site.semantic-ui.components.modals.cart]"
-          dependencies="[asset-share-commons.common,asset-share-commons.cart,asset-share-commons.site.semantic-ui.modal,asset-share-commons.site.semantic-ui.components.modals.license,asset-share-commons.site.semantic-ui.components.modals.download,asset-share-commons.site.semantic-ui.components.modals.share]"/>
+          categories="[asset-share-commons.site.asset-kit.components]"
+          dependencies="[]"/>

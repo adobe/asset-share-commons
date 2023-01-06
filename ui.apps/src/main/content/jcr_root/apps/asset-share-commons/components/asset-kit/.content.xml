@@ -19,7 +19,7 @@
 
 <jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
           jcr:primaryType="cq:Component"
-          jcr:title="Assets kit"
+          jcr:title="Asset kit"
           jcr:description="Displays the assets to display as part of a kit web page."
           cq:icon="experience"
-          componentGroup="Asset Share Commons - Assets kit"/>
+          componentGroup="Asset Share Commons - Asset kit"/>

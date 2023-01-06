@@ -1,5 +1,5 @@
-<jcr:root jcr:primaryType="nt:unstructured" jcr:title="Assets kit creator (Asset Share Commons)"
-          helpPath="https://opensource.adobe.com/asset-share-commons/assets-kit.html"
+<jcr:root jcr:primaryType="nt:unstructured" jcr:title="Asset kit creator (Asset Share Commons)"
+          helpPath="https://opensource.adobe.com/asset-share-commons/asset-kit.html"
           sling:resourceType="cq/gui/components/authoring/dialog" xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
           xmlns:granite="http://www.adobe.com/jcr/granite/1.0"
           xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
@@ -45,20 +45,20 @@
                     <column jcr:primaryType="nt:unstructured"
                             sling:resourceType="granite/ui/components/coral/foundation/container">
                         <items jcr:primaryType="nt:unstructured">
-                            <arguments jcr:primaryType="nt:unstructured" jcr:title="Assets kit configuration"
+                            <arguments jcr:primaryType="nt:unstructured" jcr:title="Asset kit configuration"
                                        sling:resourceType="granite/ui/components/coral/foundation/form/fieldset">
                                 <items jcr:primaryType="nt:unstructured">
                                     <root-page-path jcr:primaryType="nt:unstructured"
                                                    sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
-                                                   fieldLabel="Assets kit pages root path"
+                                                   fieldLabel="Asset kit pages root path"
                                                    rootPath="/content"
                                                    required="{Boolean}true"
-                                                   emptyText="Defaults to: /content/assets-kits"
+                                                   emptyText="Defaults to: /content/asset-kits"
                                                    name="./metaData/ROOT_PATH_PATH"/>
 
                                     <template-path jcr:primaryType="nt:unstructured"
                                                    sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
-                                                   fieldLabel="Assets kit page template path"
+                                                   fieldLabel="Asset kit page template path"
                                                    rootPath="/conf"
                                                    required="{Boolean}true"
                                                    name="./metaData/ASSETS_KIT_PAGE_TEMPLATE_PATH"/>
@@ -74,7 +74,7 @@
                                     <component-updaters
                                             jcr:primaryType="nt:unstructured"
                                             fieldLabel="Component updaters"
-                                            fieldDescription="Select which component updaters should be used when processing the assets kit page.."
+                                            fieldDescription="Select which component updaters should be used when processing the asset kit page.."
                                             required="{Boolean}true"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/multifield">
                                         <field
@@ -85,7 +85,7 @@
                                                 sling:resourceType="granite/ui/components/coral/foundation/form/select">
                                             <datasource
                                                     jcr:primaryType="nt:unstructured"
-                                                    sling:resourceType="asset-share-commons/data-sources/assets-kit/component-updaters"/>
+                                                    sling:resourceType="asset-share-commons/data-sources/asset-kit/component-updaters"/>
                                         </field>
                                     </component-updaters>
 
