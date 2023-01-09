@@ -32,14 +32,11 @@ public class AssetKitImpl implements AssetKit {
     @Optional
     private Collection<String> paths;
 
-    @ValueMapValue
-    @Optional
-    private String displayResourceType;
-
     @OSGiService
     private AssetKitHelper assetKitHelper;
 
     @OSGiService
+    @Optional
     private AssetKit.Filter assetsFilter;
 
     Collection<? extends AssetModel> assets;
