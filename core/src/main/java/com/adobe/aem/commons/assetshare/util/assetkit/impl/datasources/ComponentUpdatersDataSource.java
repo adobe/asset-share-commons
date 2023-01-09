@@ -1,7 +1,7 @@
 /*
  * Asset Share Commons
  *
- * Copyright (C) 2019 Adobe
+ * Copyright (C) 2023 Adobe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
  * limitations under the License.
  *
  */
-
 package com.adobe.aem.commons.assetshare.util.assetkit.impl.datasources;
 
 import com.adobe.aem.commons.assetshare.util.DataSourceBuilder;
