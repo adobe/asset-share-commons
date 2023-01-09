@@ -20,6 +20,7 @@ package com.adobe.aem.commons.assetshare.workflow.assetkit.impl;
 
 import com.adobe.aem.commons.assetshare.util.assetkit.AssetKitHelper;
 import com.adobe.aem.commons.assetshare.util.assetkit.ComponentUpdater;
+import com.adobe.aem.commons.assetshare.util.assetkit.PagePathGenerator;
 import com.adobe.granite.workflow.WorkflowException;
 import com.adobe.granite.workflow.WorkflowSession;
 import com.adobe.granite.workflow.exec.WorkItem;
@@ -47,7 +48,6 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.day.cq.commons.jcr.JcrConstants.*;
@@ -68,8 +68,9 @@ public class AssetKitCreatorWorkflowProcess implements WorkflowProcess {
     private static final String WORKFLOW_ROOT_PAGE_PATH = "ROOT_PAGE_PATH";
     public static final String WORKFLOW_ASSETS_KIT_PAGE_ID = "ASSETS_KIT_PAGE_ID";
     public static final String WORKFLOW_ASSETS_KIT_PATH = "ASSETS_KIT_PATH";
-
     public static final String WORKFLOW_TRACK_AND_UPDATE = "TRACK_AND_UPDATE";
+
+    public static final String WORKFLOW_PAGE_PATH_GENERATOR_ID = "PAGE_PATH_GENERATOR_ID";
 
     @Reference
     private transient QueryBuilder queryBuilder;
@@ -82,6 +83,12 @@ public class AssetKitCreatorWorkflowProcess implements WorkflowProcess {
             cardinality = ReferenceCardinality.MULTIPLE
     )
     private transient Collection<ComponentUpdater> componentUpdaters;
+
+    @Reference(
+            policyOption = ReferencePolicyOption.GREEDY,
+            cardinality = ReferenceCardinality.MULTIPLE
+    )
+    private transient Collection<PagePathGenerator> pagePathGenerators;
 
     @Override
     public void execute(WorkItem workItem, WorkflowSession workflowSession, MetaDataMap metaDataMap) throws WorkflowException {
@@ -99,11 +106,12 @@ public class AssetKitCreatorWorkflowProcess implements WorkflowProcess {
         final boolean trackAndUpdate = metaDataMap.get(WORKFLOW_TRACK_AND_UPDATE, false);
         final String templatePath = metaDataMap.get(WORKFLOW_ASSETS_KIT_PAGE_TEMPLATE_PATH, String.class);
         final String rootPagePath = metaDataMap.get(WORKFLOW_ROOT_PAGE_PATH, "/content/asset-kits");
+        final String pagePathGeneratorId = metaDataMap.get(WORKFLOW_PAGE_PATH_GENERATOR_ID, String.class);
         final String[] componentUpdaterIds = metaDataMap.get(WORKFLOW_ASSETS_KIT_PAGE_COMPONENT_UPDATERS, String[].class);
 
         final Resource trackingResource = getOrCreateTrackingResource(payloadResource);
 
-        String assetsKitId = StringUtils.removeEnd(rootPagePath, "/") + "/" + new SimpleDateFormat("yyyy/MM").format(new Date()) + "/" + UUID.randomUUID();
+        String assetsKitId = pagePathGenerators.stream().filter(pagePathGenerator -> StringUtils.equals(pagePathGeneratorId, pagePathGenerator.getId())).findFirst().orElseThrow(() -> new WorkflowException(String.format("No PagePathGenerator found for ID [ %s ]", pagePathGeneratorId))).generatePagePath(rootPagePath, payloadResource);
         if (trackAndUpdate) {
             assetsKitId = trackingResource.getValueMap().get(TRACKING_PROPERTY_ASSETS_KIT_ID, assetsKitId);
         }
