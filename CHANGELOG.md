@@ -2,7 +2,38 @@
 
 ## [Unreleased](https://github.com/adobe/asset-share-commons/tree/HEAD)
 
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.4.6...HEAD)
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.4.8...HEAD)
+
+### 🐛 Bug fixes
+
+- HTML email values are being double-encoded in the Share email [\#887](https://github.com/adobe/asset-share-commons/pull/887) ([davidjgonzalez](https://github.com/davidjgonzalez))
+
+### 📁 Other pull requests
+
+- Bump json5 from 1.0.1 to 1.0.2 in /ui.frontend.theme.dark [\#886](https://github.com/adobe/asset-share-commons/pull/886) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump json5 from 1.0.1 to 1.0.2 in /ui.frontend.theme.light [\#885](https://github.com/adobe/asset-share-commons/pull/885) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump org.apache.sling.testing.osgi-mock.junit4 from 3.3.0 to 3.3.4 [\#878](https://github.com/adobe/asset-share-commons/pull/878) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump minimatch from 3.0.4 to 3.1.2 in /ui.frontend.theme.dark [\#875](https://github.com/adobe/asset-share-commons/pull/875) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump minimatch from 3.0.4 to 3.1.2 in /ui.frontend.theme.light [\#874](https://github.com/adobe/asset-share-commons/pull/874) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump express from 4.17.1 to 4.18.2 in /ui.frontend.theme.light [\#873](https://github.com/adobe/asset-share-commons/pull/873) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump express from 4.17.1 to 4.18.2 in /ui.frontend.theme.dark [\#872](https://github.com/adobe/asset-share-commons/pull/872) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump qs from 6.5.2 to 6.5.3 in /ui.frontend.theme.dark [\#871](https://github.com/adobe/asset-share-commons/pull/871) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump qs from 6.5.2 to 6.5.3 in /ui.frontend.theme.light [\#870](https://github.com/adobe/asset-share-commons/pull/870) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump decode-uri-component from 0.2.0 to 0.2.2 in /ui.frontend.theme.dark [\#869](https://github.com/adobe/asset-share-commons/pull/869) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump decode-uri-component from 0.2.0 to 0.2.2 in /ui.frontend.theme.light [\#868](https://github.com/adobe/asset-share-commons/pull/868) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump org.apache.sling.testing.sling-mock.junit4 from 3.3.2 to 3.4.2 [\#863](https://github.com/adobe/asset-share-commons/pull/863) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump maven-release-oddeven-policy from 3.0.0-M6 to 3.0.0-M7 [\#862](https://github.com/adobe/asset-share-commons/pull/862) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump spotbugs-maven-plugin from 4.7.2.1 to 4.7.3.0 [\#861](https://github.com/adobe/asset-share-commons/pull/861) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump loader-utils from 1.4.1 to 1.4.2 in /ui.frontend.theme.light [\#860](https://github.com/adobe/asset-share-commons/pull/860) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump loader-utils from 1.4.1 to 1.4.2 in /ui.frontend.theme.dark [\#853](https://github.com/adobe/asset-share-commons/pull/853) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [asset-share-commons-2.4.8](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.4.8) (2023-01-09)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.4.6...asset-share-commons-2.4.8)
+
+## [asset-share-commons-2.4.6](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.4.6) (2022-11-22)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.4.4...asset-share-commons-2.4.6)
 
 ### 🐛 Bug fixes
 
@@ -10,16 +41,13 @@
 
 ### 📁 Other pull requests
 
+- v.2.4.6 release [\#858](https://github.com/adobe/asset-share-commons/pull/858) ([davidjgonzalez](https://github.com/davidjgonzalez))
 - Bump loader-utils, html-webpack-plugin and webpack-cli in /ui.frontend.theme.dark [\#851](https://github.com/adobe/asset-share-commons/pull/851) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump loader-utils, html-webpack-plugin and webpack-cli in /ui.frontend.theme.light [\#850](https://github.com/adobe/asset-share-commons/pull/850) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump mockito-core from 4.6.1 to 4.8.1 [\#847](https://github.com/adobe/asset-share-commons/pull/847) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump aemanalyser-maven-plugin from 1.4.10 to 1.4.20 [\#846](https://github.com/adobe/asset-share-commons/pull/846) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump maven-javadoc-plugin from 3.4.0 to 3.4.1 [\#844](https://github.com/adobe/asset-share-commons/pull/844) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Replace deprecated set-output command with \>\> $GITHUB\_OUTPUT [\#842](https://github.com/adobe/asset-share-commons/pull/842) ([davidjgonzalez](https://github.com/davidjgonzalez))
-
-## [asset-share-commons-2.4.6](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.4.6) (2022-11-22)
-
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.4.4...asset-share-commons-2.4.6)
 
 ## [asset-share-commons-2.4.4](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.4.4) (2022-10-28)
 
