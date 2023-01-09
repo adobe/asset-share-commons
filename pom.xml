@@ -121,7 +121,7 @@
                     <dependency>
                         <groupId>org.apache.maven.release</groupId>
                         <artifactId>maven-release-oddeven-policy</artifactId>
-                        <version>3.0.0-M6</version>
+                        <version>3.0.0-M7</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -498,7 +498,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                 <plugin>
                     <groupId>com.github.spotbugs</groupId>
                     <artifactId>spotbugs-maven-plugin</artifactId>
-                    <version>4.7.2.1</version>
+                    <version>4.7.3.0</version>
                 </plugin>
                 <!-- Maven Checkstyle Plugin -->
                 <plugin>
@@ -974,13 +974,13 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
             <dependency>
                 <groupId>org.apache.sling</groupId>
                 <artifactId>org.apache.sling.testing.osgi-mock.junit4</artifactId>
-                <version>3.3.0</version>
+                <version>3.3.4</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.sling</groupId>
                 <artifactId>org.apache.sling.testing.sling-mock.junit4</artifactId>
-                <version>3.3.2</version>
+                <version>3.4.2</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
