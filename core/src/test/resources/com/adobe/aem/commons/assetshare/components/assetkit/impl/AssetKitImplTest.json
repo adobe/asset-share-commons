@@ -1,0 +1,92 @@
+
+{
+  "page": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "root": {
+        "jcr:primaryType": "nt:unstructured",
+        "sling:resourceType": "wcm/foundation/components/responsivegrid",
+        "responsivegrid": {
+          "jcr:primaryType": "nt:unstructured",
+          "sling:resourceType": "wcm/foundation/components/responsivegrid",
+          "image": {
+            "jcr:primaryType": "nt:unstructured",
+            "sling:resourceType": "asset-share-commons/components/content/image",
+            "fileReference": "/content/dam/folder/banner.png"
+          },
+          "asset-kit": {
+            "jcr:primaryType": "nt:unstructured",
+            "sling:resourceType": "asset-share-commons/components/asset-kit",
+            "paths": ["/content/dam/folder"]
+          },
+          "asset-kit-not-ready": {
+            "jcr:primaryType": "nt:unstructured",
+            "sling:resourceType": "asset-share-commons/components/asset-kit",
+            "paths": ""
+          }
+        }
+      }
+    }
+  },
+  "dam": {
+    "jcr:primaryType": "sling:Folder",
+    "folder": {
+      "jcr:primaryType": "sling:OrderedFolder",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:title": "My Asset Kit",
+        "jcr:description": "My Asset Kit Description",
+        "metadata": {
+            "jcr:primaryType": "nt:unstructured"
+        }
+      },
+      "banner.png": {
+        "jcr:primaryType": "dam:Asset",
+        "jcr:content": {
+          "jcr:primaryType": "nt:unstructured",
+          "metadata": {
+            "jcr:primaryType": "nt:unstructured",
+            "dc:title": "Banner",
+            "dc:description": "Banner description"
+          }
+        }
+      },
+      "test-1.png": {
+        "jcr:primaryType": "dam:Asset",
+        "jcr:content": {
+          "jcr:primaryType": "nt:unstructured",
+          "metadata": {
+            "jcr:primaryType": "nt:unstructured",
+            "dc:title": "Test 1",
+            "dc:description": "Test 1 description"
+          }
+        }
+      },
+      "test-2.png": {
+        "jcr:primaryType": "dam:Asset",
+        "jcr:content": {
+          "jcr:primaryType": "nt:unstructured",
+          "metadata": {
+            "jcr:primaryType": "nt:unstructured",
+            "dc:title": "Test 2",
+            "dc:description": "Test 2 description"
+          }
+
+        }
+      },
+      "test-3.png": {
+        "jcr:primaryType": "dam:Asset",
+        "jcr:content": {
+          "jcr:primaryType": "nt:unstructured",
+          "metadata": {
+            "jcr:primaryType": "nt:unstructured",
+            "dc:title": "Test 3",
+            "dc:description": "Test 3 description"
+          }
+        }
+      }
+    }
+  }
+}
+
