@@ -3,6 +3,7 @@ layout: component-page
 title: Downloads Modal
 component-group: modals
 initial-version: 2.0.0
+compatability: AEM as a Cloud Service only
 ---
 
 ![Downloads modal component](./images/main.png)
