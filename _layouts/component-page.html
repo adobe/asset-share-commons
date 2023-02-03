@@ -10,6 +10,10 @@ layout: default
             <li><span class="component-details--label">Component group:</span> Asset Share Commons - {{ page.component-group }}</li>
             <li><span class="component-details--label">Released with version </span> {{ page.initial-version | default: "1.0.0" }}</li>
 
+            {% if page.compatibility %}
+            <li><span class="component-details--label">Compatibility: </span> {{ page.compatibility }}</li>
+            {% endif %}
+                
             {% if page.last-updated-version %}
             <li><span class="component-details--label">Last updated in version </span> {{ page.last-updated-version }}</li>
             {% endif %}
