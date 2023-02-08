@@ -2,7 +2,22 @@
 
 ## [Unreleased](https://github.com/adobe/asset-share-commons/tree/HEAD)
 
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.4.8...HEAD)
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.5.0...HEAD)
+
+### 📁 Other pull requests
+
+- Bump maven-pmd-plugin from 3.16.0 to 3.20.0 [\#892](https://github.com/adobe/asset-share-commons/pull/892) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump maven-dependency-plugin from 3.3.0 to 3.5.0 [\#891](https://github.com/adobe/asset-share-commons/pull/891) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Asset kit [\#889](https://github.com/adobe/asset-share-commons/pull/889) ([davidjgonzalez](https://github.com/davidjgonzalez))
+- Bump maven-jar-plugin from 3.2.2 to 3.3.0 [\#879](https://github.com/adobe/asset-share-commons/pull/879) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [asset-share-commons-2.5.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.5.0) (2023-02-08)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.4.8...asset-share-commons-2.5.0)
+
+## [asset-share-commons-2.4.8](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.4.8) (2023-01-09)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.4.6...asset-share-commons-2.4.8)
 
 ### 🐛 Bug fixes
 
@@ -10,6 +25,7 @@
 
 ### 📁 Other pull requests
 
+- v2.4.8 release [\#890](https://github.com/adobe/asset-share-commons/pull/890) ([davidjgonzalez](https://github.com/davidjgonzalez))
 - Bump json5 from 1.0.1 to 1.0.2 in /ui.frontend.theme.dark [\#886](https://github.com/adobe/asset-share-commons/pull/886) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump json5 from 1.0.1 to 1.0.2 in /ui.frontend.theme.light [\#885](https://github.com/adobe/asset-share-commons/pull/885) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump org.apache.sling.testing.osgi-mock.junit4 from 3.3.0 to 3.3.4 [\#878](https://github.com/adobe/asset-share-commons/pull/878) ([dependabot[bot]](https://github.com/apps/dependabot))
@@ -26,10 +42,6 @@
 - Bump spotbugs-maven-plugin from 4.7.2.1 to 4.7.3.0 [\#861](https://github.com/adobe/asset-share-commons/pull/861) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump loader-utils from 1.4.1 to 1.4.2 in /ui.frontend.theme.light [\#860](https://github.com/adobe/asset-share-commons/pull/860) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump loader-utils from 1.4.1 to 1.4.2 in /ui.frontend.theme.dark [\#853](https://github.com/adobe/asset-share-commons/pull/853) ([dependabot[bot]](https://github.com/apps/dependabot))
-
-## [asset-share-commons-2.4.8](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.4.8) (2023-01-09)
-
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.4.6...asset-share-commons-2.4.8)
 
 ## [asset-share-commons-2.4.6](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.4.6) (2022-11-22)
 
