@@ -32,6 +32,7 @@ import org.apache.sling.models.factory.ModelFactory;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.lenient;
 
 public class MockAssetModels {
 
@@ -50,8 +51,11 @@ public class MockAssetModels {
 
         final AssetModel asset = ctx.request().adaptTo(AssetModel.class);
 
-        doReturn(asset).when(mockModelFactory).getModelFromWrappedRequest(eq(ctx.request()),
+        lenient().doReturn(asset).when(mockModelFactory).getModelFromWrappedRequest(eq(ctx.request()),
                 argThat(new ResourcePathMatcher(assetPath)),
+                eq(AssetModel.class));
+
+        lenient().doReturn(asset).when(mockModelFactory).createModel(argThat(new ResourcePathMatcher(assetPath)),
                 eq(AssetModel.class));
 
         ctx.requestPathInfo().setResourcePath(previousResourcePath);

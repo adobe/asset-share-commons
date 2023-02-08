@@ -76,7 +76,11 @@ public class FileSizeImpl extends AbstractComputedProperty<String> {
             }
         }
 
-        return UIHelper.getSizeLabel(bytes, request);
+        if (request != null) {
+            return UIHelper.getSizeLabel(bytes, request);
+        } else {
+            return UIHelper.getSizeLabel(bytes);
+        }
     }
 
     @Activate
