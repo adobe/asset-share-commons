@@ -49,12 +49,12 @@ public final class DataSourceBuilderImpl implements DataSourceBuilder {
     public final void build(final SlingHttpServletRequest request, final Map<String, Object> data) {
         request.setAttribute(DataSource.class.getName(), EmptyDataSource.instance());
 
-        final List<Resource> fakeResourceList = new ArrayList<Resource>();
+        final List<Resource> fakeResourceList = new ArrayList<>();
 
         handleNoneOption(request, fakeResourceList);
 
         for (Map.Entry<String, Object> entry : data.entrySet()) {
-            final ValueMap vm = new ValueMapDecorator(new HashMap<String, Object>());
+            final ValueMap vm = new ValueMapDecorator(new HashMap<>());
 
             vm.put(TEXT, entry.getKey());
             vm.put(VALUE, entry.getValue());
@@ -79,7 +79,7 @@ public final class DataSourceBuilderImpl implements DataSourceBuilder {
         final String noneValue = properties.get(PN_NONE_VALUE, "");
 
         if (noneLabel != null) {
-            final ValueMap vm = new ValueMapDecorator(new HashMap<String, Object>());
+            final ValueMap vm = new ValueMapDecorator(new HashMap<>());
 
             vm.put(TEXT, noneLabel);
             vm.put(VALUE, noneValue);

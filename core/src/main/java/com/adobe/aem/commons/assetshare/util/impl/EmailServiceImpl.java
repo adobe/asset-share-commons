@@ -106,9 +106,9 @@ public final class EmailServiceImpl implements EmailService {
                                   final Map<String, String> emailParams,
                                   final String... recipients) {
 
-        List<String> failureList = new ArrayList<String>();
+        List<String> failureList = new ArrayList<>();
 
-        if (recipients == null || recipients.length <= 0) {
+        if (recipients == null || recipients.length == 0) {
             throw new IllegalArgumentException(MSG_INVALID_RECIPIENTS);
         }
 
@@ -134,7 +134,7 @@ public final class EmailServiceImpl implements EmailService {
     public List<InternetAddress> sendEmail(final String templatePath, final Map<String, String> emailParams,
                                            final InternetAddress... recipients) {
 
-        List<InternetAddress> failureList = new ArrayList<InternetAddress>();
+        List<InternetAddress> failureList = new ArrayList<>();
 
         if (recipients == null || recipients.length <= 0) {
             throw new IllegalArgumentException(MSG_INVALID_RECIPIENTS);
@@ -274,7 +274,7 @@ public final class EmailServiceImpl implements EmailService {
         MailTemplate mailTemplate = null;
         ResourceResolver resourceResolver = null;
         try {
-            Map<String, Object> authInfo = Collections.singletonMap(ResourceResolverFactory.SUBSERVICE, (Object) SERVICE_NAME);
+            Map<String, Object> authInfo = Collections.singletonMap(ResourceResolverFactory.SUBSERVICE, SERVICE_NAME);
             resourceResolver = resourceResolverFactory.getServiceResourceResolver(authInfo);
             mailTemplate = MailTemplate.create(templatePath, resourceResolver.adaptTo(Session.class));
 
