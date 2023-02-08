@@ -127,6 +127,7 @@ public class EmailShareServiceImpl implements ShareService {
         final EmailShare emailShare = request.adaptTo(EmailShare.class);
 
         shareParameters.putAll(xssProtectUserData(emailShare.getUserData()));
+        //shareParameters.putAll(emailShare.getUserData());
 
         // Configured data supersedes user data
         shareParameters.putAll(emailShare.getConfiguredData());
@@ -301,13 +302,13 @@ public class EmailShareServiceImpl implements ShareService {
     private String[] xssCleanData(String[] dirtyData) {
         List<String> cleanValues = new ArrayList<String>();
         for (String val : dirtyData) {
-            cleanValues.add(xssAPI.encodeForHTML(xssAPI.filterHTML(val)));
+            cleanValues.add(xssAPI.encodeForHTML(val));
         }
         return cleanValues.toArray(new String[0]);
     }
 
     private String xssCleanData(String dirtyData) {
-        return xssAPI.encodeForHTML(xssAPI.filterHTML(dirtyData));
+        return xssAPI.encodeForHTML(dirtyData);
     }
 
     @Activate
