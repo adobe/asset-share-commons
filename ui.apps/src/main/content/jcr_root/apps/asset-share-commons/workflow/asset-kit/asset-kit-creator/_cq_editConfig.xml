@@ -29,6 +29,8 @@
             PROCESS="com.adobe.aem.commons.assetshare.workflow.assetkit.impl.AssetKitCreatorWorkflowProcess"
             PROCESS_AUTO_ADVANCE="true"
 
+            PAGE_PATH_GENERATOR_ID="com.adobe.aem.commons.assetshare.util.assetkit.impl.pagegenerators.YyyyMmPagePathPathGeneratorImpl"
+
             ROOT_PAGE_PATH="/content/asset-kits"
             TRACK_AND_UPDATE="{Boolean}true"
     />
