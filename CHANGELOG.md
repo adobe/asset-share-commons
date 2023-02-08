@@ -1,19 +1,20 @@
 # 📑 Changelog
 
-## [Unreleased](https://github.com/adobe/asset-share-commons/tree/HEAD)
+## [asset-share-commons-2.5.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.5.2) (2023-02-08)
 
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.5.0...HEAD)
-
-### 📁 Other pull requests
-
-- Bump maven-pmd-plugin from 3.16.0 to 3.20.0 [\#892](https://github.com/adobe/asset-share-commons/pull/892) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump maven-dependency-plugin from 3.3.0 to 3.5.0 [\#891](https://github.com/adobe/asset-share-commons/pull/891) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Asset kit [\#889](https://github.com/adobe/asset-share-commons/pull/889) ([davidjgonzalez](https://github.com/davidjgonzalez))
-- Bump maven-jar-plugin from 3.2.2 to 3.3.0 [\#879](https://github.com/adobe/asset-share-commons/pull/879) ([dependabot[bot]](https://github.com/apps/dependabot))
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.5.0...asset-share-commons-2.5.2)
 
 ## [asset-share-commons-2.5.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.5.0) (2023-02-08)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.4.8...asset-share-commons-2.5.0)
+
+### 📁 Other pull requests
+
+- v2.5.0 release [\#893](https://github.com/adobe/asset-share-commons/pull/893) ([davidjgonzalez](https://github.com/davidjgonzalez))
+- Bump maven-pmd-plugin from 3.16.0 to 3.20.0 [\#892](https://github.com/adobe/asset-share-commons/pull/892) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump maven-dependency-plugin from 3.3.0 to 3.5.0 [\#891](https://github.com/adobe/asset-share-commons/pull/891) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Asset kit [\#889](https://github.com/adobe/asset-share-commons/pull/889) ([davidjgonzalez](https://github.com/davidjgonzalez))
+- Bump maven-jar-plugin from 3.2.2 to 3.3.0 [\#879](https://github.com/adobe/asset-share-commons/pull/879) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [asset-share-commons-2.4.8](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.4.8) (2023-01-09)
 
