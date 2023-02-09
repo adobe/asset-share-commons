@@ -39,3 +39,6 @@
 "destination"
 "Sling-uploadmode"
 "x-requested-with"
+"If-Modified-Since"
+"Authorization"
+"x-request-id"
