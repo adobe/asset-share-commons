@@ -23,6 +23,20 @@ MANIFEST.MF
 _site
 .jekyll-metadata
 
+#Java project
+pom.xml
+all/
+core/
+core.cloud/
+dispatcher/
+ui.apps/
+ui.app.structure/
+ui.content/
+ui.content.sample/
+ui.config/
+ui.frontend.theme.light/
+ui.frontend.theme.dark/
+
 #vlt directories
 content/src/main/content/jcr_root/.content.xml
 content/src/main/content/jcr_root/apps/.content.xml
