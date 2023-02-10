@@ -1,4 +1,0 @@
-#base=js
-
-vendors~site.bundle.js
-site.bundle.js
