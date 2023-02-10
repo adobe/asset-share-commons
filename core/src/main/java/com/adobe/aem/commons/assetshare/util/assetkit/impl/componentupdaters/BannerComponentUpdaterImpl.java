@@ -44,8 +44,6 @@ import java.util.Collection;
 public class BannerComponentUpdaterImpl implements ComponentUpdater {
     private static final Logger log = LoggerFactory.getLogger(BannerComponentUpdaterImpl.class);
 
-    private static String PROPERTY_NAME = "fileReference";
-
     @Reference
     private transient AssetKitHelper assetKitHelper;
 
@@ -86,5 +84,11 @@ public class BannerComponentUpdaterImpl implements ComponentUpdater {
             description = "The resource type of the component to update."
         )
         String resource_type() default "asset-share-commons/components/content/image";
+
+        @AttributeDefinition(
+            name = "Banner asset property",
+            description = "The property name that holds the banner asset's path."
+        )
+        String banner_asset_path_property() default "fileReference";
     }
 }

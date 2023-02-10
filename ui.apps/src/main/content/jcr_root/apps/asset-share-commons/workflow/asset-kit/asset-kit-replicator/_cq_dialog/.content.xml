@@ -1,5 +1,5 @@
 <jcr:root jcr:primaryType="nt:unstructured" jcr:title="Asset kit replicator (Asset Share Commons)"
-          helpPath="https://opensource.adobe.com/asset-share-commons/asset-kit.html"
+          helpPath="https://opensource.adobe.com/asset-share-commons/pages/asset-kit/workflows.html"
           sling:resourceType="cq/gui/components/authoring/dialog" xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
           xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
           xmlns:nt="http://www.jcp.org/jcr/nt/1.0">
