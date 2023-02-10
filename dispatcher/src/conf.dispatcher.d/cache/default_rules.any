@@ -18,3 +18,23 @@
 	/glob "*"
 	/type "allow"
 }
+# Don't cache csrf login tokens
+/0001 {
+    /glob "/libs/granite/csrf/token.json"
+    /type "deny"
+}
+
+# AEM Screens cache rules
+# Do not cache Screens channels json
+/0010 {
+	/glob "/content/screens/svc.channels.json"
+	/type "deny"
+}
+/0011 {
+	/glob "/content/screens/svc/channels.channels.json"
+	/type "deny"
+}
+/0012 {
+	/glob "/screens/channels.json"
+	/type "deny"
+}

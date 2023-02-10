@@ -24,7 +24,7 @@
     <cq:formParameters
             jcr:description="An AEM workflow process to replicate a asset kit and its set of assets."
             jcr:primaryType="nt:unstructured"
-            jcr:title="Asset kit replication"
+            jcr:title="Asset kit replicator"
 
             PROCESS="com.adobe.aem.commons.assetshare.workflow.assetkit.impl.AssetKitReplicationWorkflowProcess"
             PROCESS_AUTO_ADVANCE="true"
