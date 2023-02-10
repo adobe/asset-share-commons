@@ -1,0 +1,6 @@
+{
+  "jcr:primaryType": "cq:ClientLibraryFolder",
+  "categories": [
+    "test.base.apps.fourth"
+  ]
+}

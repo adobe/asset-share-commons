@@ -1,0 +1,16 @@
+{
+  "jcr:primaryType": "cq:ClientLibraryFolder",
+  "categories": [
+    "test.base.apps.mainapp"
+  ],
+  "cssProcessor": [
+    "default:none",
+    "min:none"
+  ],
+  "jsProcessor": [
+    "default:none",
+    "min:gcc"
+  ],
+  "allowProxy": true,
+  "longCacheKey": "${project.version}-${buildNumber}"
+}
