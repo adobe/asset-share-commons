@@ -24,17 +24,23 @@ import com.adobe.aem.commons.assetshare.util.assetkit.ComponentUpdater;
 import com.day.cq.wcm.api.Page;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.metatype.annotations.AttributeDefinition;
+import org.osgi.service.metatype.annotations.Designate;
+import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
 import javax.jcr.RepositoryException;
 @Component
+@Designate(ocd = AssetKitComponentUpdaterImpl.Config.class)
 public class AssetKitComponentUpdaterImpl implements ComponentUpdater {
-    private static String RESOURCE_TYPE = AssetKitImpl.RESOURCE_TYPE;
     private static String PROPERTY_NAME = "paths";
 
     @Reference
     private transient AssetKitHelper assetKitHelper;
+    private Config config;
 
     @Override
     public String getName() {
@@ -43,6 +49,24 @@ public class AssetKitComponentUpdaterImpl implements ComponentUpdater {
 
     @Override
     public void updateComponent(Page assetKitPage, Resource assetKit) throws PersistenceException, RepositoryException {
-        assetKitHelper.updateComponentOnPage(assetKitPage, RESOURCE_TYPE, PROPERTY_NAME, assetKit.getPath());
+        assetKitHelper.updateComponentOnPage(assetKitPage, config.resource_type(), PROPERTY_NAME, assetKit.getPath());
+    }
+
+    @Activate
+    @Modified
+    protected void activate(Config config) {
+        this.config = config;
+    }
+
+    @ObjectClassDefinition(
+        name = "Asset Share Commons - Asset Kit Component Updater",
+        description = "Component updater that updates an Asset Kit component"
+    )
+    @interface Config {
+        @AttributeDefinition(
+            name = "Resource Type",
+            description = "The resource type of the component to update."
+        )
+        String resource_type() default AssetKitImpl.RESOURCE_TYPE;
     }
 }

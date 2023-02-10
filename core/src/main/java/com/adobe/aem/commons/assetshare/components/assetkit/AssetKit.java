@@ -26,10 +26,26 @@ import org.osgi.annotation.versioning.ProviderType;
 import java.util.Collection;
 @ProviderType
 public interface AssetKit extends Component {
+    /**
+     * Returns the assets that are part of this Asset Kit.
+     * The assets are returned as as AssetModels, so ComputedProperties can used to display relevant data.
+     * @return a Collection of AssetModels
+     */    
     Collection<? extends AssetModel> getAssets();
+
+    /**
+     * Returns true is the component is ready to display. This is used to determine if the component's Page Editor edit box should display or not.
+     */
     boolean isReady();
 
     @ConsumerType
+    /**
+     * A Filter is used to filter the assets that are part of the Asset Kit.
+     * 
+     * This acts as an OSGi service interface that can be implemented with a service.ranking > 10000 to override default filtering behavior.
+     * The Asset Share Commons provided filter removed the "banner image asset" from the asset kit listing (AssetKitFilterImpl.java).
+     * If the logic for defining the banner image changes a custom Filter would need to be developed.
+     */
     interface Filter {
         Collection<? extends AssetModel> filter(Collection<? extends AssetModel> assets);
     }

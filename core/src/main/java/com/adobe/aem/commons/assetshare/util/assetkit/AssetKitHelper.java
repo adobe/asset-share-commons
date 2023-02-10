@@ -27,7 +27,11 @@ import org.osgi.annotation.versioning.ProviderType;
 
 import javax.jcr.RepositoryException;
 import java.util.Collection;
+
 @ProviderType
+/**
+ * A helper class for working with the Asset Kit. Typically use in custom ComponentUpdater implementations or custom AssetKit component Sling Models.
+ */
 public interface AssetKitHelper {
     /**
      * Gets a collection of assets that at or exist under the paths provided.
