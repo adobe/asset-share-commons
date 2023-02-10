@@ -18,6 +18,7 @@
  */
 package com.adobe.aem.commons.assetshare.util.assetkit.impl.componentupdaters;
 
+import com.adobe.aem.commons.assetshare.components.assetkit.impl.AssetKitImpl;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.util.assetkit.AssetKitHelper;
 import com.adobe.aem.commons.assetshare.util.assetkit.ComponentUpdater;
@@ -25,22 +26,30 @@ import com.day.cq.wcm.api.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.metatype.annotations.AttributeDefinition;
+import org.osgi.service.metatype.annotations.Designate;
+import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
 import java.util.Collection;
+
 @Component
+@Designate(ocd = BannerComponentUpdaterImpl.Config.class)
 public class BannerComponentUpdaterImpl implements ComponentUpdater {
     private static final Logger log = LoggerFactory.getLogger(BannerComponentUpdaterImpl.class);
 
-    private static String RESOURCE_TYPE =  "asset-share-commons/components/content/image";
     private static String PROPERTY_NAME = "fileReference";
 
     @Reference
     private transient AssetKitHelper assetKitHelper;
+
+    private Config config;
 
     @Override
     public String getName() {
@@ -54,10 +63,28 @@ public class BannerComponentUpdaterImpl implements ComponentUpdater {
 
         assets.stream().filter(asset -> StringUtils.equals("banner", StringUtils.lowerCase(asset.getTitle()))).findFirst().ifPresent(asset -> {
             try {
-                assetKitHelper.updateComponentOnPage(assetKitPage, RESOURCE_TYPE, PROPERTY_NAME, asset.getPath());
+                assetKitHelper.updateComponentOnPage(assetKitPage, config.resource_type(), PROPERTY_NAME, asset.getPath());
             } catch (PersistenceException | RepositoryException e) {
                 log.error(String.format("Failed to update banner component on page [ %s ]", assetKitPage.getPath()), e);
             }
         });
+    }
+
+    @Activate
+    @Modified
+    protected void activate(Config config) {
+        this.config = config;
+    }
+
+    @ObjectClassDefinition(
+        name = "Asset Share Commons - Banner Component Updater",
+        description = "Component updater that updates an Banner component"
+    )
+    @interface Config {
+        @AttributeDefinition(
+            name = "Resource Type",
+            description = "The resource type of the component to update."
+        )
+        String resource_type() default "asset-share-commons/components/content/image";
     }
 }

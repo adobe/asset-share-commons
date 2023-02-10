@@ -30,8 +30,6 @@
                     <div class="cmp-asset-kit__asset-badge .cmp-asset-kit__asset-badge--${asset.properties['type']}">${asset.properties['type']}</div>
                     <img class="cmp-asset-kit__asset-image" src="${asset.properties['rendition?name=card']}" alt="${asset.name}"/>
                     <p class="cmp-asset-kit__asset-title">${asset.title}</p>
-
-
                     <table class="cmp-asset-kit__metadata">
                         <tr class="cmp-asset-kit__metadata-entry"
                             data-sly-test="${asset.properties['dc:description']}">
@@ -45,25 +43,22 @@
                             <td class="cmp-asset-kit__metadata-description .cmp-asset-kit__metadata-entry-title">File name:</td>
                             <td class="cmp-asset-kit__metadata-description .cmp-asset-kit__metadata-entry-value">${asset.name}</td>
                         </tr>
-
                         <tr>
                             <td class="cmp-asset-kit__metadata-format .cmp-asset-kit__metadata-entry-title">Format:</td>
                             <td class="cmp-asset-kit__metadata-format .cmp-asset-kit__metadata-entry-value">${asset.properties['fileExtension']}</td>
                         </tr>
-
                         <tr>
                             <td class="cmp-asset-kit__metadata-format .cmp-asset-kit__metadata-entry-title">Size:</td>
                             <td class="cmp-asset-kit__metadata-format .cmp-asset-kit__metadata-entry-value">${asset.properties['fileSize']}</td>
                         </tr>
                     </table>
                 </div>
-
                 <div class="cmp-asset-kit__asset-actions">
                     <a class="cmp-asset-kit__asset-download-button" href="${asset.path}">Download</a>
                 </div>
             </div>
         </li>
     </ul>
-
+    
 </sly>
 <sly data-sly-call="${placeholderTemplate.placeholder @ isEmpty=!ready}"></sly>
