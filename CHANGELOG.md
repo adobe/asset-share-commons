@@ -1,8 +1,24 @@
 # 📑 Changelog
 
+## [Unreleased](https://github.com/adobe/asset-share-commons/tree/HEAD)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.5.4...HEAD)
+
+### 📁 Other pull requests
+
+- Asset kit fixes \(help URLs, OSGi configurations and naming\) [\#896](https://github.com/adobe/asset-share-commons/pull/896) ([davidjgonzalez](https://github.com/davidjgonzalez))
+
+## [asset-share-commons-2.5.4](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.5.4) (2023-02-10)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.5.2...asset-share-commons-2.5.4)
+
 ## [asset-share-commons-2.5.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.5.2) (2023-02-08)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.5.0...asset-share-commons-2.5.2)
+
+### 📁 Other pull requests
+
+- v2.5.2 [\#894](https://github.com/adobe/asset-share-commons/pull/894) ([davidjgonzalez](https://github.com/davidjgonzalez))
 
 ## [asset-share-commons-2.5.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.5.0) (2023-02-08)
 
