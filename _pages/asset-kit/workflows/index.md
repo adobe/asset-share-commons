@@ -3,7 +3,7 @@ title: Asset kit workflows
 layout: template-page
 feature-group: asset kit
 initial-version: 2.5.0
-last-updated-version: 2.5.2
+last-updated-version: 2.5.4
 ---
 
 ![Asset kit Workflows](./images/main.png)

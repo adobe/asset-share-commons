@@ -3,7 +3,7 @@ title: Asset kit pages
 layout: template-page
 feature-group: asset kit
 initial-version: 2.5.0
-last-updated-version: 2.5.2
+last-updated-version: 2.5.4
 ---
 
 ![Asset kit page](./images/main.png)
