@@ -1,7 +1,9 @@
 ---
 title: Asset kit workflows
 layout: template-page
-last-updated-version: 2.0.2
+feature-group: asset kit
+initial-version: 2.5.0
+last-updated-version: 2.5.2
 ---
 
 ![Asset kit Workflows](./images/main.png)
@@ -48,7 +50,7 @@ Checkbox that determines when the same asset kit payload (asset folder or collec
 
 #### Page path generator
 
-An [pluggable](#custom-page-path-generators) generator that builds path to the asset kit page. This value is appended to the [asset kit pages root path](#asset-kit-pages-root-path).
+A pluggable](#custom-page-path-generators) generator that builds path to the asset kit page. This value is appended to the [asset kit pages root path](#asset-kit-pages-root-path).
 
 __Asset Share Commons provided page path generators:__
 
@@ -65,13 +67,13 @@ __Asset Share Commons provided component updaters:__
 
 + __Page metadata (Asset Share Commons)__ updates the page's title and description with that of asset kit payload's. If an asset folder is the payload, the asset kit page's title is updated to the asset folder title, and asset kit page's description to the asset folder description. Similar behavior with asset collection as the payload.
 + __Banner component (Asset Share Commons)__ updates an "Asset share commons image component"(resource type of: `asset-share-commons/components/content/image`) on the page with an asset path. This expects the image component to be added to the [asset kit template's](#asset-kit-page-template-path) initial content. 
-+ __Asset kit component (Asset Share Commons)__ updates the [Asset kit component](#blah) (resource type of: `asset-share-commons/components/asset-kit`) on the asset kit page with the path(s) to the asset kit payload, such that the asset kit component can display the correct assets. This expects the [Asset kit](#blah) component to be added to the [asset kit template's](#asset-kit-page-template-path) initial content. 
++ __Asset kit component (Asset Share Commons)__ updates the [Asset kit component](../pages/index.md#asset-kit-component) (resource type of: `asset-share-commons/components/asset-kit`) on the asset kit page with the path to the asset kit payload. This expects the [Asset kit component](../pages/index.md#asset-kit-component) to be added to the [asset kit template's](#asset-kit-page-template-path) initial content. 
 
 [Custom component updaters](#custom-component-updaters) can be developed to update asset kit pages in a bespoke manner.
 
 ## Asset kit replicator
 
-The __Asset Kit creator__ workflow step is responsible for replicating (either activating or deactivating) an an asset kit. The workflow step replicates the asset kit page, and all references, including the assets it displays.
+The __Asset Kit creator__ workflow step is responsible for replicating (either activating or deactivating) an asset kit. The workflow step replicates the asset kit page, and all references, including the assets it displays.
 
 The use of this workflow step is optional, and/or other workflow steps, such as a review step, can be placed between the [Asset kit creator](#asset-kit-creator) step and this step.
 
@@ -112,7 +114,7 @@ __Options:__
 
 ## Technical details
 
-The following technical details provide insights into how these workflows are implemented, and how they can extended.
+The following technical details provide insights into how these workflows are implemented, and how they are extended.
 
 + [Asset kit creator workflow process implementation](https://github.com/adobe/asset-share-commons/blob/main/core/src/main/java/com/adobe/aem/commons/assetshare/workflow/assetkit/impl/AssetKitCreatorWorkflowProcess.java)
 + [Asset kit replicator workflow process implementation](https://github.com/adobe/asset-share-commons/blob/main/core/src/main/java/com/adobe/aem/commons/assetshare/workflow/assetkit/impl/AssetKitReplicationWorkflowProcess.java)
@@ -135,4 +137,24 @@ __Example component updater implementations:__
 
 + [PageMetadataComponentUpdaterImpl.java](https://github.com/adobe/asset-share-commons/blob/main/core/src/main/java/com/adobe/aem/commons/assetshare/util/assetkit/impl/componentupdaters/PageMetadataComponentUpdaterImpl.java)
 + [BannerComponentUpdaterImpl](https://github.com/adobe/asset-share-commons/blob/main/core/src/main/java/com/adobe/aem/commons/assetshare/util/assetkit/impl/componentupdaters/BannerComponentUpdaterImpl.java)
+    + The component this implementation searches for to update can be configured via OSGi configuration:
+
+    `ui.config/src/.../osgiconfig/config.author/com.adobe.aem.commons.assetshare.util.assetkit.impl.componentupdaters.BannerComponentUpdaterImpl.cfg.json`
+
+    ```
+    {
+        "resource.type": "example/components/custom-banner",
+        "banner.asset.path.property": "path"
+    }
+    ```
+
 + [AssetKitComponentUpdaterImpl.java](https://github.com/adobe/asset-share-commons/blob/main/core/src/main/java/com/adobe/aem/commons/assetshare/util/assetkit/impl/componentupdaters/AssetKitComponentUpdaterImpl.java)
+    + The component this implementation searches for to update can be configured via OSGi configuration:
+
+    `ui.config/src/.../osgiconfig/config.author/com.adobe.aem.commons.assetshare.util.assetkit.impl.componentupdaters.AssetKitComponentUpdaterImpl.cfg.json`
+
+    ```
+    {
+        "resource.type": "example/components/custom-asset-kit"
+    }
+    ```

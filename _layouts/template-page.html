@@ -4,6 +4,28 @@ layout: default
 <div class="content-page doc-page template-page">
     <h1>{{ page.title }}</h1>
 
+
+    <section class="component-details">
+        <ul class="component-details__list">
+            {% if page.feature-group %}
+            <li><span class="component-details--label">Feature group:</span> {{ page.feature-group }}</li>
+            {% endif %}
+
+            {% if page.initial-version %}
+            <li><span class="component-details--label">Released with version </span> {{ page.initial-version | default: "1.0.0" }}</li>
+            {% endif %}
+                
+            {% if page.last-updated-version %}
+            <li><span class="component-details--label">Last updated in version </span> {{ page.last-updated-version }}</li>
+            {% endif %}
+
+            {% if page.compatibility %}
+            <li><span class="component-details--label">Compatibility: </span> {{ page.compatibility }}</li>
+            {% endif %}
+        </ul>
+    </section>
+
+
     <article class="page-content">
     {{ content }}
     </article>
