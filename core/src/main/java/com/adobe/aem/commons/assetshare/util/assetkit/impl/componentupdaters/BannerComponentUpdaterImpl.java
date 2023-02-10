@@ -61,7 +61,7 @@ public class BannerComponentUpdaterImpl implements ComponentUpdater {
 
         assets.stream().filter(asset -> StringUtils.equals("banner", StringUtils.lowerCase(asset.getTitle()))).findFirst().ifPresent(asset -> {
             try {
-                assetKitHelper.updateComponentOnPage(assetKitPage, config.resource_type(), PROPERTY_NAME, asset.getPath());
+                assetKitHelper.updateComponentOnPage(assetKitPage, config.resource_type(), config.banner_asset_path_property(), asset.getPath());
             } catch (PersistenceException | RepositoryException e) {
                 log.error(String.format("Failed to update banner component on page [ %s ]", assetKitPage.getPath()), e);
             }
