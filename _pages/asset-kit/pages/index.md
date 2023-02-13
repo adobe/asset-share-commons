@@ -39,7 +39,7 @@ Asset kit pages are created for each asset kit payload (assets folder or collect
 
 ![Asset kit component](./images/asset-kit-component-dialog.png)
 
-A custom Asset kit component can be developed that displays the kit's assets and the specific data they require. Custom asset kit components can implement custom HTL but use (directly or via delegating) the Asset Share Commons [AssetKit Sling Model](https://javadoc.io/static/com.adobe.aem.commons/assetshare.core/2.5.2/com/adobe/aem/commons/assetshare/components/assetkit/AssetKit.html).
+A custom Asset kit component can be developed that displays the kit's assets and the specific data they require. Custom asset kit components can implement custom HTL but use (directly or via delegating) the Asset Share Commons [AssetKit Sling Model](https://javadoc.io/static/com.adobe.aem.commons/assetshare.core/2.5.4/com/adobe/aem/commons/assetshare/components/assetkit/AssetKit.html).
 
 This custom Asset kit component must be added to the asset kit's [editable template's initial content](#editable-templates) for the [component updater](#component-updaters) to update.
 
