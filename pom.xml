@@ -994,7 +994,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
             <dependency>
                 <groupId>org.osgi</groupId>
                 <artifactId>org.osgi.util.tracker</artifactId>
-                <version>1.5.2</version>
+                <version>1.5.4</version>
                 <scope>test</scope>
             </dependency>
             <!-- Require to resolve OSGi Tacker Classes in tests; else they fail -->
