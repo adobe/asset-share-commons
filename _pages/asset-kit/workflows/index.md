@@ -121,7 +121,7 @@ The following technical details provide insights into how these workflows are im
 
 ### Custom page path generators
 
-Develop an OSGi component that implements the [PagePathGenerator interface](https://javadoc.io/static/com.adobe.aem.commons/assetshare.core/2.5.2/com/adobe/aem/commons/assetshare/util/assetkit/PagePathGenerator.html) to create a custom page path generator.
+Develop an OSGi component that implements the [PagePathGenerator interface](https://javadoc.io/static/com.adobe.aem.commons/assetshare.core/2.5.4/com/adobe/aem/commons/assetshare/util/assetkit/PagePathGenerator.html) to create a custom page path generator.
 
 __Example page path generator implementations:__
 
@@ -129,9 +129,9 @@ __Example page path generator implementations:__
 
 ### Custom component updaters
 
-Develop an OSGi component that implements the [ComponentUpdater interface](https://javadoc.io/static/com.adobe.aem.commons/assetshare.core/2.5.2/com/adobe/aem/commons/assetshare/util/assetkit/ComponentUpdater.html) to create a custom component updater.
+Develop an OSGi component that implements the [ComponentUpdater interface](https://javadoc.io/static/com.adobe.aem.commons/assetshare.core/2.5.4/com/adobe/aem/commons/assetshare/util/assetkit/ComponentUpdater.html) to create a custom component updater.
 
-The [AssetKitHelper](https://javadoc.io/static/com.adobe.aem.commons/assetshare.core/2.5.2/com/adobe/aem/commons/assetshare/util/assetkit/AssetKitHelper.html) OSGi service is helpful when developing custom component updaters.
+The [AssetKitHelper](https://javadoc.io/static/com.adobe.aem.commons/assetshare.core/2.5.4/com/adobe/aem/commons/assetshare/util/assetkit/AssetKitHelper.html) OSGi service is helpful when developing custom component updaters.
 
 __Example component updater implementations:__
 
