@@ -35,7 +35,7 @@ The expected use of the Asset kit is as follows:
 
 The following are the common configurations and extensions before using Asset Share Common's asset kit.
 
-+   Create a custom Asset kit component that displays the kit's assets and the specific data they require. Custom asset kit components can implement custom HTL but use (directly or via delegating) the Asset Share Commons [AssetKit Sling Model](https://javadoc.io/static/com.adobe.aem.commons/assetshare.core/2.5.2/com/adobe/aem/commons/assetshare/components/assetkit/AssetKit.html).
++   Create a custom Asset kit component that displays the kit's assets and the specific data they require. Custom asset kit components can implement custom HTL but use (directly or via delegating) the Asset Share Commons [AssetKit Sling Model](https://javadoc.io/static/com.adobe.aem.commons/assetshare.core/2.5.4/com/adobe/aem/commons/assetshare/components/assetkit/AssetKit.html).
 +   Create an Asset kit page template
     + Populate the template's initial content with components the [Asset kit creator workflow step](../workflows/index.md#asset-kit-creator) updates based on the payload.
     + Populate the template's structure content with any component's that are common (and their content), across all asset kit pages.
