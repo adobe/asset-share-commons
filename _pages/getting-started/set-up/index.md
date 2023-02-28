@@ -14,7 +14,7 @@ In order to user Asset Share Commons 2.x, you must create your own AEM Dispatche
 
 ### Other setup considerations
 
-* AEM as a Cloud Services requires an Adobe Support ticket to open up SMTP/E-mail. In order to use emailing Sharing in Asset Share Commons, you must make this request before configuring your CQ Mailer OSGi configuration. 
+* AEM as a Cloud Services require setup of [advanced networking to connect to SMTP/E-mail services](https://experienceleague.adobe.com/docs/experience-manager-learn/cloud-service/networking/examples/email-service.html). In order to use email sharing in Asset Share Commons, you must make set up advanced networking before configuring your [CQ Mailer OSGi configuration](https://experienceleague.adobe.com/docs/experience-manager-learn/cloud-service/networking/examples/email-service.html#osgi-configuration). 
 * Only [Asset Renditions](../../development/asset-renditions) are supported. 
   * This requires the [Asset Renditions](../../development/asset-renditions) to be deployed as OSGi configurations (mapping the "name" to the actual rendition).
   * Download of Dynamic Media renditions is supported, via ExternalRedirectAssetRenditionDispatcher OSGi configurations.
