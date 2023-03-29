@@ -126,6 +126,10 @@ public final class AssetRenditionParameters {
         return fileName;
     }
 
+    public Asset getAsset() {
+        return asset;
+    }
+
     public List<String> getParameters() {
         return new ArrayList<>(otherParameters);
     }
