@@ -32,14 +32,14 @@ layout: default
             <span style="display:inline-block; width: 2rem;"></span>
             <a href="https://aem.enablementadobe.com/content/asset-share-commons/en/dark.html" class="button">Dark theme demo</a>
         </div>
-
     </div>
 </section>
 
 
 <!-- Feature table -->
+
 |                                                          | Asset Share Commons 1.x | Asset Share Commons 2.x |
-|----------------------------------------------------------|-------------------------|-------------------------|
+|----------------------------------------------------------|:-----------------------:|:-----------------------:|
 | Supports AEM as a Cloud Service                          |            ✗            |            ✔            |
 | Supports AEM 6.5.x                                       |            ✔            |       ✔ _(6.5.7+)_      |
 | Requires AEM Core WCM Components                         |            ✔            |            ✔            |
