@@ -36,6 +36,20 @@ layout: default
     </div>
 </section>
 
+
+<!-- Feature table -->
+|                                                          | Asset Share Commons 1.x | Asset Share Commons 2.x |
+|----------------------------------------------------------|-------------------------|-------------------------|
+| Supports AEM as a Cloud Service                          |            ✗            |            ✔            |
+| Supports AEM 6.5.x                                       |            ✔            |       ✔ _(6.5.7+)_      |
+| Requires AEM Core WCM Components                         |            ✔            |            ✔            |
+| Supports legacy AEM 6.5 Asset Download framework         |            ✗            |            ✔            |
+| Supports optimized ASC AEm 6.5 asset download framework  |            ✗            |            ✔            |
+| Supports AEM as a Cloud Service asset download framework |            ✗            |            ✔            |
+| Includes ASC asset renditions                            |            ✗            |            ✔            |
+| Includes ASC asset kit                                   |            ✗            |       ✔ _(2.5.4+)_      |
+
+
 <!-- Section -->
 <section>
     <header class="major">
