@@ -43,7 +43,7 @@ public interface ShareService {
      *
      * @param request         the request that provides context of which Asset Share instance the request is coming to.
      * @param response        the response
-     * @param shareParameters a &lt;String, Object&gt; map or parameters; This is initially constructed from the request.getParameterMap() but can be augmented in the ShareService implementationa s needed.
+     * @param shareParameters a &lt;String, Object&gt; map or parameters; This is initially constructed from the request.getParameterMap() but can be augmented in the ShareService implementation as needed.
      * @throws ShareException is thrown if an error occurs with sharing (required share params are missing) or with the sharing initiation itself.
      */
     void share(SlingHttpServletRequest request, SlingHttpServletResponse response, ValueMap shareParameters) throws ShareException;

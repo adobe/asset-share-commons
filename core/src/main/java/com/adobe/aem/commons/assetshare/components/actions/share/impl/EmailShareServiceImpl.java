@@ -37,6 +37,7 @@ import com.adobe.aem.commons.assetshare.configuration.Config;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.util.EmailService;
 import com.adobe.aem.commons.assetshare.util.RequireAem;
+import com.adobe.cq.commerce.common.ValueMapDecorator;
 import com.adobe.granite.security.user.UserProperties;
 import com.adobe.granite.security.user.UserPropertiesManager;
 import com.day.cq.commons.Externalizer;
@@ -66,6 +67,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
+import javax.jcr.Value;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -116,6 +118,8 @@ public class EmailShareServiceImpl implements ShareService {
 
     @Override
     public final void share(final SlingHttpServletRequest request, final SlingHttpServletResponse response, final ValueMap shareParameters) throws ShareException {
+        final ValueMap unprotectedShareParameters = new ValueMapDecorator(new HashMap<>());
+        unprotectedShareParameters.putAll(shareParameters);
 
         /** Work around for regression issue introduced in AEM 6.4 **/
         SlingBindings bindings = new SlingBindings();
@@ -127,10 +131,11 @@ public class EmailShareServiceImpl implements ShareService {
         final EmailShare emailShare = request.adaptTo(EmailShare.class);
 
         shareParameters.putAll(xssProtectUserData(emailShare.getUserData()));
-        //shareParameters.putAll(emailShare.getUserData());
+        unprotectedShareParameters.putAll(emailShare.getUserData());
 
         // Configured data supersedes user data
         shareParameters.putAll(emailShare.getConfiguredData());
+        unprotectedShareParameters.putAll(emailShare.getConfiguredData());
 
         // Except for signature which we may or may  not want to use from configured data, depending on flags in configured data
         shareParameters.put(SIGNATURE, getSignature(emailShare, userProperties));
@@ -141,12 +146,12 @@ public class EmailShareServiceImpl implements ShareService {
             shareParameters.put(EmailService.REPLY_TO, replyToAddress);
         }
 
-        share(request.adaptTo(Config.class), shareParameters, StringUtils.defaultIfBlank(emailShare.getEmailTemplatePath(), cfg.emailTemplate()));
+        share(request.adaptTo(Config.class), unprotectedShareParameters, shareParameters, StringUtils.defaultIfBlank(emailShare.getEmailTemplatePath(), cfg.emailTemplate()));
     }
 
-    private final void share(final Config config, final ValueMap shareParameters, final String emailTemplatePath) throws ShareException {
-        final String[] emailAddresses = StringUtils.split(shareParameters.get(EMAIL_ADDRESSES, ""), ",");
-        final String[] assetPaths = Arrays.stream(shareParameters.get(ASSET_PATHS, ArrayUtils.EMPTY_STRING_ARRAY))
+    private final void share(final Config config, final ValueMap unprotectedShareParameters, final ValueMap shareParameters, final String emailTemplatePath) throws ShareException {
+        final String[] emailAddresses = StringUtils.split(unprotectedShareParameters.get(EMAIL_ADDRESSES, ""), ",");
+        final String[] assetPaths = Arrays.stream(unprotectedShareParameters.get(ASSET_PATHS, ArrayUtils.EMPTY_STRING_ARRAY))
                 .filter(StringUtils::isNotBlank)
                 .map(path -> config.getResourceResolver().getResource(path))
                 .filter(Objects::nonNull)
@@ -163,7 +168,7 @@ public class EmailShareServiceImpl implements ShareService {
         }
 
         // Convert provided params to <String, String>; anything that needs to be accessed in its native type should be accessed and manipulated via shareParameters.get(..)
-        final Map<String, String> emailParameters = new HashMap<String, String>();
+        final Map<String, String> emailParameters = new HashMap<>();
         for (final String key : shareParameters.keySet()) {
             emailParameters.put(key, shareParameters.get(key, String.class));
         }
@@ -288,7 +293,6 @@ public class EmailShareServiceImpl implements ShareService {
     private Map<String, Object> xssProtectUserData(Map<String, Object> dirtyUserData) {
         Map<String, Object> cleanUserData = new HashMap<String, Object>();
         for (final Map.Entry<String, Object> entry : dirtyUserData.entrySet()) {
-
             if (entry.getValue() instanceof String[]) {
                 cleanUserData.put(entry.getKey(), xssCleanData((String[]) entry.getValue()));
             } else if (entry.getValue() instanceof String) {
