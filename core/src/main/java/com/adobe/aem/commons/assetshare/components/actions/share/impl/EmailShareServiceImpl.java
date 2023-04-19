@@ -37,7 +37,6 @@ import com.adobe.aem.commons.assetshare.configuration.Config;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.util.EmailService;
 import com.adobe.aem.commons.assetshare.util.RequireAem;
-import com.adobe.cq.commerce.common.ValueMapDecorator;
 import com.adobe.granite.security.user.UserProperties;
 import com.adobe.granite.security.user.UserPropertiesManager;
 import com.day.cq.commons.Externalizer;
@@ -53,6 +52,7 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.scripting.SlingBindings;
+import org.apache.sling.api.wrappers.ValueMapDecorator;
 import org.apache.sling.models.factory.ModelFactory;
 import org.apache.sling.scripting.core.ScriptHelper;
 import org.apache.sling.xss.XSSAPI;
@@ -151,6 +151,7 @@ public class EmailShareServiceImpl implements ShareService {
 
     private final void share(final Config config, final ValueMap unprotectedShareParameters, final ValueMap shareParameters, final String emailTemplatePath) throws ShareException {
         final String[] emailAddresses = StringUtils.split(unprotectedShareParameters.get(EMAIL_ADDRESSES, ""), ",");
+
         final String[] assetPaths = Arrays.stream(unprotectedShareParameters.get(ASSET_PATHS, ArrayUtils.EMPTY_STRING_ARRAY))
                 .filter(StringUtils::isNotBlank)
                 .map(path -> config.getResourceResolver().getResource(path))
@@ -159,6 +160,10 @@ public class EmailShareServiceImpl implements ShareService {
                 .filter(Objects::nonNull)
                 .map(Asset::getPath)
                 .toArray(String[]::new);
+
+        if (log.isDebugEnabled()) {
+            log.debug("Sharing [ {} ] to [ {} ]", StringUtils.join(unprotectedShareParameters.get(ASSET_PATHS, ArrayUtils.EMPTY_STRING_ARRAY), ", "), StringUtils.join(emailAddresses, ", "));
+        }
 
         // Check to ensure the minimum set of e-mail parameters are provided; Throw exception if not.
         if (emailAddresses == null || emailAddresses.length == 0) {
