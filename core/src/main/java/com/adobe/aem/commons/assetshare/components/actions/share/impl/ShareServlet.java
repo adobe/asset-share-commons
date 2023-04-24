@@ -82,7 +82,7 @@ public class ShareServlet extends SlingAllMethodsServlet {
                     try {
                         shareService.share(request, response,
                                 // Make map write-able
-                                new ValueMapDecorator(new HashMap<String, Object>(request.getParameterMap())));
+                                new ValueMapDecorator(new HashMap<>(request.getParameterMap())));
                         counter.incrementAndGet();
                     } catch (ShareException e) {
                         if (log.isErrorEnabled()) {
@@ -96,7 +96,7 @@ public class ShareServlet extends SlingAllMethodsServlet {
             if (counter.get() == 0) {
                 defaultShareService.share(request, response,
                         // Make map write-able
-                        new ValueMapDecorator(new HashMap<String, Object>(request.getParameterMap())));
+                        new ValueMapDecorator(new HashMap<>(request.getParameterMap())));
             }
         } catch (ShareException ex) {
             log.error("Unable to share assets from Asset Share Commons", ex);
