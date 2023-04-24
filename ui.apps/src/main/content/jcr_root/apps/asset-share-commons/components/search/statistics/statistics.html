@@ -16,9 +16,9 @@
   ~ limitations under the License.
  */-->
 
-<sly data-sly-use.component="com.adobe.aem.commons.assetshare.components.search.Statistics"
-	    data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html"
-		data-sly-test.ready="${component.ready}">
+<sly data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html"
+	 data-sly-use.component="com.adobe.aem.commons.assetshare.components.search.Statistics"
+	 data-sly-test.ready="${component.ready}">
 
 	<div class="ui mini ${properties['hideTimeTaken'] ? 'two' : 'three' } statistics"
 		 data-asset-share-id="${component.id}__statistics"
