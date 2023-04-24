@@ -17,8 +17,8 @@
  */-->
 
 <sly    data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
-        data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
-        data-sly-test.searchConfig="${modelCache['com.adobe.aem.commons.assetshare.components.search.SearchConfig']}"
+        data-sly-set.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
+        data-sly-set.searchConfig="${modelCache['com.adobe.aem.commons.assetshare.components.search.SearchConfig']}"
         data-sly-use.cart="com.adobe.aem.commons.assetshare.components.actions.cart.Cart"></sly>
 
 <style data-sly-test="${!wccmode.disabled}">

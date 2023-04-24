@@ -17,12 +17,12 @@
  */-->
 
 <sly
+        data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html"
         data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
-        data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
-        data-sly-test="${!config.aemClassic}"
+        data-sly-set.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
         data-sly-use.downloads="com.adobe.aem.commons.assetshare.components.actions.downloads.Downloads"
         data-sly-use.downloadTemplate="templates/download.html"
-        data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html">
+        data-sly-test="${!config.aemClassic}">
 
     <sly data-sly-test="${!wccmode.disabled}">
         <script>
