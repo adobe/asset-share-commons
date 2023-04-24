@@ -17,7 +17,7 @@
  */-->
 
 <sly data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
-     data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
+     data-sly-set.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
      data-sly-use.header="com.adobe.aem.commons.assetshare.components.structure.Header"
      data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html"
      data-sly-test.ready="${header.ready}">

@@ -17,9 +17,9 @@
  */-->
 
 <sly    data-sly-use.modelCache="com.adobe.aem.commons.assetshare.util.ModelCache"
-        data-sly-test.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
-        data-sly-test.search="${modelCache['com.adobe.aem.commons.assetshare.search.Search']}"
-        data-sly-test.pagePredicate="${modelCache['com.adobe.aem.commons.assetshare.components.predicates.PagePredicate']}"></sly>
+        data-sly-set.config="${modelCache['com.adobe.aem.commons.assetshare.configuration.Config']}"
+        data-sly-set.search="${modelCache['com.adobe.aem.commons.assetshare.search.Search']}"
+        data-sly-set.pagePredicate="${modelCache['com.adobe.aem.commons.assetshare.components.predicates.PagePredicate']}"></sly>
 
 <form   role="search"
         class="ui form"
