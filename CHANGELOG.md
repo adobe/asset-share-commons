@@ -2,10 +2,25 @@
 
 ## [Unreleased](https://github.com/adobe/asset-share-commons/tree/HEAD)
 
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.5.6...HEAD)
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.6.0...HEAD)
 
 ### 📁 Other pull requests
 
+- Bump org.apache.sling.testing.sling-mock.junit4 from 3.4.2 to 3.4.8 [\#933](https://github.com/adobe/asset-share-commons/pull/933) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump spotbugs-maven-plugin from 4.7.3.0 to 4.7.3.4 [\#931](https://github.com/adobe/asset-share-commons/pull/931) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Image delivery [\#928](https://github.com/adobe/asset-share-commons/pull/928) ([davidjgonzalez](https://github.com/davidjgonzalez))
+
+## [asset-share-commons-2.6.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.6.0) (2023-05-12)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.5.6...asset-share-commons-2.6.0)
+
+## [asset-share-commons-2.5.6](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.5.6) (2023-04-24)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.5.4...asset-share-commons-2.5.6)
+
+### 📁 Other pull requests
+
+- v2.5.6 release [\#927](https://github.com/adobe/asset-share-commons/pull/927) ([davidjgonzalez](https://github.com/davidjgonzalez))
 - Updated some data-sly-test to data-sly-set and moved data-sly-use of … [\#926](https://github.com/adobe/asset-share-commons/pull/926) ([davidjgonzalez](https://github.com/davidjgonzalez))
 - Removed all escaping for controlled email variables [\#925](https://github.com/adobe/asset-share-commons/pull/925) ([davidjgonzalez](https://github.com/davidjgonzalez))
 - Bump maven-release-plugin from 3.0.0-M6 to 3.0.0 [\#922](https://github.com/adobe/asset-share-commons/pull/922) ([dependabot[bot]](https://github.com/apps/dependabot))
@@ -13,10 +28,6 @@
 - Bump maven-javadoc-plugin from 3.4.1 to 3.5.0 [\#920](https://github.com/adobe/asset-share-commons/pull/920) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump maven-resources-plugin from 3.2.0 to 3.3.1 [\#913](https://github.com/adobe/asset-share-commons/pull/913) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump dependency-check-maven from 7.1.1 to 8.2.1 [\#912](https://github.com/adobe/asset-share-commons/pull/912) ([dependabot[bot]](https://github.com/apps/dependabot))
-
-## [asset-share-commons-2.5.6](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.5.6) (2023-04-24)
-
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.5.4...asset-share-commons-2.5.6)
 
 ## [asset-share-commons-2.5.4](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.5.4) (2023-02-10)
 
