@@ -39,7 +39,9 @@
 			id="${asset.path}">
 
 		<td class="image">
-			<a href="${assetDetails.fullUrl}"><img src="${asset.properties['rendition?name=list'] || properties['missingImage'] @ context = 'attribute'}" alt="${asset.properties['title']}"/></a>
+			<a href="${assetDetails.fullUrl}"><img src="${asset.properties['rendition?name=list'] || properties['missingImage'] @ context = 'attribute'}"
+												   width="98px"
+												   alt="${asset.properties['title']}"/></a>
 		</td>
 		<td class="header">
 			<a href="${assetDetails.fullUrl}">${asset.properties['title']}</a>

@@ -1,0 +1,9 @@
+{
+  "service.ranking:Integer": -9001,
+  "label": "Search Results",
+  "name": "asset-share-commons-search-results_cloud",
+  "rendition.mappings": [
+    "card=format=webp&preferwebp=true&width=237&quality=80",
+    "list=format=webp&preferwebp=true&width=98&quality=50"
+  ]
+}
