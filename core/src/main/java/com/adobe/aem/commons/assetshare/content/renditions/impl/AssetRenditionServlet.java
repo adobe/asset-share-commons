@@ -19,13 +19,16 @@
 
 package com.adobe.aem.commons.assetshare.content.renditions.impl;
 
+import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
+import org.apache.sling.models.factory.ModelFactory;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -73,6 +76,9 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
     @Reference
     private transient AssetRenditionDispatchers assetRenditionDispatchers;
 
+    @Reference
+    private transient ModelFactory modelFactory;
+
     private transient Set allowedParameters = new HashSet();
 
     public final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) throws IOException, ServletException {
@@ -80,8 +86,10 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
             final AssetRenditionParameters parameters = new AssetRenditionParameters(request);
 
             if (acceptsAssetRenditionParameters(parameters)) {
+                final AssetModel assetModel = modelFactory.getModelFromWrappedRequest(request, parameters.getAsset().adaptTo(Resource.class), AssetModel.class);
+
                 for (final AssetRenditionDispatcher assetRenditionDispatcher : assetRenditionDispatchers.getAssetRenditionDispatchers()) {
-                    if (acceptedByAssetRenditionDispatcher(assetRenditionDispatcher, parameters)) {
+                    if (acceptedByAssetRenditionDispatcher(request, assetModel, assetRenditionDispatcher, parameters)) {
 
                         setResponseHeaders(response, parameters);
 
@@ -103,13 +111,13 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
         }
     }
 
-    protected boolean acceptedByAssetRenditionDispatcher(final AssetRenditionDispatcher assetRenditionDispatcher, final AssetRenditionParameters parameters) {
+    protected boolean acceptedByAssetRenditionDispatcher(final SlingHttpServletRequest request, final AssetModel assetModel, final AssetRenditionDispatcher assetRenditionDispatcher, final AssetRenditionParameters parameters) {
         if (assetRenditionDispatcher.getRenditionNames() == null ||
                 assetRenditionDispatchers == null ||
                 StringUtils.isBlank(parameters.getRenditionName())) {
             return false;
         } else {
-            return assetRenditionDispatcher.getRenditionNames().contains(parameters.getRenditionName());
+            return assetRenditionDispatcher.accepts(assetModel, parameters.getRenditionName());
         }
     }
 

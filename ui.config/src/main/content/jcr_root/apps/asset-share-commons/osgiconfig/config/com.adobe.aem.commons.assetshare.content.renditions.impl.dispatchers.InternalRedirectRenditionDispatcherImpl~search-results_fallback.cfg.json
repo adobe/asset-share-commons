@@ -1,5 +1,5 @@
 {
-  "service.ranking:Integer": -9001,
+  "service.ranking:Integer": -9002,
   "label": "Search Results",
   "name": "asset-share-commons-search-results",
   "hidden:Boolean": true,
