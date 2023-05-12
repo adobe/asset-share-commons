@@ -16,7 +16,7 @@ layout: default
         <hr/>
 
         <div style="text-align: center;">
-            <h2>Asset Share Commons version 2.5.6 is out!</h2>
+            <h2>Asset Share Commons version 2.6.0 is out!</h2>
 
             <p>
                 Asset Share Commons 2.0 now supports AEM as a Cloud Service and AEM 6.5 SP7+, and requires AEM WCM Core Components 2.17.14+.
@@ -43,8 +43,8 @@ layout: default
 | Supports AEM as a Cloud Service                          |            ✗            |            ✔            |
 | Supports AEM 6.5.x                                       |            ✔            |       ✔ _(6.5.7+)_      |
 | Requires AEM Core WCM Components                         |            ✔            |            ✔            |
-| Supports legacy AEM 6.5 Asset Download framework         |            ✗            |            ✔            |
-| Supports optimized ASC AEm 6.5 asset download framework  |            ✗            |            ✔            |
+| Supports legacy AEM 6.5 asset download framework         |            ✗            |            ✔            |
+| Supports optimized ASC AEM 6.5 asset download framework  |            ✗            |            ✔            |
 | Supports AEM as a Cloud Service asset download framework |            ✗            |            ✔            |
 | Includes ASC asset renditions                            |            ✗            |            ✔            |
 | Includes ASC asset kit                                   |            ✗            |       ✔ _(2.5.4+)_      |
