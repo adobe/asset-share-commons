@@ -14,7 +14,6 @@ This frameworks solves two problems:
 For example, today the "web" rendition may be `/content/dam/images/dog.png/_jcr_content/renditions/cq5dam.web.1280.1280.png`, but tomorrow it me be updated to a higher resolution at `/content/dam/images/dog.png/_jcr_content/renditions/cq5dam.web.1600.1600.png`.
 Ideally the change of what it means to be the "web rendition" happens once internally, and all clients that need the web rendition can remain ignorant of this backend change.
 
-
 The Asset Rendition framework is an extensible framework that maps simple URLs to back-end processes, which are responsible for serving up the appropriate rendition.
 
 HTTP GETs are made to Asset resources in the following format:
@@ -46,7 +45,6 @@ There are 2 provided `AssetRenditionDispatcher` configuration factory implementa
 ### Static Rendition Dispatchers
 
 `StaticRenditionDispatcherImpl` streams the matching static rendition (`[dam:Asset]/jcr:content/renditions/*`) to the response.
-
 
 | Label       | OSGi property | Description   |
 |-------------|---------------|---------------|
@@ -116,7 +114,6 @@ Supported "variables" in the `rendition.types` field are as follows:
 * `${dm.domain}` = The asset's `dam:scene7Domain` property
 * `${dm.api-server}` = The asset's `dam:scene7APIServer` property
 
-
 #### Example OSGi factory configuration
 
 ![Asset Renditions Search Results configuration](images/search-results-asset-renditions-config.png)
@@ -145,7 +142,7 @@ Review the example XML definition at [com.adobe.aem.commons.assetshare.content.r
 | Label       | label         | The human-friendly name of this AssetRenditionDispatcher and may be displayed to authors. |
 | Rendition types | types     | The types of renditions this configuration will return. Ideally all renditions in this configuration apply types specified here. This is used to drive and scope the Asset Renditions displays in Authoring datasources. OOTB types are: `image` and `video` |
 | Hide renditions | hidden | Hide if this AssetRenditionDispatcher configuration is not intended to be exposed to AEM authors for selection in dialogs. |
-| Rediret | redirect | Select the type of redirect that should be made: Moved Permanently (301) or Moved Temporarily (302). Defaults to 301. |
+| Redirect | redirect | Select the type of redirect that should be made: Moved Permanently (301) or Moved Temporarily (302). Defaults to 301. |
 | Rendition mappings	| rendition.mappings | In the form: `<renditionName>=<external url expression>` |
 | Service ranking | service.ranking | Higher service rankings take precedence.
 
@@ -188,6 +185,48 @@ Supported "variables" in the `rendition.types` field are as follows:
 
 Note that the last 2 mappings `cmyk-preset` and `foo` have an `extension` query parameter set. This is a specially named query parameter ASC will itercept and will use as the extension of the downloaded file. This is helpfulp when no variables can be used to determine the file type at the "end of the" external request (such as Dynamic Media). 
 
+### Asset Delivery Renditions (since v2.6.0)
+
+Asset Delivery renditions only work on AEM as a Cloud Service (not AEM SDK, or AEM 6.5) and utilize [AEM's optimized image delivery API](https://experienceleague.adobe.com/docs/experience-manager-learn/cloud-service/developing/advanced/web-optimized-image-delivery-java-apis.html).
+
+Asset Share Commons uses these OOTB for the search result card/list view thumbnail images to increase site performance. The card/list thumbnails fallback to static renditions when Asset Share Commons is running on a non-AEM as a Cloud Service environment (AEM SDK, AEM 6.5).
+
+| Label       | OSGi property | Description   |
+|-------------|---------------|---------------|
+| Name        | name          | The system name of this Rendition Dispatcher. This should be unique across all AssetRenditionDispatcher instances. This can be used to exclude all rendition mappings from uses of the Asset Renditions DataSource.
+| Label       | label         | The human-friendly name of this AssetRenditionDispatcher and may be displayed to authors. |
+| Rendition types | types     | The types of renditions this configuration will return. Ideally all renditions in this configuration apply types specified here. This is used to drive and scope the Asset Renditions displays in Authoring datasources. OOTB types are: `image` and `video` |
+| Hide renditions | hidden | Hide if this AssetRenditionDispatcher configuration is not intended to be exposed to AEM authors for selection in dialogs. |
+| Rendition mappings	| rendition.mappings | In the form: `<renditionName>=<asset delivery query params>` |
+| Service ranking | service.ranking | Higher service rankings take precedence.
+
+
+The `rendition.mappings` are in the format:
+
+`<rendition name>=<asset delivery query parameters>`
+
+For example
+
+`mobile=format=webp&preferwebp=true&width=800&quality=90`
+
+[Allowed query parameters](https://experienceleague.adobe.com/docs/experience-manager-learn/getting-started-with-aem-headless/how-to/images.html#query-variables) can be found in Adobe documentation.
+
+#### Example OSGi Configuration definition (using the modern .cfg.json syntax)
+
+`com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.AssetDeliveryRenditionDispatcherImpl~my-optimized-renditions.cfg.json`
+
+```json
+{
+  "label": "Search Results",
+  "name": "my-optimized-renditions",
+  "rendition.mappings": [
+    "mobile=format=webp&preferwebp=true&width=800&quality=90",
+    "tablet=format=webp&preferwebp=true&width=1200&quality=90"
+    "desktop=format=webp&preferwebp=true&width=1600&quality=90",
+  ]
+}
+```
+
 ## Provided Asset Rendition Dispatcher Configurations
 
 ![Asset Renditions Search Results configuration](images/ootb-asset-renditions-configs.png)
@@ -202,12 +241,10 @@ Note that the last 2 mappings `cmyk-preset` and `foo` have an `extension` query 
 
 *Note when the "Rendition Types" is empty, this implicitly means "all".*
 
-
 ### Overriding provided Asset Rendition configurations
 
 Since Asset Share Commons installs the above configurations they cannot be removed, however they can be overridden. For example, if a different "web" rendition is desired the implementor can create a new OSGi configuration (of any type), and set the `Service ranking` to be greater than zero.
 The Rendition Name whose config has the highest service ranking will be used.
-
 
 
 ## Dispatcher configuration
