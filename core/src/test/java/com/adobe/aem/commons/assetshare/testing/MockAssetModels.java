@@ -34,6 +34,19 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.lenient;
 
+
+/**
+ *     @Rule
+ *     public final AemContext ctx = new AemContext();
+ *
+ *     @Mock
+ *     ModelFactory modelFactory;
+ *
+ *     ...
+ *
+ *     MockAssetModels.mockModelFactory(ctx, modelFactory, "/content/dam/test.png");
+ *     ctx.registerService(ModelFactory.class, modelFactory, org.osgi.framework.Constants.SERVICE_RANKING, Integer.MAX_VALUE);
+ */
 public class MockAssetModels {
 
     public static void mockModelFactory(AemContext ctx, ModelFactory mockModelFactory, String assetPath) {
