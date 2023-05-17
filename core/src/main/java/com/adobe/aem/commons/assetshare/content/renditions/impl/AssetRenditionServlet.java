@@ -47,6 +47,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * /content/dam/foo.png.renditions/thumbnail/download/asset.rendition
@@ -101,13 +102,22 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
                     return;
                 }
 
+                if (log.isDebugEnabled()) {
+                    log.debug("Looking for first accepting AssetRenditionDispatcher from ordered list of [ {} ] to dispatch asset [ {} ]",
+                        assetRenditionDispatchers.getAssetRenditionDispatchers().stream().map(AssetRenditionDispatcher::getName).collect(Collectors.joining(", ")), assetModel.getPath());
+                }
+
                 for (final AssetRenditionDispatcher assetRenditionDispatcher : assetRenditionDispatchers.getAssetRenditionDispatchers()) {
                     if (acceptedByAssetRenditionDispatcher(request, assetModel, assetRenditionDispatcher, parameters)) {
-
+                        if (log.isDebugEnabled()) {
+                            log.debug("Asset Rendition Dispatcher [ {} ] accepted for asset [ {} ]", assetRenditionDispatcher.getName(), assetModel.getPath());
+                        }
                         setResponseHeaders(response, parameters);
 
                         assetRenditionDispatcher.dispatch(request, response);
                         return;
+                    } else if (log.isDebugEnabled()) {
+                        log.debug("Asset Rendition Dispatcher [ {} ] rejected for asset [ {} ]", assetRenditionDispatcher.getName(), assetModel.getPath());
                     }
                 }
 
