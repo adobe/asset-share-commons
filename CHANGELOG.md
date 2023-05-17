@@ -2,17 +2,33 @@
 
 ## [Unreleased](https://github.com/adobe/asset-share-commons/tree/HEAD)
 
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.6.0...HEAD)
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.6.2...HEAD)
+
+### 🐛 Bug fixes
+
+- Fixed issue with AssetRenditionServlet and thumbnails in new 6.5 serv… [\#939](https://github.com/adobe/asset-share-commons/pull/939) ([davidjgonzalez](https://github.com/davidjgonzalez))
 
 ### 📁 Other pull requests
 
-- Bump org.apache.sling.testing.sling-mock.junit4 from 3.4.2 to 3.4.8 [\#933](https://github.com/adobe/asset-share-commons/pull/933) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump spotbugs-maven-plugin from 4.7.3.0 to 4.7.3.4 [\#931](https://github.com/adobe/asset-share-commons/pull/931) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Image delivery [\#928](https://github.com/adobe/asset-share-commons/pull/928) ([davidjgonzalez](https://github.com/davidjgonzalez))
+- Bump surefire-junit47 from 2.22.2 to 3.1.0 [\#937](https://github.com/adobe/asset-share-commons/pull/937) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump org.apache.sling.testing.osgi-mock.junit4 from 3.3.4 to 3.3.6 [\#936](https://github.com/adobe/asset-share-commons/pull/936) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump maven-install-plugin from 2.5.2 to 3.1.1 [\#935](https://github.com/adobe/asset-share-commons/pull/935) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump filevault-package-maven-plugin from 1.3.0 to 1.3.2 [\#919](https://github.com/adobe/asset-share-commons/pull/919) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [asset-share-commons-2.6.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.6.2) (2023-05-17)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.6.0...asset-share-commons-2.6.2)
 
 ## [asset-share-commons-2.6.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.6.0) (2023-05-12)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.5.6...asset-share-commons-2.6.0)
+
+### 📁 Other pull requests
+
+- v2.6.0 [\#934](https://github.com/adobe/asset-share-commons/pull/934) ([davidjgonzalez](https://github.com/davidjgonzalez))
+- Bump org.apache.sling.testing.sling-mock.junit4 from 3.4.2 to 3.4.8 [\#933](https://github.com/adobe/asset-share-commons/pull/933) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump spotbugs-maven-plugin from 4.7.3.0 to 4.7.3.4 [\#931](https://github.com/adobe/asset-share-commons/pull/931) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Image delivery [\#928](https://github.com/adobe/asset-share-commons/pull/928) ([davidjgonzalez](https://github.com/davidjgonzalez))
 
 ## [asset-share-commons-2.5.6](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.5.6) (2023-04-24)
 
