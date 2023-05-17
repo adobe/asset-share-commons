@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
+import com.adobe.aem.commons.assetshare.util.ServletHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -79,6 +80,10 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
     @Reference
     private transient ModelFactory modelFactory;
 
+
+    @Reference
+    private transient ServletHelper servletHelper;
+
     private transient Set allowedParameters = new HashSet();
 
     public final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) throws IOException, ServletException {
@@ -86,7 +91,15 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
             final AssetRenditionParameters parameters = new AssetRenditionParameters(request);
 
             if (acceptsAssetRenditionParameters(parameters)) {
-                final AssetModel assetModel = modelFactory.getModelFromWrappedRequest(request, parameters.getAsset().adaptTo(Resource.class), AssetModel.class);
+
+                servletHelper.addSlingBindings(request, response);
+
+                final AssetModel assetModel = modelFactory.getModelFromWrappedRequest(request, request.getResourceResolver().getResource(parameters.getAsset().getPath()), AssetModel.class);
+
+                if (assetModel == null) {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Asset [ " + parameters.getAsset().getPath() + " ] cannot be resolved.");
+                    return;
+                }
 
                 for (final AssetRenditionDispatcher assetRenditionDispatcher : assetRenditionDispatchers.getAssetRenditionDispatchers()) {
                     if (acceptedByAssetRenditionDispatcher(request, assetModel, assetRenditionDispatcher, parameters)) {
@@ -107,7 +120,11 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
         } catch (IllegalArgumentException e) {
             log.warn("Invalid request URL format for AssetRenditionServlet.", e);
 
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR , "Invalid request URL format for AssetRenditionServlet.");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST , "Invalid request URL format for AssetRenditionServlet.");
+        } catch (NullPointerException e) {
+            log.error("Null pointer in AssetRenditionServlet most likely trying to resolve a path to an AssetModel.", e);
+
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR , "Invalid asset path for AssetRenditionServlet.");
         }
     }
 

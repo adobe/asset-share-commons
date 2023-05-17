@@ -24,6 +24,7 @@ import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatc
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
+import com.adobe.aem.commons.assetshare.testing.MockAssetModels;
 import com.adobe.aem.commons.assetshare.util.ServletHelper;
 import com.adobe.aem.commons.assetshare.util.impl.ServletHelperImpl;
 import com.google.common.collect.ImmutableMap;
@@ -33,6 +34,7 @@ import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.request.RequestDispatcherOptions;
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.models.factory.ModelFactory;
 import org.apache.sling.testing.mock.sling.servlet.MockRequestDispatcherFactory;
 import org.apache.sling.testing.mock.sling.servlet.MockSlingHttpServletResponse;
 import org.junit.Before;
@@ -61,6 +63,9 @@ public class AssetRenditionServletTest {
     @Mock
     private RequestDispatcher requestDispatcher;
 
+    @Mock
+    private ModelFactory modelFactory;
+
     @Before
     public void setUp() throws Exception {
         ctx.load().json(getClass().getResourceAsStream("AssetRenditionServletTest.json"), "/content/dam");
@@ -75,9 +80,13 @@ public class AssetRenditionServletTest {
 
         ctx.currentResource("/content/dam/test.png");
 
-        ctx.registerService(ServletHelper.class, new ServletHelperImpl());
+        ctx.registerInjectActivateService(new ServletHelperImpl());
         ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
         ctx.registerService(AssetRenditionDispatchers.class, new AssetRenditionDispatchersImpl());
+
+        MockAssetModels.mockModelFactory(ctx, modelFactory,"/content/dam/test.png");
+
+        ctx.registerService(ModelFactory.class, modelFactory, org.osgi.framework.Constants.SERVICE_RANKING, Integer.MAX_VALUE);
 
         ctx.request().setRequestDispatcherFactory(new MockRequestDispatcherFactory() {
             @Override
@@ -99,7 +108,7 @@ public class AssetRenditionServletTest {
         final byte[] expectedOutputStream = IOUtils.toByteArray(this.getClass().getResourceAsStream("AssetRenditionServletTest__cq5dam.web.1280.1280.png"));
         doAnswer(invocation -> {
             Object[] args = invocation.getArguments();
-            // Write some data to the response so we know that that requestDispatcher.include(..) was infact invoked.
+            // Write some data to the response so we know that requestDispatcher.include(..) was infact invoked.
             ((MockSlingHttpServletResponse) args[1]).getOutputStream().write(expectedOutputStream);
             return null; // void method, return null
         }).when(requestDispatcher).include(any(SlingHttpServletRequest.class), any(SlingHttpServletResponse.class));
