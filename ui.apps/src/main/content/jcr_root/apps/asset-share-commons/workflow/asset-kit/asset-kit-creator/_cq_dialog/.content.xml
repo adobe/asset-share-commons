@@ -54,7 +54,7 @@
                                                    rootPath="/content"
                                                    required="{Boolean}true"
                                                    emptyText="Defaults to: /content/asset-kits"
-                                                   name="./metaData/ROOT_PATH_PATH"/>
+                                                   name="./metaData/ROOT_PAGE_PATH"/>
 
                                     <template-path jcr:primaryType="nt:unstructured"
                                                    sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
