@@ -1,8 +1,12 @@
 # 📑 Changelog
 
-## [Unreleased](https://github.com/adobe/asset-share-commons/tree/HEAD)
+## [asset-share-commons-2.6.4](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.6.4) (2023-05-19)
 
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.6.2...HEAD)
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.6.2...asset-share-commons-2.6.4)
+
+## [asset-share-commons-2.6.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.6.2) (2023-05-17)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.6.0...asset-share-commons-2.6.2)
 
 ### 🐛 Bug fixes
 
@@ -10,14 +14,11 @@
 
 ### 📁 Other pull requests
 
+- v2.6.2 [\#940](https://github.com/adobe/asset-share-commons/pull/940) ([davidjgonzalez](https://github.com/davidjgonzalez))
 - Bump surefire-junit47 from 2.22.2 to 3.1.0 [\#937](https://github.com/adobe/asset-share-commons/pull/937) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump org.apache.sling.testing.osgi-mock.junit4 from 3.3.4 to 3.3.6 [\#936](https://github.com/adobe/asset-share-commons/pull/936) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump maven-install-plugin from 2.5.2 to 3.1.1 [\#935](https://github.com/adobe/asset-share-commons/pull/935) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump filevault-package-maven-plugin from 1.3.0 to 1.3.2 [\#919](https://github.com/adobe/asset-share-commons/pull/919) ([dependabot[bot]](https://github.com/apps/dependabot))
-
-## [asset-share-commons-2.6.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.6.2) (2023-05-17)
-
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.6.0...asset-share-commons-2.6.2)
 
 ## [asset-share-commons-2.6.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.6.0) (2023-05-12)
 
