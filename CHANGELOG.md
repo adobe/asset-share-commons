@@ -1,8 +1,30 @@
 # 📑 Changelog
 
+## [Unreleased](https://github.com/adobe/asset-share-commons/tree/HEAD)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.6.6...HEAD)
+
+### 🐛 Bug fixes
+
+- Fixed issued with the search pages being oddly centered due to a sele… [\#948](https://github.com/adobe/asset-share-commons/pull/948) ([davidjgonzalez](https://github.com/davidjgonzalez))
+
+### 📁 Other pull requests
+
+- Added Dispatcher opt-in file [\#949](https://github.com/adobe/asset-share-commons/pull/949) ([davidjgonzalez](https://github.com/davidjgonzalez))
+- Bump maven-checkstyle-plugin from 3.2.0 to 3.2.2 [\#945](https://github.com/adobe/asset-share-commons/pull/945) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump maven-compiler-plugin from 3.10.1 to 3.11.0 [\#944](https://github.com/adobe/asset-share-commons/pull/944) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [asset-share-commons-2.6.6](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.6.6) (2023-05-24)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.6.4...asset-share-commons-2.6.6)
+
 ## [asset-share-commons-2.6.4](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.6.4) (2023-05-19)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.6.2...asset-share-commons-2.6.4)
+
+### 📁 Other pull requests
+
+- v2.6.4 [\#942](https://github.com/adobe/asset-share-commons/pull/942) ([davidjgonzalez](https://github.com/davidjgonzalez))
 
 ## [asset-share-commons-2.6.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.6.2) (2023-05-17)
 
