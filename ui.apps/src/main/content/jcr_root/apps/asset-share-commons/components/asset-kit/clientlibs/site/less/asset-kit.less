@@ -23,13 +23,12 @@
 
  */
 
- .basicpage {
+ head:has(meta[content="asset-kit-template"]) ~ body.basicpage { 
     max-width: 1200px;
     margin: 0 auto;
- }
+}
 
 .cmp-asset-kit {
-
     .cmp-asset-kit__assets-kit-size {
         text-align: right;
     }
