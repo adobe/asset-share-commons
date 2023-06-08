@@ -38,7 +38,7 @@ layout: default
 
 <!-- Feature table -->
 
-|                                                          | Asset Share Commons 1.x | Asset Share Commons 2.x |
+|                                                          | Asset Share Commons 1.x | Asset Share Commons 2.x/3.x |
 |----------------------------------------------------------|:-----------------------:|:-----------------------:|
 | Supports AEM as a Cloud Service                          |            ✗            |            ✔            |
 | Supports AEM 6.5.x                                       |            ✔            |       ✔ _(6.5.7+)_      |
