@@ -288,7 +288,7 @@
                                                             jcr:primaryType="nt:unstructured"
                                                             sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
                                                             fieldDescription="A JSON file having an options array with text and value fields."
-                                                            fieldLabel="JSON DataSource"
+                                                            fieldLabel="JSON"
                                                             name="./jsonSource"
                                                             rootPath="/content/dam"
                                                             required="{Boolean}true">
