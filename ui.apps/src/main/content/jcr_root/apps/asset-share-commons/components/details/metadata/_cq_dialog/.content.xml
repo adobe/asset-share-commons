@@ -287,7 +287,7 @@
                                                     <jsonDataSource
                                                             jcr:primaryType="nt:unstructured"
                                                             sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
-                                                            fieldDescription="A JSON file having an options array with text and value properties used in metadata schema to populate dropdown fields"
+                                                            fieldDescription="A JSON file having an options array with text and value fields"
                                                             fieldLabel="JSON DataSource"
                                                             name="./jsonDataSourceProperty"
                                                             rootPath="/content/dam"
