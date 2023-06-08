@@ -69,18 +69,15 @@ public interface Metadata extends EmptyTextComponent {
     String getLocale();
 
     /**
-     * Get the display text using a json file
-     * @return
-     * @throws IOException
+     * @return the values for the selected property adn type
      */
-    List<String> getDisplayTextFromJson() throws IOException;
-
+    List<String> getValues() throws IOException;
 
     /**
      * The DataType are the types of data supported by the Metadata Component that support special formatting.
      */
     enum DataType {
-        COMPUTED("computed"), TEXT("text"), DATE("date"), NUMBER("number"), BOOLEAN("boolean"), JSON_DATASOURCE("jsonDataSource");
+        COMPUTED("computed"), TEXT("text"), DATE("date"), NUMBER("number"), BOOLEAN("boolean"), JSON("json");
 
         private String value;
 
