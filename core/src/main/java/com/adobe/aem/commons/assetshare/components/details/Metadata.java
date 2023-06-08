@@ -24,6 +24,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.ValueMap;
 import org.osgi.annotation.versioning.ConsumerType;
 
+import java.io.IOException;
+import java.util.List;
+
 @ConsumerType
 public interface Metadata extends EmptyTextComponent {
 
@@ -65,12 +68,16 @@ public interface Metadata extends EmptyTextComponent {
      */
     String getLocale();
 
+    /**
+     * @return the values for the selected property adn type
+     */
+    List<String> getValues() throws IOException;
 
     /**
      * The DataType are the types of data supported by the Metadata Component that support special formatting.
      */
     enum DataType {
-        COMPUTED("computed"), TEXT("text"), DATE("date"), NUMBER("number"), BOOLEAN("boolean");
+        COMPUTED("computed"), TEXT("text"), DATE("date"), NUMBER("number"), BOOLEAN("boolean"), JSON("json");
 
         private String value;
 

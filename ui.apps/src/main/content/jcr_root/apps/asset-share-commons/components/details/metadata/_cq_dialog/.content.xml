@@ -107,6 +107,10 @@
                                                     jcr:primaryType="nt:unstructured"
                                                     text="Boolean"
                                                     value="boolean"/>
+                                            <json
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="JSON"
+                                                    value="json"/>
                                         </items>
                                     </data-type>
                                     <set-date
@@ -263,6 +267,36 @@
                                             </well>
                                         </items>
                                     </set-computed>
+                                    <set-json
+                                            granite:class="hide list-option-listfrom-showhide-target foundation-layout-util-vmargin"
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/container">
+                                        <granite:data
+                                                jcr:primaryType="nt:unstructured"
+                                                showhidetargetvalue="json"/>
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <heading
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/heading"
+                                                    level="{Long}4"
+                                                    text="JSON lookup file"/>
+                                            <well
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/well">
+                                                <items jcr:primaryType="nt:unstructured">
+                                                    <json
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
+                                                            fieldDescription="A JSON file having an options array with text and value fields."
+                                                            fieldLabel="JSON"
+                                                            name="./jsonSource"
+                                                            rootPath="/content/dam"
+                                                            required="{Boolean}true">
+                                                    </json>
+                                                </items>
+                                            </well>
+                                        </items>
+                                    </set-json>
                                 </items>
                             </column>
                         </items>
