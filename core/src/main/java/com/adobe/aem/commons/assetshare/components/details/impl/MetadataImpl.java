@@ -205,25 +205,37 @@ public class MetadataImpl extends AbstractEmptyTextComponent implements Metadata
 
     @Override
     public List<String> getDisplayTextFromJson() throws IOException {
-        List<String> actualValues = Collections.EMPTY_LIST;
+        List<String> metadataValue = Collections.EMPTY_LIST;
         Object val = combinedProperties.get(getPropertyName());
         if (null == val) {
-            return actualValues;
+            return metadataValue;
         } else if (val instanceof String) {
-            actualValues = new ArrayList<>();
-            actualValues.add((String) val);
+            metadataValue = new ArrayList<>();
+            metadataValue.add((String) val);
         } else if (val instanceof String[]) {
-            actualValues = Arrays.asList((String[]) val);
+            metadataValue = Arrays.asList((String[]) val);
         }
         ResourceResolver resolver = request.getResourceResolver();
         Resource resource = resolver.getResource(jsonDataSourceProperty);
         if (null == resource) {
-            return actualValues;
+            return metadataValue;
         }
         Asset asset = resource.adaptTo(Asset.class);
         if (null == asset) {
-            return actualValues;
+            return metadataValue;
         }
+        List<String> displayText = readJson(metadataValue, asset );
+        return displayText;
+    }
+
+    /**
+     *
+     * @param metadataValue
+     * @param asset
+     * @return displayText
+     * @throws IOException
+     */
+    private static List<String> readJson(List<String> metadataValue, Asset asset) throws IOException {
         List<String> displayText = new ArrayList<>();
         try (InputStream stream = asset.getOriginal().adaptTo(InputStream.class);
              BufferedReader reader = new BufferedReader(
@@ -236,20 +248,20 @@ public class MetadataImpl extends AbstractEmptyTextComponent implements Metadata
                     if (log.isDebugEnabled()) {
                         log.debug("JSON is missing options array [ {} ]", asset.getPath());
                     }
-                    return actualValues;
+                    return metadataValue;
                 }
                 Type listType = new TypeToken<List<Option>>() {}.getType();
                 List<Option> options = gson.fromJson(optionsJson, listType);
-                for (String metadataVal : actualValues) {
+                for (String val : metadataValue) {
                     Option value = options.stream()
-                            .filter(option -> metadataVal.equals(option.value))
+                            .filter(option -> val.equals(option.value))
                             .findFirst()
                             .orElse(null);
                     if( null!= value) {
                         displayText.add(value.text);
                     }
                     else{
-                        displayText.add(metadataVal);
+                        displayText.add(val);
                     }
                 }
             }
@@ -257,6 +269,7 @@ public class MetadataImpl extends AbstractEmptyTextComponent implements Metadata
         }
         return displayText;
     }
+
     protected class Option{
         private String text;
         private String value;

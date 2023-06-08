@@ -69,7 +69,7 @@ public interface Metadata extends EmptyTextComponent {
     String getLocale();
 
     /**
-     *
+     * Get the display text using a json file
      * @return
      * @throws IOException
      */
