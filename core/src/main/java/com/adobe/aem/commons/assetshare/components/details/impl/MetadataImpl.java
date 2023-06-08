@@ -24,7 +24,13 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.export.json.ExporterConstants;
 import com.adobe.cq.sightly.SightlyWCMMode;
+import com.day.cq.dam.commons.util.DamUtil;
 import com.day.cq.wcm.api.Page;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -36,14 +42,19 @@ import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.ScriptVariable;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
+import com.day.cq.dam.api.Asset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Locale;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 @Model(
         adaptables = SlingHttpServletRequest.class,
@@ -89,6 +100,9 @@ public class MetadataImpl extends AbstractEmptyTextComponent implements Metadata
     @ValueMapValue(name = MetadataImpl.PN_TYPE)
     private String typeString;
 
+    @ValueMapValue
+    private String jsonSource;
+
     private DataType type;
 
     private String locale;
@@ -97,6 +111,8 @@ public class MetadataImpl extends AbstractEmptyTextComponent implements Metadata
      * ValueMap of the properties of the Asset currently being viewed
      */
     private ValueMap combinedProperties;
+
+    private List<String> values = null;
 
     @PostConstruct
     public void init() {
@@ -159,6 +175,8 @@ public class MetadataImpl extends AbstractEmptyTextComponent implements Metadata
     public boolean isEmpty() {
         if (StringUtils.isBlank(getPropertyName())) {
             return true;
+        } else if (DataType.JSON.equals(getType())) {
+            return CollectionUtils.isEmpty(getValues());
         } else {
             Object val = combinedProperties.get(getPropertyName());
             if (val == null) {
@@ -188,5 +206,83 @@ public class MetadataImpl extends AbstractEmptyTextComponent implements Metadata
     @Override
     public String getExportedType() {
         return RESOURCE_TYPE;
+    }
+
+
+    @Override
+    public List<String> getValues() {
+        if (values == null) {
+            values = new ArrayList<>();
+
+            Object val = combinedProperties.get(getPropertyName());
+
+            if (null == val) {
+                return values;
+            } else if (val instanceof String) {
+                values.add((String) val);
+            } else if (val instanceof String[]) {
+                values.addAll(Arrays.asList((String[]) val));
+            }
+
+            if (DataType.JSON.equals(getType())) {
+                Asset asset = DamUtil.resolveToAsset(request.getResourceResolver().getResource(jsonSource));
+                if (null != asset) {
+                    try {
+                        values = readJson(values, asset);
+                    } catch (IOException e) {
+                        log.error("Unable to read JSON from [ {} ]. Defaulting to no values.", asset.getPath(), e);
+                    }
+                }
+            }
+        }
+
+        return values;
+    }
+
+    /**
+     * @param metadataValues the values from the metadata that will be used as the keys to look up values in the JSON
+     * @param jsonAsset      the asset that contains the JSON
+     * @return values the values from the JSON
+     * @throws IOException
+     */
+    private List<String> readJson(List<String> metadataValues, Asset jsonAsset) throws IOException {
+        List<String> values = new ArrayList<>();
+        try (InputStream stream = jsonAsset.getOriginal().adaptTo(InputStream.class);
+             BufferedReader reader = new BufferedReader(
+                     new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+            Gson gson = new Gson();
+            JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
+            if (jsonObject.isJsonObject()) {
+                JsonElement optionsJson = jsonObject.get("options");
+                if (null == optionsJson) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("JSON is missing options array [ {} ]", jsonAsset.getPath());
+                    }
+                    return metadataValues;
+                }
+                Type listType = new TypeToken<List<JsonOption>>() {}.getType();
+
+                List<JsonOption> options = gson.fromJson(optionsJson, listType);
+
+                for (String val : metadataValues) {
+                    JsonOption value = options.stream()
+                            .filter(option -> val.equals(option.value))
+                            .findFirst()
+                            .orElse(null);
+                    if (null != value) {
+                        values.add(value.text);
+                    } else {
+                        values.add(val);
+                    }
+                }
+            }
+
+        }
+        return values;
+    }
+
+    protected class JsonOption {
+        private String text;
+        private String value;
     }
 }
