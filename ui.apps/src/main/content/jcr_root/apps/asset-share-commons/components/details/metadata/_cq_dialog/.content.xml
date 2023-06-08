@@ -107,10 +107,10 @@
                                                     jcr:primaryType="nt:unstructured"
                                                     text="Boolean"
                                                     value="boolean"/>
-                                            <jsonDataSource
+                                            <json
                                                     jcr:primaryType="nt:unstructured"
-                                                    text="JSON DataSource"
-                                                    value="jsonDataSource"/>
+                                                    text="JSON"
+                                                    value="json"/>
                                         </items>
                                     </data-type>
                                     <set-date
@@ -273,7 +273,7 @@
                                             sling:resourceType="granite/ui/components/coral/foundation/container">
                                         <granite:data
                                                 jcr:primaryType="nt:unstructured"
-                                                showhidetargetvalue="jsonDataSource"/>
+                                                showhidetargetvalue="json"/>
                                         <items jcr:primaryType="nt:unstructured">
                                             <heading
                                                     jcr:primaryType="nt:unstructured"
