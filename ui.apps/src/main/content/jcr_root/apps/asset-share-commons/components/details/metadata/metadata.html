@@ -46,6 +46,9 @@
 
             <sly data-sly-test="${field.type.value == 'boolean'}"
                  data-sly-call="${fieldTypesTemplate.boolean @ field = field}"></sly>
+
+            <sly data-sly-test="${field.type.value == 'jsonDataSource'}"
+                 data-sly-call="${fieldTypesTemplate.json @ field = field}"></sly>
         </sly>
     </div>
 

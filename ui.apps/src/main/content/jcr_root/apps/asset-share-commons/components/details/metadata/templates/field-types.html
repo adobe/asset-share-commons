@@ -48,3 +48,12 @@
     <p data-sly-test.truthy="${field.properties[field.propertyName]}">${properties['trueValue'] || 'Yes' @ i18n}</p>
     <p data-sly-test="${!truthy}">${properties['falseValue'] || 'No' @ i18n}</p>
 </template>
+
+<!--/* JSON Lookup */-->
+<template data-sly-template.json="${@ field}">
+    <sly data-sly-list="${field.displayTextFromJson}">
+        <div class="item">
+            ${item}
+        </div>
+    </sly>
+</template>
