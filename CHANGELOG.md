@@ -2,7 +2,20 @@
 
 ## [Unreleased](https://github.com/adobe/asset-share-commons/tree/HEAD)
 
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.6.6...HEAD)
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.0.0...HEAD)
+
+### 📁 Other pull requests
+
+- feature/metadata json lookup [\#955](https://github.com/adobe/asset-share-commons/pull/955) ([arpithaar](https://github.com/arpithaar))
+- Bump org.apache.sling.testing.sling-mock.junit4 from 3.4.8 to 3.4.10 [\#953](https://github.com/adobe/asset-share-commons/pull/953) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [asset-share-commons-3.0.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.0.0) (2023-06-08)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.6.6...asset-share-commons-3.0.0)
+
+## [asset-share-commons-2.6.6](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.6.6) (2023-05-24)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.6.4...asset-share-commons-2.6.6)
 
 ### 🐛 Bug fixes
 
@@ -10,13 +23,10 @@
 
 ### 📁 Other pull requests
 
+- v2.6.6 [\#950](https://github.com/adobe/asset-share-commons/pull/950) ([davidjgonzalez](https://github.com/davidjgonzalez))
 - Added Dispatcher opt-in file [\#949](https://github.com/adobe/asset-share-commons/pull/949) ([davidjgonzalez](https://github.com/davidjgonzalez))
 - Bump maven-checkstyle-plugin from 3.2.0 to 3.2.2 [\#945](https://github.com/adobe/asset-share-commons/pull/945) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump maven-compiler-plugin from 3.10.1 to 3.11.0 [\#944](https://github.com/adobe/asset-share-commons/pull/944) ([dependabot[bot]](https://github.com/apps/dependabot))
-
-## [asset-share-commons-2.6.6](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.6.6) (2023-05-24)
-
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.6.4...asset-share-commons-2.6.6)
 
 ## [asset-share-commons-2.6.4](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.6.4) (2023-05-19)
 
