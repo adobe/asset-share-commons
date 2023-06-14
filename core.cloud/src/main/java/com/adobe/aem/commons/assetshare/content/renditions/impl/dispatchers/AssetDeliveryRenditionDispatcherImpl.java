@@ -20,10 +20,7 @@
 package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRendition;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.adobe.aem.commons.assetshare.content.renditions.*;
 import com.adobe.aem.commons.assetshare.util.ExpressionEvaluator;
 import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.cq.wcm.spi.AssetDelivery;
@@ -39,9 +36,7 @@ import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.commons.mime.MimeTypeService;
 import org.apache.sling.models.factory.ModelFactory;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.*;
 import org.osgi.service.metatype.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,6 +95,13 @@ public class AssetDeliveryRenditionDispatcherImpl extends AbstractRenditionDispa
     @Reference
     private MimeTypeService mimeTypeService;
 
+    @Reference(
+            cardinality = ReferenceCardinality.OPTIONAL,
+            policy = ReferencePolicy.DYNAMIC,
+            policyOption = ReferencePolicyOption.GREEDY
+    )
+    private volatile AssetRenditionTracker assetRenditionTracker;
+
     @Override
     public String getLabel() {
         return cfg.label();
@@ -153,6 +155,10 @@ public class AssetDeliveryRenditionDispatcherImpl extends AbstractRenditionDispa
                         parameters.getRenditionName());
             }
 
+            if (assetRenditionTracker != null) {
+                assetRenditionTracker.track(this, request, parameters, renditionRedirect);
+            }
+
             if (cfg.redirect() == HttpServletResponse.SC_MOVED_TEMPORARILY) {
                 response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
             } else {
@@ -182,6 +188,10 @@ public class AssetDeliveryRenditionDispatcherImpl extends AbstractRenditionDispa
                     log.debug("Downloading Asset Delivery rendition [ {} ] for resolved rendition name [ {} ]",
                             renditionRedirect,
                             parameters.getRenditionName());
+                }
+
+                if (assetRenditionTracker != null) {
+                    assetRenditionTracker.track(this, assetModel, parameters, renditionRedirect);
                 }
 
                 return new AssetRendition(renditionRedirect, PLACEHOLDER_SIZE_IN_BYTES, mimeTypeService.getMimeType(extension));

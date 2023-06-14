@@ -101,7 +101,6 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
 
     @Override
     protected final void doPost(final SlingHttpServletRequest request, final SlingHttpServletResponse response) throws ServletException, IOException {
-        log.debug("Entering AsyncAssetRenditionsDownloadServlet.doPost(..)");
         final ValueMap componentProperties = request.getResource().getValueMap();
 
         final Collection<AssetModel> assetModels = actionHelper.getAssetsFromQueryParameter(request, REQ_KEY_ASSET_PATHS);
@@ -132,11 +131,11 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
         }
 
         try {
-            log.debug("Invoking AEM Download Framework with Download Manifest");
-
             final String downloadId = downloadService.download(manifest, request.getResourceResolver());
 
-            log.debug("AEM Download Framework Download Id: [ {} ]", downloadId);
+            if (log.isDebugEnabled()) {
+                log.debug("AEM Download Framework Download Id: [ {} ]", downloadId);
+            }
 
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json;charset=UTF-8");
@@ -162,7 +161,10 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
         }
 
         renditionNames.forEach(renditionName -> {
-            log.debug("Adding Download Rendition to Manifest for [ {} ]", renditionName);
+
+            if (log.isDebugEnabled()) {
+                log.debug("Adding Download Rendition to Manifest for [ {} ]", renditionName);
+            }
 
             final Map<String, Object> renditionParameters = new HashMap();
 
@@ -171,6 +173,7 @@ public class AsyncAssetRenditionsDownloadServlet extends SlingAllMethodsServlet 
             renditionParameters.put(PARAM_ARCHIVE_NAME, archiveName);
             renditionParameters.put(PARAM_RENDITION_BY_ASSET_FOLDER, groupRenditionsByAssetFolder);
             renditionParameters.put(PARAM_DOWNLOAD_COMPONENT_PATH, downloadComponentResource.getPath());
+            renditionParameters.put(PARAM_USER_ID, asset.getResource().getResourceResolver().getUserID());
 
             if (log.isDebugEnabled()) {
                 log.debug("Download Target rendition [ {} ] parameters for [ {} ]", renditionName, TARGET_TYPE);
