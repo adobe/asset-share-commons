@@ -25,14 +25,13 @@ import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.commons.util.DamUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.api.wrappers.ValueMapDecorator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * This class is used to represent the parameters used by the AssetRenditionServlet for two use cases:
@@ -52,6 +51,8 @@ public final class AssetRenditionParameters {
     private final String renditionName;
     private final String fileName;
     private final List<String> otherParameters;
+
+     private final ValueMap otherProperties = new ValueMapDecorator(new HashMap<>());
 
     public AssetRenditionParameters(final SlingHttpServletRequest request) throws IllegalArgumentException {
         final String[] segments = PathInfoUtil.getSuffixSegments(request);
@@ -132,6 +133,26 @@ public final class AssetRenditionParameters {
 
     public List<String> getParameters() {
         return new ArrayList<>(otherParameters);
+    }
+
+
+    /**
+     * At this time, only "userId" is set by Asset Share Commons to this ValueMap. Other values can be set by custom implementations as needed.
+     *
+     * @return other properties associated with this AssetRenditionParameters instance.
+     */
+    public ValueMap getOtherProperties() {
+        return new ValueMapDecorator(new HashMap<>(otherProperties));
+    }
+
+    /**
+     * Sets a property that will be added to the ValueMap returned by getOtherProperties().
+     *
+     * @param key the property name
+     * @param value the property value
+     */
+    public void setOtherProperty(String key, Object value) {
+        otherProperties.put(key, value);
     }
 
     protected String buildFileName(final Asset asset, final String renditionName) {

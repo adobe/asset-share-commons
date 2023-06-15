@@ -20,10 +20,7 @@
 package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRendition;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.adobe.aem.commons.assetshare.content.renditions.*;
 import com.adobe.aem.commons.assetshare.util.impl.ExtensionOverrideRequestWrapper;
 import com.day.cq.commons.PathInfo;
 import com.day.text.Text;
@@ -31,9 +28,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.request.RequestDispatcherOptions;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.*;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.AttributeType;
 import org.osgi.service.metatype.annotations.Designate;
@@ -72,6 +67,14 @@ public class InternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
 
     @Reference
     private AssetRenditions assetRenditions;
+
+    @Reference(
+            cardinality = ReferenceCardinality.OPTIONAL,
+            policy = ReferencePolicy.DYNAMIC,
+            policyOption = ReferencePolicyOption.GREEDY
+    )
+    private volatile AssetRenditionTracker assetRenditionTracker;
+
 
     @Override
     public String getLabel() {
@@ -131,6 +134,10 @@ public class InternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
                         parameters.getRenditionName());
             }
 
+            if (assetRenditionTracker != null) {
+                assetRenditionTracker.track(this, request, parameters, resourcePath);
+            }
+
             final RequestDispatcherOptions options = new RequestDispatcherOptions();
 
             options.setReplaceSelectors(StringUtils.removeStart(pathInfo.getSelectorString(), "."));
@@ -148,6 +155,9 @@ public class InternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
         // If this method becomes supportable by the AEM Async Asset Download framework, review the code at:
         // https://gist.github.com/davidjgonzalez/66e481b54aafb1b900a579ee95848d8f
         // As this might prove useful in it's implementation.
+
+
+        // No tracking of this method as it's not supported by the AEM Async Asset Download Framework.
 
         if (log.isWarnEnabled()) {
             log.warn("[ {} ] is not supported by the AEM Async Asset Download Framework.", this.getClass().getName());

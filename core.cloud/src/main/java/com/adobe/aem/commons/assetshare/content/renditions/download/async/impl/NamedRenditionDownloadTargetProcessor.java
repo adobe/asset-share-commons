@@ -63,6 +63,7 @@ public class NamedRenditionDownloadTargetProcessor implements DownloadTargetProc
     public static final String PARAM_ARCHIVE_NAME = "archiveName";
     public static final String PARAM_ARCHIVE_PATH = "archivePath";
     public static final String PARAM_DOWNLOAD_COMPONENT_PATH = "downloadComponentPath";
+    public static final String PARAM_USER_ID = "userId";
 
     @Reference
     private transient AssetRenditionDispatchers assetRenditionDispatchers;
@@ -83,10 +84,12 @@ public class NamedRenditionDownloadTargetProcessor implements DownloadTargetProc
         final String path = target.getParameter(DownloadTargetParameters.ASSET_PATH.toString(), String.class);
         final String renditionName = target.getParameter(DownloadTargetParameters.RENDITION_NAME.toString(), String.class);
         final String archiveName = target.getParameter(DownloadTargetParameters.ARCHIVE_NAME.toString(), String.class);
+        final String userId = target.getParameter(DownloadTargetParameters.USER_ID.toString(), String.class);
 
         final Resource resource = resourceResolver.getResource(path);
         final AssetModel assetModel = resource.adaptTo(AssetModel.class);
         final AssetRenditionParameters assetRenditionParameters = new AssetRenditionParameters(assetModel, renditionName);
+        assetRenditionParameters.setOtherProperty("userId", userId);
 
         for (final AssetRenditionDispatcher assetRenditionDispatcher : assetRenditionDispatchers.getAssetRenditionDispatchers()) {
 
@@ -126,7 +129,7 @@ public class NamedRenditionDownloadTargetProcessor implements DownloadTargetProc
 
             } else {
                 if (log.isDebugEnabled()) {
-                    log.debug("assetRenditionDispatcher [ {} ] does not accept AssetModel [ {} ] and renditionName [ {} ]", this.getClass().getName(), assetModel.getPath(), renditionName);
+                    log.debug("assetRenditionDispatcher [ {} ] does not accept AssetModel [ {} ] and renditionName [ {} ]", assetRenditionDispatcher.getClass().getName(), assetModel.getPath(), renditionName);
                 }
             }
         }
@@ -148,6 +151,7 @@ public class NamedRenditionDownloadTargetProcessor implements DownloadTargetProc
         validParameters.put(PARAM_ARCHIVE_NAME, true);
         validParameters.put(PARAM_ARCHIVE_PATH, false);
         validParameters.put(PARAM_DOWNLOAD_COMPONENT_PATH, true);
+        validParameters.put(PARAM_USER_ID, true);
 
         return validParameters;
     }
