@@ -2,16 +2,33 @@
 
 ## [Unreleased](https://github.com/adobe/asset-share-commons/tree/HEAD)
 
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.0.0...HEAD)
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.2.0...HEAD)
+
+### 🚀 Enhancements
+
+- Asset Rendition dispatcher tracking hook [\#958](https://github.com/adobe/asset-share-commons/pull/958) ([davidjgonzalez](https://github.com/davidjgonzalez))
+
+### 🐛 Bug fixes
+
+- Fixed issue with daterange.upperBound predicate restrictions [\#960](https://github.com/adobe/asset-share-commons/pull/960) ([davidjgonzalez](https://github.com/davidjgonzalez))
 
 ### 📁 Other pull requests
 
-- feature/metadata json lookup [\#955](https://github.com/adobe/asset-share-commons/pull/955) ([arpithaar](https://github.com/arpithaar))
-- Bump org.apache.sling.testing.sling-mock.junit4 from 3.4.8 to 3.4.10 [\#953](https://github.com/adobe/asset-share-commons/pull/953) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump build-helper-maven-plugin from 3.3.0 to 3.4.0 [\#957](https://github.com/adobe/asset-share-commons/pull/957) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [asset-share-commons-3.2.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.2.0) (2023-06-15)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.0.0...asset-share-commons-3.2.0)
 
 ## [asset-share-commons-3.0.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.0.0) (2023-06-08)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-2.6.6...asset-share-commons-3.0.0)
+
+### 📁 Other pull requests
+
+- v3.0.0 [\#956](https://github.com/adobe/asset-share-commons/pull/956) ([davidjgonzalez](https://github.com/davidjgonzalez))
+- feature/metadata json lookup [\#955](https://github.com/adobe/asset-share-commons/pull/955) ([arpithaar](https://github.com/arpithaar))
+- Bump org.apache.sling.testing.sling-mock.junit4 from 3.4.8 to 3.4.10 [\#953](https://github.com/adobe/asset-share-commons/pull/953) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [asset-share-commons-2.6.6](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-2.6.6) (2023-05-24)
 
