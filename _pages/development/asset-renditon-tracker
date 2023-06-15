@@ -1,0 +1,56 @@
+---
+layout: content-page
+title: Asset Renditions Tracker
+description: Customizable hook to track Asset Renditions access.
+---
+
+
+
+
+
+```java
+package com.examples.assetshare.tracking.impl;
+
+import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionTracker;
+import org.apache.sling.api.SlingHttpServletRequest;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.ConfigurationPolicy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+@Component(
+        service = AssetRenditionTracker.class,
+        configurationPolicy = ConfigurationPolicy.REQUIRE // Since we probably only want to enable this on config.publish services.
+)
+public class AssetRenditionTrackerImpl implements AssetRenditionTracker {
+    private static final Logger log = LoggerFactory.getLogger(AssetRenditionTrackerImpl.class);
+
+    @Override
+    public void track(AssetRenditionDispatcher assetRenditionDispatcher, SlingHttpServletRequest request, AssetRenditionParameters parameters, String renditionUri) {
+
+        log.debug("Tracking REQUEST asset [ {} ] w/ rendition name [ {} ] at URI [ {} ] using rendition Dispatcher [ {} ] by user [ {} ]", new String[] {
+                parameters.getAsset().getPath(),
+                parameters.getRenditionName(),
+                renditionUri,
+                assetRenditionDispatcher.getLabel(),
+                request.getResourceResolver().getUserID()
+        });
+
+    }
+
+    @Override
+    public void track(AssetRenditionDispatcher assetRenditionDispatcher, AssetModel assetModel, AssetRenditionParameters parameters, String renditionUri) {
+        log.debug("Tracking DOWNLOAD asset [ {} ] w/ rendition name [ {} ] at URI [ {} ] using rendition Dispatcher [ {} ] by user [ {} ]", new String[] {
+                parameters.getAsset().getPath(),
+                parameters.getRenditionName(),
+                renditionUri,
+                assetRenditionDispatcher.getLabel(),
+                parameters.getOtherProperties().get("userId", "Unknown")
+        });
+    }
+}
+```
