@@ -44,6 +44,7 @@ $(function () {
             month = date.getMonth() + 1;
             year = date.getFullYear();
 
+            // Format is important here as the date is used in the query builder.
             return year + '-' + month + '-' + day;
         }
 
@@ -65,6 +66,7 @@ $(function () {
                 }
             });
 
+            // Setting the rangeEnd to have the last milliseconds of the selected day is handled in serach/search-form.js @ _adjustFormData()
             $(rangeEnd).calendar({
                 type: 'date',
                 startCalendar: $(this),
@@ -72,7 +74,7 @@ $(function () {
                     date: dateFormatter
                 },
                 onChange: function (date, text, mode) {
-                    $(rangeEnd).find('input[type="text"]').val(text+'T23:59:59').trigger("change");
+                    rangeEnd.find('input[type="text"]').val(text).trigger("change");
                 }
             });
         });
