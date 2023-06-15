@@ -20,18 +20,13 @@
 package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRendition;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.adobe.aem.commons.assetshare.content.renditions.*;
 import com.adobe.aem.commons.assetshare.util.UrlUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.commons.mime.MimeTypeService;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.*;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.AttributeType;
 import org.osgi.service.metatype.annotations.Designate;
@@ -77,6 +72,13 @@ public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
 
     @Reference
     private MimeTypeService mimeTypeService;
+
+    @Reference(
+            cardinality = ReferenceCardinality.OPTIONAL,
+            policy = ReferencePolicy.DYNAMIC,
+            policyOption = ReferencePolicyOption.GREEDY
+    )
+    private volatile AssetRenditionTracker assetRenditionTracker;
 
     @Override
     public String getLabel() {
@@ -130,6 +132,10 @@ public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
                         parameters.getRenditionName());
             }
 
+            if (assetRenditionTracker != null) {
+                assetRenditionTracker.track(this, request, parameters, renditionRedirect);
+            }
+
             if (cfg.redirect() == HttpServletResponse.SC_MOVED_TEMPORARILY) {
                 response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
             } else {
@@ -137,7 +143,6 @@ public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
             }
 
             response.setHeader("Location", UrlUtil.escape(renditionRedirect));
-
         } else {
             log.error("Could not convert [ {} ] into a valid URI", renditionRedirect);
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not serve asset rendition.");
@@ -161,6 +166,10 @@ public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
                     log.debug("Downloading External redirect rendition [ {} ] for resolved rendition name [ {} ]",
                             renditionRedirect,
                             parameters.getRenditionName());
+                }
+
+                if (assetRenditionTracker != null) {
+                    assetRenditionTracker.track(this, assetModel, parameters, renditionRedirect);
                 }
 
                 return new AssetRendition(renditionRedirect, PLACEHOLDER_SIZE_IN_BYTES, mimeTypeService.getMimeType(extension));

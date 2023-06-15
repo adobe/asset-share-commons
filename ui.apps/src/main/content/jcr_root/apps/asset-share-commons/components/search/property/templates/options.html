@@ -32,7 +32,7 @@
 		 data-sly-list.option="${predicate.items}">
 		<div class="field">
 			<div class="ui ${predicate.subType} checkbox">
-				<input id="${predicate.id}"
+				<input id="${predicate.id}_${optionList.index}"
 					   for="${predicate.id}"
 					   form="${predicate.formId}"
 					   type="${predicate.subType == 'checkbox' ? 'checkbox' : 'radio'}"
@@ -41,7 +41,7 @@
 					   checked="${option.selected}"
 					   disabled="${option.disabled}"
 					   data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}"/>
-				<label for="${predicate.id}">${option.text}</label>
+				<label for="${predicate.id}_${optionList.index}">${option.text}</label>
 			</div>
 		</div>
 	</div>

@@ -107,6 +107,7 @@ AssetShare.Search.Form = function (ns) {
 
     function buildFormData(formData, event) {
         var clone = clean(formData.clone());
+        clone = _adjustFormData(clone);
 
         // Clear all search data marked as events; they will be re-added as needed below
         $("[data-asset-share-search-actions]").each(function () {
@@ -128,6 +129,18 @@ AssetShare.Search.Form = function (ns) {
             reset();
         }
         return buildFormData(formData, event).serialize();
+    }
+
+    function _adjustFormData(formData) {
+        formData.getAll().forEach(function(field) {
+            // Handle date range fields upperBounds to make it the last millisecond of the selected day
+            // Make sure not to double-process field values that have already been adjusted
+            if (field.name.endsWith('daterange.upperBound') && !field.value.endsWith('T23:59:59.999Z')) {
+                formData.set(field.name, field.value + 'T23:59:59.999Z');
+            }
+        });
+
+        return formData;
     }
 
     function _valid(formToValidate) {

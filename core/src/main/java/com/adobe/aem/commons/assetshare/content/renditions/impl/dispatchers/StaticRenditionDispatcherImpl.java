@@ -20,10 +20,7 @@
 package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRendition;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.adobe.aem.commons.assetshare.content.renditions.*;
 import com.adobe.aem.commons.assetshare.content.renditions.download.impl.AssetRenditionDownloadRequest;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
@@ -32,11 +29,7 @@ import com.day.cq.dam.commons.util.DamUtil;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.service.component.annotations.*;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.AttributeType;
 import org.osgi.service.metatype.annotations.Designate;
@@ -79,6 +72,13 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
             policyOption = ReferencePolicyOption.GREEDY
     )
     private volatile AssetRenditions assetRenditions;
+
+    @Reference(
+            cardinality = ReferenceCardinality.OPTIONAL,
+            policy = ReferencePolicy.DYNAMIC,
+            policyOption = ReferencePolicyOption.GREEDY
+    )
+    private volatile AssetRenditionTracker assetRenditionTracker;
 
     @Override
     public String getLabel() {
@@ -132,6 +132,10 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
                         parameters.getRenditionName());
             }
 
+            if (assetRenditionTracker != null) {
+                assetRenditionTracker.track(this, request, parameters, rendition.getPath());
+            }
+
             response.setHeader("Content-Type", rendition.getMimeType());
 
             request.getRequestDispatcher(rendition.adaptTo(Resource.class)).include(
@@ -141,8 +145,6 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
                            new String[]{},
                            null,
                            ""), response);
-
-            log.debug("Finishing the include");
 
         } else {
             throw new ServletException(String.format("Cloud not locate rendition [ %s ] for assets [ %s ]", parameters.getRenditionName(), asset.getPath()));
@@ -159,6 +161,11 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
                         rendition.getPath(),
                         parameters.getRenditionName());
             }
+
+            if (assetRenditionTracker != null) {
+                assetRenditionTracker.track(this, assetModel, parameters, rendition.getPath());
+            }
+
             return new AssetRendition(rendition.getPath(), rendition.getSize(), rendition.getMimeType());
         }
 

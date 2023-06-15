@@ -5,5 +5,6 @@
   "rendition.mappings": [
     "card=format=webp&preferwebp=true&width=237&quality=80",
     "list=format=webp&preferwebp=true&width=98&quality=50"
-  ]
+  ],
+  "redirect": 302
 }

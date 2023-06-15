@@ -24,7 +24,8 @@ public enum DownloadTargetParameters {
     RENDITION_NAME("renditionName"),
     ARCHIVE_NAME("archiveName"),
     ARCHIVE_PATH("archivePath"),
-    DOWNLOAD_COMPONENT_PATH("downloadComponentPath");
+    DOWNLOAD_COMPONENT_PATH("downloadComponentPath"),
+    USER_ID("userId");
 
     private final String parameter;
 
