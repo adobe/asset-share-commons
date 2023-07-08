@@ -24,7 +24,7 @@
     "cssnano": "^4.1.10",
     "file-loader": "^5.0.2",
     "html-webpack-plugin": "^5.5.0",
-    "less": "^3.10.3",
+    "less": "^3.13.1",
     "less-loader": "^5.0.0",
     "mini-css-extract-plugin": "^0.4.4",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
