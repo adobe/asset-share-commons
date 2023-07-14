@@ -86,27 +86,28 @@ jobs:
       - name: Maven Verify
         run: mvn -U clean verify -Pcloud
 
-      - name: Generate Release Changelog
-        id: generate-release-changelog
-        uses: heinrichreimer/github-changelog-generator-action@v2.3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          breakingLabel: '### 💥 Breaking'
-          enhancementLabel: '### 🚀 Enhancements'
-          bugsLabel: '### 🐛 Bug fixes'
-          securityLabel: '### 🛡️ Security'
-          issuesLabel: '### 📁 Other issues'
-          prLabel: '### 📁 Other pull requests'
-          addSections: '{"documentation":{"prefix":"### 📖 Documentation","labels":["documentation"]},"tests":{"prefix":"### ✅ Testing","labels":["tests"]}}'
-          issues: false
-          issuesWoLabels: false
-          pullRequests: true
-          prWoLabels: true
-          author: true
-          compareLink: true
-          onlyLastTag: true
-          stripHeaders: true
-          stripGeneratorNotice: true
+      # Breaking build due to Github rate limits
+      #- name: Generate Release Changelog
+      #  id: generate-release-changelog
+      #  uses: heinrichreimer/github-changelog-generator-action@v2.3
+      #  with:
+      #    token: ${{ secrets.GITHUB_TOKEN }}
+      #    breakingLabel: '### 💥 Breaking'
+      #    enhancementLabel: '### 🚀 Enhancements'
+      #    bugsLabel: '### 🐛 Bug fixes'
+      #    securityLabel: '### 🛡️ Security'
+      #    issuesLabel: '### 📁 Other issues'
+      #    prLabel: '### 📁 Other pull requests'
+      #    addSections: '{"documentation":{"prefix":"### 📖 Documentation","labels":["documentation"]},"tests":{"prefix":"### ✅ Testing","labels":["tests"]}}'
+      #    issues: false
+      #    issuesWoLabels: false
+      #    pullRequests: true
+      #    prWoLabels: true
+      #    author: true
+      #    compareLink: true
+      #    onlyLastTag: true
+      #    stripHeaders: true
+      #    stripGeneratorNotice: true
 
       - name: Create Release
         id: create-release
