@@ -76,6 +76,36 @@ Displays a long, int or double property as a number. Optionally additional forma
 
 Displays a boolean metadata property. Author can specify the labels displayed if the property is true or if the property is false. By default *Yes* and *No* labels will be used for true and false values. 
 
+### Dialog / Configuration / Metadata Type: Boolean
+
+![Boolean Property Metadata Type - Dialog](./images/dialog-boolean-property.png)
+
+Displays a boolean metadata property. Author can specify the labels displayed if the property is true or if the property is false. By default *Yes* and *No* labels will be used for true and false values. 
+
+### Dialog / Configuration / Metadata Type: JSON
+
+![JSON Property Metadata Type - Dialog](./images/dialog-json-property.png)
+
+Specifies a JSON file in the DAM that is used as a property value -> display value lookup table. 
+
+For example, the following JSON file could be used to display friendly names based on the asset's `dc:format` property values.
+
+The JSON file must be in the following format, where each option object comprising of a `text` field that contains the display text, and a `value` field containing the asset property value, used as the key to look up the `text`.
+
+```json
+{
+  "options": [
+    {
+      "value": "image/jpeg"
+      "text": "JPEG image",
+    },
+    {
+      "value": "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+      "text": "Powerpoint presentation",
+    }]
+}
+```
+
 ## Technical details
 
 * **Component**: `/apps/asset-share-commons/components/details/metadata`
