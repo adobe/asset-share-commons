@@ -2,15 +2,24 @@
 
 ## [Unreleased](https://github.com/adobe/asset-share-commons/tree/HEAD)
 
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.2.2...HEAD)
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.2.4...HEAD)
 
 ### 📁 Other pull requests
 
-- Added tighter restrictions on what mimetypes can use the AssetDeliver… [\#968](https://github.com/adobe/asset-share-commons/pull/968) ([davidjgonzalez](https://github.com/davidjgonzalez))
+- Release workaround [\#970](https://github.com/adobe/asset-share-commons/pull/970) ([davidjgonzalez](https://github.com/davidjgonzalez))
+
+## [asset-share-commons-3.2.4](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.2.4) (2023-07-14)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.2.2...asset-share-commons-3.2.4)
 
 ## [asset-share-commons-3.2.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.2.2) (2023-07-14)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.2.0...asset-share-commons-3.2.2)
+
+### 📁 Other pull requests
+
+- v3.2.2 [\#969](https://github.com/adobe/asset-share-commons/pull/969) ([davidjgonzalez](https://github.com/davidjgonzalez))
+- Added tighter restrictions on what mimetypes can use the AssetDeliver… [\#968](https://github.com/adobe/asset-share-commons/pull/968) ([davidjgonzalez](https://github.com/davidjgonzalez))
 
 ## [asset-share-commons-3.2.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.2.0) (2023-06-15)
 
