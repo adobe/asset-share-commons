@@ -38,22 +38,24 @@ public class JsonResolverImpl implements JsonResolver {
     public JsonObject resolveJson(SlingHttpServletRequest request, SlingHttpServletResponse response, String path) {
         ResourceResolver resourceResolver = request.getResourceResolver();
         Resource resource = request.getResourceResolver().getResource(path);
+        JsonObject result = null;
         try {
             if (resource != null && (resourceResolver.isResourceType(resource, NT_FILE) ||
                     resourceResolver.isResourceType(resource, NT_RESOURCE) ||
                     resourceResolver.isResourceType(resource, NT_OAK_RESOURCE))) {
-                return getJsonFromNtFile(resource);
+                result = getJsonFromNtFile(resource);
             } else if (resource != null && DamUtil.resolveToAsset(resource) != null) {
-                return getJsonStringFromDamAsset(resource);
+                result = getJsonStringFromDamAsset(resource);
             } else if (resource == null && StringUtils.startsWithAny(path, "http://", "https://")) {
-                return getJsonFromExternalUrl(path);
+                result = getJsonFromExternalUrl(path);
             } else {
-                return getJsonAsInternalRequest(request, response, path);
+                result = getJsonAsInternalRequest(request, response, path);
             }
         } catch (IOException | InterruptedException | ServletException e) {
             log.error("Unable to resolve JSON from path: {}", path, e);
-            return null;
         }
+
+        return result;
     }
 
     private JsonObject getJsonFromNtFile(Resource resource) {
