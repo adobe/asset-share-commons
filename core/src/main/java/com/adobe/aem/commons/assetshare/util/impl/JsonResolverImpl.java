@@ -1,9 +1,9 @@
 package com.adobe.aem.commons.assetshare.util.impl;
 
+import com.adobe.acs.commons.util.BufferedServletOutput;
+import com.adobe.acs.commons.util.BufferedSlingHttpServletResponse;
 import com.adobe.aem.commons.assetshare.util.JsonResolver;
 import com.adobe.aem.commons.assetshare.util.impl.requests.ExtensionOverrideRequestWrapper;
-import com.adobe.aem.commons.assetshare.util.impl.responses.BufferedServletOutput;
-import com.adobe.aem.commons.assetshare.util.impl.responses.BufferedSlingHttpServletResponse;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.commons.util.DamUtil;
 import com.google.gson.Gson;
