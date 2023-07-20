@@ -2,7 +2,25 @@
 
 ## [Unreleased](https://github.com/adobe/asset-share-commons/tree/HEAD)
 
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.2.0...HEAD)
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.2.4...HEAD)
+
+## [asset-share-commons-3.2.4](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.2.4) (2023-07-14)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.2.0...asset-share-commons-3.2.4)
+
+- Same as Asset Share Commons 3.2.2. New release required due to issue with release script.
+
+## [asset-share-commons-3.2.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.2.2) (2023-07-14)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.2.0...asset-share-commons-3.2.2)
+
+### 🐛 Bug fixes
+
+- Added tighter restrictions on what mimetypes can use the AssetDeliver… [\#968](https://github.com/adobe/asset-share-commons/pull/968) ([davidjgonzalez](https://github.com/davidjgonzalez))
+
+## [asset-share-commons-3.2.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.2.0) (2023-06-15)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.0.0...asset-share-commons-3.2.0)
 
 ### 🚀 Enhancements
 
@@ -14,11 +32,8 @@
 
 ### 📁 Other pull requests
 
+- v3.1.0 [\#961](https://github.com/adobe/asset-share-commons/pull/961) ([davidjgonzalez](https://github.com/davidjgonzalez))
 - Bump build-helper-maven-plugin from 3.3.0 to 3.4.0 [\#957](https://github.com/adobe/asset-share-commons/pull/957) ([dependabot[bot]](https://github.com/apps/dependabot))
-
-## [asset-share-commons-3.2.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.2.0) (2023-06-15)
-
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.0.0...asset-share-commons-3.2.0)
 
 ## [asset-share-commons-3.0.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.0.0) (2023-06-08)
 
