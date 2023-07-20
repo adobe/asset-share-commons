@@ -1,0 +1,4 @@
+{
+   README: "This file is used by some ASC tests",
+   test: "remote test json file."
+}
