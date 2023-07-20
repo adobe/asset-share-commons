@@ -72,6 +72,12 @@ public class AssetDeliveryRenditionDispatcherImpl extends AbstractRenditionDispa
     public static final String PN_FORMAT = "format";
     public static final String PN_SEONAME = "seoname";
     public static final String DEFAULT_FORMAT = "webp";
+    final String[] ACCEPTED_MIME_TYPES = {
+            "image/.*",
+            "application/pdf",
+            "application/vnd.openxmlformats-officedocument.presentationml.presentation",    // PPT
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",      // DOC
+    };
 
     private Cfg cfg;
 
@@ -223,9 +229,10 @@ public class AssetDeliveryRenditionDispatcherImpl extends AbstractRenditionDispa
         }
 
         // Asset Delivery only supports image and document formats; it cannot generate renditions for video, audio, etc. at this time.
-        final String[] allowedFormats = { "image/", "application/" };
         final String assetFormat = StringUtils.lowerCase(assetModel.getProperties().get(DamConstants.DC_FORMAT, String.class));
-        return StringUtils.startsWithAny(assetFormat, allowedFormats);
+
+        // Return true if assetFormat matches any regex in ALLOWED_MIME_TYPES
+        return Arrays.stream(ACCEPTED_MIME_TYPES).anyMatch(regex -> assetFormat.matches(regex));
     }
 
     protected String evaluateExpression(final SlingHttpServletRequest request, String expression) {
