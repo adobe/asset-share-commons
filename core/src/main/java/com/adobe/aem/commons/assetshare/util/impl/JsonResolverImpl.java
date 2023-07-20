@@ -28,6 +28,7 @@ import java.nio.charset.StandardCharsets;
 
 import static org.apache.jackrabbit.JcrConstants.NT_FILE;
 import static org.apache.jackrabbit.JcrConstants.NT_RESOURCE;
+import static org.apache.jackrabbit.oak.spi.nodetype.NodeTypeConstants.NT_OAK_RESOURCE;
 
 @Component(service = JsonResolver.class)
 public class JsonResolverImpl implements JsonResolver {
@@ -38,7 +39,9 @@ public class JsonResolverImpl implements JsonResolver {
         ResourceResolver resourceResolver = request.getResourceResolver();
         Resource resource = request.getResourceResolver().getResource(path);
         try {
-            if (resource != null && (resourceResolver.isResourceType(resource, NT_FILE) || resourceResolver.isResourceType(resource, NT_RESOURCE))) {
+            if (resource != null && (resourceResolver.isResourceType(resource, NT_FILE) ||
+                    resourceResolver.isResourceType(resource, NT_RESOURCE) ||
+                    resourceResolver.isResourceType(resource, NT_OAK_RESOURCE))) {
                 return getJsonFromNtFile(resource);
             } else if (resource != null && DamUtil.resolveToAsset(resource) != null) {
                 return getJsonStringFromDamAsset(resource);
