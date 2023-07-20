@@ -20,10 +20,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import java.io.*;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 import static org.apache.jackrabbit.JcrConstants.NT_FILE;
@@ -110,18 +108,25 @@ public class JsonResolverImpl implements JsonResolver {
     }
 
     private JsonObject getJsonFromExternalUrl(String path) throws IOException, InterruptedException {
-        URI uri = URI.create(path);
+        URL url = new URL(path);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
 
-        HttpClient client = HttpClient.newBuilder().build();
-        HttpRequest request = HttpRequest.newBuilder().uri(uri).build();
+        // Set connection and read timeouts (adjust as needed)
+        connection.setConnectTimeout(5000);
+        connection.setReadTimeout(5000);
 
-        // Send the HttpRequest using the configured HttpClient
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        log.debug("HTTP response body: {} ", response.body());
-
-        if (response.statusCode() == 200) {
-            return getJsonObject(new ByteArrayInputStream(response.body().getBytes(StandardCharsets.UTF_8)));
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                return getJsonObject(new ByteArrayInputStream(response.toString().getBytes(StandardCharsets.UTF_8)));
+            }
         } else {
             return null;
         }
