@@ -96,12 +96,12 @@ The JSON file must be in the following format, where each option object comprisi
 {
   "options": [
     {
-      "value": "image/jpeg"
-      "text": "JPEG image",
+      "value": "image/jpeg",
+      "text": "JPEG image"
     },
     {
-      "value": "application/vnd.openxmlformats-officedocument.presentationml.presentation"
-      "text": "Powerpoint presentation",
+      "value": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+      "text": "Powerpoint presentation"
     }]
 }
 ```
