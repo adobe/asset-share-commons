@@ -21,44 +21,37 @@ package com.adobe.aem.commons.assetshare.components.predicates.impl;
 
 import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.PropertyPredicate;
-import com.adobe.aem.commons.assetshare.components.predicates.impl.options.JsonOptionItem;
 import com.adobe.aem.commons.assetshare.components.predicates.impl.options.SelectedOptionItem;
 import com.adobe.aem.commons.assetshare.components.predicates.impl.options.UnselectedOptionItem;
 import com.adobe.aem.commons.assetshare.search.impl.predicateevaluators.PropertyValuesPredicateEvaluator;
+import com.adobe.aem.commons.assetshare.util.JsonResolver;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.export.json.ExporterConstants;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
-import com.day.cq.dam.api.Asset;
-import com.day.cq.dam.commons.util.DamUtil;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
+import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
-import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.Default;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
 import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
+import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.Self;
+import org.apache.sling.models.annotations.injectorspecific.SlingObject;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,14 +70,21 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
     protected String valueFromRequest = null;
     protected ValueMap valuesFromRequest = null;
     protected static final String DAM_RESOURCE_TYPE = "dam:Asset";
-    
+
     @Self
     @Required
     private SlingHttpServletRequest request;
 
+    @SlingObject
+    @Required
+    private SlingHttpServletResponse response;
+
     @Self
     @Required
     private Options coreOptions;
+
+    @OSGiService
+    private JsonResolver jsonResolver;
 
     @ValueMapValue
     private String label;
@@ -107,11 +107,11 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
     private boolean and;
 
     @ValueMapValue
-	private String source;
+    private String source;
 
-	@ValueMapValue
-	private String jsonSource;
-	
+    @ValueMapValue
+    private String jsonSource;
+
     @PostConstruct
     protected void init() {
         initPredicate(request, coreOptions);
@@ -120,29 +120,34 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
     /* Options - Core Component Delegates */
 
     public List<OptionItem> getItems() {
-		final ValueMap initialValues = getInitialValues();
-		final List<OptionItem> processedOptionItems = new ArrayList<>();
-		final boolean useDefaultSelected = !isParameterizedSearchRequest();
+        final ValueMap initialValues = getInitialValues();
+        final List<OptionItem> processedOptionItems = new ArrayList<>();
+        final boolean useDefaultSelected = !isParameterizedSearchRequest();
 
-		if (source.equals("json")){
-			List<JsonOption> jsonOptionItems = getJsonItems();
-			for (JsonOption jsonOption : jsonOptionItems) {
-				processedOptionItems.add(new JsonOptionItem(jsonOption.text, jsonOption.value, PredicateUtil.isOptionInInitialValues(jsonOption.value, initialValues)));
-			}
-		} else{
-			coreOptions.getItems().stream()
-			.forEach(optionItem -> {
-				if (PredicateUtil.isOptionInInitialValues(optionItem, initialValues)) {
-					processedOptionItems.add(new SelectedOptionItem(optionItem));
-				} else if (useDefaultSelected) {
-					processedOptionItems.add(optionItem);
-				} else {
-					processedOptionItems.add(new UnselectedOptionItem(optionItem));
-				}
-			});
-		}
-		return processedOptionItems;
-	}
+        List<OptionItem> optionItems = new ArrayList<>();
+
+        if (source.equals("json")) {
+            JsonObject jsonObject = jsonResolver.resolveJson(request, response, jsonSource);
+            if (jsonObject != null) {
+                optionItems = getOptionItemsFromJson(jsonObject);
+            }
+        } else {
+            optionItems = coreOptions.getItems();
+        }
+
+        optionItems.stream()
+                .forEach(optionItem -> {
+                    if (PredicateUtil.isOptionInInitialValues(optionItem, initialValues)) {
+                        processedOptionItems.add(new SelectedOptionItem(optionItem));
+                    } else if (useDefaultSelected) {
+                        processedOptionItems.add(optionItem);
+                    } else {
+                        processedOptionItems.add(new UnselectedOptionItem(optionItem));
+                    }
+                });
+
+        return processedOptionItems;
+    }
 
     public Type getType() {
         return coreOptions.getType();
@@ -216,61 +221,76 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
     public String getExportedType() {
         return RESOURCE_TYPE;
     }
-    
-    private List<JsonOption> getJsonItems(){
-		List<JsonOption> options = new ArrayList<>();
-		// Get option from json type asset and inject via jsonSource filepath
-		@Nullable
-		Resource resource = request.getResourceResolver().getResource(jsonSource);
-		String resourceType = resource.getResourceType();
-		if(resourceType != null && resourceType.equalsIgnoreCase(DAM_RESOURCE_TYPE)) {
-			Asset jsonAsset = DamUtil.resolveToAsset(request.getResourceResolver().getResource(jsonSource));
 
-			try(InputStream stream = jsonAsset.getOriginal().adaptTo(InputStream.class);
-					BufferedReader reader = new BufferedReader(
-							new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+    protected List<OptionItem> getOptionItemsFromJson(JsonObject json) {
+        final String OPTIONS = "options";
+        TypeToken textValueTypeToken = new TypeToken<List<TextValueJsonOption>>() {
+        };
+        TypeToken jcrTitleValueTypeToken = new TypeToken<List<JcrTitleValueJsonOption>>() {
+        };
 
-				Gson gson = new Gson();
-				JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
-				if (jsonObject.isJsonObject()){
-					JsonElement optionsJson = jsonObject.get("options");
-					options = gson.fromJson(optionsJson, new TypeToken<List<JsonOption>>() {}.getType());
-					return options;
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			// End of reading options from Json asset
-		}else {
-			// Start of reading options from generic list  /etc/acs-commons/lists/audience/jcr:content/list
-			Iterable<Resource> dropdownListItem = resource.getChildren();
-			for (Resource optionResource : dropdownListItem) {
-				ValueMap valueMap = optionResource.getValueMap();
-				options.add(new JsonOption(valueMap.get("jcr:title",String.class), valueMap.get("value",String.class)));
-			}
-			return options;
-		}
-		return null;
-	}
+        List<OptionItem> values = new ArrayList<>();
 
-	protected class JsonOption {
-		private String text;
-		private String value;
+        if (json != null && json.isJsonObject() && json.has(OPTIONS) && json.get(OPTIONS).isJsonArray()) {
+            JsonArray jsonArray = json.getAsJsonArray(OPTIONS);
 
-		public JsonOption(String text, String value) {
-			this.text = text;
-			this.value = value;
-		}
+            values = new Gson().fromJson(jsonArray, jcrTitleValueTypeToken.getType());
+
+            if (values.stream().anyMatch(kv -> kv.getText() == null || kv.getValue() == null)) {
+                values = new Gson().fromJson(jsonArray, textValueTypeToken.getType());
+            }
+
+            if (values.stream().anyMatch(kv -> kv.getText() == null || kv.getValue() == null)) {
+                values = new ArrayList<>();
+            }
+        }
+
+        return values;
+    }
 
 
-		public String getText() {
-			return text;
-		}
+    protected class TextValueJsonOption implements OptionItem {
+
+        private final String text;
+        private final String value;
+
+        public TextValueJsonOption(String text, String value) {
+            this.text = text;
+            this.value = value;
+        }
+
+        @Override
+        public String getText() {
+            return text;
+        }
+
+        @Override
+        public String getValue() {
+            return value;
+        }
+    }
 
 
-		public String getValue() {
-			return value;
-		}
+    protected class JcrTitleValueJsonOption implements OptionItem {
+        @SerializedName("jcr:title")
+        private final String text;
 
-	}
+        private final String value;
+
+        public JcrTitleValueJsonOption(String text, String value) {
+            this.text = text;
+            this.value = value;
+        }
+
+        @Override
+        public String getText() {
+            return text;
+        }
+
+        @Override
+        public String getValue() {
+            return value;
+        }
+
+    }
 }
