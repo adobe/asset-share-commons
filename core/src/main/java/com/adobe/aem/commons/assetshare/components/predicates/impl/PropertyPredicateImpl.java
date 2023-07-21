@@ -127,9 +127,9 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
         List<OptionItem> optionItems = new ArrayList<>();
 
         if (source.equals("json")) {
-            JsonObject jsonObject = jsonResolver.resolveJson(request, response, jsonSource);
-            if (jsonObject != null) {
-                optionItems = getOptionItemsFromJson(jsonObject);
+            JsonElement jsonElement = jsonResolver.resolveJson(request, response, jsonSource);
+            if (jsonElement != null) {
+                optionItems = getOptionItemsFromJson(jsonElement);
             }
         } else {
             optionItems = coreOptions.getItems();
@@ -222,27 +222,30 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
         return RESOURCE_TYPE;
     }
 
-    protected List<OptionItem> getOptionItemsFromJson(JsonObject json) {
+    protected List<OptionItem> getOptionItemsFromJson(JsonElement json) {
         final String OPTIONS = "options";
         TypeToken textValueTypeToken = new TypeToken<List<TextValueJsonOption>>() {
-        };
-        TypeToken jcrTitleValueTypeToken = new TypeToken<List<JcrTitleValueJsonOption>>() {
         };
 
         List<OptionItem> values = new ArrayList<>();
 
-        if (json != null && json.isJsonObject() && json.has(OPTIONS) && json.get(OPTIONS).isJsonArray()) {
-            JsonArray jsonArray = json.getAsJsonArray(OPTIONS);
+        JsonArray jsonArray = new JsonArray();
 
-            values = new Gson().fromJson(jsonArray, jcrTitleValueTypeToken.getType());
-
-            if (values.stream().anyMatch(kv -> kv.getText() == null || kv.getValue() == null)) {
-                values = new Gson().fromJson(jsonArray, textValueTypeToken.getType());
+        if (json != null) {
+            if (json.isJsonArray()) {
+                jsonArray = json.getAsJsonArray();
+            } else if (json.isJsonObject()) {
+                JsonObject jsonObject = json.getAsJsonObject();
+                if (jsonObject.has(OPTIONS) && jsonObject.get(OPTIONS).isJsonArray()) {
+                    jsonArray = json.getAsJsonObject().getAsJsonArray(OPTIONS);
+                }
             }
+        }
 
-            if (values.stream().anyMatch(kv -> kv.getText() == null || kv.getValue() == null)) {
-                values = new ArrayList<>();
-            }
+        values = new Gson().fromJson(jsonArray, textValueTypeToken.getType());
+
+        if (values.stream().anyMatch(kv -> kv.getText() == null || kv.getValue() == null)) {
+            values = new ArrayList<>();
         }
 
         return values;
@@ -268,29 +271,5 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
         public String getValue() {
             return value;
         }
-    }
-
-
-    protected class JcrTitleValueJsonOption implements OptionItem {
-        @SerializedName("jcr:title")
-        private final String text;
-
-        private final String value;
-
-        public JcrTitleValueJsonOption(String text, String value) {
-            this.text = text;
-            this.value = value;
-        }
-
-        @Override
-        public String getText() {
-            return text;
-        }
-
-        @Override
-        public String getValue() {
-            return value;
-        }
-
     }
 }

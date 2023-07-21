@@ -2,6 +2,8 @@ package com.adobe.aem.commons.assetshare.components.predicates.impl;
 
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,9 +26,9 @@ public class PropertyPredicateImplTest {
 
         Gson gson = new Gson();
 
-        JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
+        JsonElement jsonElement = gson.fromJson(json, JsonObject.class);
 
-        List<OptionItem> result = propertyPredicate.getOptionItemsFromJson(jsonObject);
+        List<OptionItem> result = propertyPredicate.getOptionItemsFromJson(jsonElement);
 
         assertNotNull(result);
         assertEquals(2, result.size());
@@ -40,13 +42,13 @@ public class PropertyPredicateImplTest {
     public void getKeyValuePairsFromJson_jcrTitleValue() {
         PropertyPredicateImpl propertyPredicate = new PropertyPredicateImpl();
 
-        String json = "{ \"options\": [ { \"jcr:title\": \"the text 1\", \"value\": \"the value 1\" }, { \"jcr:title\": \"the text 2\", \"value\": \"the value 2\" } ] }";
+        String json = "[ { \"text\": \"the text 1\", \"value\": \"the value 1\" }, { \"text\": \"the text 2\", \"value\": \"the value 2\" } ]";
 
         Gson gson = new Gson();
 
-        JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
+        JsonElement jsonElement = gson.fromJson(json, JsonArray.class);
 
-        List<OptionItem> result = propertyPredicate.getOptionItemsFromJson(jsonObject);
+        List<OptionItem> result = propertyPredicate.getOptionItemsFromJson(jsonElement);
 
         assertNotNull(result);
         assertEquals(2, result.size());

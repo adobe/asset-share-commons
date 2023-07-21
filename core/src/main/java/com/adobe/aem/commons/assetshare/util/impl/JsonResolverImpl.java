@@ -7,7 +7,7 @@ import com.adobe.aem.commons.assetshare.util.impl.requests.ExtensionOverrideRequ
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.commons.util.DamUtil;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -33,10 +33,10 @@ public class JsonResolverImpl implements JsonResolver {
     private static final Logger log = LoggerFactory.getLogger(JsonResolverImpl.class);
 
     @Override
-    public JsonObject resolveJson(SlingHttpServletRequest request, SlingHttpServletResponse response, String path) {
+    public JsonElement resolveJson(SlingHttpServletRequest request, SlingHttpServletResponse response, String path) {
         ResourceResolver resourceResolver = request.getResourceResolver();
         Resource resource = request.getResourceResolver().getResource(path);
-        JsonObject result = null;
+        JsonElement result = null;
         try {
             if (resource != null && (resourceResolver.isResourceType(resource, NT_FILE) ||
                     resourceResolver.isResourceType(resource, NT_RESOURCE) ||
@@ -48,7 +48,7 @@ public class JsonResolverImpl implements JsonResolver {
                 result = getJsonFromExternalUrl(path);
             } else if (resource != null && StringUtils.startsWithAny(path, "/etc/acs-commons/lists/")) {
                 path = StringUtils.substringBefore(path, ".");
-                path = path + ".list.json";
+                path = path + "/jcr:content.list.json";
                 result = getJsonAsInternalRequest(request, response, path);
             } else {
                 result = getJsonAsInternalRequest(request, response, path);
@@ -60,26 +60,26 @@ public class JsonResolverImpl implements JsonResolver {
         return result;
     }
 
-    private JsonObject getJsonFromNtFile(Resource resource) {
+    private JsonElement getJsonFromNtFile(Resource resource) {
         Resource jcrContent = resource.getChild("jcr:content");
         if (jcrContent != null && StringUtils.equalsIgnoreCase(jcrContent.getValueMap().get("jcr:mimeType", String.class), "application/json")) {
-            return getJsonObject(jcrContent.adaptTo(InputStream.class));
+            return getJsonElement(jcrContent.adaptTo(InputStream.class));
         } else {
             return null;
         }
     }
 
-    private JsonObject getJsonStringFromDamAsset(Resource resource) {
+    private JsonElement getJsonStringFromDamAsset(Resource resource) {
         Asset asset = DamUtil.resolveToAsset(resource);
 
         if (StringUtils.equalsIgnoreCase(asset.getMimeType(), "application/json")) {
-            return getJsonObject(asset.getOriginal().getStream());
+            return getJsonElement(asset.getOriginal().getStream());
         } else {
             return null;
         }
     }
 
-    private JsonObject getJsonAsInternalRequest(SlingHttpServletRequest request, SlingHttpServletResponse response, String path) throws ServletException, IOException {
+    private JsonElement getJsonAsInternalRequest(SlingHttpServletRequest request, SlingHttpServletResponse response, String path) throws ServletException, IOException {
         BufferedSlingHttpServletResponse wrappedResponse = new BufferedSlingHttpServletResponse(response);
         wrappedResponse.getBufferedServletOutput().setFlushBufferOnClose(true);
 
@@ -104,14 +104,14 @@ public class JsonResolverImpl implements JsonResolver {
         }
 
         if (bytes != null) {
-            return getJsonObject(new ByteArrayInputStream(bytes));
+            return getJsonElement(new ByteArrayInputStream(bytes));
         } else {
             log.warn("Unable to resolve JSON from path: {}", path);
             return null;
         }
     }
 
-    private JsonObject getJsonFromExternalUrl(String path) throws IOException, InterruptedException {
+    private JsonElement getJsonFromExternalUrl(String path) throws IOException, InterruptedException {
         URL url = new URL(path);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
@@ -128,16 +128,16 @@ public class JsonResolverImpl implements JsonResolver {
                 while ((line = reader.readLine()) != null) {
                     response.append(line);
                 }
-                return getJsonObject(new ByteArrayInputStream(response.toString().getBytes(StandardCharsets.UTF_8)));
+                return getJsonElement(new ByteArrayInputStream(response.toString().getBytes(StandardCharsets.UTF_8)));
             }
         } else {
             return null;
         }
     }
 
-    private JsonObject getJsonObject(InputStream inputStream) {
+    private JsonElement getJsonElement(InputStream inputStream) {
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-        return new Gson().fromJson(reader, JsonObject.class);
+        return new Gson().fromJson(reader, JsonElement.class);
     }
 }
