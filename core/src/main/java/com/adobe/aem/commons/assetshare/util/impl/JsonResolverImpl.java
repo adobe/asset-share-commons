@@ -5,12 +5,16 @@ import com.adobe.acs.commons.util.BufferedSlingHttpServletResponse;
 import com.adobe.acs.commons.util.PathInfoUtil;
 import com.adobe.aem.commons.assetshare.util.JsonResolver;
 import com.adobe.aem.commons.assetshare.util.impl.requests.ExtensionOverrideRequestWrapper;
+import com.adobe.aem.commons.assetshare.util.impl.requests.IncludableRequestWrapper;
+import com.adobe.aem.commons.assetshare.util.impl.responses.IncludableResponseWrapper;
 import com.day.cq.commons.PathInfo;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.commons.util.DamUtil;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
+import com.day.cq.wcm.api.WCMMode;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -27,6 +31,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 
 import static org.apache.jackrabbit.JcrConstants.NT_FILE;
 import static org.apache.jackrabbit.JcrConstants.NT_RESOURCE;
@@ -87,8 +92,7 @@ public class JsonResolverImpl implements JsonResolver {
     }
 
     private JsonElement getJsonAsInternalRequest(SlingHttpServletRequest request, SlingHttpServletResponse response, String path) throws ServletException, IOException {
-        BufferedSlingHttpServletResponse wrappedResponse = new BufferedSlingHttpServletResponse(response);
-        wrappedResponse.getBufferedServletOutput().setFlushBufferOnClose(true);
+        IncludableResponseWrapper wrappedResponse = new IncludableResponseWrapper(response);
 
         PathInfo pathInfo = new PathInfo(path);
         String extension = StringUtils.defaultIfEmpty(pathInfo.getExtension(), "json");
@@ -97,8 +101,11 @@ public class JsonResolverImpl implements JsonResolver {
         options.setReplaceSelectors(pathInfo.getSelectorString());
         options.setReplaceSuffix("");
 
+        SlingHttpServletRequest wrappedRequest = new IncludableRequestWrapper(request, extension);
+        WCMMode.DISABLED.toRequest(wrappedRequest);
+
         request.getRequestDispatcher(pathInfo.getResourcePath(), options)
-                .forward(new ExtensionOverrideRequestWrapper(request, extension), wrappedResponse);
+                .include(wrappedRequest, wrappedResponse);
 
         byte[] bytes = null;
         if (wrappedResponse.getBufferedServletOutput().getWriteMethod() == BufferedServletOutput.ResponseWriteMethod.WRITER) {
@@ -144,5 +151,25 @@ public class JsonResolverImpl implements JsonResolver {
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(inputStream, StandardCharsets.UTF_8));
         return new Gson().fromJson(reader, JsonElement.class);
+
+        /*
+        StringJoiner stringJoiner = new StringJoiner("\n");
+        String line;
+        try {
+            while ((line = reader.readLine()) != null) {
+                line = StringUtils.trimToEmpty(line);
+                if (StringUtils.startsWith(line, "<") || StringUtils.isBlank(line)) {
+                    // Skip
+                } else {
+                    stringJoiner.add(line);
+                }
+            }
+        } catch (IOException e) {
+            log.warn("Unable to read JSON from input stream", e);
+            return new JsonArray();
+        }
+
+         */
+
     }
 }
