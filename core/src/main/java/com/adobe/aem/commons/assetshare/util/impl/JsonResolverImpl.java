@@ -98,7 +98,7 @@ public class JsonResolverImpl implements JsonResolver {
         options.setReplaceSuffix("");
 
         request.getRequestDispatcher(pathInfo.getResourcePath(), options)
-                .include(new ExtensionOverrideRequestWrapper(request, extension), wrappedResponse);
+                .forward(new ExtensionOverrideRequestWrapper(request, extension), wrappedResponse);
 
         byte[] bytes = null;
         if (wrappedResponse.getBufferedServletOutput().getWriteMethod() == BufferedServletOutput.ResponseWriteMethod.WRITER) {

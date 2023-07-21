@@ -290,7 +290,7 @@
                                                             fieldDescription="A JSON file having an options array with text and value fields."
                                                             fieldLabel="JSON"
                                                             name="./jsonSource"
-                                                            rootPath="/content"
+                                                            rootPath="/"
                                                             required="{Boolean}true">
                                                     </json>
                                                 </items>
