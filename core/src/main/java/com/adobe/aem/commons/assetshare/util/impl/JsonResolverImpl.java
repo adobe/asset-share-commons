@@ -2,10 +2,14 @@ package com.adobe.aem.commons.assetshare.util.impl;
 
 import com.adobe.acs.commons.util.BufferedServletOutput;
 import com.adobe.acs.commons.util.BufferedSlingHttpServletResponse;
+import com.adobe.acs.commons.util.PathInfoUtil;
 import com.adobe.aem.commons.assetshare.util.JsonResolver;
 import com.adobe.aem.commons.assetshare.util.impl.requests.ExtensionOverrideRequestWrapper;
+import com.day.cq.commons.PathInfo;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.commons.util.DamUtil;
+import com.day.cq.wcm.api.Page;
+import com.day.cq.wcm.api.PageManager;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import org.apache.commons.lang3.StringUtils;
@@ -47,8 +51,11 @@ public class JsonResolverImpl implements JsonResolver {
             } else if (resource == null && StringUtils.startsWithAny(path, "http://", "https://")) {
                 result = getJsonFromExternalUrl(path);
             } else if (resource != null && StringUtils.startsWithAny(path, "/etc/acs-commons/lists/")) {
-                path = StringUtils.substringBefore(path, ".");
-                path = path + "/jcr:content.list.json";
+                PageManager pageManager = request.getResourceResolver().adaptTo(PageManager.class);
+                Page page = pageManager.getContainingPage(path);
+                if (page != null) {
+                    path = page.getPath() + "/jcr:content.list.json";
+                }
                 result = getJsonAsInternalRequest(request, response, path);
             } else {
                 result = getJsonAsInternalRequest(request, response, path);
@@ -83,17 +90,15 @@ public class JsonResolverImpl implements JsonResolver {
         BufferedSlingHttpServletResponse wrappedResponse = new BufferedSlingHttpServletResponse(response);
         wrappedResponse.getBufferedServletOutput().setFlushBufferOnClose(true);
 
-        // If path ends with .json remove it
-        if (path.endsWith(".json")) {
-            path = path.substring(0, path.length() - ".json".length());
-        }
+        PathInfo pathInfo = new PathInfo(path);
+        String extension = StringUtils.defaultIfEmpty(pathInfo.getExtension(), "json");
 
         final RequestDispatcherOptions options = new RequestDispatcherOptions();
-        options.setReplaceSelectors("");
+        options.setReplaceSelectors(pathInfo.getSelectorString());
         options.setReplaceSuffix("");
 
-        request.getRequestDispatcher(path, options)
-                .include(new ExtensionOverrideRequestWrapper(request, "json"), wrappedResponse);
+        request.getRequestDispatcher(pathInfo.getResourcePath(), options)
+                .include(new ExtensionOverrideRequestWrapper(request, extension), wrappedResponse);
 
         byte[] bytes = null;
         if (wrappedResponse.getBufferedServletOutput().getWriteMethod() == BufferedServletOutput.ResponseWriteMethod.WRITER) {
