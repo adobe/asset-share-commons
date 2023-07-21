@@ -262,7 +262,7 @@
                                                                             sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
                                                                             fieldDescription="A JSON file containing the dropdown options as text and value fields."
                                                                             fieldLabel="JSON Source"
-                                                                            rootPath="/content/dam"
+                                                                            rootPath="/"
                                                                             name="./jsonSource"
                                                                             required="{Boolean}true">
                                                                     </json>
