@@ -46,6 +46,10 @@ public class JsonResolverImpl implements JsonResolver {
                 result = getJsonStringFromDamAsset(resource);
             } else if (resource == null && StringUtils.startsWithAny(path, "http://", "https://")) {
                 result = getJsonFromExternalUrl(path);
+            } else if (resource != null && StringUtils.startsWithAny(path, "/etc/acs-commons/lists/")) {
+                path = StringUtils.substringBefore(path, ".");
+                path = path + ".list.json";
+                result = getJsonAsInternalRequest(request, response, path);
             } else {
                 result = getJsonAsInternalRequest(request, response, path);
             }
