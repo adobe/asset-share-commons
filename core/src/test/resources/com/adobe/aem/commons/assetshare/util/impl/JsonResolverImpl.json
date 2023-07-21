@@ -1,0 +1,17 @@
+{
+  "dam": {
+    "test-dam-asset.json": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured",
+        "metadata": {
+          "jcr:primaryType": "nt:unstructured",
+          "dc:format": "application/json"
+        },
+        "renditions": {
+          "jcr:primaryType": "nt:unstructured"
+        }
+      }
+    }
+  }
+}

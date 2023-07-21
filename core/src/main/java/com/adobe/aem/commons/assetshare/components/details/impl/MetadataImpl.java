@@ -21,12 +21,14 @@ package com.adobe.aem.commons.assetshare.components.details.impl;
 
 import com.adobe.aem.commons.assetshare.components.details.Metadata;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.aem.commons.assetshare.util.JsonResolver;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.export.json.ExporterConstants;
 import com.adobe.cq.sightly.SightlyWCMMode;
 import com.day.cq.dam.commons.util.DamUtil;
 import com.day.cq.wcm.api.Page;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -34,14 +36,13 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
 import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
-import org.apache.sling.models.annotations.injectorspecific.ScriptVariable;
-import org.apache.sling.models.annotations.injectorspecific.Self;
-import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
+import org.apache.sling.models.annotations.injectorspecific.*;
 import com.day.cq.dam.api.Asset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,9 +73,16 @@ public class MetadataImpl extends AbstractEmptyTextComponent implements Metadata
     @Required
     private SlingHttpServletRequest request;
 
+    @SlingObject
+    @Required
+    private SlingHttpServletResponse response;
+
     @Self
     @Required
     private AssetModel asset;
+
+    @OSGiService
+    private JsonResolver jsonResolver;
 
     @ScriptVariable
     private SightlyWCMMode wcmmode;
@@ -224,14 +232,13 @@ public class MetadataImpl extends AbstractEmptyTextComponent implements Metadata
                 values.addAll(Arrays.asList((String[]) val));
             }
 
-            if (DataType.JSON.equals(getType())) {
-                Asset asset = DamUtil.resolveToAsset(request.getResourceResolver().getResource(jsonSource));
-                if (null != asset) {
-                    try {
-                        values = readJson(values, asset);
-                    } catch (IOException e) {
-                        log.error("Unable to read JSON from [ {} ]. Defaulting to no values.", asset.getPath(), e);
-                    }
+            if (DataType.JSON.equals(getType()) && StringUtils.isNotBlank(jsonSource)) {
+                JsonObject jsonObject = jsonResolver.resolveJson(request, response, jsonSource);
+
+                if (jsonObject != null) {
+                    values = readJson(values, jsonObject);
+                } else {
+                    log.error("Unable to read JSON from [ {} ]. Defaulting to no values.", jsonSource);
                 }
             }
         }
@@ -240,49 +247,43 @@ public class MetadataImpl extends AbstractEmptyTextComponent implements Metadata
     }
 
     /**
-     * @param metadataValues the values from the metadata that will be used as the keys to look up values in the JSON
-     * @param jsonAsset      the asset that contains the JSON
-     * @return values the values from the JSON
-     * @throws IOException
+     * @param propertyValues the property values from the asset that will be used as the keys to look up values in the JSON
+     * @param json           the JsonObject that contains the propertyValue to display value mappings
+     * @return values the values to display
      */
-    private List<String> readJson(List<String> metadataValues, Asset jsonAsset) throws IOException {
+    private List<String> readJson(List<String> propertyValues, JsonObject json) {
+        final String OPTIONS = "options";
+
         List<String> values = new ArrayList<>();
-        try (InputStream stream = jsonAsset.getOriginal().adaptTo(InputStream.class);
-             BufferedReader reader = new BufferedReader(
-                     new InputStreamReader(stream, StandardCharsets.UTF_8))) {
-            Gson gson = new Gson();
-            JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
-            if (jsonObject.isJsonObject()) {
-                JsonElement optionsJson = jsonObject.get("options");
-                if (null == optionsJson) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("JSON is missing options array [ {} ]", jsonAsset.getPath());
-                    }
-                    return metadataValues;
-                }
-                Type listType = new TypeToken<List<JsonOption>>() {}.getType();
 
-                List<JsonOption> options = gson.fromJson(optionsJson, listType);
+        if (json.isJsonObject() && json.has(OPTIONS) && json.get(OPTIONS).isJsonArray()) {
+            List<JsonOption> options = new Gson().fromJson(json.getAsJsonArray(OPTIONS), new TypeToken<List<JsonOption>>() {
+            }.getType());
 
-                for (String val : metadataValues) {
-                    JsonOption value = options.stream()
-                            .filter(option -> val.equals(option.value))
-                            .findFirst()
-                            .orElse(null);
-                    if (null != value) {
-                        values.add(value.text);
-                    } else {
-                        values.add(val);
-                    }
+            for (String propertyValue : propertyValues) {
+                JsonOption value = options.stream()
+                        .filter(option -> propertyValue.equals(option.value))
+                        .findFirst()
+                        .orElse(null);
+
+                if (null != value) {
+                    values.add(value.text);
+                } else {
+                    values.add(propertyValue);
                 }
             }
-
+        } else {
+            if (log.isDebugEnabled()) {
+                log.debug("JsonObject is missing options array [ {} ], defaulting to actual property values.", new Gson().toJson(json));
+            }
+            return propertyValues;
         }
+
         return values;
     }
 
-    protected class JsonOption {
-        private String text;
-        private String value;
+    class JsonOption {
+        String text;
+        String value;
     }
 }

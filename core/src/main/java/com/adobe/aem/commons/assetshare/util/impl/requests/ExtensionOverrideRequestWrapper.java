@@ -17,7 +17,7 @@
  *
  */
 
-package com.adobe.aem.commons.assetshare.util.impl;
+package com.adobe.aem.commons.assetshare.util.impl.requests;
 
 import com.adobe.aem.commons.assetshare.util.impl.proxies.RequestPathInfoWrapper;
 import org.apache.sling.api.SlingHttpServletRequest;
