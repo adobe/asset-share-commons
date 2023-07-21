@@ -1,10 +1,7 @@
 package com.adobe.aem.commons.assetshare.util.impl;
 
 import com.adobe.acs.commons.util.BufferedServletOutput;
-import com.adobe.acs.commons.util.BufferedSlingHttpServletResponse;
-import com.adobe.acs.commons.util.PathInfoUtil;
 import com.adobe.aem.commons.assetshare.util.JsonResolver;
-import com.adobe.aem.commons.assetshare.util.impl.requests.ExtensionOverrideRequestWrapper;
 import com.adobe.aem.commons.assetshare.util.impl.requests.IncludableRequestWrapper;
 import com.adobe.aem.commons.assetshare.util.impl.responses.IncludableResponseWrapper;
 import com.day.cq.commons.PathInfo;
@@ -16,6 +13,7 @@ import com.day.cq.wcm.api.WCMMode;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -31,7 +29,6 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 
 import static org.apache.jackrabbit.JcrConstants.NT_FILE;
 import static org.apache.jackrabbit.JcrConstants.NT_RESOURCE;
@@ -61,7 +58,10 @@ public class JsonResolverImpl implements JsonResolver {
                 if (page != null) {
                     path = page.getPath() + "/jcr:content.list.json";
                 }
-                result = getJsonAsInternalRequest(request, response, path);
+                JsonElement jsonArray = getJsonAsInternalRequest(request, response, path);
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.add("options", jsonArray);
+                return jsonObject;
             } else {
                 result = getJsonAsInternalRequest(request, response, path);
             }
@@ -151,25 +151,5 @@ public class JsonResolverImpl implements JsonResolver {
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(inputStream, StandardCharsets.UTF_8));
         return new Gson().fromJson(reader, JsonElement.class);
-
-        /*
-        StringJoiner stringJoiner = new StringJoiner("\n");
-        String line;
-        try {
-            while ((line = reader.readLine()) != null) {
-                line = StringUtils.trimToEmpty(line);
-                if (StringUtils.startsWith(line, "<") || StringUtils.isBlank(line)) {
-                    // Skip
-                } else {
-                    stringJoiner.add(line);
-                }
-            }
-        } catch (IOException e) {
-            log.warn("Unable to read JSON from input stream", e);
-            return new JsonArray();
-        }
-
-         */
-
     }
 }

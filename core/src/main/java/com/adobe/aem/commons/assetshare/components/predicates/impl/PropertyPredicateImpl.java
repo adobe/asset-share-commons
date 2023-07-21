@@ -118,35 +118,40 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
     }
 
     /* Options - Core Component Delegates */
+    private List<OptionItem> items = null;
 
     public List<OptionItem> getItems() {
-        final ValueMap initialValues = getInitialValues();
-        final List<OptionItem> processedOptionItems = new ArrayList<>();
-        final boolean useDefaultSelected = !isParameterizedSearchRequest();
+        if (items == null) {
+            final ValueMap initialValues = getInitialValues();
+            final List<OptionItem> processedOptionItems = new ArrayList<>();
+            final boolean useDefaultSelected = !isParameterizedSearchRequest();
 
-        List<OptionItem> optionItems = new ArrayList<>();
+            List<OptionItem> optionItems = new ArrayList<>();
 
-        if (source.equals("json")) {
-            JsonElement jsonElement = jsonResolver.resolveJson(request, response, jsonSource);
-            if (jsonElement != null) {
-                optionItems = getOptionItemsFromJson(jsonElement);
+            if (source.equals("json")) {
+                JsonElement jsonElement = jsonResolver.resolveJson(request, response, jsonSource);
+                if (jsonElement != null) {
+                    optionItems = getOptionItemsFromJson(jsonElement);
+                }
+            } else {
+                optionItems = coreOptions.getItems();
             }
-        } else {
-            optionItems = coreOptions.getItems();
+
+            optionItems.stream()
+                    .forEach(optionItem -> {
+                        if (PredicateUtil.isOptionInInitialValues(optionItem, initialValues)) {
+                            processedOptionItems.add(new SelectedOptionItem(optionItem));
+                        } else if (useDefaultSelected) {
+                            processedOptionItems.add(optionItem);
+                        } else {
+                            processedOptionItems.add(new UnselectedOptionItem(optionItem));
+                        }
+                    });
+
+            items = processedOptionItems;
         }
 
-        optionItems.stream()
-                .forEach(optionItem -> {
-                    if (PredicateUtil.isOptionInInitialValues(optionItem, initialValues)) {
-                        processedOptionItems.add(new SelectedOptionItem(optionItem));
-                    } else if (useDefaultSelected) {
-                        processedOptionItems.add(optionItem);
-                    } else {
-                        processedOptionItems.add(new UnselectedOptionItem(optionItem));
-                    }
-                });
-
-        return processedOptionItems;
+        return items;
     }
 
     public Type getType() {
@@ -195,7 +200,7 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
 
     @Override
     public boolean isReady() {
-        return coreOptions.getItems().size() > 0;
+        return getItems().size() > 0;
     }
 
     @Override
