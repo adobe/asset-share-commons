@@ -6,15 +6,19 @@
 
 ### 📁 Other pull requests
 
-- Feature/metadata filter dropdown option [\#973](https://github.com/adobe/asset-share-commons/pull/973) ([davidjgonzalez](https://github.com/davidjgonzalez))
-- JSON file resolver [\#971](https://github.com/adobe/asset-share-commons/pull/971) ([davidjgonzalez](https://github.com/davidjgonzalez))
-- Release workaround [\#970](https://github.com/adobe/asset-share-commons/pull/970) ([davidjgonzalez](https://github.com/davidjgonzalez))
-- Bump tough-cookie and less in /ui.frontend.theme.dark [\#967](https://github.com/adobe/asset-share-commons/pull/967) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump tough-cookie and less in /ui.frontend.theme.light [\#966](https://github.com/adobe/asset-share-commons/pull/966) ([dependabot[bot]](https://github.com/apps/dependabot))
-
 ## [asset-share-commons-3.3.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.3.0) (2023-07-24)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.2.4...asset-share-commons-3.3.0)
+
+### 🚀 Enhancements
+
+- Feature/metadata filter dropdown option [\#973](https://github.com/adobe/asset-share-commons/pull/973) ([davidjgonzalez](https://github.com/davidjgonzalez))
+- JSON file resolver [\#971](https://github.com/adobe/asset-share-commons/pull/971) ([davidjgonzalez](https://github.com/davidjgonzalez))
+
+### 📁 Other pull requests
+
+- Bump tough-cookie and less in /ui.frontend.theme.dark [\#967](https://github.com/adobe/asset-share-commons/pull/967) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump tough-cookie and less in /ui.frontend.theme.light [\#966](https://github.com/adobe/asset-share-commons/pull/966) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [asset-share-commons-3.2.4](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.2.4) (2023-07-14)
 
