@@ -168,6 +168,10 @@
                                                                             jcr:primaryType="nt:unstructured"
                                                                             text="Datasource"
                                                                             value="datasource"/>
+                                                                    <json
+                                                                        jcr:primaryType="nt:unstructured"
+                                                                        text="JSON"
+                                                                        value="json"/>
                                                                 </items>
                                                             </source>
                                                             <fromDatasource
@@ -245,6 +249,25 @@
                                                                     </options>
                                                                 </items>
                                                             </fromLocal>
+                                                            <fromJson
+                                                                    granite:class="hide list-option-listfrom-showhide-target foundation-layout-util-vmargin"
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    sling:resourceType="granite/ui/components/coral/foundation/container">
+                                                                <granite:data
+                                                                        jcr:primaryType="nt:unstructured"
+                                                                        showhidetargetvalue="json"/>
+                                                                <items jcr:primaryType="nt:unstructured">
+                                                                    <json
+                                                                            jcr:primaryType="nt:unstructured"
+                                                                            sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
+                                                                            fieldDescription="A JSON source containing the filter options."
+                                                                            fieldLabel="JSON Source"
+                                                                            rootPath="/"
+                                                                            name="./jsonSource"
+                                                                            required="{Boolean}true">
+                                                                    </json>
+                                                                </items>
+                                                            </fromJson>
                                                         </items>
                                                     </column>
                                                 </items>

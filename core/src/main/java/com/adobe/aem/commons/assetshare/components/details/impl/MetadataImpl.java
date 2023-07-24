@@ -25,7 +25,6 @@ import com.adobe.aem.commons.assetshare.util.JsonResolver;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.export.json.ExporterConstants;
 import com.adobe.cq.sightly.SightlyWCMMode;
-import com.day.cq.dam.commons.util.DamUtil;
 import com.day.cq.wcm.api.Page;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -43,18 +42,11 @@ import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.*;
-import com.day.cq.dam.api.Asset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Model(
@@ -233,10 +225,10 @@ public class MetadataImpl extends AbstractEmptyTextComponent implements Metadata
             }
 
             if (DataType.JSON.equals(getType()) && StringUtils.isNotBlank(jsonSource)) {
-                JsonObject jsonObject = jsonResolver.resolveJson(request, response, jsonSource);
+                JsonElement jsonElement = jsonResolver.resolveJson(request, response, jsonSource);
 
-                if (jsonObject != null) {
-                    values = readJson(values, jsonObject);
+                if (jsonElement != null) {
+                    values = getValuesFromJson(values, jsonElement);
                 } else {
                     log.error("Unable to read JSON from [ {} ]. Defaulting to no values.", jsonSource);
                 }
@@ -248,35 +240,40 @@ public class MetadataImpl extends AbstractEmptyTextComponent implements Metadata
 
     /**
      * @param propertyValues the property values from the asset that will be used as the keys to look up values in the JSON
-     * @param json           the JsonObject that contains the propertyValue to display value mappings
+     * @param json           the JsonElement that contains the propertyValue to display value mappings
      * @return values the values to display
      */
-    private List<String> readJson(List<String> propertyValues, JsonObject json) {
+    private List<String> getValuesFromJson(List<String> propertyValues, JsonElement json) {
         final String OPTIONS = "options";
 
         List<String> values = new ArrayList<>();
 
-        if (json.isJsonObject() && json.has(OPTIONS) && json.get(OPTIONS).isJsonArray()) {
-            List<JsonOption> options = new Gson().fromJson(json.getAsJsonArray(OPTIONS), new TypeToken<List<JsonOption>>() {
-            }.getType());
-
-            for (String propertyValue : propertyValues) {
-                JsonOption value = options.stream()
-                        .filter(option -> propertyValue.equals(option.value))
-                        .findFirst()
-                        .orElse(null);
-
-                if (null != value) {
-                    values.add(value.text);
-                } else {
-                    values.add(propertyValue);
-                }
+        JsonArray jsonArray = new JsonArray();
+        if (json.isJsonArray()) {
+            jsonArray = json.getAsJsonArray();
+        } else if (json.isJsonObject()) {
+            JsonObject jsonObject = json.getAsJsonObject();
+            if (jsonObject.has(OPTIONS) && jsonObject.get(OPTIONS).isJsonArray()) {
+                jsonArray = jsonObject.getAsJsonArray(OPTIONS);
             }
         } else {
-            if (log.isDebugEnabled()) {
-                log.debug("JsonObject is missing options array [ {} ], defaulting to actual property values.", new Gson().toJson(json));
-            }
             return propertyValues;
+        }
+
+        List<JsonOption> options = new Gson().fromJson(jsonArray, new TypeToken<List<JsonOption>>() {
+        }.getType());
+
+        for (String propertyValue : propertyValues) {
+            JsonOption value = options.stream()
+                    .filter(option -> propertyValue.equals(option.value))
+                    .findFirst()
+                    .orElse(null);
+
+            if (null != value) {
+                values.add(value.text);
+            } else {
+                values.add(propertyValue);
+            }
         }
 
         return values;

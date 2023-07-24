@@ -1,6 +1,26 @@
+/*
+ * Asset Share Commons
+ *
+ * Copyright (C) 2023 Adobe
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.adobe.aem.commons.assetshare.util.impl;
 
 import com.adobe.aem.commons.assetshare.util.JsonResolver;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.junit.Before;
@@ -35,20 +55,20 @@ public class JsonResolverImplTest {
     public void resolveDamAsset() {
         JsonResolver jsonResolver = ctx.getService(JsonResolver.class);
 
-        JsonObject actual = jsonResolver.resolveJson(ctx.request(), ctx.response(), "/content/dam/test-dam-asset.json");
+        JsonElement actual = jsonResolver.resolveJson(ctx.request(), ctx.response(), "/content/dam/test-dam-asset.json");
 
         assertNotNull(actual);
-        assertEquals("dam asset", actual.get("test").getAsString());
+        assertEquals("dam asset", actual.getAsJsonObject().get("test").getAsString());
     }
 
     @Test
     public void resolveExternalInclude() {
         JsonResolver jsonResolver = ctx.getService(JsonResolver.class);
 
-        JsonObject actual = jsonResolver.resolveJson(ctx.request(), ctx.response(), "https://opensource.adobe.com/asset-share-commons/tests/example.json");
+        JsonElement actual = jsonResolver.resolveJson(ctx.request(), ctx.response(), "https://opensource.adobe.com/asset-share-commons/tests/example.json");
 
         assertNotNull(actual);
-        assertEquals("remote test json file.", actual.get("test").getAsString());
+        assertEquals("remote test json file.", actual.getAsJsonObject().get("test").getAsString());
     }
 
 
@@ -57,10 +77,10 @@ public class JsonResolverImplTest {
         // This test requires too much mocking to be worth it.
         JsonResolver jsonResolver = ctx.getService(JsonResolver.class);
 
-        JsonObject actual = jsonResolver.resolveJson(ctx.request(), ctx.response(), "/content/test-internal-include.json");
+        JsonElement actual = jsonResolver.resolveJson(ctx.request(), ctx.response(), "/content/test-internal-include.json");
 
         assertNotNull(actual);
-        assertEquals("internal include", actual.get("test").getAsString());
+        assertEquals("internal include", actual.getAsJsonObject().get("test").getAsString());
     }
 }
 
