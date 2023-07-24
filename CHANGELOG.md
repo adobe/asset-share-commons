@@ -8,6 +8,8 @@
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.2.0...asset-share-commons-3.2.4)
 
+### 📁 Other pull requests
+
 - Same as Asset Share Commons 3.2.2. New release required due to issue with release script.
 
 ## [asset-share-commons-3.2.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.2.2) (2023-07-14)
