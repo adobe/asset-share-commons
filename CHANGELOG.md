@@ -2,13 +2,9 @@
 
 ## [Unreleased](https://github.com/adobe/asset-share-commons/tree/HEAD)
 
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.3.0...HEAD)
-
-### 📁 Other pull requests
-
 ## [asset-share-commons-3.3.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.3.0) (2023-07-24)
 
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.2.4...asset-share-commons-3.3.0)
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.3.0...HEAD)
 
 ### 🚀 Enhancements
 
