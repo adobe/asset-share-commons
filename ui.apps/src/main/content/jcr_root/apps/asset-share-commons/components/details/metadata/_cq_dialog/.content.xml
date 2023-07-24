@@ -279,7 +279,7 @@
                                                     jcr:primaryType="nt:unstructured"
                                                     sling:resourceType="granite/ui/components/coral/foundation/heading"
                                                     level="{Long}4"
-                                                    text="JSON lookup file"/>
+                                                    text="JSON lookup"/>
                                             <well
                                                     jcr:primaryType="nt:unstructured"
                                                     sling:resourceType="granite/ui/components/coral/foundation/well">
@@ -287,7 +287,7 @@
                                                     <json
                                                             jcr:primaryType="nt:unstructured"
                                                             sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
-                                                            fieldDescription="A JSON file having an options array with text and value fields."
+                                                            fieldDescription="A JSON source containing asset property value to display value mappings."
                                                             fieldLabel="JSON"
                                                             name="./jsonSource"
                                                             rootPath="/"

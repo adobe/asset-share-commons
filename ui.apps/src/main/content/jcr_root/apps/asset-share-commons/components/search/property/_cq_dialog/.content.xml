@@ -260,7 +260,7 @@
                                                                     <json
                                                                             jcr:primaryType="nt:unstructured"
                                                                             sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
-                                                                            fieldDescription="A JSON file containing the dropdown options as text and value fields."
+                                                                            fieldDescription="A JSON source containing the filter options."
                                                                             fieldLabel="JSON Source"
                                                                             rootPath="/"
                                                                             name="./jsonSource"
