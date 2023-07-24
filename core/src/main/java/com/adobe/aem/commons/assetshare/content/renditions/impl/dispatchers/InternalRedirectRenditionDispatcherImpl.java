@@ -21,7 +21,7 @@ package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.*;
-import com.adobe.aem.commons.assetshare.util.impl.ExtensionOverrideRequestWrapper;
+import com.adobe.aem.commons.assetshare.util.impl.requests.ExtensionOverrideRequestWrapper;
 import com.day.cq.commons.PathInfo;
 import com.day.text.Text;
 import org.apache.commons.lang3.StringUtils;

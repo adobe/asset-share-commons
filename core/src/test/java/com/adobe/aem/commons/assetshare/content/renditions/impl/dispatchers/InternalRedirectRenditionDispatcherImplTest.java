@@ -29,7 +29,7 @@ import com.adobe.aem.commons.assetshare.testing.RequireAemMock;
 import com.adobe.aem.commons.assetshare.util.ExpressionEvaluator;
 import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.aem.commons.assetshare.util.impl.ExpressionEvaluatorImpl;
-import com.adobe.aem.commons.assetshare.util.impl.ExtensionOverrideRequestWrapper;
+import com.adobe.aem.commons.assetshare.util.impl.requests.ExtensionOverrideRequestWrapper;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.sling.api.request.RequestDispatcherOptions;
