@@ -2,22 +2,31 @@
 
 ## [Unreleased](https://github.com/adobe/asset-share-commons/tree/HEAD)
 
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.2.4...HEAD)
-
-## [asset-share-commons-3.2.4](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.2.4) (2023-07-14)
-
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.2.0...asset-share-commons-3.2.4)
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.3.0...HEAD)
 
 ### 📁 Other pull requests
 
-- Same as Asset Share Commons 3.2.2. New release required due to issue with release script.
+- Feature/metadata filter dropdown option [\#973](https://github.com/adobe/asset-share-commons/pull/973) ([davidjgonzalez](https://github.com/davidjgonzalez))
+- JSON file resolver [\#971](https://github.com/adobe/asset-share-commons/pull/971) ([davidjgonzalez](https://github.com/davidjgonzalez))
+- Release workaround [\#970](https://github.com/adobe/asset-share-commons/pull/970) ([davidjgonzalez](https://github.com/davidjgonzalez))
+- Bump tough-cookie and less in /ui.frontend.theme.dark [\#967](https://github.com/adobe/asset-share-commons/pull/967) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump tough-cookie and less in /ui.frontend.theme.light [\#966](https://github.com/adobe/asset-share-commons/pull/966) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [asset-share-commons-3.3.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.3.0) (2023-07-24)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.2.4...asset-share-commons-3.3.0)
+
+## [asset-share-commons-3.2.4](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.2.4) (2023-07-14)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.2.2...asset-share-commons-3.2.4)
 
 ## [asset-share-commons-3.2.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.2.2) (2023-07-14)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.2.0...asset-share-commons-3.2.2)
 
-### 🐛 Bug fixes
+### 📁 Other pull requests
 
+- v3.2.2 [\#969](https://github.com/adobe/asset-share-commons/pull/969) ([davidjgonzalez](https://github.com/davidjgonzalez))
 - Added tighter restrictions on what mimetypes can use the AssetDeliver… [\#968](https://github.com/adobe/asset-share-commons/pull/968) ([davidjgonzalez](https://github.com/davidjgonzalez))
 
 ## [asset-share-commons-3.2.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.2.0) (2023-06-15)
