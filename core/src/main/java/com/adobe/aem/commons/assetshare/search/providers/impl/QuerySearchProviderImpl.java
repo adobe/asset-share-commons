@@ -256,7 +256,7 @@ public class QuerySearchProviderImpl implements SearchProvider {
 
             final StringBuilder sb = new StringBuilder();
             for (final Map.Entry<String, String> parameter : sortedParams.entrySet()) {
-                sb.append("\n" + parameter.getKey() + " = " + parameter.getValue());
+                sb.append(parameter.getKey() + " = " + parameter.getValue() + " | ");
             }
 
             log.debug("Query Builder Parameters: {}", sb.toString());

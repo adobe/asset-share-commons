@@ -1,7 +1,7 @@
 /*
  * Asset Share Commons
  *
- * Copyright (C) 2017 Adobe
+ * Copyright (C) 2023 Adobe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,17 @@
  *
  */
 
-@Version("4.1.0")
 package com.adobe.aem.commons.assetshare.components.predicates;
 
-import org.osgi.annotation.versioning.Version;
+import com.adobe.cq.wcm.core.components.models.form.OptionItem;
+import com.day.cq.search.PredicateGroup;
 
+import java.util.Collection;
+
+public interface DefaultValuesPredicate {
+
+    /**
+     * @return a PredicateGroup that represents the HiddenPredicate configuration.
+     */
+    PredicateGroup getPredicateGroup();
+}

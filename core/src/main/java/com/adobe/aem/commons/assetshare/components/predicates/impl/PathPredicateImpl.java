@@ -20,6 +20,7 @@
 package com.adobe.aem.commons.assetshare.components.predicates.impl;
 
 import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
+import com.adobe.aem.commons.assetshare.components.predicates.DefaultValuesPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.PathPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.impl.options.SelectedOptionItem;
 import com.adobe.aem.commons.assetshare.components.predicates.impl.options.UnselectedOptionItem;
@@ -28,29 +29,35 @@ import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.export.json.ExporterConstants;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
+import com.day.cq.search.PredicateConverter;
+import com.day.cq.search.PredicateGroup;
 import com.day.cq.search.eval.PathPredicateEvaluator;
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
 import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.Self;
+import org.apache.sling.models.annotations.injectorspecific.SlingObject;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
 import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {PathPredicate.class, ComponentExporter.class},
+        adapters = {PathPredicate.class, DefaultValuesPredicate.class, ComponentExporter.class},
         resourceType = {PathPredicateImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
 @Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
-public class PathPredicateImpl extends AbstractPredicate implements PathPredicate, Options {
+public class PathPredicateImpl extends AbstractPredicate implements PathPredicate, DefaultValuesPredicate, Options {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/path";
     protected static final String PN_TYPE = "type";
 
@@ -61,6 +68,9 @@ public class PathPredicateImpl extends AbstractPredicate implements PathPredicat
     @Self
     @Required
     private SlingHttpServletRequest request;
+
+    @SlingObject
+    private Resource resource;
 
     @Self
     @Required
@@ -144,6 +154,31 @@ public class PathPredicateImpl extends AbstractPredicate implements PathPredicat
 
         return valuesFromRequest;
     }
+
+    @Override
+    public PredicateGroup getPredicateGroup() {
+        final Map<String, String> params = new HashMap<>();
+
+        if (resource == null) {
+            return new PredicateGroup();
+        }
+
+        int i = 0;
+        for (OptionItem item : getItems()) {
+            if (item.isSelected()) {
+                params.put(i + "_" + PathPredicateEvaluator.PATH, item.getValue());
+                i++;
+            }
+        }
+
+        if (!params.isEmpty()) {
+            // OR paths since it doesn't make sense to AND paths (i.e. a single asset can't be in multiple paths, unless they're nested but then justs select the deep path)
+            params.put("p.or", "true");
+        }
+
+        return PredicateConverter.createPredicates(params);
+    }
+
 
     @Nonnull
     @Override

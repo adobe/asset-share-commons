@@ -19,6 +19,7 @@
 
 package com.adobe.aem.commons.assetshare.components.predicates;
 
+import com.adobe.aem.commons.assetshare.util.PredicateUtil;
 import com.adobe.cq.wcm.core.components.models.form.Field;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.day.cq.wcm.commons.WCMUtils;
@@ -139,7 +140,7 @@ public abstract class AbstractPredicate implements Predicate {
      * @return true if the request appears to be a request that has search parameters.
      */
     public boolean isParameterizedSearchRequest() {
-        return Arrays.stream(new String[]{"p.", "", "_group."}).anyMatch(needle -> StringUtils.contains(request.getQueryString(), needle));
+        return PredicateUtil.isParameterizedSearchRequest(request);
     }
 
     /**
