@@ -24,10 +24,17 @@ import com.day.cq.search.PredicateGroup;
 
 import java.util.Collection;
 
+/**
+ * This interface is used to make Search Predicate components that can have default values (options marked as "Active"). 
+ * Examples of this include the ASC PropertyPredicate and PathPredicate components.
+ * Any predicate components that can have default values should both implement this interface, and list it as Sling Model adapters.
+ * getPredicateGroup() should return a QueryBuilder PredicateGroup that is populated with query parameters that reflect the default values of the component.
+ * See ProperyPredicateImpl.java and PathPredicateImpl.java for examples.
+ */
 public interface DefaultValuesPredicate {
 
     /**
-     * @return a PredicateGroup that represents the HiddenPredicate configuration.
+     * @return a PredicateGroup that represents the default/active query configuration for the component.
      */
     PredicateGroup getPredicateGroup();
 }
