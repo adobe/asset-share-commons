@@ -46,7 +46,7 @@ public final class PredicateUtil {
     private PredicateUtil() { }
 
     public static boolean isParameterizedSearchRequest(SlingHttpServletRequest request) {
-        return Arrays.stream(new String[]{"p.", "", "_group."}).anyMatch(needle -> StringUtils.contains(request.getQueryString(), needle));
+        return Arrays.stream(new String[]{"_group.", "?p.", "&p."}).anyMatch(needle -> StringUtils.contains(request.getQueryString(), needle));
     }
 
     /**
