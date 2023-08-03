@@ -20,7 +20,6 @@
 package com.adobe.aem.commons.assetshare.components.predicates;
 
 import com.day.cq.search.PredicateGroup;
-import java.util.Collection;
 import org.osgi.annotation.versioning.ConsumerType;
 
 /**
