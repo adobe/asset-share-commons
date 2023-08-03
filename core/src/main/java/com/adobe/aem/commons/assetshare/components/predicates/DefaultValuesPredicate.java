@@ -19,10 +19,9 @@
 
 package com.adobe.aem.commons.assetshare.components.predicates;
 
-import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.day.cq.search.PredicateGroup;
-
 import java.util.Collection;
+import org.osgi.annotation.versioning.ConsumerType;
 
 /**
  * This interface is used to make Search Predicate components that can have default values (options marked as "Active"). 
@@ -31,6 +30,7 @@ import java.util.Collection;
  * getPredicateGroup() should return a QueryBuilder PredicateGroup that is populated with query parameters that reflect the default values of the component.
  * See ProperyPredicateImpl.java and PathPredicateImpl.java for examples.
  */
+@ConsumerType
 public interface DefaultValuesPredicate {
 
     /**
