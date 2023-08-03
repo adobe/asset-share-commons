@@ -1,12 +1,36 @@
+/*
+ * Asset Share Commons
+ *
+ * Copyright (C) 2023 Adobe
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.adobe.aem.commons.assetshare.util.impl;
 
 import com.adobe.acs.commons.util.BufferedServletOutput;
-import com.adobe.acs.commons.util.BufferedSlingHttpServletResponse;
 import com.adobe.aem.commons.assetshare.util.JsonResolver;
-import com.adobe.aem.commons.assetshare.util.impl.requests.ExtensionOverrideRequestWrapper;
+import com.adobe.aem.commons.assetshare.util.impl.requests.IncludableRequestWrapper;
+import com.adobe.aem.commons.assetshare.util.impl.responses.IncludableResponseWrapper;
+import com.day.cq.commons.PathInfo;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.commons.util.DamUtil;
+import com.day.cq.wcm.api.Page;
+import com.day.cq.wcm.api.PageManager;
+import com.day.cq.wcm.api.WCMMode;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -33,10 +57,10 @@ public class JsonResolverImpl implements JsonResolver {
     private static final Logger log = LoggerFactory.getLogger(JsonResolverImpl.class);
 
     @Override
-    public JsonObject resolveJson(SlingHttpServletRequest request, SlingHttpServletResponse response, String path) {
+    public JsonElement resolveJson(SlingHttpServletRequest request, SlingHttpServletResponse response, String path) {
         ResourceResolver resourceResolver = request.getResourceResolver();
         Resource resource = request.getResourceResolver().getResource(path);
-        JsonObject result = null;
+        JsonElement result = null;
         try {
             if (resource != null && (resourceResolver.isResourceType(resource, NT_FILE) ||
                     resourceResolver.isResourceType(resource, NT_RESOURCE) ||
@@ -46,6 +70,17 @@ public class JsonResolverImpl implements JsonResolver {
                 result = getJsonStringFromDamAsset(resource);
             } else if (resource == null && StringUtils.startsWithAny(path, "http://", "https://")) {
                 result = getJsonFromExternalUrl(path);
+            } else if (resource != null && StringUtils.startsWithAny(path, "/etc/acs-commons/lists/")) {
+                PageManager pageManager = request.getResourceResolver().adaptTo(PageManager.class);
+                Page page = pageManager.getContainingPage(path);
+                if (page != null) {
+                    path = page.getPath() + "/jcr:content.list.json";
+                }
+                // Add the Generic List options to a JSON Object under an options key.
+                JsonElement jsonArray = getJsonAsInternalRequest(request, response, path);
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.add("options", jsonArray);
+                return jsonObject;
             } else {
                 result = getJsonAsInternalRequest(request, response, path);
             }
@@ -56,40 +91,40 @@ public class JsonResolverImpl implements JsonResolver {
         return result;
     }
 
-    private JsonObject getJsonFromNtFile(Resource resource) {
+    private JsonElement getJsonFromNtFile(Resource resource) {
         Resource jcrContent = resource.getChild("jcr:content");
         if (jcrContent != null && StringUtils.equalsIgnoreCase(jcrContent.getValueMap().get("jcr:mimeType", String.class), "application/json")) {
-            return getJsonObject(jcrContent.adaptTo(InputStream.class));
+            return getJsonElement(jcrContent.adaptTo(InputStream.class));
         } else {
             return null;
         }
     }
 
-    private JsonObject getJsonStringFromDamAsset(Resource resource) {
+    private JsonElement getJsonStringFromDamAsset(Resource resource) {
         Asset asset = DamUtil.resolveToAsset(resource);
 
         if (StringUtils.equalsIgnoreCase(asset.getMimeType(), "application/json")) {
-            return getJsonObject(asset.getOriginal().getStream());
+            return getJsonElement(asset.getOriginal().getStream());
         } else {
             return null;
         }
     }
 
-    private JsonObject getJsonAsInternalRequest(SlingHttpServletRequest request, SlingHttpServletResponse response, String path) throws ServletException, IOException {
-        BufferedSlingHttpServletResponse wrappedResponse = new BufferedSlingHttpServletResponse(response);
-        wrappedResponse.getBufferedServletOutput().setFlushBufferOnClose(true);
+    private JsonElement getJsonAsInternalRequest(SlingHttpServletRequest request, SlingHttpServletResponse response, String path) throws ServletException, IOException {
+        IncludableResponseWrapper wrappedResponse = new IncludableResponseWrapper(response);
 
-        // If path ends with .json remove it
-        if (path.endsWith(".json")) {
-            path = path.substring(0, path.length() - ".json".length());
-        }
+        PathInfo pathInfo = new PathInfo(path);
+        String extension = StringUtils.defaultIfEmpty(pathInfo.getExtension(), "json");
 
         final RequestDispatcherOptions options = new RequestDispatcherOptions();
-        options.setReplaceSelectors("");
+        options.setReplaceSelectors(pathInfo.getSelectorString());
         options.setReplaceSuffix("");
 
-        request.getRequestDispatcher(path, options)
-                .include(new ExtensionOverrideRequestWrapper(request, "json"), wrappedResponse);
+        SlingHttpServletRequest wrappedRequest = new IncludableRequestWrapper(request, extension);
+        WCMMode.DISABLED.toRequest(wrappedRequest);
+
+        request.getRequestDispatcher(pathInfo.getResourcePath(), options)
+                .include(wrappedRequest, wrappedResponse);
 
         byte[] bytes = null;
         if (wrappedResponse.getBufferedServletOutput().getWriteMethod() == BufferedServletOutput.ResponseWriteMethod.WRITER) {
@@ -100,14 +135,14 @@ public class JsonResolverImpl implements JsonResolver {
         }
 
         if (bytes != null) {
-            return getJsonObject(new ByteArrayInputStream(bytes));
+            return getJsonElement(new ByteArrayInputStream(bytes));
         } else {
             log.warn("Unable to resolve JSON from path: {}", path);
             return null;
         }
     }
 
-    private JsonObject getJsonFromExternalUrl(String path) throws IOException, InterruptedException {
+    private JsonElement getJsonFromExternalUrl(String path) throws IOException, InterruptedException {
         URL url = new URL(path);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
@@ -124,16 +159,16 @@ public class JsonResolverImpl implements JsonResolver {
                 while ((line = reader.readLine()) != null) {
                     response.append(line);
                 }
-                return getJsonObject(new ByteArrayInputStream(response.toString().getBytes(StandardCharsets.UTF_8)));
+                return getJsonElement(new ByteArrayInputStream(response.toString().getBytes(StandardCharsets.UTF_8)));
             }
         } else {
             return null;
         }
     }
 
-    private JsonObject getJsonObject(InputStream inputStream) {
+    private JsonElement getJsonElement(InputStream inputStream) {
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-        return new Gson().fromJson(reader, JsonObject.class);
+        return new Gson().fromJson(reader, JsonElement.class);
     }
 }
