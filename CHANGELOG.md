@@ -2,17 +2,32 @@
 
 ## [Unreleased](https://github.com/adobe/asset-share-commons/tree/HEAD)
 
-## [asset-share-commons-3.3.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.3.0) (2023-07-24)
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.4.0...HEAD)
 
-[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.3.0...HEAD)
+### 🐛 Bug fixes
 
-### 🚀 Enhancements
-
-- Feature/metadata filter dropdown option [\#973](https://github.com/adobe/asset-share-commons/pull/973) ([davidjgonzalez](https://github.com/davidjgonzalez))
-- JSON file resolver [\#971](https://github.com/adobe/asset-share-commons/pull/971) ([davidjgonzalez](https://github.com/davidjgonzalez))
+- Fixed issue with default values filter values \(active options\) not im… [\#977](https://github.com/adobe/asset-share-commons/pull/977) ([davidjgonzalez](https://github.com/davidjgonzalez))
 
 ### 📁 Other pull requests
 
+- Bump org.apache.maven.plugins:maven-clean-plugin from 3.2.0 to 3.3.1 [\#979](https://github.com/adobe/asset-share-commons/pull/979) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Upgraded moment.js to 2.29.4 [\#978](https://github.com/adobe/asset-share-commons/pull/978) ([davidjgonzalez](https://github.com/davidjgonzalez))
+- Bump maven-checkstyle-plugin from 3.2.2 to 3.3.0 [\#963](https://github.com/adobe/asset-share-commons/pull/963) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [asset-share-commons-3.4.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.4.0) (2023-08-07)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.3.0...asset-share-commons-3.4.0)
+
+## [asset-share-commons-3.3.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.3.0) (2023-07-24)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.2.4...asset-share-commons-3.3.0)
+
+### 📁 Other pull requests
+
+- v3.3.0 [\#974](https://github.com/adobe/asset-share-commons/pull/974) ([davidjgonzalez](https://github.com/davidjgonzalez))
+- Feature/metadata filter dropdown option [\#973](https://github.com/adobe/asset-share-commons/pull/973) ([davidjgonzalez](https://github.com/davidjgonzalez))
+- JSON file resolver [\#971](https://github.com/adobe/asset-share-commons/pull/971) ([davidjgonzalez](https://github.com/davidjgonzalez))
+- Release workaround [\#970](https://github.com/adobe/asset-share-commons/pull/970) ([davidjgonzalez](https://github.com/davidjgonzalez))
 - Bump tough-cookie and less in /ui.frontend.theme.dark [\#967](https://github.com/adobe/asset-share-commons/pull/967) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump tough-cookie and less in /ui.frontend.theme.light [\#966](https://github.com/adobe/asset-share-commons/pull/966) ([dependabot[bot]](https://github.com/apps/dependabot))
 
