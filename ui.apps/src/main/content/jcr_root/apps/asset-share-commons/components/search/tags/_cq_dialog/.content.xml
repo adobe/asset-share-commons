@@ -137,6 +137,8 @@
                                                             <fromLocal
                                                                     jcr:primaryType="nt:unstructured"
                                                                     sling:hideResource="{Boolean}true"/>
+                                                            <fromJson jcr:primaryType="nt:unstructured"
+                                                                      sling:hideResource="{Boolean}true"></fromJson>
                                                             <displayOrder
                                                                     granite:class="cmp-options--editor-type-v1"
                                                                     jcr:primaryType="nt:unstructured"

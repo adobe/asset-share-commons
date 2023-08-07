@@ -21,6 +21,8 @@ package com.adobe.aem.commons.assetshare.util;
 
 import com.adobe.aem.commons.assetshare.components.predicates.Predicate;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
+import com.day.cq.search.PredicateConverter;
+import com.day.cq.search.PredicateGroup;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -42,6 +44,10 @@ import java.util.stream.Collectors;
  */
 public final class PredicateUtil {
     private PredicateUtil() { }
+
+    public static boolean isParameterizedSearchRequest(SlingHttpServletRequest request) {
+        return Arrays.stream(new String[]{"_group.", "?p.", "&p."}).anyMatch(needle -> StringUtils.contains(request.getQueryString(), needle));
+    }
 
     /**
      *
@@ -183,5 +189,26 @@ public final class PredicateUtil {
                 .forEach(key -> foundPredicates.put(key, queryBuilderParams.get(key)));
 
         return foundPredicates;
+    }
+
+    /**
+     * Check if the QueryBuilder map entries that pertain to the parameterized predicate.
+     * @param predicates the query builder predicates to check
+     * @param predicateNames the predicate names to check for
+     * @return true if at least one entry contains an instruction for the parameterized predicate, else false.
+     */
+    public static boolean hasPredicate(Map<String, String> predicates, String[] predicateNames) {
+
+        for(final String predicateName : predicateNames) {
+            final Pattern p = Pattern.compile("^((\\d+_)?group\\.)?(\\d+_)?" + predicateName + "(\\.((\\d+_)?(.+)))?$");
+
+            for (final String key : predicates.keySet()) {
+                if (p.matcher(key).matches()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

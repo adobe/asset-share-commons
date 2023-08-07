@@ -1,3 +1,4 @@
+
 /*
  * Asset Share Commons
  *
@@ -20,6 +21,7 @@
 package com.adobe.aem.commons.assetshare.components.predicates.impl;
 
 import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
+import com.adobe.aem.commons.assetshare.components.predicates.DefaultValuesPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.PropertyPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.impl.options.SelectedOptionItem;
 import com.adobe.aem.commons.assetshare.components.predicates.impl.options.UnselectedOptionItem;
@@ -30,19 +32,20 @@ import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.export.json.ExporterConstants;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
-import com.google.gson.*;
-import com.google.gson.annotations.SerializedName;
+import com.day.cq.search.PredicateConverter;
+import com.day.cq.search.PredicateGroup;
+import com.day.cq.search.eval.JcrPropertyPredicateEvaluator;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
-import org.apache.sling.models.annotations.Default;
-import org.apache.sling.models.annotations.DefaultInjectionStrategy;
-import org.apache.sling.models.annotations.Exporter;
-import org.apache.sling.models.annotations.Model;
-import org.apache.sling.models.annotations.Required;
+import org.apache.sling.models.annotations.*;
 import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.SlingObject;
@@ -51,18 +54,19 @@ import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
-        adapters = {PropertyPredicate.class, ComponentExporter.class},
+        adapters = {PropertyPredicate.class, DefaultValuesPredicate.class, ComponentExporter.class},
         resourceType = {PropertyPredicateImpl.RESOURCE_TYPE},
         defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
 @Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
-public class PropertyPredicateImpl extends AbstractPredicate implements PropertyPredicate, Options {
+public class PropertyPredicateImpl extends AbstractPredicate implements PropertyPredicate, DefaultValuesPredicate, Options {
 
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/search/property";
     protected static final String PN_TYPE = "type";
@@ -78,6 +82,9 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
     @SlingObject
     @Required
     private SlingHttpServletResponse response;
+
+    @SlingObject
+    private Resource resource;
 
     @Self
     @Required
@@ -220,6 +227,33 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
 
         return valuesFromRequest;
     }
+
+    @Override
+    public PredicateGroup getPredicateGroup() {
+        final Map<String, String> params = new HashMap<>();
+
+        if (resource == null) {
+            return new PredicateGroup();
+        }
+
+        String prefix = getName() + ".";
+
+        int i = 0;
+        for (OptionItem item : getItems()) {
+            if (item.isSelected()) {
+                params.put(prefix + JcrPropertyPredicateEvaluator.PROPERTY, getProperty());
+                params.put(prefix + i + "_" + getValuesKey(), item.getValue());
+                params.put(prefix + JcrPropertyPredicateEvaluator.OPERATION,  getOperation());
+                if (hasAnd()) {
+                    params.put(prefix + JcrPropertyPredicateEvaluator.AND, String.valueOf(getAnd()));
+                }
+                i++;
+            }
+        }
+
+        return PredicateConverter.createPredicates(params);
+    }
+
 
     @Nonnull
     @Override

@@ -1,5 +1,6 @@
 package com.adobe.aem.commons.assetshare.util;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.models.factory.ModelFactory;
@@ -37,6 +38,15 @@ public final class ComponentModelVisitor<T> extends ResourceTypeVisitor {
         this.clazz = clazz;
     }
 
+    public ComponentModelVisitor(SlingHttpServletRequest request,
+                                 ModelFactory modelFactory,
+                                 Class<T> clazz) {
+        super(null);
+        this.request = request;
+        this.modelFactory = modelFactory;
+        this.clazz = clazz;
+    }
+
     /**
      * Note that getModels() may return a SUBSET of getResources(). If a resource matches the resource type check but cannot be turned into a model, the resources will be in getResources() but not in getModels().
      * @return a list of Models representing the visited resources (assuming they match the resourceTypes and can be made into the clazz model type.
@@ -47,11 +57,16 @@ public final class ComponentModelVisitor<T> extends ResourceTypeVisitor {
 
     @Override
     protected final void visit(Resource resource) {
-        for (final String resourceType : resourceTypes) {
-            if (handleResourceVisit(resource, resourceType)) {
-                handleModelVisit(resource);
-                break;
+        if (resourceTypes != null && !ArrayUtils.isEmpty(resourceTypes)) {
+            for (final String resourceType : resourceTypes) {
+                if (handleResourceVisit(resource, resourceType)) {
+                    handleModelVisit(resource);
+                    break;
+                }
             }
+        } else {
+            // No resource types specified, so visit all resources and try to turn them into the specified Sling Model.
+            handleModelVisit(resource);
         }
     }
 
