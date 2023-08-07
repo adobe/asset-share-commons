@@ -20,6 +20,7 @@
 package com.adobe.aem.commons.assetshare.components.predicates.impl;
 
 import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
+import com.adobe.aem.commons.assetshare.components.predicates.DefaultValuesPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.HiddenPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.PagePredicate;
 import com.adobe.aem.commons.assetshare.components.search.SearchConfig;
@@ -186,8 +187,15 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
             addTypeAsPredicate(root);
         }
 
+        // Default component values if its NOT a parameterized search request
+        if (!PredicateUtil.isParameterizedSearchRequest(request)) {
+            addDefaultValuesAsPredicateGroups(root);
+        }
+
         // Path Predicate
-        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.PATH)) {
+        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.PATH) &&
+                (!PredicateUtil.isParameterizedSearchRequest(request) && !PredicateUtil.hasPredicate(PredicateConverter.createMap(root), new String[] { PathPredicateEvaluator.PATH }))) {
+            // Only add the search config path predicate if there isn't one provided by the request OR if there isn't one provided by Default values.
             addPathAsPredicateGroup(root);
         }
 
@@ -264,6 +272,12 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
         }
     }
 
+    private void addDefaultValuesAsPredicateGroups(final PredicateGroup root) {
+        for (final DefaultValuesPredicate defaultValuesPredicate : getDefaultValuesPredicates(currentPage)) {
+            root.add(defaultValuesPredicate.getPredicateGroup());
+        }
+    }
+
     private void addPathAsPredicateGroup(final PredicateGroup root) {
         final PredicateGroup paths = new PredicateGroup();
         paths.setAllRequired(false);
@@ -284,7 +298,6 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
                 put(TypePredicateEvaluator.TYPE, DamConstants.NT_DAM_ASSET).
                 build()));
     }
-
 
     private void addOrderByAsPredicate(final PredicateGroup root) {
         Builder<String, String> orderPredicateBuilder = ImmutableMap.<String, String>builder().
@@ -313,7 +326,7 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
     }
 
     private Collection<HiddenPredicate> getHiddenPredicates(final Page page) {
-        final ComponentModelVisitor<HiddenPredicate> visitor = new ComponentModelVisitor<HiddenPredicate>(request,
+        final ComponentModelVisitor<HiddenPredicate> visitor = new ComponentModelVisitor<>(request,
                 modelFactory,
                 new String[]{HiddenPredicateImpl.RESOURCE_TYPE},
                 HiddenPredicate.class);
@@ -321,6 +334,16 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
         visitor.accept(page.getContentResource());
         return visitor.getModels();
     }
+
+    private Collection<DefaultValuesPredicate> getDefaultValuesPredicates(final Page page) {
+        final ComponentModelVisitor<DefaultValuesPredicate> visitor = new ComponentModelVisitor<>(request,
+                modelFactory,
+                DefaultValuesPredicate.class);
+
+        visitor.accept(page.getContentResource());
+        return visitor.getModels();
+    }
+
 
     /**
      * Deprecated Methods
