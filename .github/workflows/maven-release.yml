@@ -73,7 +73,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # Work around for https://github.com/heinrichreimer/action-github-changelog-generator/issues/21
           ref: asset-share-commons-${{ needs.Tag.outputs.version }}
 
       - name: Setup JDK
@@ -88,25 +87,11 @@ jobs:
 
       - name: Generate Release Changelog
         id: generate-release-changelog
-        uses: heinrichreimer/github-changelog-generator-action@v2.3
+        uses: mikepenz/release-changelog-builder-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          breakingLabel: '### 💥 Breaking'
-          enhancementLabel: '### 🚀 Enhancements'
-          bugsLabel: '### 🐛 Bug fixes'
-          securityLabel: '### 🛡️ Security'
-          issuesLabel: '### 📁 Other issues'
-          prLabel: '### 📁 Other pull requests'
-          addSections: '{"documentation":{"prefix":"### 📖 Documentation","labels":["documentation"]},"tests":{"prefix":"### ✅ Testing","labels":["tests"]}}'
-          issues: false
-          issuesWoLabels: false
-          pullRequests: true
-          prWoLabels: true
-          author: true
-          compareLink: true
-          onlyLastTag: true
-          stripHeaders: true
-          stripGeneratorNotice: true
+          configuration: ".github/.release-changelog-config.json"
+          toTag: asset-share-commons-${{ needs.Tag.outputs.version }}
 
       - name: Create Release
         id: create-release
@@ -126,7 +111,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: asset-share-commons-${{ needs.Tag.outputs.version }}
+          tag_name: asset-share-commons-${{ needs.Tag.o utputs.version }}
           files: |
             all/target/asset-share-commons.all-*.zip
             ui.content.sample/target/asset-share-commons.ui.content.sample-*.zip
