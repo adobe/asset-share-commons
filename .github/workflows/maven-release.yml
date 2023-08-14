@@ -112,7 +112,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: asset-share-commons-${{ needs.Tag.o utputs.version }}
+          tag_name: asset-share-commons-${{ needs.Tag.outputs.version }}
           files: |
             all/target/asset-share-commons.all-*.zip
             ui.content.sample/target/asset-share-commons.ui.content.sample-*.zip
