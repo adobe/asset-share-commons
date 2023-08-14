@@ -73,6 +73,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
+          fetch-depth: 0
           ref: asset-share-commons-${{ needs.Tag.outputs.version }}
 
       - name: Setup JDK
@@ -170,6 +171,7 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v3
         with:
+          fetch-depth: 0
           ref: main
 
       - name: "Build Changelog Fragment"
