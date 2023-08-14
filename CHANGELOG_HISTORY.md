@@ -1,5 +1,3 @@
-# 📑 Changelog
-
 ## [asset-share-commons-3.4.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.4.0)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.3.0...asset-share-commons-3.4.0)

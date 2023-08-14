@@ -73,7 +73,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # Work around for https://github.com/heinrichreimer/action-github-changelog-generator/issues/21
+          fetch-depth: 0
           ref: asset-share-commons-${{ needs.Tag.outputs.version }}
 
       - name: Setup JDK
@@ -88,25 +88,11 @@ jobs:
 
       - name: Generate Release Changelog
         id: generate-release-changelog
-        uses: heinrichreimer/github-changelog-generator-action@v2.3
+        uses: mikepenz/release-changelog-builder-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          breakingLabel: '### 💥 Breaking'
-          enhancementLabel: '### 🚀 Enhancements'
-          bugsLabel: '### 🐛 Bug fixes'
-          securityLabel: '### 🛡️ Security'
-          issuesLabel: '### 📁 Other issues'
-          prLabel: '### 📁 Other pull requests'
-          addSections: '{"documentation":{"prefix":"### 📖 Documentation","labels":["documentation"]},"tests":{"prefix":"### ✅ Testing","labels":["tests"]}}'
-          issues: false
-          issuesWoLabels: false
-          pullRequests: true
-          prWoLabels: true
-          author: true
-          compareLink: true
-          onlyLastTag: true
-          stripHeaders: true
-          stripGeneratorNotice: true
+          configuration: ".github/.release-changelog-config.json"
+          toTag: asset-share-commons-${{ needs.Tag.outputs.version }}
 
       - name: Create Release
         id: create-release
@@ -178,9 +164,38 @@ jobs:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
   Changelog:
+    runs-on: ubuntu-latest
     needs: Tag
     if: ${{ !inputs.dryRun }}
-    uses: ./.github/workflows/changelog.yaml
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: "Build Changelog Fragment"
+        id: build_changelog_fragment
+        uses: mikepenz/release-changelog-builder-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          configuration: ".github/.release-changelog-config.json"
+          toTag: asset-share-commons-${{ needs.Tag.outputs.version }}
+
+      - name: "Build Changelog"
+        run: |
+          echo -e "${{steps.build_changelog_fragment.outputs.changelog}}" | cat - CHANGELOG_HISTORY.md > tmp
+          mv tmp CHANGELOG_HISTORY.md
+          echo -e '# 📑 Changelog\n\n' | cat - CHANGELOG_HISTORY.md > CHANGELOG.md
+
+      - name: Commit Changelog
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email noreply@github.com
+          git add CHANGELOG.md
+          git add CHANGELOG_HISTORY.md
+          git commit -m 'Update Changelog.'
+          git push
 
   Sync_develop:
     needs: Changelog

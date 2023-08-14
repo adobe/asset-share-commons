@@ -1,0 +1,50 @@
+{
+  "categories": [
+    {
+      "title": "### 💥 Breaking",
+      "labels": ["breaking"]
+    },
+    {
+      "title": "### 🚀 Enhancements",
+      "labels": ["enhancement"]
+    },
+    {
+      "title": "### 🐛 Bug fixes",
+      "labels": ["bug"]
+    },
+    {
+      "title": "### 🛡️ Security",
+      "labels": ["security"]
+    },
+    {
+      "title": "### ✅ Testing",
+      "labels": ["tests"]
+    },
+    {
+      "title": "### 📖 Documentation",
+      "labels": ["documentation"]
+    },
+    {
+      "title": "### 📦 Uncategorized",
+      "labels": []
+    }
+  ],
+  "sort": {
+    "order": "DESC",
+    "on_property": "mergedAt"
+  },
+  "template": "## [${{TO_TAG}}](https://github.com/adobe/asset-share-commons/tree/${{TO_TAG}})\n\n[Full Changelog](https://github.com/adobe/asset-share-commons/compare/${{FROM_TAG}}...${{TO_TAG}})\n\n${{CHANGELOG}}",
+  "pr_template": "- ${{TITLE}} [#${{NUMBER}}](${{URL}}) (${{AUTHOR}})",
+  "tag_resolver": {
+    "method": "semver",
+    "filter": {
+      "pattern": "asset-share-commons-(.+)",
+      "flags": "gu"
+    },
+    "transformer": {
+      "pattern": "asset-share-commons-(.+)",
+      "flags": "gu",
+      "target": "$1"
+    }
+  }
+}
