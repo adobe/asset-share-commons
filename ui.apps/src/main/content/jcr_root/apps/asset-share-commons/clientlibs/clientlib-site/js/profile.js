@@ -29,7 +29,7 @@ AssetShare.Profile = (function ($, ns, profileStore) {
           PROFILE_EXT        = 'profile.json';
 
     // initally check to see if profile is ready based on local storage
-    if(profileStore.isReady()) {
+    if(profileStore.isReady() && profileStore.getUserProfile()) {
         announceProfileLoaded(profileStore.getUserProfile());
     }
 
@@ -82,6 +82,13 @@ AssetShare.Profile = (function ($, ns, profileStore) {
             announceProfileLoaded(currentUser);
 
         }).fail(function() {
+            if (currentUser) {
+                // update profile in local storage
+                profileStore.setUserProfile(currentUser);
+
+                //announce profile updated
+                announceProfileLoaded(currentUser);
+            }
             console.error('Could not retrieve a user home, extra profile attributes not set.');
         });
     }
