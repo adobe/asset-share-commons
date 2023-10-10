@@ -8,6 +8,8 @@ compatibility: AEM as a Cloud Service only
 
 ![Downloads modal component](./images/main.png)
 
+To display this Downloads modal, the downloads icon in the [Asset Share Commons Header component](https://opensource.adobe.com/asset-share-commons/pages/structure/header/) must be clicked. See [technical details)[#technical-details] for information how to trigger the display of this modal from a custom button or component.
+
 Displays the modal used manage the asynchronous downloads queue used by AEM as a Cloud Service to create and service download zips.
 
 * Each row displays a download request to AEM, with the following columns:
@@ -99,3 +101,7 @@ The text to display in the clear downloads button.
 
 * **Component**: `/apps/asset-share-commons/components/modals/downloads`
 * **Sling Model**: `com.adobe.aem.commons.assetshare.components.actions.downloads.impl.DownloadsImpl`
+
+To display this Downloads modal, the downloads icon in the [Asset Share Commons Header component](https://opensource.adobe.com/asset-share-commons/pages/structure/header/) must be clicked.
+
+If a custom header is used, you must provide you own button with attribute `data-asset-share-id="show-downloads"` on the HTML click-able element. An example of a button that opens this Download modal is in the [Asset Share Coommons Header component code](https://github.com/adobe/asset-share-commons/blob/develop/ui.apps/src/main/content/jcr_root/apps/asset-share-commons/components/structure/header/header.html#L54-L60).
