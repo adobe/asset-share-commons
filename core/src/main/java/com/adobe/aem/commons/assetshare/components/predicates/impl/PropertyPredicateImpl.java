@@ -73,7 +73,6 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
 
     protected String valueFromRequest = null;
     protected ValueMap valuesFromRequest = null;
-    protected static final String DAM_RESOURCE_TYPE = "dam:Asset";
 
     @Self
     @Required
@@ -135,7 +134,7 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
 
             List<OptionItem> optionItems = new ArrayList<>();
 
-            if (source.equals("json")) {
+            if (StringUtils.equalsIgnoreCase("json", source)) {
                 JsonElement jsonElement = jsonResolver.resolveJson(request, response, jsonSource);
                 if (jsonElement != null) {
                     optionItems = getOptionItemsFromJson(jsonElement);

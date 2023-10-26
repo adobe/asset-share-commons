@@ -15,7 +15,7 @@
     "start": "webpack-dev-server --open --config ./webpack.dev.js"
   },
   "devDependencies": {
-    "aem-clientlib-generator": "^1.4.3",
+    "aem-clientlib-generator": "^1.8.0",
     "autoprefixer": "^9.2.1",
     "browserslist": "^4.16.5",
     "clean-webpack-plugin": "^3.0.0",
