@@ -1,3 +1,29 @@
+## [asset-share-commons-3.4.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.4.2)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.4.0...asset-share-commons-3.4.2)
+
+### 🐛 Bug fixes
+
+- Fix possible NPE in PropertyPredicateImpl [#1007](https://github.com/adobe/asset-share-commons/pull/1007) (davidjgonzalez)
+- Fix user info rendering when profile.json isn't available [#1001](https://github.com/adobe/asset-share-commons/pull/1001) (Roman-Skripka)
+
+### 📦 Uncategorized
+
+- v3.4.2 release [#1023](https://github.com/adobe/asset-share-commons/pull/1023) (davidjgonzalez)
+- Bump lodash and aem-clientlib-generator in /ui.frontend.theme.light [#1020](https://github.com/adobe/asset-share-commons/pull/1020) (dependabot[bot])
+- Bump lodash and aem-clientlib-generator in /ui.frontend.theme.dark [#1021](https://github.com/adobe/asset-share-commons/pull/1021) (dependabot[bot])
+- Bump actions/checkout from 3 to 4 [#997](https://github.com/adobe/asset-share-commons/pull/997) (dependabot[bot])
+- Bump org.owasp:dependency-check-maven from 8.2.1 to 8.4.0 [#992](https://github.com/adobe/asset-share-commons/pull/992) (dependabot[bot])
+- Bump org.apache.maven.plugins:maven-assembly-plugin from 3.1.1 to 3.6.0 [#994](https://github.com/adobe/asset-share-commons/pull/994) (dependabot[bot])
+- Bump org.apache.maven.plugins:maven-dependency-plugin from 3.5.0 to 3.6.0 [#995](https://github.com/adobe/asset-share-commons/pull/995) (dependabot[bot])
+- Bump org.apache.maven.plugins:maven-deploy-plugin from 2.8.2 to 3.1.1 [#984](https://github.com/adobe/asset-share-commons/pull/984) (dependabot[bot])
+- Bump org.apache.jackrabbit:filevault-package-maven-plugin from 1.3.2 to 1.3.4 [#983](https://github.com/adobe/asset-share-commons/pull/983) (dependabot[bot])
+- Bump org.apache.maven.plugins:maven-surefire-plugin from 2.22.2 to 3.1.2 [#985](https://github.com/adobe/asset-share-commons/pull/985) (dependabot[bot])
+- Bump org.apache.maven.plugins:maven-source-plugin from 3.2.1 to 3.3.0 [#986](https://github.com/adobe/asset-share-commons/pull/986) (dependabot[bot])
+- Bump org.apache.maven.surefire:surefire-junit47 from 3.1.0 to 3.1.2 [#987](https://github.com/adobe/asset-share-commons/pull/987) (dependabot[bot])
+- Fix Release for Github API Limits [#988](https://github.com/adobe/asset-share-commons/pull/988) (bstopp)
+
+
 ## [asset-share-commons-3.4.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.4.0)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.3.0...asset-share-commons-3.4.0)
