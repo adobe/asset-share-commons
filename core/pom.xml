@@ -23,7 +23,7 @@
     <parent>
         <groupId>com.adobe.aem.commons</groupId>
         <artifactId>assetshare</artifactId>
-        <version>3.4.1-SNAPSHOT</version>
+        <version>4.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -132,6 +132,11 @@ com.adobe.aem.commons.assetshare.util.impl
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <systemPropertyVariables>
+                        <logback.configurationFile>${project.build.testOutputDirectory}/logback-test.xml</logback.configurationFile>
+                    </systemPropertyVariables>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

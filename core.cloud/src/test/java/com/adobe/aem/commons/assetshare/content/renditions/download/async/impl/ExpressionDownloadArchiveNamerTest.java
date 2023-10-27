@@ -72,9 +72,9 @@ public class ExpressionDownloadArchiveNamerTest {
         assertEquals("test/test (Test Web).png", namer.getArchiveFilePath(assetModel, assetRendition, downloadTarget));
     }
 
+
     @Test
-    public void getArchiveFilePath_withDownloadExtensionResolver() {
-        ctx.registerService(DownloadExtensionResolver.class, new TestDownloadExtensionResolver());
+    public void getArchiveFilePath_renditionNameWithParameters() {
         ctx.registerInjectActivateService(new ExpressionDownloadArchiveNamer());
 
         DownloadArchiveNamer namer = ctx.getService(DownloadArchiveNamer.class);
@@ -82,7 +82,21 @@ public class ExpressionDownloadArchiveNamerTest {
         AssetModel assetModel = modelFactory.getModelFromWrappedRequest(ctx.request(), ctx.resourceResolver().getResource("/content/dam/test.png"), AssetModel.class);
         AssetRendition assetRendition = new AssetRendition("/content/dam/test.png/jcr:renditions/cq5dam.web.1280.1280.png", 10l, "image/png");
 
-        assertEquals("test/test (Test Web).custom", namer.getArchiveFilePath(assetModel, assetRendition, downloadTarget));
+        assertEquals("test/test (Test Web).png", namer.getArchiveFilePath(assetModel, assetRendition, downloadTarget));
+    }
+
+    @Test
+    public void getArchiveFilePath_withDownloadExtensionResolver() {
+        when(downloadTarget.getParameter(DownloadTargetParameters.RENDITION_NAME.toString(), String.class)).thenReturn("Test web with parameters?param.pattern=.*web.*&width=100px");
+
+        ctx.registerInjectActivateService(new ExpressionDownloadArchiveNamer());
+
+        DownloadArchiveNamer namer = ctx.getService(DownloadArchiveNamer.class);
+
+        AssetModel assetModel = modelFactory.getModelFromWrappedRequest(ctx.request(), ctx.resourceResolver().getResource("/content/dam/test.png"), AssetModel.class);
+        AssetRendition assetRendition = new AssetRendition("/content/dam/test.png/jcr:renditions/cq5dam.web.1280.1280.png", 10l, "image/png");
+
+        assertEquals("test/test (Test web with parameters).png", namer.getArchiveFilePath(assetModel, assetRendition, downloadTarget));
     }
 
 

@@ -21,6 +21,7 @@ package com.adobe.aem.commons.assetshare.content.renditions;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.resource.ValueMap;
 import org.osgi.annotation.versioning.ProviderType;
 
 import java.util.Map;
@@ -36,7 +37,6 @@ public interface AssetRenditions {
     String VAR_ASSET_NAME_NO_EXTENSION = "${asset.name.no-extension}"; // -> BnW
     String VAR_ASSET_EXTENSION = "${asset.extension}"; // -> mp4
     String VAR_RENDITION_NAME = "${rendition.name}";
-
     String VAR_DM_NAME = "${dm.name}"; // metadata/dam:scene7Name () -> BnW-3
     String VAR_DM_ID = "${dm.id}"; // metadata/dam:scene7ID -> a|17904150
     String VAR_DM_FILE = "${dm.file}"; // metadata/dam:scene7File -> DynamicMediaNA/BnW-3
@@ -87,5 +87,17 @@ public interface AssetRenditions {
      * @param expression the expression to replace the variables in.
      * @return the expression with the variables replaced with values derived from the request.
      */
+    @Deprecated
     String evaluateExpression(final AssetModel assetModel, String renditionName, String expression);
+
+    /**
+     * Replaces the 'variables' in the expressions with the corresponding bits derived from the AssetModel.
+     *
+     * @param assetModel the AssetModel representing the asset whose rendition expression should be evaluated.
+     * @param renditionName the requested rendition name
+     * @param expression the expression to replace the variables in.
+     * @param parameters the value map to replace the variables with; the keys in the map are replaced w/ the corresponding string value.
+     * @return the expression with the variables replaced with values derived from the request.
+     */
+    String evaluateExpression(AssetModel assetModel, String renditionName, String expression, ValueMap parameters);
 }

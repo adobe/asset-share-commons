@@ -5,6 +5,8 @@ import com.adobe.aem.commons.assetshare.content.impl.AssetModelImpl;
 import com.adobe.aem.commons.assetshare.testing.MockAssetModels;
 import com.adobe.aem.commons.assetshare.util.ExpressionEvaluator;
 import io.wcm.testing.mock.aem.junit.AemContext;
+import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.api.wrappers.ValueMapDecorator;
 import org.apache.sling.models.factory.ModelFactory;
 import org.junit.Before;
 import org.junit.Rule;
@@ -12,6 +14,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 
@@ -47,5 +51,23 @@ public class ExpressionEvaluatorImplTest {
         final String actual = expressionEvaluator.evaluateProperties("https://foo.com/serve/${prop@metadataProperty}/${prop@metadataProperty}/${prop@../jcrContentProperty}/bad-property${prop@badProperty}/file.ext", assetModel);
 
         assertEquals(expected, actual);
+    }
+
+
+    @Test
+    public void evaluateParameters() {
+
+        ValueMap input = new ValueMapDecorator(new HashMap<>());
+        input.put("param.pattern", ".*web.*");
+        input.put("width", "100px");
+
+        final String expected = "/some/test/.*web.*-100px/?w=100px";
+        ExpressionEvaluator expressionEvaluator = ctx.getService(ExpressionEvaluator.class);
+
+        final String actual = expressionEvaluator.evaluateParameterExpression("/some/test/${param.pattern}-${width}/?w=${width}", input);
+
+        assertEquals(expected, actual);
+
+
     }
 }

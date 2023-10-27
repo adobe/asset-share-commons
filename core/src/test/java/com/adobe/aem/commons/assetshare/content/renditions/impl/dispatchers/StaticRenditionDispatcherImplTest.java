@@ -25,6 +25,8 @@ import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedProperti
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
+import com.adobe.aem.commons.assetshare.testing.MockAssetModels;
+import com.adobe.aem.commons.assetshare.util.impl.ExpressionEvaluatorImpl;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.commons.io.IOUtils;
@@ -32,6 +34,8 @@ import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.request.RequestDispatcherOptions;
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.commons.mime.MimeTypeService;
+import org.apache.sling.models.factory.ModelFactory;
 import org.apache.sling.testing.mock.sling.servlet.MockRequestDispatcherFactory;
 import org.apache.sling.testing.mock.sling.servlet.MockSlingHttpServletResponse;
 import org.junit.Before;
@@ -61,6 +65,12 @@ public class StaticRenditionDispatcherImplTest {
     @Mock
     private RequestDispatcher requestDispatcher;
 
+    @Mock
+    private ModelFactory modelFactory;
+
+    @Mock
+    private MimeTypeService mimeTypeService;
+
     @Before
     public void setUp() throws Exception {
         ctx.load().json(getClass().getResourceAsStream("StaticRenditionDispatcherImplTest.json"), "/content/dam");
@@ -75,9 +85,14 @@ public class StaticRenditionDispatcherImplTest {
 
         ctx.currentResource("/content/dam/test.png");
 
-        ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
+        ctx.registerService(MimeTypeService.class, mimeTypeService);
+        ctx.registerInjectActivateService(new ExpressionEvaluatorImpl());
+        ctx.registerInjectActivateService(new AssetRenditionsImpl());
         ctx.registerService(ComputedProperties.class, new ComputedPropertiesImpl());
         ctx.addModelsForClasses(AssetModelImpl.class);
+
+        MockAssetModels.mockModelFactory(ctx, modelFactory, "/content/dam/test.png");
+        ctx.registerService(ModelFactory.class, modelFactory);
 
         ctx.request().setRequestDispatcherFactory(new MockRequestDispatcherFactory() {
             @Override

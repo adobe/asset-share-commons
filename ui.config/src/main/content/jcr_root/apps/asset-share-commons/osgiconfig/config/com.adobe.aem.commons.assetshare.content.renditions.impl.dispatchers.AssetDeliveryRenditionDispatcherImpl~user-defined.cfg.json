@@ -1,0 +1,10 @@
+{
+  "service.ranking:Integer": -9001,
+  "label": "Parameterized Asset Delivery (User Defined) - Cloud",
+  "name": "asset-share-commons-asset-delivery-user-defined_cloud",
+  "rendition.mappings": [
+    "param-asset-delivery=webp&preferwebp=true&width=${param.width}&quality=${param.quality}"
+  ],
+  "hidden": true,
+  "redirect": 302
+}

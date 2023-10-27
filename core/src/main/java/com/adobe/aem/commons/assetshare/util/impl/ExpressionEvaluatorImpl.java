@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRendition;
 import com.adobe.aem.commons.assetshare.util.ExpressionEvaluator;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.commons.mime.MimeTypeService;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -53,6 +54,7 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
     @Reference
     private MimeTypeService mimeTypeService;
 
+    @Override
     public String evaluateAssetsRenditionsExpressions(String expression, Collection<AssetModel> assetModels, Collection<String> renditionNames) {
         expression = StringUtils.replace(expression, VAR_ASSET_COUNT, String.valueOf(assetModels.size()));
         expression = StringUtils.replace(expression, VAR_RENDITION_COUNT, String.valueOf(renditionNames.size()));
@@ -61,8 +63,8 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
         return expression;
     }
 
+    @Override
     public String evaluateDateTimeExpressions(String expression, ZonedDateTime zonedDateTime) {
-
         expression = StringUtils.replace(expression, VAR_DATE_YEAR, zonedDateTime.format(year));
         expression = StringUtils.replace(expression, VAR_DATE_MONTH, zonedDateTime.format(month));
         expression = StringUtils.replace(expression, VAR_DATE_MONTH_NAME, zonedDateTime.format(monthName));
@@ -76,7 +78,7 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
         return expression;
     }
 
-
+    @Override
     public String evaluateDynamicMediaExpression(String expression, AssetModel assetModel) {
         // Dynamic Media properties
         final String dmName = assetModel.getProperties().get(PN_S7_NAME, String.class);
@@ -104,6 +106,7 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
         return expression;
     }
 
+    @Override
     public String evaluateAssetExpression(String expression, AssetModel assetModel) {
         final String assetPath = assetModel.getPath();
         final String assetUrl = assetModel.getUrl();
@@ -121,12 +124,29 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
         return expression;
     }
 
+    @Override
+    public String evaluateParameterExpression(String expression, ValueMap parameters) {
+        if (parameters != null) {
+            for (String key : parameters.keySet()) {
+                String value = parameters.get(key, String.class);
+                if (StringUtils.isNotBlank(value)) {
+                    expression = StringUtils.replace(expression, "${" + key + "}", value);
+                }
+            }
+        }
+
+        return expression;
+    }
+
+
+    @Override
     public String evaluateRenditionExpression(String expression, String renditionName) {
         expression = StringUtils.replace(expression, VAR_RENDITION_NAME, renditionName);
 
         return expression;
     }
 
+    @Override
     public String evaluateRenditionExpression(String expression, AssetRendition assetRendition) {
         String mimeType = assetRendition.getMimeType();
         String renditionExtension = mimeTypeService.getExtension(mimeType);
@@ -136,6 +156,7 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator {
         return expression;
     }
 
+    @Override
     public String evaluateProperties(String expression, AssetModel assetModel) {
         final Pattern p = Pattern.compile("\\$\\{prop\\@([^}]+)\\}");
         final Matcher m = p.matcher(expression);

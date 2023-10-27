@@ -152,7 +152,7 @@ public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
     @Override
     public AssetRendition getRendition(AssetModel assetModel, AssetRenditionParameters parameters) {
         final String expression = mappings.get(parameters.getRenditionName());
-        String renditionRedirect = assetRenditions.evaluateExpression(assetModel, parameters.getRenditionName(), expression);
+        String renditionRedirect = assetRenditions.evaluateExpression(assetModel, parameters.getRenditionName(), expression, parameters.getParameters());
 
         if (StringUtils.isNotBlank(renditionRedirect)) {
             try {

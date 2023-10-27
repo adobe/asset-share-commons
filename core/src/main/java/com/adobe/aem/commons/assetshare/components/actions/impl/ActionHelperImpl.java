@@ -73,7 +73,7 @@ public final class ActionHelperImpl implements ActionHelper {
 
             if (requestParameters != null) {
                 return Arrays.stream(requestParameters).map(RequestParameter::getString)
-                        .filter(renditionName -> allowedValues.length == 0 || ArrayUtils.contains(allowedValues, renditionName))
+                        .filter(renditionName -> allowedValues.length == 0 || ArrayUtils.contains(allowedValues,  StringUtils.substringBefore(renditionName, "?")))
                         .distinct()
                         .collect(Collectors.toList());
             }

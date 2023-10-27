@@ -27,7 +27,6 @@ import com.adobe.aem.commons.assetshare.util.ServletHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
-import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
 import org.apache.sling.models.factory.ModelFactory;
 import org.osgi.service.component.annotations.Activate;
@@ -80,7 +79,6 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
 
     @Reference
     private transient ModelFactory modelFactory;
-
 
     @Reference
     private transient ServletHelper servletHelper;
@@ -149,7 +147,7 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
     }
 
     protected boolean acceptsAssetRenditionParameters(final AssetRenditionParameters assetRenditionParameters) {
-        return !assetRenditionParameters.getParameters().stream().
+        return allowedParameters.isEmpty() || !assetRenditionParameters.getParameters().keySet().stream().
                 parallel().
                 anyMatch(assetRenditionParameter -> !allowedParameters.contains(assetRenditionParameter));
     }
@@ -164,8 +162,8 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
 
     @Activate
     protected void activate(Cfg cfg) {
-        if (cfg.allowed_suffix_parameters() != null) {
-            this.allowedParameters = new HashSet<>(Arrays.asList(cfg.allowed_suffix_parameters()));
+        if (cfg.allowed_parameters() != null && cfg.allowed_parameters().length > 0) {
+            this.allowedParameters = new HashSet<>(Arrays.asList(cfg.allowed_parameters()));
         } else {
             this.allowedParameters = Collections.EMPTY_SET;
         }
@@ -177,6 +175,6 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
                 name = "Allowed suffix parameters",
                 description = "Only accept requests to this servlet that contain any sub-set of these parameters. Any request that includes suffix parameters that are NOT in this list will be rejected by the servlet. Leave blank to allow any and all suffix parameters. Suffix parameters are any suffix segments between (exclusive) the first and last suffix segments."
         )
-        String[] allowed_suffix_parameters() default {"download"};
+        String[] allowed_parameters() default {};
     }
 }

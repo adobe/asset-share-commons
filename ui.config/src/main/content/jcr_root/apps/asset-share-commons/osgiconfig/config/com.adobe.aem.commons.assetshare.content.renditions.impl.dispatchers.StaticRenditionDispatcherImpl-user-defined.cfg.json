@@ -1,0 +1,12 @@
+{
+  "service.ranking:Integer": -10001,
+  "label": "Static Image Renditions User Defined",
+  "name": "asset-share-commons-static-image-renditions",
+  "types": [
+    "image"
+  ],
+  "rendition.mappings": [
+    "user-defined=${param.pattern}"
+  ],
+  "hidden": true
+}

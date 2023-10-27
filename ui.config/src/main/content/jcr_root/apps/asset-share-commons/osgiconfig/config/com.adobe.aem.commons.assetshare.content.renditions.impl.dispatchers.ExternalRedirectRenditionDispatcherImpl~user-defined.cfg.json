@@ -1,0 +1,8 @@
+{
+  "service.ranking:Integer": -5001,
+  "label": "User Defined",
+  "name": "asset-share-commons-external-user-defined",
+  "rendition.mappings": [
+    "grayscale=${dm.domain}/is/image/${dm.file}?$grayscale$&amp;extension=${param.extension}"
+  ]
+}
