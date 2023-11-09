@@ -19,8 +19,12 @@
 @import (once) "/apps/asset-share-commons/clientlibs/clientlib-site/less/variables.less";
 
 .cmp-search-results {
+
   .cmp-cards {
-  
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(237px, 1fr));
+    grid-gap: 10px;
+
     &:after {
       content: none !important;
     }
