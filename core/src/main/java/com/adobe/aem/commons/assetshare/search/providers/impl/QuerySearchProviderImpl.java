@@ -149,7 +149,7 @@ public class QuerySearchProviderImpl implements SearchProvider {
     /**
      * Generates the QueryBuilder query params from the Page Predicate settings and the request attributes.
      *
-     * @param request
+     * @param request the request object.
      * @return the QueryBuilder parameter map.
      */
     private Map<String, String> getParams(final SlingHttpServletRequest request) {
@@ -168,6 +168,20 @@ public class QuerySearchProviderImpl implements SearchProvider {
 
         PagePredicate.ParamTypes[] excludeParamTypes = new PagePredicate.ParamTypes[]{};
 
+
+        // Paths are special case where user provided params must be under atleast 1 configured allowed path (assuming they are configured)
+        if (isPathsProvidedByRequestParams(pagePredicate, params)) {
+            String[] allowedPathPrefixes = pagePredicate.getPaths().stream().map(path -> StringUtils.removeEnd(path, "/") + "/").toArray(String[]::new);
+            Map<String, String> tmpParams = params;
+
+            PredicateUtil.findPredicate(params, PathPredicateEvaluator.PATH, PathPredicateEvaluator.PATH).entrySet().stream()
+                    .filter(entry -> !StringUtils.startsWithAny((String) entry.getValue(), allowedPathPrefixes))
+                    .forEach(entry -> tmpParams.remove(entry.getKey()));
+
+            params = tmpParams;
+        }
+
+        // Check again after checking the provided paths
         if (isPathsProvidedByRequestParams(pagePredicate, params)) {
             excludeParamTypes = new PagePredicate.ParamTypes[]{PagePredicate.ParamTypes.PATH};
         }

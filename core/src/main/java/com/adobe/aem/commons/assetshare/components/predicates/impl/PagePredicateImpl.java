@@ -193,9 +193,8 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
         }
 
         // Path Predicate
-        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.PATH) &&
-                (!PredicateUtil.isParameterizedSearchRequest(request) && !PredicateUtil.hasPredicate(PredicateConverter.createMap(root), new String[] { PathPredicateEvaluator.PATH }))) {
-            // Only add the search config path predicate if there isn't one provided by the request OR if there isn't one provided by Default values.
+        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.PATH)) {
+            // The search result component paths are only added when the search is NOT safely parameterized with user defined paths.
             addPathAsPredicateGroup(root);
         }
 
@@ -273,9 +272,22 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
     }
 
     private void addDefaultValuesAsPredicateGroups(final PredicateGroup root) {
+        // Capture any existing values, however these should be null
+        Object predicateGroupTracker = request.getAttribute(AbstractPredicate.REQUEST_ATTR_PREDICATE_GROUP_TRACKER);
+        Object legacyPredicateGroupTracker = request.getAttribute(AbstractPredicate.REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER);
+
+        // Reset group tracking, as any instantiation of a predicate will increment the group
+        request.setAttribute(AbstractPredicate.REQUEST_ATTR_PREDICATE_GROUP_TRACKER, null);
+        request.setAttribute(AbstractPredicate.REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER, null);
+
         for (final DefaultValuesPredicate defaultValuesPredicate : getDefaultValuesPredicates(currentPage)) {
             root.add(defaultValuesPredicate.getPredicateGroup());
         }
+
+        // Set back any existing values, though these should be null
+        request.setAttribute(AbstractPredicate.REQUEST_ATTR_PREDICATE_GROUP_TRACKER, predicateGroupTracker);
+        request.setAttribute(AbstractPredicate.REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER, legacyPredicateGroupTracker);
+
     }
 
     private void addPathAsPredicateGroup(final PredicateGroup root) {

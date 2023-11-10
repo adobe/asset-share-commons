@@ -41,8 +41,8 @@ import java.util.Comparator;
 public abstract class AbstractPredicate implements Predicate {
     private static final Logger log = LoggerFactory.getLogger(AbstractPredicate.class);
 
-    private static final String REQUEST_ATTR_PREDICATE_GROUP_TRACKER = "asset-share-commons__predicate-group";
-    private static final String REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER = "asset-share-commons__legacy_predicate-group";
+    public static final String REQUEST_ATTR_PREDICATE_GROUP_TRACKER = "asset-share-commons__predicate-group";
+    public static final String REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER = "asset-share-commons__legacy_predicate-group";
 
     private static final String REQUEST_ATTR_FORM_ID_TRACKER = "asset-share-commons__form-id";
     private static final String PN_GENERATE_PREDICATE_GROUP_ID = "generatePredicateGroupId";
