@@ -1,3 +1,17 @@
+## [asset-share-commons-3.5.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.5.0)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.4.2...asset-share-commons-3.5.0)
+
+### 📦 Uncategorized
+
+- v3.5.0 release [#1039](https://github.com/adobe/asset-share-commons/pull/1039) (davidjgonzalez)
+- Fixed version from 3.50.0 to 3.5.0 [#1040](https://github.com/adobe/asset-share-commons/pull/1040) (davidjgonzalez)
+- Bump browserify-sign from 4.0.4 to 4.2.2 in /ui.frontend.theme.light [#1027](https://github.com/adobe/asset-share-commons/pull/1027) (dependabot[bot])
+- Bump browserify-sign from 4.0.4 to 4.2.2 in /ui.frontend.theme.dark [#1028](https://github.com/adobe/asset-share-commons/pull/1028) (dependabot[bot])
+- Bump com.github.eirslett:frontend-maven-plugin from 1.12.1 to 1.14.2 [#1032](https://github.com/adobe/asset-share-commons/pull/1032) (dependabot[bot])
+- 1037 -  issue with search predicates being tracked and used [#1038](https://github.com/adobe/asset-share-commons/pull/1038) (davidjgonzalez)
+
+
 ## [asset-share-commons-3.4.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.4.2)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.4.0...asset-share-commons-3.4.2)
