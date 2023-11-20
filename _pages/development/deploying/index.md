@@ -12,7 +12,7 @@ Ensure your AEM Maven project follows the latest [Maven project structure best p
 
 ## Including Asset Share Commons application
 
-Include Asset Share Commons 2.x's `all` project as an `embedded` in your AEM Maven project's `all/pom.xml`.
+Include Asset Share Commons 2.x's/3.x's `all` project as an `embedded` in your AEM Maven project's `all/pom.xml`.
 
 1. Add the Asset Share Commons `all` project as `<dependency>`.
 
@@ -23,6 +23,8 @@ Include Asset Share Commons 2.x's `all` project as an `embedded` in your AEM Mav
             <groupId>com.adobe.aem.commons</groupId>
             <artifactId>assetshare.all</artifactId>
             <version>2.x.x</version>
+            <!-- Add the cloud classifier when deploying to AEM as a Cloud Service; omit if deploying to AEM 6.5 -->
+            <classifier>cloud</classifier>  
             <type>zip</type>
         </dependency>
         ...
