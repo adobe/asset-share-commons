@@ -3,14 +3,14 @@ layout: doc-page
 title: Set Up
 ---
 
-## Asset Share Commons 2.x
+## Asset Share Commons {{ site.data.asc.version }} (2.0.0+)
 
 * [AEM as a Cloud Service](https://experienceleague.adobe.com/docs/experience-manager-learn/cloud-service/overview.html) or [AEM 6.5 SP7](https://helpx.adobe.com/experience-manager/6-5/release-notes.html) or greater
 * [AEM WCM Core Components 2.14.0](https://github.com/adobe/aem-core-wcm-components/releases) or greater
 
 ### Dispatcher 
 
-In order to user Asset Share Commons 2.x, you must create your own AEM Dispatcher project, and copy the rules ([filters](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/blob/develop/dispatcher/src/conf.dispatcher.d/filters/filters.any) and [cache-able HTTP request headers](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/blob/develop/dispatcher/src/conf.dispatcher.d/available_farms/asset-share-commons.farm#L92-L95)) defined in the project's [dispatcher sub-project](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/tree/master/dispatcher).
+In order to user Asset Share Commons {{ site.data.asc.version }} (or 2.0.0+), you must create your own AEM Dispatcher project, and copy the rules ([filters](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/blob/develop/dispatcher/src/conf.dispatcher.d/filters/filters.any) and [cache-able HTTP request headers](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/blob/develop/dispatcher/src/conf.dispatcher.d/available_farms/asset-share-commons.farm#L92-L95)) defined in the project's [dispatcher sub-project](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/tree/master/dispatcher).
 
 ### Other setup considerations
 
@@ -22,7 +22,7 @@ In order to user Asset Share Commons 2.x, you must create your own AEM Dispatche
   * Modals > [Download](../../actions/download)
   * Modals > [Downloads](../../actions/downloads) (lists the async downloads)
   * Search Page > Page Properties > Asset Share > [Messages Configuration > Archive Added To Downloads](../../structure/messages)
-* ContextHub is no longer used for managing the Asset Share Commons cart. ContentHub still works and can be loaded if a valid ContextHub configuration path is provided in the usual Page Properties (`Personalization > ContextHub Configurations > ContextHub Path`).
+* ContextHub is __no longer used__ for managing the Asset Share Commons cart. ContentHub still works and can be loaded if a valid ContextHub configuration path is provided in the usual Page Properties (`Personalization > ContextHub Configurations > ContextHub Path`).
 
 ### How to use
 
@@ -64,21 +64,26 @@ Example `dispatcher.any` rules
 ```
 /filter {
   ...
-   # ContextHub
-   /0201 { /type "allow" /method "GET" /path "/home/users/*" /extension '(json|png)' }
+  # Allow components JSON model
+  /0100 { /type "allow" /extension "json" /selectors "model" /path "/content/*" }
 
-   # Current user
-   # No longer needed to be added explicitly as this should be in the OOTB allow rules
-   # /0202 { /type "allow" /url "/libs/granite/security/currentuser.json" }
+  # Allow manifest.webmanifest files located in the content
+  /0101 { /type "allow" /extension "webmanifest" /path "/content/*/manifest" }
 
-   # ContextHub page data
-   /0202 { /type "allow" /method "GET" /path "/content/*" /selectors "pagedata" /extension "json" }
+  # User profile retrieval (HTTP GET /home/users/ira.profile.json)
+  /0201 { /type "allow" /method "GET" /path "/home/users/*" /extension '(json|png)' }
 
-   # Asset Renditions requests
-   /0203 { /type "allow" /method "GET" /path "/content/dam/*" /extension "renditions" }
+  # ContextHub page data
+  /0202 { /type "allow" /method "GET" /path "/content/*" /selectors "pagedata" /extension "json" }
 
-   # Asset Rendition downloads
-   /0204 { /type "allow" /method "POST" /path "/content/*" /extension "zip" }
+  # Async Download Framework
+  /0300 { /type "allow" /method "GET" /path "/content/dam" /selectors "downloadbinaries" /extension "json" }
+
+  # Asset Rendition request
+  /0400 { /type "allow" /method "GET" /path "/content/dam/*" /extension "renditions" }
+
+  # Asset Rendition downloads
+  /0401 { /type "allow" /method "POST" /path "/content/*" /selectors "download-asset-renditions" /extension "zip" }
 }
 
 /headers {
@@ -90,7 +95,7 @@ Example `dispatcher.any` rules
 }
 ```
 
-### Production Setup
+### Production setup on AEM 6.5
 
 Best practices of deploying an AEM Sites project in production should be followed when deploying Asset Share Commons. This includes:
 

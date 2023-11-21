@@ -1,9 +1,9 @@
 ---
 layout: doc-page
-title: Upgrade to Asset Share Commons 2.0
+title: Upgrading to Asset Share Commons
 ---
 
-This is an abridged guide to upgrading from Asset Share Commons 1.x to Asset Share Commons 2.0.
+This is an abridged guide to upgrading from Asset Share Commons 1.x to Asset Share Commons 2.0.0+ (please upgrade to latest release, {{ site.data.asc.version }}).
 
 Details of this can be found through the rest of the Getting Started section.
 
@@ -14,8 +14,9 @@ The following should be updated at a project level by the development team.
 1. Ensure you are on __AEM as a Cloud Service__ or __AEM 6.5 SP7+__.
 1. Ensure your custom project that includes Asset Share Commons is updated to the latest [AEM project structure](https://experienceleague.adobe.com/docs/experience-manager-cloud-service/implementing/developing/aem-project-content-package-structure.html).
     * If you were deploying Asset Share Commons source code directly, you'll want to re-think that now, and move to a custom, wrapping project.
-1. [Embed Asset Share Commons 2+ `all` artifact](../../development/deploying) in your AEM Maven Project's `all` project.
-1. [Add a maven dependency on Asset Share Commons 2+ `core` artifact](../../development/deploying) in your AEM Maven Project's `core`  project.
+1. [Embed Asset Share Commons {{ site.data.asc.version }} `all` artifact](../../development/deploying) in your AEM Maven Project's `all` project.
+    * Make sure when deploying to __AEM as a Cloud Service__ make sure the `<classifier>cloud</classifier>` is used in the Maven dependency.
+1. [Add a maven dependency on Asset Share Commons {{ site.data.asc.version }} `core` artifact](../../development/deploying) in your AEM Maven Project's `core`  project.
 1. Define [Asset Rendition](../../development/asset-renditions) OSGi configurations for the asset renditions you use in your your AEM Maven Project's `ui.config` project's `config` folder.
 1. Update your AEM Maven Project's `dispatcher` project with the required [filters](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/blob/develop/dispatcher/src/conf.dispatcher.d/filters/filters.any) and [cache-able HTTP request headers](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/blob/develop/dispatcher/src/conf.dispatcher.d/available_farms/asset-share-commons.farm#L92-L95).
 

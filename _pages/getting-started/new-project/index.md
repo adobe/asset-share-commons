@@ -13,7 +13,7 @@ For example:
 mvn -B archetype:generate \
  -D archetypeGroupId=com.adobe.aem \
  -D archetypeArtifactId=aem-project-archetype \
- -D archetypeVersion=37 \
+ -D archetypeVersion=39 \
  -D appTitle="My Asset Share" \
  -D appId="my-asset-share" \
  -D groupId="com.myassetshare"
@@ -32,7 +32,7 @@ In the `<dependencies>` section of your project's **parent** pom.xml (root of th
    <dependency>
     <groupId>com.adobe.aem.commons</groupId>
     <artifactId>assetshare.all</artifactId>
-    <version>2.x.x</version>
+    <version>{{ site.data.asc.version }}</version>
     <classifier>cloud</classifier>
     <type>zip</type>
   </dependency>
@@ -41,13 +41,13 @@ In the `<dependencies>` section of your project's **parent** pom.xml (root of th
   <dependency>
     <groupId>com.adobe.aem.commons</groupId>
     <artifactId>assetshare.core</artifactId>
-    <version>2.x.x</version>
+    <version>{{ site.data.asc.version }}</version>
     <type>jar</type>
   </dependency>
   <dependency>
     <groupId>com.adobe.aem.commons</groupId>
     <artifactId>assetshare.core.cloud</artifactId>    
-    <version>2.x.x</version>
+    <version>{{ site.data.asc.version }}</version>
     <type>jar</type>
   </dependency>
   ...
@@ -63,7 +63,7 @@ In the `<dependencies>` section of your project's **parent** pom.xml (root of th
    <dependency>
     <groupId>com.adobe.aem.commons</groupId>
     <artifactId>assetshare.all</artifactId>
-    <version>2.x.x</version>
+    <version>{{ site.data.asc.version }}</version>
     <type>zip</type>
   </dependency>
 
@@ -71,7 +71,7 @@ In the `<dependencies>` section of your project's **parent** pom.xml (root of th
   <dependency>
     <groupId>com.adobe.aem.commons</groupId>
     <artifactId>assetshare.core</artifactId>
-    <version>2.x.x</version>
+    <version>{{ site.data.asc.version }}</version>
     <type>jar</type>
   </dependency>
   ...
@@ -92,7 +92,7 @@ Include Asset Share Commons 2.x's `all` project as an `embedded` in your AEM Mav
         <dependency>
             <groupId>com.adobe.aem.commons</groupId>
             <artifactId>assetshare.all</artifactId>
-	    <classifier>cloud</classifier>
+	        <classifier>cloud</classifier> <!-- MUST ADD FOR AEM AS A CLOUD SERVICE  -->
             <type>zip</type>
         </dependency>
         ...
@@ -114,7 +114,7 @@ Include Asset Share Commons 2.x's `all` project as an `embedded` in your AEM Mav
                     <embedded>
                         <groupId>com.adobe.aem.commons</groupId>
                         <artifactId>assetshare.all</artifactId>
-			<classifier>cloud</classifier>
+			            <classifier>cloud</classifier> <!-- MUST ADD FOR AEM AS A CLOUD SERVICE  -->
                         <type>zip</type>
                         <target>/apps/<my-app>-packages/container/install</target>
                     </embedded>
@@ -131,6 +131,7 @@ Include Asset Share Commons 2.x's `all` project as an `embedded` in your AEM Mav
         <dependency>
             <groupId>com.adobe.aem.commons</groupId>
             <artifactId>assetshare.all</artifactId>
+            <!-- OMIT CLASSIFIER FOR AEM 6.5  -->
             <type>zip</type>
         </dependency>
         ...
