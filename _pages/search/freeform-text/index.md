@@ -39,7 +39,7 @@ The search operation to perform between the Metadata Property and Option(s).
   * Equals
     * Metadata property exactly matches at least 1 delimited input value (see Delimiters below)
   * Starts with
-    * Metadata property starts with at least 1 delimited input value (see Delimiters below)
+    * Metadata property starts with at least 1 delimited input value (see Delimiters below). [This is not a "true" starts with, rather it matches any term or word in the configured property, even when the match is not the first term or word in the property value](https://github.com/adobe/asset-share-commons/issues/1049). 
   * Contains
     * Metadata property contains at least 1 delimited input value (see Delimiters below)
     * *Note that contains maybe effect search performance. Please discuss common use of "contains" with your application support team."*
