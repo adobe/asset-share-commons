@@ -373,6 +373,25 @@
                                         sling:resourceType="granite/ui/components/coral/foundation/text"
                                         text="For direct downloads to function, at least one rendition option should be marked as Selected in the Download Options tab." />
 
+                                    <avoid-zip-downloads
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/switch"
+                                            fieldLabel="Avoid Zip Downloads"
+                                            fieldDescription="When enabled, and only one asset and one rendition are selected, the file will not download as a zip."
+                                            onText="Avoid Zip Downloads"
+                                            offText="Always Zip Downloads"
+                                            name="./avoidZipDownloads"
+                                            required="{Boolean}false"
+                                            value="true"
+                                            uncheckedValue=""
+                                            deleteHint="{Boolean}true"/>
+
+                                    <avoid-zip-downloads-note
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/text"
+                                            text="Not zipping download requires only a single asset and a single rendition to be selected for the download." />
+
+
                                     <automatic-download
                                         jcr:primaryType="nt:unstructured"
                                         sling:resourceType="granite/ui/components/coral/foundation/form/switch"
@@ -391,7 +410,10 @@
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/text"
                                             text="Enabling automatic downloads will attempt to automatically initiate downloads automatically rather than adding them to the Downloads queue. If a download requires more time than allocated by automatic downloads to create the download zip the download will be added to the Downloads queue." />
-                                    
+
+
+
+
                                 </items>
                             </column>
                         </items>
