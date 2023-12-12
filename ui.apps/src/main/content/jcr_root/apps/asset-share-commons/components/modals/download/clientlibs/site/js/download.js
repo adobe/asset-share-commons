@@ -25,7 +25,8 @@ jQuery((function(ns, semanticModal, licenseModal, downloadService) {
             DOWNLOAD_DIRECT = "asset-share-download-direct",
             DOWNLOAD_MODAL_ID = "download-modal",
             DOWNLOAD_BUTTON_ID = "download-asset",
-            DOWNLOAD_MODE_ASYNC = "data-asset-share-mode-async";
+            DOWNLOAD_MODE_ASYNC = "data-asset-share-mode-async",
+            DOWNLOAD_AVOID_ZIP = "data-asset-share-download-avoid-zip"
 
         function getId() {
             return DOWNLOAD_MODAL_ID;
@@ -107,13 +108,31 @@ jQuery((function(ns, semanticModal, licenseModal, downloadService) {
             $("body").on("click", ns.Elements.selector([DOWNLOAD_BUTTON_ID]), download);
 
             // intercept async download submission
-            $("body").on("submit", "[" + DOWNLOAD_MODE_ASYNC + "=\"true\"]", function (e) {
-                var formEl = $(this);
+            $("body").on("submit", "[" + DOWNLOAD_AVOID_ZIP + "=\"true\"]", (e) => {
+                e.preventDefault(); // Prevent the default form submission
+                e.stopPropagation(); // Stop the event from bubbling up the DOM tree
+                const formEl = e.target;
 
-                e.preventDefault();
-                e.stopPropagation();
+                const renditionNames = [...formEl.querySelectorAll('input[type="checkbox"][name="renditionName"]:checked')].map((checkbox) => checkbox.value);
+                const assetPaths = [...formEl.querySelectorAll('input[name="path"]')].map((input) => input.value);
 
-                if (formEl.form('is valid')) {
+                if (renditionNames.length === 1 && assetPaths.length === 1) {
+                    // Set the form's method and action
+                    formEl.method = 'GET';
+                    formEl.action = assetPaths[0] + '.renditions/' + renditionNames[0] + '/download/asset.rendition';
+                    formEl.submit();
+                }
+            });
+
+            // intercept async download submission
+            // This must be registered after the above handler to ensure this is called second (after the form method is changed)
+            $("body").on("submit", "[" + DOWNLOAD_MODE_ASYNC + "=\"true\"]", (e) => {
+                var formEl = $(e.target);
+
+                // GET indicates this is a single asset download and not a zip, so make sure this is a POST
+                if (formEl.form('is valid') && e.target.method === 'post') {
+                    e.preventDefault();
+                    e.stopPropagation();
                     downloadService.initializeDownload(formEl);
                 }
             });
