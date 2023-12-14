@@ -68,8 +68,12 @@ AssetShare.FormData = function (formEl) {
         form = [];
     }
 
-    function getAll() {
-        return form;
+    function getAll(key) {
+        if (!key) {
+            return form;
+        } else {
+            return form.filter(function (element) { return element.name === key; }).map((function (element) { return element.value; }));
+        }
     }
 
     function get(key) {
