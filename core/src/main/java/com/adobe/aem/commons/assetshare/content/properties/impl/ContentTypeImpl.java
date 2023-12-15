@@ -22,14 +22,16 @@ package com.adobe.aem.commons.assetshare.content.properties.impl;
 import com.adobe.aem.commons.assetshare.content.properties.AbstractComputedProperty;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
 import com.day.cq.dam.api.Asset;
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.StringUtils;
 import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
+
+import java.util.Map;
 
 import static com.adobe.aem.commons.assetshare.content.properties.ComputedProperty.DEFAULT_ASC_COMPUTED_PROPERTY_SERVICE_RANKING;
 
@@ -43,12 +45,7 @@ import static com.adobe.aem.commons.assetshare.content.properties.ComputedProper
 public class ContentTypeImpl extends AbstractComputedProperty<String> {
     public static final String LABEL = "Content Type";
     public static final String NAME = "content-type";
-    public static final String UNKNOWN_LABEL = "";
-
     private Cfg cfg;
-
-    @Reference(target = "(component.name=com.adobe.aem.commons.assetshare.content.properties.impl.FileExtensionImpl)")
-    ComputedProperty<Long> fileExtension;
 
     @Override
     public String getName() {
@@ -65,71 +62,56 @@ public class ContentTypeImpl extends AbstractComputedProperty<String> {
         return cfg.types();
     }
 
+
+    // Full mime type to label map
+    private static final Map<String, String> mimeTypeToLabelMap = ImmutableMap.<String, String>builder()
+            .put("image/vnd.adobe.photoshop",                                                   "Photoshop")
+            .put("application/msword",                                                          "Word Doc")
+            .put("application//vnd.openxmlformats-officedocument.wordprocessingml.document",    "Word Doc")
+            .put("application/vnd.ms-excel",                                                    "Excel")
+            .put("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",           "Excel")
+            .put("application/vnd.ms-powerpoint",                                               "PowerPoint")
+            .put("application/vnd.openxmlformats-officedocument.presentationml.presentation",   "PowerPoint")
+            .put("application/xml",                                                             "XML")
+            .put("application/zip",                                                             "Zip")
+            .put("application/json",                                                            "JSON")
+            .put("application/vnd.adobe.illustrator",                                           "Illustrator")
+            .put("application/vnd.adobe.indesign",                                              "InDesign")
+            .put("application/vnd.adobe.indesignml",                                            "InDesign")
+            .put("application/vnd.adobe.indesignx",                                             "InDesign")
+            .put("application/vnd.adobe.aftereffects",                                          "After Effects")
+            .put("application/vnd.adobe.premiere",                                              "Premiere")
+            .put("application/vnd.adobe.xd",                                                    "XD")
+            .put("text/html",                                                                   "HTML")
+            .put("text/csv",                                                                    "CSV")
+            .build();
+
+
+    // Fallback mime type prefix to label map
+    private static final Map<String, String> mimeTypePrefixToLabelMap = ImmutableMap.<String, String>builder()
+            .put("image",   "Image")
+            .put("video",   "Video")
+            .put("audio",   "Audio")
+            .put("font",    "Font")
+            .put("model",   "3D")
+            .put("text",    "Text")
+            .build();
+
     @Override
     public String get(Asset asset) {
         final String mimeType = StringUtils.defaultIfBlank(asset.getMimeType(), "");
 
-        if (StringUtils.isNotBlank(mimeType)) {
-            // Has mimetype
-            if (StringUtils.startsWith(mimeType, "image/")) {
-                // Is image
-                if (StringUtils.endsWithAny(mimeType, "/vnd.adobe.photoshop")) {
-                    return "PHOTOSHOP";
-                } else {
-                    return "IMAGE";
-                }
-            } else if (StringUtils.startsWith(mimeType, "video/")) {
-                // Is video
-                return "VIDEO";
-            } else if (StringUtils.startsWith(mimeType, "audio/")) {
-                // Is audio
-                return "AUDIO";
-            } else if (StringUtils.startsWith(mimeType, "font/")) {
-                // Is font
-                return "FONT";
-            } else if (StringUtils.startsWith(mimeType, "model/")) {
-                // Is 3D model
-                return "3D";
-            } else if (StringUtils.startsWith(mimeType, "application/")) {
-                // Is application
-                if (StringUtils.endsWithAny(mimeType, "/pdf")) {
-                    return "PDF";
-                } else if (StringUtils.endsWithAny(mimeType, "/msword", "/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
-                    return "DOCUMENT";
-                } else if (StringUtils.endsWithAny(mimeType, "/vnd.ms-excel", "/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
-                    return "SPREADSHEET";
-                } else if (StringUtils.endsWithAny(mimeType, "/vnd.ms-powerpoint", "/vnd.openxmlformats-officedocument.presentationml.presentation")) {
-                    return "POWERPOINT";
-                } else if (StringUtils.endsWithAny(mimeType, "/xml")) {
-                    return "XML";
-                } else if (StringUtils.endsWithAny(mimeType, "/zip")) {
-                    return "ZIP";
-                } else if (StringUtils.endsWithAny(mimeType, "/json")) {
-                    return "JSON";
-                } else if (StringUtils.endsWithAny(mimeType, "/vnd.adobe.illustrator")) {
-                    return "ILLUSTRATOR";
-                } else if (StringUtils.endsWithAny(mimeType, "/vnd.adobe.indesign", "/vnd.adobe.indesignml", "/vnd.adobe.indesignx", "/vnd.adobe.indesign-idml-package", "/vnd.adobe.indesign-idml-template", "/vnd.adobe.indesign-snippet", "/vnd.adobe.indesign-library", "/vnd.adobe.indesign-xml", "/vnd.adobe.indesign-pkg", "/vnd.adobe.indesign-interchange", "/vnd.adobe.indesign-interchange-package", "/vnd.adobe.indesign-book", "/vnd.adobe.indesign-ccml")) {
-                    return "INDESIGN";
-                } else if (StringUtils.endsWithAny(mimeType, "/vnd.adobe.aftereffects")) {
-                    return "AFTEREFFECTS";
-                } else if (StringUtils.endsWithAny(mimeType, "/vnd.adobe.premiere")) {
-                    return "PREMIERE";
-                } else if (StringUtils.endsWithAny(mimeType, "/vnd.adobe.xd")) {
-                    return "XD";
-                }
-            } else if (StringUtils.startsWith(mimeType, "text/")) {
-                // Is text
-                if (StringUtils.endsWithAny(mimeType, "/html")) {
-                    return "HTML";
-                } else if (StringUtils.endsWithAny(mimeType, "/csv")) {
-                    return "CSV";
-                } else {
-                    return "TEXT";
-                }
-            }
+        String value = mimeTypeToLabelMap.get(mimeType);
+
+        if (StringUtils.isBlank(value)) {
+            value = mimeTypePrefixToLabelMap.get(StringUtils.substringBefore(mimeType, "/"));
         }
 
-        return UNKNOWN_LABEL;
+        if (StringUtils.isBlank(value)) {
+            value = StringUtils.defaultIfBlank(cfg.unknownLabel(), "");
+        }
+
+        return value;
     }
 
     @Activate
@@ -155,6 +137,6 @@ public class ContentTypeImpl extends AbstractComputedProperty<String> {
                 name = "Unknown Label",
                 description = "Defaults to blank so it can be trivially handled via HTL existence checks."
         )
-        String unknownLabel() default UNKNOWN_LABEL;
+        String unknownLabel() default "";
     }
 }

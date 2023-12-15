@@ -38,7 +38,7 @@ import org.osgi.service.metatype.annotations.ObjectClassDefinition;
         service = AssetDetailsSelector.class
 )
 @Designate(ocd = AssetTypeSelectorImpl.Cfg.class)
-public class AssetTypeSelectorImpl implements AssetDetailsSelector {
+public class AssetTypeSelectorImpl extends AbstractSelector implements AssetDetailsSelector {
     public static final String LABEL = "Asset Type";
     public static final String ID = "asset-type";
 
@@ -62,21 +62,6 @@ public class AssetTypeSelectorImpl implements AssetDetailsSelector {
     @Override
     public String getUrl(final Config config, final AssetModel asset) {
         return buildUrl(config, asset.getProperties().get(AssetTypeImpl.NAME, String.class));
-    }
-
-    private String buildUrl(final Config config, String assetType) {
-        if (assetType == null) {
-            return null;
-        } else {
-            assetType = StringUtils.lowerCase(assetType);
-            assetType = StringUtils.replace(assetType, " ", "-");
-
-            if (StringUtils.isBlank(config.getAssetDetailsPath())) {
-                return null;
-            } else {
-                return config.getAssetDetailsPath() + "/" + assetType + ".html";
-            }
-        }
     }
 
     @Activate
