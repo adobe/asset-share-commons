@@ -169,7 +169,7 @@ public class AssetTypeImpl extends AbstractComputedProperty<String> {
 
         @AttributeDefinition(
                 name = "Unknown Label",
-                description = "Defaults to blank so it can be trivially handled via HTL existance checks."
+                description = "Defaults to blank so it can be trivially handled via HTL existence checks."
         )
         String unknownLabel() default UNKNOWN_LABEL;
     }

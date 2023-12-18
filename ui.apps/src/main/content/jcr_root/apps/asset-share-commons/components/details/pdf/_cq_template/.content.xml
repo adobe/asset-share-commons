@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+          xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+          jcr:primaryType="nt:unstructured"
+          renditionName="original"
+          embedMode="SIZED_CONTAINER"
+          defaultVieMode="FIT_WIDTH"
+          enableLinearization="{Boolean}false">
+    <in-line jcr:primaryType="nt:unstructured"
+             showDownloadPDF="{Boolean}true"
+             showPrintPDF="{Boolean}true"
+    />
+    <sized-container jcr:primaryType="nt:unstructured"
+                     showDownloadPDF="{Boolean}true"
+                     showPrintPDF="{Boolean}true"
+                     height="{Long}800"
+    />
+    <full-window jcr:primaryType="nt:unstructured"
+                 hasReadOnlyAccess="{Boolean}false"
+                 showDownloadPDF="{Boolean}true"
+                 showPrintPDF="{Boolean}true"
+                 showBookmarks="{Boolean}true"
+                 showAnnotationTools="{Boolean}false"
+                 showFullScreen="{Boolean}true"
+                 showZoomControl="{Boolean}true"
+                 height="{Long}800"
+    />
+</jcr:root>

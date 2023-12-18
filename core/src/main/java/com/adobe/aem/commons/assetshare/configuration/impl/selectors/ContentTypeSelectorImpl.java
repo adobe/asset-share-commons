@@ -22,7 +22,7 @@ package com.adobe.aem.commons.assetshare.configuration.impl.selectors;
 import com.adobe.aem.commons.assetshare.configuration.AssetDetailsSelector;
 import com.adobe.aem.commons.assetshare.configuration.Config;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
-import com.adobe.aem.commons.assetshare.content.properties.impl.AssetTypeImpl;
+import com.adobe.aem.commons.assetshare.content.properties.impl.ContentTypeImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -32,15 +32,15 @@ import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
 @Component(
         property = {
-                "label:String=" + AssetTypeSelectorImpl.LABEL,
-                "id:String=" + AssetTypeSelectorImpl.ID
+                "label:String=" + ContentTypeSelectorImpl.LABEL,
+                "id:String=" + ContentTypeSelectorImpl.ID
         },
         service = AssetDetailsSelector.class
 )
-@Designate(ocd = AssetTypeSelectorImpl.Cfg.class)
-public class AssetTypeSelectorImpl extends AbstractSelector implements AssetDetailsSelector {
-    public static final String LABEL = "Asset Type";
-    public static final String ID = "asset-type";
+@Designate(ocd = ContentTypeSelectorImpl.Cfg.class)
+public class ContentTypeSelectorImpl extends AbstractSelector implements AssetDetailsSelector {
+    public static final String LABEL = "Content Type";
+    public static final String ID = "content-type";
 
     private Cfg cfg;
 
@@ -61,7 +61,7 @@ public class AssetTypeSelectorImpl extends AbstractSelector implements AssetDeta
 
     @Override
     public String getUrl(final Config config, final AssetModel asset) {
-        return buildUrl(config, asset.getProperties().get(AssetTypeImpl.NAME, String.class));
+        return buildUrl(config, asset.getProperties().get(ContentTypeImpl.NAME, String.class));
     }
 
     @Activate
@@ -69,7 +69,7 @@ public class AssetTypeSelectorImpl extends AbstractSelector implements AssetDeta
         this.cfg = cfg;
     }
 
-    @ObjectClassDefinition(name = "Asset Share Commons - Asset Details Selector - Asset Type")
+    @ObjectClassDefinition(name = "Asset Share Commons - Asset Details Selector - Content Type")
     public @interface Cfg {
         @AttributeDefinition(
                 name = "Label",
