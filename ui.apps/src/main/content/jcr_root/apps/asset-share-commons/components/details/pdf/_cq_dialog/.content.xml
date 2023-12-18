@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+          xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+          xmlns:granite="http://www.adobe.com/jcr/granite/1.0"
+          jcr:primaryType="nt:unstructured"
+          jcr:title="PDF"
+          sling:resourceType="cq/gui/components/authoring/dialog"
+          helpPath="https://opensource.adobe.com/asset-share-commons/pages/details/pdf/">
+    <content
+            jcr:primaryType="nt:unstructured"
+            sling:resourceType="granite/ui/components/coral/foundation/container">
+        <items jcr:primaryType="nt:unstructured">
+            <tabs
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="granite/ui/components/coral/foundation/tabs"
+                    maxmized="{Boolean}true">
+                <items jcr:primaryType="nt:unstructured">
+                    <general
+                            jcr:primaryType="nt:unstructured"
+                            jcr:title="Configuration"
+                            sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns"
+                            margin="{Boolean}true">
+                        <items jcr:primaryType="nt:unstructured">
+                            <column
+                                    jcr:primaryType="nt:unstructured"
+                                    sling:resourceType="granite/ui/components/coral/foundation/container">
+                                <items jcr:primaryType="nt:unstructured">
+
+                                    <asset-rendition
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                            emptyText="Select an asset rendition to display"
+                                            fieldDescription="Select the rendition to use."
+                                            fieldLabel="Rendition"
+                                            allowedAssetRenditionTypes="[pdf]"
+                                            name="./renditionName">
+                                        <datasource
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="asset-share-commons/data-sources/asset-renditions"/>
+                                    </asset-rendition>
+
+                                    <embed-mode
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                            granite:class="cq-dialog-dropdown-showhide"
+                                            fieldLabel="Type"
+                                            name="./embedMode">
+                                        <granite:data
+                                                jcr:primaryType="nt:unstructured"
+                                                cq-dialog-dropdown-showhide-target=".embed-mode-showhide-target"/>
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <sized-container
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Sized Container"
+                                                    value="SIZED_CONTAINER"/>
+                                            <in-line
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="In-Line"
+                                                    value="IN_LINE"/>
+                                            <full-window
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Full Window"
+                                                    value="FULL_WINDOW"/>
+                                        </items>
+                                    </embed-mode>
+
+                                    <default-view-mode
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                            fieldLabel="Default View Mode"
+                                            name="./defaultViewModel">
+                                        <granite:data
+                                                jcr:primaryType="nt:unstructured"/>
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <fit-page
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Fit Page"
+                                                    value="FIT_PAGE"/>
+                                            <fit-width
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Fit Width"
+                                                    value="FIT_WIDTH"/>
+                                            <two-column
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Two Column"
+                                                    value="TWO_COLUMN"/>
+                                            <two-column-fit-page
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Two Column Fit Page"
+                                                    value="TWO_COLUMN_FIT_PAGE"/>
+                                        </items>
+                                    </default-view-mode>
+
+                                     <sized-container-options
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/well"
+                                        granite:class="hide embed-mode-showhide-target">
+                                        <granite:data
+                                                jcr:primaryType="nt:unstructured"
+                                                showhidetargetvalue="SIZED_CONTAINER"/>
+                                        <items jcr:primaryType="nt:unstructured">
+
+                                            <height
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/form/numberfield"
+                                                    fieldDescription="Height in pixels of the PDF viewer"
+                                                    fieldLabel="PDF Viewer Height (in pixels)"
+                                                    min="{Double}1.0"
+                                                    name="./sized-container/height">
+                                            </height>
+
+                                            <show-fullscreen
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                    text="Fullscreen Mode"
+                                                    fieldDescription="Show the full screen button also appears in the bottom toolbar which allows users to view the PDF in full screen mode."
+                                                    name="./sized-container/showFullScreen"
+                                                    value="{Boolean}true"
+                                                    uncheckedValue="{Boolean}false"
+                                                    deleteHint="{Boolean}true"/>
+
+                                            <show-download-pdf
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                    fieldDescription="Allow download of the PDF."
+                                                    text="Download PDF"
+                                                    name="./sized-container/showDownloadPDF"
+                                                    value="{Boolean}true"
+                                                    uncheckedValue="{Boolean}false"
+                                                    deleteHint="{Boolean}true"/>
+
+                                            <show-print-pdf
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                    fieldDescription="Allow printing of the PDF."
+                                                    text="Print PDF"
+                                                    name="./sized-container/showPrintPDF"
+                                                    value="{Boolean}true"
+                                                    uncheckedValue="{Boolean}false"
+                                                    deleteHint="{Boolean}true"/>
+                                        </items>
+                                    </sized-container-options>
+
+
+                                    <full-window-options
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/well"
+                                            granite:class="hide embed-mode-showhide-target">
+                                        <granite:data
+                                                jcr:primaryType="nt:unstructured"
+                                                showhidetargetvalue="FULL_WINDOW"/>
+                                        <items jcr:primaryType="nt:unstructured">
+
+                                            <height
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/form/numberfield"
+                                                    fieldDescription="Height in pixels of the PDF viewer"
+                                                    fieldLabel="PDF Viewer Height (in pixels)"
+                                                    min="{Double}1.0"
+                                                    name="./full-window/height">
+                                            </height>
+
+                                            <read-only
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                    fieldDescription="Check this box to true if you want to render the PDF in read-only mode. Commenting is not allowed and existing PDF comments are displayed as read only."
+                                                    text="Read only"
+                                                    name="./full-window/hasReadOnlyAccess"
+                                                    value="{Boolean}true"
+                                                    uncheckedValue="{Boolean}false"
+                                                    deleteHint="{Boolean}true"/>
+
+                                            <show-fullscreen
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                    text="Fullscreen Mode"
+                                                    fieldDescription="Show the full screen button also appears in the bottom toolbar which allows users to view the PDF in full screen mode."
+                                                    name="./full-window/showFullScreen"
+                                                    value="{Boolean}true"
+                                                    uncheckedValue="{Boolean}false"
+                                                    deleteHint="{Boolean}true"/>
+
+                                            <show-zoom-control
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                    fieldDescription="Show zoom-in and zoom-out controls in the right-hand panel."
+                                                    text="Zoom Controls"
+                                                    name="./full-window/showZoomControl"
+                                                    value="{Boolean}true"
+                                                    uncheckedValue="{Boolean}false"
+                                                    deleteHint="{Boolean}true"/>
+
+                                            <show-download-pdf
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                    fieldDescription="Allow download of the PDF."
+                                                    text="Download PDF"
+                                                    name="./full-window/showDownloadPDF"
+                                                    value="{Boolean}true"
+                                                    uncheckedValue="{Boolean}false"
+                                                    deleteHint="{Boolean}true"/>
+
+                                            <show-print-pdf
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                    fieldDescription="Allow printing of the PDF."
+                                                    text="Print PDF"
+                                                    name="./full-window/showPrintPDF"
+                                                    value="{Boolean}true"
+                                                    uncheckedValue="{Boolean}false"
+                                                    deleteHint="{Boolean}true"/>
+
+                                            <show-bookmarks
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                    fieldDescription="Show bookmark controls in the right-hand panel."
+                                                    text="Show Bookmarks"
+                                                    name="./full-window/showBookmarks"
+                                                    value="{Boolean}true"
+                                                    uncheckedValue="{Boolean}false"
+                                                    deleteHint="{Boolean}true"/>
+
+                                            <show-annotation-tools
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                    fieldDescription="Show commenting tools (add text comment, sticky notes, highlight, drawing tool, strikethrough and underline), eraser tool and the undo/redo tools are available with this mode. Users can add and save annotations to the PDF."
+                                                    text="Show Annotation Tools"
+                                                    name="./full-window/showAnnotationTools"
+                                                    value="{Boolean}true"
+                                                    uncheckedValue="{Boolean}false"
+                                                    deleteHint="{Boolean}true"/>
+                                        </items>
+                                    </full-window-options>
+
+                                    <enable-linearization
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                            fieldDescription="Enable linearization to optimize PDFs for faster viewing."
+                                            text="Enable linearization"
+                                            name="./enableLinearization"
+                                            value="{Boolean}true"
+                                            uncheckedValue="{Boolean}false"
+                                            deleteHint="{Boolean}true"/>
+
+                                </items>
+                            </column>
+                        </items>
+                    </general>
+                </items>
+            </tabs>
+        </items>
+    </content>
+</jcr:root>

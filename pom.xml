@@ -70,7 +70,7 @@
         <vault.password>admin</vault.password>
         <package.group>asset-share-commons</package.group>
         <!-- the minimum AEM 6.5 version being supported -->
-        <aem.classic.api.version>6.5.7.0003</aem.classic.api.version><!-- actually one of https://repo1.maven.org/maven2/io/wcm/maven/io.wcm.maven.aem-dependencies/ -->
+        <aem.classic.api.version>6.5.19.0000</aem.classic.api.version><!-- actually one of https://repo1.maven.org/maven2/io/wcm/maven/io.wcm.maven.aem-dependencies/ -->
         <!-- the minimum AEMaaCS version being supported -->
         <aem.sdk.api.version>2023.9.13665.20230927T063259Z-230800</aem.sdk.api.version><!-- actually one of https://repo1.maven.org/maven2/com/adobe/aem/aem-sdk-api/ -->
         <core.wcm.components.version>2.17.14</core.wcm.components.version>
@@ -163,7 +163,7 @@
                 <plugin>
                     <groupId>com.github.eirslett</groupId>
                     <artifactId>frontend-maven-plugin</artifactId>
-                    <version>1.12.1</version>
+                    <version>1.14.2</version>
                     <configuration>
                         <nodeVersion>${node.version}</nodeVersion>
                         <npmVersion>${npm.version}</npmVersion>
@@ -277,7 +277,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                         <dependency>
                             <groupId>org.apache.maven.surefire</groupId>
                             <artifactId>surefire-junit47</artifactId>
-                            <version>3.1.2</version>
+                            <version>3.2.2</version>
                         </dependency>
                     </dependencies>
                     <configuration>
@@ -290,7 +290,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>2.22.2</version>
+                    <version>3.2.2</version>
                 </plugin>
                 <!-- Maven Deploy Plugin -->
                 <plugin>
@@ -385,7 +385,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
-                    <version>3.6.0</version>
+                    <version>3.6.1</version>
                 </plugin>
                 <!-- Build Helper Maven Plugin -->
                 <plugin>
@@ -462,7 +462,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                 <!-- Maven Javadoc Plugin -->
                 <plugin>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.5.0</version>
+                    <version>3.6.2</version>
                     <configuration>
                         <encoding>${project.build.sourceEncoding}</encoding>
                         <excludePackageNames>

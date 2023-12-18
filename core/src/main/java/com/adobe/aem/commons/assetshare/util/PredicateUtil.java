@@ -21,8 +21,6 @@ package com.adobe.aem.commons.assetshare.util;
 
 import com.adobe.aem.commons.assetshare.components.predicates.Predicate;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
-import com.day.cq.search.PredicateConverter;
-import com.day.cq.search.PredicateGroup;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -45,6 +43,11 @@ import java.util.stream.Collectors;
 public final class PredicateUtil {
     private PredicateUtil() { }
 
+    /**
+     * Determines if the request is a parameterized search request.
+     * @param request the request object.
+     * @return true if the request is a parameterized search request.
+     */
     public static boolean isParameterizedSearchRequest(SlingHttpServletRequest request) {
         return Arrays.stream(new String[]{"_group.", "?p.", "&p."}).anyMatch(needle -> StringUtils.contains(request.getQueryString(), needle));
     }

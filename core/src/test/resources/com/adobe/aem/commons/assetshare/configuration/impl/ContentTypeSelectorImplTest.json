@@ -1,0 +1,38 @@
+{
+  "test.png": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:content": {
+      "jcr:primaryType": "nt:unstructured",
+      "metadata": {
+        "dc:format": "image/png"
+      }
+    }
+  },
+  "test.pdf": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:content": {
+      "jcr:primaryType": "nt:unstructured",
+      "metadata": {
+        "dc:format": "application/pdf"
+      }
+    }
+  },
+  "test.doc": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:content": {
+      "jcr:primaryType": "nt:unstructured",
+      "metadata": {
+        "dc:format": "application/msword"
+      }
+    }
+  },
+  "test.unknown": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:content": {
+      "jcr:primaryType": "nt:unstructured",
+      "metadata": {
+        "dc:format": "dev/null"
+      }
+    }
+  }
+}

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Asset Share Commons
   ~
@@ -17,8 +18,11 @@
   ~
   -->
 
-<configuration>
-    <root level="warn">
-        <appender-ref ref="CONSOLE" />
-    </root>
-</configuration>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+          jcr:primaryType="cq:EditConfig">
+    <cq:listeners
+            jcr:primaryType="cq:EditListenersConfig"
+            afteredit="REFRESH_PAGE"
+            aftercreate="REFRESH_PAGE"
+            afterinsert="REFRESH_PAGE"/>
+</jcr:root>
