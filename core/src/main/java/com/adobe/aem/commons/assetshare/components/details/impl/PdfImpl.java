@@ -4,6 +4,7 @@ import com.adobe.aem.commons.assetshare.components.details.Pdf;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.aem.commons.assetshare.util.UrlUtil;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.export.json.ExporterConstants;
@@ -37,13 +38,9 @@ import java.util.UUID;
 @Exporter(name = ExporterConstants.SLING_MODEL_EXPORTER_NAME, extensions = ExporterConstants.SLING_MODEL_EXTENSION)
 public class PdfImpl extends AbstractEmptyTextComponent implements Pdf {
     protected static final String RESOURCE_TYPE = "asset-share-commons/components/details/pdf";
-    private static final String PN_CLIENT_ID = "clientId";
-
     private static final String SIZED_CONTAINER = "SIZED_CONTAINER";
     private static final String IN_LINE = "IN_LINE";
     private static final String FULL_WINDOW = "FULL_WINDOW";
-
-
 
     @Self
     @Required
@@ -56,6 +53,10 @@ public class PdfImpl extends AbstractEmptyTextComponent implements Pdf {
     @OSGiService
     @Required
     private AssetRenditions assetRenditions;
+
+    @OSGiService
+    @Required
+    private RequireAem requireAem;
 
     @ValueMapValue
     private String renditionName;
@@ -76,7 +77,7 @@ public class PdfImpl extends AbstractEmptyTextComponent implements Pdf {
 
     @Override
     public boolean isEmpty() {
-        return StringUtils.isBlank(getSrc()) && StringUtils.isNotBlank(getClientId());
+        return StringUtils.isBlank(getSrc()) || StringUtils.isBlank(getClientId());
     }
 
     @Override
@@ -108,7 +109,12 @@ public class PdfImpl extends AbstractEmptyTextComponent implements Pdf {
 
     @Override
     public String getClientId() {
-        return currentStyle.get(PN_CLIENT_ID, String.class);
+        // "clientId" property is the legacy value before we added support for author and publish clientIds.
+        if (RequireAem.ServiceType.AUTHOR.equals(requireAem.getServiceType())) {
+            return currentStyle.get("authorClientId", currentStyle.get("clientId", String.class));
+        } else {
+            return currentStyle.get("publishClientId", currentStyle.get("clientId", String.class));
+        }
     }
 
     @Override
