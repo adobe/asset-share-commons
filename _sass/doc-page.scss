@@ -41,11 +41,25 @@
     margin-top: 2rem;
   }
 
-  h3 ~ h4,
-  h3 ~ p,
-  h3 ~ ul,
-  h3 ~ ol,
-  h3 ~ blockquote {
+h3 ~ h4,
+h3 ~ p,
+h3 ~ ul,
+h3 ~ ol,
+h3 ~ blockquote,
+h4 ~ h5,
+h4 ~ p,
+h4 ~ ul,
+h4 ~ ol,
+h4 ~ blockquote,
+h5 ~ h6,
+h5 ~ p,
+h5 ~ ul,
+h5 ~ ol,
+h5 ~ blockquote,
+h6 ~ p,
+h6 ~ ul,
+h6 ~ ol,
+h6 ~ blockquote {
     margin-left: 1rem;
   }
 

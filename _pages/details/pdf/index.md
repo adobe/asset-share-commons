@@ -2,7 +2,7 @@
 layout: component-page
 title: PDF
 component-group: "asset details"
-initial-version: 3.7.0
+initial-version: 3.7.2
 ---
 
 ![PDF component - Center](./images/main.png)
@@ -13,7 +13,7 @@ The PDF component displays a PDF rendition for a given Asset using the [Adobe PD
 
 Authors have several configurations available to choose which asset rendition is displayed.
 
-### Dialog / Configuration
+### Dialog
 
 ![PDF dialog](./images/dialog.png)
 
@@ -24,7 +24,7 @@ A PDF rendition that can be picked from a dropdown that lists all Asset Renditio
 OOTB the available PDF renditions are available:
 
 * Original (maps to static original rendition)
-* PDF (maps to the static cq5dam.web.x.x.x)
+* Pdf (maps to the static rendition with node name matching `*.pdf`)
 
 #### Type
 
@@ -47,6 +47,8 @@ The default view of the PDF. The options are:
 
 #### Sized Container options
 
+![PDF - Sized Container - dialog](./images/dialog_sized-container.png)
+
 These options only display and are in effect with `Type = Sized Container`.
 
 ##### PDF Viewer Height (in pixels)
@@ -66,6 +68,8 @@ Allow download of the PDF.
 Allow printing of the PDF.
 
 #### Full Window options
+
+![PDF - Full Window - dialog](./images/dialog_full-window.png)
 
 These options only display and are in effect with `Type = Full Window`.
 
@@ -97,14 +101,18 @@ Allow printing of the PDF.
 
 Show bookmark controls in the right-hand panel.
 
-###### Enable linearization
+#### Enable linearization
+
+![PDF - Enable Linearization - dialog](./images/dialog_enable-linearization.png)
 
 Enable linearization to optimize PDFs for faster viewing.
 
 
-### Style Dialog
+### Policy Dialog
 
-The Style Dialog is configured on the PDF component's policy via the Editable Templates.
+![PDF - Policy - dialog](./images/dialog_policy.png)
+
+The Policy Dialog is configured on the PDF component's policy via the Editable Templates.
 
 #### Client ID
 
