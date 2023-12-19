@@ -72,6 +72,7 @@ public class ContentTypeImpl extends AbstractComputedProperty<String> {
             .put("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",           "Excel")
             .put("application/vnd.ms-powerpoint",                                               "PowerPoint")
             .put("application/vnd.openxmlformats-officedocument.presentationml.presentation",   "PowerPoint")
+            .put("application/pdf",                                                             "PDF")
             .put("application/xml",                                                             "XML")
             .put("application/zip",                                                             "Zip")
             .put("application/json",                                                            "JSON")

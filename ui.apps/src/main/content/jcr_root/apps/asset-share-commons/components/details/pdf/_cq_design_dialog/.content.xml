@@ -26,15 +26,21 @@
                                     sling:resourceType="granite/ui/components/coral/foundation/container">
                                 <items jcr:primaryType="nt:unstructured">
 
-
-                                    <client-id
+                                    <publish-client-id
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
                                             emptyText="Enter your Adobe Document Cloud client ID."
                                             fieldDescription="Enter the client ID for your Adobe Document Cloud account registered with your Adobe Acrobat Viewer."
-                                            fieldLabel="Client ID"
-                                            name="./clientId"/>
+                                            fieldLabel="Client ID for AEM Publish domain"
+                                            name="./publishClientId"/>
 
+                                    <author-client-id
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            emptyText="Enter your Adobe Document Cloud client ID."
+                                            fieldDescription="Enter the client ID for your Adobe Document Cloud account registered with your Adobe Acrobat Viewer."
+                                            fieldLabel="Client ID for AEM Author domain"
+                                            name="./authorClientId"/>
                                 </items>
                             </column>
                         </items>

@@ -39,31 +39,6 @@
                                                 sling:resourceType="asset-share-commons/data-sources/asset-renditions"/>
                                     </asset-rendition>
 
-                                    <embed-mode
-                                            jcr:primaryType="nt:unstructured"
-                                            sling:resourceType="granite/ui/components/coral/foundation/form/select"
-                                            granite:class="cq-dialog-dropdown-showhide"
-                                            fieldLabel="Type"
-                                            name="./embedMode">
-                                        <granite:data
-                                                jcr:primaryType="nt:unstructured"
-                                                cq-dialog-dropdown-showhide-target=".embed-mode-showhide-target"/>
-                                        <items jcr:primaryType="nt:unstructured">
-                                            <sized-container
-                                                    jcr:primaryType="nt:unstructured"
-                                                    text="Sized Container"
-                                                    value="SIZED_CONTAINER"/>
-                                            <in-line
-                                                    jcr:primaryType="nt:unstructured"
-                                                    text="In-Line"
-                                                    value="IN_LINE"/>
-                                            <full-window
-                                                    jcr:primaryType="nt:unstructured"
-                                                    text="Full Window"
-                                                    value="FULL_WINDOW"/>
-                                        </items>
-                                    </embed-mode>
-
                                     <default-view-mode
                                             jcr:primaryType="nt:unstructured"
                                             sling:resourceType="granite/ui/components/coral/foundation/form/select"
@@ -90,6 +65,31 @@
                                                     value="TWO_COLUMN_FIT_PAGE"/>
                                         </items>
                                     </default-view-mode>
+
+                                    <embed-mode
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                            granite:class="cq-dialog-dropdown-showhide"
+                                            fieldLabel="Type"
+                                            name="./embedMode">
+                                        <granite:data
+                                                jcr:primaryType="nt:unstructured"
+                                                cq-dialog-dropdown-showhide-target=".embed-mode-showhide-target"/>
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <sized-container
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Sized Container"
+                                                    value="SIZED_CONTAINER"/>
+                                            <in-line
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="In-Line"
+                                                    value="IN_LINE"/>
+                                            <full-window
+                                                    jcr:primaryType="nt:unstructured"
+                                                    text="Full Window"
+                                                    value="FULL_WINDOW"/>
+                                        </items>
+                                    </embed-mode>
 
                                      <sized-container-options
                                         jcr:primaryType="nt:unstructured"
