@@ -12,8 +12,7 @@ The minimum set of components to be added to the Search Page is the `Search Resu
 
 ## Content Architecture
 
-The Search Page acts as the "root configuration" for other Asset Share-related pages. 
-Other Asset Share pages will look up the page tree for configurations that are applied at the Search Page level.
+The Search Page acts as the "root configuration" for other Asset Share Commons-related pages. Other Asset Share Commons pages will look up the page tree for configurations that are applied to the "Search Page".
 Search pages can be created under other search pages; for example, a "What's New" search page may exist under a "root" Search Page.
 
 ### Recommended Content Architecture
@@ -24,7 +23,7 @@ Search pages can be created under other search pages; for example, a "What's New
            /search-page
                 /details (default details page)
                      /image (details for images)
-                     /video (details for videos)
+                     /multimedia (details for videos and audio)
                      /document  (details for word documents)
                      /presentation   (details for power point)
                 /actions
@@ -36,6 +35,7 @@ Search pages can be created under other search pages; for example, a "What's New
                 /specific-search-page-2  
 ```
 
+The names of the pages under the [default Asset Details page](#default-asset-details-page) (usually `/details`) are determined by selected [Asset Details Page Selector](#asset-details-page-selector) configuration.
 
 ## Authoring
 
@@ -54,10 +54,12 @@ Search page authoring can be broken into 2 concerns:
 
 Defines how Asset Details pages should be resolved for this content tree.
 
-  * Always use default Asset Details page
+  * **Always use default Asset Details page**
     * When selected the **Default Asset Details Page* (defined in the next field) will always be used.  
-  * Asset Type
-    * The "Asset Type" computed property is used to determine the name of the Asset Details pages to use. The asset details page to use for an asset will be `<default-asset-details-page>/<asset-type>`. If no Asset Type can be derived, then the Default Asset Details Page will be used.
+  * **Asset Type**
+    * The [Asset Type computed property](https://github.com/adobe/asset-share-commons/blob/main/core/src/main/java/com/adobe/aem/commons/assetshare/content/properties/impl/AssetTypeImpl.java) is used to determine the name of the Asset Details pages to use. The asset details page to use for an asset will be `<default-asset-details-page>/<asset-type>`. The Asset Type value will be lowercased, and spaces replaced with hyphens. If no Asset Type can be derived, then the [Default Asset Details Page](#default-asset-details-page) is used.
+  * **Content Type**
+    * The [Content Type computed property](https://github.com/adobe/asset-share-commons/blob/main/core/src/main/java/com/adobe/aem/commons/assetshare/content/properties/impl/ContentTypeImpl.java) is used to determine the name of the Asset Details pages to use. The asset details page to use for an asset will be `<default-asset-details-page>/<content-type>`. The Content Type value will be lowercased, and spaces replaced with hyphens.  If no Content Type can be derived, then the [Default Asset Details Page](#default-asset-details-page) is used.
     
 #### Default Asset Details Page
 

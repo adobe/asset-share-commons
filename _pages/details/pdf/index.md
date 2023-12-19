@@ -1,12 +1,13 @@
 ---
 layout: component-page
-title: Image
+title: PDF
 component-group: "asset details"
+initial-version: 3.7.0
 ---
 
-![Image component - Center](./images/main.png)
+![PDF component - Center](./images/main.png)
 
-The Image component displays an image rendition for a given Asset.
+The PDF component displays a PDF rendition for a given Asset using the [Adobe PDF Embed API](https://developer.adobe.com/document-services/docs/overview/pdf-embed-api/).
 
 ## Authoring
 
@@ -14,56 +15,117 @@ Authors have several configurations available to choose which asset rendition is
 
 ### Dialog / Configuration
 
-![Image dialog](./images/dialog.png)
+![PDF dialog](./images/dialog.png)
 
 #### Rendition
 
-An Image rendition that can be picked from a dropdown that lists all Asset Rendition Names that are registered to Asset Rendition Dispatcher OSGi configurations with `type = image`. These values are exposed via [Asset Share Commons' Asset Rendition framework](/asset-share-commons/pages/development/asset-renditions/).
+A PDF rendition that can be picked from a dropdown that lists all Asset Rendition Names that are registered to Asset Rendition Dispatcher OSGi configurations with `type = pdf`. These values are exposed via [Asset Share Commons' Asset Rendition framework](/asset-share-commons/pages/development/asset-renditions/).
 
-OOTB the available image renditions are available:
+OOTB the available PDF renditions are available:
 
 * Original (maps to static original rendition)
-* Web (maps to the static cq5dam.web.x.x.x)
+* PDF (maps to the static cq5dam.web.x.x.x)
 
-#### Fallback Image Src
+#### Type
 
-An image can be selected to be used if no rendition for a given asset is found. The fallback image src will be used directly to populate the `src` attribute. Even if the fallback image is an asset in the DAM that has a rendition, only the path will be used.
+The type of PDF viewer to use. The options are:
 
-#### Maximum Image Height (in pixels)
+* **Sized Container**: The PDF viewer will be sized to the container it is in. This is the default.
+* **Full Width**: The PDF viewer will be sized to the full width of the browser window.
+* **In-line**: The PDF viewer will be sized to the full width of the browser window, and will be in-line with the rest of the content.
 
-If set, an inline style attribute `max-height` will be set to explicitly limit the height the image can grow. If left blank the image will render as is.
+You can explore the different types in the [Adobe PDF Viewer demo](https://documentcloud.adobe.com/view-sdk-demo/PDFEmbedAPI). Note that "Lightbox" is not supported by this component.
+
+#### Default View Mode
+
+The default view of the PDF. The options are:
+
+* **Fit Page**: The PDF will be sized to display the entire page in the viewer.
+* **Fit Width**: The PDF will be sized to display the entire width of the page in the viewer.
+* **Two Column**: The PDF will be sized to display two columns of the page in the viewer.
+* **Two Column Fit Page**: The PDF will be sized to display two columns of the page in the viewer, and the page will be sized to display the entire page in the viewer.
+
+#### Sized Container options
+
+These options only display and are in effect with `Type = Sized Container`.
+
+##### PDF Viewer Height (in pixels)
+
+Height in pixels of the PDF viewer.
+
+###### Fullscreen Mode
+
+Show the full screen button also appears in the bottom toolbar which allows users to view the PDF in full screen mode.
+
+###### Download PDF
+
+Allow download of the PDF.
+
+###### Print PDF
+
+Allow printing of the PDF.
+
+#### Full Window options
+
+These options only display and are in effect with `Type = Full Window`.
+
+##### PDF Viewer Height (in pixels)
+
+Height in pixels of the PDF viewer.
+
+###### Read only
+
+Check this box to true if you want to render the PDF in read-only mode. Commenting is not allowed and existing PDF comments are displayed as read only.
+
+###### Fullscreen Mode
+
+Show the full screen button also appears in the bottom toolbar which allows users to view the PDF in full screen mode.
+
+###### Zoom Controls
+
+Show zoom-in and zoom-out controls in the right-hand panel.
+
+###### Download PDF
+
+Allow download of the PDF.
+
+###### Print PDF
+
+Allow printing of the PDF.
+
+###### Show Bookmarks
+
+Show bookmark controls in the right-hand panel.
+
+###### Enable linearization
+
+Enable linearization to optimize PDFs for faster viewing.
 
 
-### Legacy support
+### Style Dialog
 
-In Asset Share Commons v1.8.0 the dialog was updated to use the Renditions provided by the [Asset Share Commons' Asset Rendition framework](/asset-share-commons/pages/development/asset-renditions/).
+The Style Dialog is configured on the PDF component's policy via the Editable Templates.
 
-Previous instances of Image components will continue to work and allow configurations in both modes using a Legacy Mode toggle switch.
+#### Client ID
 
-Any NEW instance of the Image component ONLY supports the Asset Renditions.
+Enter the client ID for your Adobe Document Cloud account registered with your Adobe Acrobat Viewer. 
 
-#### Migrating off legacy
+A Client ID can be obtained from the [Adobe PDF Embed API Credentials](https://acrobatservices.adobe.com/dc-integration-creation-app-cdn/main.html?api=pdf-embed-api).
 
-It is highly recommended to move to the new Asset Rendition based approached at your earliest convenience. The easiest way to migrate is to:
 
-1. Define and configure any required AssetRenditionDispatcher configurations, and promote through QA -> Stage as needed.
-2. Update AEM Dispatcher configuration to support Asset Renditions.
-3. Deploy Asset Share Commons v1.8.0+ and any dependency configurations to production environment.
-3. On AEM Author, navigate to the page with the Image component.
-4. Enter Edit mode
-5. Add a NEW Image component above the Image component using the legacy configuration.
-6. Configure the NEW Image component as needed, and verify it is surfacing the expected rendition.
-7. Delete the previous Image component using the legacy configuration.
-8. Double-check everything works as expected on AEM Author.
-9. Publish the page.
-10. Double-check the page renders properly on AEM Publish
-11. Rinse, repeat for all instances of the Image component.
+## Asset Details Page Selector
+
+In order to use this PDF asset details component, the asset must have a PDF rendition. Often, only PDF assets themselves are expected to be displayed via this component, which means that PDF assets need to have their own Asset Details page.
+
+In order to achieve this Asset -> Asset Details page mapping, is recommended to use the [Content Type Asset Details Selector](/asset-share-commons/pages/development/asset-details-selector/) or develop a custom Asset Details Page Selector, and set it via the [Search Page](/asset-share-commons/pages/development/search-page/#asset-details-page-selector) properties.    
+
+
 
 ## Technical details
 
-* **Component**: `/apps/asset-share-commons/components/details/image`
-* **Sling Model**: `com.adobe.aem.commons.assetshare.components.details.impl.ImageImpl`
+* **Component**: `/apps/asset-share-commons/components/details/pdf`
+* **Sling Model**: `com.adobe.aem.commons.assetshare.components.details.impl.PdfImpl`
 
 **Dialog Data Sources**
 
-* **Renditions**: [`com.adobe.aem.commons.assetshare.content.impl.datasources.AssetRenditionsDataSource`](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/blob/develop/core/src/main/java/com/adobe/aem/commons/assetshare/content/impl/datasources/AssetRenditionsDataSource.java) with a filter of `allowedAssetRenditionTypes="[image]"`
+* **Renditions**: [`com.adobe.aem.commons.assetshare.content.impl.datasources.AssetRenditionsDataSource`](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/blob/develop/core/src/main/java/com/adobe/aem/commons/assetshare/content/impl/datasources/AssetRenditionsDataSource.java) with a filter of `allowedAssetRenditionTypes="[pdf]"`
