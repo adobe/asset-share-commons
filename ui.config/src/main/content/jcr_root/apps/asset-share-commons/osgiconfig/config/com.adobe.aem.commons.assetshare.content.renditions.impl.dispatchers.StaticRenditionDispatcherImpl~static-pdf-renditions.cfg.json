@@ -1,0 +1,11 @@
+{
+  "service.ranking:Integer": -10001,
+  "label": "Static PDF Renditions",
+  "name": "asset-share-commons-static-pdf-renditions",
+  "types": [
+    "pdf"
+  ],
+  "rendition.mappings": [
+    "pdf=.*\\.pdf"
+  ]
+}

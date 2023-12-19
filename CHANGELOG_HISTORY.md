@@ -1,3 +1,27 @@
+## [asset-share-commons-3.7.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.7.2)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.7.0...asset-share-commons-3.7.2)
+
+### 🐛 Bug fixes
+
+- Fixes for PDF asset details component [#1065](https://github.com/adobe/asset-share-commons/pull/1065) (davidjgonzalez)
+
+### 📦 Uncategorized
+
+- v3.7.2 [#1067](https://github.com/adobe/asset-share-commons/pull/1067) (davidjgonzalez)
+
+
+## [asset-share-commons-3.7.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.7.0)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.6.0...asset-share-commons-3.7.0)
+
+### 📦 Uncategorized
+
+- v3.7.0 [#1064](https://github.com/adobe/asset-share-commons/pull/1064) (davidjgonzalez)
+- Updated jquery to 3.5.1 [#1063](https://github.com/adobe/asset-share-commons/pull/1063) (davidjgonzalez)
+- Asset Details - PDF Viewer [#1060](https://github.com/adobe/asset-share-commons/pull/1060) (davidjgonzalez)
+
+
 ## [asset-share-commons-3.6.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.6.0)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.5.0...asset-share-commons-3.6.0)
