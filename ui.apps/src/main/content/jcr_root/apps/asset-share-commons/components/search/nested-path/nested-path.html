@@ -1,0 +1,8 @@
+<sly
+    data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html"
+    data-sly-use.optionsTemplate="templates/options.html"
+    data-sly-use.predicate="com.adobe.aem.commons.assetshare.components.predicates.NestedPathPredicate"
+    data-sly-test.ready="${predicate.ready}">
+    <sly data-sly-call="${optionsTemplate.nested @ predicate = predicate}" />
+</sly>
+<sly data-sly-call="${placeholderTemplate.placeholder @ isEmpty=!ready}" />

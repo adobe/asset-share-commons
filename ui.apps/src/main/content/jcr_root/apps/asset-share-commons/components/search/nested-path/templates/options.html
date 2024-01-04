@@ -1,0 +1,61 @@
+<template data-sly-template.nested="${ @ predicate }">
+    <div class="ui form">
+        <input
+            data-sly-test="${predicate.hasOr}"
+            type="hidden"
+            name="${predicate.group}.p.or"
+            value="true"
+            form="${predicate.formId}"
+            data-asset-share-predicate-id="${predicate.id}" />
+        <input
+            data-sly-test="${predicate.property}"
+            type="hidden"
+            name="${predicate.group}.${predicate.name}.property"
+            value="${predicate.property}"
+            form="${predicate.formId}"
+            data-asset-share-predicate-id="${predicate.id}" />
+
+        <div class="ui fluid styled accordion">
+            <div class="${predicate.isExpanded && 'active'} title right">
+                <i class="dropdown icon"></i> ${predicate.title}
+            </div>
+            <div
+                class="${predicate.isExpanded && 'active'} content nested"
+                data-asset-share-id="${predicate.id}__fields"
+                data-asset-share-update-method="${predicate.componentUpdateMethod}"
+                data-sly-list="${predicate.items}">
+                <sly
+                    data-sly-call="${child @predicate=predicate, option=item}" />
+            </div>
+        </div>
+    </div>
+</template>
+
+<template
+    data-sly-template.child="${ @ predicate, option, parentId }"
+    data-sly-set.childId="${predicate.id}_${option.index}">
+    <div class="accordion nested" data-sly-unwrap="${!option.children}">
+        <div class="${option.children && 'title'} field">
+            <i class="dropdown icon"></i>
+            <div class="ui checkbox">
+                <input
+                    id="${childId}"
+                    for="${predicate.id}"
+                    form="${predicate.formId}"
+                    type="checkbox"
+                    name="${predicate.inputName @ format=option.index}"
+                    value="${option.value}"
+                    checked="${option.selected}"
+                    disabled="${option.disabled}"
+                    data-asset-share-search-on="${predicate.autoSearch && 'change'}"
+                    data-parentid="${parentId || true}"
+                    data-formid="${predicate.formId}" />
+                <label for="${childId}">${option.text}</label>
+            </div>
+        </div>
+        <div class="content nested" data-sly-list="${option.children}">
+            <sly
+                data-sly-call="${child @predicate=predicate, option=item, parentId=childId}" />
+        </div>
+    </div>
+</template>

@@ -1,0 +1,23 @@
+.ui.styled.accordion .nested.accordion {
+    margin: 0;
+}
+.ui.styled.accordion .nested.accordion .nested.content {
+    padding: 0 0 0 1.5em;
+}
+.ui.styled.accordion .nested.content .field:not(.title) > .icon {
+    visibility: hidden;
+}
+.ui.styled.accordion .nested.content .field {
+    display: flex;
+    margin: 0;
+    padding: 0.5em 0 0.5em 0;
+}
+.ui.styled.accordion .nested.content .field label {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.ui.styled.accordion .nested.content .field.title {
+    font-size: 1rem;
+    user-select: none; 
+}
