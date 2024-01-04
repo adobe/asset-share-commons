@@ -4,6 +4,7 @@ import com.adobe.aem.commons.assetshare.components.details.Pdf;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import com.adobe.aem.commons.assetshare.util.AdobePdfEmbedApi;
 import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.aem.commons.assetshare.util.UrlUtil;
 import com.adobe.cq.export.json.ComponentExporter;
@@ -13,10 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.wrappers.ValueMapDecorator;
-import org.apache.sling.models.annotations.DefaultInjectionStrategy;
-import org.apache.sling.models.annotations.Exporter;
-import org.apache.sling.models.annotations.Model;
-import org.apache.sling.models.annotations.Required;
+import org.apache.sling.models.annotations.*;
 import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.ScriptVariable;
 import org.apache.sling.models.annotations.injectorspecific.Self;
@@ -58,6 +56,10 @@ public class PdfImpl extends AbstractEmptyTextComponent implements Pdf {
     @Required
     private RequireAem requireAem;
 
+    @OSGiService
+    @Optional
+    private AdobePdfEmbedApi adobePdfEmbedApi;
+
     @ValueMapValue
     private String renditionName;
 
@@ -67,6 +69,8 @@ public class PdfImpl extends AbstractEmptyTextComponent implements Pdf {
     private String src = null;
 
     private String viewerId = null;
+
+    private String clientId = null;
 
     private ValueMap properties = new ValueMapDecorator(new HashMap<>());
 
@@ -109,12 +113,22 @@ public class PdfImpl extends AbstractEmptyTextComponent implements Pdf {
 
     @Override
     public String getClientId() {
-        // "clientId" property is the legacy value before we added support for author and publish clientIds.
-        if (RequireAem.ServiceType.AUTHOR.equals(requireAem.getServiceType())) {
-            return currentStyle.get("authorClientId", currentStyle.get("clientId", String.class));
-        } else {
-            return currentStyle.get("publishClientId", currentStyle.get("clientId", String.class));
+
+        if (clientId == null) {
+            // "clientId" property is the legacy value before we added support for author and publish clientIds.
+            if (RequireAem.ServiceType.AUTHOR.equals(requireAem.getServiceType())) {
+                clientId = currentStyle.get("authorClientId", currentStyle.get("clientId", String.class));
+            } else {
+                clientId = currentStyle.get("publishClientId", currentStyle.get("clientId", String.class));
+            }
+
+            // Fallback to the AdobePdfEmbedApi OSGi service defined Adobe PDF Embed API Client ID
+            if (StringUtils.isBlank(clientId) && adobePdfEmbedApi != null) {
+                clientId = adobePdfEmbedApi.getClientId();
+            }
         }
+
+        return clientId;
     }
 
     @Override
