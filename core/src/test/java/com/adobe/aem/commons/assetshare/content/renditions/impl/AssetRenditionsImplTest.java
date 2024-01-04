@@ -69,7 +69,6 @@ public class AssetRenditionsImplTest {
         ctx.registerService(ExpressionEvaluator.class, new ExpressionEvaluatorImpl());
 
         ctx.registerService(ComputedProperties.class, new ComputedPropertiesImpl());
-        ctx.addModelsForClasses(AssetModelImpl.class);
 
         ctx.registerInjectActivateService(new AssetRenditionsImpl());
 

@@ -29,6 +29,7 @@ import com.day.cq.dam.commons.util.DamUtil;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.models.factory.ModelFactory;
 import org.osgi.service.component.annotations.*;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.AttributeType;
@@ -65,7 +66,7 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
 
     private Cfg cfg;
 
-    private ConcurrentHashMap<String, Pattern> mappings;
+    private ConcurrentHashMap<String, String> mappings;
 
     @Reference(
             policy = ReferencePolicy.DYNAMIC,
@@ -79,6 +80,9 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
             policyOption = ReferencePolicyOption.GREEDY
     )
     private volatile AssetRenditionTracker assetRenditionTracker;
+
+    @Reference
+    private ModelFactory modelFactory;
 
     @Override
     public String getLabel() {
@@ -178,14 +182,18 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
     }
 
     private Rendition findRendition(final Asset asset, final AssetRenditionParameters parameters) {
-        return asset.getRendition(new PatternRenditionPicker(mappings.get(parameters.getRenditionName())));
+        AssetModel assetModel = modelFactory.createModel(asset.adaptTo(Resource.class), AssetModel.class);
+
+        String expression = mappings.get(parameters.getRenditionName());
+        expression = assetRenditions.evaluateExpression(assetModel, parameters.getRenditionName(), expression, parameters.getParameters());
+        return asset.getRendition(new PatternRenditionPicker(Pattern.compile(expression)));
     }
 
     @Activate
     protected void activate(Cfg cfg) {
         this.cfg = cfg;
 
-        this.mappings = super.parseMappingsAsPatterns(cfg.rendition_mappings());
+        this.mappings = super.parseMappingsAsStrings(cfg.rendition_mappings());
     }
 
     @ObjectClassDefinition(name = "Asset Share Commons - Rendition Dispatcher - Static Renditions")

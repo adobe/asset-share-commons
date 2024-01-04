@@ -26,6 +26,7 @@ import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
 import com.adobe.aem.commons.assetshare.testing.MockAssetModels;
 import com.adobe.aem.commons.assetshare.util.ServletHelper;
+import com.adobe.aem.commons.assetshare.util.impl.ExpressionEvaluatorImpl;
 import com.adobe.aem.commons.assetshare.util.impl.ServletHelperImpl;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
@@ -34,6 +35,7 @@ import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.request.RequestDispatcherOptions;
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.commons.mime.MimeTypeService;
 import org.apache.sling.models.factory.ModelFactory;
 import org.apache.sling.testing.mock.sling.servlet.MockRequestDispatcherFactory;
 import org.apache.sling.testing.mock.sling.servlet.MockSlingHttpServletResponse;
@@ -81,7 +83,9 @@ public class AssetRenditionServletTest {
         ctx.currentResource("/content/dam/test.png");
 
         ctx.registerInjectActivateService(new ServletHelperImpl());
-        ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
+        ctx.registerInjectActivateService(new ExpressionEvaluatorImpl());
+        ctx.registerInjectActivateService(new AssetRenditionsImpl());
+
         ctx.registerService(AssetRenditionDispatchers.class, new AssetRenditionDispatchersImpl());
 
         MockAssetModels.mockModelFactory(ctx, modelFactory,"/content/dam/test.png");
@@ -106,13 +110,14 @@ public class AssetRenditionServletTest {
         final AssetRenditionDispatcher assetRenditionDispatcher = Mockito.spy(new StaticRenditionDispatcherImpl());
 
         final byte[] expectedOutputStream = IOUtils.toByteArray(this.getClass().getResourceAsStream("AssetRenditionServletTest__cq5dam.web.1280.1280.png"));
+        /*
         doAnswer(invocation -> {
             Object[] args = invocation.getArguments();
             // Write some data to the response so we know that requestDispatcher.include(..) was infact invoked.
             ((MockSlingHttpServletResponse) args[1]).getOutputStream().write(expectedOutputStream);
             return null; // void method, return null
         }).when(requestDispatcher).include(any(SlingHttpServletRequest.class), any(SlingHttpServletResponse.class));
-
+        */
         ctx.registerInjectActivateService(
                 new StaticRenditionDispatcherImpl(),
                 ImmutableMap.<String, Object>builder().
@@ -151,7 +156,11 @@ public class AssetRenditionServletTest {
                                 "testing=value doesnt matter"}).
                         build());
 
-        Servlet servlet = ctx.registerInjectActivateService(new AssetRenditionServlet());
+        Servlet servlet = ctx.registerInjectActivateService(new AssetRenditionServlet(),
+                ImmutableMap.<String, Object>builder().
+                        put("allowed.parameters", new String[]{
+                                "download"}).
+                        build());
 
         ctx.request().setMethod("GET");
         ctx.requestPathInfo().setResourcePath("/content/dam/test.png");

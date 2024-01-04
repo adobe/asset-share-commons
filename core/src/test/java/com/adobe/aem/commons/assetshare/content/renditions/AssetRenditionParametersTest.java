@@ -26,6 +26,7 @@ import com.adobe.aem.commons.assetshare.content.properties.ComputedProperties;
 import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedPropertiesImpl;
 import com.day.cq.dam.commons.util.DamUtil;
 import io.wcm.testing.mock.aem.junit.AemContext;
+import org.apache.sling.api.resource.ValueMap;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -70,6 +71,18 @@ public class AssetRenditionParametersTest {
     }
 
     @Test
+    public void getters_CstorRenditionNameWithParameters() {
+        final AssetRenditionParameters actual = new AssetRenditionParameters(testAssetModel, "testing?param.pattern=.*web.*&width=100px");
+
+        assertEquals("testing", actual.getRenditionName());
+        assertEquals("test.testing.png", actual.getFileName());
+        assertFalse(actual.isDownload());
+        assertEquals(2, actual.getParameters().size());
+        assertEquals(".*web.*", actual.getParameters().get("param.pattern", String.class));
+        assertEquals("100px", actual.getParameters().get("width", String.class));
+    }
+
+    @Test
     public void getters_CstorRenditionNameAndDownload() {
         final AssetRenditionParameters actual = new AssetRenditionParameters(testAssetModel, "testing", true);
 
@@ -77,7 +90,7 @@ public class AssetRenditionParametersTest {
         assertEquals("test.testing.png", actual.getFileName());
         assertTrue(actual.isDownload());
         assertEquals(1, actual.getParameters().size());
-        assertEquals("download", actual.getParameters().get(0));
+        assertTrue(actual.getParameters().keySet().contains("download"));
     }
 
     @Test
@@ -87,10 +100,10 @@ public class AssetRenditionParametersTest {
         assertEquals("testing", actual.getRenditionName());
         assertEquals("test.testing.png", actual.getFileName());
         assertTrue(actual.isDownload());
-        assertEquals(3, actual.getParameters().size());
-        assertEquals("param1", actual.getParameters().get(0));
-        assertEquals("param2", actual.getParameters().get(1));
-        assertEquals("download", actual.getParameters().get(2));
+        //assertEquals(3, actual.getParameters().size());
+        assertTrue("download should exist in parameters", actual.getParameters().keySet().contains("download"));
+        assertTrue("param1 should exist in parameters", actual.getParameters().keySet().contains("param1"));
+        assertTrue("param2 should exist in parameters", actual.getParameters().keySet().contains("param2"));
     }
 
     @Test
@@ -103,10 +116,29 @@ public class AssetRenditionParametersTest {
         assertEquals("testing", actual.getRenditionName());
         assertEquals("test.testing.png", actual.getFileName());
         assertTrue(actual.isDownload());
-        assertEquals(3, actual.getParameters().size());
-        assertEquals("download", actual.getParameters().get(0));
-        assertEquals("param1", actual.getParameters().get(1));
-        assertEquals("param2", actual.getParameters().get(2));
+        assertEquals(3, actual.getParameters().keySet().size());
+        assertTrue("download should exist in parameters", actual.getParameters().keySet().contains("download"));
+        assertTrue("param1 should exist in parameters", actual.getParameters().keySet().contains("param1"));
+        assertTrue("param2 should exist in parameters", actual.getParameters().keySet().contains("param2"));
+    }
+
+    @Test
+    public void getters_FromRequestWithQueryParams() {
+        ctx.requestPathInfo().setExtension("renditions");
+        ctx.requestPathInfo().setSuffix("testing/download/param1/param2/asset.rendition");
+        ctx.request().setQueryString("param3=foo&param4=bar");
+
+        final AssetRenditionParameters actual = new AssetRenditionParameters(ctx.request());
+
+        assertEquals("testing", actual.getRenditionName());
+        assertEquals("test.testing.png", actual.getFileName());
+        assertTrue(actual.isDownload());
+        assertEquals(5, actual.getParameters().keySet().size());
+        assertTrue("download should exist in parameters", actual.getParameters().keySet().contains("download"));
+        assertTrue("param1 should exist in parameters", actual.getParameters().keySet().contains("param1"));
+        assertTrue("param2 should exist in parameters", actual.getParameters().keySet().contains("param2"));
+        assertEquals("param3 should exist in parameters", "foo", actual.getParameters().get("param3"));
+        assertEquals("param3 should exist in parameters", "bar", actual.getParameters().get("param4"));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -123,5 +155,30 @@ public class AssetRenditionParametersTest {
         ctx.requestPathInfo().setSuffix("testing/foo");
 
         final AssetRenditionParameters actual = new AssetRenditionParameters(ctx.request());
+    }
+
+    @Test
+    public void getParameters_onlyRenditionName() {
+        ValueMap actual = AssetRenditionParameters.getParameters("input");
+
+        assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    public void getParameters_onlyParameters() {
+        ValueMap actual = AssetRenditionParameters.getParameters("?param.pattern=.*web.*&width=100px");
+
+        assertEquals(2, actual.size());
+        assertEquals(".*web.*", actual.get("param.pattern", String.class));
+        assertEquals("100px", actual.get("width", String.class));
+    }
+
+    @Test
+    public void getParameters() {
+        ValueMap actual = AssetRenditionParameters.getParameters("testing?param.pattern=.*web.*&width=100px");
+
+        assertEquals(2, actual.size());
+        assertEquals(".*web.*", actual.get("param.pattern", String.class));
+        assertEquals("100px", actual.get("width", String.class));
     }
 }

@@ -152,7 +152,7 @@ public class AssetDeliveryRenditionDispatcherImpl extends AbstractRenditionDispa
 
         final String expression = mappings.get(parameters.getRenditionName());
         // Special case where we use a limited set of expression evaluation since Asset Delivery is limited in its configurations
-        final String renditionRedirect = getDeliveryURL(evaluateExpression(request, expression), parameters.getAsset());
+        final String renditionRedirect = getDeliveryURL(evaluateExpression(request, expression, parameters), parameters.getAsset());
 
         if (StringUtils.isNotBlank(renditionRedirect)) {
             if (log.isDebugEnabled()) {
@@ -183,7 +183,7 @@ public class AssetDeliveryRenditionDispatcherImpl extends AbstractRenditionDispa
     public AssetRendition getRendition(AssetModel assetModel, AssetRenditionParameters parameters) {
         final String expression = mappings.get(parameters.getRenditionName());
         // Special case where we use a limited set of expression evaluation since Asset Delivery is limited in its configurations
-        final String renditionRedirect = getDeliveryURL(evaluateExpression(parameters.getAsset(), expression), parameters.getAsset());
+        final String renditionRedirect = getDeliveryURL(evaluateExpression(parameters.getAsset(), expression, parameters), parameters.getAsset());
 
         if (StringUtils.isNotBlank(renditionRedirect)) {
             try {
@@ -235,17 +235,17 @@ public class AssetDeliveryRenditionDispatcherImpl extends AbstractRenditionDispa
         return Arrays.stream(ACCEPTED_MIME_TYPES).anyMatch(regex -> assetFormat.matches(regex));
     }
 
-    protected String evaluateExpression(final SlingHttpServletRequest request, String expression) {
-        final
-        Asset asset = request.getResource().adaptTo(Asset.class);
-        return evaluateExpression(asset, expression);
+    protected String evaluateExpression(final SlingHttpServletRequest request, String expression, AssetRenditionParameters assetRenditionParameters) {
+        final Asset asset = request.getResource().adaptTo(Asset.class);
+        return evaluateExpression(asset, expression, assetRenditionParameters);
     }
 
-    protected String evaluateExpression(final Asset asset, String expression) {
+    protected String evaluateExpression(final Asset asset, String expression, AssetRenditionParameters assetRenditionParameters) {
         final AssetModel assetModel = modelFactory.createModel(asset.adaptTo(Resource.class), AssetModel.class);
 
         expression = expressionEvaluator.evaluateAssetExpression(expression, assetModel);
         expression = expressionEvaluator.evaluateProperties(expression, assetModel);
+        expression = expressionEvaluator.evaluateParameterExpression(expression, assetRenditionParameters.getParameters());
 
         return expression;
     }

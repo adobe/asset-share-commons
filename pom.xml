@@ -18,7 +18,7 @@
     <groupId>com.adobe.aem.commons</groupId>
     <artifactId>assetshare</artifactId>
     <packaging>pom</packaging>
-    <version>3.8.1-SNAPSHOT</version>
+    <version>4.0.0-SNAPSHOT</version>
 
     <name>Asset Share Commons - Reactor Project</name>
     <description>asset-share-commons</description>
@@ -72,7 +72,7 @@
         <!-- the minimum AEM 6.5 version being supported -->
         <aem.classic.api.version>6.5.19.0000</aem.classic.api.version><!-- actually one of https://repo1.maven.org/maven2/io/wcm/maven/io.wcm.maven.aem-dependencies/ -->
         <!-- the minimum AEMaaCS version being supported -->
-        <aem.sdk.api.version>2023.7.12874.20230726T072051Z-230702</aem.sdk.api.version><!-- actually one of https://repo1.maven.org/maven2/com/adobe/aem/aem-sdk-api/ -->
+        <aem.sdk.api.version>2023.9.13665.20230927T063259Z-230800</aem.sdk.api.version><!-- actually one of https://repo1.maven.org/maven2/com/adobe/aem/aem-sdk-api/ -->
         <core.wcm.components.version>2.17.14</core.wcm.components.version>
         <frontend-maven-plugin.version>1.9.0</frontend-maven-plugin.version>
         <node.version>v13.7.0</node.version>
@@ -975,7 +975,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
             <dependency>
                 <groupId>org.apache.sling</groupId>
                 <artifactId>org.apache.sling.testing.osgi-mock.junit4</artifactId>
-                <version>3.3.6</version>
+                <version>3.3.8</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -987,7 +987,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
             <dependency>
                 <groupId>io.wcm</groupId>
                 <artifactId>io.wcm.testing.aem-mock.junit4</artifactId>
-                <version>5.0.0</version>
+                <version>5.1.2</version>
                 <scope>test</scope>
             </dependency>
             <!-- Require to resolve ServiceTracker in tests; else they fail -->

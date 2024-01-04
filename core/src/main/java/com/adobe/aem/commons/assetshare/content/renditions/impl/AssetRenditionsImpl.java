@@ -25,6 +25,7 @@ import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.util.ExpressionEvaluator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.factory.ModelFactory;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -76,15 +77,28 @@ public class AssetRenditionsImpl implements AssetRenditions {
     @Override
     public String evaluateExpression(final SlingHttpServletRequest request, String expression) {
         final AssetModel assetModel = modelFactory.createModel(request.getResource(), AssetModel.class);
-        return evaluateExpression(assetModel, new AssetRenditionParameters(request).getRenditionName(), expression);
+        final AssetRenditionParameters assetRenditionParameters = new AssetRenditionParameters(request);
+        return evaluateExpression(assetModel, assetRenditionParameters.getRenditionName(), expression,assetRenditionParameters.getParameters());
     }
 
     @Override
+    @Deprecated // Use evaluateExpression(final AssetModel assetModel, String renditionName, String expression, ValueMap valueMap)  instead
     public String evaluateExpression(final AssetModel assetModel, String renditionName, String expression) {
         expression = expressionEvaluator.evaluateAssetExpression(expression, assetModel);
         expression = expressionEvaluator.evaluateRenditionExpression(expression, renditionName);
         expression = expressionEvaluator.evaluateDynamicMediaExpression(expression, assetModel);
         expression = expressionEvaluator.evaluateProperties(expression, assetModel);
+
+        return expression;
+    }
+
+    @Override
+    public String evaluateExpression(final AssetModel assetModel, String renditionName, String expression, ValueMap parameters) {
+        expression = expressionEvaluator.evaluateAssetExpression(expression, assetModel);
+        expression = expressionEvaluator.evaluateRenditionExpression(expression, renditionName);
+        expression = expressionEvaluator.evaluateDynamicMediaExpression(expression, assetModel);
+        expression = expressionEvaluator.evaluateProperties(expression, assetModel);
+        expression = expressionEvaluator.evaluateParameterExpression(expression, parameters);
 
         return expression;
     }

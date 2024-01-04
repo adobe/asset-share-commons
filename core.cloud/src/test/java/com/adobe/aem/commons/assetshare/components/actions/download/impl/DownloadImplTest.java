@@ -279,7 +279,7 @@ public class DownloadImplTest {
 		//assertEquals("rendition-2-2", actual.get(1).getItems().get(1).getValue());
 	}
 
-    private class IsSameResourceByPath implements ArgumentMatcher<Resource> {
+    private static class IsSameResourceByPath implements ArgumentMatcher<Resource> {
         private final String path;
 
         public IsSameResourceByPath(String path) {

@@ -31,6 +31,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.*;
 
 /**
@@ -47,12 +49,13 @@ public final class AssetRenditionParameters {
     public static final String DOWNLOAD = "download";
     public static final String CACHE_FILENAME = "asset.rendition";
 
+    public static final String PARAMETER_RENDITION_DISPLAY_NAME = "renditionDisplayName";
+
     private final Asset asset;
     private final String renditionName;
     private final String fileName;
-    private final List<String> otherParameters;
-
-     private final ValueMap otherProperties = new ValueMapDecorator(new HashMap<>());
+    private final ValueMap otherParameters = new ValueMapDecorator(new HashMap<>());
+    private final ValueMap otherProperties = new ValueMapDecorator(new HashMap<>());
 
     public AssetRenditionParameters(final SlingHttpServletRequest request) throws IllegalArgumentException {
         final String[] segments = PathInfoUtil.getSuffixSegments(request);
@@ -76,12 +79,17 @@ public final class AssetRenditionParameters {
         // Build the download filename (for Content-Disposition) from the asset node name and rendition name.
         this.fileName = buildFileName(asset, renditionName);
 
-        // Other parameters are any optional parameters
-        this.otherParameters = new ArrayList<>();
-
+        // Other parameters are any optional parameters in the selector OR in query parameter
         for (int i = 1; i < segments.length - 1; i++) {
-            this.otherParameters.add(segments[i]);
+            String key = segments[i];
+            if (StringUtils.equals(key, DOWNLOAD)) {
+                this.otherParameters.put(key, true);
+            } else {
+                this.otherParameters.put(key, null);
+            }
         }
+
+        this.otherParameters.putAll(getParameters(request));
     }
 
     public AssetRenditionParameters(final @Nonnull AssetModel assetModel, final @Nonnull String renditionName) throws IllegalArgumentException {
@@ -96,19 +104,25 @@ public final class AssetRenditionParameters {
         this(assetModel, renditionName, download, Arrays.asList(otherParameters));
     }
 
-    public AssetRenditionParameters(final @Nonnull AssetModel assetModel, final @Nonnull String renditionName, final boolean download, final List<String> otherParameters) throws IllegalArgumentException {
-        if (StringUtils.isBlank(renditionName)) {
+    public AssetRenditionParameters(final @Nonnull AssetModel assetModel, final @Nonnull String renditionNameWithParameters, final boolean download, final List<String> otherParameters) throws IllegalArgumentException {
+        if (StringUtils.isBlank(renditionNameWithParameters)) {
             throw new IllegalArgumentException("Am asset is required");
-        } else if (StringUtils.isBlank(renditionName)) {
+        } else if (StringUtils.isBlank(renditionNameWithParameters)) {
             throw new IllegalArgumentException("A renditionName is required");
         }
 
         this.asset = DamUtil.resolveToAsset(assetModel.getResource());
-        this.renditionName = renditionName;
+        this.renditionName = StringUtils.substringBefore(renditionNameWithParameters, "?");
         this.fileName = buildFileName(asset, renditionName);
-        this.otherParameters = new ArrayList<>(otherParameters);
+
+        for (String otherParameter : otherParameters) {
+            this.otherParameters.put(otherParameter, null);
+        }
+
+        this.otherParameters.putAll(getParameters(renditionNameWithParameters));
+
         if (download) {
-            this.otherParameters.add(DOWNLOAD);
+            this.otherParameters.put(DOWNLOAD, true);
         }
     }
 
@@ -117,7 +131,7 @@ public final class AssetRenditionParameters {
     }
 
     public boolean isDownload() {
-        return otherParameters.contains(DOWNLOAD);
+        return otherParameters.containsKey(DOWNLOAD);
     }
 
     public String getFileName() {
@@ -131,10 +145,10 @@ public final class AssetRenditionParameters {
         return asset;
     }
 
-    public List<String> getParameters() {
-        return new ArrayList<>(otherParameters);
-    }
 
+    public ValueMap getParameters() {
+        return new ValueMapDecorator(otherParameters);
+    }
 
     /**
      * At this time, only "userId" is set by Asset Share Commons to this ValueMap. Other values can be set by custom implementations as needed.
@@ -153,6 +167,45 @@ public final class AssetRenditionParameters {
      */
     public void setOtherProperty(String key, Object value) {
         otherProperties.put(key, value);
+    }
+
+    public static ValueMap getParameters(SlingHttpServletRequest request) {
+        Map<String, Object> params = new TreeMap<>();
+
+        request.getParameterMap().forEach((key, value) -> {
+            params.put(key, value[0]);
+        });
+
+        return new ValueMapDecorator(params);
+    }
+
+    public static ValueMap getParameters(String input) {
+        Map<String, Object> params = new TreeMap<>();
+
+        input = StringUtils.substringAfter(input, "?");
+
+        Arrays.stream(StringUtils.split(input, "&")).spliterator().forEachRemaining(param -> {
+            final String[] keyValue = StringUtils.split(param, "=");
+            if (keyValue.length == 2) {
+                String value = keyValue[1];
+                try {
+                    value = URLDecoder.decode(value, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    log.warn("Unable to decode Asset Rendition query parameter value [ {} ]. Using encoded value.", value, e);
+                }
+                params.putIfAbsent(keyValue[0], value);
+            }
+        });
+
+        return new ValueMapDecorator(params);
+    }
+
+    public static String getRenditionName(String input) {
+        if (StringUtils.contains(input, "?")) {
+            return StringUtils.substringBefore(input, "?");
+        } else {
+            return input;
+        }
     }
 
     protected String buildFileName(final Asset asset, final String renditionName) {

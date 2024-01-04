@@ -1,6 +1,7 @@
 package com.adobe.aem.commons.assetshare.content.renditions.download.impl;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.adobe.aem.commons.assetshare.content.impl.AssetModelImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsDownloadOrchestrator;
@@ -9,6 +10,8 @@ import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionDi
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
 import com.adobe.aem.commons.assetshare.testing.MockAssetModels;
+import com.adobe.aem.commons.assetshare.util.ExpressionEvaluator;
+import com.adobe.aem.commons.assetshare.util.impl.ExpressionEvaluatorImpl;
 import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.commons.io.IOUtils;
@@ -18,6 +21,7 @@ import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.request.RequestDispatcherOptions;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.wrappers.ValueMapDecorator;
+import org.apache.sling.commons.mime.MimeTypeService;
 import org.apache.sling.models.factory.ModelFactory;
 import org.apache.sling.testing.mock.sling.servlet.MockRequestDispatcherFactory;
 import org.junit.Before;
@@ -56,6 +60,9 @@ public class AssetRenditionsZipperImplTest {
     @Mock
     HttpClientBuilderFactory httpClientBuilderFactory;
 
+    @Mock
+    private MimeTypeService mimeTypeService;
+
     @Before
     public void setUp() throws Exception {
         ctx.load().json(getClass().getResourceAsStream("AssetRenditionsZipperImplTest.json"), "/content");
@@ -69,10 +76,13 @@ public class AssetRenditionsZipperImplTest {
         ctx.registerService(ModelFactory.class, modelFactory, org.osgi.framework.Constants.SERVICE_RANKING,
                 Integer.MAX_VALUE);
 
+        ctx.addModelsForClasses(AssetModelImpl.class);
+
+        ctx.registerService(MimeTypeService.class, mimeTypeService);
+        ctx.registerInjectActivateService(new ExpressionEvaluatorImpl());
+
         ctx.registerService(AssetRenditionDispatchers.class, new AssetRenditionDispatchersImpl());
-
-        ctx.registerService(AssetRenditions.class, new AssetRenditionsImpl());
-
+        ctx.registerInjectActivateService(new AssetRenditionsImpl());
         ctx.registerService(HttpClientBuilderFactory.class, httpClientBuilderFactory);
 
         ctx.registerInjectActivateService(
@@ -86,6 +96,7 @@ public class AssetRenditionsZipperImplTest {
                         build());
 
         ctx.registerInjectActivateService(new AssetRenditionStreamerImpl());
+        ctx.registerInjectActivateService(new ExpressionEvaluatorImpl());
 
         ctx.request().setRequestDispatcherFactory(new MockRequestDispatcherFactory() {
             @Override

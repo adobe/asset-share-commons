@@ -22,6 +22,7 @@ package com.adobe.aem.commons.assetshare.content.renditions.download.async.impl;
 import com.adobe.aem.commons.assetshare.components.actions.download.impl.DownloadImpl;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRendition;
+import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.download.DownloadExtensionResolver;
 import com.adobe.aem.commons.assetshare.content.renditions.download.async.DownloadArchiveNamer;
@@ -30,6 +31,7 @@ import com.adobe.cq.dam.download.api.DownloadTarget;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.commons.mime.MimeTypeService;
 import org.osgi.service.component.annotations.*;
 
@@ -57,7 +59,9 @@ public class ExpressionDownloadArchiveNamer implements DownloadArchiveNamer {
     public String getArchiveFilePath(final AssetModel assetModel, final AssetRendition assetRendition, final DownloadTarget downloadTarget) {
         final ResourceResolver resourceResolver = assetModel.getResource().getResourceResolver();
         final Resource downloadComponentResource = resourceResolver.getResource(downloadTarget.getParameter(DownloadTargetParameters.DOWNLOAD_COMPONENT_PATH.toString(), String.class));
-        final String renditionName = downloadTarget.getParameter(DownloadTargetParameters.RENDITION_NAME.toString(), String.class);
+        final String renditionNameWithParameters = downloadTarget.getParameter(DownloadTargetParameters.RENDITION_NAME.toString(), String.class);
+        final ValueMap renditionParameters = AssetRenditionParameters.getParameters(renditionNameWithParameters);
+        final String renditionName = renditionParameters.get(AssetRenditionParameters.PARAMETER_RENDITION_DISPLAY_NAME, AssetRenditionParameters.getRenditionName(renditionNameWithParameters));
 
         if (downloadComponentResource == null || renditionName == null) {
             return null;
@@ -82,7 +86,7 @@ public class ExpressionDownloadArchiveNamer implements DownloadArchiveNamer {
         final String expression = downloadComponentResource.getValueMap().get(DownloadImpl.PN_ARCHIVE_FILE_NAME_EXPRESSION, DownloadImpl.DEFAULT_ARCHIVE_FILE_NAME_EXPRESSION);
 
         if (StringUtils.isNotBlank(expression)) {
-           return assetRenditions.evaluateExpression(assetModel, renditionName, expression) + StringUtils.defaultIfBlank(extension, "");
+           return assetRenditions.evaluateExpression(assetModel, renditionName, expression, AssetRenditionParameters.getParameters(renditionNameWithParameters)) + StringUtils.defaultIfBlank(extension, "");
         } else {
             return null;
         }

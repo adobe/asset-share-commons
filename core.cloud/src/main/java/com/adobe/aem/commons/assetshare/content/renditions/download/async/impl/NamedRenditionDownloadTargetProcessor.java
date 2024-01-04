@@ -81,19 +81,23 @@ public class NamedRenditionDownloadTargetProcessor implements DownloadTargetProc
     public Collection<DownloadFile> processTarget(DownloadTarget target, ResourceResolver resourceResolver) throws DownloadException {
         final List<DownloadFile> downloadFiles = new ArrayList<>();
 
+        log.error("!!!!! processTarget !!!!!");
+
         final String path = target.getParameter(DownloadTargetParameters.ASSET_PATH.toString(), String.class);
-        final String renditionName = target.getParameter(DownloadTargetParameters.RENDITION_NAME.toString(), String.class);
+        final String renditionNameWithParameters = target.getParameter(DownloadTargetParameters.RENDITION_NAME.toString(), String.class);
         final String archiveName = target.getParameter(DownloadTargetParameters.ARCHIVE_NAME.toString(), String.class);
         final String userId = target.getParameter(DownloadTargetParameters.USER_ID.toString(), String.class);
 
         final Resource resource = resourceResolver.getResource(path);
         final AssetModel assetModel = resource.adaptTo(AssetModel.class);
-        final AssetRenditionParameters assetRenditionParameters = new AssetRenditionParameters(assetModel, renditionName);
+
+        final AssetRenditionParameters assetRenditionParameters = new AssetRenditionParameters(assetModel, renditionNameWithParameters);
+
         assetRenditionParameters.setOtherProperty("userId", userId);
 
         for (final AssetRenditionDispatcher assetRenditionDispatcher : assetRenditionDispatchers.getAssetRenditionDispatchers()) {
 
-            if (assetRenditionDispatcher.accepts(assetModel, renditionName)) {
+            if (assetRenditionDispatcher.accepts(assetModel, assetRenditionParameters.getRenditionName())) {
                 if (log.isDebugEnabled()) {
                     log.debug("Setting DownloadTarget for [ {} ] using AssetRenditionDispatcher [ {} ]", assetModel.getPath(), assetRenditionDispatcher.getName());
                 }
@@ -107,6 +111,8 @@ public class NamedRenditionDownloadTargetProcessor implements DownloadTargetProc
                     if (log.isDebugEnabled()) {
                         log.debug("Obtained AssetRendition [ {} ] details for [ {} ]", assetRendition.getBinaryUri(), assetModel.getPath());
                     }
+
+                    log.error(">>>> archive file path: {}", downloadArchiveNamer.getArchiveFilePath(assetModel, assetRendition, target));
 
                     downloadFileParameters.put(PARAM_ARCHIVE_PATH, downloadArchiveNamer.getArchiveFilePath(assetModel, assetRendition, target));
                     downloadFiles.add(apiFactory.createDownloadFile(assetRendition.getSize(),
@@ -129,7 +135,7 @@ public class NamedRenditionDownloadTargetProcessor implements DownloadTargetProc
 
             } else {
                 if (log.isDebugEnabled()) {
-                    log.debug("assetRenditionDispatcher [ {} ] does not accept AssetModel [ {} ] and renditionName [ {} ]", assetRenditionDispatcher.getClass().getName(), assetModel.getPath(), renditionName);
+                    log.debug("assetRenditionDispatcher [ {} ] does not accept AssetModel [ {} ] and renditionName [ {} ]", assetRenditionDispatcher.getClass().getName(), assetModel.getPath(), renditionNameWithParameters);
                 }
             }
         }

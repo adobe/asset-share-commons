@@ -22,6 +22,7 @@ package com.adobe.aem.commons.assetshare.util;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRendition;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
+import org.apache.sling.api.resource.ValueMap;
 import org.osgi.annotation.versioning.ProviderType;
 
 import java.time.ZonedDateTime;
@@ -69,6 +70,8 @@ public interface ExpressionEvaluator {
     String evaluateDynamicMediaExpression(String expression, AssetModel assetModel);
 
     String evaluateAssetExpression(String expression, AssetModel assetModel);
+
+    String evaluateParameterExpression(String expression, ValueMap parameters);
 
     String evaluateRenditionExpression(String expression, String renditionName);
 
