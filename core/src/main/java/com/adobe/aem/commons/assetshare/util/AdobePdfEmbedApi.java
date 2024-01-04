@@ -1,7 +1,7 @@
 /*
  * Asset Share Commons
  *
- * Copyright (C) 2017 Adobe
+ * Copyright (C) 2024 Adobe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,15 @@
  *
  */
 
-@Version("1.16.0")
 package com.adobe.aem.commons.assetshare.util;
 
-import org.osgi.annotation.versioning.Version;
+import org.osgi.annotation.versioning.ProviderType;
 
+@ProviderType
+public interface AdobePdfEmbedApi {
+
+    /**
+     * @return the Adobe PDF Embed API Client ID.
+     */
+    String getClientId();
+}
