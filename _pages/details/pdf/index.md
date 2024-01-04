@@ -110,7 +110,7 @@ Enable linearization to optimize PDFs for faster viewing.
 
 ### Policy Dialog
 
-![PDF - Policy - dialog](./images/dialog_policy.png)
+![PDF - Policy - dialog](./images/policy.png)
 
 The Policy Dialog is configured on the PDF component's policy via the Editable Templates.
 
