@@ -1,6 +1,16 @@
 # 📑 Changelog
 
 
+## [asset-share-commons-3.8.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.8.0)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.7.2...asset-share-commons-3.8.0)
+
+### 📦 Uncategorized
+
+- v3.8.0 [#1070](https://github.com/adobe/asset-share-commons/pull/1070) (davidjgonzalez)
+- Added OSGi configuration for Adobe Embed PDF API client ID [#1069](https://github.com/adobe/asset-share-commons/pull/1069) (davidjgonzalez)
+
+
 ## [asset-share-commons-3.7.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.7.2)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.7.0...asset-share-commons-3.7.2)
