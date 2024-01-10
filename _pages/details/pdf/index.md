@@ -122,11 +122,13 @@ A Client ID can be obtained from the [Adobe PDF Embed API Credentials](https://a
 
 Since v3.8.0, the client ID can optionally be provided via OSGI configuration, such that it can be maintained in Git. Client IDs provided via Policy will supersede any provided via OSGi configuration.
 
-`/apps/my-app/osgiconfig/config.xxx/com.adobe.aem.commons.assetshare.util.impl.AdobePdfEmbedApiImpl.cfg.json`
+```
+/apps/my-app/osgiconfig/config.xxx/com.adobe.aem.commons.assetshare.util.impl.AdobePdfEmbedApiImpl.cfg.json
+```
 
 ```json
 {
-   "config.id": "abcdef0123456789"
+   "client.id": "abcdef0123456789"
 }
 ```
 
