@@ -38,7 +38,7 @@ Specifies the type of metadata that is intended to be displayed. Several types a
 
 ![Computed Property Metadata Type - Dialog](./images/dialog-computed-properties.png)
 
-A computed property can be selected from the Computed Metadata Properties dropdown. If a computed property is used the Property Name selection is ignored. More information about available computed properties can be found [here](asset-share-commons/pages/development/computed-properties/).
+A computed property can be selected from the Computed Metadata Properties dropdown. If a computed property is used the Property Name selection is ignored. More information about available computed properties can be found [here](/asset-share-commons/pages/development/computed-properties/).
 
 ### Dialog / Configuration / Metadata Type: Text
 
