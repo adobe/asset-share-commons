@@ -30,8 +30,10 @@ import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.WCMMode;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -73,14 +75,20 @@ public class JsonResolverImpl implements JsonResolver {
             } else if (resource != null && StringUtils.startsWithAny(path, "/etc/acs-commons/lists/")) {
                 PageManager pageManager = request.getResourceResolver().adaptTo(PageManager.class);
                 Page page = pageManager.getContainingPage(path);
+
                 if (page != null) {
-                    path = page.getPath() + "/jcr:content.list.json";
+                    JsonArray jsonArray = new JsonArray();
+                    Resource list = page.getContentResource("list");
+                    list.getChildren().forEach(child -> {
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("text", child.getValueMap().get("jcr:title", String.class));
+                        jsonObject.addProperty("value", child.getValueMap().get("value", String.class));
+                        jsonArray.add(jsonObject);
+                    });
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.add("options", jsonArray);
+                    return jsonObject;
                 }
-                // Add the Generic List options to a JSON Object under an options key.
-                JsonElement jsonArray = getJsonAsInternalRequest(request, response, path);
-                JsonObject jsonObject = new JsonObject();
-                jsonObject.add("options", jsonArray);
-                return jsonObject;
             } else {
                 result = getJsonAsInternalRequest(request, response, path);
             }
@@ -167,8 +175,24 @@ public class JsonResolverImpl implements JsonResolver {
     }
 
     private JsonElement getJsonElement(InputStream inputStream) {
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-        return new Gson().fromJson(reader, JsonElement.class);
+        String jsonString = null;
+        try {
+            jsonString = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            log.warn("Could not parse JSON from input stream to a string", e);
+            return null;
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Resolved to JSON string: {}", jsonString);
+        }
+
+        JsonElement jsonElement = new Gson().fromJson(jsonString, JsonElement.class);
+
+        if (log.isDebugEnabled()) {
+            log.debug("Resolved to JSON element: {}", jsonElement.getAsString());
+        }
+
+        return jsonElement;
     }
 }
