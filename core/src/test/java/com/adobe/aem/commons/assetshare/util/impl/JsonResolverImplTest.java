@@ -37,7 +37,7 @@ public class JsonResolverImplTest {
     @Before
     public void setUp() throws Exception {
         ctx.load().json(getClass().getResourceAsStream("JsonResolverImpl.json"), "/content");
-
+        ctx.load().json(getClass().getResourceAsStream("JsonResolverImpl--generic-list.json"), "/etc/acs-commons/lists");
 
         ctx.load().binaryFile(getClass().getResourceAsStream("JsonResolverImpl__file--damAsset.json"),
                 "/content/dam/test-dam-asset.json/jcr:content/renditions/original");
@@ -81,6 +81,20 @@ public class JsonResolverImplTest {
 
         assertNotNull(actual);
         assertEquals("internal include", actual.getAsJsonObject().get("test").getAsString());
+    }
+
+    @Test
+    public void resolveGenericList() {
+        JsonResolver jsonResolver = ctx.getService(JsonResolver.class);
+
+        JsonElement actual = jsonResolver.resolveJson(ctx.request(), ctx.response(), "/etc/acs-commons/lists/test");
+
+        assertNotNull(actual);
+        assertEquals(2, actual.getAsJsonObject().getAsJsonArray("options").size());
+        assertEquals("Item 1", actual.getAsJsonObject().getAsJsonArray("options").get(0).getAsJsonObject().get("text").getAsString());
+        assertEquals("1", actual.getAsJsonObject().getAsJsonArray("options").get(0).getAsJsonObject().get("value").getAsString());
+        assertEquals("Item 2", actual.getAsJsonObject().getAsJsonArray("options").get(1).getAsJsonObject().get("text").getAsString());
+        assertEquals("2", actual.getAsJsonObject().getAsJsonArray("options").get(1).getAsJsonObject().get("value").getAsString());
     }
 }
 

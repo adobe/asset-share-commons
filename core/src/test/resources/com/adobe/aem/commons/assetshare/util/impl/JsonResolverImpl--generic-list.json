@@ -1,0 +1,26 @@
+{
+
+        "test": {
+          "jcr:primaryType": "cq:Page",
+          "jcr:title": "Generic list page",
+          "jcr:content": {
+            "jcr:primaryType": "cq:PageContent",
+            "sling:resourceType": "acs-commons/components/utilities/genericlist",
+            "list": {
+              "jcr:primaryType": "nt:unstructured",
+              "item1": {
+                "jcr:primaryType": "nt:unstructured",
+                "jcr:title": "Item 1",
+                "value": "1"
+              },
+              "item2": {
+                "jcr:primaryType": "nt:unstructured",
+                "jcr:title": "Item 2",
+                "value": "2"
+              }
+            }
+          }
+        }
+      }
+
+
