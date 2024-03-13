@@ -51,14 +51,16 @@
                     </a>
                 </sly>
 
+                <!--/* Mobile: Downloads */-->
                 <a class="item 12 cmp-mobile__downloads"
-                        data-sly-test="${!config.aemClassic && (config.downloadEnabled || config.downloadEnabledCart)}"
-                        data-asset-share-id="show-downloads">
+                   data-sly-test="${!config.aemClassic && (config.downloadEnabled || config.downloadEnabledCart)}"
+                   data-asset-share-id="show-downloads">
                     <i class="big download icon"></i>
                     <div class="floating ui primary circular label"
                          data-asset-share-id="downloads-count"></div>
                 </a>
 
+                <!--/* Mobile: Downloads */-->
                 <a class="item 12 cmp-mobile__cart"
                         data-sly-test="${config.cartEnabled}"
                         data-asset-share-id="show-cart">

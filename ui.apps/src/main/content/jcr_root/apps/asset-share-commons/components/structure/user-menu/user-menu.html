@@ -35,15 +35,16 @@
                 <div class="ui secondary right icon menu"
                      style="float:right">
 
-                    <!--/* Downloads */-->
-                    <a class="item" data-sly-test="${config.downloadsPanelEnabled}"
-                        data-asset-share-id="show-downloadspanel"> <i
+                    <!--/* Desktop: Downloads - Only show on AEM as a Cloud Service when downloads are enabled */-->
+                    <a class="item"
+                        data-sly-test="${!config.aemClassic && (config.downloadEnabled || config.downloadEnabledCart)}"
+                        data-asset-share-id="show-downloads"> <i
                         class="big download icon"></i>
                         <div class="floating ui primary circular label"
                             data-asset-share-id="downloads-count"></div>
                     </a>
 
-                    <!--/* Cart */-->
+                    <!--/* Desktop: Cart */-->
                     <a class="item"
                        data-sly-test="${config.cartEnabled}"
                        data-asset-share-id="show-cart">

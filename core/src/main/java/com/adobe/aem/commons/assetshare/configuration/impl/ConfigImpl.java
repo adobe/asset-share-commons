@@ -246,7 +246,7 @@ public class ConfigImpl implements Config {
 
         return false;
     }
-
+    
     @Override
     public boolean isCartEnabled() {
         return properties.get(PN_CART_ENABLED, false) &&
