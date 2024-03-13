@@ -1,6 +1,20 @@
 # 📑 Changelog
 
 
+## [asset-share-commons-3.8.4](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.8.4)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.8.2...asset-share-commons-3.8.4)
+
+### 🐛 Bug fixes
+
+- Resolves issue #1095 where downloads icon is not showing properly [#1096](https://github.com/adobe/asset-share-commons/pull/1096) (davidjgonzalez)
+
+### 📦 Uncategorized
+
+- v.3.8.4 [#1097](https://github.com/adobe/asset-share-commons/pull/1097) (davidjgonzalez)
+- Bump softprops/action-gh-release from 1 to 2 [#1094](https://github.com/adobe/asset-share-commons/pull/1094) (dependabot[bot])
+
+
 ## [asset-share-commons-3.8.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.8.2)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.8.0...asset-share-commons-3.8.2)
