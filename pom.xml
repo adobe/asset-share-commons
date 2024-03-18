@@ -193,7 +193,7 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
                     <!-- DO NOT upgrade this version as it will break how Cloud Manager resolves symbolic links -->
-                    <version>3.6.0</version>
+                    <version>3.7.0</version>
                 </plugin>
                 <!-- Maven Clean Plugin -->
                 <plugin>
