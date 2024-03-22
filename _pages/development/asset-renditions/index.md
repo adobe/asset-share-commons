@@ -58,10 +58,12 @@ There are 2 provided `AssetRenditionDispatcher` configuration factory implementa
 
 **Static rendition mappings** are multi-value fields in the form:
 
-    <rendition-name>=<static rendition node-name pattern>
-     original=original
-     web=cq5dam\.web\..+
-     pdf=custom-print-rendition.pdf
+```
+<rendition-name>=<static rendition node-name pattern>
+original=original
+web=cq5dam\.web\..+
+pdf=custom-print-rendition.pdf
+```
 
 #### Example OSGi factory configuration
 
@@ -69,14 +71,16 @@ There are 2 provided `AssetRenditionDispatcher` configuration factory implementa
 
 #### Example sling:OsgiConfig definition
 
-    <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
-              jcr:primaryType="sling:OsgiConfig"
-              service.ranking="-10001"
-              label="Static Image Renditions"
-              name="asset-share-commons-static-image-renditions"
-              types="[image]"
-              rendition.mappings="[web=^cq5dam\\.web\\.\\d+\\.\\d+\\..+]"
-    />
+```
+ <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+           jcr:primaryType="sling:OsgiConfig"
+           service.ranking="-10001"
+           label="Static Image Renditions"
+           name="asset-share-commons-static-image-renditions"
+           types="[image]"
+           rendition.mappings="[web=^cq5dam\\.web\\.\\d+\\.\\d+\\..+]"
+ />
+```
 
 Review the example XML definition at [com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl-StaticImageRenditions.xml](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/blob/develop/ui.apps/src/main/content/jcr_root/apps/asset-share-commons/config/com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl-StaticImageRenditions.xml)
 
@@ -96,11 +100,13 @@ Review the example XML definition at [com.adobe.aem.commons.assetshare.content.r
 
 *Rendition Mappings* are multi-value fields in the form:
 
-    <rendition-name>=<internal url>
-    placeholder=/content/dam/placeholder.jpg
-    card=${asset.path}.thumb.320.320.jpg
-    list=${asset.path}.thumb.100.100.jpg
-    hero=${asset.path}.thumb.2400.2400.${asset.extension}
+```
+ <rendition-name>=<internal url>
+ placeholder=/content/dam/placeholder.jpg
+ card=${asset.path}.thumb.320.320.jpg
+ list=${asset.path}.thumb.100.100.jpg
+ hero=${asset.path}.thumb.2400.2400.${asset.extension}
+```
 
 Supported "variables" in the `rendition.types` field are as follows:
 * `${asset.path}` = the asset's full, absolute path
@@ -120,14 +126,16 @@ Supported "variables" in the `rendition.types` field are as follows:
 
 #### Example sling:OsgiConfig definition
 
-    <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
-              jcr:primaryType="sling:OsgiConfig"
-              service.ranking="-9001"
-              label="Search Results"
-              name="asset-share-commons-search-results"
-              hidden="{Boolean}true"
-              rendition.mappings="[card=${asset.path}.thumb.319.319.jpg,list=${asset.path}.thumb.140.140.jpg]"
-    />
+```
+ <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+           jcr:primaryType="sling:OsgiConfig"
+           service.ranking="-9001"
+           label="Search Results"
+           name="asset-share-commons-search-results"
+           hidden="{Boolean}true"
+           rendition.mappings="[card=${asset.path}.thumb.319.319.jpg,list=${asset.path}.thumb.140.140.jpg]"
+ />
+```
 
 Review the example XML definition at [com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.InternalRedirectRenditionDispatcherImpl-SearchResults.xml](https://github.com/Adobe-Marketing-Cloud/asset-share-commons/blob/develop/ui.apps/src/main/content/jcr_root/apps/asset-share-commons/config/com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.InternalRedirectRenditionDispatcherImpl-SearchResults.xml)
 
@@ -149,9 +157,11 @@ Review the example XML definition at [com.adobe.aem.commons.assetshare.content.r
 
 *Rendition Mappings* are multi-value fields in the form:
 
-    <rendition-name>=<external url>
-    grayscale-preset=${dm.api-server}is/image/${dm.file}?$graycale$
-    smart-crop-medium=${dm.api-server}is/image/${dm.file}:Medium
+```
+ <rendition-name>=<external url>
+ grayscale-preset=${dm.api-server}is/image/${dm.file}?$graycale$
+ smart-crop-medium=${dm.api-server}is/image/${dm.file}:Medium
+```
 
 Supported "variables" in the `rendition.types` field are as follows:
 * `${asset.path}` = the asset's full, absolute path
@@ -167,21 +177,22 @@ Supported "variables" in the `rendition.types` field are as follows:
 
 #### Example OSGi Configuration definition (using the modern .cfg.json syntax)
 
-   {
-       "service.ranking": -9001,
-       label: "Dynamic Media renditions",
-       name: "asset-share-commons-example-dynamic-media",
-       hidden: false,
-       redirect: 301,
-       "rendition.mappings": [ 
+```
+{
+    "service.ranking": -9001,
+    label: "Dynamic Media renditions",
+    name: "asset-share-commons-example-dynamic-media",
+    hidden: false,
+    redirect: 301,
+    "rendition.mappings": [ 
+      "grayscale-preset=${dm.api-server}is/image/${dm.file}?$grayscale$",
+      "smart-crop-medium=${dm.api-server}is/image/${dm.file}:Medium",
+      "cmyk-preset=${dm.api-server}is/image/${dm.file}?$cmyk$?extension=png",
+      "foo=http://foo.com/render?name=${asset.name}&format=tiff&extension=tif
 
-         "grayscale-preset=${dm.api-server}is/image/${dm.file}?$graycale$",
-         "smart-crop-medium=${dm.api-server}is/image/${dm.file}:Medium",
-         "cmyk-preset=${dm.api-server}is/image/${dm.file}?$cmyk$?extension=png",
-         "foo=http://foo.com/render?name=${asset.name}&format=tiff&extension=tif
-
-       ]
-   }
+    ]
+}
+```
 
 Note that the last 2 mappings `cmyk-preset` and `foo` have an `extension` query parameter set. This is a specially named query parameter ASC will itercept and will use as the extension of the downloaded file. This is helpfulp when no variables can be used to determine the file type at the "end of the" external request (such as Dynamic Media). 
 
@@ -281,19 +292,21 @@ In order to configure AEM Dispatcher to handle Asset Rendition URLs gracefully, 
 
 Available Asset Renditions can be exposed in Dialogs for author selection via the use of a Granite UI datasource, using the `sling:resourceType` of `asset-share-commons/data-sources/asset-renditions`, for example:
 
-     <asset-rendition
-            jcr:primaryType="nt:unstructured"
-            sling:resourceType="granite/ui/components/coral/foundation/form/select"
-            emptyText="Select an asset rendition to display"
-            fieldDescription="Select the rendition to use."
-            fieldLabel="Rendition"
-            excludeAssetRenditions="[original]
-            allowedAssetRenditionTypes="[image]"
-            name="./renditionName">
-        <datasource
-                jcr:primaryType="nt:unstructured"
-                sling:resourceType="asset-share-commons/data-sources/asset-renditions"/>
-    </asset-rendition>
+```
+<asset-rendition
+      jcr:primaryType="nt:unstructured"
+      sling:resourceType="granite/ui/components/coral/foundation/form/select"
+      emptyText="Select an asset rendition to display"
+      fieldDescription="Select the rendition to use."
+      fieldLabel="Rendition"
+      excludeAssetRenditions="[original]
+      allowedAssetRenditionTypes="[image]"
+      name="./renditionName">
+  <datasource
+          jcr:primaryType="nt:unstructured"
+          sling:resourceType="asset-share-commons/data-sources/asset-renditions"/>
+</asset-rendition>
+```
 
 The Asset Renditions names can be controlled via the following mechanisms:
 
