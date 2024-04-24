@@ -156,6 +156,11 @@ AssetShare.Search = (function (window, $, ns, ajax) {
                 search(e);
             }
         });
+
+        // Handle navigation back/forward on search page
+        window.addEventListener('popstate', function(event) {
+            if (getForm()) { window.location.reload(); }
+        });
     }());
 
     return {
