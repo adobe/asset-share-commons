@@ -129,21 +129,11 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
     public List<OptionItem> getItems() {
         if (items == null) {
             final ValueMap initialValues = getInitialValues();
-            final List<OptionItem> processedOptionItems = new ArrayList<>();
             final boolean useDefaultSelected = !isParameterizedSearchRequest();
 
-            List<OptionItem> optionItems = new ArrayList<>();
+            List<OptionItem> processedOptionItems = new ArrayList<>();
 
-            if (StringUtils.equalsIgnoreCase("json", source)) {
-                JsonElement jsonElement = jsonResolver.resolveJson(request, response, jsonSource);
-                if (jsonElement != null) {
-                    optionItems = getOptionItemsFromJson(jsonElement);
-                }
-            } else {
-                optionItems = coreOptions.getItems();
-            }
-
-            optionItems.stream()
+            getOptionItems().stream()
                     .forEach(optionItem -> {
                         if (PredicateUtil.isOptionInInitialValues(optionItem, initialValues)) {
                             processedOptionItems.add(new SelectedOptionItem(optionItem));
@@ -158,6 +148,20 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
         }
 
         return items;
+    }
+
+    private List<OptionItem> getOptionItems() {
+        List<OptionItem> optionItems = new ArrayList<>();
+
+        if (StringUtils.equalsIgnoreCase("json", source)) {
+            JsonElement jsonElement = jsonResolver.resolveJson(request, response, jsonSource);
+            if (jsonElement != null) {
+                optionItems = getOptionItemsFromJson(jsonElement);
+            }
+        } else {
+            optionItems = coreOptions.getItems();
+        }
+        return optionItems;
     }
 
     public Type getType() {
@@ -206,7 +210,8 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
 
     @Override
     public boolean isReady() {
-        return getItems().size() > 0;
+        // Do NOT call getItems() the group is not initialized yet.
+        return getOptionItems().size() > 0;
     }
 
     @Override
@@ -288,6 +293,8 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
 
         return values;
     }
+
+
 
 
     protected class TextValueJsonOption implements OptionItem {
