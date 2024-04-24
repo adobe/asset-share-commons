@@ -1,6 +1,25 @@
 # 📑 Changelog
 
 
+## [asset-share-commons-3.8.6](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.8.6)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.8.4...asset-share-commons-3.8.6)
+
+### 🐛 Bug fixes
+
+- Added missing cq: namespace [#1111](https://github.com/adobe/asset-share-commons/pull/1111) (davidjgonzalez)
+- #117 - Fixed issue with property predicate breaking initial state due… [#1118](https://github.com/adobe/asset-share-commons/pull/1118) (davidjgonzalez)
+- Handle using the back/forward button on the search page [#1120](https://github.com/adobe/asset-share-commons/pull/1120) (davidjgonzalez)
+
+### 📦 Uncategorized
+
+- v.3.8.6 release [#1121](https://github.com/adobe/asset-share-commons/pull/1121) (davidjgonzalez)
+- Bump org.apache.maven.plugins:maven-clean-plugin from 3.3.1 to 3.3.2 [#1101](https://github.com/adobe/asset-share-commons/pull/1101) (dependabot[bot])
+- Bump org.apache.maven.plugins:maven-enforcer-plugin from 3.1.0 to 3.4.1 [#1102](https://github.com/adobe/asset-share-commons/pull/1102) (dependabot[bot])
+- Bump org.apache.maven.plugins:maven-assembly-plugin from 3.6.0 to 3.7.1 [#1107](https://github.com/adobe/asset-share-commons/pull/1107) (dependabot[bot])
+- Bump org.slf4j:slf4j-simple from 1.7.36 to 2.0.13 [#1114](https://github.com/adobe/asset-share-commons/pull/1114) (dependabot[bot])
+
+
 ## [asset-share-commons-3.8.4](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.8.4)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.8.2...asset-share-commons-3.8.4)
