@@ -18,7 +18,7 @@
     <groupId>com.adobe.aem.commons</groupId>
     <artifactId>assetshare</artifactId>
     <packaging>pom</packaging>
-    <version>3.8.5-SNAPSHOT</version>
+    <version>3.8.6</version>
 
     <name>Asset Share Commons - Reactor Project</name>
     <description>asset-share-commons</description>
@@ -88,7 +88,7 @@
         <connection>scm:git:https://github.com/adobe/asset-share-commons.git</connection>
         <developerConnection>scm:git:https://github.com/adobe/asset-share-commons.git</developerConnection>
         <url>https://github.com/adobe/asset-share-commons/tree/main</url>
-        <tag>HEAD</tag>
+        <tag>asset-share-commons-3.8.6</tag>
     </scm>
 
     <build>
