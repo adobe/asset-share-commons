@@ -136,7 +136,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.4.1</version>
                 <executions>
                     <execution>
                         <id>enforce-maven</id>
@@ -193,13 +193,13 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
                     <!-- DO NOT upgrade this version as it will break how Cloud Manager resolves symbolic links -->
-                    <version>3.6.0</version>
+                    <version>3.7.1</version>
                 </plugin>
                 <!-- Maven Clean Plugin -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
-                    <version>3.3.1</version>
+                    <version>3.3.2</version>
                 </plugin>
                 <!-- BND Maven Plugin -->
                 <plugin>
@@ -963,7 +963,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-simple</artifactId>
-                <version>1.7.36</version>
+                <version>2.0.13</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
