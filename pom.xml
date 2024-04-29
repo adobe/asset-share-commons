@@ -987,7 +987,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
             <dependency>
                 <groupId>io.wcm</groupId>
                 <artifactId>io.wcm.testing.aem-mock.junit4</artifactId>
-                <version>5.0.0</version>
+                <version>5.5.2</version>
                 <scope>test</scope>
             </dependency>
             <!-- Require to resolve ServiceTracker in tests; else they fail -->
