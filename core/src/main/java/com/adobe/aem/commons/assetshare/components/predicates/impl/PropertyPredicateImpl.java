@@ -23,15 +23,19 @@ package com.adobe.aem.commons.assetshare.components.predicates.impl;
 import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.DefaultValuesPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.PropertyPredicate;
+import com.adobe.aem.commons.assetshare.components.predicates.impl.options.CoreComponentsOptionItem;
 import com.adobe.aem.commons.assetshare.components.predicates.impl.options.SelectedOptionItem;
 import com.adobe.aem.commons.assetshare.components.predicates.impl.options.UnselectedOptionItem;
 import com.adobe.aem.commons.assetshare.search.impl.predicateevaluators.PropertyValuesPredicateEvaluator;
 import com.adobe.aem.commons.assetshare.util.JsonResolver;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
+import com.adobe.aem.commons.assetshare.util.impl.responses.DiscardingResponseWrapper;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.export.json.ExporterConstants;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
+import com.adobe.granite.ui.components.ds.DataSource;
+import com.adobe.granite.ui.components.ds.SimpleDataSource;
 import com.day.cq.search.PredicateConverter;
 import com.day.cq.search.PredicateGroup;
 import com.day.cq.search.eval.JcrPropertyPredicateEvaluator;
@@ -43,6 +47,7 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
+import org.apache.sling.api.request.RequestDispatcherOptions;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.*;
@@ -52,12 +57,13 @@ import org.apache.sling.models.annotations.injectorspecific.SlingObject;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import java.io.IOException;
+import java.util.*;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
@@ -88,6 +94,10 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
     @Self
     @Required
     private Options coreOptions;
+
+    @ValueMapValue
+    @Nullable
+    private String datasourceRT;
 
     @OSGiService
     private JsonResolver jsonResolver;
@@ -129,11 +139,26 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
     public List<OptionItem> getItems() {
         if (items == null) {
             final ValueMap initialValues = getInitialValues();
+            final List<OptionItem> processedOptionItems = new ArrayList<>();
             final boolean useDefaultSelected = !isParameterizedSearchRequest();
 
-            List<OptionItem> processedOptionItems = new ArrayList<>();
+            List<OptionItem> optionItems = new ArrayList<>();
 
-            getOptionItems().stream()
+            if (StringUtils.equalsIgnoreCase("json", source)) {
+                JsonElement jsonElement = jsonResolver.resolveJson(request, response, jsonSource);
+                if (jsonElement != null) {
+                    optionItems = getOptionItemsFromJson(jsonElement);
+                }
+            } else if (StringUtils.equalsIgnoreCase("datasource", source)) {
+                // This is copied down drom Core Components, as it has to be specially handled
+                // otherwise extra HTML is inadvertently injected into the page
+                optionItems = populateOptionItemsFromDatasource(datasourceRT);
+
+            } else {
+                optionItems = coreOptions.getItems();
+            }
+
+            optionItems.stream()
                     .forEach(optionItem -> {
                         if (PredicateUtil.isOptionInInitialValues(optionItem, initialValues)) {
                             processedOptionItems.add(new SelectedOptionItem(optionItem));
@@ -148,20 +173,6 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
         }
 
         return items;
-    }
-
-    private List<OptionItem> getOptionItems() {
-        List<OptionItem> optionItems = new ArrayList<>();
-
-        if (StringUtils.equalsIgnoreCase("json", source)) {
-            JsonElement jsonElement = jsonResolver.resolveJson(request, response, jsonSource);
-            if (jsonElement != null) {
-                optionItems = getOptionItemsFromJson(jsonElement);
-            }
-        } else {
-            optionItems = coreOptions.getItems();
-        }
-        return optionItems;
     }
 
     public Type getType() {
@@ -210,8 +221,7 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
 
     @Override
     public boolean isReady() {
-        // Do NOT call getItems() the group is not initialized yet.
-        return getOptionItems().size() > 0;
+        return getItems().size() > 0;
     }
 
     @Override
@@ -295,6 +305,51 @@ public class PropertyPredicateImpl extends AbstractPredicate implements Property
     }
 
 
+    @SuppressWarnings("unchecked")
+    /**
+     * This is copied from Core Components.
+     * The key difference is it passes in the DiscardingResponseWrapper to the include method
+     * HTML is not inadvertently injected into the page.
+     *
+     * See Bug #1129
+     */
+    private ArrayList<OptionItem> populateOptionItemsFromDatasource(String datasourceRT) {
+        ArrayList<OptionItem> optionItems = new ArrayList<>();
+
+        if (StringUtils.isBlank(datasourceRT)) {
+            return optionItems;
+        }
+        // build the options by running the datasource code (the list is set as a request attribute)
+        RequestDispatcherOptions opts = new RequestDispatcherOptions();
+        opts.setForceResourceType(datasourceRT);
+        RequestDispatcher dispatcher = request.getRequestDispatcher(resource, opts);
+        try {
+            if (dispatcher != null) {
+                dispatcher.include(request, new DiscardingResponseWrapper(response));
+            } else {
+                //log.error("Failed to include the datasource at " + datasourceRT);
+            }
+        } catch (IOException | ServletException | RuntimeException e) {
+            //LOGGER.error("Failed to include the datasource at " + datasourceRT, e);
+        }
+
+        // retrieve the datasource from the request and adapt it to form options
+        SimpleDataSource dataSource = (SimpleDataSource) request.getAttribute(DataSource.class.getName());
+        if (dataSource != null) {
+            Iterator<Resource> itemIterator = dataSource.iterator();
+            if (itemIterator != null) {
+                while (itemIterator.hasNext()) {
+                    Resource itemResource = itemIterator.next();
+                    OptionItem optionItem = new CoreComponentsOptionItem(request, resource, itemResource);
+                    if ((optionItem.isDisabled() || StringUtils.isNotBlank(optionItem.getValue()))) {
+                        optionItems.add(optionItem);
+                    }
+                }
+            }
+        }
+
+        return optionItems;
+    }
 
 
     protected class TextValueJsonOption implements OptionItem {
