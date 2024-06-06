@@ -1,6 +1,19 @@
 # 📑 Changelog
 
 
+## [asset-share-commons-3.8.8](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.8.8)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.8.6...asset-share-commons-3.8.8)
+
+### 📦 Uncategorized
+
+- v3.8.8 [#1134](https://github.com/adobe/asset-share-commons/pull/1134) (davidjgonzalez)
+- Fix for #1129 - Property Filter datasource option breaks search page … [#1130](https://github.com/adobe/asset-share-commons/pull/1130) (davidjgonzalez)
+- Bump com.day.jcr.vault:content-package-maven-plugin from 1.0.4 to 1.0.6 [#1123](https://github.com/adobe/asset-share-commons/pull/1123) (dependabot[bot])
+- Bump org.apache.maven.plugins:maven-jar-plugin from 3.3.0 to 3.4.1 [#1125](https://github.com/adobe/asset-share-commons/pull/1125) (dependabot[bot])
+-  FIX #1132 Update jQuery version to 3.5.1 in vendor [#1133](https://github.com/adobe/asset-share-commons/pull/1133) (zhgeric)
+
+
 ## [asset-share-commons-3.8.6](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.8.6)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.8.4...asset-share-commons-3.8.6)
