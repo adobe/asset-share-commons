@@ -1,6 +1,23 @@
 # 📑 Changelog
 
 
+## [asset-share-commons-3.8.10](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.8.10)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.8.8...asset-share-commons-3.8.10)
+
+### 🐛 Bug fixes
+
+- #1147 - Search results cards alignment [#1148](https://github.com/adobe/asset-share-commons/pull/1148) (davidjgonzalez)
+
+### 📦 Uncategorized
+
+- v3.8.10 release [#1149](https://github.com/adobe/asset-share-commons/pull/1149) (davidjgonzalez)
+- Bump org.apache.maven.surefire:surefire-junit47 from 3.2.2 to 3.3.0 [#1145](https://github.com/adobe/asset-share-commons/pull/1145) (dependabot[bot])
+- Bump org.owasp:dependency-check-maven from 8.4.0 to 9.2.0 [#1138](https://github.com/adobe/asset-share-commons/pull/1138) (dependabot[bot])
+- Bump org.apache.maven.plugins:maven-javadoc-plugin from 3.6.2 to 3.7.0 [#1139](https://github.com/adobe/asset-share-commons/pull/1139) (dependabot[bot])
+- Bump org.apache.maven.release:maven-release-oddeven-policy from 3.0.0 to 3.1.0 [#1144](https://github.com/adobe/asset-share-commons/pull/1144) (dependabot[bot])
+
+
 ## [asset-share-commons-3.8.8](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.8.8)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.8.6...asset-share-commons-3.8.8)
