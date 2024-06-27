@@ -21,51 +21,61 @@
 .cmp-search-results {
 
   .cmp-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(237px, 1fr));
-    grid-gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
 
     &:after {
       content: none !important;
     }
-  }
 
-  .cmp-card {
-    .cmp-image__wrapper--card {
-      display: block;
-      object-fit: cover;
-    }
+      .cmp-card {
+        display: flex;
+        min-width: 270px;  /* Minimum width constraint */
+        max-width: 400px;  /* Maximum width constraint */
+        flex-grow: 1;      /* Allow item to grow */
+        flex-shrink: 1;    /* Allow item to shrink */
 
-    .cmp-image--card {
-      height: 175px !important;
-    }
-  }
 
-  .cmp_card__action-buttons {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: space-between;
-    min-height: 2rem;
-
-    li {
-      .ui.button {
+        /* Override SemanticUI */
         margin: 0;
-        min-width: 60px;
-      }
 
-      &:last-child {
-        .ui.button {
-          text-align: right;
+        .cmp-image__wrapper--card {
+          display: block;
+          object-fit: cover;
+        }
+
+        .cmp-image--card {
+          height: 175px !important;
         }
       }
 
-      &:first-child {
-        .ui.button {
-          text-align: left;
+      .cmp_card__action-buttons {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: space-between;
+        min-height: 2rem;
+
+        li {
+          .ui.button {
+            margin: 0;
+            min-width: 60px;
+          }
+
+          &:last-child {
+            .ui.button {
+              text-align: right;
+            }
+          }
+
+          &:first-child {
+            .ui.button {
+              text-align: left;
+            }
+          }
         }
       }
     }
-  }
 }
