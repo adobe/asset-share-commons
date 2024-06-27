@@ -121,7 +121,7 @@
                     <dependency>
                         <groupId>org.apache.maven.release</groupId>
                         <artifactId>maven-release-oddeven-policy</artifactId>
-                        <version>3.0.0</version>
+                        <version>3.1.0</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -277,7 +277,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                         <dependency>
                             <groupId>org.apache.maven.surefire</groupId>
                             <artifactId>surefire-junit47</artifactId>
-                            <version>3.2.2</version>
+                            <version>3.3.0</version>
                         </dependency>
                     </dependencies>
                     <configuration>
@@ -462,7 +462,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                 <!-- Maven Javadoc Plugin -->
                 <plugin>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.6.2</version>
+                    <version>3.7.0</version>
                     <configuration>
                         <encoding>${project.build.sourceEncoding}</encoding>
                         <excludePackageNames>
@@ -546,7 +546,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                 <plugin>
                     <groupId>org.owasp</groupId>
                     <artifactId>dependency-check-maven</artifactId>
-                    <version>8.4.0</version>
+                    <version>9.2.0</version>
                     <configuration>
                         <failBuildOnAnyVulnerability>true</failBuildOnAnyVulnerability>
                     </configuration>
