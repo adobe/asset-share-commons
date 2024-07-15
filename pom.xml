@@ -499,7 +499,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                 <plugin>
                     <groupId>com.github.spotbugs</groupId>
                     <artifactId>spotbugs-maven-plugin</artifactId>
-                    <version>4.7.3.4</version>
+                    <version>4.8.6.2</version>
                 </plugin>
                 <!-- Maven Checkstyle Plugin -->
                 <plugin>
