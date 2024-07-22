@@ -86,4 +86,26 @@ public class AssetDeliveryRenditionDispatcherImplTest {
 
         assertFalse("OFT should not be accepted", dispatcher.accepts(assetModel, "test"));
     }
+
+
+    @Test
+    public void testAccepts_NoDcFormat_False() {
+        ctx.currentResource("/content/dam/test.no-dc-format");
+        AssetModel assetModel = ctx.request().adaptTo(AssetModel.class);
+
+        AssetRenditionDispatcher dispatcher = ctx.getService(AssetRenditionDispatcher.class);
+
+        assertFalse("Missing dc:format should not be accepted", dispatcher.accepts(assetModel, "test"));
+    }
+
+
+    @Test
+    public void testAccepts_BlankDcFormat_False() {
+        ctx.currentResource("/content/dam/test.blank-dc-format");
+        AssetModel assetModel = ctx.request().adaptTo(AssetModel.class);
+
+        AssetRenditionDispatcher dispatcher = ctx.getService(AssetRenditionDispatcher.class);
+
+        assertFalse("Blank dc:format should not be accepted", dispatcher.accepts(assetModel, "test"));
+    }
 }
