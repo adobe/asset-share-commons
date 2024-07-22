@@ -1,6 +1,25 @@
 # 📑 Changelog
 
 
+## [asset-share-commons-3.8.12](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.8.12)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.8.10...asset-share-commons-3.8.12)
+
+### 🐛 Bug fixes
+
+- Fixed issue with thumbnails not showing for assets missing dc:format [#1159](https://github.com/adobe/asset-share-commons/pull/1159) (davidjgonzalez)
+
+### 📦 Uncategorized
+
+- v.3.8.12 [#1160](https://github.com/adobe/asset-share-commons/pull/1160) (davidjgonzalez)
+- Bump org.sonatype.plugins:nexus-staging-maven-plugin from 1.6.13 to 1.7.0 [#1156](https://github.com/adobe/asset-share-commons/pull/1156) (dependabot[bot])
+- Bump org.apache.maven.plugins:maven-surefire-plugin from 3.1.2 to 3.3.1 [#1157](https://github.com/adobe/asset-share-commons/pull/1157) (dependabot[bot])
+- Bump com.github.spotbugs:spotbugs-maven-plugin from 4.7.3.4 to 4.8.6.2 [#1158](https://github.com/adobe/asset-share-commons/pull/1158) (dependabot[bot])
+- Bump org.apache.jackrabbit:filevault-package-maven-plugin from 1.3.4 to 1.3.6 [#1150](https://github.com/adobe/asset-share-commons/pull/1150) (dependabot[bot])
+- Bump org.apache.maven.plugins:maven-install-plugin from 3.1.1 to 3.1.2 [#1152](https://github.com/adobe/asset-share-commons/pull/1152) (dependabot[bot])
+- Bump org.apache.maven.plugins:maven-compiler-plugin from 3.11.0 to 3.13.0 [#1153](https://github.com/adobe/asset-share-commons/pull/1153) (dependabot[bot])
+
+
 ## [asset-share-commons-3.8.10](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.8.10)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.8.8...asset-share-commons-3.8.10)
