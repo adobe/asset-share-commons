@@ -897,6 +897,12 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
         the ones for AEM on prem are always built -->
         <profile>
             <id>cloud</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>env.CM_BUILD</name>
+                </property>
+            </activation>
             <modules>
                 <module>core.cloud</module>
             </modules>

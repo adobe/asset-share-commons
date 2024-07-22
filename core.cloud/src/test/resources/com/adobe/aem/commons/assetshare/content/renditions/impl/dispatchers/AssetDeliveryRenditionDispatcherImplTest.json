@@ -1,0 +1,83 @@
+{
+  "dam": {
+    "test.png": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured",
+        "metadata": {
+          "jcr:primaryType": "nt:unstructured",
+          "dc:format": "image/png"
+        },
+        "renditions": {
+          "jcr:primaryType": "nt:unstructured",
+          "cq5dam.web.1280.1280.png": {
+            "jcr:primaryType": "nt:file",
+            "jcr:content": {
+              "jcr:primaryType": "oak:Resource",
+              "jcr:mimeType": "image/png"
+            }
+          }
+        }
+      }
+    },
+    "test.oft": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured",
+        "metadata": {
+          "jcr:primaryType": "nt:unstructured",
+          "dc:format": "application/vnd.oasis.opendocument.text"
+        },
+        "renditions": {
+          "jcr:primaryType": "nt:unstructured",
+          "cq5dam.web.1280.1280.png": {
+            "jcr:primaryType": "nt:file",
+            "jcr:content": {
+              "jcr:primaryType": "oak:Resource",
+              "jcr:mimeType": "image/png"
+            }
+          }
+        }
+      }
+    },
+    "test.no-dc-format": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured",
+        "metadata": {
+          "jcr:primaryType": "nt:unstructured"
+        },
+        "renditions": {
+          "jcr:primaryType": "nt:unstructured",
+          "cq5dam.web.1280.1280.png": {
+            "jcr:primaryType": "nt:file",
+            "jcr:content": {
+              "jcr:primaryType": "oak:Resource",
+              "jcr:mimeType": "image/png"
+            }
+          }
+        }
+      }
+    },
+    "test.blank-dc-format": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured",
+        "metadata": {
+          "jcr:primaryType": "nt:unstructured",
+            "dc:format": " "
+        },
+        "renditions": {
+          "jcr:primaryType": "nt:unstructured",
+          "cq5dam.web.1280.1280.png": {
+            "jcr:primaryType": "nt:file",
+            "jcr:content": {
+              "jcr:primaryType": "oak:Resource",
+              "jcr:mimeType": "image/png"
+            }
+          }
+        }
+      }
+    }
+  }
+}

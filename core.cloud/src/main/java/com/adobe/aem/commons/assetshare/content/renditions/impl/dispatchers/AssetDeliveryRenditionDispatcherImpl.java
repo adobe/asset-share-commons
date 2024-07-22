@@ -232,7 +232,13 @@ public class AssetDeliveryRenditionDispatcherImpl extends AbstractRenditionDispa
         final String assetFormat = StringUtils.lowerCase(assetModel.getProperties().get(DamConstants.DC_FORMAT, String.class));
 
         // Return true if assetFormat matches any regex in ALLOWED_MIME_TYPES
-        return Arrays.stream(ACCEPTED_MIME_TYPES).anyMatch(regex -> assetFormat.matches(regex));
+        if (StringUtils.isBlank(assetFormat)) {
+            // If the asset format is not set, we can't determine if it's an image or document, so we can't use Asset Delivery
+            return false;
+        } else {
+            // Otherwise, check if the asset format is an image or document
+            return Arrays.stream(ACCEPTED_MIME_TYPES).anyMatch(regex -> assetFormat.matches(regex));
+        }
     }
 
     protected String evaluateExpression(final SlingHttpServletRequest request, String expression) {

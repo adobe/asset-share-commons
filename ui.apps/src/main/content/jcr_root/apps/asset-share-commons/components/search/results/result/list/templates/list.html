@@ -41,6 +41,7 @@
 		<td class="image">
 			<a href="${assetDetails.fullUrl}"><img src="${asset.properties['rendition?name=list'] || properties['missingImage'] @ context = 'attribute'}"
 												   width="98px"
+												   data-assets-share-missing-image="${properties['missingImage']}"
 												   alt="${asset.properties['title']}"/></a>
 		</td>
 		<td class="header">
