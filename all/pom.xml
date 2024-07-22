@@ -112,6 +112,9 @@
             <id>cloud</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>env.CM_BUILD</name>
+                </property>
             </activation>
             <build>
                 <plugins>
