@@ -37,21 +37,14 @@
 	       style="height:${height @ context = 'styleToken'}px;"
 	       controls controlsList="nodownload"
 	       data-sly-test.height="${properties['height']}">
-         	<source src="${video.src}" 
-          		type="video/webm"/>
-  		<source src="${video.src}"
-          		type="video/mp4"/>       
-               
+			<source src="${video.src}" />
         </video>
 
         <!--/* Video element without a max height */-->
         <video class="ui centered image cmp-image"
                poster="${properties['posterImage']}" controls controlsList="nodownload"
                data-sly-test="${!height}">
-        	<source src="${video.src}" 
-          		type="video/webm"/>
-  		<source src="${video.src}"
-          		type="video/mp4" />        
+        	<source src="${video.src}"/>
         </video>
 
 </template>
