@@ -32,7 +32,7 @@
         <a class="cmp-card__link" href="${assetDetails.url @ suffix = asset.path}">
             <img src="${asset.properties['rendition?name=card'] || properties['missingImage'] @ context = 'attribute'}"
                  class="cmp-card__image"
-                 data-asset-share-missing-thumbnail="${properties['missingImage']}"
+                 data-asset-share-missing-image="${properties['missingImage']}"
                  alt="${asset.properties['title']}"/>
         </a>
 
