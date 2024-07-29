@@ -479,7 +479,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                 <!-- Maven PMD Plugin -->
                 <plugin>
                     <artifactId>maven-pmd-plugin</artifactId>
-                    <version>3.20.0</version>
+                    <version>3.24.0</version>
                     <configuration>
                         <linkXRef>false</linkXRef>
                         <rulesets>
