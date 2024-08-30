@@ -190,7 +190,7 @@ public class JsonResolverImpl implements JsonResolver {
         JsonElement jsonElement = new Gson().fromJson(jsonString, JsonElement.class);
 
         if (log.isDebugEnabled()) {
-            log.debug("Resolved to JSON element: {}", jsonElement.getAsString());
+            log.debug("Resolved to JSON element: {}", jsonElement);
         }
 
         return jsonElement;
