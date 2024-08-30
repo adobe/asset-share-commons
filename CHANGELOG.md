@@ -1,6 +1,16 @@
 # 📑 Changelog
 
 
+## [asset-share-commons-3.8.14](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.8.14)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.8.12...asset-share-commons-3.8.14)
+
+### 📦 Uncategorized
+
+- 3.8.14 release [#1173](https://github.com/adobe/asset-share-commons/pull/1173) (davidjgonzalez)
+- Fixed issue 1171 : JSON option in Property Filter component is throwing UnsupportedOperationException [#1172](https://github.com/adobe/asset-share-commons/pull/1172) (sagaciousagi)
+
+
 ## [asset-share-commons-3.8.12](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.8.12)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.8.10...asset-share-commons-3.8.12)
