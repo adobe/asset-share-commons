@@ -1,3 +1,17 @@
+## [asset-share-commons-3.8.16](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.8.16)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.8.14...asset-share-commons-3.8.16)
+
+### 🐛 Bug fixes
+
+- Update js.txt to import moment-with-locales.min.js #1176 [#1177](https://github.com/adobe/asset-share-commons/pull/1177) (zhgeric)
+
+### 📦 Uncategorized
+
+- v3.8.16 [#1178](https://github.com/adobe/asset-share-commons/pull/1178) (davidjgonzalez)
+- Bump org.apache.maven.plugins:maven-pmd-plugin from 3.20.0 to 3.25.0 [#1174](https://github.com/adobe/asset-share-commons/pull/1174) (dependabot[bot])
+
+
 ## [asset-share-commons-3.8.14](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.8.14)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.8.12...asset-share-commons-3.8.14)
