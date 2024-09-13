@@ -1,3 +1,4 @@
 #base=js
 
 moment.min.js
+moment-with-locales.min.js
