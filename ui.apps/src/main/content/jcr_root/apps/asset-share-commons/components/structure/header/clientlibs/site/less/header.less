@@ -23,39 +23,47 @@
 	header.assetshare-header {
 		padding: 0em 1em;
 
-        /* hide mobile menu items by default */
-        .cmp-mobile__cart.item,
-        .cmp-mobile__downloads.item {
-            display: none;
-            border: none;
-        }
-
-        .cmp-mobile-menu.item {
-            display: none;
-        }
-
-        .ui.menu .ui.dropdown .menu > .cmp-mobile-menu__item.item {
-            border:none;
-            text-transform: uppercase;
-        }
-
-        @media only screen and (max-width: @tablet-max-width) {
+        .primary.menu {
+            /* hide mobile menu items by default */
             .cmp-mobile__cart.item,
             .cmp-mobile__downloads.item {
-                display: block;
+                display: none;
+                border: none;
             }
-        }
-        @media only screen and (max-width: @mobile-max-width) {
-            .cmp-mobile__cart.item,
-            .cmp-mobile__downloads.item {
-                display: block;
-            }
-            .cmp-menu__item.item {
-                display: block;
-            }
-            .cmp-header-title {
+
+            .cmp-mobile-menu.item {
                 display: none;
             }
+
+            .ui.menu .ui.dropdown .menu > .cmp-mobile-menu__item.item {
+                border:none;
+                text-transform: uppercase;
+            }
+
+            @media only screen and (max-width: @tablet-max-width) {
+                .cmp-mobile__cart.item,
+                .cmp-mobile__downloads.item {
+                    display: block;
+                }
+            }
+            @media only screen and (max-width: @mobile-max-width) {
+                .cmp-mobile__cart.item,
+                .cmp-mobile__downloads.item {
+                    display: block;
+                }
+
+                 .cmp-mobile-menu.item {
+                    display: block;
+                }
+
+                .cmp-menu__item {
+                    display: none;
+                }
+
+                .cmp-header-title {
+                    display: none;
+                }
+            }
         }
-	}
+    }
 }
