@@ -21,7 +21,6 @@
      data-sly-test.ready="${pdf.ready}">
 
     <div id="${pdf.viewerId}" style="height: ${pdf.height @ context='styleToken'}"></div>
-    <script src="https://acrobatservices.adobe.com/view-sdk/viewer.js"></script>
     <script type="text/javascript">
         document.addEventListener("adobe_dc_view_sdk.ready", function() {
             const adobeDCView = new AdobeDC.View({clientId: "${pdf.clientId @ context='scriptToken'}", divId: "${pdf.viewerId  @ context='scriptToken'}"});
@@ -48,5 +47,7 @@
            });
         });
     </script>
+    <!--/* viewer.js must be included below the event listener registration to avoid race conditions *-->
+    <script src="https://acrobatservices.adobe.com/view-sdk/viewer.js"></script>
 </sly>
 <sly data-sly-call="${placeholderTemplate.placeholder @ isEmpty=!ready}"></sly>

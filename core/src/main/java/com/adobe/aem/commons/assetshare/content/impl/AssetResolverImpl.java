@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.configuration.Config;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.AssetResolver;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionServlet;
+import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.DamConstants;
 import com.day.cq.dam.commons.util.DamUtil;
@@ -31,6 +32,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +41,9 @@ import javax.jcr.RepositoryException;
 @Component
 public class AssetResolverImpl implements AssetResolver {
     private static final Logger log = LoggerFactory.getLogger(AssetResolverImpl.class);
+
+    @Reference
+    RequireAem requireAem;
 
     public Asset resolveAsset(final SlingHttpServletRequest request) {
         Asset asset = null;
@@ -62,7 +67,8 @@ public class AssetResolverImpl implements AssetResolver {
         }
 
         if (asset == null) {
-            if (!WCMMode.DISABLED.equals(WCMMode.fromRequest(request))) {
+            if (!WCMMode.DISABLED.equals(WCMMode.fromRequest(request)) ||
+                    (RequireAem.ServiceType.AUTHOR.equals(requireAem.getServiceType())) && StringUtils.isBlank(request.getRequestPathInfo().getSuffix())) {
                 asset = resolvePlaceholderAsset(request.adaptTo(Config.class));
             }
 
