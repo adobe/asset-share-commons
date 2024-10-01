@@ -1,6 +1,22 @@
 # 📑 Changelog
 
 
+## [asset-share-commons-3.8.18](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.8.18)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.8.16...asset-share-commons-3.8.18)
+
+### 🐛 Bug fixes
+
+- Bug/pdf viewer [#1181](https://github.com/adobe/asset-share-commons/pull/1181) (davidjgonzalez)
+- Bug/menu [#1182](https://github.com/adobe/asset-share-commons/pull/1182) (davidjgonzalez)
+
+### 📦 Uncategorized
+
+- v3.8.18 release [#1184](https://github.com/adobe/asset-share-commons/pull/1184) (davidjgonzalez)
+- Bump org.apache.maven.plugins:maven-javadoc-plugin from 3.7.0 to 3.10.0 [#1179](https://github.com/adobe/asset-share-commons/pull/1179) (dependabot[bot])
+- Updated node version to 14 [#1183](https://github.com/adobe/asset-share-commons/pull/1183) (davidjgonzalez)
+
+
 ## [asset-share-commons-3.8.16](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.8.16)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.8.14...asset-share-commons-3.8.16)
