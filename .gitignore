@@ -40,3 +40,7 @@ ui.tests/node_modules/
 # Maven
 *.asc
 *.versionsBackup
+
+
+# Adobe IO CLI
+.aio
