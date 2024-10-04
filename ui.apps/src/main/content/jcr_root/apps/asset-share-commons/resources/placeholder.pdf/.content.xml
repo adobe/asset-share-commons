@@ -6,7 +6,7 @@
         cq:parentPath="/content/dam/asset-share-commons"
         dam:assetState="processed"
         dam:relativePath="asset-share-commons/placeholder.pdf"
-        jcr:lastModified="{Date}2017-10-09T21:14:03.426-04:00"
+        jcr:lastModified="{Date}2024-09-09T21:14:03.426-04:00"
         jcr:lastModifiedBy="admin"
         jcr:primaryType="dam:AssetContent"
         averageRating="{Double}5.0">
@@ -22,7 +22,7 @@
             dc:description="A placeholder document to help AEM Authors configure Asset Share Commons asset details pages."
             dc:format="application/pdf"
             dc:language="en"
-            dc:modified="{Date}2017-10-09T21:14:03.124-04:00"
+            dc:modified="{Date}2024-09-09T21:14:03.124-04:00"
             dc:rights="None"
             dc:subject="[Placeholder Document,Placeholder,Asset Share Commons]"
             dc:title="Placeholder Document"
@@ -35,7 +35,7 @@
             Iptc4xmpExt:MaxAvailWidth="{Long}1080"
             Iptc4xmpExt:OrganisationInImageCode="Asset Share Commons"
             Iptc4xmpExt:OrganisationInImageName="Asset Share Commons"
-            jcr:lastModified="{Date}2017-10-09T21:14:03.124-04:00"
+            jcr:lastModified="{Date}2024-09-09T21:14:03.124-04:00"
             jcr:lastModifiedBy="admin"
             jcr:mixinTypes="[cq:Taggable]"
             jcr:primaryType="nt:unstructured"
@@ -45,7 +45,7 @@
             photoshop:City="San Jose"
             photoshop:ColorMode="{Long}3"
             photoshop:Country="United States"
-            photoshop:DateCreated="{Date}2017-10-09T21:13:00.000-04:00"
+            photoshop:DateCreated="{Date}2024-09-09T21:13:00.000-04:00"
             photoshop:DocumentAncestors="[xmp.did:4bb91241-1a1b-4edb-8cef-105e5432c737]"
             photoshop:DocumentAncestors_xmpArrayType="rdf:Bag"
             photoshop:Headline="Placeholder Document"
@@ -53,10 +53,10 @@
             photoshop:State="CA"
             plus:ModelReleaseStatus="http://ns.useplus.org/ldf/vocab/MR-NAP "
             plus:PropertyReleaseStatus="http://ns.useplus.org/ldf/vocab/PR-NAP"
-            xmp:CreateDate="{Date}2017-10-06T09:31:06.000-04:00"
+            xmp:CreateDate="{Date}2024-09-06T09:31:06.000-04:00"
             xmp:CreatorTool="Adobe Photoshop CC 2017 (Macintosh)"
-            xmp:MetadataDate="{Date}2017-10-09T21:06:56.000-04:00"
-            xmp:ModifyDate="{Date}2017-10-09T21:06:56.000-04:00"
+            xmp:MetadataDate="{Date}2024-09-09T21:06:56.000-04:00"
+            xmp:ModifyDate="{Date}2024-09-09T21:06:56.000-04:00"
             xmpMM:DocumentID="adobe:docid:photoshop:caa6abd3-eda3-117a-b7e3-a80d23e72419"
             xmpMM:InstanceID="uuid:dbde1f6f-8d05-1f45-b353-ad10aa20143a"
             xmpMM:OriginalDocumentID="xmp.did:4bb91241-1a1b-4edb-8cef-105e5432c737"
@@ -96,7 +96,7 @@
                     stEvt:action="created"
                     stEvt:instanceID="xmp.iid:4bb91241-1a1b-4edb-8cef-105e5432c737"
                     stEvt:softwareAgent="Adobe Photoshop CC 2017 (Macintosh)"
-                    stEvt:when="{Date}2017-10-06T09:31:06.000-04:00"
+                    stEvt:when="{Date}2024-09-06T09:31:06.000-04:00"
                     xmpNodeType="xmpStruct"/>
                 <_x0032_
                     jcr:primaryType="nt:unstructured"
@@ -109,7 +109,7 @@
                     stEvt:changed="/"
                     stEvt:instanceID="xmp.iid:1724e050-5e3c-4315-a2c7-8bc8fae5f2ef"
                     stEvt:softwareAgent="Adobe Photoshop CC 2017 (Macintosh)"
-                    stEvt:when="{Date}2017-10-06T18:12:15.000-04:00"
+                    stEvt:when="{Date}2024-09-06T18:12:15.000-04:00"
                     xmpNodeType="xmpStruct"/>
                 <_x0034_
                     jcr:primaryType="nt:unstructured"
@@ -117,7 +117,7 @@
                     stEvt:changed="/"
                     stEvt:instanceID="xmp.iid:a33b9da9-a15f-4fef-998c-fe5388117d04"
                     stEvt:softwareAgent="Adobe Photoshop CC 2017 (Macintosh)"
-                    stEvt:when="{Date}2017-10-09T21:06:45.000-04:00"
+                    stEvt:when="{Date}2024-09-09T21:06:45.000-04:00"
                     xmpNodeType="xmpStruct"/>
                 <_x0035_
                     jcr:primaryType="nt:unstructured"
@@ -135,7 +135,7 @@
                     stEvt:changed="/"
                     stEvt:instanceID="xmp.iid:8e487d5f-a2e0-4f91-8cf2-de725015ef84"
                     stEvt:softwareAgent="Adobe Photoshop CC 2017 (Macintosh)"
-                    stEvt:when="{Date}2017-10-09T21:06:45.000-04:00"
+                    stEvt:when="{Date}2024-09-09T21:06:45.000-04:00"
                     xmpNodeType="xmpStruct"/>
             </xmpMM:History>
             <xmpMM:DerivedFrom

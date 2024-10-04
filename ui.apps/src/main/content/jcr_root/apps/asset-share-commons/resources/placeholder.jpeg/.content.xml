@@ -6,14 +6,14 @@
         cq:parentPath="/content/dam"
         dam:assetState="processed"
         dam:relativePath="placeholder.jpeg"
-        jcr:lastModified="{Date}2017-10-06T09:45:53.806-04:00"
+        jcr:lastModified="{Date}2024-09-06T09:45:53.806-04:00"
         jcr:lastModifiedBy="admin"
         jcr:primaryType="dam:AssetContent"
         averageRating="{Double}5.0">
         <metadata
             cq:tags="[properties:style/color,properties:orientation/landscape]"
             dam:Bitsperpixel="{Long}32"
-            dam:extracted="{Date}2017-10-06T09:35:52.614-04:00"
+            dam:extracted="{Date}2024-09-06T09:35:52.614-04:00"
             dam:Fileformat="JPEG"
             dam:MIMEtype="image/jpeg"
             dam:Numberofimages="{Long}1"
@@ -30,7 +30,7 @@
             dc:description="A placeholder image to help AEM Authors configure Asset Share Commons asset details pages."
             dc:format="image/jpeg"
             dc:language="en"
-            dc:modified="{Date}2017-10-06T09:43:02.024-04:00"
+            dc:modified="{Date}2024-09-06T09:43:02.024-04:00"
             dc:subject="[Asset Share Commons,Placeholder]"
             dc:title="Placeholder Image"
             exif:ColorSpace="{Long}65535"
@@ -43,7 +43,7 @@
             Iptc4xmpExt:DigitalSourceType="http://cv.iptc.org/newscodes/digitalsourcetype/softwareImage"
             Iptc4xmpExt:MaxAvailHeight="{Long}1080"
             Iptc4xmpExt:MaxAvailWidth="{Long}1920"
-            jcr:lastModified="{Date}2017-10-06T09:45:53.640-04:00"
+            jcr:lastModified="{Date}2024-09-06T09:45:53.640-04:00"
             jcr:lastModifiedBy="admin"
             jcr:mixinTypes="[cq:Taggable]"
             jcr:primaryType="nt:unstructured"
@@ -51,7 +51,7 @@
             photoshop:City="San Jose"
             photoshop:ColorMode="{Long}3"
             photoshop:Country="United States"
-            photoshop:DateCreated="{Date}2017-10-06T09:41:00.000-04:00"
+            photoshop:DateCreated="{Date}2024-09-06T09:41:00.000-04:00"
             photoshop:Headline="Placeholder Image"
             photoshop:State="CA"
             plus:ModelReleaseStatus="http://ns.useplus.org/ldf/vocab/MR-NAP "
@@ -62,10 +62,10 @@
             tiff:ResolutionUnit="{Long}2"
             tiff:XResolution="720000/10000"
             tiff:YResolution="720000/10000"
-            xmp:CreateDate="{Date}2017-10-06T09:31:06.000-04:00"
+            xmp:CreateDate="{Date}2024-09-06T09:31:06.000-04:00"
             xmp:CreatorTool="Adobe Photoshop CC 2017 (Macintosh)"
-            xmp:MetadataDate="{Date}2017-10-06T09:35:35.000-04:00"
-            xmp:ModifyDate="{Date}2017-10-06T09:35:35.000-04:00"
+            xmp:MetadataDate="{Date}2024-09-06T09:35:35.000-04:00"
+            xmp:ModifyDate="{Date}2024-09-06T09:35:35.000-04:00"
             xmpMM:DocumentID="adobe:docid:photoshop:9be5e642-eb29-117a-b7e3-a80d23e72419"
             xmpMM:InstanceID="xmp.iid:11abb56f-59ac-47e9-b2bc-fc738f1d1692"
             xmpMM:OriginalDocumentID="xmp.did:d3d88019-a301-47ac-a124-8cc659c4a31c">
@@ -79,7 +79,7 @@
                     stEvt:action="created"
                     stEvt:instanceID="xmp.iid:d3d88019-a301-47ac-a124-8cc659c4a31c"
                     stEvt:softwareAgent="Adobe Photoshop CC 2017 (Macintosh)"
-                    stEvt:when="{Date}2017-10-06T09:31:06.000-04:00"
+                    stEvt:when="{Date}2024-09-06T09:31:06.000-04:00"
                     xmpNodeType="xmpStruct"/>
                 <_x0032_
                     jcr:primaryType="nt:unstructured"
@@ -87,7 +87,7 @@
                     stEvt:changed="/"
                     stEvt:instanceID="xmp.iid:11abb56f-59ac-47e9-b2bc-fc738f1d1692"
                     stEvt:softwareAgent="Adobe Photoshop CC 2017 (Macintosh)"
-                    stEvt:when="{Date}2017-10-06T09:35:35.000-04:00"
+                    stEvt:when="{Date}2024-09-06T09:35:35.000-04:00"
                     xmpNodeType="xmpStruct"/>
             </xmpMM:History>
             <Iptc4xmpCore:CreatorContactInfo
