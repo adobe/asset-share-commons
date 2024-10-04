@@ -1,3 +1,16 @@
+## [asset-share-commons-3.8.20](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.8.20)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.8.18...asset-share-commons-3.8.20)
+
+### 🐛 Bug fixes
+
+- Placeholder resolution [#1185](https://github.com/adobe/asset-share-commons/pull/1185) (davidjgonzalez)
+
+### 📦 Uncategorized
+
+- v3.8.20 [#1186](https://github.com/adobe/asset-share-commons/pull/1186) (davidjgonzalez)
+
+
 ## [asset-share-commons-3.8.18](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.8.18)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.8.16...asset-share-commons-3.8.18)
