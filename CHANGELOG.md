@@ -1,6 +1,16 @@
 # 📑 Changelog
 
 
+## [asset-share-commons-3.8.22](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.8.22)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.8.20...asset-share-commons-3.8.22)
+
+### 📦 Uncategorized
+
+- v3.8.22 [#1207](https://github.com/adobe/asset-share-commons/pull/1207) (davidjgonzalez)
+- Update ContentTypeImpl.java [#1206](https://github.com/adobe/asset-share-commons/pull/1206) (davidjgonzalez)
+
+
 ## [asset-share-commons-3.8.20](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.8.20)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.8.18...asset-share-commons-3.8.20)
