@@ -67,7 +67,7 @@ public class ContentTypeImpl extends AbstractComputedProperty<String> {
     private static final Map<String, String> mimeTypeToLabelMap = ImmutableMap.<String, String>builder()
             .put("image/vnd.adobe.photoshop",                                                   "Photoshop")
             .put("application/msword",                                                          "Word Doc")
-            .put("application//vnd.openxmlformats-officedocument.wordprocessingml.document",    "Word Doc")
+            .put("application/vnd.openxmlformats-officedocument.wordprocessingml.document",    "Word Doc")
             .put("application/vnd.ms-excel",                                                    "Excel")
             .put("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",           "Excel")
             .put("application/vnd.ms-powerpoint",                                               "PowerPoint")
