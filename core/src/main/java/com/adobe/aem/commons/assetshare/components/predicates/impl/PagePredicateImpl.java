@@ -255,14 +255,20 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
     }
 
     private void addIndexTagAsParameterPredicate(final PredicateGroup parameterGroup) {
+        String indexTag = getIndexTag();
+        if (StringUtils.isBlank(indexTag)) { return; }
+
         parameterGroup.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
-                put(Predicate.PARAM_OPTIONS_INDEXTAG, getIndexTag()).
+                put(Predicate.PARAM_OPTIONS_INDEXTAG, indexTag).
                 build()));
     }
 
     private void addFacetStrategyAsParameterPredicate(final PredicateGroup parameterGroup) {
+        String facetStrategy = getFacetStrategy();
+        if (StringUtils.isBlank(facetStrategy)) { return; }
+
         parameterGroup.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
-                put(Predicate.PARAM_FACET_STRATEGY, getFacetStrategy()).
+                put(Predicate.PARAM_FACET_STRATEGY, facetStrategy).
                 build()));
     }
 
