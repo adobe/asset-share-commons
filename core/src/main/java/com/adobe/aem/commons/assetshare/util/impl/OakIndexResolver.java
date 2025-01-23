@@ -28,7 +28,12 @@ public class OakIndexResolver {
     public static final String resolveRankingOakIndex(final ResourceResolver resourceResolver, final String oakIndexRootName) {
         final Resource oakIndexes = resourceResolver.getResource(PATH_OAK_INDEX);
 
-        final Map<Version, String> map = new TreeMap<>(Collections.reverseOrder());
+        //final Map<Version, String> map = new TreeMap<>(Collections.reverseOrder());
+
+        Map<String, String> map = new TreeMap<>((a, b) -> {
+            // Parse the version strings into Comparable doubles
+            return Double.compare(Double.parseDouble(b), Double.parseDouble(a));
+        });
 
         StreamSupport.stream(oakIndexes.getChildren().spliterator(), false)
                 // Only look at Lucene indexes
@@ -40,7 +45,7 @@ public class OakIndexResolver {
                         if (log.isDebugEnabled()) {
                             log.debug("Resolved Oak Index [ {} ] -> [ {} ]", oakIndex.getPath(), version);
                         }
-                        map.put(version, oakIndex.getName());
+                        map.put(version.toString(), oakIndex.getName());
                     } else {
                         if (log.isWarnEnabled()) {
                             log.warn("Unable to parse version for Oak Index [ {} ]", oakIndex.getPath());

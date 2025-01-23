@@ -1,5 +1,18 @@
 {
-  "damAssetLucene-99-custom-1": {
+  "damAssetLucene": {
+    "jcr:primaryType": "oak:QueryIndexDefinition",
+    "type": "lucene",
+    "indexRules": {
+      "jcr:primaryType": "nt:unstructured",
+      "dam:Asset": {
+        "jcr:primaryType": "nt:unstructured",
+        "properties": {
+          "jcr:primaryType": "nt:unstructured"
+        }
+      }
+    }
+  },
+  "damAssetLucene-100-custom-1": {
     "jcr:primaryType": "oak:QueryIndexDefinition",
     "type": "lucene",
     "indexRules": {
@@ -35,6 +48,45 @@
             "analyzed": true,
             "propertyIndex": true
           }
+        }
+      }
+    }
+  },
+  "damAssetLucene-98-custom-2": {
+    "jcr:primaryType": "oak:QueryIndexDefinition",
+    "type": "lucene",
+    "indexRules": {
+      "jcr:primaryType": "nt:unstructured",
+      "dam:Asset": {
+        "jcr:primaryType": "nt:unstructured",
+        "properties": {
+          "jcr:primaryType": "nt:unstructured"
+        }
+      }
+    }
+  },
+  "damAssetLucene-87-custom-10": {
+    "jcr:primaryType": "oak:QueryIndexDefinition",
+    "type": "lucene",
+    "indexRules": {
+      "jcr:primaryType": "nt:unstructured",
+      "dam:Asset": {
+        "jcr:primaryType": "nt:unstructured",
+        "properties": {
+          "jcr:primaryType": "nt:unstructured"
+        }
+      }
+    }
+  },
+  "damAssetLucene-1": {
+    "jcr:primaryType": "oak:QueryIndexDefinition",
+    "type": "lucene",
+    "indexRules": {
+      "jcr:primaryType": "nt:unstructured",
+      "dam:Asset": {
+        "jcr:primaryType": "nt:unstructured",
+        "properties": {
+          "jcr:primaryType": "nt:unstructured"
         }
       }
     }
