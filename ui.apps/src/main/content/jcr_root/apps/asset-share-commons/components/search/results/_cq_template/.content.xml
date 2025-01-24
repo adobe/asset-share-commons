@@ -28,4 +28,6 @@
     noResultsText="Your search did not match any assets."
     orderBy="@jcr:score"
     orderBySort="desc"
+    indexTag=""
+    facetStrategy="oak"
     paths="[/content/dam]"/>

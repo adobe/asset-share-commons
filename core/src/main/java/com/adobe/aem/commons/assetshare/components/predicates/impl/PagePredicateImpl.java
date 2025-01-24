@@ -168,6 +168,14 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
         return searchConfig.getGuessTotal();
     }
 
+    public String getIndexTag() {
+        return searchConfig.getIndexTag();
+    }
+
+    public String getFacetStrategy() {
+        return searchConfig.getFacetStrategy();
+    }
+
     public List<String> getPaths() {
         return searchConfig.getPaths();
     }
@@ -230,10 +238,40 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
             addGuessTotalAsParameterPredicate(parameterGroup);
         }
 
+        // p.indexTag
+        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.INDEX_TAG)) {
+            addIndexTagAsParameterPredicate(parameterGroup);
+        }
+
+        // p.facetStrategy
+        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.FACET_STRATEGY)) {
+            addFacetStrategyAsParameterPredicate(parameterGroup);
+        }
+
+
         root.add(parameterGroup);
 
         return root;
     }
+
+    private void addIndexTagAsParameterPredicate(final PredicateGroup parameterGroup) {
+        String indexTag = getIndexTag();
+        if (StringUtils.isBlank(indexTag)) { return; }
+
+        parameterGroup.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
+                put(Predicate.PARAM_OPTIONS_INDEXTAG, indexTag).
+                build()));
+    }
+
+    private void addFacetStrategyAsParameterPredicate(final PredicateGroup parameterGroup) {
+        String facetStrategy = getFacetStrategy();
+        if (StringUtils.isBlank(facetStrategy)) { return; }
+
+        parameterGroup.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
+                put(Predicate.PARAM_FACET_STRATEGY, facetStrategy).
+                build()));
+    }
+
 
     private void addGuessTotalAsParameterPredicate(final PredicateGroup parameterGroup) {
         parameterGroup.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().

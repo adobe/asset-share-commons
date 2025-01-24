@@ -73,6 +73,18 @@ public interface SearchConfig {
     String getGuessTotal();
 
     /**
+     *
+     * @return the index tag hint, or null if none is set
+     */
+    default String getIndexTag() { return null; };
+
+    /**
+     *
+     * @return the facet strategy, or null if none is set
+     */
+    default String getFacetStrategy() { return null; }
+
+    /**
      * @return the default
      */
     String getSearchProviderId();

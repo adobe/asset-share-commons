@@ -82,6 +82,7 @@
                                         min="1"
                                         name="./limit"
                                         value="50"/>
+
                                     <guess-total
                                         jcr:primaryType="nt:unstructured"
                                         sling:resourceType="granite/ui/components/coral/foundation/form/numberfield"
@@ -129,9 +130,26 @@
                                           sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
                                           fieldDescription="Select for case-insensitive sorting of the default sort configuration. Only use this when 'Default Sort Property` is a text (String) property. This value should be kept in sync with the value for this property in the Sort component."
                                           name="./orderByCase"
-                                          text="Case-Insensitive Sorting for Default Sort"
+                                          text="Case-Insensitive sorting for Default Sort"
                                           value="{Boolean}false"
                                           uncheckedValue="{Boolean}true"/>
+
+                                    <facet-strategy
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                            fieldDescription="Always set to true if a custom facet implementation has been added to your Asset Share Commons deployment."
+                                            name="./facetStrategy"
+                                            text="Enable Oak Facet Extraction"
+                                            value="{String}oak"
+                                            uncheckedValue=""/>
+
+                                    <index-tag
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            required="{Boolean}false"
+                                            fieldLabel="Index Tag"
+                                            fieldDescription="Instruct AEM which Oak index to use via an index tag hint."
+                                            name="./indexTag"/>
 
                                 </items>
                             </column>
