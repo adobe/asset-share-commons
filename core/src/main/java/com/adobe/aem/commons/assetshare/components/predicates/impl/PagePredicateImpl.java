@@ -312,11 +312,9 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
     private void addDefaultValuesAsPredicateGroups(final PredicateGroup root) {
         // Capture any existing values, however these should be null
         Object predicateGroupTracker = request.getAttribute(AbstractPredicate.REQUEST_ATTR_PREDICATE_GROUP_TRACKER);
-        Object legacyPredicateGroupTracker = request.getAttribute(AbstractPredicate.REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER);
 
         // Reset group tracking, as any instantiation of a predicate will increment the group
         request.setAttribute(AbstractPredicate.REQUEST_ATTR_PREDICATE_GROUP_TRACKER, null);
-        request.setAttribute(AbstractPredicate.REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER, null);
 
         for (final DefaultValuesPredicate defaultValuesPredicate : getDefaultValuesPredicates(currentPage)) {
             root.add(defaultValuesPredicate.getPredicateGroup());
@@ -324,8 +322,6 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
 
         // Set back any existing values, though these should be null
         request.setAttribute(AbstractPredicate.REQUEST_ATTR_PREDICATE_GROUP_TRACKER, predicateGroupTracker);
-        request.setAttribute(AbstractPredicate.REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER, legacyPredicateGroupTracker);
-
     }
 
     private void addPathAsPredicateGroup(final PredicateGroup root) {
