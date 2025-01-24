@@ -37,6 +37,8 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Named;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class AbstractPredicate implements Predicate {
     private static final Logger log = LoggerFactory.getLogger(AbstractPredicate.class);
@@ -89,8 +91,18 @@ public abstract class AbstractPredicate implements Predicate {
     }
 
     public String getGroup() {
+        Map<String, Integer> groupTracker = getGroupTracker(this.request);
+        String path = this.request.getResource().getPath();
+
+        if (groupTracker.get(path) != null) {
+            group = groupTracker.get(path);
+        } else {
+            group = this.request.getResource().getPath().hashCode();
+        }
+
         return group + "_group";
     }
+
 
     public String getInitialValue() {
         return null;
@@ -169,8 +181,12 @@ public abstract class AbstractPredicate implements Predicate {
     protected synchronized final void initGroup(final SlingHttpServletRequest request) {
         /* Track Predicate Groups across Request */
 
-        if (!isGroupIdGeneratingComponent(request) || !isReady() || !generateGroupId(request)) {
+        /*if (!isGroupIdGeneratingComponent(request) || !isReady() || !generateGroupId(request)) {
             generateLegacyGroupId(request);
+        }*/
+
+        if (isGroupIdGeneratingComponent(request)) {
+            generateGroupId(request);
         }
     }
 
@@ -190,19 +206,29 @@ public abstract class AbstractPredicate implements Predicate {
      * @return true if a group id was generated.
      */
     private boolean generateGroupId(SlingHttpServletRequest request) {
-        Object groupTracker = request.getAttribute(REQUEST_ATTR_PREDICATE_GROUP_TRACKER);
+        HashMap<String, Integer> groupTracker = getGroupTracker(request);
 
-        if (groupTracker == null) {
-            groupTracker = INITIAL_GROUP_ID;
-        }
-
-        if (groupTracker instanceof Integer) {
-            group = (Integer) groupTracker + 1;
-            request.setAttribute(REQUEST_ATTR_PREDICATE_GROUP_TRACKER, group);
+        if (groupTracker.containsKey(request.getResource().getPath())) {
+            this.group = groupTracker.getOrDefault(request.getResource().getPath(), request.getResource().getPath().hashCode());
+            // Processed
+            return false;
+        } else {
+            group = groupTracker.values().stream().max(Integer::compare).orElse(-1) + 1;
+            groupTracker.put(request.getResource().getPath(), group);
+            request.setAttribute(REQUEST_ATTR_PREDICATE_GROUP_TRACKER, groupTracker);
+            request.setAttribute("TEST", "I WWAS SET IN GENERATE GROUP ID");
             return true;
         }
+    }
 
-        return false;
+
+    private HashMap<String, Integer> getGroupTracker(SlingHttpServletRequest request) {
+        HashMap<String, Integer> groupTracker = (HashMap) request.getAttribute(REQUEST_ATTR_PREDICATE_GROUP_TRACKER);
+        if (groupTracker == null) {
+            groupTracker = new HashMap<>();
+        }
+
+        return groupTracker;
     }
 
     /**
