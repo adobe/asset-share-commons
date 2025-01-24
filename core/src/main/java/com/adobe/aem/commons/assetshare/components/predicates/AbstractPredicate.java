@@ -44,13 +44,10 @@ public abstract class AbstractPredicate implements Predicate {
     private static final Logger log = LoggerFactory.getLogger(AbstractPredicate.class);
 
     public static final String REQUEST_ATTR_PREDICATE_GROUP_TRACKER = "asset-share-commons__predicate-group";
-    public static final String REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER = "asset-share-commons__legacy_predicate-group";
+    public static final String REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER = "DEPRECATED_DO_NOT_USE__asset-share-commons__legacy_predicate-group";
 
     private static final String REQUEST_ATTR_FORM_ID_TRACKER = "asset-share-commons__form-id";
     private static final String PN_GENERATE_PREDICATE_GROUP_ID = "generatePredicateGroupId";
-
-    private static final Integer INITIAL_GROUP_ID = 0;
-    private static final Integer INITIAL_LEGACY_GROUP_ID = 10000 - 1;
 
     @Self
     @Required
@@ -229,26 +226,6 @@ public abstract class AbstractPredicate implements Predicate {
         }
 
         return groupTracker;
-    }
-
-    /**
-     * Set the legacy groupId and set the request attribute.
-     *
-     * @param request the Sling Http Request object.
-     */
-    private void generateLegacyGroupId(SlingHttpServletRequest request) {
-        Object legacyGroupTracker = request.getAttribute(REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER);
-
-        if (legacyGroupTracker == null) {
-            legacyGroupTracker = INITIAL_LEGACY_GROUP_ID;
-        }
-
-        if (legacyGroupTracker instanceof Integer) {
-            group = (Integer) legacyGroupTracker + 1;
-            request.setAttribute(REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER, group);
-        } else {
-            group = -1;
-        }
     }
 
     public class AlphabeticalOptionItems implements Comparator<OptionItem> {
