@@ -62,6 +62,8 @@ public class SearchConfigImpl implements SearchConfig, ComponentExporter {
     private String PN_GUESS_TOTAL = Predicate.PARAM_GUESS_TOTAL;
     private String PN_SPID = "searchProviderId";
     private String PN_SEARCH_PREDICATES = "searchPredicates";
+    private String PN_INDEX_TAG = "indexTag";
+    private String PN_FACET_STRATEGY = "facetStrategy";
 
     @Self
     private SlingHttpServletRequest request;
@@ -146,6 +148,26 @@ public class SearchConfigImpl implements SearchConfig, ComponentExporter {
     @Override
     public boolean isOrderByCase() {
         return properties.get(PN_ORDER_BY_CASE, DEFAULT_ORDER_BY_CASE);
+    }
+
+    @Override
+    public String getIndexTag() {
+        String indexTag = properties.get(PN_INDEX_TAG, String.class);
+        if (StringUtils.isBlank(indexTag)) {
+            return null;
+        } else {
+            return indexTag;
+        }
+    }
+
+    @Override
+    public String getFacetStrategy() {
+        String facetStrategy = properties.get(PN_FACET_STRATEGY, String.class);
+        if (StringUtils.isBlank(facetStrategy)) {
+            return null;
+        } else {
+            return facetStrategy;
+        }
     }
 
     @Override

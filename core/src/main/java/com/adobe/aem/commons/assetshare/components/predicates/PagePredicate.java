@@ -44,7 +44,9 @@ public interface PagePredicate extends Predicate {
         LIMIT,
         HIDDEN_PREDICATES,
         SEARCH_PREDICATES,
-        ORDERBY;
+        ORDERBY,
+        INDEX_TAG,
+        FACET_STRATEGY
     }
 
     /**

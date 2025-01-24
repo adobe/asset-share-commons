@@ -168,6 +168,14 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
         return searchConfig.getGuessTotal();
     }
 
+    public String getIndexTag() {
+        return searchConfig.getIndexTag();
+    }
+
+    public String getFacetStrategy() {
+        return searchConfig.getFacetStrategy();
+    }
+
     public List<String> getPaths() {
         return searchConfig.getPaths();
     }
@@ -230,10 +238,40 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
             addGuessTotalAsParameterPredicate(parameterGroup);
         }
 
+        // p.indexTag
+        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.INDEX_TAG)) {
+            addIndexTagAsParameterPredicate(parameterGroup);
+        }
+
+        // p.facetStrategy
+        if (!ArrayUtils.contains(excludeParamTypes, ParamTypes.FACET_STRATEGY)) {
+            addFacetStrategyAsParameterPredicate(parameterGroup);
+        }
+
+
         root.add(parameterGroup);
 
         return root;
     }
+
+    private void addIndexTagAsParameterPredicate(final PredicateGroup parameterGroup) {
+        String indexTag = getIndexTag();
+        if (StringUtils.isBlank(indexTag)) { return; }
+
+        parameterGroup.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
+                put(Predicate.PARAM_OPTIONS_INDEXTAG, indexTag).
+                build()));
+    }
+
+    private void addFacetStrategyAsParameterPredicate(final PredicateGroup parameterGroup) {
+        String facetStrategy = getFacetStrategy();
+        if (StringUtils.isBlank(facetStrategy)) { return; }
+
+        parameterGroup.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
+                put(Predicate.PARAM_FACET_STRATEGY, facetStrategy).
+                build()));
+    }
+
 
     private void addGuessTotalAsParameterPredicate(final PredicateGroup parameterGroup) {
         parameterGroup.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
@@ -274,11 +312,9 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
     private void addDefaultValuesAsPredicateGroups(final PredicateGroup root) {
         // Capture any existing values, however these should be null
         Object predicateGroupTracker = request.getAttribute(AbstractPredicate.REQUEST_ATTR_PREDICATE_GROUP_TRACKER);
-        Object legacyPredicateGroupTracker = request.getAttribute(AbstractPredicate.REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER);
 
         // Reset group tracking, as any instantiation of a predicate will increment the group
         request.setAttribute(AbstractPredicate.REQUEST_ATTR_PREDICATE_GROUP_TRACKER, null);
-        request.setAttribute(AbstractPredicate.REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER, null);
 
         for (final DefaultValuesPredicate defaultValuesPredicate : getDefaultValuesPredicates(currentPage)) {
             root.add(defaultValuesPredicate.getPredicateGroup());
@@ -286,8 +322,6 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
 
         // Set back any existing values, though these should be null
         request.setAttribute(AbstractPredicate.REQUEST_ATTR_PREDICATE_GROUP_TRACKER, predicateGroupTracker);
-        request.setAttribute(AbstractPredicate.REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER, legacyPredicateGroupTracker);
-
     }
 
     private void addPathAsPredicateGroup(final PredicateGroup root) {

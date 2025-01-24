@@ -37,18 +37,17 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Named;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class AbstractPredicate implements Predicate {
     private static final Logger log = LoggerFactory.getLogger(AbstractPredicate.class);
 
     public static final String REQUEST_ATTR_PREDICATE_GROUP_TRACKER = "asset-share-commons__predicate-group";
-    public static final String REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER = "asset-share-commons__legacy_predicate-group";
+    public static final String REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER = "DEPRECATED_DO_NOT_USE__asset-share-commons__legacy_predicate-group";
 
     private static final String REQUEST_ATTR_FORM_ID_TRACKER = "asset-share-commons__form-id";
     private static final String PN_GENERATE_PREDICATE_GROUP_ID = "generatePredicateGroupId";
-
-    private static final Integer INITIAL_GROUP_ID = 0;
-    private static final Integer INITIAL_LEGACY_GROUP_ID = 10000 - 1;
 
     @Self
     @Required
@@ -89,8 +88,18 @@ public abstract class AbstractPredicate implements Predicate {
     }
 
     public String getGroup() {
+        Map<String, Integer> groupTracker = getGroupTracker(this.request);
+        String path = this.request.getResource().getPath();
+
+        if (groupTracker.get(path) != null) {
+            group = groupTracker.get(path);
+        } else {
+            group = this.request.getResource().getPath().hashCode();
+        }
+
         return group + "_group";
     }
+
 
     public String getInitialValue() {
         return null;
@@ -169,8 +178,12 @@ public abstract class AbstractPredicate implements Predicate {
     protected synchronized final void initGroup(final SlingHttpServletRequest request) {
         /* Track Predicate Groups across Request */
 
-        if (!isGroupIdGeneratingComponent(request) || !isReady() || !generateGroupId(request)) {
+        /*if (!isGroupIdGeneratingComponent(request) || !isReady() || !generateGroupId(request)) {
             generateLegacyGroupId(request);
+        }*/
+
+        if (isGroupIdGeneratingComponent(request)) {
+            generateGroupId(request);
         }
     }
 
@@ -190,39 +203,29 @@ public abstract class AbstractPredicate implements Predicate {
      * @return true if a group id was generated.
      */
     private boolean generateGroupId(SlingHttpServletRequest request) {
-        Object groupTracker = request.getAttribute(REQUEST_ATTR_PREDICATE_GROUP_TRACKER);
+        HashMap<String, Integer> groupTracker = getGroupTracker(request);
 
-        if (groupTracker == null) {
-            groupTracker = INITIAL_GROUP_ID;
-        }
-
-        if (groupTracker instanceof Integer) {
-            group = (Integer) groupTracker + 1;
-            request.setAttribute(REQUEST_ATTR_PREDICATE_GROUP_TRACKER, group);
+        if (groupTracker.containsKey(request.getResource().getPath())) {
+            this.group = groupTracker.getOrDefault(request.getResource().getPath(), request.getResource().getPath().hashCode());
+            // Processed
+            return false;
+        } else {
+            group = groupTracker.values().stream().max(Integer::compare).orElse(-1) + 1;
+            groupTracker.put(request.getResource().getPath(), group);
+            request.setAttribute(REQUEST_ATTR_PREDICATE_GROUP_TRACKER, groupTracker);
+            request.setAttribute("TEST", "I WWAS SET IN GENERATE GROUP ID");
             return true;
         }
-
-        return false;
     }
 
-    /**
-     * Set the legacy groupId and set the request attribute.
-     *
-     * @param request the Sling Http Request object.
-     */
-    private void generateLegacyGroupId(SlingHttpServletRequest request) {
-        Object legacyGroupTracker = request.getAttribute(REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER);
 
-        if (legacyGroupTracker == null) {
-            legacyGroupTracker = INITIAL_LEGACY_GROUP_ID;
+    private HashMap<String, Integer> getGroupTracker(SlingHttpServletRequest request) {
+        HashMap<String, Integer> groupTracker = (HashMap) request.getAttribute(REQUEST_ATTR_PREDICATE_GROUP_TRACKER);
+        if (groupTracker == null) {
+            groupTracker = new HashMap<>();
         }
 
-        if (legacyGroupTracker instanceof Integer) {
-            group = (Integer) legacyGroupTracker + 1;
-            request.setAttribute(REQUEST_ATTR_LEGACY_PREDICATE_GROUP_TRACKER, group);
-        } else {
-            group = -1;
-        }
+        return groupTracker;
     }
 
     public class AlphabeticalOptionItems implements Comparator<OptionItem> {
