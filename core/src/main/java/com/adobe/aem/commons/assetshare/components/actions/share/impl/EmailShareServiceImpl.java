@@ -67,13 +67,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
-import javax.jcr.Value;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import org.apache.http.client.utils.URIBuilder;
 
 @Component(service = ShareService.class)
 @Designate(ocd = EmailShareServiceImpl.Cfg.class)
@@ -89,6 +91,10 @@ public class EmailShareServiceImpl implements ShareService {
     private static final String ASSET_PATHS = "path";
     private static final String EMAIL_ADDRESSES = "email";
     private static final String EMAIL_ASSET_LINK_LIST_HTML = "assetLinksHTML";
+
+    /* Share properties */
+    private static final String PN_TRACKING_NAME = "trackingName";
+    private static final String PN_TRACKING_VALUE = "trackingValue";
 
     private transient Cfg cfg;
     private transient BundleContext bundleContext;
@@ -206,12 +212,27 @@ public class EmailShareServiceImpl implements ShareService {
 
                 // Unescape the URL since externalizer also escapes, resulting in a breaking, double-escaped URLs
                 // This is required since assetDetailsResolver.getFullUrl(config, asset) performs its own escaping.
-                url =  Text.unescape(url);
+                url = Text.unescape(url);
 
                 if (RequireAem.ServiceType.AUTHOR.equals(requireAem.getServiceType())) {
                     url = externalizer.authorLink(config.getResourceResolver(), url);
                 } else {
                     url = externalizer.externalLink(config.getResourceResolver(), cfg.externalizerDomain(), url);
+                }
+
+                String trackingName = config.getProperties().get(PN_TRACKING_NAME, String.class);
+                String trackingValue = config.getProperties().get(PN_TRACKING_VALUE, String.class);
+
+                try {
+                    if (!StringUtils.isAnyBlank(trackingName, trackingValue)) {
+                        URIBuilder uriBuilder = new URIBuilder(url);
+                        uriBuilder.setParameter(trackingName, trackingValue);
+                        url = uriBuilder.build().toString();
+                    }
+                } catch (URISyntaxException e) {
+                    if (log.isWarnEnabled()) {
+                        log.warn("Unable to part [ {} ] to a valid URL for use in a share e-mail.", url);
+                    }
                 }
 
                 sb.append("<li><a href=\"");
