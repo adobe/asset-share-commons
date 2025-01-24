@@ -153,7 +153,7 @@ com.adobe.aem.commons.assetshare.util.impl
                         </goals>
                     </execution>
                 </executions>
-            </plugin><plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><configuration><source>8</source><target>8</target></configuration></plugin>
+            </plugin>
             <!-- tests are reused from assetshare.core.cloud, therefore create a dedicated artifact, https://maven.apache.org/plugins/maven-jar-plugin/examples/create-test-jar.html -->
         </plugins>
     </build>
