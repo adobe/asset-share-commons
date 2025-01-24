@@ -1,6 +1,23 @@
 # 📑 Changelog
 
 
+## [asset-share-commons-3.9.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.9.0)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.8.22...asset-share-commons-3.9.0)
+
+### 📦 Uncategorized
+
+- v.3.9.0 release [#1219](https://github.com/adobe/asset-share-commons/pull/1219) (davidjgonzalez)
+- Adding share tracking [#1210](https://github.com/adobe/asset-share-commons/pull/1210) (davidjgonzalez)
+- Fix issue with Initial values [#1218](https://github.com/adobe/asset-share-commons/pull/1218) (davidjgonzalez)
+- Bump org.apache.maven.plugins:maven-enforcer-plugin from 3.4.1 to 3.5.0 [#1190](https://github.com/adobe/asset-share-commons/pull/1190) (dependabot[bot])
+- Bump org.apache.maven.plugins:maven-source-plugin from 3.3.0 to 3.3.1 [#1192](https://github.com/adobe/asset-share-commons/pull/1192) (dependabot[bot])
+- Bump org.codehaus.mojo:build-helper-maven-plugin from 3.4.0 to 3.6.0 [#1194](https://github.com/adobe/asset-share-commons/pull/1194) (dependabot[bot])
+- Bump codecov/codecov-action from 4 to 5 [#1203](https://github.com/adobe/asset-share-commons/pull/1203) (dependabot[bot])
+- Bump org.apache.maven.plugins:maven-javadoc-plugin from 3.10.0 to 3.11.2 [#1209](https://github.com/adobe/asset-share-commons/pull/1209) (dependabot[bot])
+- Oak index configuration optimizations [#1217](https://github.com/adobe/asset-share-commons/pull/1217) (davidjgonzalez)
+
+
 ## [asset-share-commons-3.8.22](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.8.22)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.8.20...asset-share-commons-3.8.22)
