@@ -474,7 +474,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.8.8</version>
+                    <version>0.8.12</version>
                 </plugin>
                 <!-- Maven PMD Plugin -->
                 <plugin>
