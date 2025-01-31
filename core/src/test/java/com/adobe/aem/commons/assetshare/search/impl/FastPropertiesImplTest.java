@@ -20,7 +20,6 @@
 package com.adobe.aem.commons.assetshare.search.impl;
 
 import com.adobe.aem.commons.assetshare.search.FastProperties;
-import com.google.common.collect.ImmutableList;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.junit.Before;
 import org.junit.Rule;
@@ -28,7 +27,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -50,11 +51,12 @@ public class FastPropertiesImplTest {
     public void getFastProperties_WithNoParams() {
         final FastProperties fastProperties = ctx.getService(FastProperties.class);
 
-        final List<String> expected = ImmutableList.of(
-                "jcr:content/analyzedIndexRule",
-                "jcr:content/propertyAndAnalyzedIndexRule",
-                "jcr:content/propertyIndexRule",
-                "jcr:content/vanilla");
+        final List<String> expected =
+                Collections.unmodifiableList(Arrays.asList(
+                        "jcr:content/analyzedIndexRule",
+                        "jcr:content/propertyAndAnalyzedIndexRule",
+                        "jcr:content/propertyIndexRule",
+                        "jcr:content/vanilla"));
 
         final List<String> actual = fastProperties.getFastProperties();
 
@@ -65,9 +67,9 @@ public class FastPropertiesImplTest {
     public void getFastProperties_WithPropertyIndexParam() {
         final FastProperties fastProperties = ctx.getService(FastProperties.class);
 
-        final List<String> expected = ImmutableList.of(
+        final List<String> expected = Collections.unmodifiableList(Arrays.asList(
                 "jcr:content/propertyAndAnalyzedIndexRule",
-                "jcr:content/propertyIndexRule");
+                "jcr:content/propertyIndexRule"));
 
         final List<String> actual = fastProperties.getFastProperties("propertyIndex");
 
@@ -78,9 +80,9 @@ public class FastPropertiesImplTest {
     public void getFastProperties_WithAnalyzedIndexParam() {
         final FastProperties fastProperties = ctx.getService(FastProperties.class);
 
-        final List<String> expected = ImmutableList.of(
+        final List<String> expected = Collections.unmodifiableList(Arrays.asList(
                 "jcr:content/analyzedIndexRule",
-                "jcr:content/propertyAndAnalyzedIndexRule");
+                "jcr:content/propertyAndAnalyzedIndexRule"));
 
         final List<String> actual = fastProperties.getFastProperties("analyzed");
 
@@ -92,10 +94,11 @@ public class FastPropertiesImplTest {
     public void getFastProperties_WithAnalyzedAndPropertyIndexParams() {
         final FastProperties fastProperties = ctx.getService(FastProperties.class);
 
-        final List<String> expected = ImmutableList.of(
-                "jcr:content/propertyAndAnalyzedIndexRule");
+        final List<String> expected = Collections.unmodifiableList(Collections.singletonList(
 
-        final List<String> actual = fastProperties.getFastProperties(ImmutableList.of("analyzed", "propertyIndex"));
+                "jcr:content/propertyAndAnalyzedIndexRule"));
+
+        final List<String> actual = fastProperties.getFastProperties(Collections.unmodifiableList(Arrays.asList("analyzed", "propertyIndex")));
 
         assertEquals(expected, actual);
     }
@@ -104,18 +107,18 @@ public class FastPropertiesImplTest {
     public void getDeltaProperties() {
         final FastProperties fastProperties = ctx.getService(FastProperties.class);
 
-        final Collection<String> fast = ImmutableList.of(
+        final Collection<String> fast = Collections.unmodifiableList(Arrays.asList(
                 "./jcr:content/one",
                 "./jcr:content/two",
                 "./jcr:content/three",
                 "./jcr:content/four",
-                "./jcr:content/five");
+                "./jcr:content/five"));
 
-        final Collection<String> other = ImmutableList.of(
+        final Collection<String> other = Collections.unmodifiableList(Arrays.asList(
                 "jcr:content/one",
                 "jcr:content/two",
                 "jcr:content/three",
-                "jcr:content/five");
+                "jcr:content/five"));
 
         final List<String> actual = fastProperties.getDeltaProperties(fast, other);
 

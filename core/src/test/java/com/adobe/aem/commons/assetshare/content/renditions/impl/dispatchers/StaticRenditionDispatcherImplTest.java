@@ -25,7 +25,7 @@ import com.adobe.aem.commons.assetshare.content.properties.impl.ComputedProperti
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
-import com.google.common.collect.ImmutableMap;
+
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.commons.io.IOUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -44,9 +44,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -120,19 +118,20 @@ public class StaticRenditionDispatcherImplTest {
 
     @Test
     public void getOptions() {
-        final Map<String, String> expected =  ImmutableMap.<String, String>builder().
-                put("Foo", "foo").
-                put("Foo bar", "foo_bar").
-                put("Foo-bar", "foo-bar").
-                build();
+        final Map<String, String> expected = Collections.unmodifiableMap(new HashMap<String, String>() {{
+            put("Foo", "foo");
+            put("Foo bar", "foo_bar");
+            put("Foo-bar", "foo-bar");
+        }});
 
         ctx.registerInjectActivateService(new StaticRenditionDispatcherImpl(),
-                ImmutableMap.<String, Object>builder().
-                        put("rendition.mappings", new String[]{
-                                "foo=foo value",
-                                "foo_bar=foo_bar value",
-                                "foo-bar=foo-bar value"}).
-                        build());
+                Collections.unmodifiableMap(new HashMap<String, Object>() {{
+                    put("rendition.mappings", new String[]{
+                            "foo=foo value",
+                            "foo_bar=foo_bar value",
+                            "foo-bar=foo-bar value"
+                    });
+                }}));
         final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
         final Map<String, String> actual = assetRenditionDispatcher.getOptions();
 
@@ -146,11 +145,12 @@ public class StaticRenditionDispatcherImplTest {
         expected.add("test.ing");
 
         ctx.registerInjectActivateService(new StaticRenditionDispatcherImpl(),
-                ImmutableMap.<String, Object>builder().
-                        put("rendition.mappings", new String[]{
-                                "foo=foo value",
-                                "test.ing-rendition=test-rendition value"}).
-                        build());
+                Collections.unmodifiableMap(new HashMap<String, Object>() {{
+                    put("rendition.mappings", new String[]{
+                            "foo=foo value",
+                            "test.ing-rendition=test-rendition value"
+                    });
+                }}));
         final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
         final Set<String> actual = assetRenditionDispatcher.getRenditionNames();
 
@@ -171,11 +171,12 @@ public class StaticRenditionDispatcherImplTest {
         }).when(requestDispatcher).include(any(SlingHttpServletRequest.class), any(SlingHttpServletResponse.class));
 
         ctx.registerInjectActivateService(new StaticRenditionDispatcherImpl(),
-                ImmutableMap.<String, Object>builder().
-                        put("rendition.mappings", new String[]{
-                                "original=original",
-                                "testing=^cq5dam\\.web\\..*"}).
-                        build());
+                Collections.unmodifiableMap(new HashMap<String, Object>() {{
+                    put("rendition.mappings", new String[]{
+                            "original=original",
+                            "testing=^cq5dam\\.web\\..*"
+                    });
+                }}));
 
         final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
 

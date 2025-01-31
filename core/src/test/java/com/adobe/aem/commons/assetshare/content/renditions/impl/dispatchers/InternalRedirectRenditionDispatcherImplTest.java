@@ -30,7 +30,7 @@ import com.adobe.aem.commons.assetshare.util.ExpressionEvaluator;
 import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.aem.commons.assetshare.util.impl.ExpressionEvaluatorImpl;
 import com.adobe.aem.commons.assetshare.util.impl.requests.ExtensionOverrideRequestWrapper;
-import com.google.common.collect.ImmutableMap;
+
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.sling.api.request.RequestDispatcherOptions;
 import org.apache.sling.api.resource.Resource;
@@ -47,9 +47,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -128,19 +126,20 @@ public class InternalRedirectRenditionDispatcherImplTest {
 
     @Test
     public void getOptions() {
-        final Map<String, String> expected = ImmutableMap.<String, String>builder().
-                put("Foo", "foo").
-                put("Foo bar", "foo_bar").
-                put("Foo-bar", "foo-bar").
-                build();
+        final Map<String, String> expected = Collections.unmodifiableMap(new HashMap<String, String>() {{
+            put("Foo", "foo");
+            put("Foo bar", "foo_bar");
+            put("Foo-bar", "foo-bar");
+        }});
 
         ctx.registerInjectActivateService(new InternalRedirectRenditionDispatcherImpl(),
-                ImmutableMap.<String, Object>builder().
-                        put("rendition.mappings", new String[]{
-                                "foo=foo value",
-                                "foo_bar=foo_bar value",
-                                "foo-bar=foo-bar value"}).
-                        build());
+                Collections.unmodifiableMap(new HashMap<String, Object>() {{
+                    put("rendition.mappings", new String[]{
+                            "foo=foo value",
+                            "foo_bar=foo_bar value",
+                            "foo-bar=foo-bar value"
+                    });
+                }}));
         final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
         final Map<String, String> actual = assetRenditionDispatcher.getOptions();
 
@@ -154,11 +153,12 @@ public class InternalRedirectRenditionDispatcherImplTest {
         expected.add("test.ing-rendition");
 
         ctx.registerInjectActivateService(new InternalRedirectRenditionDispatcherImpl(),
-                ImmutableMap.<String, Object>builder().
-                        put("rendition.mappings", new String[]{
-                                "foo=foo value",
-                                "test.ing-rendition=test-rendition value"}).
-                        build());
+                Collections.unmodifiableMap(new HashMap<String, Object>() {{
+                    put("rendition.mappings", new String[]{
+                            "foo=foo value",
+                            "test.ing-rendition=test-rendition value"
+                    });
+                }}));
         final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
         final Set<String> actual = assetRenditionDispatcher.getRenditionNames();
 
@@ -170,10 +170,11 @@ public class InternalRedirectRenditionDispatcherImplTest {
     @Test
     public void dispatch() throws IOException, ServletException {
         ctx.registerInjectActivateService(new InternalRedirectRenditionDispatcherImpl(),
-                ImmutableMap.<String, Object>builder().
-                        put("rendition.mappings", new String[]{
-                                "testing=${asset.path}.test.500.500.${asset.extension}"}).
-                        build());
+                Collections.unmodifiableMap(new HashMap<String, Object>() {{
+                    put("rendition.mappings", new String[]{
+                            "testing=${asset.path}.test.500.500.${asset.extension}"
+                    });
+                }}));
 
         final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
 
@@ -196,10 +197,11 @@ public class InternalRedirectRenditionDispatcherImplTest {
     @Test
     public void dispatch_WithSpacesInPath() throws IOException, ServletException {
         ctx.registerInjectActivateService(new InternalRedirectRenditionDispatcherImpl(),
-                ImmutableMap.<String, Object>builder().
-                        put("rendition.mappings", new String[]{
-                                "testing=${asset.path}.test.500.500.${asset.extension}"}).
-                        build());
+                Collections.unmodifiableMap(new HashMap<String, Object>() {{
+                    put("rendition.mappings", new String[]{
+                            "testing=${asset.path}.test.500.500.${asset.extension}"
+                    });
+                }}));
 
         final AssetRenditionDispatcher assetRenditionDispatcher = ctx.getService(AssetRenditionDispatcher.class);
 

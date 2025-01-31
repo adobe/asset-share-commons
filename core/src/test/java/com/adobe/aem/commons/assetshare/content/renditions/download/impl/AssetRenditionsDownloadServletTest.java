@@ -30,7 +30,6 @@ import com.adobe.aem.commons.assetshare.util.ExpressionEvaluator;
 import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.aem.commons.assetshare.util.impl.ExpressionEvaluatorImpl;
 import com.adobe.aem.commons.assetshare.util.impl.ServletHelperImpl;
-import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.osgi.services.HttpClientBuilderFactory;
@@ -50,9 +49,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.osgi.framework.Constants;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -107,13 +107,13 @@ public class AssetRenditionsDownloadServletTest {
 
         ctx.registerInjectActivateService(
                 new StaticRenditionDispatcherImpl(),
-                ImmutableMap.<String, Object>builder().
-                        put(Constants.SERVICE_RANKING, 0).
-                        put("label", "Test AssetRenditionDispatcher").
-                        put("name", "test").
-                        put ("types", new String[]{"image", "video"}).
-                        put("rendition.mappings", new String[]{ "test=original" }).
-                        build());
+                Collections.unmodifiableMap(new HashMap<String, Object>() {{
+                    put(Constants.SERVICE_RANKING, 0);
+                    put("label", "Test AssetRenditionDispatcher");
+                    put("name", "test");
+                    put("types", new String[]{"image", "video"});
+                    put("rendition.mappings", new String[]{"test=original"});
+                }}));
 
         RequireAemMock.setAem(ctx, RequireAem.Distribution.CLASSIC, RequireAem.ServiceType.PUBLISH);
 
@@ -152,7 +152,7 @@ public class AssetRenditionsDownloadServletTest {
         servlet.service(ctx.request(), ctx.response());
 
         assertEquals("application/zip", ctx.response().getContentType());
-        assertEquals(334,  ctx.response().getOutput().length);
+        assertEquals(334, ctx.response().getOutput().length);
     }
 
     @Test
@@ -169,7 +169,7 @@ public class AssetRenditionsDownloadServletTest {
         servlet.service(ctx.request(), ctx.response());
 
         assertEquals("application/zip", ctx.response().getContentType());
-        assertEquals(253,  ctx.response().getOutput().length); // Size of zip w/ default no content message
+        assertEquals(253, ctx.response().getOutput().length); // Size of zip w/ default no content message
     }
 
     @Test
@@ -186,6 +186,6 @@ public class AssetRenditionsDownloadServletTest {
         servlet.service(ctx.request(), ctx.response());
 
         assertEquals("application/zip", ctx.response().getContentType());
-        assertEquals(253,  ctx.response().getOutput().length); // Size of zip w/ default no content message
+        assertEquals(253, ctx.response().getOutput().length); // Size of zip w/ default no content message
     }
 }

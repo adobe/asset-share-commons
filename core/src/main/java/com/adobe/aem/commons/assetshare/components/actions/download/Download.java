@@ -22,7 +22,6 @@ package com.adobe.aem.commons.assetshare.components.actions.download;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.adobe.cq.wcm.core.components.models.form.Options;
-import com.google.common.collect.ImmutableList;
 import org.osgi.annotation.versioning.ConsumerType;
 
 import java.util.ArrayList;
@@ -98,7 +97,7 @@ public interface Download {
         }
 
         public List<OptionItem> getItems() {
-            return ImmutableList.copyOf(options);
+            return Collections.unmodifiableList(options);
         }
     }
 }

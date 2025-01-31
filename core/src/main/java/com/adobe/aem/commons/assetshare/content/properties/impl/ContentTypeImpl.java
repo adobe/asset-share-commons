@@ -22,7 +22,7 @@ package com.adobe.aem.commons.assetshare.content.properties.impl;
 import com.adobe.aem.commons.assetshare.content.properties.AbstractComputedProperty;
 import com.adobe.aem.commons.assetshare.content.properties.ComputedProperty;
 import com.day.cq.dam.api.Asset;
-import com.google.common.collect.ImmutableMap;
+
 import org.apache.commons.lang3.StringUtils;
 import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Activate;
@@ -31,6 +31,8 @@ import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.adobe.aem.commons.assetshare.content.properties.ComputedProperty.DEFAULT_ASC_COMPUTED_PROPERTY_SERVICE_RANKING;
@@ -64,39 +66,38 @@ public class ContentTypeImpl extends AbstractComputedProperty<String> {
 
 
     // Full mime type to label map
-    private static final Map<String, String> mimeTypeToLabelMap = ImmutableMap.<String, String>builder()
-            .put("image/vnd.adobe.photoshop",                                                   "Photoshop")
-            .put("application/msword",                                                          "Word Doc")
-            .put("application/vnd.openxmlformats-officedocument.wordprocessingml.document",    "Word Doc")
-            .put("application/vnd.ms-excel",                                                    "Excel")
-            .put("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",           "Excel")
-            .put("application/vnd.ms-powerpoint",                                               "PowerPoint")
-            .put("application/vnd.openxmlformats-officedocument.presentationml.presentation",   "PowerPoint")
-            .put("application/pdf",                                                             "PDF")
-            .put("application/xml",                                                             "XML")
-            .put("application/zip",                                                             "Zip")
-            .put("application/json",                                                            "JSON")
-            .put("application/vnd.adobe.illustrator",                                           "Illustrator")
-            .put("application/vnd.adobe.indesign",                                              "InDesign")
-            .put("application/vnd.adobe.indesignml",                                            "InDesign")
-            .put("application/vnd.adobe.indesignx",                                             "InDesign")
-            .put("application/vnd.adobe.aftereffects",                                          "After Effects")
-            .put("application/vnd.adobe.premiere",                                              "Premiere")
-            .put("application/vnd.adobe.xd",                                                    "XD")
-            .put("text/html",                                                                   "HTML")
-            .put("text/csv",                                                                    "CSV")
-            .build();
-
+    private static final Map<String, String> mimeTypeToLabelMap = Collections.unmodifiableMap(new HashMap<String, String>() {{
+        put("image/vnd.adobe.photoshop", "Photoshop");
+        put("application/msword", "Word Doc");
+        put("application/vnd.openxmlformats-officedocument.wordprocessingml.document", "Word Doc");
+        put("application/vnd.ms-excel", "Excel");
+        put("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Excel");
+        put("application/vnd.ms-powerpoint", "PowerPoint");
+        put("application/vnd.openxmlformats-officedocument.presentationml.presentation", "PowerPoint");
+        put("application/pdf", "PDF");
+        put("application/xml", "XML");
+        put("application/zip", "Zip");
+        put("application/json", "JSON");
+        put("application/vnd.adobe.illustrator", "Illustrator");
+        put("application/vnd.adobe.indesign", "InDesign");
+        put("application/vnd.adobe.indesignml", "InDesign");
+        put("application/vnd.adobe.indesignx", "InDesign");
+        put("application/vnd.adobe.aftereffects", "After Effects");
+        put("application/vnd.adobe.premiere", "Premiere");
+        put("application/vnd.adobe.xd", "XD");
+        put("text/html", "HTML");
+        put("text/csv", "CSV");
+    }});
 
     // Fallback mime type prefix to label map
-    private static final Map<String, String> mimeTypePrefixToLabelMap = ImmutableMap.<String, String>builder()
-            .put("image",   "Image")
-            .put("video",   "Video")
-            .put("audio",   "Audio")
-            .put("font",    "Font")
-            .put("model",   "3D")
-            .put("text",    "Text")
-            .build();
+    private static final Map<String, String> mimeTypePrefixToLabelMap = Collections.unmodifiableMap(new HashMap<String, String>() {{
+        put("image", "Image");
+        put("video", "Video");
+        put("audio", "Audio");
+        put("font", "Font");
+        put("model", "3D");
+        put("text", "Text");
+    }});
 
     @Override
     public String get(Asset asset) {

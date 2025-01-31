@@ -187,7 +187,7 @@
                     <plugin>
                         <groupId>com.adobe.aem</groupId>
                         <artifactId>aemanalyser-maven-plugin</artifactId>
-                        <version>1.5.8</version> <!-- Make sure to use the latest release -->
+                        <version>1.6.6</version> <!-- Make sure to use the latest release -->
                         <executions>
                             <execution>
                                 <id>aem-analyser</id>
