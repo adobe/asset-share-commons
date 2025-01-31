@@ -9,7 +9,7 @@ import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionDi
 import com.adobe.aem.commons.assetshare.content.renditions.impl.AssetRenditionsImpl;
 import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.StaticRenditionDispatcherImpl;
 import com.adobe.aem.commons.assetshare.testing.MockAssetModels;
-import com.google.common.collect.ImmutableMap;
+
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.osgi.services.HttpClientBuilderFactory;
@@ -31,10 +31,7 @@ import org.osgi.framework.Constants;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -77,13 +74,13 @@ public class AssetRenditionsZipperImplTest {
 
         ctx.registerInjectActivateService(
                 new StaticRenditionDispatcherImpl(),
-                ImmutableMap.<String, Object>builder().
-                        put(Constants.SERVICE_RANKING, 0).
-                        put("label", "Test AssetRenditionDispatcher").
-                        put("name", "test").
-                        put ("types", new String[]{"image", "video"}).
-                        put("rendition.mappings", new String[]{ "test=original" }).
-                        build());
+                Collections.unmodifiableMap(new HashMap<String, Object>() {{
+                    put(Constants.SERVICE_RANKING, 0);
+                    put("label", "Test AssetRenditionDispatcher");
+                    put("name", "test");
+                    put("types", new String[]{"image", "video"});
+                    put("rendition.mappings", new String[]{"test=original"});
+                }}));
 
         ctx.registerInjectActivateService(new AssetRenditionStreamerImpl());
 
@@ -120,7 +117,9 @@ public class AssetRenditionsZipperImplTest {
 
         AssetRenditionsZipperImpl zipper = (AssetRenditionsZipperImpl) ctx.getService(AssetRenditionsDownloadOrchestrator.class);
 
-        assertEquals(expected, zipper.getFileName(new ValueMapDecorator(ImmutableMap.of("fileName", "My Assets"))));
+        assertEquals(expected, zipper.getFileName(new ValueMapDecorator(Collections.unmodifiableMap(new HashMap<String, Object>() {{
+            put("fileName", "My Assets");
+        }}))));
     }
 
     @Test

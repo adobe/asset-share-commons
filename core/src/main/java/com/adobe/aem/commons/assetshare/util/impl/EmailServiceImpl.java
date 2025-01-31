@@ -235,6 +235,7 @@ public final class EmailServiceImpl implements EmailService {
                            final Class<? extends Email> mailType,
                            final Map<String, String> params) throws EmailException, MessagingException, IOException {
 
+        // We cannot get rid of StrLookup even tho its deprecated, because the AEM MailTemplate.getEmail(...) requires a parameter of this type
         final Email email = mailTemplate.getEmail(StrLookup.mapLookup(params), mailType);
 
         if (params.containsKey(EmailService.SENDER_EMAIL_ADDRESS)

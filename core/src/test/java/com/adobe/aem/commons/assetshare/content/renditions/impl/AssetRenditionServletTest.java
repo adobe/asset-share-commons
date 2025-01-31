@@ -27,7 +27,7 @@ import com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers.Stat
 import com.adobe.aem.commons.assetshare.testing.MockAssetModels;
 import com.adobe.aem.commons.assetshare.util.ServletHelper;
 import com.adobe.aem.commons.assetshare.util.impl.ServletHelperImpl;
-import com.google.common.collect.ImmutableMap;
+
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.commons.io.IOUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -49,6 +49,8 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -115,18 +117,20 @@ public class AssetRenditionServletTest {
 
         ctx.registerInjectActivateService(
                 new StaticRenditionDispatcherImpl(),
-                ImmutableMap.<String, Object>builder().
-                        put("rendition.mappings", new String[]{
-                                "testing1=value doesnt matter"}).
-                        build());
+                Collections.unmodifiableMap(new HashMap<String, Object>() {{
+                    put("rendition.mappings", new String[]{
+                            "testing1=value doesnt matter"
+                    });
+                }}));
 
         ctx.registerInjectActivateService(
                 assetRenditionDispatcher,
-                ImmutableMap.<String, Object>builder().
-                        put("rendition.mappings", new String[]{
-                                "original=original",
-                                "testing2=^cq5dam\\.web\\..*"}).
-                        build());
+                Collections.unmodifiableMap(new HashMap<String, Object>() {{
+                    put("rendition.mappings", new String[]{
+                            "original=original",
+                            "testing2=^cq5dam\\.web\\..*"
+                    });
+                }}));
 
         Servlet servlet = ctx.registerInjectActivateService(new AssetRenditionServlet());
 
@@ -146,10 +150,11 @@ public class AssetRenditionServletTest {
 
         ctx.registerInjectActivateService(
                 assetRenditionDispatcher,
-                ImmutableMap.<String, Object>builder().
-                        put("rendition.mappings", new String[]{
-                                "testing=value doesnt matter"}).
-                        build());
+                Collections.unmodifiableMap(new HashMap<String, Object>() {{
+                    put("rendition.mappings", new String[]{
+                            "testing=value doesnt matter"
+                    });
+                }}));
 
         Servlet servlet = ctx.registerInjectActivateService(new AssetRenditionServlet());
 

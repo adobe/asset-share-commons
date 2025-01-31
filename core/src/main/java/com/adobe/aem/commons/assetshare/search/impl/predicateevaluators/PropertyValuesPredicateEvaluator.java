@@ -25,7 +25,6 @@ import com.day.cq.search.eval.FulltextPredicateEvaluator;
 import com.day.cq.search.eval.JcrPropertyPredicateEvaluator;
 import com.day.cq.search.eval.PredicateEvaluator;
 import com.day.cq.search.facets.FacetExtractor;
-import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.osgi.service.component.annotations.Activate;
@@ -213,7 +212,7 @@ public class PropertyValuesPredicateEvaluator implements PredicateEvaluator {
 
     protected List<String> getValues(final String data, final List<String> delimiters) {
         if (delimiters.size() == 0) {
-            return ImmutableList.<String>builder().add(data).build();
+            Collections.unmodifiableList(Arrays.asList(data));
         }
 
         final String regex = delimiters.stream()

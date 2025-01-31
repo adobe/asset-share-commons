@@ -30,7 +30,7 @@ import com.adobe.aem.commons.assetshare.util.impl.DataSourceBuilderImpl;
 import com.adobe.aem.commons.assetshare.util.impl.ExpressionEvaluatorImpl;
 import com.adobe.aem.commons.assetshare.util.impl.RequireAemImpl;
 import com.adobe.granite.ui.components.ds.DataSource;
-import com.google.common.collect.ImmutableMap;
+
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
@@ -46,9 +46,7 @@ import org.osgi.framework.Constants;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertArrayEquals;
 
@@ -74,27 +72,29 @@ public class AssetRenditionsDataSourceTest {
 
         ctx.registerInjectActivateService(
                 new StaticRenditionDispatcherImpl(),
-                ImmutableMap.<String, Object>builder().
-                        put(Constants.SERVICE_RANKING, 0).
-                        put("label", "One AssetRenditionDispatcher").
-                        put("name", "one").
-                        put ("types", new String[]{"image", "video"}).
-                        put("rendition.mappings", new String[]{
-                                "a=value",
-                                "b=value",}).
-                        build());
+                Collections.unmodifiableMap(new HashMap<String, Object>() {{
+                    put(Constants.SERVICE_RANKING, 0);
+                    put("label", "One AssetRenditionDispatcher");
+                    put("name", "one");
+                    put("types", new String[]{"image", "video"});
+                    put("rendition.mappings", new String[]{
+                            "a=value",
+                            "b=value"
+                    });
+                }}));
 
         ctx.registerInjectActivateService(
                 new StaticRenditionDispatcherImpl(),
-                ImmutableMap.<String, Object>builder().
-                        put(Constants.SERVICE_RANKING, 0).
-                        put("label", "Two AssetRenditionDispatcher").
-                        put("name", "two").
-                        put ("types", new String[]{"video"}).
-                        put("rendition.mappings", new String[]{
-                                "c=value",
-                                "d=value"}).
-                        build());
+                Collections.unmodifiableMap(new HashMap<String, Object>() {{
+                    put(Constants.SERVICE_RANKING, 0);
+                    put("label", "Two AssetRenditionDispatcher");
+                    put("name", "two");
+                    put("types", new String[]{"video"});
+                    put("rendition.mappings", new String[]{
+                            "c=value",
+                            "d=value"
+                    });
+                }}));
     }
 
     @Test
@@ -205,14 +205,15 @@ public class AssetRenditionsDataSourceTest {
 
         ctx.registerInjectActivateService(
                 new StaticRenditionDispatcherImpl(),
-                ImmutableMap.<String, Object>builder().
-                        put(Constants.SERVICE_RANKING, 1000).
-                        put("label", "Three AssetRenditionDispatcher").
-                        put("name", "three").
-                        put("rendition.mappings", new String[]{
-                                "a=preferred value for a",
-                                "c=preferred value for c"}).
-                        build());
+                Collections.unmodifiableMap(new HashMap<String, Object>() {{
+                    put(Constants.SERVICE_RANKING, 1000);
+                    put("label", "Three AssetRenditionDispatcher");
+                    put("name", "three");
+                    put("rendition.mappings", new String[]{
+                            "a=preferred value for a",
+                            "c=preferred value for c"
+                    });
+                }}));
 
         servlet.service(ctx.request(), ctx.response());
 
@@ -234,15 +235,16 @@ public class AssetRenditionsDataSourceTest {
 
         ctx.registerInjectActivateService(
                 new StaticRenditionDispatcherImpl(),
-                ImmutableMap.<String, Object>builder().
-                        put(Constants.SERVICE_RANKING, 1000).
-                        put("label", "Three AssetRenditionDispatcher").
-                        put("name", "three").
-                        put ("hidden", true).
-                        put("rendition.mappings", new String[]{
-                                "e=value",
-                                "f=value"}).
-                        build());
+                Collections.unmodifiableMap(new HashMap<String, Object>() {{
+                    put(Constants.SERVICE_RANKING, 1000);
+                    put("label", "Three AssetRenditionDispatcher");
+                    put("name", "three");
+                    put("hidden", true);
+                    put("rendition.mappings", new String[]{
+                            "e=value",
+                            "f=value"
+                    });
+                }}));
 
         servlet.service(ctx.request(), ctx.response());
 
@@ -263,15 +265,16 @@ public class AssetRenditionsDataSourceTest {
 
         ctx.registerInjectActivateService(
                 new StaticRenditionDispatcherImpl(),
-                ImmutableMap.<String, Object>builder().
-                        put(Constants.SERVICE_RANKING, 1000).
-                        put("label", "Three AssetRenditionDispatcher").
-                        put("name", "three").
-                        put ("types", new String[]{"image"}).
-                        put("rendition.mappings", new String[]{
-                                "e=value",
-                                "f=value"}).
-                        build());
+                Collections.unmodifiableMap(new HashMap<String, Object>() {{
+                    put(Constants.SERVICE_RANKING, 1000);
+                    put("label", "Three AssetRenditionDispatcher");
+                    put("name", "three");
+                    put("types", new String[]{"image"});
+                    put("rendition.mappings", new String[]{
+                            "e=value",
+                            "f=value"
+                    });
+                }}));
 
         servlet.service(ctx.request(), ctx.response());
 

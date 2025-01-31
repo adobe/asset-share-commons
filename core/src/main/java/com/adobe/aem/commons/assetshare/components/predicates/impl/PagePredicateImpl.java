@@ -36,8 +36,6 @@ import com.day.cq.search.PredicateGroup;
 import com.day.cq.search.eval.PathPredicateEvaluator;
 import com.day.cq.search.eval.TypePredicateEvaluator;
 import com.day.cq.wcm.api.Page;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMap.Builder;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -53,11 +51,7 @@ import org.apache.sling.models.factory.ModelFactory;
 import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Model(
         adaptables = {SlingHttpServletRequest.class},
@@ -161,7 +155,7 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
             }
         }
 
-       return offset;
+        return offset;
     }
 
     public String getGuessTotal() {
@@ -248,7 +242,6 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
             addFacetStrategyAsParameterPredicate(parameterGroup);
         }
 
-
         root.add(parameterGroup);
 
         return root;
@@ -256,39 +249,60 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
 
     private void addIndexTagAsParameterPredicate(final PredicateGroup parameterGroup) {
         String indexTag = getIndexTag();
-        if (StringUtils.isBlank(indexTag)) { return; }
+        if (StringUtils.isBlank(indexTag)) {
+            return;
+        }
 
-        parameterGroup.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
-                put(Predicate.PARAM_OPTIONS_INDEXTAG, indexTag).
-                build()));
+        Map<String, String> map = new HashMap<String, String>() {
+            {
+                put(Predicate.PARAM_OPTIONS_INDEXTAG, indexTag);
+            }
+        };
+
+        parameterGroup.addAll(PredicateConverter.createPredicates(Collections.unmodifiableMap(map)));
     }
 
     private void addFacetStrategyAsParameterPredicate(final PredicateGroup parameterGroup) {
         String facetStrategy = getFacetStrategy();
-        if (StringUtils.isBlank(facetStrategy)) { return; }
+        if (StringUtils.isBlank(facetStrategy)) {
+            return;
+        }
 
-        parameterGroup.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
-                put(Predicate.PARAM_FACET_STRATEGY, facetStrategy).
-                build()));
+        Map<String, String> map = new HashMap<String, String>() {
+            {
+                put(Predicate.PARAM_FACET_STRATEGY, facetStrategy);
+            }
+        };
+
+        parameterGroup.addAll(PredicateConverter.createPredicates(Collections.unmodifiableMap(map)));
     }
 
 
     private void addGuessTotalAsParameterPredicate(final PredicateGroup parameterGroup) {
-        parameterGroup.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
-                put(Predicate.PARAM_GUESS_TOTAL, getGuessTotal()).
-                build()));
+        Map<String, String> map = new HashMap<String, String>() {
+            {
+                put(Predicate.PARAM_GUESS_TOTAL, getGuessTotal());
+
+            }
+        };
+
+        parameterGroup.addAll(PredicateConverter.createPredicates(Collections.unmodifiableMap(map)));
     }
 
     private void addOffsetAsParameterPredicate(final PredicateGroup parameterGroup) {
-        parameterGroup.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
-                put(Predicate.PARAM_OFFSET,  String.valueOf(getOffset())).
-                build()));
+        Map<String, String> map = new HashMap<String, String>() {{
+            put(Predicate.PARAM_OFFSET, String.valueOf(getOffset()));
+        }};
+
+        parameterGroup.addAll(PredicateConverter.createPredicates(Collections.unmodifiableMap(map)));
     }
 
     private void addLimitAsParameterPredicate(final PredicateGroup parameterGroup) {
-        parameterGroup.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
-                put(Predicate.PARAM_LIMIT, String.valueOf(getLimit())).
-                build()));
+        Map<String, String> map = new HashMap<String, String>() {{
+            put(Predicate.PARAM_LIMIT, String.valueOf(getLimit()));
+        }};
+
+        parameterGroup.addAll(PredicateConverter.createPredicates(Collections.unmodifiableMap(map)));
     }
 
     private void addSearchPredicateAsPredicateGroups(final PredicateGroup root) {
@@ -340,21 +354,22 @@ public class PagePredicateImpl extends AbstractPredicate implements PagePredicat
     }
 
     private void addTypeAsPredicate(final PredicateGroup root) {
-        root.addAll(PredicateConverter.createPredicates(ImmutableMap.<String, String>builder().
-                put(TypePredicateEvaluator.TYPE, DamConstants.NT_DAM_ASSET).
-                build()));
+        Map<String, String> map = new HashMap<>();
+        map.put(TypePredicateEvaluator.TYPE, DamConstants.NT_DAM_ASSET);
+
+        root.addAll(PredicateConverter.createPredicates(Collections.unmodifiableMap(map)));
     }
 
     private void addOrderByAsPredicate(final PredicateGroup root) {
-        Builder<String, String> orderPredicateBuilder = ImmutableMap.<String, String>builder().
-            put(Predicate.ORDER_BY, searchConfig.getOrderBy()).
-            put(Predicate.ORDER_BY + "." + Predicate.PARAM_SORT, searchConfig.getOrderBySort());
+        Map<String, String> map = new HashMap<>();
+        map.put(Predicate.ORDER_BY, searchConfig.getOrderBy());
+        map.put(Predicate.ORDER_BY + "." + Predicate.PARAM_SORT, searchConfig.getOrderBySort());
 
         if (!isOrderByCase()) {
-            orderPredicateBuilder.put(Predicate.ORDER_BY + "." + Predicate.PARAM_CASE, Predicate.IGNORE_CASE);
+            map.put(Predicate.ORDER_BY + "." + Predicate.PARAM_CASE, Predicate.IGNORE_CASE);
         }
 
-        root.addAll(PredicateConverter.createPredicates(orderPredicateBuilder.build()));
+        root.addAll(PredicateConverter.createPredicates(Collections.unmodifiableMap(map)));
     }
 
     private List<SearchPredicate> getSearchPredicates() {

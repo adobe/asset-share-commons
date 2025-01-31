@@ -20,16 +20,13 @@
 package com.adobe.aem.commons.assetshare.content.impl;
 
 import com.adobe.aem.commons.assetshare.content.MetadataProperties;
-import com.google.common.collect.ImmutableMap;
+
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -45,10 +42,9 @@ public class MetadataSchemaPropertiesImplTest {
     @Test
     public void collectExtraMetadataProperties() {
         ctx.registerInjectActivateService(new MetadataSchemaPropertiesImpl(),
-                ImmutableMap.<String, Object>builder().
-                put("extra.metadata.properties", new String[]{ "jcr:content/foo=My Foo", "jcr:content/metadata/bar=My Bar", "./jcr:content/foo=My Foo 2" }).
-                build());
-
+                Collections.unmodifiableMap(new HashMap<String, Object>() {{
+                        put("extra.metadata.properties", new String[]{"jcr:content/foo=My Foo", "jcr:content/metadata/bar=My Bar", "./jcr:content/foo=My Foo 2"});
+                    }}));
         MetadataSchemaPropertiesImpl metadataSchemaProperties = (MetadataSchemaPropertiesImpl) ctx.getService(MetadataProperties.class);
 
         Map<String, List<String>> collectedMetadata = new HashMap<>();
@@ -67,16 +63,15 @@ public class MetadataSchemaPropertiesImplTest {
     @Test
     public void removeMetadataProperties() {
         ctx.registerInjectActivateService(new MetadataSchemaPropertiesImpl(),
-                ImmutableMap.<String, Object>builder().
-                        put("blacklisted.metadata.properties", new String[]{ "jcr:content/foo" }).
-                        build());
-
+                Collections.unmodifiableMap(new HashMap<String, Object>() {{
+                    put("blacklisted.metadata.properties", new String[]{"jcr:content/foo"});
+                }}));
         MetadataSchemaPropertiesImpl metadataSchemaProperties = (MetadataSchemaPropertiesImpl) ctx.getService(MetadataProperties.class);
 
         Map<String, List<String>> collectedMetadata = new HashMap<>();
-        collectedMetadata.put("jcr:content/foo", Arrays.asList("Blacklisted"));
-        collectedMetadata.put("./jcr:content/foo", Arrays.asList("Blacklisted Too"));
-        collectedMetadata.put("./jcr:content/metadata/bar", Arrays.asList("Not blacklisted"));
+        collectedMetadata.put("jcr:content/foo", Collections.singletonList("Blacklisted"));
+        collectedMetadata.put("./jcr:content/foo", Collections.singletonList("Blacklisted Too"));
+        collectedMetadata.put("./jcr:content/metadata/bar", Collections.singletonList("Not blacklisted"));
 
         collectedMetadata = metadataSchemaProperties.removeBlacklistedMetadataProperties(collectedMetadata);
 

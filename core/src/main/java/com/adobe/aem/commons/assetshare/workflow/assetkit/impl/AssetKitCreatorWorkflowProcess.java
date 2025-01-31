@@ -28,11 +28,11 @@ import com.adobe.granite.workflow.exec.WorkflowData;
 import com.adobe.granite.workflow.exec.WorkflowProcess;
 import com.adobe.granite.workflow.metadata.MetaDataMap;
 import com.day.cq.commons.jcr.JcrUtil;
+import com.day.cq.search.Predicate;
 import com.day.cq.search.QueryBuilder;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.WCMException;
-import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.ModifiableValueMap;
 import org.apache.sling.api.resource.PersistenceException;
@@ -161,7 +161,9 @@ public class AssetKitCreatorWorkflowProcess implements WorkflowProcess {
                 resource = resource.getChild(JCR_CONTENT);
                 if (resource.getChild("metadata") == null) {
                     try {
-                        resource = resource.getResourceResolver().create(resource, "metadata", ImmutableMap.of(JCR_PRIMARYTYPE, NT_UNSTRUCTURED));
+                        resource = resource.getResourceResolver().create(resource, "metadata", Collections.unmodifiableMap(new HashMap<String, String>() {{
+                            put(JCR_PRIMARYTYPE, NT_UNSTRUCTURED);
+                        }}));
                     } catch (PersistenceException e) {
                         throw new WorkflowException(String.format("Could not create missing metadata node for asset folder [ {} ].", resource.getPath()), e);
                     }
