@@ -163,21 +163,32 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
     public AssetRendition getRendition(final AssetModel assetModel, final AssetRenditionParameters parameters) {
         final Rendition rendition = findRendition(assetModel.getAsset(), parameters);
 
-        if (rendition != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Downloading asset rendition [ {} ] for resolved rendition name [ {} ]",
-                        rendition.getPath(),
-                        parameters.getRenditionName());
-            }
-
-            if (assetRenditionTracker != null && parameters.getOtherProperties().get(TRACK, true) ) {
-                assetRenditionTracker.track(this, assetModel, parameters, rendition.getPath());
-            }
-
-            return new AssetRendition(rendition.getPath(), rendition.getSize(), rendition.getMimeType());
+        if (rendition == null) {
+            return null;
         }
 
-        return null;
+        logRenditionDetails(rendition, parameters);
+        trackAssetRendition(assetModel, parameters, rendition);
+
+        return createAssetRendition(rendition);
+    }
+
+    private void logRenditionDetails(Rendition rendition, AssetRenditionParameters parameters) {
+        if (log.isDebugEnabled()) {
+            log.debug("Downloading asset rendition [ {} ] for resolved rendition name [ {} ]",
+                    rendition.getPath(),
+                    parameters.getRenditionName());
+        }
+    }
+
+    private void trackAssetRendition(AssetModel assetModel, AssetRenditionParameters parameters, Rendition rendition) {
+        if (assetRenditionTracker != null && parameters.getOtherProperties().get(TRACK, true)) {
+            assetRenditionTracker.track(this, assetModel, parameters, rendition.getPath());
+        }
+    }
+
+    private AssetRendition createAssetRendition(Rendition rendition) {
+        return new AssetRendition(rendition.getPath(), rendition.getSize(), rendition.getMimeType());
     }
 
 
