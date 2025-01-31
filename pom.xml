@@ -107,7 +107,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.1.1</version>
                 <configuration>
                     <tagNameFormat>asset-share-commons-@{project.version}</tagNameFormat>
                     <scmCommentPrefix>[maven-scm] :</scmCommentPrefix>
@@ -385,7 +385,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
-                    <version>3.6.1</version>
+                    <version>3.8.1</version>
                 </plugin>
                 <!-- Build Helper Maven Plugin -->
                 <plugin>
@@ -474,7 +474,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.8.8</version>
+                    <version>0.8.12</version>
                 </plugin>
                 <!-- Maven PMD Plugin -->
                 <plugin>
@@ -499,7 +499,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                 <plugin>
                     <groupId>com.github.spotbugs</groupId>
                     <artifactId>spotbugs-maven-plugin</artifactId>
-                    <version>4.8.6.2</version>
+                    <version>4.8.6.6</version>
                 </plugin>
                 <!-- Maven Checkstyle Plugin -->
                 <plugin>
