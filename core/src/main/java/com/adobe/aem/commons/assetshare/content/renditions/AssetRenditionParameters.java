@@ -47,6 +47,13 @@ public final class AssetRenditionParameters {
     public static final String DOWNLOAD = "download";
     public static final String CACHE_FILENAME = "asset.rendition";
 
+    // RENDITION DETAILS
+    public static final String RENDITION_DETAILS_SIZE = "size-in-bytes";
+    public static final String RENDITION_DETAILS_MIME_TYPE = "mime-type";
+    public static final String RENDITION_DETAILS_EXTENSION = "extension";
+
+    public static final String TRACK = "track";
+
     private final Asset asset;
     private final String renditionName;
     private final String fileName;
@@ -156,16 +163,13 @@ public final class AssetRenditionParameters {
     }
 
     protected String buildFileName(final Asset asset, final String renditionName) {
-        String fileName;
-
         final String assetName = StringUtils.substringBeforeLast(asset.getName(), ".");
+        String extension = StringUtils.defaultIfBlank(getOtherProperties().get(RENDITION_DETAILS_EXTENSION, String.class),  StringUtils.substringAfterLast(asset.getName(), "."));
 
-        if (StringUtils.lastIndexOf(asset.getName(), ".") < 0) {
-            fileName = assetName + "." + renditionName;
-        } else {
-            fileName = assetName + "." + renditionName + "." + StringUtils.substringAfterLast(asset.getName(), ".");
+        if (StringUtils.isNotBlank(extension)) {
+            extension = "." + extension;
         }
 
-        return fileName;
+        return assetName + "." + renditionName + extension;
     }
 }
