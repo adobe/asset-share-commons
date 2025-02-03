@@ -70,7 +70,7 @@
         <vault.password>admin</vault.password>
         <package.group>asset-share-commons</package.group>
         <!-- the minimum AEM 6.5 version being supported -->
-        <aem.classic.api.version>6.5.19.0000</aem.classic.api.version><!-- actually one of https://repo1.maven.org/maven2/io/wcm/maven/io.wcm.maven.aem-dependencies/ -->
+        <aem.classic.api.version>6.5.2025.0.0000</aem.classic.api.version><!-- actually one of https://repo1.maven.org/maven2/io/wcm/maven/io.wcm.maven.aem-dependencies/ -->
         <!-- the minimum AEMaaCS version being supported -->
         <aem.sdk.api.version>2025.1.19149.20250116T154450Z-250100</aem.sdk.api.version><!-- actually one of https://repo1.maven.org/maven2/com/adobe/aem/aem-sdk-api/ -->
         <core.wcm.components.version>2.17.14</core.wcm.components.version>
