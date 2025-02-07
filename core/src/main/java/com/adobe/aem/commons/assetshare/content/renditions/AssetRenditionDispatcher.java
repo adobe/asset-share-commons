@@ -20,10 +20,10 @@
 package com.adobe.aem.commons.assetshare.content.renditions;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
-import com.adobe.cq.commerce.common.ValueMapDecorator;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.api.wrappers.ValueMapDecorator;
 import org.osgi.annotation.versioning.ConsumerType;
 
 import javax.servlet.ServletException;

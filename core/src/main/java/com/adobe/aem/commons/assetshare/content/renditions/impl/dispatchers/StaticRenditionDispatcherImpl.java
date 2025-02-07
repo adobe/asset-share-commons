@@ -23,7 +23,6 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.*;
 import com.adobe.aem.commons.assetshare.content.renditions.download.DownloadExtensionResolver;
 import com.adobe.aem.commons.assetshare.content.renditions.download.impl.AssetRenditionDownloadRequest;
-import com.adobe.cq.commerce.common.ValueMapDecorator;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.api.RenditionPicker;
@@ -33,6 +32,7 @@ import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.api.wrappers.ValueMapDecorator;
 import org.osgi.service.component.annotations.*;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.AttributeType;
@@ -167,27 +167,16 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
             return null;
         }
 
-        logRenditionDetails(rendition, parameters);
-        trackAssetRendition(assetModel, parameters, rendition);
-
-        return createAssetRendition(rendition);
-    }
-
-    private void logRenditionDetails(Rendition rendition, AssetRenditionParameters parameters) {
         if (log.isDebugEnabled()) {
             log.debug("Downloading asset rendition [ {} ] for resolved rendition name [ {} ]",
                     rendition.getPath(),
                     parameters.getRenditionName());
         }
-    }
 
-    private void trackAssetRendition(AssetModel assetModel, AssetRenditionParameters parameters, Rendition rendition) {
         if (assetRenditionTracker != null && parameters.getOtherProperties().get(TRACK, true)) {
             assetRenditionTracker.track(this, assetModel, parameters, rendition.getPath());
         }
-    }
 
-    private AssetRendition createAssetRendition(Rendition rendition) {
         return new AssetRendition(rendition.getPath(), rendition.getSize(), rendition.getMimeType());
     }
 
