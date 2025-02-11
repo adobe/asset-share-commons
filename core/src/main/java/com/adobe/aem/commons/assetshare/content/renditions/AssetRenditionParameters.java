@@ -56,7 +56,6 @@ public final class AssetRenditionParameters {
 
     private final Asset asset;
     private final String renditionName;
-    private final String fileName;
     private final List<String> otherParameters;
 
      private final ValueMap otherProperties = new ValueMapDecorator(new HashMap<>());
@@ -81,7 +80,7 @@ public final class AssetRenditionParameters {
         }
 
         // Build the download filename (for Content-Disposition) from the asset node name and rendition name.
-        this.fileName = buildFileName(asset, renditionName);
+        //this.fileName = buildFileName(asset, renditionName);
 
         // Other parameters are any optional parameters
         this.otherParameters = new ArrayList<>();
@@ -112,7 +111,6 @@ public final class AssetRenditionParameters {
 
         this.asset = DamUtil.resolveToAsset(assetModel.getResource());
         this.renditionName = renditionName;
-        this.fileName = buildFileName(asset, renditionName);
         this.otherParameters = new ArrayList<>(otherParameters);
         if (download) {
             this.otherParameters.add(DOWNLOAD);
@@ -128,10 +126,14 @@ public final class AssetRenditionParameters {
     }
 
     public String getFileName() {
-        if (fileName == null) {
-            log.debug("The fileName can only be derived from parameters sourced from a SlingHttpServletRequest");
+        final String assetName = StringUtils.substringBeforeLast(asset.getName(), ".");
+        String extension = StringUtils.defaultIfBlank(getOtherProperties().get(RENDITION_DETAILS_EXTENSION, String.class),  StringUtils.substringAfterLast(asset.getName(), "."));
+
+        if (StringUtils.isNotBlank(extension)) {
+            extension = "." + extension;
         }
-        return fileName;
+
+        return assetName + "." + renditionName + extension;
     }
 
     public Asset getAsset() {
@@ -162,14 +164,8 @@ public final class AssetRenditionParameters {
         otherProperties.put(key, value);
     }
 
+    @Deprecated
     protected String buildFileName(final Asset asset, final String renditionName) {
-        final String assetName = StringUtils.substringBeforeLast(asset.getName(), ".");
-        String extension = StringUtils.defaultIfBlank(getOtherProperties().get(RENDITION_DETAILS_EXTENSION, String.class),  StringUtils.substringAfterLast(asset.getName(), "."));
-
-        if (StringUtils.isNotBlank(extension)) {
-            extension = "." + extension;
-        }
-
-        return assetName + "." + renditionName + extension;
+        throw new UnsupportedOperationException("This function no longer supported; used getFileName() instead.");
     }
 }
