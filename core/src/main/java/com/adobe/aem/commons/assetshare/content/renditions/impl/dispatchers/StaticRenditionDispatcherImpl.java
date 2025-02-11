@@ -24,6 +24,7 @@ import com.adobe.aem.commons.assetshare.content.renditions.*;
 import com.adobe.aem.commons.assetshare.content.renditions.download.DownloadExtensionResolver;
 import com.adobe.aem.commons.assetshare.content.renditions.download.impl.AssetRenditionDownloadRequest;
 import com.day.cq.dam.api.Asset;
+import com.day.cq.dam.api.DamConstants;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.api.RenditionPicker;
 import com.day.cq.dam.commons.util.DamUtil;
@@ -197,7 +198,13 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
             extension = downloadExtensionResolver.resolve(assetModel, assetRendition);
         } else {
             final Rendition rendition = findRendition(assetModel.getAsset(), parameters);
-            extension = StringUtils.substringAfterLast(rendition.getName(), ".");
+            String staticRenditionName = rendition.getName();
+
+            if (DamConstants.ORIGINAL_FILE.equalsIgnoreCase(rendition.getName())) {
+                staticRenditionName = assetModel.getName();
+            }
+
+            extension = StringUtils.substringAfterLast(staticRenditionName, ".");
         }
 
         if (StringUtils.isNotBlank(extension)) {
