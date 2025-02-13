@@ -21,7 +21,6 @@ package com.adobe.aem.commons.assetshare.content.renditions.impl;
 
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
-import com.google.common.collect.ImmutableList;
 import org.apache.sling.commons.osgi.Order;
 import org.apache.sling.commons.osgi.RankedServices;
 import org.osgi.service.component.annotations.Component;
@@ -74,7 +73,7 @@ public class AssetRenditionDispatchersImpl implements AssetRenditionDispatchers 
         if (assetRenditionDispatchers == null || assetRenditionDispatchers.getList() == null) {
             return Collections.EMPTY_LIST;
         } else {
-            return ImmutableList.copyOf(assetRenditionDispatchers.getList());
+            return Collections.unmodifiableList((assetRenditionDispatchers.getList()));
         }
     }
 

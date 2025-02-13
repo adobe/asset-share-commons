@@ -28,6 +28,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
 import org.apache.sling.models.factory.ModelFactory;
 import org.osgi.service.component.annotations.Activate;
@@ -43,10 +44,7 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -112,6 +110,12 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
                         if (log.isDebugEnabled()) {
                             log.debug("Asset Rendition Dispatcher [ {} ] accepted for asset [ {} ]", assetRenditionDispatcher.getName(), assetModel.getPath());
                         }
+
+                        // Copy the details to the other parameters map
+                        ValueMap renditionDetails = assetRenditionDispatcher.getRenditionDetails(assetModel, parameters);
+                        renditionDetails.entrySet().spliterator().forEachRemaining(entry ->
+                                parameters.setOtherProperty(entry.getKey(), entry.getValue()));
+
                         setResponseHeaders(response, parameters);
 
                         assetRenditionDispatcher.dispatch(request, response);

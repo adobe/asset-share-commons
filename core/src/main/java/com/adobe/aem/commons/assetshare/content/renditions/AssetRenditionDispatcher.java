@@ -22,14 +22,13 @@ package com.adobe.aem.commons.assetshare.content.renditions;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
+import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.api.wrappers.ValueMapDecorator;
 import org.osgi.annotation.versioning.ConsumerType;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * An OSGi Service (with multiple implementations) that dispatches requests to the AssetRenditionsServlet to some representation of the resolved asset rendition.
@@ -104,6 +103,17 @@ public interface AssetRenditionDispatcher {
      */
     default AssetRendition getRendition(AssetModel assetModel, AssetRenditionParameters parameters) {
         throw new UnsupportedOperationException("AssetRendition are only supported by AEM as a Cloud Service");
+    }
+
+    /**
+     * Returns a map of details that attempts to describe the asset rendition being requested.
+     *
+     * @param assetModel
+     * @param parameters
+     * @return
+     */
+    default ValueMap getRenditionDetails(AssetModel assetModel, AssetRenditionParameters parameters) {
+        return new ValueMapDecorator(new HashMap<>());
     }
 
     /**

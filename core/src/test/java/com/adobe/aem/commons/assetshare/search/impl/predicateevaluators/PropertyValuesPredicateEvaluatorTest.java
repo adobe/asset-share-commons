@@ -23,7 +23,6 @@ import com.day.cq.search.Predicate;
 import com.day.cq.search.eval.FulltextPredicateEvaluator;
 import com.day.cq.search.eval.JcrPropertyPredicateEvaluator;
 import com.day.cq.search.eval.PredicateEvaluator;
-import com.google.common.collect.ImmutableList;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.junit.Before;
 import org.junit.Rule;
@@ -31,10 +30,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import static org.junit.Assert.*;
@@ -263,7 +259,7 @@ public class PropertyValuesPredicateEvaluatorTest {
 
     @Test
     public void getValues_WhitespaceDelimiters() {
-        List<String> expected = ImmutableList.of("one", "two", "three", "four", "five");
+        List<String> expected = Collections.unmodifiableList(Arrays.asList("one", "two", "three", "four", "five"));
 
         List<String> delimiters = new ArrayList<>();
         delimiters.add("\\s");
