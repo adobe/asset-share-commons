@@ -21,14 +21,19 @@ package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.*;
+import com.adobe.aem.commons.assetshare.content.renditions.download.DownloadExtensionResolver;
 import com.adobe.aem.commons.assetshare.content.renditions.download.impl.AssetRenditionDownloadRequest;
 import com.day.cq.dam.api.Asset;
+import com.day.cq.dam.api.DamConstants;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.api.RenditionPicker;
 import com.day.cq.dam.commons.util.DamUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.api.wrappers.ValueMapDecorator;
 import org.osgi.service.component.annotations.*;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.AttributeType;
@@ -39,14 +44,11 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
+import static com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters.*;
 import static org.osgi.framework.Constants.SERVICE_RANKING;
 
 @Component(
@@ -79,6 +81,13 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
             policyOption = ReferencePolicyOption.GREEDY
     )
     private volatile AssetRenditionTracker assetRenditionTracker;
+
+    @Reference(
+            cardinality = ReferenceCardinality.OPTIONAL,
+            policy = ReferencePolicy.DYNAMIC,
+            policyOption = ReferencePolicyOption.GREEDY
+    )
+    private volatile DownloadExtensionResolver downloadExtensionResolver;
 
     @Override
     public String getLabel() {
@@ -155,22 +164,56 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
     public AssetRendition getRendition(final AssetModel assetModel, final AssetRenditionParameters parameters) {
         final Rendition rendition = findRendition(assetModel.getAsset(), parameters);
 
-        if (rendition != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Downloading asset rendition [ {} ] for resolved rendition name [ {} ]",
-                        rendition.getPath(),
-                        parameters.getRenditionName());
-            }
-
-            if (assetRenditionTracker != null) {
-                assetRenditionTracker.track(this, assetModel, parameters, rendition.getPath());
-            }
-
-            return new AssetRendition(rendition.getPath(), rendition.getSize(), rendition.getMimeType());
+        if (rendition == null) {
+            return null;
         }
 
-        return null;
+        if (log.isDebugEnabled()) {
+            log.debug("Downloading asset rendition [ {} ] for resolved rendition name [ {} ]",
+                    rendition.getPath(),
+                    parameters.getRenditionName());
+        }
+
+        if (assetRenditionTracker != null && parameters.getOtherProperties().get(TRACK, true)) {
+            assetRenditionTracker.track(this, assetModel, parameters, rendition.getPath());
+        }
+
+        return new AssetRendition(rendition.getPath(), rendition.getSize(), rendition.getMimeType());
     }
+
+
+    @Override
+    public ValueMap getRenditionDetails(AssetModel assetModel, AssetRenditionParameters parameters) {
+
+        parameters.setOtherProperty(TRACK, false);
+        final AssetRendition assetRendition = getRendition(assetModel, parameters);
+        parameters.setOtherProperty(TRACK, null);
+
+        ValueMap details = new ValueMapDecorator(new HashMap<>());
+        details.put(RENDITION_DETAILS_SIZE, assetRendition.getSize());
+        details.put(RENDITION_DETAILS_MIME_TYPE, assetRendition.getMimeType());
+
+        String extension = null;
+        if (downloadExtensionResolver != null) {
+            extension = downloadExtensionResolver.resolve(assetModel, assetRendition);
+        } else {
+            final Rendition rendition = findRendition(assetModel.getAsset(), parameters);
+            String staticRenditionName = rendition.getName();
+
+            if (DamConstants.ORIGINAL_FILE.equalsIgnoreCase(rendition.getName())) {
+                staticRenditionName = assetModel.getName();
+            }
+
+            extension = StringUtils.substringAfterLast(staticRenditionName, ".");
+        }
+
+        if (StringUtils.isNotBlank(extension)) {
+            details.put(RENDITION_DETAILS_EXTENSION, extension);
+        }
+
+        return details;
+    }
+
 
     @Override
     public boolean accepts(AssetModel assetModel, String renditionName) {

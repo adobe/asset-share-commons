@@ -22,9 +22,13 @@ package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.*;
 import com.adobe.aem.commons.assetshare.util.UrlUtil;
+import com.day.cq.dam.api.DamConstants;
+import com.day.cq.dam.api.Rendition;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
+import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.api.wrappers.ValueMapDecorator;
 import org.apache.sling.commons.mime.MimeTypeService;
 import org.osgi.service.component.annotations.*;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
@@ -38,14 +42,16 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
+import static com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters.*;
+import static com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters.RENDITION_DETAILS_EXTENSION;
 import static org.osgi.framework.Constants.SERVICE_RANKING;
 
 @Component(
@@ -149,6 +155,40 @@ public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
         }
     }
 
+
+
+    @Override
+    public ValueMap getRenditionDetails(AssetModel assetModel, AssetRenditionParameters parameters) {
+        ValueMap details = new ValueMapDecorator(new HashMap<>());
+        final String expression = mappings.get(parameters.getRenditionName());
+        final String renditionRedirect = assetRenditions.evaluateExpression(assetModel, parameters.getRenditionName(), expression);
+
+        try {
+            final URI uri = new URI(renditionRedirect);
+            final Map<String, List<String>> queryParams = getQueryParams(uri);
+
+            if (StringUtils.startsWith(uri.getPath(), "/adobe/assets/")) {
+                // https://adobe-aem-assets-delivery.redoc.ly/
+                Pattern pattern = Pattern.compile("^/adobe/assets/[^/]+/as/[^/]+\\.([^.?]+)");
+                Matcher matcher = pattern.matcher(uri.getPath());
+
+                if (matcher.find()) {
+                    details.put(RENDITION_DETAILS_EXTENSION, matcher.group(1));
+                }
+            } else if (StringUtils.contains(uri.getPath(), "/is/image/")) {
+                // https://experienceleague.adobe.com/en/docs/dynamic-media-developer-resources/image-serving-api/image-serving-api/http-protocol-reference/syntax-and-features/r-basic-syntax
+                if (queryParams.containsKey("fmt")) {
+                    details.put(RENDITION_DETAILS_EXTENSION,  queryParams.get("fmt").get(0));
+                }
+            }
+        } catch (URISyntaxException e) {
+            log.warn("Could not turn external redirect rendition into a valid URI: [ {} ]", renditionRedirect);
+            return details;
+        }
+
+        return details;
+    }
+
     @Override
     public AssetRendition getRendition(AssetModel assetModel, AssetRenditionParameters parameters) {
         final String expression = mappings.get(parameters.getRenditionName());
@@ -186,6 +226,20 @@ public class ExternalRedirectRenditionDispatcherImpl extends AbstractRenditionDi
     @Override
     public boolean accepts(AssetModel assetModel, String renditionName) {
         return getRenditionNames().contains(renditionName);
+    }
+
+
+    private Map<String, List<String>> getQueryParams(URI uri) {
+        if (uri.getQuery() == null) {
+            return Collections.emptyMap();
+        }
+
+        return Arrays.stream(uri.getQuery().split("&"))
+                .map(param -> param.split("=", 2))
+                .collect(Collectors.groupingBy(
+                        arr -> arr[0],
+                        Collectors.mapping(arr -> arr.length > 1 ? arr[1] : "", Collectors.toList())
+                ));
     }
 
     @Activate
