@@ -1,3 +1,27 @@
+## [asset-share-commons-3.10.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.10.0)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.9.0...asset-share-commons-3.10.0)
+
+### 🚀 Enhancements
+
+- Rendition details [#1226](https://github.com/adobe/asset-share-commons/pull/1226) (davidjgonzalez)
+
+### 🐛 Bug fixes
+
+- Fixed issues (that have fixes) identified by AEM Analyse 1.6.6 [#1225](https://github.com/adobe/asset-share-commons/pull/1225) (davidjgonzalez)
+
+### 📦 Uncategorized
+
+- v.3.10.0 [#1234](https://github.com/adobe/asset-share-commons/pull/1234) (davidjgonzalez)
+- Bump com.google.code.gson:gson from 2.8.9 to 2.12.1 [#1228](https://github.com/adobe/asset-share-commons/pull/1228) (dependabot[bot])
+- Bump org.apache.maven.release:maven-release-oddeven-policy from 3.1.0 to 3.1.1 [#1230](https://github.com/adobe/asset-share-commons/pull/1230) (dependabot[bot])
+- Bump org.apache.maven.plugins:maven-checkstyle-plugin from 3.3.0 to 3.6.0 [#1232](https://github.com/adobe/asset-share-commons/pull/1232) (dependabot[bot])
+- Bump org.apache.maven.plugins:maven-dependency-plugin from 3.6.1 to 3.8.1 [#1220](https://github.com/adobe/asset-share-commons/pull/1220) (dependabot[bot])
+- Bump org.apache.maven.plugins:maven-release-plugin from 3.0.0 to 3.1.1 [#1222](https://github.com/adobe/asset-share-commons/pull/1222) (dependabot[bot])
+- Bump com.github.spotbugs:spotbugs-maven-plugin from 4.8.6.2 to 4.8.6.6 [#1223](https://github.com/adobe/asset-share-commons/pull/1223) (dependabot[bot])
+- Bump org.jacoco:jacoco-maven-plugin from 0.8.8 to 0.8.12 [#1224](https://github.com/adobe/asset-share-commons/pull/1224) (dependabot[bot])
+
+
 ## [asset-share-commons-3.1.0.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.1.0.0)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.0.0...asset-share-commons-3.1.0.0)
