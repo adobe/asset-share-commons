@@ -131,7 +131,6 @@ public class AssetDeliveryRenditionDispatcherImplTest {
 
         Asset asset = ctx.create().asset("/content/dam/test.png", 100, 100, "image/png");
         String expression = "format=webp&seoname=test-asset";
-        when(assetDelivery.getDeliveryURL(eq(null), any())).thenReturn(null);
 
         String result = dispatcher.getDeliveryURL(expression, asset);
 
