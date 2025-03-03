@@ -11,7 +11,9 @@ import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.aem.commons.assetshare.util.impl.ExpressionEvaluatorImpl;
 import com.adobe.cq.dam.download.api.DownloadTarget;
 import com.adobe.cq.wcm.spi.AssetDelivery;
+import com.day.cq.dam.api.Asset;
 import io.wcm.testing.mock.aem.junit.AemContext;
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.commons.mime.MimeTypeService;
 import org.apache.sling.models.factory.ModelFactory;
 import org.junit.Before;
@@ -21,8 +23,10 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AssetDeliveryRenditionDispatcherImplTest {
@@ -56,7 +60,6 @@ public class AssetDeliveryRenditionDispatcherImplTest {
 
         ctx.registerService(ModelFactory.class, modelFactory, org.osgi.framework.Constants.SERVICE_RANKING,
                 Integer.MAX_VALUE);
-
 
         ctx.registerService(AssetDelivery.class, assetDelivery);
         ctx.registerService(MimeTypeService.class, mimeTypeService);
@@ -107,5 +110,31 @@ public class AssetDeliveryRenditionDispatcherImplTest {
         AssetRenditionDispatcher dispatcher = ctx.getService(AssetRenditionDispatcher.class);
 
         assertFalse("Blank dc:format should not be accepted", dispatcher.accepts(assetModel, "test"));
+    }
+
+    @Test
+    public void testGetDeliveryURL_ValidExpression() {
+        AssetDeliveryRenditionDispatcherImpl dispatcher = (AssetDeliveryRenditionDispatcherImpl) ctx.getService(AssetRenditionDispatcher.class);
+
+        Asset asset = ctx.create().asset("/content/dam/test.png", 100, 100, "image/png");
+        String expression = "path=/content/dam/test.png&format=webp&seoname=test-asset";
+        when(assetDelivery.getDeliveryURL(eq(asset.adaptTo(Resource.class)), any())).thenReturn(asset.getPath());
+
+        String result = dispatcher.getDeliveryURL(expression, asset);
+
+        assertEquals(asset.getPath(), result);
+    }
+
+    @Test
+    public void testGetDeliveryURL_MissingPath() {
+        AssetDeliveryRenditionDispatcherImpl dispatcher = (AssetDeliveryRenditionDispatcherImpl) ctx.getService(AssetRenditionDispatcher.class);
+
+        Asset asset = ctx.create().asset("/content/dam/test.png", 100, 100, "image/png");
+        String expression = "format=webp&seoname=test-asset";
+        when(assetDelivery.getDeliveryURL(eq(null), any())).thenReturn(null);
+
+        String result = dispatcher.getDeliveryURL(expression, asset);
+
+        assertNull(result);
     }
 }
