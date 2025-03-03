@@ -26,7 +26,6 @@ import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.cq.wcm.spi.AssetDelivery;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.DamConstants;
-import com.google.common.base.Splitter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.NameValuePair;
@@ -257,7 +256,10 @@ public class AssetDeliveryRenditionDispatcherImpl extends AbstractRenditionDispa
     }
 
     protected String getDeliveryURL(String expression, Asset asset) {
-        final Map<String, String> map = Splitter.on("&").withKeyValueSeparator("=").split(expression);
+        final Map<String, String> map = Arrays.stream(expression.split("&"))
+                .map(s -> s.split("=", 2))
+                .filter(arr -> arr.length == 2)
+                .collect(Collectors.toMap(arr -> arr[0], arr -> arr[1]));
         final Map<String, Object> params = map.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()));
 
         // The following properties are REQUIRED by the AssetDelivery service, so add them with defaults if they do not exist
