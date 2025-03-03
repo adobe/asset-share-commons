@@ -1,6 +1,16 @@
 # 📑 Changelog
 
 
+## [asset-share-commons-3.10.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.10.2)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.10.0...asset-share-commons-3.10.2)
+
+### 📦 Uncategorized
+
+- v.3.10.2 [#1245](https://github.com/adobe/asset-share-commons/pull/1245) (davidjgonzalez)
+- Removed use of com.google.common [#1244](https://github.com/adobe/asset-share-commons/pull/1244) (davidjgonzalez)
+
+
 ## [asset-share-commons-3.10.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.10.0)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.9.0...asset-share-commons-3.10.0)
