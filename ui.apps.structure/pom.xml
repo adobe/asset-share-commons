@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.adobe.aem.commons</groupId>
         <artifactId>assetshare</artifactId>
-        <version>3.10.5-SNAPSHOT</version>
+        <version>3.10.6</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
