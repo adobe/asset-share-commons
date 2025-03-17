@@ -266,7 +266,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-install-plugin</artifactId>
-                    <version>3.1.2</version>
+                    <version>3.1.4</version>
                 </plugin>
                 <!-- Maven Surefire Plugin -->
                 <plugin>
@@ -290,7 +290,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>3.2.2</version>
+                    <version>3.5.2</version>
                 </plugin>
                 <!-- Maven Deploy Plugin -->
                 <plugin>
@@ -534,7 +534,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
-                    <version>3.0.1</version>
+                    <version>3.2.7</version>
                 </plugin>
                 <!-- Maven Central / OSS Sonatype release plugin -->
                 <plugin>
@@ -975,7 +975,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
-                <version>4.8.1</version>
+                <version>5.16.1</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
