@@ -1,6 +1,24 @@
 # 📑 Changelog
 
 
+## [asset-share-commons-3.10.6](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.10.6)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.10.4...asset-share-commons-3.10.6)
+
+### 🐛 Bug fixes
+
+- #1250 - Relaxed imports to support AEM 6.5 SP19 [#1251](https://github.com/adobe/asset-share-commons/pull/1251) (davidjgonzalez)
+
+### 📦 Uncategorized
+
+- v3.10.6 [#1254](https://github.com/adobe/asset-share-commons/pull/1254) (davidjgonzalez)
+- Try relaxing imports again for AEM SP18 [#1253](https://github.com/adobe/asset-share-commons/pull/1253) (davidjgonzalez)
+- Bump org.apache.maven.plugins:maven-failsafe-plugin from 3.2.2 to 3.5.2 [#1237](https://github.com/adobe/asset-share-commons/pull/1237) (dependabot[bot])
+- Bump org.apache.maven.plugins:maven-gpg-plugin from 3.0.1 to 3.2.7 [#1239](https://github.com/adobe/asset-share-commons/pull/1239) (dependabot[bot])
+- Bump org.apache.maven.plugins:maven-install-plugin from 3.1.2 to 3.1.4 [#1242](https://github.com/adobe/asset-share-commons/pull/1242) (dependabot[bot])
+- Bump org.mockito:mockito-core from 4.8.1 to 5.16.1 [#1249](https://github.com/adobe/asset-share-commons/pull/1249) (dependabot[bot])
+
+
 - no changes
 ## [asset-share-commons-3.10.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.10.2)
 
