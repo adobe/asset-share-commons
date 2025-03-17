@@ -1,3 +1,4 @@
+- no changes
 ## [asset-share-commons-3.10.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.10.2)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.10.0...asset-share-commons-3.10.2)
