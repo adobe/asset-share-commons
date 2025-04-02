@@ -1,3 +1,15 @@
+## [asset-share-commons-3.10.8](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.10.8)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.10.6...asset-share-commons-3.10.8)
+
+### 📦 Uncategorized
+
+- v3.10.8 [#1260](https://github.com/adobe/asset-share-commons/pull/1260) (davidjgonzalez)
+- Bump org.apache.maven.plugins:maven-compiler-plugin from 3.13.0 to 3.14.0 [#1255](https://github.com/adobe/asset-share-commons/pull/1255) (dependabot[bot])
+- Bump org.apache.sling:org.apache.sling.api from 2.22.0 to 2.27.6 [#1256](https://github.com/adobe/asset-share-commons/pull/1256) (dependabot[bot])
+- Bump org.apache.sling:org.apache.sling.testing.osgi-mock.junit4 from 3.3.6 to 3.5.2 [#1257](https://github.com/adobe/asset-share-commons/pull/1257) (dependabot[bot])
+
+
 ## [asset-share-commons-3.10.6](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.10.6)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.10.4...asset-share-commons-3.10.6)
