@@ -1,3 +1,20 @@
+## [asset-share-commons-3.10.10](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.10.10)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.10.8...asset-share-commons-3.10.10)
+
+### 🐛 Bug fixes
+
+- Changed For loop in modal.js to use ES5-friendly syntax [#1268](https://github.com/adobe/asset-share-commons/pull/1268) (davidjgonzalez)
+- Fix spelling mistake in Cart Download Cart button class [#1266](https://github.com/adobe/asset-share-commons/pull/1266) (PaulMHounslowIBM)
+
+### 📦 Uncategorized
+
+- v.3.10.10 [#1269](https://github.com/adobe/asset-share-commons/pull/1269) (davidjgonzalez)
+- Bump org.owasp:dependency-check-maven from 9.2.0 to 12.1.1 [#1261](https://github.com/adobe/asset-share-commons/pull/1261) (dependabot[bot])
+- Bump com.github.spotbugs:spotbugs-maven-plugin from 4.8.6.6 to 4.9.3.0 [#1262](https://github.com/adobe/asset-share-commons/pull/1262) (dependabot[bot])
+- Bump org.apache.sling:sling-maven-plugin from 3.0.2 to 3.0.4 [#1263](https://github.com/adobe/asset-share-commons/pull/1263) (dependabot[bot])
+
+
 ## [asset-share-commons-3.10.8](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.10.8)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.10.6...asset-share-commons-3.10.8)
