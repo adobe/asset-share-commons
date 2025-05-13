@@ -54,8 +54,9 @@ jQuery((function(ns, semanticModal, licenseModal, downloadService) {
                     beforeShow: function(htmlResponse, modalTracker) {
                         var modal = $("<div>" + htmlResponse + "</div>").find(ns.Elements.selector(getId()));
                         if($(modal).data(DOWNLOAD_DIRECT)) {
-                            for(var modalId of modalTracker) {
-                                if(modalId !== licenseModal.id()) {
+                            for (var i = 0; i < modalTracker.length; i++) {
+                                var modalId = modalTracker[i];
+                                if (modalId !== licenseModal.id()) {
                                     ns.Elements.element(modalId).modal('hide');
                                 }
                             }
