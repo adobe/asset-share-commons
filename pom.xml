@@ -334,7 +334,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                 <plugin>
                     <groupId>org.apache.jackrabbit</groupId>
                     <artifactId>filevault-package-maven-plugin</artifactId>
-                    <version>1.3.6</version>
+                    <version>1.4.0</version>
                     <extensions>true</extensions>
                     <configuration>
                         <filterSource>src/main/content/META-INF/vault/filter.xml</filterSource>
