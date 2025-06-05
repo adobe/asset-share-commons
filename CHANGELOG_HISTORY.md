@@ -1,3 +1,12 @@
+## [asset-share-commons-3.10.14](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.10.14)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.10.12...asset-share-commons-3.10.14)
+
+### 📦 Uncategorized
+
+- v3.10.14 [#1280](https://github.com/adobe/asset-share-commons/pull/1280) (davidjgonzalez)
+
+
 ## [asset-share-commons-3.10.12](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.10.12)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.10.10...asset-share-commons-3.10.12)
