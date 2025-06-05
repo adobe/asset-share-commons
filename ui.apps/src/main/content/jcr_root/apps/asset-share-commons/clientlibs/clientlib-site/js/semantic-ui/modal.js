@@ -24,7 +24,7 @@ AssetShare.SemanticUI.Modal = (function ($, ns) {
     var tracker = [];
 
     function isPreviewMode() {
-        var topWindow = $(window.top);
+        var topWindow = ns.Util.isSameOrigin() ? $(window.top) : $(window);
 
         return topWindow.length > 0 &&
             topWindow[0].Granite &&
