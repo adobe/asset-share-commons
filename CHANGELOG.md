@@ -1,6 +1,22 @@
 # 📑 Changelog
 
 
+## [asset-share-commons-3.10.12](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.10.12)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.10.10...asset-share-commons-3.10.12)
+
+### 🐛 Bug fixes
+
+- fix for ASC issue #1276 - modals not opening correctly when ASC loaded in iframe [#1277](https://github.com/adobe/asset-share-commons/pull/1277) (Rathtrick)
+
+### 📦 Uncategorized
+
+- v3.10.12 release [#1279](https://github.com/adobe/asset-share-commons/pull/1279) (davidjgonzalez)
+- Bump org.apache.jackrabbit:filevault-package-maven-plugin from 1.3.6 to 1.4.0 [#1271](https://github.com/adobe/asset-share-commons/pull/1271) (dependabot[bot])
+- Bump com.adobe.aem:aem-sdk-api from 2025.1.19149.20250116T154450Z-250100 to 2025.5.21005.20250522T173058Z-250400 [#1275](https://github.com/adobe/asset-share-commons/pull/1275) (dependabot[bot])
+- Removed JS Processing on clientlibs that use ES6 syntax [#1278](https://github.com/adobe/asset-share-commons/pull/1278) (davidjgonzalez)
+
+
 ## [asset-share-commons-3.10.10](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.10.10)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.10.8...asset-share-commons-3.10.10)
