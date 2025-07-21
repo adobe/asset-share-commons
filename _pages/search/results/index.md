@@ -34,7 +34,7 @@ Server-side Search Predicates to include in the search.
     * Exclude expired assets
     * Exclude sub-assets
 
-*Custom Search Predicates can be created by implementing the [SearchPredicate](/asset-share-commons/apidocs/com/adobe/aem/commons/assetshare/search/searchpredicates/SearchPredicate.html) interface.*
+*Custom Search Predicates can be created by implementing the [SearchPredicate](https://javadoc.io/doc/com.adobe.aem.commons/assetshare.core/latest/com/adobe/aem/commons/assetshare/search/searchpredicates/SearchPredicate.html) interface.*
 
 #### Limit
 
