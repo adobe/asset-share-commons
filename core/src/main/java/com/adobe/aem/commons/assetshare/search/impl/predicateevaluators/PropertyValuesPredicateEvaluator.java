@@ -49,7 +49,7 @@ import java.util.stream.Stream;
 import static java.util.Collections.emptyList;
 
 /**
- * The QueryBuilder predicate for this Sample would be structured like so...
+ * The QueryBuilder predicate for this Predicate Evaluator would be structured like so...
  * <p>
  * type=cq:PageContent<br>
  * path=/content<br>

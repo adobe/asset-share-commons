@@ -90,6 +90,13 @@ public class QuerySearchProviderImpl implements SearchProvider {
         return true;
     }
 
+    /**
+     *
+     * @param request
+     * @return
+     * @throws UnsafeSearchException
+     * @throws RepositoryException
+     */
     public Results getResults(final SlingHttpServletRequest request) throws UnsafeSearchException, RepositoryException {
         final ResourceResolver resourceResolver = request.getResourceResolver();
 
@@ -195,6 +202,13 @@ public class QuerySearchProviderImpl implements SearchProvider {
         return params;
     }
 
+    /**
+     * Checks if the request parameters contain paths that are allowed by the Page Predicate.
+     *
+     * @param pagePredicate the Page Predicate containing the allowed paths.
+     * @param requestParams the request parameters to check.
+     * @return true if at least one of the provided paths is allowed, false otherwise.
+     */
     private boolean isPathsProvidedByRequestParams(final PagePredicate pagePredicate, final Map<String, String> requestParams) {
         final ValueMap pathPredicates = PredicateUtil.findPredicate(requestParams, PathPredicateEvaluator.PATH, PathPredicateEvaluator.PATH);
 
@@ -219,6 +233,12 @@ public class QuerySearchProviderImpl implements SearchProvider {
         return hasAllowed;
     }
 
+
+    /**
+     * Remove unnecessary parameters that should not be passed to QueryBuilder.
+     *
+     * @param params the map of query parameters.
+     */
     private void cleanParams(Map<String, String> params) {
         // Do not allow users to specify guessTotal
         params.remove("p.guessTotal");
@@ -262,6 +282,11 @@ public class QuerySearchProviderImpl implements SearchProvider {
         return merged;
     }
 
+    /**
+     * Debugging method to log the QueryBuilder parameters before the query is executed.
+     *
+     * @param predicateGroup the PredicateGroup containing the QueryBuilder parameters.
+     */
     private void debugPreQuery(PredicateGroup predicateGroup) {
         if (log.isDebugEnabled()) {
 
@@ -277,6 +302,11 @@ public class QuerySearchProviderImpl implements SearchProvider {
         }
     }
 
+    /**
+     * Debugging method to log the QueryBuilder results after the query is executed.
+     *
+     * @param searchResult the query results
+     */
     private void debugPostQuery(SearchResult searchResult) {
         if (log.isDebugEnabled()) {
             log.debug("Executed query statement:\n{}", searchResult.getQueryStatement());

@@ -40,6 +40,17 @@
                                 jcr:primaryType="nt:unstructured"
                                 sling:resourceType="granite/ui/components/coral/foundation/container">
                                 <items jcr:primaryType="nt:unstructured">
+                                    <ai-search
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                            name="./aiSearch"
+                                            fieldDescription="Enable AI search for full-text search. Your AEM as a Cloud Service program must be enabled for AI Search for this work."
+                                            text="Enable AI Search"
+                                            value="true">
+                                        <granite:rendercondition
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="asset-share-commons/authoring/renderconditions/ai-search"/>
+                                    </ai-search>
                                     <field-type
                                         jcr:primaryType="nt:unstructured"
                                         sling:resourceType="granite/ui/components/coral/foundation/form/hidden"
