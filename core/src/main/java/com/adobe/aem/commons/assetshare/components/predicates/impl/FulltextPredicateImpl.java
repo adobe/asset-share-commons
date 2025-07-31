@@ -21,6 +21,7 @@ package com.adobe.aem.commons.assetshare.components.predicates.impl;
 
 import com.adobe.aem.commons.assetshare.components.predicates.AbstractPredicate;
 import com.adobe.aem.commons.assetshare.components.predicates.FulltextPredicate;
+import com.adobe.aem.commons.assetshare.search.impl.predicateevaluators.AiFulltextPredicateEvaluator;
 import com.adobe.aem.commons.assetshare.util.PredicateUtil;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.export.json.ExporterConstants;
@@ -29,10 +30,12 @@ import com.day.cq.search.eval.FulltextPredicateEvaluator;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.wrappers.ValueMapDecorator;
+import org.apache.sling.models.annotations.Default;
 import org.apache.sling.models.annotations.Exporter;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Required;
 import org.apache.sling.models.annotations.injectorspecific.Self;
+import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
 import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
@@ -56,6 +59,10 @@ public class FulltextPredicateImpl extends AbstractPredicate implements Fulltext
     @Self
     @Required
     private Text coreText;
+
+    @ValueMapValue(name = "aiSearch")
+    @Default(booleanValues = false)
+    private boolean aiSearch;
 
     @PostConstruct
     protected void init() {
@@ -104,7 +111,11 @@ public class FulltextPredicateImpl extends AbstractPredicate implements Fulltext
 
     @Override
     public String getName() {
-        return FulltextPredicateEvaluator.FULLTEXT;
+        if (aiSearch) {
+            return AiFulltextPredicateEvaluator.PREDICATE_NAME;
+        } else {
+            return FulltextPredicateEvaluator.FULLTEXT;
+        }
     }
 
     @Override
