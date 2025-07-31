@@ -1,6 +1,17 @@
 # 📑 Changelog
 
 
+## [asset-share-commons-3.11.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.11.0)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.10.16...asset-share-commons-3.11.0)
+
+### 📦 Uncategorized
+
+- v3.11.0 [#1294](https://github.com/adobe/asset-share-commons/pull/1294) (davidjgonzalez)
+- Added support for AI Search in AEM as a Cloud Service [#1291](https://github.com/adobe/asset-share-commons/pull/1291) (davidjgonzalez)
+- Support page editor with context path [#1293](https://github.com/adobe/asset-share-commons/pull/1293) (davidjgonzalez)
+
+
 ## [asset-share-commons-3.10.16](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.10.16)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.10.14...asset-share-commons-3.10.16)
