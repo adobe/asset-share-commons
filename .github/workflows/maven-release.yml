@@ -42,7 +42,7 @@ jobs:
 
       # Set up environment with Java and Maven
       - name: Setup JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: 11
@@ -77,7 +77,7 @@ jobs:
           ref: asset-share-commons-${{ needs.Tag.outputs.version }}
 
       - name: Setup JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: 11
@@ -129,7 +129,7 @@ jobs:
           ref: asset-share-commons-${{ needs.Tag.outputs.version }}
 
       - name: Setup JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: 11
