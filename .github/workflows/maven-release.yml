@@ -38,11 +38,11 @@ jobs:
     
     steps:
       # Check out Git repository
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # Set up environment with Java and Maven
       - name: Setup JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: 11
@@ -71,13 +71,13 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           ref: asset-share-commons-${{ needs.Tag.outputs.version }}
 
       - name: Setup JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: 11
@@ -124,12 +124,12 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: asset-share-commons-${{ needs.Tag.outputs.version }}
 
       - name: Setup JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: 11
@@ -169,7 +169,7 @@ jobs:
     if: ${{ !inputs.dryRun }}
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           ref: main

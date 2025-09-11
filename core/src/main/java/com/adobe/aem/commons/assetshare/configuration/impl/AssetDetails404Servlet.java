@@ -51,7 +51,8 @@ public class AssetDetails404Servlet extends SlingSafeMethodsServlet implements O
     protected final void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response)
             throws ServletException, IOException {
         // Control which requests enter this method via acceptedByAssetRenditionDispatcher(..) below.
-        //send 404 error to let Sling handle it.
+        // Send 404 error to let Sling handle it.
+        response.setContentType("text/html;charset=UTF-8");
         response.sendError(SlingHttpServletResponse.SC_NOT_FOUND);
     }
 
