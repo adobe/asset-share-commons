@@ -1,6 +1,19 @@
 # 📑 Changelog
 
 
+## [asset-share-commons-3.11.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.11.2)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.11.0...asset-share-commons-3.11.2)
+
+### 📦 Uncategorized
+
+- v3.11.2 release [#1303](https://github.com/adobe/asset-share-commons/pull/1303) (davidjgonzalez)
+- Remove missing Adobe Marketing Cloud image from share email [#1299](https://github.com/adobe/asset-share-commons/pull/1299) (davidjgonzalez)
+- Bump actions/checkout from 4 to 5 [#1295](https://github.com/adobe/asset-share-commons/pull/1295) (dependabot[bot])
+- Bump actions/setup-java from 4 to 5 [#1297](https://github.com/adobe/asset-share-commons/pull/1297) (dependabot[bot])
+- Update AssetDetails404Servlet.java [#1301](https://github.com/adobe/asset-share-commons/pull/1301) (davidjgonzalez)
+
+
 ## [asset-share-commons-3.11.0](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.11.0)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.10.16...asset-share-commons-3.11.0)
