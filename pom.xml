@@ -73,7 +73,7 @@
         <aem.classic.api.version>6.5.19.0000</aem.classic.api.version><!-- actually one of https://repo1.maven.org/maven2/io/wcm/maven/io.wcm.maven.aem-dependencies/ -->
         <!-- the minimum AEMaaCS version being supported -->
         <aem.sdk.api.version>2025.5.21005.20250522T173058Z-250400</aem.sdk.api.version><!-- actually one of https://repo1.maven.org/maven2/com/adobe/aem/aem-sdk-api/ -->
-        <core.wcm.components.version>2.17.14</core.wcm.components.version>
+        <core.wcm.components.version>2.29.0</core.wcm.components.version>
         <frontend-maven-plugin.version>1.9.0</frontend-maven-plugin.version>
         <node.version>v14.21.3</node.version>
         <npm.version>6.14.18</npm.version>
