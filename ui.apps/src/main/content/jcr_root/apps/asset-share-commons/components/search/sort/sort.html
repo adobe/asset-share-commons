@@ -38,7 +38,7 @@
 				data-asset-share-search-actions="all"
 				data-asset-share-search-on="${predicate.autoSearch ? 'change' : ''}"/>
 		<i class="dropdown icon"></i>
-		<div class="text">${predicate.orderByLabel}</div>
+		<div class="text">${predicate.orderByLabel @ i18n}</div>
 		<div class="menu"
 			 data-sly-list.item="${predicate.items}">
 			<div class="item ${item.selected ? 'selected' : ''}"
