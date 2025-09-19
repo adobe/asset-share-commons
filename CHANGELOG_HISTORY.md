@@ -1,3 +1,13 @@
+## [asset-share-commons-3.11.4](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.11.4)
+
+[Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.11.2...asset-share-commons-3.11.4)
+
+### 📦 Uncategorized
+
+- v3.11.4 release [#1307](https://github.com/adobe/asset-share-commons/pull/1307) (davidjgonzalez)
+- feat: internationalize table headers in search results and sort components [#1306](https://github.com/adobe/asset-share-commons/pull/1306) (tmastalirsch-tlv)
+
+
 ## [asset-share-commons-3.11.2](https://github.com/adobe/asset-share-commons/tree/asset-share-commons-3.11.2)
 
 [Full Changelog](https://github.com/adobe/asset-share-commons/compare/asset-share-commons-3.11.0...asset-share-commons-3.11.2)
