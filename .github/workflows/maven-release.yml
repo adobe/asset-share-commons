@@ -38,7 +38,7 @@ jobs:
     
     steps:
       # Check out Git repository
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       # Set up environment with Java and Maven
       - name: Setup JDK
@@ -71,7 +71,7 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           ref: asset-share-commons-${{ needs.Tag.outputs.version }}
@@ -124,7 +124,7 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: asset-share-commons-${{ needs.Tag.outputs.version }}
 
@@ -169,7 +169,7 @@ jobs:
     if: ${{ !inputs.dryRun }}
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           ref: main
