@@ -38,7 +38,7 @@ jobs:
     
     steps:
       # Check out Git repository
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       # Set up environment with Java and Maven
       - name: Setup JDK
@@ -71,7 +71,7 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           ref: asset-share-commons-${{ needs.Tag.outputs.version }}
@@ -88,7 +88,7 @@ jobs:
 
       - name: Generate Release Changelog
         id: generate-release-changelog
-        uses: mikepenz/release-changelog-builder-action@v4
+        uses: mikepenz/release-changelog-builder-action@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           configuration: ".github/.release-changelog-config.json"
@@ -124,7 +124,7 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: asset-share-commons-${{ needs.Tag.outputs.version }}
 
@@ -169,14 +169,14 @@ jobs:
     if: ${{ !inputs.dryRun }}
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           ref: main
 
       - name: "Build Changelog Fragment"
         id: build_changelog_fragment
-        uses: mikepenz/release-changelog-builder-action@v4
+        uses: mikepenz/release-changelog-builder-action@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           configuration: ".github/.release-changelog-config.json"

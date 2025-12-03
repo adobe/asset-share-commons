@@ -1,0 +1,11 @@
+
+<template data-sly-template.audio="${ @ audio}">
+    <!--/* Audio element */-->
+    <audio class="ui centered cmp-audio"
+           controls controlsList="nodownload"
+           style="width: 100%; max-width: 600px;">
+        <source src="${audio.src}" />
+        ${'Your browser does not support the audio element.' @ i18n}
+    </audio>
+</template>
+
