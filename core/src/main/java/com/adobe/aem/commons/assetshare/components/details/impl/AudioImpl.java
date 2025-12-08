@@ -13,7 +13,6 @@ import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
 import com.adobe.aem.commons.assetshare.components.details.Audio;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
-import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditions;
 import com.adobe.aem.commons.assetshare.util.UrlUtil;
 import com.adobe.cq.export.json.ComponentExporter;
@@ -21,7 +20,6 @@ import com.adobe.cq.export.json.ExporterConstants;
 import com.adobe.cq.wcm.core.components.util.AbstractComponentImpl;
 import com.day.cq.dam.api.DamConstants;
 import com.day.cq.dam.commons.util.DamUtil;
-import com.drew.lang.annotations.NotNull;
 
 @Model(adaptables = { SlingHttpServletRequest.class }, adapters = { Audio.class, ComponentExporter.class }, resourceType = {
     AudioImpl.RESOURCE_TYPE }, defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL)
@@ -80,10 +78,7 @@ public class AudioImpl extends AbstractComponentImpl implements Audio {
     }
 
     private String getRenditionUrl(AssetModel asset) {
-        AssetRenditionParameters parameters = new AssetRenditionParameters(asset, getRenditionName(), false);
-        return Optional.ofNullable(assetRenditions)
-                .map(rendition -> rendition.getUrl(request, asset, parameters))
-                .orElse(StringUtils.EMPTY);
+        return asset.getProperties().get("path", String.class);
     }
 
 
