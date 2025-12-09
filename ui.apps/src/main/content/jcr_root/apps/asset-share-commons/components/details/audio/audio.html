@@ -1,6 +1,7 @@
 <sly data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html"
     data-sly-use.playerTemplate="templates/player.html"
-    data-sly-use.audio="com.adobe.aem.commons.assetshare.components.details.Audio">
+    data-sly-use.audio="com.adobe.aem.commons.assetshare.components.details.Audio"
+    data-sly-test.ready="${audio.ready}">
 
 <h4 class="ui header center aligned"
     data-sly-test="${!audio.audioAsset}">
