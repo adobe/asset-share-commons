@@ -18,7 +18,7 @@
 
 <!--/* Computed Properties Format */-->
 <template data-sly-template.computed="${@ field}">
-    <p>${field.properties[field.propertyName]}</p>
+    <p>${field.properties[field.propertyName] @ i18n }</p>
 </template>
 
 <!--/* Text or Computed Properties Format */-->
