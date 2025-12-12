@@ -95,6 +95,7 @@ public class EmailShareServiceImpl implements ShareService {
     /* Share properties */
     private static final String PN_TRACKING_NAME = "trackingName";
     private static final String PN_TRACKING_VALUE = "trackingValue";
+    private static final String PN_EXTERNALIZER_DOMAIN = "externalizerDomain";
 
     private transient Cfg cfg;
     private transient BundleContext bundleContext;
@@ -185,7 +186,9 @@ public class EmailShareServiceImpl implements ShareService {
         }
 
         // Generate the HTML list of Assets and their links
-        emailParameters.put(EMAIL_ASSET_LINK_LIST_HTML, getAssetLinkListHtml(config, assetPaths));
+        emailParameters.put(EMAIL_ASSET_LINK_LIST_HTML, getAssetLinkListHtml(config,
+                shareParameters.get(PN_EXTERNALIZER_DOMAIN, String.class),
+                assetPaths));
 
         // Send e-mail
         final List<String> failureList = emailService.sendEmail(emailTemplatePath, emailParameters, emailAddresses);
@@ -194,7 +197,9 @@ public class EmailShareServiceImpl implements ShareService {
         }
     }
 
-    private final String getAssetLinkListHtml(final Config config, final String[] assetPaths) {
+    private final String getAssetLinkListHtml(final Config config, String externalizerDomain, final String[] assetPaths) {
+        externalizerDomain = StringUtils.defaultIfBlank(externalizerDomain, cfg.externalizerDomain());
+
         final StringBuilder sb = new StringBuilder();
 
         for (final String assetPath : assetPaths) {
@@ -217,7 +222,9 @@ public class EmailShareServiceImpl implements ShareService {
                 if (RequireAem.ServiceType.AUTHOR.equals(requireAem.getServiceType())) {
                     url = externalizer.authorLink(config.getResourceResolver(), url);
                 } else {
-                    url = externalizer.externalLink(config.getResourceResolver(), cfg.externalizerDomain(), url);
+                    url = externalizer.externalLink(config.getResourceResolver(),
+                            config.getProperties().get(PN_EXTERNALIZER_DOMAIN, cfg.externalizerDomain()),
+                            url);
                 }
 
                 String trackingName = config.getProperties().get(PN_TRACKING_NAME, String.class);
