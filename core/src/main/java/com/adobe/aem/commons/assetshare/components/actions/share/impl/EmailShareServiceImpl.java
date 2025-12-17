@@ -153,10 +153,13 @@ public class EmailShareServiceImpl implements ShareService {
             shareParameters.put(EmailService.REPLY_TO, replyToAddress);
         }
 
-        share(request.adaptTo(Config.class), unprotectedShareParameters, shareParameters, StringUtils.defaultIfBlank(emailShare.getEmailTemplatePath(), cfg.emailTemplate()));
+        share(request.adaptTo(Config.class), emailShare, unprotectedShareParameters, shareParameters);
     }
 
-    private final void share(final Config config, final ValueMap unprotectedShareParameters, final ValueMap shareParameters, final String emailTemplatePath) throws ShareException {
+    private void share(final Config config, final EmailShare emailShare, final ValueMap unprotectedShareParameters, final ValueMap shareParameters) throws ShareException {
+
+        final String emailTemplatePath = StringUtils.defaultIfBlank(emailShare.getEmailTemplatePath(), cfg.emailTemplate());
+        final String externalizerDomain = StringUtils.defaultIfBlank(emailShare.getProperties().get(PN_EXTERNALIZER_DOMAIN, cfg.externalizerDomain()), "publish");
         final String[] emailAddresses = StringUtils.split(unprotectedShareParameters.get(EMAIL_ADDRESSES, ""), ",");
 
         final String[] assetPaths = Arrays.stream(unprotectedShareParameters.get(ASSET_PATHS, ArrayUtils.EMPTY_STRING_ARRAY))
@@ -187,7 +190,7 @@ public class EmailShareServiceImpl implements ShareService {
 
         // Generate the HTML list of Assets and their links
         emailParameters.put(EMAIL_ASSET_LINK_LIST_HTML, getAssetLinkListHtml(config,
-                shareParameters.get(PN_EXTERNALIZER_DOMAIN, String.class),
+                externalizerDomain,
                 assetPaths));
 
         // Send e-mail
@@ -271,7 +274,7 @@ public class EmailShareServiceImpl implements ShareService {
     }
 
     private String getReplyToAddress(final EmailShare emailShare, final UserProperties userProperties) throws ShareException {
-        boolean replyToSharer = emailShare.getProperties().get(EmailShare.PN_USE_SHARER_EMAIL_AS_REPLY_TO, false);
+            boolean replyToSharer = emailShare.getProperties().get(EmailShare.PN_USE_SHARER_EMAIL_AS_REPLY_TO, false);
         if (replyToSharer && userProperties != null) {
 
           try {
