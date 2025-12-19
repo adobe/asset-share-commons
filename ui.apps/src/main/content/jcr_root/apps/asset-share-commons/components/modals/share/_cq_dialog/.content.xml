@@ -247,6 +247,16 @@
                                                 sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
                                                 name="./allowedQueryParams"/>
                                     </allowed-query-params>
+
+                                    <externalizer-domain
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            fieldDescription="The domain-mapping key used to generate absolute URLs to AEM Publish, for assets in the e-mail template. Check with your AEM administrator for the correct value. If not set here, the OSGi-based global variable is used, which defaults to 'publish'."
+                                            emptyText="publish"
+                                            fieldLabel="AEM Publish Externalizer Domain"
+                                            name="./externalizerDomain"
+                                            required="{Boolean}false"/>
+
                                 </items>
                             </column>
                         </items>
