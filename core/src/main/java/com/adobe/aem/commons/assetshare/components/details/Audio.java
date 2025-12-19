@@ -18,10 +18,9 @@ public interface Audio extends EmptyTextComponent {
      */
     boolean isAudioAsset();
 
-
     /**
-     * @return Returns the type of the asset
+     * @return Returns the (mime))type of the audio asset
      */
-    String getType();
+    default String getType() { return null; }
 
 }
