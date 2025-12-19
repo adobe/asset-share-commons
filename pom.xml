@@ -981,7 +981,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
             <dependency>
                 <groupId>org.apache.sling</groupId>
                 <artifactId>org.apache.sling.testing.osgi-mock.junit4</artifactId>
-                <version>3.5.2</version>
+                <version>3.5.4</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
