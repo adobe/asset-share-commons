@@ -226,7 +226,7 @@ public class EmailShareServiceImpl implements ShareService {
                     url = externalizer.authorLink(config.getResourceResolver(), url);
                 } else {
                     url = externalizer.externalLink(config.getResourceResolver(),
-                            config.getProperties().get(PN_EXTERNALIZER_DOMAIN, cfg.externalizerDomain()),
+                            externalizerDomain,
                             url);
                 }
 
