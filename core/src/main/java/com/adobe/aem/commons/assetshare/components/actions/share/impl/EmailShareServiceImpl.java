@@ -95,6 +95,7 @@ public class EmailShareServiceImpl implements ShareService {
     /* Share properties */
     private static final String PN_TRACKING_NAME = "trackingName";
     private static final String PN_TRACKING_VALUE = "trackingValue";
+    private static final String PN_EXTERNALIZER_DOMAIN = "externalizerDomain";
 
     private transient Cfg cfg;
     private transient BundleContext bundleContext;
@@ -152,10 +153,13 @@ public class EmailShareServiceImpl implements ShareService {
             shareParameters.put(EmailService.REPLY_TO, replyToAddress);
         }
 
-        share(request.adaptTo(Config.class), unprotectedShareParameters, shareParameters, StringUtils.defaultIfBlank(emailShare.getEmailTemplatePath(), cfg.emailTemplate()));
+        share(request.adaptTo(Config.class), emailShare, unprotectedShareParameters, shareParameters);
     }
 
-    private final void share(final Config config, final ValueMap unprotectedShareParameters, final ValueMap shareParameters, final String emailTemplatePath) throws ShareException {
+    private void share(final Config config, final EmailShare emailShare, final ValueMap unprotectedShareParameters, final ValueMap shareParameters) throws ShareException {
+
+        final String emailTemplatePath = StringUtils.defaultIfBlank(emailShare.getEmailTemplatePath(), cfg.emailTemplate());
+        final String externalizerDomain = StringUtils.defaultIfBlank(emailShare.getProperties().get(PN_EXTERNALIZER_DOMAIN, cfg.externalizerDomain()), "publish");
         final String[] emailAddresses = StringUtils.split(unprotectedShareParameters.get(EMAIL_ADDRESSES, ""), ",");
 
         final String[] assetPaths = Arrays.stream(unprotectedShareParameters.get(ASSET_PATHS, ArrayUtils.EMPTY_STRING_ARRAY))
@@ -185,7 +189,9 @@ public class EmailShareServiceImpl implements ShareService {
         }
 
         // Generate the HTML list of Assets and their links
-        emailParameters.put(EMAIL_ASSET_LINK_LIST_HTML, getAssetLinkListHtml(config, assetPaths));
+        emailParameters.put(EMAIL_ASSET_LINK_LIST_HTML, getAssetLinkListHtml(config,
+                externalizerDomain,
+                assetPaths));
 
         // Send e-mail
         final List<String> failureList = emailService.sendEmail(emailTemplatePath, emailParameters, emailAddresses);
@@ -194,7 +200,9 @@ public class EmailShareServiceImpl implements ShareService {
         }
     }
 
-    private final String getAssetLinkListHtml(final Config config, final String[] assetPaths) {
+    private final String getAssetLinkListHtml(final Config config, String externalizerDomain, final String[] assetPaths) {
+        externalizerDomain = StringUtils.defaultIfBlank(externalizerDomain, cfg.externalizerDomain());
+
         final StringBuilder sb = new StringBuilder();
 
         for (final String assetPath : assetPaths) {
@@ -217,7 +225,9 @@ public class EmailShareServiceImpl implements ShareService {
                 if (RequireAem.ServiceType.AUTHOR.equals(requireAem.getServiceType())) {
                     url = externalizer.authorLink(config.getResourceResolver(), url);
                 } else {
-                    url = externalizer.externalLink(config.getResourceResolver(), cfg.externalizerDomain(), url);
+                    url = externalizer.externalLink(config.getResourceResolver(),
+                            externalizerDomain,
+                            url);
                 }
 
                 String trackingName = config.getProperties().get(PN_TRACKING_NAME, String.class);
@@ -264,7 +274,7 @@ public class EmailShareServiceImpl implements ShareService {
     }
 
     private String getReplyToAddress(final EmailShare emailShare, final UserProperties userProperties) throws ShareException {
-        boolean replyToSharer = emailShare.getProperties().get(EmailShare.PN_USE_SHARER_EMAIL_AS_REPLY_TO, false);
+            boolean replyToSharer = emailShare.getProperties().get(EmailShare.PN_USE_SHARER_EMAIL_AS_REPLY_TO, false);
         if (replyToSharer && userProperties != null) {
 
           try {

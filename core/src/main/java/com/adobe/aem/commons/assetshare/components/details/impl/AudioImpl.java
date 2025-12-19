@@ -19,9 +19,9 @@ import com.adobe.aem.commons.assetshare.util.UrlUtil;
 import com.adobe.cq.export.json.ComponentExporter;
 import com.adobe.cq.export.json.ExporterConstants;
 import com.adobe.cq.wcm.core.components.util.AbstractComponentImpl;
+import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.DamConstants;
 import com.day.cq.dam.commons.util.DamUtil;
-import com.drew.lang.annotations.NotNull;
 
 @Model(adaptables = { SlingHttpServletRequest.class }, adapters = { Audio.class, ComponentExporter.class }, resourceType = {
     AudioImpl.RESOURCE_TYPE }, defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL)
@@ -74,6 +74,11 @@ public class AudioImpl extends AbstractComponentImpl implements Audio {
         return !isEmpty();
     }
 
+    @Override
+    public String getType() {
+        return getAsset().getMimeType();
+    }
+
     public String getRenditionName() {
         return Optional.ofNullable(renditionName)
                 .orElse(DamConstants.ORIGINAL_FILE);
@@ -86,5 +91,8 @@ public class AudioImpl extends AbstractComponentImpl implements Audio {
                 .orElse(StringUtils.EMPTY);
     }
 
+    private Asset getAsset() {
+        return asset.getAsset();
+    }
 
 }
