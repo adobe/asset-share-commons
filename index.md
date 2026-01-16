@@ -22,16 +22,6 @@ layout: default
                 Asset Share Commons 2+ now supports AEM as a Cloud Service and AEM 6.5 SP7+, and requires AEM WCM Core Components 2.17.14+.
             </p>
         </div>
-
-        <hr/>
-
-        <div style="text-align: center;">
-            <h2>Checkout the live demo sites!</h2>
-
-            <a href="https://aem.enablementadobe.com/content/asset-share-commons/en/light.html" class="button">Light theme demo</a>
-            <span style="display:inline-block; width: 2rem;"></span>
-            <a href="https://aem.enablementadobe.com/content/asset-share-commons/en/dark.html" class="button">Dark theme demo</a>
-        </div>
     </div>
 </section>
 
