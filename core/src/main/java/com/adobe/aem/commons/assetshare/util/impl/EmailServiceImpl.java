@@ -31,10 +31,8 @@
 package com.adobe.aem.commons.assetshare.util.impl;
 
 import com.adobe.aem.commons.assetshare.util.EmailService;
-import com.day.cq.commons.mail.MailTemplate;
 import com.day.cq.mailer.MessageGateway;
 import com.day.cq.mailer.MessageGatewayService;
-import org.apache.commons.lang.text.StrLookup;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
@@ -42,6 +40,7 @@ import org.apache.commons.mail.SimpleEmail;
 import org.apache.sling.api.resource.LoginException;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceResolverFactory;
+import org.apache.sling.commons.html.HtmlParser;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -90,6 +89,9 @@ public final class EmailServiceImpl implements EmailService {
 
     @Reference
     private transient ResourceResolverFactory resourceResolverFactory;
+
+    @Reference
+    private transient HtmlParser htmlParser;
 
     private static final String MSG_INVALID_RECIPIENTS = "Invalid Recipients";
 
@@ -140,7 +142,7 @@ public final class EmailServiceImpl implements EmailService {
             throw new IllegalArgumentException(MSG_INVALID_RECIPIENTS);
         }
 
-        final MailTemplate mailTemplate = this.getMailTemplate(templatePath);
+        final EmailTemplate mailTemplate = this.getMailTemplate(templatePath);
         final Class<? extends Email> mailType = this.getMailType(templatePath);
         final MessageGateway<Email> messageGateway = messageGatewayService.getGateway(mailType);
 
@@ -170,7 +172,7 @@ public final class EmailServiceImpl implements EmailService {
             throw new IllegalArgumentException(MSG_INVALID_RECIPIENTS);
         }
 
-        final MailTemplate mailTemplate = this.getMailTemplate(templatePath);
+        final EmailTemplate mailTemplate = this.getMailTemplate(templatePath);
         final Class<? extends Email> mailType;
         if (attachments != null && attachments.size() > 0) {
             mailType = HtmlEmail.class;
@@ -231,12 +233,12 @@ public final class EmailServiceImpl implements EmailService {
 
     // Suppress warning as this calls an AEM method which requires the StrLookup. When the AEM API is updated, this invocation can be updated.
     @SuppressWarnings("squid:CallToDeprecatedMethod")
-    private Email getEmail(final MailTemplate mailTemplate,
+    private Email getEmail(final EmailTemplate mailTemplate,
                            final Class<? extends Email> mailType,
                            final Map<String, String> params) throws EmailException, MessagingException, IOException {
 
-        // We cannot get rid of StrLookup even tho its deprecated, because the AEM MailTemplate.getEmail(...) requires a parameter of this type
-        final Email email = mailTemplate.getEmail(StrLookup.mapLookup(params), mailType);
+        // We cannot get rid of StrLookup even tho its deprecated, because the AEM EmailTemplate.getEmail(...) requires a parameter of this type
+        final Email email = mailTemplate.getEmail(params, mailType);
 
         if (params.containsKey(EmailService.SENDER_EMAIL_ADDRESS)
                 && params.containsKey(EmailService.SENDER_NAME)) {
@@ -271,13 +273,13 @@ public final class EmailServiceImpl implements EmailService {
         return templatePath.endsWith(".html") ? HtmlEmail.class : SimpleEmail.class;
     }
 
-    private MailTemplate getMailTemplate(String templatePath) throws IllegalArgumentException {
-        MailTemplate mailTemplate = null;
+    private EmailTemplate getMailTemplate(String templatePath) throws IllegalArgumentException {
+        EmailTemplate mailTemplate = null;
         ResourceResolver resourceResolver = null;
         try {
             Map<String, Object> authInfo = Collections.singletonMap(ResourceResolverFactory.SUBSERVICE, SERVICE_NAME);
             resourceResolver = resourceResolverFactory.getServiceResourceResolver(authInfo);
-            mailTemplate = MailTemplate.create(templatePath, resourceResolver.adaptTo(Session.class));
+            mailTemplate = EmailTemplate.create(templatePath, resourceResolver.adaptTo(Session.class), htmlParser);
 
             if (mailTemplate == null) {
                 throw new IllegalArgumentException("Mail template path [ "
