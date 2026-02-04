@@ -16,20 +16,18 @@ Failed to deploy artifacts: Could not find artifact com.adobe.aem.commons:assets
 
 **File**: `pom.xml`
 
-Changed distribution management to use the base Central URL (the plugin automatically routes snapshots):
+Changed distribution management to use the correct URLs:
 
 ```xml
 <snapshotRepository>
     <id>central</id>
-    <url>https://central.sonatype.com</url>
+    <url>https://central.sonatype.com/repository/maven-snapshots/</url>
 </snapshotRepository>
 <repository>
     <id>central</id>
     <url>https://central.sonatype.com</url>
 </repository>
 ```
-
-The `central-publishing-maven-plugin` (version 0.7.0+) automatically detects snapshot versions and routes them to the appropriate snapshot repository.
 
 ### 2. Adjusted Plugin Configuration
 
@@ -86,9 +84,9 @@ Added release profile override:
 ```bash
 mvn clean deploy -Pcloud,release
 ```
-- Uploads to: `https://central.sonatype.com` (plugin routes to snapshot repository)
-- No validation performed
-- Returns immediately after upload
+- Uploads to: `https://central.sonatype.com/repository/maven-snapshots/`
+- No validation performed (`autoPublish=false`)
+- Returns immediately after upload (`waitUntil=uploaded`)
 - Snapshots are cleaned up after 90 days
 
 ### Release Deployments
@@ -112,7 +110,7 @@ After enabling snapshots in the Portal:
 
 | Aspect | Old (OSSRH) | New (Central Portal) |
 |--------|-------------|---------------------|
-| Snapshot URL | `https://oss.sonatype.org/content/repositories/snapshots/` | `https://central.sonatype.com` |
+| Snapshot URL | `https://oss.sonatype.org/content/repositories/snapshots/` | `https://central.sonatype.com/repository/maven-snapshots/` |
 | Release URL | `https://oss.sonatype.org/service/local/staging/deploy/maven2/` | `https://central.sonatype.com` |
 | Snapshot Setup | Automatic | Requires namespace enablement |
 | Snapshot Validation | None | None |

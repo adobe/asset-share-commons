@@ -103,9 +103,13 @@
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>central</publishingServerId>
-                    <autoPublish>true</autoPublish>
-                    <waitUntil>published</waitUntil>
+                    <!-- For snapshots: just upload, don't publish/validate -->
+                    <!-- For releases: overridden in release profile -->
+                    <autoPublish>false</autoPublish>
+                    <waitUntil>uploaded</waitUntil>
                     <ignorePublishedComponents>true</ignorePublishedComponents>
+                    <!-- Don't fail if some components already exist -->
+                    <deploymentName>${project.artifactId}-${project.version}</deploymentName>
                 </configuration>
             </plugin>
             <!-- Maven Release Plugin -->
@@ -739,6 +743,15 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                                 </configuration>
                             </execution>
                         </executions>
+                    </plugin>
+                    <!-- Override for releases: auto-publish to Maven Central -->
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <configuration>
+                            <autoPublish>true</autoPublish>
+                            <waitUntil>published</waitUntil>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>

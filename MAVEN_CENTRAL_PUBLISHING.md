@@ -6,7 +6,9 @@ This project has been updated to use the new [Maven Central Publishing Portal](h
 
 The project now uses:
 - **Plugin**: `central-publishing-maven-plugin` version 0.10.0
-- **Publishing URL**: `https://central.sonatype.com` (plugin automatically routes snapshots vs releases)
+- **Publishing URLs**: 
+  - Snapshots: `https://central.sonatype.com/repository/maven-snapshots/`
+  - Releases: `https://central.sonatype.com`
 - **Server ID**: `central` (in settings.xml)
 - **Auto-publish**: Enabled for releases, upload-only for snapshots
 
