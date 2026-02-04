@@ -157,6 +157,38 @@ If the bundle fails validation:
 2. Verify POM metadata meets Maven Central requirements
 3. Check the validation report in the Central Portal UI
 
+## BND Baseline Plugin
+
+The `bnd-baseline-maven-plugin` is configured to:
+- **Automatically detect** the newest available version in Maven Central to baseline against
+- **Skip by default** during migration (due to compatibility issues with old OSSRH artifacts)
+- **Can be enabled** with a command-line property once new artifacts are published
+
+### How Auto-Detection Works
+
+The plugin automatically finds the highest version below your current version using the pattern `(,${project.version})`. For example, if you're building `3.13.3-SNAPSHOT`, it will automatically find and use `3.8.12` (or whatever the latest release is).
+
+### Current Status
+
+During migration, baseline checking is skipped by default because:
+- Old artifacts are in OSSRH repository structure  
+- New artifacts will be in Maven Central structure
+- Comparison fails due to repository incompatibility
+
+### To Enable Baseline Checking
+
+Once new artifacts are successfully published to Maven Central:
+
+```bash
+# Enable baseline checking for this build
+mvn verify -Dbnd.baseline.skip=false
+
+# Or make it permanent by changing the property in pom.xml:
+<bnd.baseline.skip>false</bnd.baseline.skip>
+```
+
+After your first successful deployment, the plugin will automatically use the newest deployed version for baseline comparison.
+
 ## Additional Resources
 
 - [Central Portal Documentation](https://central.sonatype.org/publish/publish-portal-maven/)
