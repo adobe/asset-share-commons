@@ -688,12 +688,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
         <!-- Release profiles -->
         <profile>
             <id>release</id>
-            <activation>
-                <property>
-                    <name>performRelease</name>
-                    <value>!true</value>
-                </property>
-            </activation>
+            <!-- No auto-activation - must be explicitly enabled with -Prelease -->
             <build>
                 <plugins>
                     <plugin>
