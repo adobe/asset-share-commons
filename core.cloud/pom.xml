@@ -33,6 +33,15 @@
     <artifactId>assetshare.core.cloud</artifactId>
     <name>Asset Share Commons - Core Cloud Fragment</name>
     <description>OSGi Core bundle fragment for Asset Share Commons (only AEMaaCS)</description>
+
+    <!-- ====================================================================== -->
+    <!-- P R O P E R T I E S                                                    -->
+    <!-- ====================================================================== -->
+    <properties>
+        <!-- Skip individual module publishing - let parent handle it -->
+        <skipPublishing>true</skipPublishing>
+    </properties>
+
     <build>
         <plugins>
             <plugin>

@@ -45,22 +45,15 @@ jobs:
           distribution: 'temurin'
           java-version: 11
           cache: maven
-          server-id: ossrh
+          server-id: central
           server-username: MAVEN_USERNAME
           server-password: MAVEN_CENTRAL_TOKEN
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
       
-      # Keeping these separate in case multiple builds are needed.
-      - name: Build 
-        run: mvn clean deploy -DskipRemoteStaging=true -Pcloud,release,jacoco-report
-        env:
-          MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-          MAVEN_CENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-
-      - name: Deploy to Central
-        run: mvn nexus-staging:deploy-staged -DautoReleaseAfterClose=true
+      # Deploy snapshot to Maven Central with new central-publishing-maven-plugin
+      - name: Deploy Snapshot to Maven Central
+        run: mvn clean deploy -Pcloud,release,jacoco-report
         env:
           MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           MAVEN_CENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}

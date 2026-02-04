@@ -78,6 +78,8 @@
         <node.version>v14.21.3</node.version>
         <npm.version>6.14.18</npm.version>
         <bnd.version>6.3.1</bnd.version>
+        <!-- Skip baseline by default due to migration issues, enable with -Dbnd.baseline.skip=false -->
+        <bnd.baseline.skip>true</bnd.baseline.skip>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -93,14 +95,17 @@
 
     <build>
         <plugins>
-            <!-- Maven Central / OSS Sonatype Release plugin -->
+            <!-- Maven Central / Central Publishing plugin -->
             <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.10.0</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                    <publishingServerId>central</publishingServerId>
+                    <autoPublish>true</autoPublish>
+                    <waitUntil>published</waitUntil>
+                    <ignorePublishedComponents>true</ignorePublishedComponents>
                 </configuration>
             </plugin>
             <!-- Maven Release Plugin -->
@@ -241,6 +246,14 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                     <groupId>biz.aQute.bnd</groupId>
                     <artifactId>bnd-baseline-maven-plugin</artifactId>
                     <version>${bnd.version}</version>
+                    <configuration>
+                        <!-- Automatically find the newest available version to baseline against -->
+                        <!-- Default: (,${project.version}) finds highest version below current -->
+                        <failOnMissing>false</failOnMissing>
+                        <!-- Skip by default due to migration issues -->
+                        <!-- Can be enabled with: mvn verify -Dbnd.baseline.skip=false -->
+                        <skip>${bnd.baseline.skip}</skip>
+                    </configuration>
                     <executions>
                         <execution>
                             <id>baseline</id>
@@ -536,11 +549,11 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                     <artifactId>maven-gpg-plugin</artifactId>
                     <version>3.2.7</version>
                 </plugin>
-                <!-- Maven Central / OSS Sonatype release plugin -->
+                <!-- Maven Central / Central Publishing plugin -->
                 <plugin>
-                    <groupId>org.sonatype.plugins</groupId>
-                    <artifactId>nexus-staging-maven-plugin</artifactId>
-                    <version>1.7.0</version>
+                    <groupId>org.sonatype.central</groupId>
+                    <artifactId>central-publishing-maven-plugin</artifactId>
+                    <version>0.10.0</version>
                 </plugin>
                 <!-- checks for vulnerabilities in dependencies -->
                 <plugin>
@@ -675,6 +688,12 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
         <!-- Release profiles -->
         <profile>
             <id>release</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>!true</value>
+                </property>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
@@ -707,7 +726,8 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
-                                <phase>verify</phase>
+                                <!-- Bind to install phase so it only runs during install/deploy, not verify -->
+                                <phase>install</phase>
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
@@ -1022,12 +1042,12 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
 
     <distributionManagement>
         <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+            <id>central</id>
+            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
         </snapshotRepository>
         <repository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>central</id>
+            <url>https://central.sonatype.com</url>
         </repository>
     </distributionManagement>
 </project>
