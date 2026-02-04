@@ -103,13 +103,9 @@
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>central</publishingServerId>
-                    <!-- For snapshots: just upload, don't publish/validate -->
-                    <!-- For releases: overridden in release profile -->
-                    <autoPublish>false</autoPublish>
-                    <waitUntil>uploaded</waitUntil>
+                    <autoPublish>true</autoPublish>
+                    <waitUntil>published</waitUntil>
                     <ignorePublishedComponents>true</ignorePublishedComponents>
-                    <!-- Don't fail if some components already exist -->
-                    <deploymentName>${project.artifactId}-${project.version}</deploymentName>
                 </configuration>
             </plugin>
             <!-- Maven Release Plugin -->
