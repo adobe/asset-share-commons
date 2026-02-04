@@ -740,6 +740,15 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                             </execution>
                         </executions>
                     </plugin>
+                    <!-- Override for releases: auto-publish to Maven Central -->
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <configuration>
+                            <autoPublish>true</autoPublish>
+                            <waitUntil>published</waitUntil>
+                        </configuration>
+                    </plugin>
                 </plugins>
             </build>
         </profile>

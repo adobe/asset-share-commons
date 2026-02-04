@@ -55,11 +55,11 @@ jobs:
 
       - name: Tag DryRun with Maven
         if: ${{ inputs.dryRun }}
-        run: mvn -B release:clean release:prepare -DreleaseVersion=${{ inputs.releaseVersion }} -DdryRun=true -Pcloud
+        run: mvn -B release:clean release:prepare -DreleaseVersion=${{ inputs.releaseVersion }} -DdryRun=true -Dgpg.skip=true -Pcloud
       
       - name: Tag with Maven
         if: ${{ !inputs.dryRun }}
-        run: mvn -B release:clean release:prepare -DreleaseVersion=${{ inputs.releaseVersion }} -Pcloud
+        run: mvn -B release:clean release:prepare -DreleaseVersion=${{ inputs.releaseVersion }} -Dgpg.skip=true -Pcloud
 
       - name: Store Version
         id: store-version
