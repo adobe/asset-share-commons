@@ -23,6 +23,17 @@
         Any roots in the Code packages of this project should have their parent enumerated in the Filters list below.
     </description>
 
+    <!-- ====================================================================== -->
+    <!-- P R O P E R T I E S                                                    -->
+    <!-- ====================================================================== -->
+    <properties>
+        <!-- Skip source and javadoc for content packages -->
+        <maven.source.skip>true</maven.source.skip>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+        <!-- Skip individual module publishing - let parent handle it -->
+        <skipPublishing>true</skipPublishing>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
