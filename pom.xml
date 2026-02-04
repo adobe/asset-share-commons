@@ -716,7 +716,8 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
-                                <phase>verify</phase>
+                                <!-- Bind to install phase so it only runs during install/deploy, not verify -->
+                                <phase>install</phase>
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
