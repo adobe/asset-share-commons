@@ -34,6 +34,14 @@
     <name>Asset Share Commons - Core</name>
     <description>OSGi Core bundle for Asset Share Commons</description>
 
+    <!-- ====================================================================== -->
+    <!-- P R O P E R T I E S                                                    -->
+    <!-- ====================================================================== -->
+    <properties>
+        <!-- Skip individual module publishing - let parent handle it -->
+        <skipPublishing>true</skipPublishing>
+    </properties>
+
     <build>
         <pluginManagement>
             <plugins>

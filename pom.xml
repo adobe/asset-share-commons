@@ -93,14 +93,17 @@
 
     <build>
         <plugins>
-            <!-- Maven Central / OSS Sonatype Release plugin -->
+            <!-- Maven Central / Central Publishing plugin -->
             <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.10.0</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                    <publishingServerId>central</publishingServerId>
+                    <autoPublish>true</autoPublish>
+                    <waitUntil>published</waitUntil>
+                    <ignorePublishedComponents>true</ignorePublishedComponents>
                 </configuration>
             </plugin>
             <!-- Maven Release Plugin -->
@@ -536,11 +539,11 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
                     <artifactId>maven-gpg-plugin</artifactId>
                     <version>3.2.7</version>
                 </plugin>
-                <!-- Maven Central / OSS Sonatype release plugin -->
+                <!-- Maven Central / Central Publishing plugin -->
                 <plugin>
-                    <groupId>org.sonatype.plugins</groupId>
-                    <artifactId>nexus-staging-maven-plugin</artifactId>
-                    <version>1.7.0</version>
+                    <groupId>org.sonatype.central</groupId>
+                    <artifactId>central-publishing-maven-plugin</artifactId>
+                    <version>0.10.0</version>
                 </plugin>
                 <!-- checks for vulnerabilities in dependencies -->
                 <plugin>
@@ -675,6 +678,12 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
         <!-- Release profiles -->
         <profile>
             <id>release</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>!true</value>
+                </property>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
@@ -1022,12 +1031,12 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
 
     <distributionManagement>
         <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+            <id>central</id>
+            <url>https://central.sonatype.com/</url>
         </snapshotRepository>
         <repository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>central</id>
+            <url>https://central.sonatype.com/</url>
         </repository>
     </distributionManagement>
 </project>

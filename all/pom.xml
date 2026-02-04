@@ -35,6 +35,17 @@
     <description>All package for Asset Share Commons</description>
 
     <!-- ====================================================================== -->
+    <!-- P R O P E R T I E S                                                    -->
+    <!-- ====================================================================== -->
+    <properties>
+        <!-- Skip source and javadoc for content packages -->
+        <maven.source.skip>true</maven.source.skip>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+        <!-- Skip individual module publishing - let parent handle it -->
+        <skipPublishing>true</skipPublishing>
+    </properties>
+
+    <!-- ====================================================================== -->
     <!-- B U I L D   D E F I N I T I O N                                        -->
     <!-- ====================================================================== -->
     <build>
