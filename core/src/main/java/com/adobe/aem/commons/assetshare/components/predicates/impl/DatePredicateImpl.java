@@ -158,8 +158,8 @@ public class DatePredicateImpl extends AbstractPredicate implements DatePredicat
                 valuesFromRequest.put(getLowerBoundName(), getInitialLowerBound());
             }
 
-            if (StringUtils.isNotBlank(getInitialLowerBound())) {
-                valuesFromRequest.put(getUpperBoundName(), getInitialLowerBound());
+            if (StringUtils.isNotBlank(getInitialUpperBound())) {
+                valuesFromRequest.put(getUpperBoundName(), getInitialUpperBound());
             }
         }
 
