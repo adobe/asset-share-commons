@@ -48,9 +48,7 @@ jobs:
           server-id: central
           server-username: MAVEN_USERNAME
           server-password: MAVEN_CENTRAL_TOKEN
-          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
-          gpg-passphrase: MAVEN_GPG_PASSPHRASE
-      
+
       # Deploy snapshot to Maven Central with new central-publishing-maven-plugin
       - name: Deploy Snapshot to Maven Central
         run: mvn clean deploy -Pcloud,release,jacoco-report

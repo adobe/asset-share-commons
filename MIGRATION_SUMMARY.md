@@ -106,15 +106,14 @@ February 4, 2026
 - Added `settings.xml` to prevent accidentally committing local credentials
 - Keeps `settings.xml.example` in version control as a template
 
-## GitHub Secrets (No Changes Required)
+## GitHub Secrets
 
-The following secrets remain the same and work with the new system:
-- `SONATYPE_USERNAME`: Now contains Central Portal token username
-- `SONATYPE_PASSWORD`: Now contains Central Portal token password
-- `MAVEN_GPG_PRIVATE_KEY`: (unchanged)
-- `GPG_PASSPHRASE`: (unchanged)
-- `GPG_SECRET_KEYS`: (unchanged)
-- `GPG_OWNERTRUST`: (unchanged)
+Workflows use Central Portal tokens plus GPG material imported on the runner (`GPG_SECRET_KEYS` / `GPG_OWNERTRUST`); `MAVEN_GPG_PRIVATE_KEY` is not required.
+- `SONATYPE_USERNAME`: Central Portal token username
+- `SONATYPE_PASSWORD`: Central Portal token password
+- `GPG_PASSPHRASE`: Passphrase for the signing key
+- `GPG_SECRET_KEYS`: Base64-encoded secret key export for `gpg --import` in CI
+- `GPG_OWNERTRUST`: Base64-encoded owner trust for CI
 
 **Important**: The values in `SONATYPE_USERNAME` and `SONATYPE_PASSWORD` need to be updated to the new Central Portal token credentials. These can be generated at https://central.sonatype.com/account
 
