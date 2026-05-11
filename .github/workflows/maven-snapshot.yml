@@ -1,0 +1,52 @@
+# Snapshot deploy to Maven Central (Sonatype Central Portal).
+# Secrets: AIO_MAVEN_USER_NAME, AIO_MAVEN_TOKEN (Central token user), MAVEN_GPG_PRIVATE_KEY, GPG_PASSPHRASE
+
+name: Snapshot Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy-snapshot:
+    runs-on: ubuntu-latest
+    if: github.repository == 'adobe/asset-share-commons' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: 11
+          cache: maven
+          server-id: central
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_CENTRAL_TOKEN
+          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
+      - name: Check snapshot version
+        id: snapshot
+        run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "Project version: $VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if [[ "$VERSION" == *-SNAPSHOT ]]; then
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping deploy: version is not a SNAPSHOT."
+          fi
+
+      - name: Deploy Snapshot to Maven Central
+        if: steps.snapshot.outputs.deploy == 'true'
+        run: mvn clean deploy -Pcloud,release,jacoco-report
+        env:
+          MAVEN_USERNAME: ${{ secrets.AIO_MAVEN_USER_NAME }}
+          MAVEN_CENTRAL_TOKEN: ${{ secrets.AIO_MAVEN_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
