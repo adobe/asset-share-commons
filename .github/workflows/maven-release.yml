@@ -15,7 +15,7 @@
 #
 # Central + GPG secrets: AIO_MAVEN_USER_NAME, AIO_MAVEN_TOKEN, MAVEN_GPG_PRIVATE_KEY, GPG_PASSPHRASE
 
-name: Release to OSSRH
+name: Release to Maven Central
 
 on:
   workflow_dispatch:

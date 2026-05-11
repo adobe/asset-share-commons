@@ -1,7 +1,7 @@
 # Snapshot deploy to Maven Central (Sonatype Central Portal).
 # Secrets: AIO_MAVEN_USER_NAME, AIO_MAVEN_TOKEN (Central token user), MAVEN_GPG_PRIVATE_KEY, GPG_PASSPHRASE
 
-name: Snapshot Deploy
+name: Release Snapshot to Maven Central
 
 on:
   push:
