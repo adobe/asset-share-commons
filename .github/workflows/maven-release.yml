@@ -13,8 +13,9 @@
 # governing permissions and limitations under the License.
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Central: SONATYPE_USERNAME, SONATYPE_PASSWORD
+# Central: SONATYPE_USERNAME, SONATYPE_PASSWORD (Central Portal user token — https://central.sonatype.org/publish/generate-portal-token)
 # GPG: GPG_PASSPHRASE, GPG_SECRET_KEYS, GPG_OWNERTRUST (base64)
+# Job-level MAVEN_* env ensures setup-java settings.xml has credentials for deploy.
 
 name: Release to Maven Central
 
@@ -125,6 +126,10 @@ jobs:
     needs: Tag
     runs-on: ubuntu-latest
     if: ${{ !inputs.dryRun }}
+    env:
+      MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+      MAVEN_CENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
+      MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
     steps:
       - name: Checkout code
@@ -164,10 +169,6 @@ jobs:
 
       - name: Deploy to Maven Central
         run: mvn clean deploy -Pcloud,release
-        env:
-          MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-          MAVEN_CENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
   Changelog:
     runs-on: ubuntu-latest

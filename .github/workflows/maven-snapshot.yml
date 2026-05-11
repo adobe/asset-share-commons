@@ -1,5 +1,8 @@
 # Snapshot deploy to Maven Central (Sonatype Central Portal).
 # Secrets: SONATYPE_USERNAME, SONATYPE_PASSWORD, GPG_PASSPHRASE, GPG_SECRET_KEYS, GPG_OWNERTRUST (base64)
+#
+# Use a Central Portal *user token* (not legacy OSSRH JIRA creds): https://central.sonatype.org/publish/generate-portal-token
+# Job-level MAVEN_* env ensures setup-java writes settings.xml before any mvn invocation (avoids empty auth / 401).
 
 name: Release Snapshot to Maven Central
 
@@ -13,6 +16,10 @@ jobs:
   deploy-snapshot:
     runs-on: ubuntu-latest
     if: github.repository == 'adobe/asset-share-commons' && github.ref == 'refs/heads/main'
+    env:
+      MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+      MAVEN_CENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
+      MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
     steps:
       - name: Checkout code
@@ -65,7 +72,3 @@ jobs:
       - name: Deploy Snapshot to Maven Central
         if: steps.snapshot.outputs.deploy == 'true'
         run: mvn clean deploy -Pcloud,release,jacoco-report
-        env:
-          MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-          MAVEN_CENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
