@@ -1,5 +1,5 @@
 # Snapshot deploy to Maven Central (Sonatype Central Portal).
-# Secrets: AIO_MAVEN_USER_NAME, AIO_MAVEN_TOKEN (Central token user), MAVEN_GPG_PRIVATE_KEY, GPG_PASSPHRASE
+# Secrets: SONATYPE_USERNAME, SONATYPE_PASSWORD, GPG_PASSPHRASE, GPG_SECRET_KEYS, GPG_OWNERTRUST (base64)
 
 name: Release Snapshot to Maven Central
 
@@ -18,6 +18,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
+      - name: Import GPG key
+        env:
+          GPG_SECRET_KEYS: ${{ secrets.GPG_SECRET_KEYS }}
+          GPG_OWNERTRUST: ${{ secrets.GPG_OWNERTRUST }}
+        run: |
+          if [ -n "${GPG_SECRET_KEYS}" ]; then
+            echo "$GPG_SECRET_KEYS" | base64 --decode | gpg --import --no-tty --batch --yes
+          fi
+          if [ -n "${GPG_OWNERTRUST}" ]; then
+            echo "$GPG_OWNERTRUST" | base64 --decode | gpg --import-ownertrust --no-tty --batch --yes
+          fi
+
       - name: Setup JDK
         uses: actions/setup-java@v5
         with:
@@ -27,8 +39,6 @@ jobs:
           server-id: central
           server-username: MAVEN_USERNAME
           server-password: MAVEN_CENTRAL_TOKEN
-          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
-          gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
       - name: Check snapshot version
         id: snapshot
@@ -43,10 +53,19 @@ jobs:
             echo "Skipping deploy: version is not a SNAPSHOT."
           fi
 
+      - name: Verify GPG secret key is available
+        if: steps.snapshot.outputs.deploy == 'true'
+        run: |
+          gpg --list-secret-keys --keyid-format LONG
+          if ! gpg --list-secret-keys --with-colons 2>/dev/null | grep -q '^sec:'; then
+            echo "::error::No GPG secret key found. Configure repository secrets GPG_SECRET_KEYS and GPG_OWNERTRUST (base64-encoded)."
+            exit 1
+          fi
+
       - name: Deploy Snapshot to Maven Central
         if: steps.snapshot.outputs.deploy == 'true'
         run: mvn clean deploy -Pcloud,release,jacoco-report
         env:
-          MAVEN_USERNAME: ${{ secrets.AIO_MAVEN_USER_NAME }}
-          MAVEN_CENTRAL_TOKEN: ${{ secrets.AIO_MAVEN_TOKEN }}
+          MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          MAVEN_CENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
