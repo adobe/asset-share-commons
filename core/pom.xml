@@ -77,7 +77,7 @@
                                 <artifactItem>
                                     <groupId>com.adobe.acs</groupId>
                                     <artifactId>acs-aem-commons-bundle</artifactId>
-                                    <version>5.3.0</version>
+                                    <version>6.17.2</version>
                                     <classifier>sources</classifier>
                                     <type>jar</type>
                                     <overWrite>true</overWrite>
