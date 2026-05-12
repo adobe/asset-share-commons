@@ -1038,7 +1038,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
             <dependency>
                 <groupId>org.apache.sling</groupId>
                 <artifactId>org.apache.sling.api</artifactId>
-                <version>2.27.6</version>
+                <version>3.0.2</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
