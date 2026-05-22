@@ -1051,7 +1051,7 @@ Bundle-DocURL: https://opensource.adobe.com/asset-share-commons/
         </snapshotRepository>
         <repository>
             <id>central</id>
-            <url>https://central.sonatype.com</url>
+            <url>https://central.sonatype.com/repository/maven-releases/</url>
         </repository>
     </distributionManagement>
 </project>
