@@ -45,3 +45,6 @@ settings.xml.example
 
 # Adobe IO CLI
 .aio
+
+# Cursor
+.cursor/

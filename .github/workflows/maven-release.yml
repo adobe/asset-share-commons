@@ -30,6 +30,12 @@ on:
         required: true
         type: boolean
         default: true
+      sonatypeUsername:
+        description: 'Central Portal token username (overrides SONATYPE_USERNAME secret)'
+        required: false
+      sonatypePassword:
+        description: 'Central Portal token password (overrides SONATYPE_PASSWORD secret)'
+        required: false
 
 permissions:
   contents: write
@@ -127,8 +133,8 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ !inputs.dryRun }}
     env:
-      MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-      MAVEN_CENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
+      MAVEN_USERNAME: ${{ inputs.sonatypeUsername || secrets.SONATYPE_USERNAME }}
+      MAVEN_CENTRAL_TOKEN: ${{ inputs.sonatypePassword || secrets.SONATYPE_PASSWORD }}
       MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
     steps:
