@@ -148,12 +148,16 @@ jobs:
           GPG_SECRET_KEYS: ${{ secrets.GPG_SECRET_KEYS }}
           GPG_OWNERTRUST: ${{ secrets.GPG_OWNERTRUST }}
         run: |
-          if [ -n "${GPG_SECRET_KEYS}" ]; then
-            echo "$GPG_SECRET_KEYS" | base64 --decode | gpg --import --no-tty --batch --yes
+          if [ -z "${GPG_SECRET_KEYS}" ]; then
+            echo "::error::GPG_SECRET_KEYS is empty"
+            exit 1
           fi
-          if [ -n "${GPG_OWNERTRUST}" ]; then
-            echo "$GPG_OWNERTRUST" | base64 --decode | gpg --import-ownertrust --no-tty --batch --yes
+          if [ -z "${GPG_OWNERTRUST}" ]; then
+            echo "::error::GPG_OWNERTRUST is empty"
+            exit 1
           fi
+          echo "$GPG_SECRET_KEYS" | base64 --decode | gpg --import --no-tty --batch --yes
+          echo "$GPG_OWNERTRUST" | base64 --decode | gpg --import-ownertrust --no-tty --batch --yes
 
       - name: Setup JDK
         uses: actions/setup-java@v5
