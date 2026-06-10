@@ -43,8 +43,10 @@
         <!-- Skip source and javadoc for content packages -->
         <maven.source.skip>true</maven.source.skip>
         <maven.javadoc.skip>true</maven.javadoc.skip>
-        <!-- Skip individual module publishing - let parent handle it -->
-        <skipPublishing>true</skipPublishing>
+        <!-- Skip individual module publishing - let parent handle it 
+        NEW MAVEN CENTRAL PLUGIN DOES NOT SUPPORT THIS
+        <skipPublishing>true</skipPublishing> 
+        -->
     </properties>
 
     <!-- ====================================================================== -->
