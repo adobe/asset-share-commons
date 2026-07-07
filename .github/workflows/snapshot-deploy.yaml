@@ -16,15 +16,20 @@
 
 name: Snapshot Deploy
 
+# Push: automatic snapshot deploy from develop.
+# workflow_dispatch: run the same job manually (Actions → Snapshot Deploy → Run workflow).
+#   Use branch "develop" so the project version stays -SNAPSHOT and artifacts go to the snapshot repo only.
 on:
   push:
     branches:
       - develop
+  workflow_dispatch:
 
 jobs:
   Deploy_Snapshot:
     runs-on: ubuntu-latest
     # This is here to prevent forks from trying to build this on accident.
+    # workflow_dispatch uses the branch you select; only develop is allowed so we never deploy a release version as a "test".
     if: github.repository == 'adobe/asset-share-commons' && github.ref == 'refs/heads/develop'
 
     steps:
@@ -48,9 +53,7 @@ jobs:
           server-id: central
           server-username: MAVEN_USERNAME
           server-password: MAVEN_CENTRAL_TOKEN
-          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
-          gpg-passphrase: MAVEN_GPG_PASSPHRASE
-      
+
       # Deploy snapshot to Maven Central with new central-publishing-maven-plugin
       - name: Deploy Snapshot to Maven Central
         run: mvn clean deploy -Pcloud,release,jacoco-report
@@ -60,7 +63,7 @@ jobs:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
       - name: Upload CodeCov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: unittests

@@ -20,10 +20,9 @@ The following GitHub secrets are configured for automated deployments:
 
 - `SONATYPE_USERNAME`: Your Central Portal token username
 - `SONATYPE_PASSWORD`: Your Central Portal token password
-- `MAVEN_GPG_PRIVATE_KEY`: GPG private key for signing artifacts
-- `GPG_PASSPHRASE`: Passphrase for the GPG key
-- `GPG_SECRET_KEYS`: Base64-encoded GPG secret keys
-- `GPG_OWNERTRUST`: Base64-encoded GPG owner trust
+- `GPG_PASSPHRASE`: Passphrase for the GPG key (also supplied to Maven as `MAVEN_GPG_PASSPHRASE` in the workflow)
+- `GPG_SECRET_KEYS`: Base64-encoded GPG secret key export (`gpg --export-secret-keys …` then base64), imported on the runner before `mvn deploy`
+- `GPG_OWNERTRUST`: Base64-encoded GPG owner trust for that key
 
 ### Workflows
 
