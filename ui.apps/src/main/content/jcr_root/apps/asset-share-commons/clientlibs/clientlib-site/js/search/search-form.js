@@ -131,6 +131,33 @@ AssetShare.Search.Form = function (ns) {
         return buildFormData(formData, event).serialize();
     }
 
+    function serializeJsonFor(event, resetForm, removeKeys) {
+        var json = {};
+
+        if (resetForm) {
+            reset();
+        }
+
+        removeKeys = removeKeys || [];
+
+        buildFormData(formData, event).getAll().forEach(function(field) {
+            if (removeKeys.indexOf(field.name) > -1) {
+                return;
+            }
+
+            if (json[field.name]) {
+                if (!Array.isArray(json[field.name])) {
+                    json[field.name] = [json[field.name]];
+                }
+                json[field.name].push(field.value);
+            } else {
+                json[field.name] = field.value;
+            }
+        });
+
+        return JSON.stringify(json);
+    }
+
     function _adjustFormData(formData) {
         formData.getAll().forEach(function(field) {
             // Handle date range fields upperBounds to make it the last millisecond of the selected day
@@ -186,6 +213,10 @@ AssetShare.Search.Form = function (ns) {
         }
     }
 
+    function submitQuery(query, success) {
+        return $.when($.get(getUrl(), query)).then(success);
+    }
+
     function init() {
         // On init, the DOM is king as its populated by the server page load
         url = ns.Data.attr(ns.Elements.element("form"), "action");
@@ -199,8 +230,9 @@ AssetShare.Search.Form = function (ns) {
     return {
         url: getUrl,
         serializeFor: serializeFor,
+        serializeJsonFor: serializeJsonFor,
         id: getId,
-        submit: submit
+        submit: submit,
+        submitQuery: submitQuery
     };
 };
-

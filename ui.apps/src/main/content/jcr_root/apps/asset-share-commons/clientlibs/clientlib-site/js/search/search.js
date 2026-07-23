@@ -29,8 +29,10 @@ AssetShare.Search = (function (window, $, ns, ajax) {
         ACTION_LOAD_MORE = "load-more",
         ACTION_SORT = "sort",
         ACTION_SWITCH_LAYOUT = "switch-layout",
+        DISCOVERY_COMMAND = "/discovery",
 
         running = false,
+        queryParamsOverride = null,
 
         form = ns.Search.Form(ns);
 
@@ -56,10 +58,138 @@ AssetShare.Search = (function (window, $, ns, ajax) {
         ns.Elements.update(fragmentHtml, ACTION_SEARCH);
 
         ns.Navigation.gotoTop();
-        setAddressBar(form.serializeFor(ACTION_DEEP_LINK));
+        setAddressBar(queryParamsOverride || form.serializeFor(ACTION_DEEP_LINK));
+        queryParamsOverride = null;
 
         trigger(ns.Events.SEARCH_END, [EVENT_SEARCH_TYPE_FULL]);
         running = false;
+    }
+
+    function getDiscoveryQueryElement() {
+        return ns.Elements.element("discovery-query");
+    }
+
+    function getDiscoveryQueryOutputElement() {
+        return ns.Elements.element("discovery-query-output");
+    }
+
+    function getDiscoveryEndpoint() {
+        return ns.Data.attr(ns.Elements.element("discovery-search"), "discovery-agent-endpoint") || "/discovery";
+    }
+
+    function isDiscoveryCommandValue(value) {
+        return value && new RegExp("^" + DISCOVERY_COMMAND + "(\\s|$)").test($.trim(value));
+    }
+
+    function getSearchPrompt() {
+        var searchInput = $("#" + form.id()).find(":input").add($("[form='" + form.id() + "']")).filter(function() {
+            return isDiscoveryCommandValue($(this).val());
+        }).first();
+
+        return $.trim(searchInput.val()).substring(DISCOVERY_COMMAND.length).replace(/^\s+/, "");
+    }
+
+    function getDiscoverySearchFieldNames() {
+        return $("#" + form.id()).find(":input").add($("[form='" + form.id() + "']")).filter(function() {
+            return isDiscoveryCommandValue($(this).val());
+        }).map(function() {
+            return $(this).attr("name");
+        }).get();
+    }
+
+    function isDiscoverySearch() {
+        return getSearchPrompt().length > 0;
+    }
+
+    function objectToQueryString(queryObject) {
+        var params = [];
+
+        if (!queryObject) {
+            return "";
+        }
+
+        $.each(queryObject, function(key, value) {
+            if (Array.isArray(value)) {
+                value.forEach(function(arrayValue) {
+                    params.push({name: key, value: arrayValue});
+                });
+            } else {
+                params.push({name: key, value: value});
+            }
+        });
+
+        return $.param(params);
+    }
+
+    function parseDiscoveryResponse(response) {
+        var query = response;
+
+        if (typeof query === "string") {
+            try {
+                query = JSON.parse(query);
+            } catch (e) {
+                return query;
+            }
+        }
+
+        if (query.query) {
+            query = query.query;
+        } else if (query.queryBuilderQuery) {
+            query = query.queryBuilderQuery;
+        } else if (query.querybuilder) {
+            query = query.querybuilder;
+        } else if (query.queryBuilder) {
+            query = query.queryBuilder;
+        } else if (query.queryParameters) {
+            query = query.queryParameters;
+        } else if (query.params) {
+            query = query.params;
+        }
+
+        if (typeof query === "string") {
+            return query;
+        }
+
+        return objectToQueryString(query);
+    }
+
+    function showDiscoveryQuery(query) {
+        var queryElement = getDiscoveryQueryElement(),
+            outputElement = getDiscoveryQueryOutputElement(),
+            decodedQuery;
+
+        try {
+            decodedQuery = decodeURIComponent(query.replace(/\+/g, " "));
+        } catch (e) {
+            decodedQuery = query;
+        }
+
+        outputElement.text(decodedQuery);
+        queryElement.removeClass("hidden");
+    }
+
+    function discoverySearch() {
+        var prompt = getSearchPrompt(),
+            context = form.serializeJsonFor(ACTION_SEARCH, true, getDiscoverySearchFieldNames());
+
+        $.when($.post(getDiscoveryEndpoint(), {
+            prompt: prompt,
+            context: context
+        })).then(function(response) {
+            var query = parseDiscoveryResponse(response);
+
+            showDiscoveryQuery(query);
+            queryParamsOverride = query;
+            form.submitQuery(query, processSearch).fail(function() {
+                queryParamsOverride = null;
+                trigger(ns.Events.SEARCH_INVALID, [EVENT_SEARCH_TYPE_FULL]);
+                running = false;
+            });
+        }).fail(function() {
+            queryParamsOverride = null;
+            trigger(ns.Events.SEARCH_INVALID, [EVENT_SEARCH_TYPE_FULL]);
+            running = false;
+        });
     }
 
     function processLoadMore(fragmentHtml) {
@@ -77,7 +207,11 @@ AssetShare.Search = (function (window, $, ns, ajax) {
         }
         if (!running) {
             running = true;
-            if (form.submit(ACTION_SEARCH, true, processSearch)) {
+
+            if (isDiscoverySearch()) {
+                trigger(ns.Events.SEARCH_BEGIN, [EVENT_SEARCH_TYPE_FULL]);
+                discoverySearch();
+            } else if (form.submit(ACTION_SEARCH, true, processSearch)) {
                 trigger(ns.Events.SEARCH_BEGIN, [EVENT_SEARCH_TYPE_FULL]);
             } else {
                 trigger(ns.Events.SEARCH_INVALID, [EVENT_SEARCH_TYPE_FULL]);

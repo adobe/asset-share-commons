@@ -75,6 +75,13 @@
                                         fieldDescription="Text value to display on the button."
                                         fieldLabel="Button Label"
                                         name="./buttonLabel"/>
+                                    <discovery-agent-endpoint
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        fieldDescription="HTTP endpoint that accepts a POST with prompt and context fields and returns querybuilder parameters. Defaults to /discovery."
+                                        fieldLabel="Discovery Agent Endpoint"
+                                        name="./discoveryAgentEndpoint"
+                                        value="/discovery"/>
                                 </items>
                             </column>
                         </items>
