@@ -20,9 +20,7 @@
 	 data-sly-use.predicate="com.adobe.aem.commons.assetshare.components.predicates.FulltextPredicate"
 	 data-sly-test.ready="${predicate.isReady}">
 
-	<div class="ui fluid big left icon input ${properties['hideButton'] ? '' : 'action'}"
-		 data-asset-share-id="discovery-search"
-		 data-asset-share-discovery-agent-endpoint="${properties['discoveryAgentEndpoint'] ? properties['discoveryAgentEndpoint'] : '/discovery'}">
+	<div class="ui fluid big left icon input ${properties['hideButton'] ? '' : 'action'}">
 		<input type="${predicate.type}"
 			   placeholder="${properties['placeholder'] @ i18n}"
 			   name="${predicate.name}"
@@ -37,8 +35,11 @@
 	</div>
 	<div class="ui message asset-share-commons__discovery-query hidden"
 		 data-asset-share-id="discovery-query"
+		 data-asset-share-query-title="${'Discovery query' @ i18n}"
+		 data-asset-share-error-title="${'Discovery search unavailable' @ i18n}"
+		 data-asset-share-error-message="${'The discovery search could not be completed. Please try again.' @ i18n}"
 		 aria-live="polite">
-		<div class="header">Discovery query</div>
+		<div class="header" data-asset-share-id="discovery-query-title">${'Discovery query' @ i18n}</div>
 		<pre data-asset-share-id="discovery-query-output"></pre>
 	</div>
 

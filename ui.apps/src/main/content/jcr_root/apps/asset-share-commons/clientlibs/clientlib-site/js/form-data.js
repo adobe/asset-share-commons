@@ -106,7 +106,7 @@ AssetShare.FormData = function (formEl) {
         var cloneForm = new AssetShare.FormData();
 
         form.forEach(function (element) {
-            cloneForm.set(element.name, element.value);
+            cloneForm.add(element.name, element.value);
         });
 
         return cloneForm;

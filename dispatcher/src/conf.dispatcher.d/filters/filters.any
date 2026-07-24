@@ -30,3 +30,5 @@ $include "./default_filters.any"
 # Asset Rendition downloads
 /0401 { /type "allow" /method "POST" /path "/content/*" /selectors "download-asset-renditions" /extension "zip" }
 
+# Discovery agent proxy
+/0500 { /type "allow" /method "POST" /url "/bin/asset-share-commons/discovery" }

@@ -84,7 +84,7 @@ AssetShare.Search.Form = function (ns) {
                                 relatedInputValue = formData.get(relativeInputName);
                             if (relatedInputValue) {
                                 // Add to the clean form
-                                if (cleanFormData.get(inputName) !== inputValue) {
+                                if (cleanFormData.getAll(inputName).indexOf(inputValue) === -1) {
                                     // Never add the same exact inputName=inputValue twice
                                     cleanFormData.add(inputName, inputValue);
                                 }
@@ -94,7 +94,7 @@ AssetShare.Search.Form = function (ns) {
                     });
                 } else {
                     // No predicateId, so this is a stand-alone field and always add it unless its already exists
-                   if (inputValue !== '' && cleanFormData.get(inputName) !== inputValue) {
+                   if (inputValue !== '' && cleanFormData.getAll(inputName).indexOf(inputValue) === -1) {
                        // Never add the same exact inputName=inputValue twice
                        cleanFormData.add(inputName, inputValue);
                    }
@@ -129,6 +129,59 @@ AssetShare.Search.Form = function (ns) {
             reset();
         }
         return buildFormData(formData, event).serialize();
+    }
+
+    function deserialize(query) {
+        var deserializedFormData = new ns.FormData();
+
+        $.each((query || "").replace(/^\?/, "").split("&"), function(index, pair) {
+            var separator,
+                name,
+                value;
+
+            if (!pair) {
+                return;
+            }
+
+            separator = pair.indexOf("=");
+            name = separator > -1 ? pair.substring(0, separator) : pair;
+            value = separator > -1 ? pair.substring(separator + 1) : "";
+
+            try {
+                name = decodeURIComponent(name.replace(/\+/g, " "));
+                value = decodeURIComponent(value.replace(/\+/g, " "));
+            } catch (e) {
+                return;
+            }
+
+            if (name) {
+                deserializedFormData.add(name, value);
+            }
+        });
+
+        return deserializedFormData;
+    }
+
+    function removeAll(formDataToUpdate, name) {
+        while (typeof formDataToUpdate.get(name) !== "undefined") {
+            formDataToUpdate.remove(name);
+        }
+    }
+
+    function serializeQueryFor(query, event) {
+        var queryFormData = deserialize(query);
+
+        $("[data-asset-share-search-actions]").each(function() {
+            removeAll(queryFormData, $(this).attr("name"));
+        });
+
+        $("[data-asset-share-search-actions*=\"all\"],[data-asset-share-search-actions*=\"" + event + "\"]").each(function() {
+            if ($.trim($(this).val()) !== "") {
+                queryFormData.set($(this).attr("name"), $(this).val());
+            }
+        });
+
+        return queryFormData.serialize();
     }
 
     function serializeJsonFor(event, resetForm, removeKeys) {
@@ -202,11 +255,11 @@ AssetShare.Search.Form = function (ns) {
         return valid;
     }
 
-    function submit(serializationType, resetForm, success) {
+    function submit(serializationType, resetForm, success, failure) {
         var formToSubmit = serializeFor(serializationType, resetForm);
 
         if (_valid(formToSubmit)) {
-            $.when($.get(getUrl(), formToSubmit)).then(success);
+            $.when($.get(getUrl(), formToSubmit)).then(success).fail(failure);
             return true;
         } else {
             return false;
@@ -230,6 +283,7 @@ AssetShare.Search.Form = function (ns) {
     return {
         url: getUrl,
         serializeFor: serializeFor,
+        serializeQueryFor: serializeQueryFor,
         serializeJsonFor: serializeJsonFor,
         id: getId,
         submit: submit,
