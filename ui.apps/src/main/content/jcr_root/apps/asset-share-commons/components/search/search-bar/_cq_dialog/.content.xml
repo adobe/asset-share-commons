@@ -75,6 +75,13 @@
                                         fieldDescription="Text value to display on the button."
                                         fieldLabel="Button Label"
                                         name="./buttonLabel"/>
+                                    <discovery-agent-endpoint
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        fieldDescription="AEM middleware endpoint for discovery searches. Defaults to /bin/asset-share-commons/discovery."
+                                        fieldLabel="Discovery Agent Endpoint"
+                                        name="./discoveryAgentEndpoint"
+                                        value="/bin/asset-share-commons/discovery"/>
                                 </items>
                             </column>
                         </items>

@@ -30,7 +30,6 @@ AssetShare.Search = (function (window, $, ns, ajax) {
         ACTION_SORT = "sort",
         ACTION_SWITCH_LAYOUT = "switch-layout",
         DISCOVERY_COMMAND = "/discovery",
-        DISCOVERY_ENDPOINT = "/bin/asset-share-commons/discovery",
 
         running = false,
         activeDiscoveryQuery = null,
@@ -77,6 +76,13 @@ AssetShare.Search = (function (window, $, ns, ajax) {
 
     function getDiscoveryQueryTitleElement() {
         return ns.Elements.element("discovery-query-title");
+    }
+
+    function getDiscoveryEndpoint() {
+        return ns.Data.attr(
+            ns.Elements.element("discovery-search"),
+            "discovery-agent-endpoint"
+        ) || "/bin/asset-share-commons/discovery";
     }
 
     function isDiscoveryCommandValue(value) {
@@ -223,11 +229,15 @@ AssetShare.Search = (function (window, $, ns, ajax) {
 
     function discoverySearch() {
         var prompt = getSearchPrompt(),
-            context = form.serializeJsonFor(ACTION_SEARCH, true, getDiscoverySearchFieldNames());
+            context = form.serializeDiscoveryContextFor(
+                ACTION_SEARCH,
+                true,
+                getDiscoverySearchFieldNames()
+            );
 
         hideDiscoveryQuery();
 
-        $.when($.post(DISCOVERY_ENDPOINT, {
+        $.when($.post(getDiscoveryEndpoint(), {
             prompt: prompt,
             context: context
         })).then(function(response) {

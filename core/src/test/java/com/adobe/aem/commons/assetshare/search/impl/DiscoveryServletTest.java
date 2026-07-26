@@ -18,6 +18,7 @@
 
 package com.adobe.aem.commons.assetshare.search.impl;
 
+import com.adobe.granite.auth.oauth.AccessTokenProvider;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.http.HttpHeaders;
 import org.apache.http.ProtocolVersion;
@@ -28,6 +29,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.message.BasicStatusLine;
 import org.apache.http.util.EntityUtils;
+import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.resource.ResourceResolverFactory;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.junit.Before;
 import org.junit.Rule;
@@ -35,9 +38,14 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -66,6 +74,8 @@ public class DiscoveryServletTest {
 
         when(config.agent_endpoint()).thenReturn("https://agent.example/discovery");
         when(config.agent_authorization()).thenReturn("Bearer token");
+        when(config.agent_headers()).thenReturn(new String[]{"ngrok-skip-browser-warning: true"});
+        when(config.ims_provider_name()).thenReturn("discovery-provider");
         when(config.http_timeout()).thenReturn(1000);
         when(config.max_response_bytes()).thenReturn(4096);
         when(httpClient.execute(any(HttpPost.class))).thenReturn(agentResponse);
@@ -93,8 +103,50 @@ public class DiscoveryServletTest {
         verify(httpClient).execute(requestCaptor.capture());
         assertEquals("Bearer token", requestCaptor.getValue().getFirstHeader(HttpHeaders.AUTHORIZATION).getValue());
         assertEquals(
-                "prompt=find+brand+products&context=%7B%22path%22%3A%22%2Fcontent%2Fdam%22%7D",
+                ContentType.TEXT_PLAIN.getMimeType(),
+                requestCaptor.getValue().getFirstHeader(HttpHeaders.ACCEPT).getValue());
+        assertEquals(
+                "true",
+                requestCaptor.getValue().getFirstHeader("ngrok-skip-browser-warning").getValue());
+        assertEquals(
+                "{\"prompt\":\"find brand products\",\"context\":{\"path\":\"/content/dam\"}}",
                 EntityUtils.toString(requestCaptor.getValue().getEntity()));
+        assertEquals(
+                ContentType.APPLICATION_JSON.getMimeType(),
+                ContentType.get(requestCaptor.getValue().getEntity()).getMimeType());
+    }
+
+    @Test
+    public void prefersImsAuthorizationWhenProviderIsAvailable() throws Exception {
+        final ResourceResolverFactory resourceResolverFactory = mock(ResourceResolverFactory.class);
+        final ResourceResolver serviceResolver = mock(ResourceResolver.class);
+        final AccessTokenProvider accessTokenProvider = mock(AccessTokenProvider.class);
+        when(resourceResolverFactory.getServiceResourceResolver(anyMap())).thenReturn(serviceResolver);
+        when(serviceResolver.getUserID()).thenReturn("discovery-service-user");
+        when(accessTokenProvider.getAccessToken(
+                eq(serviceResolver), eq("discovery-service-user"), isNull()))
+                .thenReturn("ims-token");
+        setField(servlet, "resourceResolverFactory", resourceResolverFactory);
+        servlet.bindAccessTokenProvider(
+                accessTokenProvider,
+                Collections.<String, Object>singletonMap("name", "discovery-provider"));
+
+        final StringEntity entity = new StringEntity("fulltext=products", ContentType.TEXT_PLAIN);
+        when(agentResponse.getEntity()).thenReturn(entity);
+        when(agentResponse.getStatusLine()).thenReturn(
+                new BasicStatusLine(new ProtocolVersion("HTTP", 1, 1), 200, "OK"));
+        when(agentResponse.getFirstHeader(HttpHeaders.CONTENT_TYPE)).thenReturn(entity.getContentType());
+        context.request().addRequestParameter("prompt", "find brand products");
+        context.request().addRequestParameter("context", "{}");
+
+        servlet.doPost(context.request(), context.response());
+
+        final ArgumentCaptor<HttpPost> requestCaptor = ArgumentCaptor.forClass(HttpPost.class);
+        verify(httpClient).execute(requestCaptor.capture());
+        assertEquals(
+                "Bearer ims-token",
+                requestCaptor.getValue().getFirstHeader(HttpHeaders.AUTHORIZATION).getValue());
+        verify(serviceResolver).close();
     }
 
     @Test
@@ -118,5 +170,12 @@ public class DiscoveryServletTest {
         servlet.doPost(context.request(), context.response());
 
         assertEquals(SlingHttpServletResponse.SC_BAD_GATEWAY, context.response().getStatus());
+    }
+
+    private void setField(final Object target, final String name, final Object value)
+            throws ReflectiveOperationException {
+        final Field field = DiscoveryServlet.class.getDeclaredField(name);
+        field.setAccessible(true);
+        field.set(target, value);
     }
 }

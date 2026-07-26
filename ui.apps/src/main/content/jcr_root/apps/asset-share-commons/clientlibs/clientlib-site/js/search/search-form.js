@@ -211,6 +211,151 @@ AssetShare.Search.Form = function (ns) {
         return JSON.stringify(json);
     }
 
+    function fieldsToJson(fields, removeKeys) {
+        var json = {};
+
+        removeKeys = removeKeys || [];
+
+        fields.forEach(function(field) {
+            if (removeKeys.indexOf(field.name) > -1) {
+                return;
+            }
+
+            if (json[field.name]) {
+                if (!Array.isArray(json[field.name])) {
+                    json[field.name] = [json[field.name]];
+                }
+                json[field.name].push(field.value);
+            } else {
+                json[field.name] = field.value;
+            }
+        });
+
+        return json;
+    }
+
+    function getInputLabel(input) {
+        var inputElement = $(input),
+            label;
+
+        if (inputElement.attr("id")) {
+            label = $("label[for=\"" + inputElement.attr("id") + "\"]").first().text();
+        }
+
+        if (!label) {
+            label = inputElement.closest(".checkbox").find("label").first().text();
+        }
+
+        return $.trim(label || "");
+    }
+
+    function getPredicateTitle(predicateId, relatedInputs) {
+        var title = relatedInputs.closest(".content").prev(".title").first().text();
+
+        if (!title) {
+            title = relatedInputs.closest(".accordion").find(".title").first().text();
+        }
+
+        return $.trim(title || predicateId).replace(/\s+/g, " ");
+    }
+
+    function getPredicateOptions(relatedInputs) {
+        var options = [];
+
+        relatedInputs.each(function(index, input) {
+            var inputElement = $(input),
+                type = inputElement.attr("type") || input.tagName.toLowerCase();
+
+            if (inputElement.is("select")) {
+                inputElement.find("option").each(function(optionIndex, option) {
+                    var optionElement = $(option);
+
+                    if ($.trim(optionElement.val()) !== "") {
+                        options.push({
+                            name: inputElement.attr("name"),
+                            value: optionElement.val(),
+                            label: $.trim(optionElement.text()).replace(/\s+/g, " "),
+                            selected: optionElement.is(":selected"),
+                            disabled: optionElement.is(":disabled")
+                        });
+                    }
+                });
+            } else if (type === "checkbox" || type === "radio") {
+                options.push({
+                    name: inputElement.attr("name"),
+                    value: inputElement.val(),
+                    label: getInputLabel(input),
+                    selected: inputElement.is(":checked"),
+                    disabled: inputElement.is(":disabled")
+                });
+            }
+        });
+
+        return options;
+    }
+
+    function serializeDiscoveryContextFor(event, resetForm, removeKeys) {
+        var context,
+            predicates = {};
+
+        if (resetForm) {
+            reset();
+        }
+
+        removeKeys = removeKeys || [];
+
+        context = fieldsToJson(buildFormData(formData, event).getAll(), removeKeys);
+        context.selectedQuery = $.extend({}, context);
+        context.predicates = [];
+
+        $("[data-asset-share-predicate-id][form=\"" + getId() + "\"]").each(function(index, element) {
+            var field = $(element),
+                predicateId = ns.Data.attr(field, "predicate-id"),
+                predicate;
+
+            if (!predicateId) {
+                return;
+            }
+
+            if (!predicates[predicateId]) {
+                predicates[predicateId] = {
+                    id: predicateId,
+                    title: "",
+                    fields: [],
+                    inputs: [],
+                    options: []
+                };
+                context.predicates.push(predicates[predicateId]);
+            }
+
+            predicate = predicates[predicateId];
+            predicate.fields.push({
+                name: field.attr("name"),
+                value: field.val()
+            });
+        });
+
+        context.predicates.forEach(function(predicate) {
+            var relatedInputs = $(":input[for=\"" + predicate.id + "\"][form=\"" + getId() + "\"]");
+
+            predicate.title = getPredicateTitle(predicate.id, relatedInputs);
+            predicate.inputs = relatedInputs.map(function(index, input) {
+                var inputElement = $(input);
+
+                return {
+                    name: inputElement.attr("name"),
+                    type: inputElement.attr("type") || input.tagName.toLowerCase(),
+                    value: inputElement.val(),
+                    selected: inputElement.is(":checked") ||
+                        inputElement.is("select") && inputElement.val() !== ""
+                };
+            }).get();
+            predicate.options = getPredicateOptions(relatedInputs);
+        });
+
+        return JSON.stringify(context);
+    }
+
     function _adjustFormData(formData) {
         formData.getAll().forEach(function(field) {
             // Handle date range fields upperBounds to make it the last millisecond of the selected day
@@ -285,6 +430,7 @@ AssetShare.Search.Form = function (ns) {
         serializeFor: serializeFor,
         serializeQueryFor: serializeQueryFor,
         serializeJsonFor: serializeJsonFor,
+        serializeDiscoveryContextFor: serializeDiscoveryContextFor,
         id: getId,
         submit: submit,
         submitQuery: submitQuery
