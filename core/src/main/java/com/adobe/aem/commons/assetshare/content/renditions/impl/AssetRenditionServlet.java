@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatcher;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionDispatchers;
 import com.adobe.aem.commons.assetshare.content.renditions.AssetRenditionParameters;
+import com.adobe.aem.commons.assetshare.util.HttpHeaderUtil;
 import com.adobe.aem.commons.assetshare.util.ServletHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -159,10 +160,12 @@ public class AssetRenditionServlet extends SlingSafeMethodsServlet {
     }
 
     protected void setResponseHeaders(final SlingHttpServletResponse response, final AssetRenditionParameters parameters) {
+        final String fileName = HttpHeaderUtil.sanitize(parameters.getFileName());
+
         if (parameters.isDownload()) {
-            response.setHeader("Content-Disposition", String.format("attachment; filename=%s", parameters.getFileName()));
+            response.setHeader("Content-Disposition", String.format("attachment; filename=%s", fileName));
         } else {
-            response.setHeader("Content-Disposition", String.format("filename=%s", parameters.getFileName()));
+            response.setHeader("Content-Disposition", String.format("filename=%s", fileName));
         }
     }
 

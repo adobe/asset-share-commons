@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.*;
 import com.adobe.aem.commons.assetshare.content.renditions.download.DownloadExtensionResolver;
 import com.adobe.aem.commons.assetshare.content.renditions.download.impl.AssetRenditionDownloadRequest;
+import com.adobe.aem.commons.assetshare.util.HttpHeaderUtil;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.DamConstants;
 import com.day.cq.dam.api.Rendition;
@@ -145,7 +146,7 @@ public class StaticRenditionDispatcherImpl extends AbstractRenditionDispatcherIm
                 assetRenditionTracker.track(this, request, parameters, rendition.getPath());
             }
 
-            response.setHeader("Content-Type", rendition.getMimeType());
+            response.setHeader("Content-Type", HttpHeaderUtil.sanitize(rendition.getMimeType()));
 
             request.getRequestDispatcher(rendition.adaptTo(Resource.class)).include(
                    new AssetRenditionDownloadRequest(request,
