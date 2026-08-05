@@ -89,4 +89,30 @@ public class ComputedPropertiesImplTest {
         assertEquals(1, actual.size());
         assertEquals(actual.get(0), title3);
     }
+
+    @Test
+    public void unbindComputedProperty_RemovesTheComputedProperty() {
+        final TitleImpl title = ctx.registerInjectActivateService(new TitleImpl());
+        final FileSizeImpl fileSize = ctx.registerInjectActivateService(new FileSizeImpl());
+
+        final ComputedPropertiesImpl computedProperties = new ComputedPropertiesImpl();
+
+        final java.util.Map<String, Object> titleProps = new java.util.HashMap<>();
+        titleProps.put(Constants.SERVICE_RANKING, 0);
+
+        final java.util.Map<String, Object> fileSizeProps = new java.util.HashMap<>();
+        fileSizeProps.put(Constants.SERVICE_RANKING, 0);
+
+        computedProperties.bindComputedProperty(title, titleProps);
+        computedProperties.bindComputedProperty(fileSize, fileSizeProps);
+
+        List<ComputedProperty> actual = computedProperties.getComputedProperties();
+        assertEquals(2, actual.size());
+
+        computedProperties.unbindComputedProperty(title, titleProps);
+
+        actual = computedProperties.getComputedProperties();
+        assertEquals(1, actual.size());
+        assertEquals(actual.get(0), fileSize);
+    }
 }

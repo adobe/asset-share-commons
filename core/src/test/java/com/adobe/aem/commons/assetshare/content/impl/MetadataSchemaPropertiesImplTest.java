@@ -84,4 +84,101 @@ public class MetadataSchemaPropertiesImplTest {
     public void collectMetadataProperty() {
     }
 
+    @Test
+    public void getMetadataProperties_TraversesSchemaFormAndCollectsWidgetFields() {
+        ctx.registerInjectActivateService(new MetadataSchemaPropertiesImpl());
+
+        final String base = "/conf/global/settings/dam/adminui-extension/metadataschema";
+
+        ctx.create().resource(base + "/myform",
+                Collections.singletonMap("jcr:primaryType", "nt:folder"));
+        ctx.create().resource(base + "/myform/items",
+                Collections.singletonMap("jcr:primaryType", "nt:unstructured"));
+        ctx.create().resource(base + "/myform/items/tab1",
+                Collections.singletonMap("jcr:primaryType", "nt:unstructured"));
+        ctx.create().resource(base + "/myform/items/tab1/items",
+                Collections.singletonMap("jcr:primaryType", "nt:unstructured"));
+
+        final Map<String, Object> titleWidget = new HashMap<>();
+        titleWidget.put("sling:resourceType", "granite/ui/components/coral/foundation/form/field");
+        titleWidget.put("name", "./jcr:content/metadata/dc:title");
+        titleWidget.put("fieldLabel", "Title");
+        ctx.create().resource(base + "/myform/items/tab1/items/title", titleWidget);
+
+        // A non-widget grouping container that should simply be traversed into.
+        ctx.create().resource(base + "/myform/items/tab1/items/group",
+                Collections.singletonMap("jcr:primaryType", "nt:unstructured"));
+        ctx.create().resource(base + "/myform/items/tab1/items/group/items",
+                Collections.singletonMap("jcr:primaryType", "nt:unstructured"));
+
+        final Map<String, Object> customWidget = new HashMap<>();
+        customWidget.put("sling:resourceType", "granite/ui/components/foundation/form/field");
+        customWidget.put("fieldLabel", "Custom Property");
+        ctx.create().resource(base + "/myform/items/tab1/items/group/items/custom", customWidget);
+        ctx.create().resource(base + "/myform/items/tab1/items/group/items/custom/field",
+                Collections.singletonMap("name", "customProp"));
+
+        final MetadataProperties metadataProperties = ctx.getService(MetadataProperties.class);
+
+        final Map<String, List<String>> actual = metadataProperties.getMetadataProperties(ctx.request());
+
+        assertEquals(1, actual.get("./jcr:content/metadata/dc:title").size());
+        assertEquals("Title", actual.get("./jcr:content/metadata/dc:title").get(0));
+
+        assertEquals(1, actual.get("./customProp").size());
+        assertEquals("Custom Property", actual.get("./customProp").get(0));
+    }
+
+    @Test
+    public void getMetadataProperties_WithCustomMetadataFieldResourceTypeMatch() {
+        ctx.registerInjectActivateService(new MetadataSchemaPropertiesImpl());
+
+        final String base = "/conf/global/settings/dam/adminui-extension/metadataschema";
+
+        ctx.create().resource(base + "/myform",
+                Collections.singletonMap("jcr:primaryType", "nt:folder"));
+
+        final Map<String, Object> customTypeWidget = new HashMap<>();
+        customTypeWidget.put("sling:resourceType", "some/other/widget");
+        customTypeWidget.put("name", "customTypeProp");
+        customTypeWidget.put("fieldLabel", "Custom Type Property");
+        ctx.create().resource(base + "/myform/customTypeWidget", customTypeWidget);
+        ctx.create().resource(base + "/myform/customTypeWidget/granite:data",
+                Collections.singletonMap("metaType", "my-custom-type"));
+
+        final MetadataProperties metadataProperties = ctx.getService(MetadataProperties.class);
+
+        final Map<String, List<String>> withoutOverride = metadataProperties.getMetadataProperties(ctx.request());
+        assertEquals(0, withoutOverride.size());
+
+        final Map<String, List<String>> withOverride = metadataProperties.getMetadataProperties(ctx.request(),
+                Collections.singletonList("my-custom-type"));
+        assertEquals(1, withOverride.get("./customTypeProp").size());
+        assertEquals("Custom Type Property", withOverride.get("./customTypeProp").get(0));
+    }
+
+    @Test
+    public void getMetadataProperties_SkipsFormsWithAllowCustomizationFalse() {
+        ctx.registerInjectActivateService(new MetadataSchemaPropertiesImpl());
+
+        final String base = "/conf/global/settings/dam/adminui-extension/metadataschema";
+
+        final Map<String, Object> formProps = new HashMap<>();
+        formProps.put("jcr:primaryType", "nt:folder");
+        formProps.put("allowCustomization", false);
+        ctx.create().resource(base + "/myform", formProps);
+
+        final Map<String, Object> titleWidget = new HashMap<>();
+        titleWidget.put("sling:resourceType", "granite/ui/components/coral/foundation/form/field");
+        titleWidget.put("name", "./jcr:content/metadata/dc:title");
+        titleWidget.put("fieldLabel", "Title");
+        ctx.create().resource(base + "/myform/title", titleWidget);
+
+        final MetadataProperties metadataProperties = ctx.getService(MetadataProperties.class);
+
+        final Map<String, List<String>> actual = metadataProperties.getMetadataProperties(ctx.request());
+
+        assertEquals(0, actual.size());
+    }
+
 }
