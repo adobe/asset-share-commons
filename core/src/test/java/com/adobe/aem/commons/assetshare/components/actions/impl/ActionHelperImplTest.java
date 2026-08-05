@@ -20,7 +20,9 @@
 package com.adobe.aem.commons.assetshare.components.actions.impl;
 
 import com.adobe.aem.commons.assetshare.components.actions.ActionHelper;
+import com.adobe.aem.commons.assetshare.configuration.Config;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
+import com.day.cq.wcm.api.WCMMode;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
@@ -41,9 +43,11 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ActionHelperImplTest {
@@ -113,6 +117,39 @@ public class ActionHelperImplTest {
     }
 
     @Test
+    public void getAssetsFromQueryParameter_noRequestParameters() {
+        final ActionHelper actionHelper = ctx.getService(ActionHelper.class);
+
+        final Collection<AssetModel> models =
+                actionHelper.getAssetsFromQueryParameter(ctx.request(), ASSETS_REQUEST_PARAMETER_NAME);
+
+        assertNotNull(models);
+        assertEquals(0, models.size());
+    }
+
+    @Test
+    public void getAssetsFromQueryParameter_unresolvableResourceIsSkipped() {
+        final ActionHelper actionHelper = ctx.getService(ActionHelper.class);
+
+        final Map<String, Object> requestParameters = new HashMap<>();
+        final String[] assets = {
+                "/content/dam/does-not-exist.png",
+                "/content/dam/asset-1.png"
+        };
+
+        requestParameters.put(ASSETS_REQUEST_PARAMETER_NAME, assets);
+
+        ctx.request().setParameterMap(requestParameters);
+
+        final Collection<AssetModel> models =
+                actionHelper.getAssetsFromQueryParameter(ctx.request(), ASSETS_REQUEST_PARAMETER_NAME);
+
+        assertNotNull(models);
+        assertEquals(1, models.size());
+        assertEquals("asset-1.png", models.iterator().next().getName());
+    }
+
+    @Test
     public void getAllowedValuesFromQueryParameter() {
         final ActionHelper actionHelper = ctx.getService(ActionHelper.class);
 
@@ -121,6 +158,81 @@ public class ActionHelperImplTest {
         List<String> actual = actionHelper.getAllowedValuesFromQueryParameter(ctx.request(), "renditionName", new String[] {"four"});
         assertEquals(1, actual.size());
         assertEquals("four", actual.get(0));
+    }
+
+    @Test
+    public void getAllowedValuesFromQueryParameter_emptyAllowedValuesAllowsAll() {
+        final ActionHelper actionHelper = ctx.getService(ActionHelper.class);
+
+        ctx.request().setQueryString("renditionName=one&renditionName=four&renditionName=one");
+
+        List<String> actual = actionHelper.getAllowedValuesFromQueryParameter(ctx.request(), "renditionName", new String[] {});
+        assertEquals(2, actual.size());
+        assertTrue(actual.contains("one"));
+        assertTrue(actual.contains("four"));
+    }
+
+    @Test
+    public void getAllowedValuesFromQueryParameter_nullAllowedValues() {
+        final ActionHelper actionHelper = ctx.getService(ActionHelper.class);
+
+        ctx.request().setQueryString("renditionName=one");
+
+        List<String> actual = actionHelper.getAllowedValuesFromQueryParameter(ctx.request(), "renditionName", null);
+        assertEquals(0, actual.size());
+    }
+
+    @Test
+    public void getAllowedValuesFromQueryParameter_noRequestParameters() {
+        final ActionHelper actionHelper = ctx.getService(ActionHelper.class);
+
+        List<String> actual = actionHelper.getAllowedValuesFromQueryParameter(ctx.request(), "renditionName", new String[] {"four"});
+        assertEquals(0, actual.size());
+    }
+
+    @Test
+    public void getPlaceholderAsset_wcmModeDisabled() {
+        final ActionHelper actionHelper = ctx.getService(ActionHelper.class);
+
+        WCMMode.DISABLED.toRequest(ctx.request());
+
+        final List<AssetModel> actual = actionHelper.getPlaceholderAsset(ctx.request());
+
+        assertNotNull(actual);
+        assertEquals(0, actual.size());
+    }
+
+    @Test
+    public void getPlaceholderAsset_noPlaceholderConfigured() {
+        final ActionHelper actionHelper = ctx.getService(ActionHelper.class);
+
+        WCMMode.EDIT.toRequest(ctx.request());
+
+        final Config config = mock(Config.class);
+        doReturn(null).when(config).getPlaceholderAsset();
+        ctx.registerAdapter(org.apache.sling.api.SlingHttpServletRequest.class, Config.class, config);
+
+        final List<AssetModel> actual = actionHelper.getPlaceholderAsset(ctx.request());
+
+        assertNotNull(actual);
+        assertEquals(0, actual.size());
+    }
+
+    @Test
+    public void getPlaceholderAsset_placeholderConfigured() {
+        final ActionHelper actionHelper = ctx.getService(ActionHelper.class);
+
+        WCMMode.EDIT.toRequest(ctx.request());
+
+        final Config config = mock(Config.class);
+        doReturn(asset1).when(config).getPlaceholderAsset();
+        ctx.registerAdapter(org.apache.sling.api.SlingHttpServletRequest.class, Config.class, config);
+
+        final List<AssetModel> actual = actionHelper.getPlaceholderAsset(ctx.request());
+
+        assertNotNull(actual);
+        assertEquals(1, actual.size());
+        assertEquals(asset1, actual.get(0));
     }
 
     class ResourcePath implements ArgumentMatcher<Resource> {

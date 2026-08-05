@@ -1,8 +1,10 @@
 package com.adobe.aem.commons.assetshare.components.actions.impl;
 
 import com.adobe.aem.commons.assetshare.components.actions.AssetDownloadHelper;
+import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.day.cq.dam.api.jobs.AssetDownloadService;
 import io.wcm.testing.mock.aem.junit.AemContext;
+import org.apache.sling.api.resource.Resource;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,12 +17,18 @@ import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AssetDownloadHelperImplTest {
@@ -72,5 +80,53 @@ public class AssetDownloadHelperImplTest {
 
         final AssetDownloadHelper assetDownloadHelper = ctx.getService(AssetDownloadHelper.class);
         assertEquals(expected, assetDownloadHelper.getMaxContentSizeLimit());
+    }
+
+    @Test
+    public void testGetMaxContentSizeLimit_NonUnaryConfigurations() throws IOException, InvalidSyntaxException {
+        long expected = -1;
+
+        Configuration[] serviceConfigs = {mock(Configuration.class), mock(Configuration.class)};
+        doReturn(serviceConfigs).when(spyConfigurationAdmin).listConfigurations("(service.pid=" + ASSET_DOWNLOAD_SERVLET_PID + ")");
+
+        final AssetDownloadHelper assetDownloadHelper = ctx.getService(AssetDownloadHelper.class);
+        assertEquals(expected, assetDownloadHelper.getMaxContentSizeLimit());
+    }
+
+    @Test
+    public void testGetMaxContentSizeLimit_InvalidSyntaxException() throws IOException, InvalidSyntaxException {
+        long expected = -1;
+
+        doThrow(new InvalidSyntaxException("bad filter", "(service.pid=" + ASSET_DOWNLOAD_SERVLET_PID + ")"))
+                .when(spyConfigurationAdmin).listConfigurations("(service.pid=" + ASSET_DOWNLOAD_SERVLET_PID + ")");
+
+        final AssetDownloadHelper assetDownloadHelper = ctx.getService(AssetDownloadHelper.class);
+        assertEquals(expected, assetDownloadHelper.getMaxContentSizeLimit());
+    }
+
+    @Test
+    public void testGetAssetDownloadSize() {
+        final AssetModel asset1 = mock(AssetModel.class);
+        final Resource assetResource1 = mock(Resource.class);
+        doReturn(assetResource1).when(asset1).getResource();
+
+        final AssetModel asset2 = mock(AssetModel.class);
+        final Resource assetResource2 = mock(Resource.class);
+        doReturn(assetResource2).when(asset2).getResource();
+
+        final Collection<AssetModel> assets = new ArrayList<>();
+        assets.add(asset1);
+        assets.add(asset2);
+
+        final Resource configResource = ctx.create().resource("/content/config");
+
+        doReturn(123456L).when(assetDownloadService).computeAssetDownloadSize(any(AssetDownloadService.AssetDownloadParams.class));
+
+        final AssetDownloadHelper assetDownloadHelper = ctx.getService(AssetDownloadHelper.class);
+
+        final long actual = assetDownloadHelper.getAssetDownloadSize(assets, configResource);
+
+        assertEquals(123456L, actual);
+        verify(assetDownloadService).computeAssetDownloadSize(any(AssetDownloadService.AssetDownloadParams.class));
     }
 }
