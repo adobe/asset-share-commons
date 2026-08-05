@@ -22,6 +22,7 @@ package com.adobe.aem.commons.assetshare.content.renditions.impl.dispatchers;
 import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.*;
 import com.adobe.aem.commons.assetshare.util.ExpressionEvaluator;
+import com.adobe.aem.commons.assetshare.util.HttpHeaderUtil;
 import com.adobe.aem.commons.assetshare.util.RequireAem;
 import com.adobe.cq.wcm.spi.AssetDelivery;
 import com.day.cq.dam.api.Asset;
@@ -170,7 +171,7 @@ public class AssetDeliveryRenditionDispatcherImpl extends AbstractRenditionDispa
                 response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
             }
 
-            response.setHeader("Location", renditionRedirect);
+            response.setHeader("Location", HttpHeaderUtil.sanitize(renditionRedirect));
 
         } else {
             log.error("Could not convert [ {} ] into a valid URI", renditionRedirect);

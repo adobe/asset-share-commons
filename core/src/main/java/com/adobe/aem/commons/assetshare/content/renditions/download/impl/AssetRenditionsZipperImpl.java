@@ -23,6 +23,7 @@ import com.adobe.aem.commons.assetshare.content.AssetModel;
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionStreamer;
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsDownloadOrchestrator;
 import com.adobe.aem.commons.assetshare.content.renditions.download.AssetRenditionsException;
+import com.adobe.aem.commons.assetshare.util.HttpHeaderUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jackrabbit.vault.packaging.JcrPackage;
@@ -87,7 +88,7 @@ public class AssetRenditionsZipperImpl implements AssetRenditionsDownloadOrchest
                         final SlingHttpServletResponse response,
                         final List<AssetModel> assets,
                         final List<String> renditionNames) throws IOException {
-        final String filename = StringUtils.defaultIfBlank(getFileName(request.getResource().getValueMap()), DEFAULT_FILE_ATTACHMENT_NAME);
+        final String filename = HttpHeaderUtil.sanitize(StringUtils.defaultIfBlank(getFileName(request.getResource().getValueMap()), DEFAULT_FILE_ATTACHMENT_NAME));
 
         response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
         response.setContentType(JcrPackage.MIME_TYPE);
