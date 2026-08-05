@@ -1,0 +1,48 @@
+{
+  "dam": {
+    "jcr:primaryType": "nt:folder",
+    "test.png": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured",
+        "metadata": {
+          "dc:title": "Test Asset",
+          "myTagIds": ["asc:color/red", "asc:color/blue", "asc:color/unresolvable"],
+          "singleTagId": "asc:color/red",
+          "cq:tags": ["asc:color/red", "asc:color/blue"]
+        }
+      }
+    }
+  },
+  "tags": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/tags",
+    "default": {
+      "jcr:primaryType": "nt:unstructured",
+      "sling:resourceType": "asset-share-commons/components/details/tags"
+    },
+    "single-property": {
+      "jcr:primaryType": "nt:unstructured",
+      "sling:resourceType": "asset-share-commons/components/details/tags",
+      "tagPropertyName": ["myTagIds"]
+    },
+    "combined-properties": {
+      "jcr:primaryType": "nt:unstructured",
+      "sling:resourceType": "asset-share-commons/components/details/tags",
+      "tagPropertyName": ["myTagIds", "singleTagId"]
+    },
+    "missing-property": {
+      "jcr:primaryType": "nt:unstructured",
+      "sling:resourceType": "asset-share-commons/components/details/tags",
+      "tagPropertyName": ["doesNotExist"]
+    }
+  },
+  "page": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "jcr:title": "Test Page",
+      "jcr:language": "en"
+    }
+  }
+}

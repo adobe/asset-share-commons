@@ -20,6 +20,33 @@
           "dc:format": "image/png"
         }
       }
+    },
+    "legacy-test.mp4": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured",
+        "metadata": {
+          "dc:title": "Legacy Test Video Asset",
+          "customPath": "/content/dam/direct-path.mp4"
+        },
+        "renditions": {
+          "jcr:primaryType": "nt:unstructured",
+          "cq5dam.web.720.mp4": {
+            "jcr:primaryType": "nt:file",
+            "jcr:content": {
+              "jcr:primaryType": "oak:Resource",
+              "jcr:mimeType": "video/mp4"
+            }
+          },
+          "cq5dam.web.720.flv": {
+            "jcr:primaryType": "nt:file",
+            "jcr:content": {
+              "jcr:primaryType": "oak:Resource",
+              "jcr:mimeType": "video/x-flv"
+            }
+          }
+        }
+      }
     }
   },
   "video": {
@@ -63,5 +90,15 @@
     "renditionRegex": ".*web.*",
     "renditionName": "web",
     "legacyMode": true
+  },
+  "legacy-src-computed-property": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/video",
+    "computedProperty": "customPath"
+  },
+  "legacy-src-regex": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/video",
+    "renditionRegex": ".*web.*"
   }
 }

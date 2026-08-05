@@ -193,4 +193,40 @@ public class ImageImplTest {
         final Image image = ctx.request().adaptTo(Image.class);
         assertFalse(((ImageImpl) image).isLegacyMode());
     }
+
+    @Test
+    public void getSrc_Legacy_ComputedProperty_ReadsRawAssetProperty() {
+        ctx.requestPathInfo().setSuffix("/content/dam/legacy-test.png");
+
+        ctx.currentResource("/content/legacy-src-computed-property");
+        final Image image = ctx.request().adaptTo(Image.class);
+
+        assertEquals("/content/dam/direct-path.png", image.getSrc());
+    }
+
+    @Test
+    public void getSrc_Legacy_RenditionRegex_MatchesSupportedMimeType() {
+        ctx.requestPathInfo().setSuffix("/content/dam/legacy-test.png");
+        // Real activation (with defaults) is required so isBrowserSupportedImage(...) has a populated Cfg -
+        // overrides the plain (non-activated) MimeTypeHelperImpl instance registered in setUp().
+        ctx.registerInjectActivateService(new com.adobe.aem.commons.assetshare.util.impl.MimeTypeHelperImpl(),
+                org.osgi.framework.Constants.SERVICE_RANKING, Integer.MAX_VALUE);
+
+        ctx.currentResource("/content/legacy-src-regex-match");
+        final Image image = ctx.request().adaptTo(Image.class);
+
+        assertEquals("/content/dam/legacy-test.png/_jcr_content/renditions/cq5dam.web.1280.1280.png", image.getSrc());
+    }
+
+    @Test
+    public void getSrc_Legacy_RenditionRegex_MatchesButUnsupportedMimeType_FallsBackToFallbackSrc() {
+        ctx.requestPathInfo().setSuffix("/content/dam/legacy-test.png");
+        ctx.registerInjectActivateService(new com.adobe.aem.commons.assetshare.util.impl.MimeTypeHelperImpl(),
+                org.osgi.framework.Constants.SERVICE_RANKING, Integer.MAX_VALUE);
+
+        ctx.currentResource("/content/legacy-src-regex-nomatch-unsupported-mime");
+        final Image image = ctx.request().adaptTo(Image.class);
+
+        assertEquals("/content/dam/fallback.png", image.getSrc());
+    }
 }
