@@ -36,7 +36,7 @@ public class CustomOptionItem implements OptionItem {
         this.text = text;
         this.selected = selected;
         this.value = value;
-        this.customValue = value;
+        this.customValue = customValue;
     }
 
     @Override
