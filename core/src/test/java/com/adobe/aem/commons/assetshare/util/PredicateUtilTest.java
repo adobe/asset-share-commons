@@ -1,17 +1,23 @@
 package com.adobe.aem.commons.assetshare.util;
 
+import com.adobe.aem.commons.assetshare.components.predicates.Predicate;
+import com.adobe.cq.wcm.core.components.models.form.OptionItem;
 import com.day.cq.search.PredicateConverter;
 import com.day.cq.search.PredicateGroup;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.api.wrappers.ValueMapDecorator;
 import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class PredicateUtilTest {
 
@@ -147,4 +153,135 @@ public class PredicateUtilTest {
         assertFalse(PredicateUtil.isParameterizedSearchRequest(ctx.request()));
     }
 
+    @Test
+    public void getParamFromQueryParams_found() {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("myParam", "myValue");
+        ctx.request().setParameterMap(params);
+
+        assertEquals("myValue", PredicateUtil.getParamFromQueryParams(ctx.request(), "myParam"));
+    }
+
+    @Test
+    public void getParamFromQueryParams_notFound_returnsEmptyString() {
+        assertEquals("", PredicateUtil.getParamFromQueryParams(ctx.request(), "doesNotExist"));
+    }
+
+    @Test
+    public void isOptionInInitialValues_optionItem_matchesStringValue() {
+        final OptionItem optionItem = mock(OptionItem.class);
+        when(optionItem.getValue()).thenReturn("value-1");
+
+        final ValueMap initialValues = new ValueMapDecorator(new HashMap<>());
+        initialValues.put("someKey", "value-1");
+
+        assertTrue(PredicateUtil.isOptionInInitialValues(optionItem, initialValues));
+    }
+
+    @Test
+    public void isOptionInInitialValues_string_matchesStringArrayValue() {
+        final ValueMap initialValues = new ValueMapDecorator(new HashMap<>());
+        initialValues.put("someKey", new String[]{"value-1", "value-2"});
+
+        assertTrue(PredicateUtil.isOptionInInitialValues("value-2", initialValues));
+    }
+
+    @Test
+    public void isOptionInInitialValues_string_noMatch() {
+        final ValueMap initialValues = new ValueMapDecorator(new HashMap<>());
+        initialValues.put("someKey", "value-1");
+        initialValues.put("otherKey", new String[]{"value-2", "value-3"});
+
+        assertFalse(PredicateUtil.isOptionInInitialValues("value-not-present", initialValues));
+    }
+
+    @Test
+    public void isOptionInInitialValues_unsupportedValueType_noMatch() {
+        final ValueMap initialValues = new ValueMapDecorator(new HashMap<>());
+        initialValues.put("someKey", 12345L);
+
+        assertFalse(PredicateUtil.isOptionInInitialValues("12345", initialValues));
+    }
+
+    @Test
+    public void getInitialValue_directGroupNameValueNameMatch() {
+        final Predicate predicate = mock(Predicate.class);
+        when(predicate.getGroup()).thenReturn("group");
+        when(predicate.getName()).thenReturn("name");
+
+        final Map<String, Object> params = new HashMap<>();
+        params.put("group.name.valueName", "direct-value");
+        ctx.request().setParameterMap(params);
+
+        assertEquals("direct-value", PredicateUtil.getInitialValue(ctx.request(), predicate, "valueName"));
+    }
+
+    @Test
+    public void getInitialValue_fallsBackToGroupNameWhenValueNameBlank() {
+        final Predicate predicate = mock(Predicate.class);
+        when(predicate.getGroup()).thenReturn("group");
+        when(predicate.getName()).thenReturn("name");
+
+        final Map<String, Object> params = new HashMap<>();
+        params.put("group.name", "fallback-value");
+        ctx.request().setParameterMap(params);
+
+        assertEquals("fallback-value", PredicateUtil.getInitialValue(ctx.request(), predicate, ""));
+    }
+
+    @Test
+    public void getInitialValue_fallsBackToGroupNameWhenValueNameEqualsName() {
+        final Predicate predicate = mock(Predicate.class);
+        when(predicate.getGroup()).thenReturn("group");
+        when(predicate.getName()).thenReturn("name");
+
+        final Map<String, Object> params = new HashMap<>();
+        params.put("group.name", "fallback-value-2");
+        ctx.request().setParameterMap(params);
+
+        assertEquals("fallback-value-2", PredicateUtil.getInitialValue(ctx.request(), predicate, "name"));
+    }
+
+    @Test
+    public void getInitialValue_notFound_returnsEmptyString() {
+        final Predicate predicate = mock(Predicate.class);
+        when(predicate.getGroup()).thenReturn("group");
+        when(predicate.getName()).thenReturn("name");
+
+        assertEquals("", PredicateUtil.getInitialValue(ctx.request(), predicate, "valueName"));
+    }
+
+    @Test
+    public void getInitialValues_collectsMatchingRequestParameters() {
+        final Predicate predicate = mock(Predicate.class);
+        when(predicate.getGroup()).thenReturn("group");
+        when(predicate.getName()).thenReturn("path");
+
+        final Map<String, Object> params = new HashMap<>();
+        params.put("group.path.value", "/content/dam/a");
+        params.put("group.1_path.1_value", "/content/dam/b");
+        params.put("unrelated", "should-not-be-included");
+        ctx.request().setParameterMap(params);
+
+        final ValueMap actual = PredicateUtil.getInitialValues(ctx.request(), predicate, "value");
+
+        assertTrue(actual.containsKey("group.path.value"));
+        assertTrue(actual.containsKey("group.1_path.1_value"));
+        assertFalse(actual.containsKey("unrelated"));
+    }
+
+    @Test
+    public void getInitialValues_noMatches_returnsEmptyValueMap() {
+        final Predicate predicate = mock(Predicate.class);
+        when(predicate.getGroup()).thenReturn("group");
+        when(predicate.getName()).thenReturn("path");
+
+        final Map<String, Object> params = new HashMap<>();
+        params.put("unrelated", "value");
+        ctx.request().setParameterMap(params);
+
+        final ValueMap actual = PredicateUtil.getInitialValues(ctx.request(), predicate, "value");
+
+        assertTrue(actual.isEmpty());
+    }
 }
