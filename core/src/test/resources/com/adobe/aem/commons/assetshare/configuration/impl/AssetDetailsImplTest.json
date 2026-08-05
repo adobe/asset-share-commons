@@ -1,0 +1,21 @@
+{
+  "root": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "config": {
+        "jcr:primaryType": "nt:unstructured",
+        "asset-details": {
+          "jcr:primaryType": "nt:unstructured",
+          "assetReferenceById": true
+        }
+      }
+    }
+  },
+  "root-no-ref-by-id": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent"
+    }
+  }
+}

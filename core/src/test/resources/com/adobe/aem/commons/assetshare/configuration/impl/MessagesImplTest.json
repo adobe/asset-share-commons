@@ -1,0 +1,64 @@
+{
+  "jcr:primaryType": "cq:Page",
+  "jcr:content": {
+    "jcr:primaryType": "cq:PageContent",
+    "config": {
+      "jcr:primaryType": "nt:unstructured",
+      "messages": {
+        "jcr:primaryType": "nt:unstructured",
+        "message-empty": {
+          "jcr:primaryType": "nt:unstructured",
+          "style": "info"
+        }
+      }
+    }
+  },
+  "subpage": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "config": {
+        "jcr:primaryType": "nt:unstructured",
+        "messages": {
+          "jcr:primaryType": "nt:unstructured",
+          "message1": {
+            "jcr:primaryType": "nt:unstructured",
+            "style": "info",
+            "text": "Parent message",
+            "eventId": "parent1"
+          },
+          "message2": {
+            "jcr:primaryType": "nt:unstructured",
+            "style": "warning",
+            "text": "Parent message2",
+            "eventId": "parent2"
+          }
+        }
+      }
+    },
+    "subsubpage": {
+      "jcr:primaryType": "cq:Page",
+      "jcr:content": {
+        "jcr:primaryType": "cq:PageContent",
+        "config": {
+          "jcr:primaryType": "nt:unstructured",
+          "messages": {
+            "jcr:primaryType": "nt:unstructured",
+            "message1": {
+              "jcr:primaryType": "nt:unstructured",
+              "style": "error",
+              "text": "Leaf message",
+              "eventId": "leaf1"
+            }
+          }
+        }
+      }
+    }
+  },
+  "no-messages-page": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent"
+    }
+  }
+}

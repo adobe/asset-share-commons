@@ -1,0 +1,23 @@
+{
+  "asset-kits": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent"
+    },
+    "kit-page": {
+      "jcr:primaryType": "cq:Page",
+      "jcr:content": {
+        "jcr:primaryType": "cq:PageContent"
+      }
+    }
+  },
+  "dam": {
+    "jcr:primaryType": "sling:Folder",
+    "kit-folder": {
+      "jcr:primaryType": "sling:Folder"
+    },
+    "other-ref.png": {
+      "jcr:primaryType": "dam:Asset"
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "dam": {
+    "jcr:primaryType": "sling:Folder",
+    "kit-folder": {
+      "jcr:primaryType": "sling:Folder",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured"
+      }
+    },
+    "kit-folder-with-metadata": {
+      "jcr:primaryType": "sling:Folder",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured",
+        "metadata": {
+          "jcr:primaryType": "nt:unstructured",
+          "assetsKitId": "/content/asset-kits/existing-kit"
+        }
+      }
+    },
+    "kit-folder-no-jcr-content": {
+      "jcr:primaryType": "sling:Folder"
+    },
+    "kit-collection": {
+      "jcr:primaryType": "nt:unstructured"
+    }
+  },
+  "asset-kits": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent"
+    },
+    "existing-kit": {
+      "jcr:primaryType": "cq:Page",
+      "jcr:content": {
+        "jcr:primaryType": "cq:PageContent",
+        "jcr:title": "Old Title"
+      }
+    }
+  }
+}
