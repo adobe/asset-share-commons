@@ -105,16 +105,9 @@ public class ComputedPropertiesDataSourceTest {
 
     @Test
     public void doGet_WithDuplicateComputedPropertyNames() throws Exception {
-        // NOTE (potential production bug): ComputedPropertiesDataSource#doGet(..) intends to skip
-        // ComputedProperty entries that share the same name/key (`!data.containsKey(key)` guards the
-        // `data.put(...)` call, logging a warning on the "duplicate" branch otherwise). However `data`
-        // is a Map<String,Object> keyed by *label* (`data.put(computedProperty.getLabel(), key)`), not
-        // by name/key. So `data.containsKey(key)` checks whether the *name* happens to also be a label
-        // already in the map, which in practice is never true. As a result, two ComputedProperty
-        // instances that return the same getName() are NOT de-duplicated at all -- both appear in the
-        // resulting DataSource (one entry per distinct label), contrary to the code's own comment
-        // ("Note this follows the execution logic in CombinedProperties"; CombinedProperties actually
-        // does de-duplicate by name). This test documents the actual (buggy) behavior.
+        // ComputedProperty entries that share the same name/key are de-duplicated, only the first
+        // instance encountered (metadataProp) is kept; duplicateMetadataProp (same name, different
+        // label) is skipped, matching the execution logic in CombinedProperties.
         ctx.registerService(ComputedProperties.class,
                 (ComputedProperties) () -> Arrays.asList(metadataProp, duplicateMetadataProp, urlProp));
 
@@ -127,8 +120,8 @@ public class ComputedPropertiesDataSourceTest {
 
         final Map<String, String> actual = toMap(ctx.request());
 
-        assertEquals(3, actual.size());
-        assertArrayEquals(new String[]{"Duplicate Metadata Prop", "Metadata Prop", "Url Prop"}, actual.keySet().toArray());
+        assertEquals(2, actual.size());
+        assertArrayEquals(new String[]{"Metadata Prop", "Url Prop"}, actual.keySet().toArray());
     }
 
     private Map<String, String> toMap(SlingHttpServletRequest request) {

@@ -197,7 +197,17 @@ public final class CombinedProperties implements Map<String, Object> {
 
     @Override
     public final boolean equals(Object o) {
-        return computedProperties.equals(o);
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof CombinedProperties)) {
+            return false;
+        }
+
+        final CombinedProperties other = (CombinedProperties) o;
+        return computedProperties.equals(other.computedProperties)
+                && StringUtils.equals(asset.getPath(), other.asset.getPath());
     }
 
     @Override

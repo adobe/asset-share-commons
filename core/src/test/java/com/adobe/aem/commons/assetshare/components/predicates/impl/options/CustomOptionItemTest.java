@@ -9,21 +9,21 @@ import static org.junit.Assert.assertTrue;
 
 public class CustomOptionItemTest {
 
-    /**
-     * NOTE: CustomOptionItem's 4-arg constructor has a copy-paste bug: {@code this.customValue = value;}
-     * instead of {@code this.customValue = customValue;}. This means the "customValue" constructor
-     * argument is effectively discarded and getValue() always resolves to the "value" argument.
-     * These tests assert the ACTUAL (buggy) behavior as observed; see final report for details.
-     */
     @Test
-    public void twoArgConstructor_getValue_returnsValueNotCustomValue() {
+    public void twoArgConstructor_getValue_returnsCustomValue() {
         CustomOptionItem customOptionItem = new CustomOptionItem("the value", "the custom value");
 
-        // Due to the production bug, customValue is never actually applied.
-        assertEquals("the value", customOptionItem.getValue());
+        assertEquals("the custom value", customOptionItem.getValue());
         assertNull(customOptionItem.getText());
         assertFalse(customOptionItem.isSelected());
         assertFalse(customOptionItem.isDisabled());
+    }
+
+    @Test
+    public void twoArgConstructor_getValue_withBlankCustomValue_returnsValue() {
+        CustomOptionItem customOptionItem = new CustomOptionItem("the value", "");
+
+        assertEquals("the value", customOptionItem.getValue());
     }
 
     @Test
@@ -31,7 +31,7 @@ public class CustomOptionItemTest {
         CustomOptionItem customOptionItem = new CustomOptionItem("the text", "the value", "the custom value", true);
 
         assertEquals("the text", customOptionItem.getText());
-        assertEquals("the value", customOptionItem.getValue());
+        assertEquals("the custom value", customOptionItem.getValue());
         assertTrue(customOptionItem.isSelected());
         assertFalse(customOptionItem.isDisabled());
     }

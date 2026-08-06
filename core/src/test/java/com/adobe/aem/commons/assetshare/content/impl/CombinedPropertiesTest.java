@@ -318,12 +318,7 @@ public class CombinedPropertiesTest {
     }
 
     @Test
-    public void equals_WithEmptyComputedPropertiesIsTriviallyTrue() {
-        // NOTE: CombinedProperties#equals(Object) delegates to the internal ComputedProperty-by-name
-        // map's equals(Object), which in turn (via AbstractMap#equals) calls get(key) on the "other"
-        // Map argument for each of its own entries and compares the *computed value* against the
-        // *ComputedProperty instance* itself. Those will never be equal to one another unless the
-        // map is empty (no entries to compare), so equals() is only meaningfully true when empty.
+    public void equals_WithEmptyComputedPropertiesIsTrue() {
         final CombinedProperties empty = new CombinedProperties(new ArrayList<>(), ctx.request(), asset);
         final CombinedProperties otherEmpty = new CombinedProperties(new ArrayList<>(), ctx.request(), asset);
 
@@ -331,10 +326,23 @@ public class CombinedPropertiesTest {
     }
 
     @Test
-    public void equals_WithPopulatedComputedPropertiesIsAlwaysFalse() {
+    public void equals_WithSameAssetAndSameComputedPropertiesIsTrue() {
         final CombinedProperties other = new CombinedProperties(computedPropertiesList, ctx.request(), asset);
 
+        assertTrue(combinedProperties.equals(other));
+    }
+
+    @Test
+    public void equals_WithDifferentAssetIsFalse() {
+        final Asset otherAsset = DamUtil.resolveToAsset(ctx.resourceResolver().getResource("/content/dam/test2.png"));
+        final CombinedProperties other = new CombinedProperties(computedPropertiesList, ctx.request(), otherAsset);
+
         assertFalse(combinedProperties.equals(other));
+    }
+
+    @Test
+    public void equals_WithNonCombinedPropertiesIsFalse() {
+        assertFalse(combinedProperties.equals("not a CombinedProperties"));
     }
 
     @Test

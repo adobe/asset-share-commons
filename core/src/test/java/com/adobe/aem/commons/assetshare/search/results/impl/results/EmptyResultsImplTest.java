@@ -10,14 +10,12 @@ import static org.junit.Assert.assertTrue;
 public class EmptyResultsImplTest {
 
     @Test
-    public void constructor_SetsEmptyResultsAndErrorStatus() {
+    public void constructor_SetsEmptyResultsAndSuccessStatus() {
         final EmptyResultsImpl emptyResults = new EmptyResultsImpl();
 
         assertNotNull(emptyResults.getResults());
         assertTrue(emptyResults.getResults().isEmpty());
-        // Note: Despite the class name "Empty" (used by SearchImpl as the benign no-op default when no
-        // SearchProvider is configured), the status is set to ERROR here.
-        assertEquals(Results.Status.ERROR, emptyResults.getStatus());
+        assertEquals(Results.Status.SUCCESS, emptyResults.getStatus());
     }
 
     @Test

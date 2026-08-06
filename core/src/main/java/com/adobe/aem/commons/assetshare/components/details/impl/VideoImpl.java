@@ -113,7 +113,7 @@ public class VideoImpl extends AbstractEmptyTextComponent implements Video {
 
     @Deprecated
     private String getLegacySrc() {
-        String src = combinedProperties.get(computedProperty, String.class);
+        src = combinedProperties.get(computedProperty, String.class);
 
         if (StringUtils.isBlank(src) && StringUtils.isNotBlank(renditionRegex)) {
             fetchSrcFromRegex();

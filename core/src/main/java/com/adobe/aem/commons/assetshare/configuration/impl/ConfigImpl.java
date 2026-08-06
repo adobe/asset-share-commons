@@ -327,9 +327,9 @@ public class ConfigImpl implements Config {
                             && resourceResolver.isResourceType(page.getContentResource(), resourceType)) {
                         return page.getPath();
                     }
-
-                    page = page.getParent();
                 }
+
+                page = page.getParent();
             }
         } while (page != null);
 

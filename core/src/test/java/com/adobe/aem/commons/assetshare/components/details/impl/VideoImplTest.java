@@ -157,27 +157,13 @@ public class VideoImplTest {
         assertEquals("/content/dam/direct-path.mp4", video.getSrc());
     }
 
-    /**
-     * POTENTIAL PRODUCTION BUG (documented, not fixed): VideoImpl#getLegacySrc() declares a *local* variable
-     * named "src" (shadowing the "src" instance field), and returns that local variable. However,
-     * VideoImpl#fetchSrcFromRegex() (called from within getLegacySrc() when the computed-property lookup is
-     * blank) assigns its match to the instance field "src" - not the local variable in getLegacySrc(). So
-     * getLegacySrc() always returns null/blank in the renditionRegex-matching case, discarding the match found
-     * by fetchSrcFromRegex(). Back in getSrc(), that blank value then overwrites the instance field
-     * (`src = UrlUtil.escape(tmp)`), clobbering the value fetchSrcFromRegex() had just set.
-     * <p>
-     * Net effect: legacy renditionRegex-based video src resolution never actually returns the matched rendition
-     * path - getSrc() always ends up null here, even though a matching (non-flv) rendition
-     * ("cq5dam.web.720.mp4") exists. Contrast with the equivalent, working, ImageImpl#getLegacySrc(), which
-     * assigns directly to the (unshadowed) field.
-     */
     @Test
-    public void getSrc_Legacy_RenditionRegex_BugReturnsNullInsteadOfMatchedRendition() {
+    public void getSrc_Legacy_RenditionRegex_MatchesRendition() {
         ctx.requestPathInfo().setSuffix("/content/dam/legacy-test.mp4");
 
         ctx.currentResource("/content/legacy-src-regex");
         final Video video = ctx.request().adaptTo(Video.class);
 
-        assertNull(video.getSrc());
+        assertEquals("/content/dam/legacy-test.mp4/_jcr_content/renditions/cq5dam.web.720.mp4", video.getSrc());
     }
 }

@@ -10,14 +10,12 @@ import static org.junit.Assert.assertTrue;
 public class ErringResultsImplTest {
 
     @Test
-    public void constructor_SetsEmptyResultsAndSuccessStatusAndZeroTimeTaken() {
+    public void constructor_SetsEmptyResultsAndErrorStatusAndZeroTimeTaken() {
         final ErringResultsImpl erringResults = new ErringResultsImpl();
 
         assertNotNull(erringResults.getResults());
         assertTrue(erringResults.getResults().isEmpty());
-        // Note: Despite the class name "Erring", the status is set to SUCCESS. See Results interface's
-        // Results.ERRING_RESULTS = new ErringResultsImpl() usage in SearchImpl for error scenarios.
-        assertEquals(Results.Status.SUCCESS, erringResults.getStatus());
+        assertEquals(Results.Status.ERROR, erringResults.getStatus());
         assertEquals(0, erringResults.getTimeTaken());
     }
 
