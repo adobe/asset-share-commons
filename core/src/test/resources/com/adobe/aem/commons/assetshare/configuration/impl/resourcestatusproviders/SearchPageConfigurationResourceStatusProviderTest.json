@@ -1,0 +1,27 @@
+{
+  "search-page-no-results": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "sling:resourceType": "asset-share-commons/components/structure/search-page"
+    }
+  },
+  "search-page-with-results": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "sling:resourceType": "asset-share-commons/components/structure/search-page",
+      "results": {
+        "jcr:primaryType": "nt:unstructured",
+        "sling:resourceType": "asset-share-commons/components/search/results"
+      }
+    }
+  },
+  "other-page": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "sling:resourceType": "some/other/type"
+    }
+  }
+}

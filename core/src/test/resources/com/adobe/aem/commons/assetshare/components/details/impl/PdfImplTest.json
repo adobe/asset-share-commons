@@ -1,0 +1,51 @@
+{
+  "dam": {
+    "jcr:primaryType": "nt:folder",
+    "test.pdf": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured",
+        "metadata": {
+          "dc:title": "Test PDF Asset"
+        }
+      }
+    }
+  },
+  "pdf": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/pdf",
+    "renditionName": "original"
+  },
+  "pdf-no-rendition-name": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/pdf"
+  },
+  "pdf-embed-modes": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/pdf",
+    "renditionName": "original",
+    "embedMode": "FULL_WINDOW",
+    "defaultViewMode": "FIT_PAGE",
+    "enableLinearization": true,
+    "full-window": {
+      "jcr:primaryType": "nt:unstructured",
+      "height": 500,
+      "hasReadOnlyAccess": false,
+      "showFullScreen": true,
+      "showDownloadPDF": true,
+      "showPrintPDF": true,
+      "showZoomControl": true,
+      "showBookmarks": true,
+      "showAnnotationTools": true
+    }
+  },
+  "pdf-default-embed-mode": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/pdf",
+    "renditionName": "original",
+    "sized-container": {
+      "jcr:primaryType": "nt:unstructured",
+      "height": 50
+    }
+  }
+}

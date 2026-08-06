@@ -1,0 +1,11 @@
+{
+  "test.png": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:content": {
+      "jcr:primaryType": "nt:unstructured",
+      "metadata": {
+        "dc:title": "Test Asset"
+      }
+    }
+  }
+}

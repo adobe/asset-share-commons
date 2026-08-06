@@ -1,0 +1,56 @@
+{
+  "details-page": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "sling:resourceType": "asset-share-commons/components/structure/details-page"
+    }
+  },
+  "other-page": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "sling:resourceType": "some/other/type"
+    }
+  },
+  "details-page-with-valid-placeholder": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "sling:resourceType": "asset-share-commons/components/structure/details-page",
+      "config": {
+        "jcr:primaryType": "nt:unstructured",
+        "asset-details": {
+          "jcr:primaryType": "nt:unstructured",
+          "placeholderPath": "/content/dam/placeholder.png"
+        }
+      }
+    }
+  },
+  "details-page-with-invalid-placeholder": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "sling:resourceType": "asset-share-commons/components/structure/details-page",
+      "config": {
+        "jcr:primaryType": "nt:unstructured",
+        "asset-details": {
+          "jcr:primaryType": "nt:unstructured",
+          "placeholderPath": "/content/dam/not-an-asset"
+        }
+      }
+    }
+  },
+  "dam": {
+    "jcr:primaryType": "sling:Folder",
+    "placeholder.png": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured"
+      }
+    },
+    "not-an-asset": {
+      "jcr:primaryType": "nt:unstructured"
+    }
+  }
+}

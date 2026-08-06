@@ -72,7 +72,7 @@ public class ComputedPropertiesDataSource extends SlingSafeMethodsServlet {
                 final String key = computedProperty.getName();
 
                 if (StringUtils.isNotBlank(key)) {
-                    if (!data.containsKey(key)) {
+                    if (!data.containsValue(key)) {
                         data.put(computedProperty.getLabel(), key);
                     } else {
                         // Note this follows the execution logic in CombinedProperties

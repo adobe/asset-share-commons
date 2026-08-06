@@ -167,4 +167,199 @@ public class MetadataImplTest {
         final Metadata metadata = ctx.request().adaptTo(Metadata.class);
         assertFalse(metadata.isReady());
     }
+
+    @Test
+    public void getValues_Json_ArrayOfOptions_Match() throws Exception {
+        final com.adobe.aem.commons.assetshare.util.JsonResolver jsonResolver =
+                org.mockito.Mockito.mock(com.adobe.aem.commons.assetshare.util.JsonResolver.class);
+        final com.google.gson.JsonArray options = new com.google.gson.JsonArray();
+        options.add(jsonOption("Option One", "opt1"));
+        options.add(jsonOption("Option Two", "opt2"));
+        org.mockito.Mockito.when(jsonResolver.resolveJson(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.eq("/mock/options-array.json")))
+                .thenReturn(options);
+        ctx.registerService(com.adobe.aem.commons.assetshare.util.JsonResolver.class, jsonResolver);
+
+        ctx.currentResource("/content/json-match");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
+
+        assertEquals(java.util.Collections.singletonList("Option One"), metadata.getValues());
+        assertFalse(metadata.isEmpty());
+    }
+
+    @Test
+    public void getValues_Json_ObjectWithOptions_Match() throws Exception {
+        final com.adobe.aem.commons.assetshare.util.JsonResolver jsonResolver =
+                org.mockito.Mockito.mock(com.adobe.aem.commons.assetshare.util.JsonResolver.class);
+        final com.google.gson.JsonArray options = new com.google.gson.JsonArray();
+        options.add(jsonOption("Option One", "opt1"));
+        final com.google.gson.JsonObject wrapper = new com.google.gson.JsonObject();
+        wrapper.add("options", options);
+        org.mockito.Mockito.when(jsonResolver.resolveJson(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.eq("/mock/options-object.json")))
+                .thenReturn(wrapper);
+        ctx.registerService(com.adobe.aem.commons.assetshare.util.JsonResolver.class, jsonResolver);
+
+        ctx.currentResource("/content/json-object-options");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
+
+        assertEquals(java.util.Collections.singletonList("Option One"), metadata.getValues());
+    }
+
+    @Test
+    public void getValues_Json_NoMatch_FallsBackToRawValue() throws Exception {
+        final com.adobe.aem.commons.assetshare.util.JsonResolver jsonResolver =
+                org.mockito.Mockito.mock(com.adobe.aem.commons.assetshare.util.JsonResolver.class);
+        final com.google.gson.JsonArray options = new com.google.gson.JsonArray();
+        options.add(jsonOption("Option One", "opt1"));
+        org.mockito.Mockito.when(jsonResolver.resolveJson(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.eq("/mock/options-array.json")))
+                .thenReturn(options);
+        ctx.registerService(com.adobe.aem.commons.assetshare.util.JsonResolver.class, jsonResolver);
+
+        ctx.currentResource("/content/json-no-match");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
+
+        assertEquals(java.util.Collections.singletonList("unknown"), metadata.getValues());
+    }
+
+    @Test
+    public void getValues_Json_InvalidShape_ReturnsRawValuesUnchanged() throws Exception {
+        final com.adobe.aem.commons.assetshare.util.JsonResolver jsonResolver =
+                org.mockito.Mockito.mock(com.adobe.aem.commons.assetshare.util.JsonResolver.class);
+        org.mockito.Mockito.when(jsonResolver.resolveJson(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.eq("/mock/invalid.json")))
+                .thenReturn(new com.google.gson.JsonPrimitive("not-an-array-or-object"));
+        ctx.registerService(com.adobe.aem.commons.assetshare.util.JsonResolver.class, jsonResolver);
+
+        ctx.currentResource("/content/json-invalid-shape");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
+
+        assertEquals(java.util.Collections.singletonList("opt1"), metadata.getValues());
+    }
+
+    @Test
+    public void getValues_Json_ObjectWithoutOptionsKey_FallsBackToRawValue() throws Exception {
+        final com.adobe.aem.commons.assetshare.util.JsonResolver jsonResolver =
+                org.mockito.Mockito.mock(com.adobe.aem.commons.assetshare.util.JsonResolver.class);
+        org.mockito.Mockito.when(jsonResolver.resolveJson(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.eq("/mock/object-no-options.json")))
+                .thenReturn(new com.google.gson.JsonObject());
+        ctx.registerService(com.adobe.aem.commons.assetshare.util.JsonResolver.class, jsonResolver);
+
+        ctx.currentResource("/content/json-object-no-options");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
+
+        assertEquals(java.util.Collections.singletonList("opt1"), metadata.getValues());
+    }
+
+    @Test
+    public void getValues_Json_BlankJsonSource_SkipsJsonResolution() throws Exception {
+        // No JsonResolver registered at all - if the (blank jsonSource) branch incorrectly attempted JSON
+        // resolution, this would NPE.
+        ctx.currentResource("/content/json-blank-source");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
+
+        assertEquals(java.util.Collections.singletonList("opt1"), metadata.getValues());
+    }
+
+    @Test
+    public void getValues_Json_MissingProperty_IsEmpty() throws Exception {
+        ctx.currentResource("/content/json-missing-property");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
+
+        assertTrue(metadata.getValues().isEmpty());
+        assertTrue(metadata.isEmpty());
+    }
+
+    @Test
+    public void isEmpty_StringArray_AllBlank() {
+        ctx.currentResource("/content/string-array-blank");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
+        assertTrue(metadata.isEmpty());
+    }
+
+    @Test
+    public void isEmpty_StringArray_HasNonBlankValue() {
+        ctx.currentResource("/content/string-array-nonblank");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
+        assertFalse(metadata.isEmpty());
+    }
+
+    @Test
+    public void isEmpty_ObjectArray_NotEmpty() {
+        final org.apache.sling.api.resource.Resource metadataResource =
+                ctx.resourceResolver().getResource("/content/dam/test.png/jcr:content/metadata");
+        final org.apache.sling.api.resource.ModifiableValueMap mvm =
+                metadataResource.adaptTo(org.apache.sling.api.resource.ModifiableValueMap.class);
+        mvm.put("objArrProp", new Long[]{1L, 2L});
+
+        ctx.currentResource("/content/object-array");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
+        assertFalse(metadata.isEmpty());
+    }
+
+    @Test
+    public void isEmpty_ObjectArray_Empty() {
+        final org.apache.sling.api.resource.Resource metadataResource =
+                ctx.resourceResolver().getResource("/content/dam/test.png/jcr:content/metadata");
+        final org.apache.sling.api.resource.ModifiableValueMap mvm =
+                metadataResource.adaptTo(org.apache.sling.api.resource.ModifiableValueMap.class);
+        mvm.put("objArrPropEmpty", new Long[0]);
+
+        ctx.currentResource("/content/object-array-empty");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
+        assertTrue(metadata.isEmpty());
+    }
+
+    @Test
+    public void isEmpty_Collection_NotEmpty() {
+        final org.apache.sling.api.resource.Resource metadataResource =
+                ctx.resourceResolver().getResource("/content/dam/test.png/jcr:content/metadata");
+        final org.apache.sling.api.resource.ModifiableValueMap mvm =
+                metadataResource.adaptTo(org.apache.sling.api.resource.ModifiableValueMap.class);
+        mvm.put("setProp", new java.util.LinkedHashSet<>(java.util.Arrays.asList("a", "b")));
+
+        ctx.currentResource("/content/collection-prop");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
+        assertFalse(metadata.isEmpty());
+    }
+
+    @Test
+    public void isEmpty_Collection_Empty() {
+        final org.apache.sling.api.resource.Resource metadataResource =
+                ctx.resourceResolver().getResource("/content/dam/test.png/jcr:content/metadata");
+        final org.apache.sling.api.resource.ModifiableValueMap mvm =
+                metadataResource.adaptTo(org.apache.sling.api.resource.ModifiableValueMap.class);
+        mvm.put("setPropEmpty", new java.util.LinkedHashSet<String>());
+
+        ctx.currentResource("/content/collection-prop-empty");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
+        assertTrue(metadata.isEmpty());
+    }
+
+    @Test
+    public void isEmpty_OtherType_NeverConsideredEmpty() {
+        final org.apache.sling.api.resource.Resource metadataResource =
+                ctx.resourceResolver().getResource("/content/dam/test.png/jcr:content/metadata");
+        final org.apache.sling.api.resource.ModifiableValueMap mvm =
+                metadataResource.adaptTo(org.apache.sling.api.resource.ModifiableValueMap.class);
+        mvm.put("numberProp", 42L);
+
+        ctx.currentResource("/content/other-type-prop");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
+        assertFalse(metadata.isEmpty());
+    }
+
+    @Test
+    public void getExportedType() {
+        ctx.currentResource("/content/metadata");
+        final Metadata metadata = ctx.request().adaptTo(Metadata.class);
+        assertEquals("asset-share-commons/components/details/metadata", ((MetadataImpl) metadata).getExportedType());
+    }
+
+    /**
+     * Builds a JsonObject matching MetadataImpl.JsonOption's expected shape: {"text": ..., "value": ...}.
+     */
+    private com.google.gson.JsonObject jsonOption(final String text, final String value) {
+        final com.google.gson.JsonObject option = new com.google.gson.JsonObject();
+        option.addProperty("text", text);
+        option.addProperty("value", value);
+        return option;
+    }
 }

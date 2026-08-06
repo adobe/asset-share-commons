@@ -1,10 +1,21 @@
 {
   "test.png": {
     "jcr:primaryType": "dam:Asset",
+    "customAssetProp": "Asset Level Value",
     "jcr:content": {
       "jcr:primaryType": "nt:unstructured",
       "metadata": {
-        "dc:title": "Test Asset"
+        "dc:title": "Test Asset",
+        "customMetaProp": "Metadata Level Value"
+      }
+    }
+  },
+  "test2.png": {
+    "jcr:primaryType": "dam:Asset",
+    "jcr:content": {
+      "jcr:primaryType": "nt:unstructured",
+      "metadata": {
+        "dc:title": "Test Asset 2"
       }
     }
   }

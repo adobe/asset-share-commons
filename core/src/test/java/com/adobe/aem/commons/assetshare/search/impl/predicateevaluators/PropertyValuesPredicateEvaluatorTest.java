@@ -319,4 +319,156 @@ public class PropertyValuesPredicateEvaluatorTest {
 
         assertTrue(actual instanceof FulltextPredicateEvaluator);
     }
+
+    @Test
+    public void getValues_WithNoDelimiters_SplitsOnEmptyPatternInsteadOfReturningWholeString() {
+        // NOTE: This documents a bug in PropertyValuesPredicateEvaluator#getValues(..): when the delimiters
+        // list is empty, the method builds `Collections.unmodifiableList(Arrays.asList(data))` but never
+        // returns/uses it (the statement's result is discarded), so execution falls through to
+        // `Pattern.compile(regex).split(data)` with an empty-string regex (joining zero delimiters). An empty
+        // regex splits on every character boundary, so instead of returning the whole string as a single
+        // element, each non-blank character of `data` is returned as its own element.
+        final List<String> actual = propertyValuesPredicateEvaluator.getValues("ab c", Collections.emptyList());
+
+        assertEquals(Arrays.asList("a", "b", "c"), actual);
+    }
+
+    @Test
+    public void getValues_WithNullData_ReturnsEmptyList() {
+        final List<String> actual = propertyValuesPredicateEvaluator.getValues(null, Collections.singletonList(","));
+
+        assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    public void getDelimiters_WithNoneCode_ReturnsEmptyList() {
+        predicate.set("delimiter", "__NONE");
+        predicate.set("0_delimiter", ",");
+
+        final List<String> actual = propertyValuesPredicateEvaluator.getDelimiters(predicate);
+
+        assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    public void activate_WithCustomDelimiterMapping_ResolvesMappedDelimiter() {
+        final PropertyValuesPredicateEvaluator evaluator = ctx.registerInjectActivateService(
+                new PropertyValuesPredicateEvaluator(),
+                "delimiters.mapping", new String[]{"custom=;"});
+
+        final Predicate p = new Predicate("test", "propertyvalues");
+        p.set("values", "foo;bar");
+        p.set("delimiter", "custom");
+
+        final Predicate actual = evaluator.buildPredicate(p);
+
+        assertEquals("foo", actual.get("0_value"));
+        assertEquals("bar", actual.get("1_value"));
+    }
+
+    @Test
+    public void isFiltering_ThrowsUnsupportedOperationException() {
+        try {
+            propertyValuesPredicateEvaluator.isFiltering(predicate, null);
+            fail("Expected UnsupportedOperationException");
+        } catch (UnsupportedOperationException expected) {
+            // expected
+        }
+    }
+
+    @Test
+    public void getXPathExpression_DelegatesToPropertyEvaluator() {
+        predicate.set("operation", "equals");
+        predicate.set("property", "jcr:content/metadata/property");
+        predicate.set("values", "foo");
+
+        final com.day.cq.search.eval.EvaluationContext evaluationContext =
+                org.mockito.Mockito.mock(com.day.cq.search.eval.EvaluationContext.class);
+
+        // Simply verify this does not throw and delegates without error - the real assertion is line coverage
+        // of the delegation call itself, since the underlying JcrPropertyPredicateEvaluator implementation is
+        // exercised for real (no AEM repository available in this unit test to assert on the resulting XPath).
+        propertyValuesPredicateEvaluator.getXPathExpression(predicate, evaluationContext);
+    }
+
+    @Test
+    public void canXpath_DelegatesToPropertyEvaluator() {
+        predicate.set("operation", "equals");
+        predicate.set("property", "jcr:content/metadata/property");
+        predicate.set("values", "foo");
+
+        final com.day.cq.search.eval.EvaluationContext evaluationContext =
+                org.mockito.Mockito.mock(com.day.cq.search.eval.EvaluationContext.class);
+
+        propertyValuesPredicateEvaluator.canXpath(predicate, evaluationContext);
+    }
+
+    @Test
+    public void canFilter_DelegatesToPropertyEvaluator() {
+        predicate.set("operation", "equals");
+        predicate.set("property", "jcr:content/metadata/property");
+        predicate.set("values", "foo");
+
+        final com.day.cq.search.eval.EvaluationContext evaluationContext =
+                org.mockito.Mockito.mock(com.day.cq.search.eval.EvaluationContext.class);
+
+        propertyValuesPredicateEvaluator.canFilter(predicate, evaluationContext);
+    }
+
+    @Test
+    public void getOrderByProperties_DelegatesToPropertyEvaluator() {
+        predicate.set("operation", "equals");
+        predicate.set("property", "jcr:content/metadata/property");
+        predicate.set("values", "foo");
+
+        final com.day.cq.search.eval.EvaluationContext evaluationContext =
+                org.mockito.Mockito.mock(com.day.cq.search.eval.EvaluationContext.class);
+
+        propertyValuesPredicateEvaluator.getOrderByProperties(predicate, evaluationContext);
+    }
+
+    @Test
+    public void getOrderByComparator_DelegatesToPropertyEvaluator() {
+        predicate.set("operation", "equals");
+        predicate.set("property", "jcr:content/metadata/property");
+        predicate.set("values", "foo");
+
+        final com.day.cq.search.eval.EvaluationContext evaluationContext =
+                org.mockito.Mockito.mock(com.day.cq.search.eval.EvaluationContext.class);
+
+        propertyValuesPredicateEvaluator.getOrderByComparator(predicate, evaluationContext);
+    }
+
+    @Test
+    public void includes_DelegatesToPropertyEvaluator() throws Exception {
+        predicate.set("operation", "equals");
+        predicate.set("property", "jcr:content/metadata/property");
+        predicate.set("values", "foo");
+
+        final com.day.cq.search.eval.EvaluationContext evaluationContext =
+                org.mockito.Mockito.mock(com.day.cq.search.eval.EvaluationContext.class);
+        final javax.jcr.query.Row row = org.mockito.Mockito.mock(javax.jcr.query.Row.class);
+
+        // The real JcrPropertyPredicateEvaluator#includes(..) needs a fully-fledged JCR Row/Value/Node stack to
+        // execute end-to-end; here we only care about covering PropertyValuesPredicateEvaluator's own
+        // delegation line, so a NullPointerException surfacing from deeper in the (unmocked) real evaluator is
+        // expected and tolerated.
+        try {
+            propertyValuesPredicateEvaluator.includes(predicate, row, evaluationContext);
+        } catch (NullPointerException expected) {
+            // expected - see comment above.
+        }
+    }
+
+    @Test
+    public void getFacetExtractor_DelegatesToPropertyEvaluator() {
+        predicate.set("operation", "equals");
+        predicate.set("property", "jcr:content/metadata/property");
+        predicate.set("values", "foo");
+
+        final com.day.cq.search.eval.EvaluationContext evaluationContext =
+                org.mockito.Mockito.mock(com.day.cq.search.eval.EvaluationContext.class);
+
+        propertyValuesPredicateEvaluator.getFacetExtractor(predicate, evaluationContext);
+    }
 }

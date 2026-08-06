@@ -27,8 +27,12 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class JsonResolverImplTest {
     @Rule
@@ -49,6 +53,25 @@ public class JsonResolverImplTest {
                 "/content/test-internal-include");
 
         ctx.registerService(JsonResolver.class, new JsonResolverImpl());
+
+        // Additional fixtures (purely additive) used by the extra coverage tests below.
+
+        // A DAM asset whose metadata mime type is NOT application/json, to exercise
+        // JsonResolverImpl#getJsonStringFromDamAsset(..)'s "wrong mimetype" -> null branch.
+        ctx.create().resource("/content/dam/test-dam-asset-wrong-mimetype.txt", "jcr:primaryType", "dam:Asset");
+        ctx.create().resource("/content/dam/test-dam-asset-wrong-mimetype.txt/jcr:content", "jcr:primaryType", "nt:unstructured");
+        ctx.create().resource("/content/dam/test-dam-asset-wrong-mimetype.txt/jcr:content/metadata",
+                "jcr:primaryType", "nt:unstructured",
+                "dc:format", "text/plain");
+
+        // An nt:file whose jcr:content mime type is NOT application/json, to exercise
+        // JsonResolverImpl#getJsonFromNtFile(..)'s "wrong mimetype" -> null branch.
+        ctx.load().binaryFile(new ByteArrayInputStream("plain text content".getBytes(StandardCharsets.UTF_8)),
+                "/content/test-nt-file-wrong-mimetype.txt");
+
+        // A resource under /etc/acs-commons/lists/ that is not contained within any cq:Page, to
+        // exercise the "page == null" branch of the acs-commons list handling in resolveJson(..).
+        ctx.create().resource("/etc/acs-commons/lists/orphan", "jcr:primaryType", "nt:unstructured");
     }
 
     @Test
@@ -96,5 +119,53 @@ public class JsonResolverImplTest {
         assertEquals("Item 2", actual.getAsJsonObject().getAsJsonArray("options").get(1).getAsJsonObject().get("text").getAsString());
         assertEquals("2", actual.getAsJsonObject().getAsJsonArray("options").get(1).getAsJsonObject().get("value").getAsString());
     }
+
+    @Test
+    public void resolveNtFile() {
+        JsonResolver jsonResolver = ctx.getService(JsonResolver.class);
+
+        JsonElement actual = jsonResolver.resolveJson(ctx.request(), ctx.response(), "/content/test-nt-file.json");
+
+        assertNotNull(actual);
+        assertEquals("nt file", actual.getAsJsonObject().get("test").getAsString());
+    }
+
+    @Test
+    public void resolveNtFile_wrongMimeType_returnsNull() {
+        JsonResolver jsonResolver = ctx.getService(JsonResolver.class);
+
+        JsonElement actual = jsonResolver.resolveJson(ctx.request(), ctx.response(), "/content/test-nt-file-wrong-mimetype.txt");
+
+        assertNull(actual);
+    }
+
+    @Test
+    public void resolveDamAsset_wrongMimeType_returnsNull() {
+        JsonResolver jsonResolver = ctx.getService(JsonResolver.class);
+
+        JsonElement actual = jsonResolver.resolveJson(ctx.request(), ctx.response(), "/content/dam/test-dam-asset-wrong-mimetype.txt");
+
+        assertNull(actual);
+    }
+
+    @Test
+    public void resolveGenericList_pageNotFound_returnsNull() {
+        JsonResolver jsonResolver = ctx.getService(JsonResolver.class);
+
+        JsonElement actual = jsonResolver.resolveJson(ctx.request(), ctx.response(), "/etc/acs-commons/lists/orphan");
+
+        assertNull(actual);
+    }
+
+    @Test
+    public void resolveExternalInclude_notFound_returnsNull() {
+        JsonResolver jsonResolver = ctx.getService(JsonResolver.class);
+
+        JsonElement actual = jsonResolver.resolveJson(ctx.request(), ctx.response(),
+                "https://opensource.adobe.com/asset-share-commons/tests/this-file-does-not-exist-404.json");
+
+        assertNull(actual);
+    }
+
 }
 

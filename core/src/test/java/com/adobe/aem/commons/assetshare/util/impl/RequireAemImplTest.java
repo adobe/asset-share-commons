@@ -26,6 +26,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
+import org.apache.sling.testing.mock.osgi.MockOsgi;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -104,5 +105,18 @@ public class RequireAemImplTest {
         RequireAem[] requireAems = ctx.getServices(RequireAem.class, "(distribution=classic)");
 
         assertEquals(0, requireAems.length);
+    }
+
+    @Test
+    public void deactivate_unregistersService() {
+        setUpAsNotCloudReady();
+
+        // Before deactivation, the service is registered and resolvable.
+        assertEquals(1, ctx.getServices(RequireAem.class, null).length);
+
+        final boolean deactivated = MockOsgi.deactivate(ctx.getService(RequireAem.class), ctx.bundleContext());
+
+        assertEquals(true, deactivated);
+        assertEquals(0, ctx.getServices(RequireAem.class, null).length);
     }
 }

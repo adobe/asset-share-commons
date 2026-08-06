@@ -1,0 +1,50 @@
+{
+  "lonely": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "sling:resourceType": "asset-share-commons/components/structure/page",
+      "predicates": {
+        "jcr:primaryType": "nt:unstructured",
+        "sling:resourceType": "asset-share-commons/components/predicates/property"
+      }
+    }
+  },
+  "site": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "sling:resourceType": "asset-share-commons/components/structure/page",
+      "results": {
+        "jcr:primaryType": "nt:unstructured",
+        "sling:resourceType": "asset-share-commons/components/search/results",
+        "layout": "list",
+        "limit": 25,
+        "orderBy": "@jcr:content/title",
+        "orderBySort": "asc",
+        "orderByCase": false,
+        "guessTotal": "500",
+        "searchProviderId": "browse",
+        "indexTag": "myIndex",
+        "facetStrategy": "cached",
+        "paths": ["/content/dam/foo", "/etc/not-allowed"],
+        "searchPredicates": ["path", "tags"]
+      },
+      "predicates": {
+        "jcr:primaryType": "nt:unstructured",
+        "sling:resourceType": "asset-share-commons/components/predicates/property"
+      }
+    },
+    "child": {
+      "jcr:primaryType": "cq:Page",
+      "jcr:content": {
+        "jcr:primaryType": "cq:PageContent",
+        "sling:resourceType": "asset-share-commons/components/structure/page",
+        "predicates": {
+          "jcr:primaryType": "nt:unstructured",
+          "sling:resourceType": "asset-share-commons/components/predicates/property"
+        }
+      }
+    }
+  }
+}

@@ -18,6 +18,33 @@
           "dc:title": "Fallback Asset"
         }
       }
+    },
+    "legacy-test.png": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured",
+        "metadata": {
+          "dc:title": "Legacy Test Asset",
+          "customPath": "/content/dam/direct-path.png"
+        },
+        "renditions": {
+          "jcr:primaryType": "nt:unstructured",
+          "cq5dam.web.1280.1280.png": {
+            "jcr:primaryType": "nt:file",
+            "jcr:content": {
+              "jcr:primaryType": "oak:Resource",
+              "jcr:mimeType": "image/png"
+            }
+          },
+          "cq5dam.thumbnail.140.100.png": {
+            "jcr:primaryType": "nt:file",
+            "jcr:content": {
+              "jcr:primaryType": "oak:Resource",
+              "jcr:mimeType": "image/vnd.adobe.photoshop"
+            }
+          }
+        }
+      }
     }
   },
   "image": {
@@ -72,5 +99,23 @@
     "renditionRegex": ".*web.*",
     "renditionName": "web",
     "legacyMode": true
+  },
+  "legacy-src-computed-property": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/image",
+    "computedProperty": "customPath",
+    "fallbackSrc": "/content/dam/fallback.png"
+  },
+  "legacy-src-regex-match": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/image",
+    "renditionRegex": ".*web.*",
+    "fallbackSrc": "/content/dam/fallback.png"
+  },
+  "legacy-src-regex-nomatch-unsupported-mime": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/image",
+    "renditionRegex": ".*thumbnail.*",
+    "fallbackSrc": "/content/dam/fallback.png"
   }
 }

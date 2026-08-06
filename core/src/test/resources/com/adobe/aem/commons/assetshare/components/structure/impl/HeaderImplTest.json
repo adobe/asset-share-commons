@@ -1,0 +1,138 @@
+{
+  "root": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "jcr:title": "Root Page",
+      "root": {
+        "jcr:primaryType": "nt:unstructured",
+        "main": {
+          "jcr:primaryType": "nt:unstructured",
+          "header": {
+            "jcr:primaryType": "nt:unstructured",
+            "sling:resourceType": "asset-share-commons/components/structure/header",
+            "rootPath": "/content/root",
+            "logoPath": "/content/dam/logo.png",
+            "title": "My Site",
+            "pages": {
+              "jcr:primaryType": "nt:unstructured",
+              "item-home": {
+                "jcr:primaryType": "nt:unstructured",
+                "path": "/content/root",
+                "text": "Home"
+              },
+              "item-sub": {
+                "jcr:primaryType": "nt:unstructured",
+                "path": "/content/root/sub",
+                "text": ""
+              },
+              "item-leaf": {
+                "jcr:primaryType": "nt:unstructured",
+                "path": "/content/root/leaf",
+                "text": ""
+              },
+              "item-external": {
+                "jcr:primaryType": "nt:unstructured",
+                "path": "https://example.com",
+                "text": "External Site"
+              },
+              "item-blank-path": {
+                "jcr:primaryType": "nt:unstructured",
+                "text": "No Path"
+              }
+            }
+          }
+        }
+      }
+    },
+    "sub": {
+      "jcr:primaryType": "cq:Page",
+      "jcr:content": {
+        "jcr:primaryType": "cq:PageContent",
+        "jcr:title": "Sub Page",
+        "navTitle": "Sub Nav",
+        "root": {
+          "jcr:primaryType": "nt:unstructured",
+          "main": {
+            "jcr:primaryType": "nt:unstructured",
+            "header": {
+              "jcr:primaryType": "nt:unstructured",
+              "sling:resourceType": "asset-share-commons/components/structure/header"
+            }
+          }
+        }
+      }
+    },
+    "leaf": {
+      "jcr:primaryType": "cq:Page",
+      "jcr:content": {
+        "jcr:primaryType": "cq:PageContent",
+        "jcr:title": "Leaf Page"
+      }
+    }
+  },
+  "no-header": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "jcr:title": "No Header Page",
+      "some-other-header": {
+        "jcr:primaryType": "nt:unstructured",
+        "sling:resourceType": "asset-share-commons/components/structure/header"
+      }
+    }
+  },
+  "custom-relpath": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "jcr:title": "Custom RelPath Page",
+      "custom": {
+        "jcr:primaryType": "nt:unstructured",
+        "header": {
+          "jcr:primaryType": "nt:unstructured",
+          "sling:resourceType": "asset-share-commons/components/structure/header",
+          "rootPath": "/content/custom-relpath",
+          "title": "Custom Path Site"
+        }
+      }
+    }
+  },
+  "design-fallback": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "jcr:title": "Design Fallback Page",
+      "root": {
+        "jcr:primaryType": "nt:unstructured",
+        "main": {
+          "jcr:primaryType": "nt:unstructured",
+          "header": {
+            "jcr:primaryType": "nt:unstructured",
+            "sling:resourceType": "asset-share-commons/components/structure/header",
+            "rootPath": "/content/design-fallback"
+          }
+        }
+      }
+    }
+  },
+  "jcr-title-fallback": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "jcr:title": "Jcr Title Fallback Page",
+      "root": {
+        "jcr:primaryType": "nt:unstructured",
+        "main": {
+          "jcr:primaryType": "nt:unstructured",
+          "header": {
+            "jcr:primaryType": "nt:unstructured",
+            "sling:resourceType": "asset-share-commons/components/structure/header",
+            "rootPath": "/content/jcr-title-fallback",
+            "jcr:title": "Legacy Title Property"
+          }
+        }
+      }
+    }
+  }
+}

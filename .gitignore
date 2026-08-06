@@ -48,3 +48,4 @@ settings.xml.example
 
 # Cursor
 .cursor/
+/.claude/

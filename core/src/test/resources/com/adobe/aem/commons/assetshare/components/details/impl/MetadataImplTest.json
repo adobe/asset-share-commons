@@ -6,7 +6,11 @@
       "jcr:content": {
         "jcr:primaryType": "nt:unstructured",
         "metadata": {
-          "dc:title": "Test Asset"
+          "dc:title": "Test Asset",
+          "jsonMatchProp": "opt1",
+          "jsonNoMatchProp": "unknown",
+          "arrPropBlank": ["", "  "],
+          "arrPropNonBlank": ["", "value"]
         }
       }
     }
@@ -44,5 +48,95 @@
     "sling:resourceType": "asset-share-commons/components/details/metadata",
     "type": "text",
     "propertyName": "nonexistingProperty"
+  },
+  "json-match": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/metadata",
+    "type": "json",
+    "propertyName": "jsonMatchProp",
+    "jsonSource": "/mock/options-array.json"
+  },
+  "json-object-options": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/metadata",
+    "type": "json",
+    "propertyName": "jsonMatchProp",
+    "jsonSource": "/mock/options-object.json"
+  },
+  "json-no-match": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/metadata",
+    "type": "json",
+    "propertyName": "jsonNoMatchProp",
+    "jsonSource": "/mock/options-array.json"
+  },
+  "json-invalid-shape": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/metadata",
+    "type": "json",
+    "propertyName": "jsonMatchProp",
+    "jsonSource": "/mock/invalid.json"
+  },
+  "json-object-no-options": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/metadata",
+    "type": "json",
+    "propertyName": "jsonMatchProp",
+    "jsonSource": "/mock/object-no-options.json"
+  },
+  "json-blank-source": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/metadata",
+    "type": "json",
+    "propertyName": "jsonMatchProp"
+  },
+  "json-missing-property": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/metadata",
+    "type": "json",
+    "propertyName": "doesNotExist",
+    "jsonSource": "/mock/options-array.json"
+  },
+  "string-array-blank": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/metadata",
+    "type": "text",
+    "propertyName": "arrPropBlank"
+  },
+  "string-array-nonblank": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/metadata",
+    "type": "text",
+    "propertyName": "arrPropNonBlank"
+  },
+  "object-array": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/metadata",
+    "type": "text",
+    "propertyName": "objArrProp"
+  },
+  "object-array-empty": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/metadata",
+    "type": "text",
+    "propertyName": "objArrPropEmpty"
+  },
+  "collection-prop": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/metadata",
+    "type": "text",
+    "propertyName": "setProp"
+  },
+  "collection-prop-empty": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/metadata",
+    "type": "text",
+    "propertyName": "setPropEmpty"
+  },
+  "other-type-prop": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/metadata",
+    "type": "text",
+    "propertyName": "numberProp"
   }
 }

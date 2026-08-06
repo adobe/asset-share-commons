@@ -146,4 +146,24 @@ public class VideoImplTest {
         final Video video = ctx.request().adaptTo(Video.class);
         assertFalse(((VideoImpl) video).isLegacyMode());
     }
+
+    @Test
+    public void getSrc_Legacy_ComputedProperty_ReadsRawAssetProperty() {
+        ctx.requestPathInfo().setSuffix("/content/dam/legacy-test.mp4");
+
+        ctx.currentResource("/content/legacy-src-computed-property");
+        final Video video = ctx.request().adaptTo(Video.class);
+
+        assertEquals("/content/dam/direct-path.mp4", video.getSrc());
+    }
+
+    @Test
+    public void getSrc_Legacy_RenditionRegex_MatchesRendition() {
+        ctx.requestPathInfo().setSuffix("/content/dam/legacy-test.mp4");
+
+        ctx.currentResource("/content/legacy-src-regex");
+        final Video video = ctx.request().adaptTo(Video.class);
+
+        assertEquals("/content/dam/legacy-test.mp4/_jcr_content/renditions/cq5dam.web.720.mp4", video.getSrc());
+    }
 }

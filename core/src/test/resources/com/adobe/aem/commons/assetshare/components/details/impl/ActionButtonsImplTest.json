@@ -1,0 +1,106 @@
+{
+  "cart-page": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "config": {
+        "actions": {
+          "cart": {
+            "enabled": true
+          },
+          "download": {
+            "enabled": "false"
+          },
+          "share": {
+            "enabled": "false"
+          }
+        }
+      },
+      "action-buttons": {
+        "jcr:primaryType": "nt:unstructured",
+        "sling:resourceType": "asset-share-commons/components/details/action-buttons",
+        "addToCartLabel": "Add to Cart",
+        "removeFromCartLabel": "Remove from Cart"
+      },
+      "action-buttons-no-labels": {
+        "jcr:primaryType": "nt:unstructured",
+        "sling:resourceType": "asset-share-commons/components/details/action-buttons"
+      }
+    }
+  },
+  "download-page": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "config": {
+        "actions": {
+          "cart": {
+            "enabled": false
+          },
+          "download": {
+            "enabled": "true"
+          },
+          "share": {
+            "enabled": "false"
+          }
+        }
+      },
+      "action-buttons": {
+        "jcr:primaryType": "nt:unstructured",
+        "sling:resourceType": "asset-share-commons/components/details/action-buttons",
+        "downloadLabel": "Download"
+      }
+    }
+  },
+  "share-page": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "config": {
+        "actions": {
+          "cart": {
+            "enabled": false
+          },
+          "download": {
+            "enabled": "false"
+          },
+          "share": {
+            "enabled": "true"
+          }
+        }
+      },
+      "action-buttons": {
+        "jcr:primaryType": "nt:unstructured",
+        "sling:resourceType": "asset-share-commons/components/details/action-buttons",
+        "shareLabel": "Share"
+      }
+    }
+  },
+  "all-disabled-page": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "config": {
+        "actions": {
+          "cart": {
+            "enabled": false
+          },
+          "download": {
+            "enabled": "false"
+          },
+          "share": {
+            "enabled": "false"
+          }
+        }
+      },
+      "action-buttons": {
+        "jcr:primaryType": "nt:unstructured",
+        "sling:resourceType": "asset-share-commons/components/details/action-buttons",
+        "downloadLabel": "Download",
+        "addToCartLabel": "Add to Cart",
+        "removeFromCartLabel": "Remove from Cart",
+        "shareLabel": "Share"
+      }
+    }
+  }
+}

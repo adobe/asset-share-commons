@@ -94,4 +94,19 @@ public class UrlUtilTest {
         Assert.assertEquals("http://www.test.com/content/dam/test.png?foo=$bar$&zip=zap!&crazy=irā+pu%20pö%20&pîp☃",
                 UrlUtil.escape("http://www.test.com/content/dam/test.png?foo=$bar$&zip=zap!&crazy=irā+pu pö &pîp☃", false));
     }
+
+    @Test
+    public void escape_MalformedUrlLikeString_fallsBackToEscapeAsPath() {
+        // "foo://bar/baz" looks like a URL (matches the scheme://... pattern used by isPath(..)) but
+        // "foo" is not a recognized protocol, so `new URL(..)` throws MalformedURLException and
+        // UrlUtil#escape(..) falls back to treating the value as a path.
+        final String actual = UrlUtil.escape("foo://bar/baz asset.png", false);
+
+        Assert.assertEquals("foo%3a//bar/baz%20asset.png", actual);
+    }
+
+    @Test
+    public void escape_BlankString_treatedAsPath() {
+        Assert.assertEquals("", UrlUtil.escape("", false));
+    }
 }

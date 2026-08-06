@@ -1,0 +1,106 @@
+{
+  "dam": {
+    "jcr:primaryType": "nt:folder",
+    "test.png": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured",
+        "metadata": {
+          "dc:title": "Test Asset",
+          "license": "Standard"
+        },
+        "renditions": {
+          "jcr:primaryType": "nt:unstructured",
+          "cq5dam.web.1280.1280.png": {
+            "jcr:primaryType": "nt:file",
+            "jcr:content": {
+              "jcr:primaryType": "oak:Resource",
+              "jcr:mimeType": "image/png"
+            }
+          }
+        }
+      }
+    }
+  },
+  "renditions-modern": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/renditions",
+    "allowLinks": true,
+    "showMissingRenditions": true,
+    "asset-renditions": {
+      "jcr:primaryType": "nt:unstructured"
+    }
+  },
+  "renditions-modern-hide-missing": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/renditions",
+    "showMissingRenditions": false,
+    "asset-renditions": {
+      "jcr:primaryType": "nt:unstructured"
+    }
+  },
+  "renditions-legacy": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/renditions",
+    "showMissingRenditions": true,
+    "legacy-options": {
+      "jcr:primaryType": "nt:unstructured",
+      "match": {
+        "jcr:primaryType": "nt:unstructured",
+        "text": "Web Rendition",
+        "value": ".*web.*"
+      },
+      "nomatch": {
+        "jcr:primaryType": "nt:unstructured",
+        "text": "Nonexistent Rendition",
+        "value": ".*nonexistent.*"
+      }
+    }
+  },
+  "renditions-legacy-hide-missing": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/renditions",
+    "showMissingRenditions": false,
+    "legacy-options": {
+      "jcr:primaryType": "nt:unstructured",
+      "nomatch": {
+        "jcr:primaryType": "nt:unstructured",
+        "text": "Nonexistent Rendition",
+        "value": ".*nonexistent.*"
+      }
+    }
+  },
+  "renditions-legacy-explicit-mode": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/renditions",
+    "legacyMode": true,
+    "asset-renditions": {
+      "jcr:primaryType": "nt:unstructured"
+    },
+    "legacy-options": {
+      "jcr:primaryType": "nt:unstructured",
+      "match": {
+        "jcr:primaryType": "nt:unstructured",
+        "text": "Web Rendition",
+        "value": ".*web.*"
+      }
+    }
+  },
+  "renditions-modern-explicit-mode": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/renditions",
+    "legacyMode": false,
+    "legacy-options": {
+      "jcr:primaryType": "nt:unstructured",
+      "match": {
+        "jcr:primaryType": "nt:unstructured",
+        "text": "Web Rendition",
+        "value": ".*web.*"
+      }
+    }
+  },
+  "renditions-empty": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/renditions"
+  }
+}

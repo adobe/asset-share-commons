@@ -1,0 +1,102 @@
+{
+  "dam": {
+    "jcr:primaryType": "nt:folder",
+    "test.png": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured",
+        "metadata": {
+          "dc:title": "Test Asset",
+          "customTitle": "Custom Title Value",
+          "title": "Fallback Title Value"
+        }
+      }
+    },
+    "no-title.png": {
+      "jcr:primaryType": "dam:Asset",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured",
+        "metadata": {
+          "dc:title": "No Title Asset"
+        }
+      }
+    }
+  },
+  "title": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/title"
+  },
+  "title-custom-property": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/title",
+    "propertyName": "customTitle"
+  },
+  "title-fallback": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/title",
+    "propertyName": "doesNotExist"
+  },
+  "title-both-blank": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/title",
+    "propertyName": "doesNotExist2"
+  },
+  "title-explicit-return-path": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/title",
+    "returnPath": "/explicit/path"
+  },
+  "title-walk-default": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/title"
+  },
+  "title-walk-custom-types": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/title",
+    "returnPathResourceTypes": ["custom/resource/type"]
+  },
+  "title-walk-no-match": {
+    "jcr:primaryType": "nt:unstructured",
+    "sling:resourceType": "asset-share-commons/components/details/title"
+  },
+  "root-search-page": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "jcr:title": "Root Search Page",
+      "sling:resourceType": "asset-share-commons/components/structure/search-page"
+    },
+    "detail-page": {
+      "jcr:primaryType": "cq:Page",
+      "jcr:content": {
+        "jcr:primaryType": "cq:PageContent",
+        "jcr:title": "Detail Page",
+        "sling:resourceType": "asset-share-commons/components/structure/details-page"
+      }
+    }
+  },
+  "custom-root": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "jcr:title": "Custom Root",
+      "sling:resourceType": "custom/resource/type"
+    },
+    "custom-leaf": {
+      "jcr:primaryType": "cq:Page",
+      "jcr:content": {
+        "jcr:primaryType": "cq:PageContent",
+        "jcr:title": "Custom Leaf",
+        "sling:resourceType": "some/other/type"
+      }
+    }
+  },
+  "standalone-page": {
+    "jcr:primaryType": "cq:Page",
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "jcr:title": "Standalone Page",
+      "sling:resourceType": "some/other/type"
+    }
+  }
+}

@@ -229,6 +229,144 @@ public class CombinedPropertiesTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void containsKey_FallsBackToAssetProperties() {
+        final boolean actual = combinedProperties.containsKey("customAssetProp");
+
+        assertTrue(actual);
+    }
+
+    @Test
+    public void containsKey_FallsBackToMetaProperties() {
+        final boolean actual = combinedProperties.containsKey("customMetaProp");
+
+        assertTrue(actual);
+    }
+
+    @Test
+    public void get_WithNullKey() {
+        assertNull(combinedProperties.get(null));
+    }
+
+    @Test
+    public void get_FallsBackToMetaProperties() {
+        final String actual = (String) combinedProperties.get("customMetaProp");
+
+        assertEquals("Metadata Level Value", actual);
+    }
+
+    @Test
+    public void get_FallsBackToAssetProperties() {
+        final String actual = (String) combinedProperties.get("customAssetProp");
+
+        assertEquals("Asset Level Value", actual);
+    }
+
+    @Test
+    public void get_WithNoMatchAtAll() {
+        assertNull(combinedProperties.get("unknown"));
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void put_ThrowsUnsupportedOperationException() {
+        combinedProperties.put("foo", "bar");
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void remove_ThrowsUnsupportedOperationException() {
+        combinedProperties.remove("foo");
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void putAll_ThrowsUnsupportedOperationException() {
+        combinedProperties.putAll(new java.util.HashMap<>());
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void clear_ThrowsUnsupportedOperationException() {
+        combinedProperties.clear();
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void keySet_ThrowsUnsupportedOperationException() {
+        combinedProperties.keySet();
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void values_ThrowsUnsupportedOperationException() {
+        combinedProperties.values();
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void entrySet_ThrowsUnsupportedOperationException() {
+        combinedProperties.entrySet();
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void containsValue_ThrowsUnsupportedOperationException() {
+        combinedProperties.containsValue("foo");
+    }
+
+    @Test
+    public void size() {
+        assertEquals(computedPropertiesList.size(), combinedProperties.size());
+    }
+
+    @Test
+    public void isEmpty_ReturnsFalseWhenComputedPropertiesExist() {
+        assertFalse(combinedProperties.isEmpty());
+    }
+
+    @Test
+    public void equals_WithEmptyComputedPropertiesIsTrue() {
+        final CombinedProperties empty = new CombinedProperties(new ArrayList<>(), ctx.request(), asset);
+        final CombinedProperties otherEmpty = new CombinedProperties(new ArrayList<>(), ctx.request(), asset);
+
+        assertTrue(empty.equals(otherEmpty));
+    }
+
+    @Test
+    public void equals_WithSameAssetAndSameComputedPropertiesIsTrue() {
+        final CombinedProperties other = new CombinedProperties(computedPropertiesList, ctx.request(), asset);
+
+        assertTrue(combinedProperties.equals(other));
+    }
+
+    @Test
+    public void equals_WithDifferentAssetIsFalse() {
+        final Asset otherAsset = DamUtil.resolveToAsset(ctx.resourceResolver().getResource("/content/dam/test2.png"));
+        final CombinedProperties other = new CombinedProperties(computedPropertiesList, ctx.request(), otherAsset);
+
+        assertFalse(combinedProperties.equals(other));
+    }
+
+    @Test
+    public void equals_WithNonCombinedPropertiesIsFalse() {
+        assertFalse(combinedProperties.equals("not a CombinedProperties"));
+    }
+
+    @Test
+    public void equals_WithSameInstanceIsTrue() {
+        assertTrue(combinedProperties.equals(combinedProperties));
+    }
+
+    @Test
+    public void equals_WithSameAssetAndDifferentComputedPropertiesIsFalse() {
+        final List<ComputedProperty> otherComputedPropertiesList = new ArrayList<>();
+        otherComputedPropertiesList.add(fileNameComputedProperty);
+
+        final CombinedProperties other = new CombinedProperties(otherComputedPropertiesList, ctx.request(), asset);
+
+        assertFalse(combinedProperties.equals(other));
+    }
+
+    @Test
+    public void hashCode_MatchesUnderlyingComputedPropertiesMapHashCode() {
+        final CombinedProperties other = new CombinedProperties(computedPropertiesList, ctx.request(), asset);
+
+        assertEquals(other.hashCode(), combinedProperties.hashCode());
+    }
+
 
     class TestWithRequestComputedProperty extends AbstractComputedProperty<String> {
 

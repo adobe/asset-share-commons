@@ -5,12 +5,12 @@ import com.adobe.aem.commons.assetshare.search.results.Results;
 import java.util.Collections;
 
 /**
- * Results that represent a generic empty (but successful) state.
+ * Results that represent a generic erring state.
  */
 public final class ErringResultsImpl extends AbstractResultsImpl implements Results {
     public ErringResultsImpl() {
         results = Collections.EMPTY_LIST;
-        status = Status.SUCCESS;
+        status = Status.ERROR;
         timeTaken = 0;
     }
 }
