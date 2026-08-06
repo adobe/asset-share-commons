@@ -1,6 +1,6 @@
-[![Maven CI](https://github.com/adobe/asset-share-commons/actions/workflows/verify.yaml/badge.svg)](https://github.com/adobe/asset-share-commons/actions/workflows/verify.yaml)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.adobe.aem.commons/assetshare/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.adobe.aem.commons/assetshare)
-[![codecov](https://codecov.io/gh/adobe/asset-share-commons/branch/develop/graph/badge.svg)](https://codecov.io/gh/Adobe-Marketing-Cloud/asset-share-commons)
+[![Maven Central](https://img.shields.io/maven-central/v/com.adobe.aem.commons/assetshare.svg)](https://central.sonatype.com/artifact/com.adobe.aem.commons/assetshare)
+[![codecov](https://codecov.io/gh/adobe/asset-share-commons/graph/badge.svg?token=14Q9uWnpmp)](https://codecov.io/gh/adobe/asset-share-commons)
+
 
 # Asset Share Commons
 
