@@ -346,6 +346,21 @@ public class CombinedPropertiesTest {
     }
 
     @Test
+    public void equals_WithSameInstanceIsTrue() {
+        assertTrue(combinedProperties.equals(combinedProperties));
+    }
+
+    @Test
+    public void equals_WithSameAssetAndDifferentComputedPropertiesIsFalse() {
+        final List<ComputedProperty> otherComputedPropertiesList = new ArrayList<>();
+        otherComputedPropertiesList.add(fileNameComputedProperty);
+
+        final CombinedProperties other = new CombinedProperties(otherComputedPropertiesList, ctx.request(), asset);
+
+        assertFalse(combinedProperties.equals(other));
+    }
+
+    @Test
     public void hashCode_MatchesUnderlyingComputedPropertiesMapHashCode() {
         final CombinedProperties other = new CombinedProperties(computedPropertiesList, ctx.request(), asset);
 
