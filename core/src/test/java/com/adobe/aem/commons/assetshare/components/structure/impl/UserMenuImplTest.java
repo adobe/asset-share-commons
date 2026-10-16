@@ -22,6 +22,7 @@ package com.adobe.aem.commons.assetshare.components.structure.impl;
 import com.adobe.aem.commons.assetshare.components.structure.UserMenu;
 import com.adobe.aem.commons.assetshare.testing.TestStyle;
 import io.wcm.testing.mock.aem.junit.AemContext;
+import org.apache.sling.models.factory.ModelFactory;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -58,7 +59,7 @@ public class UserMenuImplTest {
         props.put("logOutLink", "/content/logout");
         bindStyle(props);
 
-        final UserMenu userMenu = ctx.request().adaptTo(UserMenu.class);
+        final UserMenu userMenu = ctx.getService(ModelFactory.class).createModel(ctx.request(), UserMenuImpl.class);
         assertTrue(userMenu.isReady());
     }
 
@@ -70,7 +71,7 @@ public class UserMenuImplTest {
         props.put("logOutLink", "/content/logout");
         bindStyle(props);
 
-        final UserMenu userMenu = ctx.request().adaptTo(UserMenu.class);
+        final UserMenu userMenu = ctx.getService(ModelFactory.class).createModel(ctx.request(), UserMenuImpl.class);
         assertFalse(userMenu.isReady());
     }
 
@@ -82,7 +83,7 @@ public class UserMenuImplTest {
         props.put("logOutLink", "/content/logout");
         bindStyle(props);
 
-        final UserMenu userMenu = ctx.request().adaptTo(UserMenu.class);
+        final UserMenu userMenu = ctx.getService(ModelFactory.class).createModel(ctx.request(), UserMenuImpl.class);
         assertFalse(userMenu.isReady());
     }
 
@@ -94,7 +95,7 @@ public class UserMenuImplTest {
         props.put("logOutLink", "/content/logout");
         bindStyle(props);
 
-        final UserMenu userMenu = ctx.request().adaptTo(UserMenu.class);
+        final UserMenu userMenu = ctx.getService(ModelFactory.class).createModel(ctx.request(), UserMenuImpl.class);
         assertFalse(userMenu.isReady());
     }
 
@@ -106,7 +107,7 @@ public class UserMenuImplTest {
         props.put("logOutLabel", "Log Out");
         bindStyle(props);
 
-        final UserMenu userMenu = ctx.request().adaptTo(UserMenu.class);
+        final UserMenu userMenu = ctx.getService(ModelFactory.class).createModel(ctx.request(), UserMenuImpl.class);
         assertFalse(userMenu.isReady());
     }
 
@@ -114,7 +115,7 @@ public class UserMenuImplTest {
     public void isReady_NoneConfigured_false() {
         bindStyle(new HashMap<>());
 
-        final UserMenu userMenu = ctx.request().adaptTo(UserMenu.class);
+        final UserMenu userMenu = ctx.getService(ModelFactory.class).createModel(ctx.request(), UserMenuImpl.class);
         assertFalse(userMenu.isReady());
     }
 
@@ -122,7 +123,7 @@ public class UserMenuImplTest {
     public void getExportedType() {
         bindStyle(new HashMap<>());
 
-        final UserMenu userMenu = ctx.request().adaptTo(UserMenu.class);
+        final UserMenu userMenu = ctx.getService(ModelFactory.class).createModel(ctx.request(), UserMenuImpl.class);
         assertEquals("asset-share-commons/components/structure/user-menu", ((UserMenuImpl) userMenu).getExportedType());
     }
 }
