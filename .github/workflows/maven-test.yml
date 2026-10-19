@@ -33,7 +33,7 @@ jobs:
           cache: maven
 
       - name: Build & Test with Maven
-        run: mvn -U clean verify -Pcloud,jacoco-report
+        run: mvn -U -T 1C clean verify -Pcloud,jacoco-report
 
       - name: Upload CodeCov
         uses: codecov/codecov-action@v7
